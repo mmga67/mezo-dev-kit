@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-reconciliation-model",
+  "id": "musd-savings-reconciliation",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"systems": ["classic-musd", "musd-savings", "mezo-earn-incentives"]},
+  "limitations": ["No cross-system TVL, APR, protocol revenue, or debt ratio is defined by this record."],
+  "dimensions": [
+    {"id": "classic-musd-debt", "ownerReference": {"moduleId": "protocols/musd", "resourceId": "musd-system-model"}, "rule": "Savings deposits move existing MUSD and do not create a trove or increase classic debt."},
+    {"id": "savings-principal", "rule": "sum wallet-held and gauge-custodied beneficial sMUSD once; totalSupply is principal only."},
+    {"id": "savings-yield", "rule": "pending protocol yield, indexed but unclaimed user yield, and paid yield are distinct lifecycle values."},
+    {"id": "incentive-rewards", "ownerReference": {"moduleId": "protocols/incentives", "resourceId": "incentives-gauges-rewards"}, "rule": "MEZO emissions and redirected voter revenue are not Savings principal or classic MUSD interest."}
+  ],
+  "doubleCountingGuards": [
+    "do not add Savings-held MUSD to MUSD total supply",
+    "do not add sMUSD totalSupply to classic MUSD debt",
+    "do not count the same receipt in a wallet and in a gauge",
+    "do not merge claimable MUSD yield with claimable MEZO rewards"
+  ]
+}

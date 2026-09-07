@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-sdk-tooling-owner-pointer",
+  "domain": "development/tooling",
+  "status": "verified",
+  "title": "SDK tooling requirements have canonical owners",
+  "summary": "Use root package metadata and the SDK development guide for current Node, pnpm, and quality-gate requirements instead of relying on remembered versions.",
+  "sources": ["package.json", "docs/guides/SDK_DEVELOPMENT.md"],
+  "related": ["docs/standards/coding.md"],
+  "updated": "2026-08-29"
+}

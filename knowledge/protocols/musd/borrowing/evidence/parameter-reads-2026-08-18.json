@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-borrowing-parameter-observations",
+  "id": "borrowing-parameter-observations",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "method": "eth_call"},
+  "observedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "method": "eth_call at the fixed contract registry review verification block",
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "endpointId": "mezo-mainnet-boar-https",
+      "blockNumber": 11201821,
+      "blockHash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c"
+    },
+    {
+      "networkId": "mezo-testnet",
+      "endpointId": "mezo-testnet-official-https",
+      "blockNumber": 14952836,
+      "blockHash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa"
+    }
+  ],
+  "observations": [
+    {
+      "id": "borrowing-parameters-mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "reads": [
+        {
+          "deploymentId": "musd.borrower-operations@mezo-mainnet",
+          "function": "minNetDebt()",
+          "callData": "0x969c2452",
+          "rawResult": "0x00000000000000000000000000000000000000000000006194049f30f7200000",
+          "decoded": "1800000000000000000000",
+          "unitId": "musd-token-amount"
+        },
+        {
+          "deploymentId": "musd.borrower-operations@mezo-mainnet",
+          "function": "borrowingRate()",
+          "callData": "0xb5b8453e",
+          "rawResult": "0x00000000000000000000000000000000000000000000000000038d7ea4c68000",
+          "decoded": "1000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.borrower-operations@mezo-mainnet",
+          "function": "refinancingFeePercentage()",
+          "callData": "0x6246d497",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000014",
+          "decoded": "20",
+          "unit": "integer-percent-of-refinance-fee-base"
+        },
+        {
+          "deploymentId": "musd.interest-rate-manager@mezo-mainnet",
+          "function": "interestRate()",
+          "callData": "0x7c3a00fd",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000064",
+          "decoded": "100",
+          "unitId": "annual-interest-rate"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-mainnet",
+          "function": "MCR()",
+          "callData": "0x794e5724",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000f43fc2c04ee0000",
+          "decoded": "1100000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-mainnet",
+          "function": "CCR()",
+          "callData": "0x5733d58f",
+          "rawResult": "0x00000000000000000000000000000000000000000000000014d1120d7b160000",
+          "decoded": "1500000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-mainnet",
+          "function": "MUSD_GAS_COMPENSATION()",
+          "callData": "0x7af110ba",
+          "rawResult": "0x00000000000000000000000000000000000000000000000ad78ebc5ac6200000",
+          "decoded": "200000000000000000000",
+          "unitId": "musd-token-amount"
+        },
+        {
+          "deploymentId": "musd.price-feed@mezo-mainnet",
+          "function": "TARGET_DIGITS()",
+          "callData": "0x1be5c92f",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000012",
+          "decoded": "18",
+          "unit": "decimal-digits"
+        },
+        {
+          "deploymentId": "musd.token@mezo-mainnet",
+          "function": "mintList(address)",
+          "selector": "0xbef432c6",
+          "arguments": [
+            {
+              "registryDeploymentId": "musd.borrower-operations@mezo-mainnet"
+            }
+          ],
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "decoded": true,
+          "unit": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "borrowing-parameters-mezo-testnet",
+      "networkId": "mezo-testnet",
+      "reads": [
+        {
+          "deploymentId": "musd.borrower-operations@mezo-testnet",
+          "function": "minNetDebt()",
+          "callData": "0x969c2452",
+          "rawResult": "0x00000000000000000000000000000000000000000000006194049f30f7200000",
+          "decoded": "1800000000000000000000",
+          "unitId": "musd-token-amount"
+        },
+        {
+          "deploymentId": "musd.borrower-operations@mezo-testnet",
+          "function": "borrowingRate()",
+          "callData": "0xb5b8453e",
+          "rawResult": "0x00000000000000000000000000000000000000000000000000038d7ea4c68000",
+          "decoded": "1000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.borrower-operations@mezo-testnet",
+          "function": "refinancingFeePercentage()",
+          "callData": "0x6246d497",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000014",
+          "decoded": "20",
+          "unit": "integer-percent-of-refinance-fee-base"
+        },
+        {
+          "deploymentId": "musd.interest-rate-manager@mezo-testnet",
+          "function": "interestRate()",
+          "callData": "0x7c3a00fd",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000064",
+          "decoded": "100",
+          "unitId": "annual-interest-rate"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-testnet",
+          "function": "MCR()",
+          "callData": "0x794e5724",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000f43fc2c04ee0000",
+          "decoded": "1100000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-testnet",
+          "function": "CCR()",
+          "callData": "0x5733d58f",
+          "rawResult": "0x00000000000000000000000000000000000000000000000014d1120d7b160000",
+          "decoded": "1500000000000000000",
+          "unitId": "decimal-fixed-point"
+        },
+        {
+          "deploymentId": "musd.trove-manager@mezo-testnet",
+          "function": "MUSD_GAS_COMPENSATION()",
+          "callData": "0x7af110ba",
+          "rawResult": "0x00000000000000000000000000000000000000000000000ad78ebc5ac6200000",
+          "decoded": "200000000000000000000",
+          "unitId": "musd-token-amount"
+        },
+        {
+          "deploymentId": "musd.price-feed@mezo-testnet",
+          "function": "TARGET_DIGITS()",
+          "callData": "0x1be5c92f",
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000012",
+          "decoded": "18",
+          "unit": "decimal-digits"
+        },
+        {
+          "deploymentId": "musd.token@mezo-testnet",
+          "function": "mintList(address)",
+          "selector": "0xbef432c6",
+          "arguments": [
+            {
+              "registryDeploymentId": "musd.borrower-operations@mezo-testnet"
+            }
+          ],
+          "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "decoded": true,
+          "unit": "boolean"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Values are current only at the recorded blocks and must be re-read after the review window or before a write-path release.",
+    "Deployment addresses are resolved from knowledge/contracts and are deliberately not duplicated here.",
+    "Fee-exempt accounts are keyed mappings without enumeration; callers must query the intended borrower explicitly."
+  ]
+}

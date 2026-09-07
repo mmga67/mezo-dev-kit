@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-source-taxonomy",
+  "id": "price-source-taxonomy",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T17:52:25.719Z",
+  "reviewAfter": "2026-08-26T16:00:00.000Z",
+  "scope": {
+    "sourceClasses": 6,
+    "adr": "ADR-0009"
+  },
+  "limitations": [
+    "Classification preserves price meaning and provenance; it does not establish source liveness, quality, or fitness for a consumer.",
+    "Swap routing and pool math remain outside Prices even when their outputs are classified here."
+  ],
+  "records": [
+    {
+      "id": "protocol-oracle-state",
+      "definition": "A value returned by a named deployed protocol adapter under that protocol's configured validation and normalization.",
+      "canonicalSemanticsOwner": "the consuming protocol module",
+      "requiredContext": [
+        "protocol component",
+        "deployment",
+        "network",
+        "block",
+        "adapter result"
+      ],
+      "exclusions": [
+        "external feed identity",
+        "market fallback",
+        "DEX quote"
+      ]
+    },
+    {
+      "id": "pushed-feed-observation",
+      "definition": "A publisher or transport feed observation retaining feed identity, raw signed price, exponent or decimals, publication time, and confidence when defined.",
+      "canonicalSemanticsOwner": "prices",
+      "requiredContext": [
+        "provider",
+        "feed",
+        "raw price",
+        "scale",
+        "publish time",
+        "confidence semantics"
+      ],
+      "exclusions": [
+        "consumer protocol substitution",
+        "unqualified floating point"
+      ]
+    },
+    {
+      "id": "offchain-market-reference",
+      "definition": "A provider response observed at retrieval time with provider and instrument identity plus explicit limitations.",
+      "canonicalSemanticsOwner": "prices for reusable datum semantics; provider/application for retrieval policy",
+      "requiredContext": [
+        "provider",
+        "instrument",
+        "retrieval time",
+        "terms and limitations"
+      ],
+      "exclusions": [
+        "protocol oracle truth",
+        "implicit persistence"
+      ]
+    },
+    {
+      "id": "dex-derived-observation",
+      "definition": "A pool state, spot, or TWAP derived through the owning pool mechanism at explicit blocks or timestamps and liquidity/window.",
+      "canonicalSemanticsOwner": "protocols/pools",
+      "requiredContext": [
+        "pool",
+        "block or window",
+        "liquidity",
+        "derivation reference"
+      ],
+      "exclusions": [
+        "amount-specific execution quote",
+        "general market price"
+      ]
+    },
+    {
+      "id": "dex-execution-quote",
+      "definition": "An amount-specific route result retaining block, direction, size, fees, price impact, and executable limitations.",
+      "canonicalSemanticsOwner": "accepted swap or routing owner",
+      "requiredContext": [
+        "route",
+        "amount",
+        "direction",
+        "block",
+        "fees",
+        "price impact"
+      ],
+      "exclusions": [
+        "pool spot state",
+        "protocol oracle truth"
+      ]
+    },
+    {
+      "id": "stored-analytics-projection",
+      "definition": "A cached, indexed, aggregated, or derived row retaining complete upstream provenance and never promoted by persistence alone.",
+      "canonicalSemanticsOwner": "application, indexer, or analytics owner",
+      "requiredContext": [
+        "upstream provenance",
+        "derivation",
+        "storage time"
+      ],
+      "exclusions": [
+        "canonical protocol state",
+        "fabricated freshness"
+      ]
+    }
+  ],
+  "selectionBoundary": "Changing source class is an explicit typed selection or derivation event; storage, normalization, or source order never hides the change."
+}

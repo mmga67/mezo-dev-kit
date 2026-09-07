@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "kind": "network",
+  "id": "ethereum-mainnet",
+  "owner": "chains-registry",
+  "environment": "mainnet",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T00:00:00Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkId": "ethereum-mainnet",
+    "environment": "mainnet"
+  },
+  "values": {
+    "profile": "evm",
+    "displayName": "Ethereum Mainnet",
+    "evmChainId": 1,
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "explorer": {
+      "name": "Etherscan",
+      "url": "https://etherscan.io"
+    },
+    "capabilities": {
+      "evm": true,
+      "evmJsonRpc": true,
+      "gasCurrency": "native"
+    }
+  },
+  "claims": [
+    {
+      "id": "ethereum-mainnet-identity",
+      "path": "values.displayName",
+      "statement": "Ethereum Mainnet is the primary public Ethereum production network.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-ethereum-networks",
+          "locator": "Ethereum Mainnet",
+          "note": "The official Ethereum developer page identifies Mainnet as the primary public production blockchain."
+        }
+      ]
+    },
+    {
+      "id": "ethereum-mainnet-chain-id",
+      "path": "values.evmChainId",
+      "statement": "Ethereum Mainnet uses EIP-155 chain ID 1.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-ethereum-eip-155",
+          "locator": "Parameters and List of Chain ID's",
+          "note": "Final EIP-155 assigns chain ID 1 to Ethereum mainnet."
+        },
+        {
+          "sourceId": "bridge-musd-ntt-network-snapshots",
+          "locator": "/networkSnapshots/1",
+          "note": "The fixed-block Ethereum observation independently recorded eth_chainId 1."
+        }
+      ]
+    },
+    {
+      "id": "ethereum-mainnet-native-currency",
+      "path": "values.nativeCurrency",
+      "statement": "Ethereum Mainnet uses Ether (ETH) as its native gas currency with 18 decimal places.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-ethereum-intro-to-ether",
+          "locator": "What is ether? and Denominations of ether",
+          "note": "The official developer page names Ether/ETH as the transaction-fee currency and defines one wei as 10^-18 ether."
+        }
+      ]
+    },
+    {
+      "id": "ethereum-mainnet-explorer",
+      "path": "values.explorer",
+      "statement": "Etherscan is an Ethereum block explorer at https://etherscan.io.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-ethereum-intro-to-ether",
+          "locator": "Querying ether",
+          "note": "The official developer page links Etherscan at the canonical URL for Ethereum account inspection."
+        }
+      ]
+    },
+    {
+      "id": "ethereum-mainnet-capability-profile",
+      "path": "values.capabilities",
+      "statement": "This record exposes only the EVM and Ethereum JSON-RPC capabilities needed by MDK cross-chain workflows.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-ethereum-eip-155",
+          "locator": "Specification",
+          "note": "EIP-155 defines the Ethereum transaction chain-ID semantics used by the EVM profile."
+        },
+        {
+          "sourceId": "bridge-musd-ntt-network-snapshots",
+          "locator": "/networkSnapshots/1",
+          "note": "The bounded RPC observation establishes the eth_chainId capability used by the current workflow."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Qualified registry provenance review acceptance covers this chain identity and capability profile only; it does not create provider, bridge-route, protocol, or writer support.",
+    "No Ethereum RPC endpoint is selected or supported by this record.",
+    "The EVM profile does not claim every optional JSON-RPC method, archive access, subscription, batching, or provider capability."
+  ]
+}

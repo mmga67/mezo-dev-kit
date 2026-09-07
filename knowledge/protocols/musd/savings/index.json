@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/musd/savings",
+  "moduleId": "protocols/musd/savings",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T15:30:07Z",
+  "reviewAfter": "2026-09-24T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0"},
+  "limitations": ["Qualified Level 3 review accepted the bounded module and current Savings Contract identity; protocol support remains proposed and no public capability was enabled.", "Contracts retains five coordinate-scoped proxy generations and applies the canonical ABI/exact executable reproduction only to the latest verified generation beginning at block 9088927.", "Historical implementation ABIs, broader gauge-event history, and published audit-to-bytecode mappings are not canonicalized by the accepted packet.", "No public reader, deposit, withdrawal, stake, distribution, or claim writer is supported.", "Mutable roles and accounting state require fresh same-block reads."],
+  "resources": [
+    {"id": "musd-savings-model", "role": "canonical-record", "kind": "musd-savings-accounting-model", "path": "records/model.json"},
+    {"id": "musd-savings-roles", "role": "canonical-record", "kind": "musd-savings-role-topology", "path": "records/roles.json"},
+    {"id": "musd-savings-operations", "role": "canonical-record", "kind": "musd-savings-operation-requirements", "path": "records/operations.json"},
+    {"id": "musd-savings-reconciliation", "role": "canonical-record", "kind": "musd-savings-reconciliation-model", "path": "records/reconciliation.json"},
+    {"id": "musd-savings-accounting-fixtures", "role": "fixture", "kind": "musd-savings-accounting-fixtures", "path": "fixtures/accounting.json", "recordIds": ["deposit-one-to-one", "withdraw-one-to-one", "zero-supply-buffer", "ratio-rounds-to-zero", "indexed-distribution", "user-update-floor", "gauge-claim-cap", "staked-receipt-no-double-count"], "recordCollectionPointer": "/records"},
+    {"id": "musd-savings-sources", "role": "source-catalog", "kind": "musd-savings-source-catalog", "path": "sources/catalog.json", "recordIds": ["official-musd-savings-docs", "official-docs-repository", "official-whitepaper", "fixed-block-state", "source-reproduction", "withdrawal-reconciliation"], "recordCollectionPointer": "/records"},
+    {"id": "musd-savings-fixed-block-state", "role": "evidence", "kind": "musd-savings-fixed-block-observation", "path": "evidence/fixed-block-state-2026-08-23.json"},
+    {"id": "musd-savings-withdrawal-reconciliation", "role": "evidence", "kind": "musd-savings-withdrawal-reconciliation-evidence", "path": "evidence/withdrawal-reconciliation-2026-08-24.json"},
+    {"id": "musd-savings-source-reproduction", "role": "evidence", "kind": "musd-savings-source-reproduction-evidence", "path": "evidence/source-reproduction-2026-08-23.json", "recordIds": ["musd-savings-rate", "musd-yield-converter"], "recordCollectionPointer": "/records"},
+    {"id": "musd-savings-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "musd-savings-gaps", "role": "review", "kind": "gap-report", "path": "review/gaps.md"},
+    {"id": "musd-savings-reference", "role": "generated", "kind": "human-reference", "path": "generated/reference.md", "generatedFrom": [{"moduleId": "protocols/musd/savings", "resourceId": "musd-savings-model"}, {"moduleId": "protocols/musd/savings", "resourceId": "musd-savings-roles"}, {"moduleId": "protocols/musd/savings", "resourceId": "musd-savings-reconciliation"}, {"moduleId": "protocols/musd/savings", "resourceId": "musd-savings-fixed-block-state"}]}
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/savings"},
+    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/validate-economic-system-knowledge.ts --module protocols/musd/savings"},
+    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate-economic-system-reference.ts --module protocols/musd/savings --check"}
+  ],
+  "extensions": {"writerSupport": "none", "classicMusdBoundary": "Savings principal and indexed yield are MUSD-adjacent and excluded from troves/TCR.", "compositionReference": "docs/architecture/mezo-economic-system-composition.md", "blockers": ["fresh same-block reads and exact-operation simulation before any public operation", "separate public API and security review before any reader or writer"]}
+}

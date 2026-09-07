@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-emissions-observation",
+  "id": "incentives-emissions-mainnet",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-point-in-time",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T18:18:30Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11291582,
+    "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49"
+  },
+  "limitations": [
+    "The graph and governed splitter needles are point-in-time observations and can change after the evidence block.",
+    "The representative epoch proves deployed integer reconstruction for one processed epoch; it is not a forecast or a promise of future emissions.",
+    "All thirteen referenced registry identities and ABIs are accepted under registry provenance review and emission evidence review; registry acceptance creates no writer support.",
+    "The validator and third-party destinations are identity boundaries only; their downstream allocation behavior is outside this evidence set."
+  ],
+  "networkSnapshot": {
+    "networkId": "mezo-mainnet",
+    "evmChainId": 31612,
+    "blockNumber": 11291582,
+    "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+    "blockTimestamp": "2026-08-21T18:04:49Z",
+    "rpcUrl": "https://mezo-mainnet.boar.network",
+    "explorerApiUrl": "https://api.explorer.mezo.org"
+  },
+  "methods": [
+    "eth_chainId",
+    "eth_getBlockByNumber",
+    "eth_call at the fixed block and prior epoch boundary",
+    "eth_getLogs for EpochProcessed, PeriodUpdated, and Nudge",
+    "official explorer source, ABI, creation, and transaction metadata",
+    "isolated exact-compiler Foundry reproduction"
+  ],
+  "contracts": [
+    {
+      "role": "mezo-minter",
+      "address": "0x66bff681611553b3204a226b2019ec621f39ffc3",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "mezo-rebase-distributor",
+      "address": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "mezo-chain-splitter",
+      "address": "0x5c6ef634e279a77d64e21d24b1a1bb4a5e59c5da",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "mezo-ecosystem-splitter",
+      "address": "0xe9e697d49d47c7042e768177f42d5789666d99fa",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "validators-voter",
+      "address": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a",
+      "implementation": "0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157",
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "third-party-voter",
+      "address": "0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb",
+      "implementation": "0x8d696ae943b97ff36449014e4400a9560d1664dc",
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "chain-splitter-epoch-governor",
+      "address": "0x7f8c3a8877368d6a3c727ca18661ec1d681f4365",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    },
+    {
+      "role": "ecosystem-splitter-epoch-governor",
+      "address": "0xd60f5f641e68a0e2c9bab29e444b22507a0f8ecf",
+      "implementation": null,
+      "sourceVerification": "fully-verified-executable-reproduced"
+    }
+  ],
+  "topology": {
+    "emissionBudgetSource": "mezo-minter",
+    "rebaseDestination": "mezo-rebase-distributor",
+    "rewardDestination": "mezo-chain-splitter",
+    "chainSplitter": {
+      "firstRecipient": "mezo-ecosystem-splitter",
+      "secondRecipient": "validators-voter",
+      "epochGovernor": "chain-splitter-epoch-governor"
+    },
+    "ecosystemSplitter": {
+      "firstRecipient": "pools-voter",
+      "secondRecipient": "third-party-voter",
+      "epochGovernor": "ecosystem-splitter-epoch-governor"
+    },
+    "veRebaseInput": "vemezo-current"
+  },
+  "currentState": {
+    "emissionsEnabled": true,
+    "activePeriod": "1787184000",
+    "epochIndex": "20",
+    "maxEpochsPerUpdate": "20",
+    "chainSplitterNeedle": "80",
+    "ecosystemSplitterNeedle": "88",
+    "splitterScale": "100",
+    "splitterMinimum": "1",
+    "splitterMaximum": "100",
+    "splitterTick": "1",
+    "tokenTotalSupplyRaw": "1095873938451509275625307425",
+    "rebaseDistributor": {
+      "startTime": "1774483200",
+      "lastTokenTime": "1787184609",
+      "tokenLastBalanceRaw": "21452778246540065160758475"
+    }
+  },
+  "representativeEpoch": {
+    "event": {
+      "blockNumber": 11249833,
+      "blockHash": "0x9dfa317c385fd2bdba32d7fb8d2cc09c1d8d656c805492ce7054b95d35452e5e",
+      "transactionHash": "0x996067965aee2054e01f20771d54f07227bd0232f9515eabd88576262dad5c7f",
+      "logIndex": 0,
+      "period": "1787184000",
+      "epochIndex": "19",
+      "emissionRaw": "4766533366334551196099330",
+      "rebaseRaw": "1979684202064968095632901",
+      "rewardsRaw": "2786849164269583100466429",
+      "postEmissionTotalSupplyRaw": "1095873938451509275625307425"
+    },
+    "formulaInputs": {
+      "preEmissionTotalSupplyRaw": "1091107405085174724429208095",
+      "priorBoundaryTimestamp": "1787183999",
+      "priorBoundaryUnboostedVotingPowerRaw": "96666131639565545031862065",
+      "halvingPeriod": "0",
+      "halvingPeriodProgress18": "182692307692307692",
+      "halvingPeriodStartRate18": "2500000000000000000000",
+      "halvingPeriodEndRate18": "1250000000000000000000",
+      "halvingPeriodRateDrop18": "228365384615384615000",
+      "rate18": "2271634615384615385000",
+      "epochRate18": "43685281065088757403"
+    },
+    "reconstruction": {
+      "emissionMatches": true,
+      "rebaseMatches": true,
+      "rewardRemainderMatches": true,
+      "supplyIncrementMatches": true
+    }
+  },
+  "representativeSplits": {
+    "chain": {
+      "blockNumber": 11249834,
+      "blockHash": "0x8afab0393accba8a71b44b005c6953a0adeb5fae5bf53c2bc232b993f208f7e6",
+      "transactionHash": "0x1d99d5cb9e843f6997ec11977c92125e31daaa795261a9fe8aa94245e05ea333",
+      "logIndex": 5,
+      "oldPeriod": "1786579200",
+      "newPeriod": "1787184000",
+      "needleAtDistribution": "80",
+      "firstRecipientAmountRaw": "2229479331415666480373143",
+      "secondRecipientAmountRaw": "557369832853916620093286"
+    },
+    "ecosystem": {
+      "blockNumber": 11249836,
+      "blockHash": "0x42f18349d60b5ad4f6d7eae0916db912f2958337ecf054125a14ce4f12b498e4",
+      "transactionHash": "0x03c825dc0b4b7a069ed76d922d4c348f163a754305b336549e4412371b20b8e4",
+      "logIndex": 8,
+      "oldPeriod": "1786579200",
+      "newPeriod": "1787184000",
+      "needleAtDistribution": "89",
+      "firstRecipientAmountRaw": "1984236604959943167532097",
+      "secondRecipientAmountRaw": "245242726455723312841046"
+    }
+  },
+  "governanceObservation": {
+    "blockNumber": 11283770,
+    "blockHash": "0x5bdcd9898b88410cedffdea0d19a72db9c251b019148a0ccced9aa54ff755560",
+    "transactionHash": "0x1022079ec80bedd30018094a0fe29c12c475c26bff9a8eeae92cd7981ec17326",
+    "logIndex": 1,
+    "period": "1787184000",
+    "splitterRole": "mezo-ecosystem-splitter",
+    "oldNeedle": "89",
+    "newNeedle": "88"
+  },
+  "sourceEvidenceReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-incentives-probes-2026-08-21"
+  }
+}

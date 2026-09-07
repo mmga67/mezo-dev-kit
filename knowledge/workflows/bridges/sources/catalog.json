@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-source-catalog",
+  "id": "bridge-sources",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "workflowStatus": "evidence-verified-promotion-blocked",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": []
+  },
+  "limitations": [
+    "Pinned sources and explorer labels establish only their recorded provenance class and scope.",
+    "Source evidence does not by itself accept proposed network or Contract records or create route or writer support."
+  ],
+  "sources": [
+    {
+      "id": "official-source-musd-ntt-mainnet",
+      "kind": "official-source-and-deployment-artifacts",
+      "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
+      "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
+      "deploymentPath": "deployment.json",
+      "deploymentSha256": "826fbb0694a3e78e624b7e8532d739ccefb14dfd8d2f4e96dc22a56d930a1909",
+      "nttVersion": "1.1.0",
+      "license": "Apache-2.0",
+      "classification": "authoritative-source-and-deployment-evidence"
+    },
+    {
+      "id": "official-wormhole-chain-ids",
+      "kind": "official-provider-reference",
+      "url": "https://wormhole.com/docs/products/reference/chain-ids/",
+      "retrievedAt": "2026-08-18T00:00:00Z",
+      "classification": "authoritative-provider-identifier-reference"
+    },
+    {
+      "id": "official-wormhole-ntt-lifecycle-source",
+      "kind": "version-matched-source",
+      "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
+      "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
+      "paths": [
+        "evm/src/NttManager/NttManager.sol",
+        "evm/src/NttManager/ManagerBase.sol",
+        "evm/src/Transceiver/WormholeTransceiver/WormholeTransceiver.sol",
+        "evm/src/interfaces/INttManager.sol",
+        "evm/src/interfaces/IWormholeTransceiver.sol"
+      ],
+      "classification": "authoritative-version-matched-behavior-source"
+    },
+    {
+      "id": "official-mezod-native-bridge-v12",
+      "kind": "official-version-matched-active-client-source",
+      "repository": "https://github.com/mezo-org/mezod",
+      "tag": "v12.0.0",
+      "commit": "95a5e0eddbbb92bb0b305185e2349af4c41ac63d",
+      "liveClientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+      "paths": [
+        "precompile/assetsbridge/IAssetsBridge.sol",
+        "precompile/assetsbridge/bridge_out.go",
+        "x/bridge/keeper/assets_locked.go",
+        "x/bridge/abci/preblock.go",
+        "x/bridge/abci/proposal.go",
+        "ethereum/sidecar/batch_attestation.go",
+        "ethereum/bindings/portal/ethereum/gen/abi/MezoBridge.go",
+        "x/evm/types/precompile.go"
+      ],
+      "classification": "authoritative-version-matched-behavior-source"
+    },
+    {
+      "id": "ethereum-native-bridge-deployed-source",
+      "kind": "deployed-proxy-history-and-exact-match-source",
+      "url": "https://etherscan.io/address/0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c#code",
+      "retrievedAt": "2026-08-18T00:00:00Z",
+      "classification": "deployed-evidence-with-explorer-source-label",
+      "limitation": "Exact Match is the explorer's preserved label and is not an independent bytecode reproduction."
+    }
+  ],
+  "evidenceArtifacts": [
+    {
+      "id": "bridge-musd-ntt-evidence",
+      "evidenceReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-musd-ntt-evidence"
+      },
+      "sha256": "d23c799ba704d19e1905154bda33fca4eb5c3170ce41024578713ff7c310f93e"
+    },
+    {
+      "id": "bridge-native-evidence",
+      "evidenceReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-native-evidence"
+      },
+      "sha256": "f7605382029b84c2e2f5ed6fbe5b2332541728980be8516b89eb510870079899"
+    }
+  ]
+}

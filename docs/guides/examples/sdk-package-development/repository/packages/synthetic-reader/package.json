@@ -1,0 +1,28 @@
+{
+  "name": "@mezo-dev-kit/synthetic-reader",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Disposable read-only package used by the MDK workspace-module authoring guide.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm generate:check && pnpm build && pnpm test",
+    "format:check": "prettier --check src test scripts generator-input README.md vitest.config.ts package.json tsconfig.json tsconfig.build.json",
+    "generate": "node scripts/generate-model.ts",
+    "generate:check": "node scripts/generate-model.ts --check",
+    "lint": "eslint src test scripts vitest.config.ts",
+    "test": "vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=55055",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
+  }
+}

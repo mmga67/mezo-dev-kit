@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK deterministic price fixtures v1",
+  "allOf": [{"$ref": "../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "required": ["records"],
+  "properties": {
+    "owner": {"const": "prices"},
+    "kind": {"const": "price-datum-fixtures"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "operation", "input", "expected"]
+      }
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-emission-model",
+  "id": "incentives-emissions",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T18:18:30Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11291582,
+    "activeMinterEpochIndex": "20"
+  },
+  "limitations": [
+    "The model describes the active executable generation and exact unsigned-integer order; it is not a forecast of future supply, yield, price, or governance outcomes.",
+    "The whitepaper's locked-supply description conflicts with the active minter's use of prior-boundary unboosted time-decayed voting power; deployed behavior is recorded separately and takes precedence for this scope.",
+    "Splitter needles are governed state, not constants. Consumers must read them at the relevant block or transaction pre-state.",
+    "Catch-up processing is capped per call and delayed distributor checkpointing can change historical weekly attribution.",
+    "All thirteen referenced registry roles are accepted under registry provenance review and emission evidence review; registry acceptance creates no writer support."
+  ],
+  "evidenceReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-emissions-mainnet"
+  },
+  "roleReferences": {
+    "minter": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "mezo-minter"
+    },
+    "veMEZO": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "vemezo-current"
+    },
+    "rebaseDistributor": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "mezo-rebase-distributor"
+    },
+    "chainSplitter": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "mezo-chain-splitter"
+    },
+    "ecosystemSplitter": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "mezo-ecosystem-splitter"
+    },
+    "poolsDestination": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "pools-voter"
+    },
+    "validatorsDestination": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "validators-voter"
+    },
+    "thirdPartyDestination": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "third-party-voter"
+    }
+  },
+  "units": {
+    "tokenAmounts": "raw MEZO base units",
+    "ratePrecision": "1e18",
+    "annualRateDenominator": "10000 basis points",
+    "splitterScale": "integer percent on [1,100]",
+    "epoch": "604800 seconds"
+  },
+  "constants": {
+    "precision": "1000000000000000000",
+    "maximumBasisPoints": "10000",
+    "halvingEpochs": "104",
+    "initialInflationRateBasisPoints": "2500",
+    "tailInflationRateBasisPoints": "200",
+    "weeksPerYear": "52",
+    "maxEpochsPerUpdate": "20",
+    "splitterMinimum": "1",
+    "splitterMaximum": "100",
+    "splitterTick": "1",
+    "distributorCheckpointIterationLimit": "20",
+    "distributorClaimIterationLimit": "50"
+  },
+  "formulas": [
+    {
+      "id": "mezo-epoch-emission",
+      "inputs": [
+        "epochIndex",
+        "preEmissionTotalSupplyRaw"
+      ],
+      "integerOrder": [
+        "halvingPeriod = floor(epochIndex / 104)",
+        "progress18 = floor((epochIndex mod 104) * 1e18 / 104)",
+        "startRate18 = max(floor(2500 * 1e18 / 2^halvingPeriod), 200 * 1e18)",
+        "endRate18 = max(floor(startRate18 / 2), 200 * 1e18)",
+        "rateDrop18 = floor((startRate18 - endRate18) * progress18 / 1e18)",
+        "rate18 = startRate18 - rateDrop18",
+        "epochRate18 = floor(rate18 / 52)",
+        "emissionRaw = floor(floor(epochRate18 * preEmissionTotalSupplyRaw / 10000) / 1e18)"
+      ],
+      "rounding": "Every division floors in the listed order; regrouping is not equivalent.",
+      "governedInputs": [],
+      "zeroCases": [
+        "A zero pre-emission total supply produces zero emission."
+      ],
+      "scope": "Active MEZOMinter executable at the evidence block."
+    },
+    {
+      "id": "mezo-epoch-rebase",
+      "inputs": [
+        "emissionRaw",
+        "preEmissionTotalSupplyRaw",
+        "period",
+        "priorBoundaryUnboostedVotingPowerRaw",
+        "emissionsEnabled"
+      ],
+      "integerOrder": [
+        "Return 0 when emissions are disabled, emissionRaw is 0, preEmissionTotalSupplyRaw is 0, or period is 0.",
+        "veVotingPowerRaw = veMEZO.unboostedTotalVotingPowerAt(period - 1)",
+        "Return 0 when veVotingPowerRaw >= preEmissionTotalSupplyRaw.",
+        "nonVotingSupplyRaw = preEmissionTotalSupplyRaw - veVotingPowerRaw",
+        "firstRatioProduct = floor(emissionRaw * nonVotingSupplyRaw / preEmissionTotalSupplyRaw)",
+        "squaredRatioProduct = floor(firstRatioProduct * nonVotingSupplyRaw / preEmissionTotalSupplyRaw)",
+        "rebaseRaw = floor(squaredRatioProduct / 2)"
+      ],
+      "rounding": "The two supply divisions and final division by two floor sequentially.",
+      "governedInputs": [],
+      "zeroCases": [
+        "Disabled emissions, zero emission, zero supply, zero period, or voting power at/above supply returns zero."
+      ],
+      "scope": "Active MEZOMinter and veMEZO executable generations at the evidence block.",
+      "specificationConflict": "The current whitepaper explains the ratio using locked veMEZO supply. The deployed minter instead reads unboosted, time-decayed voting power at period - 1; these quantities are not interchangeable."
+    },
+    {
+      "id": "mezo-epoch-reward-remainder",
+      "inputs": [
+        "emissionRaw",
+        "rebaseRaw"
+      ],
+      "integerOrder": [
+        "rewardsRaw = emissionRaw - rebaseRaw"
+      ],
+      "rounding": "No additional division occurs.",
+      "governedInputs": [],
+      "zeroCases": [
+        "A zero emission has zero rebase and zero rewards."
+      ],
+      "scope": "The rebase and reward branches partition one minted epoch budget; they are not additive mints."
+    },
+    {
+      "id": "mezo-splitter-allocation",
+      "inputs": [
+        "currentBalanceRaw",
+        "needle"
+      ],
+      "integerOrder": [
+        "firstRecipientAmountRaw = floor(currentBalanceRaw * needle / 100)",
+        "secondRecipientAmountRaw = currentBalanceRaw - firstRecipientAmountRaw"
+      ],
+      "rounding": "All floor dust is retained by the second recipient.",
+      "governedInputs": [
+        "needle may move by one tick per splitter epoch through its bound epoch governor, within [1,100]"
+      ],
+      "zeroCases": [
+        "A zero balance transfers zero to both recipients; small balances can floor the first amount to zero."
+      ],
+      "scope": "Both active chain and ecosystem splitter executable generations at the evidence block."
+    }
+  ],
+  "processing": {
+    "catchUp": "updatePeriod processes min(elapsed weekly epochs, 20) in chronological order, advances supply by each epoch emission before calculating the next epoch, then mints the aggregate once.",
+    "transfers": "The aggregate rebase portion is transferred to the rebase distributor and checkpointed; the aggregate reward remainder is transferred to the chain splitter.",
+    "splitterOrder": "A splitter first invokes its upstream update hook, then snapshots its full token balance and distributes it using the current needle.",
+    "rebaseClaims": "Weekly allocation floors votingPowerOfNFTAt(weekEnd) * tokensPerWeek / max(totalVotingPowerAt(weekEnd), 1). Expired non-permanent locks receive liquid tokens; other eligible locks receive depositFor. LOCKED escrow type is rejected.",
+    "delayCaveat": "The distributor checkpoint loop advances at most 20 weeks and each claim advances at most 50 weeks; long inactivity can make old weekly attribution incomplete."
+  },
+  "accountingBoundaries": [
+    "MEZO total supply increases by the epoch emission exactly once.",
+    "The rebase and rewards amounts are transfers of that minted budget, not additional supply changes.",
+    "The chain splitter separates ecosystem and validator destinations.",
+    "The ecosystem splitter separately routes to PoolsVoter and the third-party voter.",
+    "Pool gauge indexing, validator allocation, and third-party allocation are downstream accounting domains and do not redefine the minter budget."
+  ],
+  "analyticsBoundary": [
+    "Future emission projections require future supply and epoch assumptions and are not canonical facts.",
+    "APR, APY, token price, user yield, and governance-outcome predictions are excluded."
+  ]
+}

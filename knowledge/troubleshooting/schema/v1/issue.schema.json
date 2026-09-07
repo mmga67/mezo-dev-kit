@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Troubleshooting issue v1",
+  "allOf": [
+    {"$ref": "../../../schema/v0.4/common-envelope.schema.json"}
+  ],
+  "type": "object",
+  "required": [
+    "category",
+    "issueStatus",
+    "severity",
+    "symptom",
+    "prerequisites",
+    "diagnosticSteps",
+    "expected",
+    "observed",
+    "control",
+    "verifiedCause",
+    "safeMitigation",
+    "reproduction",
+    "canonicalLinks"
+  ],
+  "properties": {
+    "kind": {"const": "troubleshooting-issue"},
+    "owner": {"const": "troubleshooting"},
+    "status": {"const": "verified"},
+    "supportStatus": {"const": "none"},
+    "reviewStatus": {"enum": ["pending-qualified-review", "accepted"]},
+    "issueStatus": {
+      "enum": ["verified-point-in-time", "verified-versioned", "verified-version-scoped"]
+    },
+    "severity": {"enum": ["low", "medium", "high", "critical"]},
+    "symptom": {"type": "string", "minLength": 1},
+    "prerequisites": {"type": "array", "minItems": 1},
+    "diagnosticSteps": {"type": "array", "minItems": 2},
+    "expected": {"type": "string", "minLength": 1},
+    "observed": {"type": "string", "minLength": 1},
+    "control": {"type": "string", "minLength": 1},
+    "verifiedCause": {"type": "string", "minLength": 1},
+    "safeMitigation": {"type": "string", "minLength": 1},
+    "reproduction": {"type": "object", "minProperties": 1},
+    "canonicalLinks": {"type": "array", "minItems": 1}
+  }
+}

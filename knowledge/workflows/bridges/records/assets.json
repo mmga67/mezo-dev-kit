@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-asset-catalog",
+  "id": "bridge-assets",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "workflowStatus": "evidence-verified-promotion-blocked",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": []
+  },
+  "limitations": [
+    "Asset representations are evidence-scoped candidates, not registry-owned token identities.",
+    "Only the six recorded directions and their exact representation pairs are in scope."
+  ],
+  "records": [
+    {
+      "id": "musd",
+      "status": "verified-deployment-candidate",
+      "symbol": "MUSD",
+      "homeNetwork": "mezo-mainnet",
+      "supplyModel": "locking-on-home-burning-on-remote",
+      "representations": [
+        {
+          "id": "musd-on-mezo-mainnet",
+          "network": "mezo-mainnet",
+          "decimals": 18,
+          "managerMode": "locking",
+          "deploymentObservation": "musd-ntt-mezo-snapshot"
+        },
+        {
+          "id": "musd-on-ethereum-mainnet",
+          "network": "ethereum-mainnet",
+          "decimals": 18,
+          "managerMode": "burning",
+          "deploymentObservation": "musd-ntt-ethereum-snapshot"
+        },
+        {
+          "id": "musd-on-base-mainnet",
+          "network": "base-mainnet",
+          "decimals": 18,
+          "managerMode": "burning",
+          "deploymentObservation": "musd-ntt-base-snapshot"
+        }
+      ],
+      "limitations": [
+        "Representation addresses are evidence coordinates in the linked observation, not duplicated here.",
+        "All three network IDs resolve through the Networks registry; token representation addresses remain dated workflow evidence outside registry provenance review's promoted bridge-contract scope."
+      ]
+    },
+    {
+      "id": "usdc-native-bridge",
+      "status": "verified-deployment-candidate",
+      "symbol": "USDC/mUSDC",
+      "homeNetwork": "ethereum-mainnet",
+      "supplyModel": "locking-on-ethereum-minting-mapped-representation-on-mezo",
+      "representations": [
+        {
+          "id": "usdc-on-ethereum-mainnet",
+          "network": "ethereum-mainnet",
+          "decimals": 6,
+          "role": "source-token",
+          "evidenceObservation": "native-usdc-ethereum-to-mezo-completed"
+        },
+        {
+          "id": "musdc-on-mezo-mainnet",
+          "network": "mezo-mainnet",
+          "decimals": 6,
+          "role": "mapped-mint-burn-representation",
+          "evidenceObservation": "native-mezo-assets-bridge-v12"
+        }
+      ],
+      "limitations": [
+        "The representation pair and one inbound completion are verified; reverse-direction writer support is not implied.",
+        "Token representation addresses remain dated workflow evidence; reusable Native Bridge contract identities resolve through bridge-contract-roles."
+      ]
+    },
+    {
+      "id": "btc-native-bridge",
+      "status": "verified-deployment-candidate",
+      "symbol": "BTC/tBTC",
+      "homeNetwork": "mezo-mainnet",
+      "supplyModel": "native-btc-burn-on-mezo-tbtc-release-on-ethereum",
+      "representations": [
+        {
+          "id": "btc-on-mezo-mainnet",
+          "network": "mezo-mainnet",
+          "decimals": 18,
+          "role": "native-gas-token",
+          "evidenceObservation": "native-mezo-assets-bridge-v12"
+        },
+        {
+          "id": "tbtc-on-ethereum-mainnet",
+          "network": "ethereum-mainnet",
+          "decimals": 18,
+          "role": "source-and-release-token",
+          "evidenceObservation": "native-btc-mezo-to-ethereum-completed"
+        }
+      ],
+      "limitations": [
+        "The tBTC identity and one outbound completion are verified; inbound BTC and Bitcoin-chain directions are not promoted by this slice.",
+        "Token representation addresses remain dated workflow evidence; reusable Native Bridge contract identities resolve through bridge-contract-roles."
+      ]
+    }
+  ]
+}

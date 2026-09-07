@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "kind": "network",
+  "id": "mezo-mainnet",
+  "owner": "chains-registry",
+  "environment": "mainnet",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:21:02Z",
+  "reviewAfter": "2027-02-18T00:00:00Z",
+  "scope": {
+    "networkId": "mezo-mainnet",
+    "environment": "mainnet"
+  },
+  "values": {
+    "profile": "cosmos-evm",
+    "displayName": "Mezo Mainnet",
+    "evmChainId": 31612,
+    "cosmosChainId": "mezo_31612-1",
+    "nativeCurrency": {
+      "name": "Bitcoin",
+      "symbol": "BTC",
+      "decimals": 18,
+      "cosmosEvmDenom": "abtc"
+    },
+    "explorer": {
+      "name": "Mezo Explorer",
+      "url": "https://explorer.mezo.org"
+    },
+    "capabilities": {
+      "evm": true,
+      "evmJsonRpc": true,
+      "cosmosSdk": true,
+      "nodeCosmosRpc": true,
+      "consensusEngine": "CometBFT",
+      "gasCurrency": "native"
+    }
+  },
+  "claims": [
+    {
+      "id": "mezo-mainnet-display-name",
+      "path": "values.displayName",
+      "statement": "The production network display name is Mezo Mainnet.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Mainnet Network Details table",
+          "note": "Publishes the production network name."
+        }
+      ]
+    },
+    {
+      "id": "mezo-mainnet-evm-chain-id",
+      "path": "values.evmChainId",
+      "statement": "Mezo Mainnet uses EVM chain ID 31612.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Mainnet Network Details table",
+          "note": "Publishes EVM chain ID 31612."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "mainnet-boar-https and mainnet-validation-cloud-https",
+          "note": "Independent recommended endpoints returned eth_chainId 0x7b7c."
+        }
+      ]
+    },
+    {
+      "id": "mezo-mainnet-cosmos-chain-id",
+      "path": "values.cosmosChainId",
+      "statement": "The pinned mainnet genesis uses Cosmos chain ID mezo_31612-1.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-source-mainnet-genesis",
+          "locator": "/chain_id",
+          "note": "The official pinned genesis sets mezo_31612-1."
+        }
+      ]
+    },
+    {
+      "id": "mezo-mainnet-native-currency",
+      "path": "values.nativeCurrency",
+      "statement": "Mezo Mainnet presents native Bitcoin as BTC with 18 EVM decimals, and the pinned genesis uses abtc as the EVM base denomination.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Mainnet Network Details table",
+          "note": "Publishes BTC as native currency with 18 decimals."
+        },
+        {
+          "sourceId": "official-source-mainnet-genesis",
+          "locator": "/app_state/evm/params/evm_denom",
+          "note": "The official pinned genesis sets the EVM denomination to abtc."
+        }
+      ]
+    },
+    {
+      "id": "mezo-mainnet-architecture-capabilities",
+      "path": "values.capabilities",
+      "statement": "Mezo is an EVM-compatible Cosmos SDK chain running CometBFT; mezod exposes Ethereum JSON-RPC and a node-local Cosmos RPC surface, and native BTC pays gas.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Core Architecture",
+          "note": "Describes EVM compatibility, Cosmos SDK, CometBFT, mezod, and BTC gas."
+        },
+        {
+          "sourceId": "official-docs-mezod",
+          "locator": "EVM Integration and RPC Endpoints",
+          "note": "Documents Ethereum JSON-RPC and node-local Cosmos SDK RPC surfaces."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "mainnet-boar-https",
+          "note": "Demonstrates the bounded EVM JSON-RPC methods recorded by the probe."
+        }
+      ]
+    },
+    {
+      "id": "mezo-mainnet-explorer",
+      "path": "values.explorer",
+      "statement": "The published Mezo Mainnet explorer is https://explorer.mezo.org.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Mainnet Network Details table",
+          "note": "Publishes the mainnet explorer URL."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "mainnet-explorer-https",
+          "note": "The published URL returned HTTP 200 during verification."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "EVM compatibility is a published chain capability; this record does not claim support for every optional Ethereum JSON-RPC method or EVM feature.",
+    "nodeCosmosRpc describes a mezod node capability. MDK does not currently select or support a public Cosmos RPC endpoint.",
+    "RPC provider availability is volatile and is owned by the rpc-endpoints resource rather than this chain identity record."
+  ]
+}

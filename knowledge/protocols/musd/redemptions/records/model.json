@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-redemption-model",
+  "id": "redemption-model",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Accepted redemption semantics do not imply an implemented public writer; quote, simulation, freshness, and user output policy remain required."],
+  "records": [
+    {
+      "id": "system-and-redeemer-eligibility",
+      "claim": "Redemption requires protocol PriceFeed TCR at or above MCR, attempted amount greater than zero, and redeemer MUSD balance at least the attempted amount. Any MUSD holder may call; the deployed path does not require a trove.",
+      "boundaries": ["TCR equal to MCR is allowed", "TCR one unit below MCR reverts", "balance is checked against attempted, not eventual actual, amount"],
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral preconditions and _requireTCRoverMCR"}]
+    },
+    {
+      "id": "selection-and-order",
+      "claim": "Traversal begins at the SortedTroves tail or a valid equivalent first hint, skips positions whose current ICR is below MCR, and advances with getPrev toward higher nominal ordering until filled, capped, or stopped.",
+      "precision": "SortedTroves is ordered by NICR, not freshly computed ICR. Interest can make actual ICR order diverge; each visited position is filtered but the list is not re-sorted.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral selection loop and _isValidFirstRedemptionHint"},
+        {"sourceArtifactId": "test-trove-manager-normal", "locator": "redemption ordering and interest-out-of-order tests"}
+      ]
+    },
+    {
+      "id": "iteration-semantics",
+      "claim": "A zero maxIterations value means unbounded uint256 iterations. A nonzero value is decremented for every visited list entry, including entries later skipped for current ICR below MCR.",
+      "outcome": "Reaching the cap commits any earlier fills and leaves the remainder unburned if at least one collateral lot was drawn.",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral maxIterations loop"}]
+    },
+    {
+      "id": "per-position-redemption",
+      "claim": "After interest/pending state is materialized, the position lot is the smaller of remaining request and entire debt less gas compensation. Price-equivalent collateral is floor-rounded, and debt payment consumes interest before principal.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "_redeemCollateralFromTrove"},
+        {"canonicalReference": {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas", "recordId": "debt-payment-split"}}
+      ]
+    },
+    {
+      "id": "full-redemption-outcome",
+      "claim": "When only gas compensation remains, the reserve is burned from GasPool, all position debt is removed, the position closes as closedByRedemption, and remaining collateral is credited to CollSurplusPool for the borrower to claim.",
+      "events": ["TroveUpdated"],
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "_redeemCloseTrove and full branch of _redeemCollateralFromTrove"},
+        {"sourceArtifactId": "docs-claim-redemption-surplus", "locator": "claimable full-redemption surplus"}
+      ]
+    },
+    {
+      "id": "partial-redemption-outcome",
+      "claim": "A valid partial reduces collateral and interest/principal, updates stake, and reinserts the active trove by new NICR. It must leave net debt at least minNetDebt and provide an acceptable partial NICR/hint range.",
+      "events": ["TroveUpdated"],
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "partial branch of _redeemCollateralFromTrove"}]
+    },
+    {
+      "id": "cancelled-partial-outcome",
+      "claim": "If the proposed partial would violate minimum net debt or its NICR proof falls outside the deployed tolerance, that partial is cancelled and traversal stops. Earlier full fills remain; if nothing was filled, the entire call reverts.",
+      "redeemerEffect": "Only actual filled MUSD is burned; unfilled attempted MUSD stays with the redeemer.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "cancelledPartial and nonzero totalCollateralDrawn check"},
+        {"sourceArtifactId": "test-trove-manager-normal", "locator": "below-minimum and stale-hint redemption tests"}
+      ]
+    },
+    {
+      "id": "first-hint-semantics",
+      "claim": "The first hint is accepted only when it identifies an in-list position with current ICR at least MCR and the next lower list entry is absent or below MCR. Invalid first hints fall back to tail traversal; they do not by themselves revert.",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_isValidFirstRedemptionHint and fallback traversal"}]
+    },
+    {
+      "id": "partial-hint-semantics",
+      "claim": "HintHelpers simulates the queue and returns firstRedemptionHint, a partial NICR when applicable, and a truncated amount that preserves minNetDebt. Upper/lower insert hints are used only for a partial reinsertion.",
+      "staleness": "State changes can invalidate the partial NICR. The deployed check accepts it from actual new NICR through an upper bound that allows ten minutes of current-global-rate interest; otherwise the final partial is cancelled.",
+      "evidence": [
+        {"sourceArtifactId": "source-hint-helpers", "locator": "getRedemptionHints"},
+        {"sourceArtifactId": "source-trove-manager", "locator": "partial NICR range and reInsert"},
+        {"sourceArtifactId": "test-hint-helpers-redemptions", "locator": "redemption hint and truncation tests"}
+      ]
+    },
+    {
+      "id": "fee-and-settlement",
+      "claim": "The governed redemption rate is applied to aggregate actual collateral drawn. The fee collateral goes to PCV, net collateral goes to the redeemer, and actual principal plus interest is burned from the redeemer and removed from ActivePool debt.",
+      "feeScope": "No borrower-status waiver exists in the deployed path.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral settlement"},
+        {"sourceArtifactId": "source-borrower-operations", "locator": "getRedemptionRate"},
+        {"sourceArtifactId": "redemption-parameter-observations", "locator": "fixed-block redemption rate"}
+      ]
+    },
+    {
+      "id": "event-and-reconciliation",
+      "claim": "The Redemption event reports attempted MUSD, actual MUSD, gross collateral drawn, and collateral fee. Success reconciliation must also confirm receipt/status and compare redeemer MUSD/BTC changes, affected trove state, ActivePool debt/collateral, PCV collateral, and any borrower surplus.",
+      "warning": "A transaction hash alone and the attempted input amount do not establish actual fill. The entrypoint has no minimum-received parameter.",
+      "events": ["Redemption", "TroveUpdated"],
+      "evidence": [
+        {"sourceArtifactId": "source-interface-trove-manager", "locator": "Redemption and TroveUpdated events"},
+        {"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral event and settlement"}
+      ]
+    }
+  ],
+  "futureWriterRequirements": [
+    "Resolve registry IDs and read price, TCR, rate, minimum debt, queue/hints, balance, and relevant position state at one explicit block where practical.",
+    "Use HintHelpers.truncatedAmount as the default attempted amount when a partial tail would otherwise be cancelled.",
+    "Simulate the exact call immediately before submission and apply an explicit user policy for minimum actual MUSD and minimum BTC received because the contract has no such argument.",
+    "Treat a state change between quote and inclusion as expected staleness; do not retry a write blindly.",
+    "Reconcile the receipt event and post-state; expose attempted and actual amounts separately."
+  ]
+}

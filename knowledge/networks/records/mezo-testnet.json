@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "kind": "network",
+  "id": "mezo-testnet",
+  "owner": "chains-registry",
+  "environment": "testnet",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:21:02Z",
+  "reviewAfter": "2027-02-18T00:00:00Z",
+  "scope": {
+    "networkId": "mezo-testnet",
+    "environment": "testnet"
+  },
+  "values": {
+    "profile": "cosmos-evm",
+    "displayName": "Mezo Testnet",
+    "evmChainId": 31611,
+    "cosmosChainId": "mezo_31611-1",
+    "nativeCurrency": {
+      "name": "Bitcoin",
+      "symbol": "BTC",
+      "decimals": 18,
+      "cosmosEvmDenom": "abtc"
+    },
+    "explorer": {
+      "name": "Mezo Testnet Explorer",
+      "url": "https://explorer.test.mezo.org"
+    },
+    "capabilities": {
+      "evm": true,
+      "evmJsonRpc": true,
+      "cosmosSdk": true,
+      "nodeCosmosRpc": true,
+      "consensusEngine": "CometBFT",
+      "gasCurrency": "native"
+    }
+  },
+  "claims": [
+    {
+      "id": "mezo-testnet-display-name",
+      "path": "values.displayName",
+      "statement": "The public testing network display name is Mezo Testnet.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Network Details (Testnet) table",
+          "note": "Publishes the testnet network name."
+        }
+      ]
+    },
+    {
+      "id": "mezo-testnet-evm-chain-id",
+      "path": "values.evmChainId",
+      "statement": "Mezo Testnet uses EVM chain ID 31611.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Network Details (Testnet) table",
+          "note": "Publishes EVM chain ID 31611."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "testnet-official-https",
+          "note": "The official endpoint returned eth_chainId 0x7b7b."
+        }
+      ]
+    },
+    {
+      "id": "mezo-testnet-cosmos-chain-id",
+      "path": "values.cosmosChainId",
+      "statement": "The pinned testnet genesis uses Cosmos chain ID mezo_31611-1.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-source-testnet-genesis",
+          "locator": "/chain_id",
+          "note": "The official pinned genesis sets mezo_31611-1."
+        }
+      ]
+    },
+    {
+      "id": "mezo-testnet-native-currency",
+      "path": "values.nativeCurrency",
+      "statement": "Mezo Testnet presents test BTC as BTC with 18 EVM decimals, and the pinned genesis uses abtc as the EVM base denomination.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Network Details (Testnet) table",
+          "note": "Publishes BTC as native currency with 18 decimals."
+        },
+        {
+          "sourceId": "official-source-testnet-genesis",
+          "locator": "/app_state/evm/params/evm_denom",
+          "note": "The official pinned genesis sets the EVM denomination to abtc."
+        }
+      ]
+    },
+    {
+      "id": "mezo-testnet-architecture-capabilities",
+      "path": "values.capabilities",
+      "statement": "Mezo Testnet exposes the Mezo EVM-compatible Cosmos SDK and CometBFT architecture, including Ethereum JSON-RPC and node-local Cosmos RPC; test BTC pays gas.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Core Architecture and Network Details (Testnet)",
+          "note": "Describes architecture and states that testnet BTC is required for gas."
+        },
+        {
+          "sourceId": "official-docs-mezod",
+          "locator": "EVM Integration and RPC Endpoints",
+          "note": "Documents Ethereum JSON-RPC and node-local Cosmos SDK RPC surfaces."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "testnet-official-https",
+          "note": "Demonstrates the bounded EVM JSON-RPC methods recorded by the probe."
+        }
+      ]
+    },
+    {
+      "id": "mezo-testnet-explorer",
+      "path": "values.explorer",
+      "statement": "The published Mezo Testnet explorer is https://explorer.test.mezo.org.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-docs-getting-started",
+          "locator": "Network Details (Testnet) table",
+          "note": "Publishes the testnet explorer URL."
+        },
+        {
+          "sourceId": "network-probes-2026-08-18",
+          "locator": "testnet-explorer-https",
+          "note": "The published URL returned HTTP 200 during verification."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Testnet state and deployments may reset or diverge from mainnet; this record establishes chain identity, not deployment continuity.",
+    "EVM compatibility is a published chain capability; this record does not claim support for every optional Ethereum JSON-RPC method or EVM feature.",
+    "nodeCosmosRpc describes a mezod node capability. MDK does not currently select or support a public Cosmos RPC endpoint."
+  ]
+}

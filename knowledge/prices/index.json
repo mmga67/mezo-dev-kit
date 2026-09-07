@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "prices",
+  "moduleId": "prices",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-03T14:24:36.881Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "sourceClasses": 6,
+    "sourceIds": [
+      "source.skip-price-oracle-v1",
+      "source.pyth-core-v1"
+    ],
+    "feedIds": [
+      "feed.skip-btc-usd",
+      "feed.pyth-btc-usd",
+      "feed.pyth-musd-usd"
+    ]
+  },
+  "limitations": [
+    "oracle re-verification qualified Level 3 review accepted the post-upgrade evidence; feed/current support remains proposed.",
+    "Pyth one-hour reads remained stale at both post-upgrade evidence blocks; no live Pyth price support is claimed.",
+    "No public price reader, feed updater, provider credential, subscription, route, trading path, or writer is implemented.",
+    "Price source selection never substitutes a market, DEX, analytics, Skip-direct, or Pyth-direct result for the MUSD protocol price."
+  ],
+  "resources": [
+    {
+      "id": "price-source-taxonomy",
+      "role": "canonical-record",
+      "kind": "price-source-taxonomy",
+      "path": "records/taxonomy.json",
+      "recordIds": [
+        "protocol-oracle-state",
+        "pushed-feed-observation",
+        "offchain-market-reference",
+        "dex-derived-observation",
+        "dex-execution-quote",
+        "stored-analytics-projection"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "price-sources-feeds",
+      "role": "canonical-record",
+      "kind": "price-source-feed-catalog",
+      "path": "records/sources-feeds.json"
+    },
+    {
+      "id": "price-datum-rules",
+      "role": "canonical-record",
+      "kind": "price-datum-rules",
+      "path": "records/datum-rules.json"
+    },
+    {
+      "id": "price-freshness-fallback-rules",
+      "role": "canonical-record",
+      "kind": "price-freshness-fallback-rules",
+      "path": "records/freshness-fallback.json"
+    },
+    {
+      "id": "price-datum-fixtures",
+      "role": "fixture",
+      "kind": "price-datum-fixtures",
+      "path": "fixtures/prices.json",
+      "recordIds": [
+        "scale-multiply",
+        "scale-divide-exact",
+        "scale-divide-rounded",
+        "scale-exponent-overflow",
+        "confidence-normalization",
+        "confidence-unsupported",
+        "freshness-equality-boundary",
+        "freshness-stale",
+        "freshness-future",
+        "negative-price",
+        "consumer-prohibited-zero",
+        "allowed-zero",
+        "missing-feed",
+        "provider-disagreement",
+        "fallback-source-class-change",
+        "musd-fallback-forbidden",
+        "partial-read",
+        "total-failure"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "price-sources",
+      "role": "source-catalog",
+      "kind": "price-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-docs-mezo-oracles",
+        "official-client-mezod-price-oracle",
+        "price-fixed-block-capture",
+        "contract-oracle-roots",
+        "network-capabilities",
+        "musd-price-consumption",
+        "pool-price-mechanics",
+        "transaction-boundary",
+        "pyth-evm-api",
+        "adr-0009-price-ownership",
+        "price-fixed-block-capture-mezo-mainnet-2026-09-06"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "price-fixed-block-observations-2026-08-23",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-2026-08-23.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet",
+        "observe-pyth-mezo-mainnet",
+        "observe-skip-mezo-testnet",
+        "observe-pyth-mezo-testnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "price-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "price-fixture-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/fixture.schema.json"
+    },
+    {
+      "id": "price-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "price-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "price-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "prices",
+          "resourceId": "price-source-taxonomy"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-sources-feeds"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-datum-rules"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-freshness-fallback-rules"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-datum-fixtures"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-2026-08-23"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-2026-08-27"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+        }
+      ]
+    },
+    {
+      "id": "price-fixed-block-observations-2026-08-27",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-2026-08-27.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-08-27",
+        "observe-pyth-mezo-mainnet-2026-08-27",
+        "observe-skip-mezo-testnet-2026-08-27",
+        "observe-pyth-mezo-testnet-2026-08-27"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-fixed-block-observations-mezo-mainnet-2026-09-06",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-06.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-09-06",
+        "observe-pyth-mezo-mainnet-2026-09-06"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-current-state-mezo-mainnet-2026-09-07",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-mainnet-2026-09-07.json"
+    },
+    {
+      "id": "price-current-state-mezo-testnet-2026-09-07",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-testnet-2026-09-07.json"
+    },
+    {
+      "id": "price-hermes-diagnostic-2026-09-07",
+      "role": "artifact",
+      "kind": "upstream-price-diagnostic",
+      "path": "artifacts/current-state/hermes-attempt-2026-09-07.json"
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module prices"
+    },
+    {
+      "id": "price-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-price-knowledge.ts"
+    },
+    {
+      "id": "price-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-price-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "architectureDecision": "ADR-0009",
+    "writerSupport": "none",
+    "publicReaderSupport": "none",
+    "dependencies": [
+      "networks",
+      "contracts"
+    ],
+    "consumerReferences": [
+      "protocols/musd",
+      "protocols/pools",
+      "workflows/transactions"
+    ],
+    "ownershipBoundary": "Prices owns provider-neutral source/feed identity and datum, scaling, confidence, freshness, disagreement, and fallback-result semantics. Protocol consumption, pool math, routing, analytics, Contracts, Networks, and transaction lifecycle remain with their accepted owners.",
+    "blockers": [
+      "separate public API and transaction review before any reader or updater implementation"
+    ],
+    "gaps": [
+      "supported public reader/freshness policy",
+      "provider credentials and update transport",
+      "writer and transaction lifecycle integration",
+      "accepted quote/routing consumers"
+    ],
+    "currentEvidenceByNetwork": {
+      "mezo-mainnet": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+      },
+      "mezo-testnet": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-2026-08-27"
+      }
+    },
+    "currentStateEvidenceByNetwork": {
+      "mezo-mainnet": {
+        "moduleId": "prices",
+        "resourceId": "price-current-state-mezo-mainnet-2026-09-07"
+      },
+      "mezo-testnet": {
+        "moduleId": "prices",
+        "resourceId": "price-current-state-mezo-testnet-2026-09-07"
+      }
+    }
+  }
+}

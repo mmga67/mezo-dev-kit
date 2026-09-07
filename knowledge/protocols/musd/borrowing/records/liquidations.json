@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-liquidation-model",
+  "id": "borrowing-liquidations",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Eligibility and outcome knowledge is version-scoped and does not itself provide a liquidation executor."],
+  "records": [
+    {
+      "id": "liquidation-eligibility",
+      "stability": "versioned-design",
+      "claim": "An active trove is eligible exactly when current ICR is strictly below MCR. Equality with MCR is not eligible.",
+      "currentAmounts": "ICR includes pending redistribution and current accrued interest after the batch first updates trove interest.",
+      "modeBehavior": "The same predicate is used in Normal and Recovery Mode; there is no separate current Recovery Mode liquidation branch.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "batchLiquidateTroves and _getTotalsFromBatchLiquidate"},
+        {"sourceArtifactId": "test-trove-manager-normal", "locator": "liquidation threshold tests"},
+        {"sourceArtifactId": "test-trove-manager-recovery", "locator": "Recovery Mode liquidation tests"}
+      ]
+    },
+    {
+      "id": "last-trove-guard",
+      "stability": "versioned-design",
+      "claim": "The liquidation routine returns no liquidation values when the owner array contains one or fewer troves; a batch with no successful liquidation then reverts.",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_liquidate last-trove guard and batch nonzero-total requirement"}]
+    },
+    {
+      "id": "liquidator-compensation",
+      "stability": "versioned-design",
+      "claim": "For each liquidated trove the caller receives the fixed MUSD gas compensation and floor(entire collateral / 200), which is 0.5% before floor rounding.",
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "MUSD_GAS_COMPENSATION, PERCENT_DIVISOR, and _getCollGasCompensation"},
+        {"sourceArtifactId": "source-trove-manager", "locator": "_liquidate and _sendGasCompensation"}
+      ]
+    },
+    {
+      "id": "stability-pool-offset",
+      "stability": "versioned-design",
+      "claim": "After collateral compensation is removed, StabilityPool deposits offset debt up to available deposits. Interest is offset before principal. The pool receives a floor-rounded proportional share of liquidatable collateral.",
+      "partialCoverage": "Partial offset is supported; remaining debt and collateral are redistributed.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "_getOffsetAndRedistributionVals"},
+        {"sourceArtifactId": "source-stability-pool", "locator": "offset"},
+        {"sourceArtifactId": "docs-liquidation-mechanics", "locator": "Stability Pool and redistribution overview"}
+      ]
+    },
+    {
+      "id": "redistribution",
+      "stability": "versioned-design",
+      "claim": "Un-offset principal, interest, and collateral move from ActivePool to DefaultPool and accrue to active troves per unit stake using error-corrected cumulative sums.",
+      "application": "Pending rewards are floor(stake * per-unit delta / 1e18), then move back to active position/pool state when applied.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "_redistributeDebtAndColl, pending reward getters, and _applyPendingRewards"},
+        {"sourceArtifactId": "test-liquidation-rewards", "locator": "redistribution and rounding coverage"}
+      ]
+    },
+    {
+      "id": "borrower-outcome",
+      "stability": "versioned-design",
+      "claim": "Liquidation removes all position collateral and debt, removes the stake/list entry, and sets status closedByLiquidation. It does not burn or otherwise change MUSD already held in the borrower's wallet.",
+      "surplus": "The current liquidation path does not account collateral surplus for the borrower.",
+      "events": ["TroveLiquidated", "TroveUpdated", "Liquidation"],
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_liquidate and batchLiquidateTroves"}]
+    },
+    {
+      "id": "batch-semantics",
+      "stability": "versioned-design",
+      "claim": "A caller may submit a nonempty explicit borrower list. Ineligible entries are skipped; StabilityPool capacity is consumed across successful entries in input order; the call reverts if nothing is liquidated.",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "batchLiquidateTroves and _getTotalsFromBatchLiquidate"}]
+    }
+  ],
+  "rejectedInheritedRules": [
+    "Recovery Mode does not change the current liquidation threshold to CCR.",
+    "There is no current special below-100%-ICR redistribution-only branch.",
+    "A nonempty StabilityPool does not imply complete offset; partial offset is supported.",
+    "Liquidation does not create a claimable borrower collateral surplus in the pinned source."
+  ]
+}

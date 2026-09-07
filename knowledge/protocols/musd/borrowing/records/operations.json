@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-borrowing-operation-catalog",
+  "id": "borrowing-operations",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Accepted operation semantics do not imply an implemented or supported public transaction writer; embedded capability support fields remain authoritative."],
+  "commonRules": [
+    "Use a price returned by the protocol PriceFeed and current entire system/position state.",
+    "Materialize current interest and pending redistribution before evaluating or applying an existing-position change.",
+    "Resolve contracts by registry ID and obtain current governed or borrower-specific state at the intended block.",
+    "Supply SortedTroves hints derived from current state; stale hints may increase gas or cause an operation to revert.",
+    "A quote is not write-safe unless its block, timestamp assumptions, fee-exempt status, and parameter reads are explicit."
+  ],
+  "records": [
+    {
+      "id": "open-trove",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {
+        "allModes": ["borrower has no active trove", "net debt is at least current minimum net debt", "native collateral and requested debt produce a valid composite debt and hints"],
+        "normalMode": ["ICR is at least MCR", "post-operation TCR is at least CCR"],
+        "recoveryMode": ["ICR is at least CCR"]
+      },
+      "fees": "Normal mode adds the floor-rounded borrowing fee unless the borrower is fee exempt. Recovery Mode waives the borrowing fee.",
+      "stateChanges": ["create active borrower-keyed trove", "assign current global interest rate", "set max borrowing capacity from opening collateral and price", "mint requested MUSD to recipient", "mint fee to PCV when applicable", "mint gas compensation to GasPool", "move collateral to ActivePool", "insert by NICR"],
+      "events": ["TroveCreated", "TroveUpdated", "BorrowingFeePaid"],
+      "failureBoundaries": ["zero/insufficient debt", "existing active trove", "ICR below mode threshold", "normal-mode post-TCR below CCR", "invalid list insertion"],
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_openTrove"},
+        {"sourceArtifactId": "test-borrower-operations-normal", "locator": "openTrove tests"},
+        {"sourceArtifactId": "test-borrower-operations-recovery", "locator": "openTrove Recovery Mode tests"}
+      ]
+    },
+    {
+      "id": "add-collateral",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"allModes": ["trove is active", "nonzero native collateral is supplied"], "normalMode": ["post-operation ICR is at least MCR", "post-operation TCR is at least CCR"], "recoveryMode": ["pure collateral top-up is allowed"]},
+      "stateChanges": ["materialize interest and pending rewards", "increase trove and ActivePool collateral", "update stake and NICR ordering"],
+      "nonEffect": "Adding collateral does not increase the stored max borrowing capacity snapshot.",
+      "events": ["TroveUpdated", "BorrowingFeePaid"],
+      "failureBoundaries": ["inactive trove", "zero adjustment", "post-state mode checks", "invalid list reinsertion"],
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "addColl and _adjustTrove"}]
+    },
+    {
+      "id": "withdraw-collateral",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"normalMode": ["trove is active", "withdrawal is nonzero and no collateral is simultaneously supplied", "post-operation ICR is at least MCR", "post-operation TCR is at least CCR"], "recoveryMode": ["not permitted"]},
+      "stateChanges": ["materialize interest and pending rewards", "decrease collateral", "set max borrowing capacity to the smaller of its old value and capacity from remaining collateral/current price", "update stake and NICR ordering", "send collateral to recipient"],
+      "events": ["TroveUpdated", "BorrowingFeePaid"],
+      "failureBoundaries": ["withdrawal exceeds collateral", "Recovery Mode", "ICR/TCR threshold", "invalid list reinsertion"],
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "withdrawColl and _adjustTrove collateral-withdrawal branch"}]
+    },
+    {
+      "id": "increase-debt",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"allModes": ["trove is active", "debt increase is nonzero", "principal plus net debt change does not exceed stored max borrowing capacity"], "normalMode": ["post-operation ICR is at least MCR", "post-operation TCR is at least CCR"], "recoveryMode": ["must include collateral top-up", "post-operation ICR is at least CCR and no lower than old ICR"]},
+      "fees": "Normal mode adds the borrowing fee unless fee exempt; Recovery Mode waives it.",
+      "stateChanges": ["materialize interest and pending rewards", "increase principal by requested amount plus fee", "mint requested amount to recipient", "mint fee to PCV when applicable", "update stake and NICR ordering"],
+      "events": ["TroveUpdated", "BorrowingFeePaid"],
+      "failureBoundaries": ["zero debt change", "stored capacity exceeded", "mode threshold failure", "invalid list reinsertion"],
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "withdrawMUSD and _adjustTrove debt-increase branch"}]
+    },
+    {
+      "id": "repay-debt",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"allModes": ["trove is active", "repayment is nonzero", "caller holds the repayment amount", "repayment is no greater than total debt less gas compensation", "remaining net debt is at least current minimum net debt"], "normalMode": ["post-operation ICR is at least MCR", "post-operation TCR is at least CCR"], "recoveryMode": ["repayment is allowed and collateral withdrawal remains forbidden"]},
+      "stateChanges": ["materialize interest and pending rewards", "apply payment to interest first and then principal", "burn payment from caller", "reduce ActivePool debt", "update stake and NICR ordering"],
+      "nonEffect": "Repayment cannot close a trove and does not change the fixed gas compensation reserve.",
+      "events": ["TroveUpdated", "BorrowingFeePaid"],
+      "failureBoundaries": ["insufficient balance", "payment above repayable debt", "remaining debt below minimum", "normal-mode ICR/TCR check", "invalid list reinsertion"],
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "repayMUSD, _adjustTrove repayment branch, and _repayMUSD"},
+        {"sourceArtifactId": "source-interest-rate-math", "locator": "calculateDebtAdjustment"}
+      ]
+    },
+    {
+      "id": "close-trove",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed-for-observed-mint-role",
+      "preconditions": {"normalMode": ["trove is active", "BorrowerOperations retains its observed token mint role", "caller holds total debt less gas compensation", "closing leaves system TCR at or above CCR", "the system retains at least one other trove"], "recoveryMode": ["not permitted for the observed mint-role deployment"]},
+      "stateChanges": ["materialize interest and pending rewards", "remove stake and sorted-list entry", "set status closedByOwner", "burn caller repayment", "burn GasPool reserve", "remove all position debt from ActivePool", "return all collateral"],
+      "events": ["TroveUpdated"],
+      "failureBoundaries": ["Recovery Mode", "insufficient caller MUSD", "post-close TCR below CCR", "last trove"],
+      "compatibility": "A source migration branch exists when BorrowerOperations lacks the token mint role. It bypasses several normal close restrictions and is not supported for the observed deployments.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_closeTrove"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "mintList(BorrowerOperations) fixed-block reads"}
+      ]
+    },
+    {
+      "id": "refinance-trove",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"normalMode": ["trove is active", "post-fee ICR is at least MCR", "post-fee TCR is at least CCR"], "recoveryMode": ["not permitted"]},
+      "stateChanges": ["materialize interest and pending rewards", "compute and add fee to principal/PCV unless exempt", "replace trove rate with current global rate", "reset max borrowing capacity from current collateral and price", "update stake and NICR ordering"],
+      "nonEffects": ["no MUSD is sent to the borrower", "no collateral is moved"],
+      "events": ["RefinancingFeePaid", "TroveUpdated"],
+      "feeBehavior": "Compute feeBase = floor(refinancingFeePercentage * netDebt / 100), then fee = floor(feeBase * borrowingRate / 1e18), unless the borrower is fee exempt. At the recorded values this is 0.02% of net debt before floor rounding.",
+      "documentationDiscrepancy": "Published 0.1% refinance prose is stale for the recorded deployment behavior.",
+      "failureBoundaries": ["Recovery Mode", "inactive trove", "ICR/TCR threshold", "invalid list reinsertion"],
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_refinance"},
+        {"sourceArtifactId": "docs-borrow-fees", "locator": "Refinance fee"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "borrowingRate() and refinancingFeePercentage() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "claim-collateral-surplus",
+      "contractId": "musd.borrower-operations",
+      "support": "proposed",
+      "preconditions": {"allModes": ["CollSurplusPool has a nonzero recorded balance for borrower"]},
+      "stateChanges": ["zero borrower surplus accounting", "send recorded native collateral to recipient"],
+      "events": [],
+      "failureBoundaries": ["no claimable collateral", "surplus transfer failure"],
+      "note": "Current liquidation flow does not create borrower surplus; redemption can do so and implementation review owns that creation path.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "claimCollateral and _claimCollateral"},
+        {"sourceArtifactId": "source-coll-surplus-pool", "locator": "claimColl"}
+      ]
+    }
+  ]
+}

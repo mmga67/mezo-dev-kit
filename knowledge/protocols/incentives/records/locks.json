@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-ve-lock-model",
+  "id": "incentives-locks",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253
+  },
+  "limitations": [
+    "Contract mappings resolve to registry provenance review-accepted registry identities and activation histories; incentives evidence review accepted the bounded protocol model, but public reader and writer support remain absent.",
+    "The model does not enable a public lock writer.",
+    "Institutional custody and pledge status are not incentives voting-power state; resolve that boundary through protocols/musd/institutional-debt."
+  ],
+  "integerSemantics": "Solidity integer arithmetic. Division floors toward zero; quantities here are nonnegative. Checked arithmetic and int128 casts can revert on overflow.",
+  "constants": {"weekSeconds": "604800", "boostPrecision": "1000000000000000000"},
+  "assets": [
+    {
+      "id": "vebtc-current",
+      "underlying": "native BTC precompile at the topology evidence coordinate",
+      "decimals": 18,
+      "maxLockSeconds": "2419200",
+      "maxLockWeeks": 4,
+      "parameterEvidence": "The proxy constructor initialization calldata supplies 0x24ea00 to VeBTC.initialize, and fixed-block proxy storage slot 0x52 independently contains the same value.",
+      "splitSupport": "team-allowlisted accounts only",
+      "boostable": true,
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "VeBTC.initialize and ve/Escrow"}]
+    },
+    {
+      "id": "vemezo-current",
+      "underlying": "MEZO token precompile at the topology evidence coordinate",
+      "decimals": 18,
+      "maxLockSeconds": "125798400",
+      "maxLockWeeks": 208,
+      "parameterEvidence": "VeMEZO.initialize hard-codes 208 * 7 * 86400, and fixed-block proxy storage slot 0x52 independently contains 0x077f8800.",
+      "splitSupport": "disabled unconditionally; toggleSplit and split revert",
+      "boostable": false,
+      "evidence": [{"sourceArtifactId": "source-current-vemezo", "locator": "VeMEZO.initialize, toggleSplit, and split"}]
+    }
+  ],
+  "custodyBoundaries": [
+    {
+      "id": "institutional-enclave-vebtc",
+      "reference": {"moduleId": "protocols/musd/institutional-debt", "resourceId": "institutional-debt-enclave-vaults"},
+      "rule": "An Enclave can own a veBTC NFT while only an explicit active EnclaveDebtManager pledge makes its locked amount institutional debt collateral. Custody, pledge, voting power, and beneficial economic attribution remain distinct."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "rounded-unlock-time",
+      "inputs": {"timestamp": "unix seconds", "requestedDuration": "seconds"},
+      "expression": "floor((timestamp + requestedDuration) / weekSeconds) * weekSeconds",
+      "preconditions": ["rounded result > timestamp", "rounded result <= timestamp + deployment-scoped maxLockSeconds"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow._createLock and increaseUnlockTime"}]
+    },
+    {
+      "id": "unboosted-timed-voting-power",
+      "inputs": {"amount": "underlying token units", "maxLockSeconds": "seconds", "lockEnd": "unix seconds", "at": "unix seconds"},
+      "expression": "slope = floor(amount / maxLockSeconds); power = at >= lockEnd ? 0 : slope * (lockEnd - at)",
+      "rounding": "The amount-to-slope division floors before multiplication. This is not algebraically interchangeable with floor(amount * remaining / maxLockSeconds).",
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow._checkpoint and ve/Balance.unboostedVotingPowerOfNFTAt"}]
+    },
+    {
+      "id": "boosted-timed-voting-power",
+      "inputs": {"amount": "underlying token units", "boost": "1e18 fixed-point; zero means 1x", "maxLockSeconds": "seconds", "lockEnd": "unix seconds", "at": "unix seconds"},
+      "expression": "boostedAmount = boost == 0 ? amount : floor(amount * boost / boostPrecision); virtualSlope = floor(boostedAmount / maxLockSeconds); power = at >= lockEnd ? 0 : virtualSlope * (lockEnd - at)",
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "libraries/BoostLibrary, ve/Escrow._checkpoint, and ve/Balance._votingPowerOfNFTAt"}]
+    },
+    {
+      "id": "permanent-voting-power",
+      "expression": "unboosted power = amount; boosted power = boost == 0 ? amount : floor(amount * boost / boostPrecision)",
+      "decay": "none while permanent",
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow._checkpoint and ve/Balance voting-power getters"}]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-validator-allocation-fixtures",
+  "id": "incentives-validator-allocation-fixtures",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11366264
+  },
+  "limitations": [
+    "Fixtures reproduce unsigned-integer behavior for the active executable generations; they do not forecast validator rewards or create operation support.",
+    "Pinned event fixtures explain actual observations but never replace their event amounts."
+  ],
+  "records": [
+    {
+      "id": "validator-vote-empty-reset",
+      "formulaId": "validator-vote-allocation",
+      "inputs": {
+        "boostedVotingPowerRaw": "100",
+        "externalWeights": []
+      },
+      "expected": {
+        "gaugeVotesRaw": [],
+        "usedWeightRaw": "0",
+        "outcome": "reset-without-division"
+      }
+    },
+    {
+      "id": "validator-vote-zero-result-reverts",
+      "formulaId": "validator-vote-allocation",
+      "inputs": {
+        "boostedVotingPowerRaw": "1",
+        "externalWeights": ["1", "1"]
+      },
+      "expected": {
+        "firstGaugeVoteRaw": "0",
+        "outcome": "revert-ZeroBalance"
+      }
+    },
+    {
+      "id": "validator-vote-floor-dust",
+      "formulaId": "validator-vote-allocation",
+      "inputs": {
+        "boostedVotingPowerRaw": "10",
+        "externalWeights": ["1", "2"]
+      },
+      "expected": {
+        "gaugeVotesRaw": ["3", "6"],
+        "usedWeightRaw": "9",
+        "allocationFloorDustRaw": "1"
+      }
+    },
+    {
+      "id": "validator-vote-full-single-gauge",
+      "formulaId": "validator-vote-allocation",
+      "inputs": {
+        "boostedVotingPowerRaw": "219232366342472010",
+        "externalWeights": ["10000"]
+      },
+      "expected": {
+        "gaugeVotesRaw": ["219232366342472010"],
+        "usedWeightRaw": "219232366342472010",
+        "allocationFloorDustRaw": "0"
+      },
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-allocation-mainnet",
+        "pointer": "/representativeVote"
+      }
+    },
+    {
+      "id": "validator-index-zero-weight",
+      "formulaId": "validator-reward-index-notification",
+      "inputs": {
+        "notifiedRewardRaw": "100",
+        "preNotificationTotalWeightRaw": "0"
+      },
+      "expected": {
+        "indexDelta18": "100000000000000000000",
+        "gaugeShareSumRaw": "0",
+        "unallocatedRaw": "100"
+      }
+    },
+    {
+      "id": "validator-index-floor-dust",
+      "formulaId": "validator-reward-index-notification",
+      "inputs": {
+        "notifiedRewardRaw": "100",
+        "preNotificationTotalWeightRaw": "3",
+        "gaugeWeightsRaw": ["1", "2"]
+      },
+      "expected": {
+        "indexDelta18": "33333333333333333333",
+        "gaugeSharesRaw": ["33", "66"],
+        "gaugeShareSumRaw": "99",
+        "floorDustRaw": "1"
+      }
+    },
+    {
+      "id": "validator-index-pinned-notification",
+      "formulaId": "validator-reward-index-notification",
+      "inputs": {
+        "notifiedRewardRaw": "557369832853916620093286",
+        "preNotificationTotalWeightRaw": "933668428784635396680"
+      },
+      "expected": {
+        "indexDelta18": "596967633980566261366",
+        "gaugeShareSumRaw": "557369832853916620092881",
+        "floorDustRaw": "405"
+      },
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-allocation-mainnet",
+        "pointer": "/representativeRewardNotification"
+      }
+    },
+    {
+      "id": "validator-distribution-equal-left",
+      "formulaId": "validator-gauge-distribution-gate",
+      "inputs": {
+        "updatedClaimableRaw": "1000000",
+        "gaugeLeftRaw": "1000000"
+      },
+      "expected": {
+        "distribute": false,
+        "reason": "claimable-must-be-strictly-greater-than-left"
+      }
+    },
+    {
+      "id": "validator-distribution-duration-threshold",
+      "formulaId": "validator-gauge-distribution-gate",
+      "inputs": {
+        "updatedClaimableRaw": "604800",
+        "gaugeLeftRaw": "0"
+      },
+      "expected": {
+        "distribute": false,
+        "reason": "claimable-must-be-strictly-greater-than-604800"
+      }
+    },
+    {
+      "id": "validator-distribution-above-both-thresholds",
+      "formulaId": "validator-gauge-distribution-gate",
+      "inputs": {
+        "updatedClaimableRaw": "604801",
+        "gaugeLeftRaw": "604799"
+      },
+      "expected": {
+        "distribute": true,
+        "amountRaw": "604801"
+      }
+    },
+    {
+      "id": "validator-reward-rate-pinned-distribution",
+      "formulaId": "validator-gauge-reward-rate",
+      "inputs": {
+        "distributionAmountRaw": "19279007369329445967969",
+        "timestamp": "1787185081",
+        "priorPeriodFinish": "1787184000",
+        "priorRewardRateRaw": "0"
+      },
+      "expected": {
+        "nextEpoch": "1787788800",
+        "timeUntilNext": "603719",
+        "leftoverRaw": "0",
+        "newRewardRateRaw": "31933742965401860",
+        "periodFinish": "1787788800"
+      },
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-allocation-mainnet",
+        "pointer": "/representativeDistribution"
+      }
+    },
+    {
+      "id": "validator-history-unavailable-is-not-zero",
+      "formulaId": "validator-partial-result",
+      "inputs": {
+        "archiveRead": "unavailable"
+      },
+      "expected": {
+        "status": "unavailable",
+        "value": null,
+        "syntheticZero": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo contract source catalog v1",
+  "allOf": [
+    {
+      "$ref": "../../../schema/v0.4/common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["sources", "sourceArtifacts"],
+  "properties": {
+    "kind": { "const": "contract-source-catalog" },
+    "id": { "const": "contract-sources" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "note"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "repository": { "type": "string", "format": "uri" },
+          "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+          "package": { "type": "string", "minLength": 1 },
+          "packageVersion": { "type": "string", "minLength": 1 },
+          "license": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "retrievedAt": { "type": "string", "format": "date-time" },
+          "reference": {
+            "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+          },
+          "endpoints": {
+            "type": "array",
+            "items": { "type": "string", "format": "uri" },
+            "uniqueItems": true
+          },
+          "note": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sourceArtifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["sourceId", "path", "sha256"],
+        "properties": {
+          "sourceId": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-architecture",
+  "id": "usdc-lending-vault-architecture",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "currentProduct": "USDC Lending Vault"},
+  "limitations": ["Only the current USDC Lending Vault generation is modeled; retired Stablecoin Vaults are excluded.", "Role addresses and allocations are mutable fixed-block observations."],
+  "assetReference": {"moduleId": "workflows/bridges", "resourceId": "bridge-assets", "recordId": "usdc-native-bridge"},
+  "marketReference": {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"},
+  "incentivesReference": {"moduleId": "protocols/incentives", "resourceId": "incentives-gauges-rewards"},
+  "contractReferences": [
+    {"id": "market-adapter", "deployment": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "vaults.usdc-lending-market-adapter@mezo-mainnet"}, "abi": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "vaults.usdc-lending-market-adapter"}},
+    {"id": "receipt-wrapper", "deployment": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "vaults.usdc-lending-wrapper@mezo-mainnet"}, "abi": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "vaults.usdc-lending-wrapper"}}
+  ],
+  "registryCandidates": ["VaultV2 direct deployment", "VaultGauge direct deployment"],
+  "layers": [
+    {"id": "vault-v2", "position": "mUSDC assets are represented by VaultV2 shares; allocation is delegated to reviewed adapters."},
+    {"id": "morpho-market-adapter", "position": "the vault owns one Morpho supply-share position; borrower accounting stays in the lending module."},
+    {"id": "receipt-wrapper", "position": "the wrapper custodies VaultV2 shares, mints receipts, and earmarks high-water-mark vault-share yield."},
+    {"id": "vault-gauge", "position": "the gauge custodies wrapper receipts for beneficial stakers and accounts incentives-owned rewards."}
+  ]
+}

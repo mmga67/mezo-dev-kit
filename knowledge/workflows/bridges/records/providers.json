@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-provider-catalog",
+  "id": "bridge-providers",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "workflowStatus": "evidence-verified-promotion-blocked",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": []
+  },
+  "limitations": [
+    "Provider models are verified but no provider or route is a supported writer surface.",
+    "Network identities and the bounded bridge contract graph resolve through registry provenance review-accepted canonical references; route, relayer, quote, and writer review remains separate."
+  ],
+  "records": [
+    {
+      "id": "wormhole-ntt",
+      "status": "verified-model-not-supported",
+      "messagePrimitive": "wormhole-vaa",
+      "sourceEvidence": "source transaction receipt with NTT TransferSent digest and transceiver send event",
+      "messageEvidence": "Wormhole emitter-chain, emitter-address, and sequence tuple or a destination transceiver receive event",
+      "destinationEvidence": "successful destination receipt containing NTT TransferRedeemed for the same transfer digest",
+      "failureRule": "Absence of a VAA, destination receipt, or redemption event is pending or unknown until a provider-specific timeout/recovery policy supplies stronger evidence.",
+      "terminalSuccessRule": "A successful source receipt is necessary but insufficient; completion requires a successful destination receipt with TransferRedeemed for the same NTT transfer digest.",
+      "replayRule": "Duplicate attestations and message execution are source-defined replay-protected cases and must not be treated as a second transfer.",
+      "limitations": [
+        "NTT manual/standard/special relaying modes are contract protocol configuration, not a UI automation guarantee.",
+        "Inbound and outbound rate limiting can queue an otherwise valid transfer."
+      ]
+    },
+    {
+      "id": "mezo-native-bridge",
+      "status": "verified-model-not-supported",
+      "messagePrimitive": "sequential-validator-canonicalized-native-bridge-events",
+      "sourceEvidence": "Direction-specific AssetsLocked on Ethereum or AssetsUnlocked on Mezo, including the full provider sequence tuple.",
+      "messageEvidence": "Inbound: inclusion in the validator-canonicalized sequence consumed by Mezo. Outbound: AssetsUnlockAttested on Ethereum for the matching source tuple.",
+      "destinationEvidence": "Inbound ERC-20: matching Mezo system payload and sequence advancement plus recipient post-state delivery. Outbound: AssetsUnlockConfirmed plus exact gross/fee/net asset reconciliation.",
+      "failureRule": "Absence of a canonicalized sequence, attestation, confirmation, or recipient post-state is pending or ambiguous unless direction-specific evidence proves a source revert or permanent failure. Do not apply NTT states or event names.",
+      "terminalSuccessRule": "A successful source receipt is necessary but insufficient. Use the direction-specific delivery proof in native-lifecycle.json.",
+      "replayRule": "Inbound source events are processed as a strictly increasing sequence; outbound Ethereum confirmation tracks the unlock sequence and confirmedUnlocks state. Duplicate-looking observations do not represent a second transfer.",
+      "limitations": [
+        "The active Mezo client/source, precompile state, complete Ethereum proxy history, post-upgrade configuration snapshot, and two direction-specific transfers are verified; registry provenance review accepted the registry records, while current exact-call writer verification and route/security review remain open.",
+        "A successful logless Mezo system transaction does not alone prove an ERC-20 mint; post-state delivery evidence is required."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/pools",
+  "moduleId": "protocols/pools",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:20:55.991Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11333787,
+    "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1"
+  },
+  "limitations": [
+    "The module and seven CL Contract identities/ABIs received qualified Level 3 acceptance under pool evidence review.",
+    "No swap, liquidity, stake, approval, claim, route, or Quoter writer/read facade is supported.",
+    "Dynamic pool/gauge/NFT state must be refreshed from reviewed roots; dated evidence is not a static instance registry.",
+    "Pure math does not replace current fee, liquidity, allowance, liveness, token-behavior, simulation, or slippage checks."
+  ],
+  "resources": [
+    {
+      "id": "pools-architectures",
+      "role": "canonical-record",
+      "kind": "mezo-pool-architecture-model",
+      "path": "records/architectures.json"
+    },
+    {
+      "id": "pools-math",
+      "role": "canonical-record",
+      "kind": "mezo-pool-math-model",
+      "path": "records/math.json"
+    },
+    {
+      "id": "pools-positions-gauges",
+      "role": "canonical-record",
+      "kind": "mezo-pool-position-gauge-model",
+      "path": "records/positions-gauges.json"
+    },
+    {
+      "id": "pools-operation-requirements",
+      "role": "canonical-record",
+      "kind": "mezo-pool-future-operation-requirements",
+      "path": "records/operations.json"
+    },
+    {
+      "id": "pools-surface-classification",
+      "role": "canonical-record",
+      "kind": "mezo-liquidity-surface-classification",
+      "path": "records/classification.json"
+    },
+    {
+      "id": "pools-math-fixtures",
+      "role": "fixture",
+      "kind": "mezo-pool-math-fixtures",
+      "path": "fixtures/math.json",
+      "recordIds": [
+        "tick-min",
+        "tick-zero",
+        "tick-max",
+        "tick-minus-60",
+        "tick-plus-60",
+        "spacing-200-full-range",
+        "readable-but-not-position-aligned",
+        "one-to-one-price",
+        "inside-range-principal",
+        "inside-range-liquidity",
+        "zero-liquidity",
+        "partial-dynamic-read",
+        "stale-analytics-row",
+        "volatile-invariant",
+        "stable-normalized-invariant"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "pools-sources",
+      "role": "source-catalog",
+      "kind": "mezo-pool-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-docs-mezo-pools-current",
+        "official-source-tigris",
+        "pools-mainnet-topology",
+        "pools-source-reproduction",
+        "incentives-gauges-rewards",
+        "transaction-client-requirements"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "pools-mainnet-topology",
+      "role": "evidence",
+      "kind": "mezo-pool-topology-observation",
+      "path": "evidence/mainnet-topology-2026-08-23.json"
+    },
+    {
+      "id": "pools-source-reproduction",
+      "role": "evidence",
+      "kind": "mezo-pool-source-reproduction-evidence",
+      "path": "evidence/source-reproduction-2026-08-23.json",
+      "recordIds": [
+        "mezo-earn.cl-factory",
+        "mezo-earn.cl-pool-implementation",
+        "mezo-earn.cl-swap-router",
+        "mezo-earn.cl-position-manager",
+        "mezo-earn.cl-position-descriptor",
+        "incentives.cl-gauge-factory",
+        "incentives.cl-gauge-implementation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "pools-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "pools-fixture-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/fixture.schema.json"
+    },
+    {
+      "id": "pools-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "pools-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "pools-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "pools-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-architectures"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-math"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-positions-gauges"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-operation-requirements"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-surface-classification"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-math-fixtures"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-mainnet-topology"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-source-reproduction"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module protocols/pools"
+    },
+    {
+      "id": "pool-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-pool-knowledge.ts"
+    },
+    {
+      "id": "pool-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-pool-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "protocolStatus": "verified-supported-accepted",
+    "identityBoundary": "Accepted basic and CL roots are referenced from Contracts. Dynamic instances remain block-scoped observations discovered through those roots.",
+    "networkReference": {
+      "moduleId": "networks",
+      "resourceId": "mezo-mainnet"
+    },
+    "contractReferences": [
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments"
+      },
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis"
+      }
+    ],
+    "incentivesReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-gauges-rewards"
+    },
+    "priceReference": {
+      "moduleId": "prices",
+      "resourceId": "price-source-taxonomy",
+      "recordId": "dex-derived-observation"
+    },
+    "transactionReference": {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    "blockers": [
+      "separate official Quoter evidence before any Quoter support",
+      "fresh exact-operation verification before any public writer"
+    ]
+  }
+}

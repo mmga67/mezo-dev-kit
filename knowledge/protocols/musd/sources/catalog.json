@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-protocol-source-catalog",
+  "id": "musd-sources",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:08:06Z",
+  "reviewAfter": null,
+  "scope": {"protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c", "documentationCommit": "c9e6cb39361c8d71637f40bdfc9378a24e286555"},
+  "limitations": ["Each source and artifact establishes only its pinned path, revision, digest, and stated evidence scope."],
+  "sources": [
+    {
+      "id": "official-docs-musd",
+      "kind": "official-documentation",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "retrievedAt": "2026-08-17T22:56:59.589Z"
+    },
+    {
+      "id": "official-source-musd",
+      "kind": "official-source",
+      "repository": "https://github.com/mezo-org/musd",
+      "commit": "43ef44123753fa3e28425beffde42c86693fd03c",
+      "solidityVersion": "0.8.24",
+      "deploymentEvidenceOwner": "knowledge/contracts"
+    },
+    {
+      "id": "mdk-protocol-observations",
+      "kind": "read-only-on-chain-observation",
+      "registryOwner": "knowledge/contracts",
+      "networkOwner": "knowledge/networks"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "docs-user-overview",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/index.md",
+      "sha256": "fafba8039a29290198465f0992f9993b6b21ad7d8fd0f0f3855472085a17b382"
+    },
+    {
+      "id": "docs-architecture-terminology",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/architecture-and-terminology.md",
+      "sha256": "5fd3277b010682eb525395f87b7e76ecb1b0bbf497bfad6a94727a3ac439f1fa"
+    },
+    {
+      "id": "docs-developer-guide",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/developers/musd/index.md",
+      "sha256": "140bd1481e94bcc5d89a8100d681b5ba9e3baf623811601714424ad27d8ba994"
+    },
+    {
+      "id": "docs-borrow-fees",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/fees.md",
+      "sha256": "b9642acbfaf9fbc30709569b48c7599222b7c7ae6e95d8c02d14a0618d811539"
+    },
+    {
+      "id": "docs-liquidation-mechanics",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/liquidation-mechanics.md",
+      "sha256": "05f65a79c68564d6ca56db40ea2ecf249a91d1806cdb90af71eb07fb50aec9b8"
+    },
+    {
+      "id": "docs-mint-musd",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/mint-musd.mdx",
+      "sha256": "52416ec8d8ec1b60dfd6034deffd1056d99d80a4788353bbb4a76fb106b13c88"
+    },
+    {
+      "id": "docs-musd-redemptions",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/developers/musd/musd-redemptions/index.md",
+      "sha256": "b476782cbd70d1a7d934bbf315cca4ff843de53e3b1f5eaf5f8f3a524dfad72e"
+    },
+    {
+      "id": "docs-claim-redemption-surplus",
+      "sourceId": "official-docs-musd",
+      "path": "src/content/docs/docs/users/borrow/claim-collateral-after-redemption.mdx",
+      "sha256": "6981f38b196d75f224fddecfeb2b4e730f1c6a3f5660183e7832f362f2f14491"
+    },
+    {
+      "id": "source-musd-token",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/token/MUSD.sol",
+      "sha256": "de7554aedcefaae06ae223b919f35776ecc4f173247b53cbae088ec09fc76072"
+    },
+    {
+      "id": "source-borrower-operations",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/BorrowerOperations.sol",
+      "sha256": "c027a42b7fb09511590f837ebc1260d755f7aa91fe9fd53dbfa25354a89a3bfc"
+    },
+    {
+      "id": "source-borrower-operations-signatures",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/BorrowerOperationsSignatures.sol",
+      "sha256": "1eb181fff8c8ca73d68a591a6a97c9a7c1b12af4872c9be23129a8a54b1270f7"
+    },
+    {
+      "id": "source-trove-manager",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/TroveManager.sol",
+      "sha256": "cb7859356c871cb309d384f3c68553d774f11fab104bedaabfe6bad154ebe7f1"
+    },
+    {
+      "id": "source-stability-pool",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/StabilityPool.sol",
+      "sha256": "b429f5c1650f9190d1483a0df4d9bf3350708d2027993ed15592bdc88dcb611e"
+    },
+    {
+      "id": "source-active-pool",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/ActivePool.sol",
+      "sha256": "26ae5890f97f4ecdf72c5ac333441e2a24a3466aee350f41957cbe7c397b1b91"
+    },
+    {
+      "id": "source-default-pool",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/DefaultPool.sol",
+      "sha256": "a9405a2c125f9e57f9ac57117d07c7e56205e9242545a5c694a503b82ba11013"
+    },
+    {
+      "id": "source-coll-surplus-pool",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/CollSurplusPool.sol",
+      "sha256": "143d67a7611c93f57c1b36dfc4107d64ed8ebc2bc94f4a4aaf107c88c9e600b4"
+    },
+    {
+      "id": "source-gas-pool",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/GasPool.sol",
+      "sha256": "f01aac0d72cc2c9e9e871a1d3db2968ff6eff48102b695fb865fababd4dc69ba"
+    },
+    {
+      "id": "source-price-feed",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/PriceFeed.sol",
+      "sha256": "0a4cecc4bee03d85b46b8204395601c0b9dc3a55d118607e1e71058701553462"
+    },
+    {
+      "id": "source-sorted-troves",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/SortedTroves.sol",
+      "sha256": "b774e64e5a8f817e61cde82969453a1528ff1efc11e00f45a3373c35397c237e"
+    },
+    {
+      "id": "source-hint-helpers",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/HintHelpers.sol",
+      "sha256": "ba38ad55c6ee237eafd8589db6f579f2ed1d521fc75f711034d8ddb7bf35d94c"
+    },
+    {
+      "id": "source-interest-rate-manager",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/InterestRateManager.sol",
+      "sha256": "d230081f455d74a6147d4d1ec5f795680fd9da591077991fb3f6bcf807f976d5"
+    },
+    {
+      "id": "source-pcv",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/PCV.sol",
+      "sha256": "0509e16bc7efeb9dabb69b6694cfaa9da8804d0f60f853b388fe53b5bf8a9b1b"
+    },
+    {
+      "id": "source-governable-variables",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/GovernableVariables.sol",
+      "sha256": "e647060d0fa0ebdc3328485066fc59a0815f1e0b9d80414b38e0d5f62160beb5"
+    },
+    {
+      "id": "source-base-math",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/dependencies/BaseMath.sol",
+      "sha256": "e4769984b9eed4a32d44aef49569a6ed7036bdadac9f988b5ee436d082bb1e89"
+    },
+    {
+      "id": "source-liquity-base",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/dependencies/LiquityBase.sol",
+      "sha256": "ef8bc6bdf2547a5e2d67c0923184925c53ea84924351c1f6cf227d7b9dd0e978"
+    },
+    {
+      "id": "source-interest-rate-math",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/dependencies/InterestRateMath.sol",
+      "sha256": "1c7c98ae74c9e320978d6b73bc36095f8c1f579d1cfc6563706d56f7d6d678de"
+    },
+    {
+      "id": "source-liquity-math",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/dependencies/LiquityMath.sol",
+      "sha256": "8b50a087f5da5c2e81e8997d6771d50338f5ec841fc69ac0ac917c763ae33c0c"
+    },
+    {
+      "id": "source-interface-borrower-operations",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/interfaces/IBorrowerOperations.sol",
+      "sha256": "14b5c4ce4a5ccc95f3818fa162a1445cf7a1e527b4b12ec672b24537f83d5ed6"
+    },
+    {
+      "id": "source-interface-trove-manager",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/interfaces/ITroveManager.sol",
+      "sha256": "96887b740fdae048e3daabe2a51c56a5b73e5289107e148030274b0011fec1c9"
+    },
+    {
+      "id": "source-interface-hint-helpers",
+      "sourceId": "official-source-musd",
+      "path": "solidity/contracts/interfaces/IHintHelpers.sol",
+      "sha256": "c3cee61e218e75475bb93d2124febfc52f7a5242d61384d6185d9d92cc59a8bf"
+    },
+    {
+      "id": "test-borrower-operations-normal",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/normal/BorrowerOperations.test.ts",
+      "sha256": "0211b838adb36da053980a32382b910feb9e8d99bb8cc7231b199aa16f4279f2"
+    },
+    {
+      "id": "test-borrower-operations-recovery",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/recovery/BorrowerOperations.test.ts",
+      "sha256": "0c2d52f6dbecea2495cc41b65d1aecf73b91e97a17d18b2c5df9c48a7557d4ae"
+    },
+    {
+      "id": "test-trove-manager-normal",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/normal/TroveManager.test.ts",
+      "sha256": "abeabcee209d9ac9096653f57e40671df1d81b437c3c03580dbf9ebaf25ca115"
+    },
+    {
+      "id": "test-trove-manager-recovery",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/recovery/TroveManager.test.ts",
+      "sha256": "0aa36324fd296f419933ccd61fafbf54a4e2c58baf4f0e7b3110d848ee42b004"
+    },
+    {
+      "id": "test-liquidation-rewards",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/normal/TroveManager_LiquidationRewards.test.ts",
+      "sha256": "f85254caf5325e142b2791a47b336b62b2e9441e6e84a547fb934e3942655e4a"
+    },
+    {
+      "id": "test-interest-rate-manager",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/normal/InterestRateManager.test.ts",
+      "sha256": "8eb2ab5f63599323f72955102d3a8d0e3d9ce12b03cab616e86294cf5de53112"
+    },
+    {
+      "id": "test-hint-helpers-redemptions",
+      "sourceId": "official-source-musd",
+      "path": "solidity/test/normal/HintHelpers_getApproxHint.test.ts",
+      "sha256": "5cf65f32f62ed9253a282d63bc929b867238b4b64bb3f70e970da49b65de7189"
+    },
+    {
+      "id": "protocol-read-observations",
+      "sourceId": "mdk-protocol-observations",
+      "path": "knowledge/protocols/musd/evidence/protocol-reads-2026-08-18.json",
+      "sha256": "11f9266cdc2a0273283913cbf13df739c8011d1033365b54f08fca5e63cbddd7"
+    },
+    {
+      "id": "borrowing-parameter-observations",
+      "sourceId": "mdk-protocol-observations",
+      "path": "knowledge/protocols/musd/borrowing/evidence/parameter-reads-2026-08-18.json",
+      "sha256": "20fa46126be3e941cfe3cdcf73c3201784f79c4b57e6a4ff51330530811dd3a0"
+    },
+    {
+      "id": "redemption-parameter-observations",
+      "sourceId": "mdk-protocol-observations",
+      "path": "knowledge/protocols/musd/redemptions/evidence/parameter-reads-2026-08-18.json",
+      "sha256": "3a483281b1b5260998f9ea0ad166a05c107c720a047a76e1e1d355b30b0bb0d4"
+    }
+  ]
+}

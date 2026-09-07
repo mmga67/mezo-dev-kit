@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-accounting-fixtures",
+  "id": "musd-savings-accounting-fixtures",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"scale": "1000000000000000000"},
+  "limitations": ["Fixtures prove deterministic integer ordering only; they do not replace current reads or simulation."],
+  "records": [
+    {"id": "deposit-one-to-one", "operation": "principal", "input": {"amount": "1000000000000000000"}, "expected": {"minted": "1000000000000000000"}},
+    {"id": "withdraw-one-to-one", "operation": "principal", "input": {"amount": "900000000000000000"}, "expected": {"burned": "900000000000000000", "principalReturned": "900000000000000000"}},
+    {"id": "zero-supply-buffer", "operation": "receive-yield", "input": {"amount": "7", "pending": "5", "supply": "0", "index": "9"}, "expected": {"pending": "12", "index": "9"}},
+    {"id": "ratio-rounds-to-zero", "operation": "receive-yield", "input": {"amount": "1", "pending": "0", "supply": "1000000000000000001", "index": "0"}, "expected": {"revert": "AmountTooSmall"}},
+    {"id": "indexed-distribution", "operation": "receive-yield", "input": {"amount": "100", "pending": "20", "supply": "1000", "index": "7"}, "expected": {"ratio": "120000000000000000", "pending": "0", "index": "120000000000000007"}},
+    {"id": "user-update-floor", "operation": "user-update", "input": {"balance": "333", "index": "100000000000000000", "userIndex": "0", "claimable": "2"}, "expected": {"share": "33", "claimable": "35", "userIndex": "100000000000000000"}},
+    {"id": "gauge-claim-cap", "operation": "gauge-cap", "input": {"requested": "12000", "cap": "10000"}, "expected": {"allowed": "10000", "remaining": "2000"}},
+    {"id": "staked-receipt-no-double-count", "operation": "ownership", "input": {"walletReceipts": "10", "gaugeBeneficialReceipts": "90", "gaugeCustodyBalance": "90"}, "expected": {"beneficialPrincipal": "100"}}
+  ]
+}

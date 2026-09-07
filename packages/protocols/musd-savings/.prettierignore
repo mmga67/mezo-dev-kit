@@ -1,0 +1,2 @@
+# Deterministic generator formatting is checked by generate-savings-package.ts.
+src/model.generated.ts

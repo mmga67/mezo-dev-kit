@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-borrowing-position-model",
+  "id": "borrowing-position",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Borrower-specific and governed state must be read at an explicit block before calculations or writes."],
+  "records": [
+    {
+      "id": "borrower-keyed-trove",
+      "stability": "versioned-design",
+      "claim": "A classic position is keyed by borrower address and has one lifecycle status: nonExistent, active, closedByOwner, closedByLiquidation, or closedByRedemption.",
+      "implication": "Signature relaying can authorize borrower operations but does not transfer or re-key the trove.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "Trove struct, Troves mapping, and Status uses"},
+        {"sourceArtifactId": "source-interface-trove-manager", "locator": "ITroveManager.Status"}
+      ]
+    },
+    {
+      "id": "stored-position-state",
+      "stability": "versioned-design",
+      "claim": "Stored active state contains collateral, principal, materialized interest owed, stake, annual interest rate, last-interest timestamp, and max borrowing capacity.",
+      "excludes": ["pending redistributed collateral", "pending redistributed principal", "pending redistributed interest", "unmaterialized time interest"],
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "Trove struct and getTrove* accessors"}
+      ]
+    },
+    {
+      "id": "entire-position-state",
+      "stability": "versioned-design",
+      "claim": "Entire collateral equals stored collateral plus pending redistributed collateral. Entire debt equals stored principal, stored interest, newly accrued simple interest, pending principal, and pending interest.",
+      "riskUse": "ICR and liquidation eligibility use entire current amounts.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "getEntireDebtAndColl, _getCurrentTroveAmounts, and getCurrentICR"}
+      ]
+    },
+    {
+      "id": "net-and-composite-debt",
+      "stability": "versioned-design",
+      "claim": "Net debt excludes the fixed MUSD gas compensation. Composite debt adds the gas compensation to net debt. Opening ICR uses composite debt.",
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "_getCompositeDebt and _getNetDebt"},
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_openTrove"}
+      ]
+    },
+    {
+      "id": "interest-and-pending-materialization",
+      "stability": "versioned-design",
+      "claim": "Borrower adjustments, close, refinance, and liquidation first update system/trove interest and apply pending redistribution state before changing the position.",
+      "note": "DefaultPool debt does not itself accrue time interest; when pending principal is applied to an active trove it is added to that trove's interest-rate numerator at that trove's rate.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "updateSystemAndTroveInterest, _updateTroveInterest, and _applyPendingRewards"},
+        {"sourceArtifactId": "source-default-pool", "locator": "debt accounting"}
+      ]
+    },
+    {
+      "id": "native-collateral-custody",
+      "stability": "versioned-design",
+      "claim": "The verified classic borrowing entry points receive native currency as BTC collateral and account it in ActivePool; they do not accept an ERC-20 collateral argument.",
+      "evidence": [
+        {"sourceArtifactId": "source-interface-borrower-operations", "locator": "payable openTrove, addColl, and adjustTrove"},
+        {"sourceArtifactId": "source-active-pool", "locator": "collateral balance accounting and sendCollateral"}
+      ]
+    },
+    {
+      "id": "nominal-ordering",
+      "stability": "versioned-design",
+      "claim": "SortedTroves orders active positions using NICR computed from collateral and principal; NICR excludes interest and price. Borrowing operations require upper/lower hints, but the contract validates and searches around them.",
+      "warning": "NICR is an ordering metric, not borrower health.",
+      "evidence": [
+        {"sourceArtifactId": "source-trove-manager", "locator": "getNominalICR"},
+        {"sourceArtifactId": "source-borrower-operations", "locator": "sortedTroves.insert and reInsert calls"},
+        {"sourceArtifactId": "source-sorted-troves", "locator": "insert and reInsert"}
+      ]
+    },
+    {
+      "id": "recovery-mode-state",
+      "stability": "versioned-design",
+      "claim": "Recovery Mode is active exactly when TCR is below CCR. It changes borrower-operation admission rules but does not introduce a separate liquidation eligibility branch in the pinned source.",
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "_checkRecoveryMode"},
+        {"sourceArtifactId": "source-trove-manager", "locator": "_getTotalsFromBatchLiquidate"},
+        {"sourceArtifactId": "docs-liquidation-mechanics", "locator": "Recovery Mode and liquidation descriptions"}
+      ]
+    }
+  ]
+}

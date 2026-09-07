@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-debt-source-catalog",
+  "id": "institutional-debt-sources",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "retrievalDate": "2026-08-23"
+  },
+  "limitations": [
+    "Source authority and freshness are per record; documentation does not replace deployment/source reproduction or fixed-block reads."
+  ],
+  "records": [
+    {
+      "id": "official-docs-enclaves",
+      "type": "official-documentation",
+      "url": "https://mezo.org/docs/users/mainnet/enclaves/",
+      "retrievedAt": "2026-08-23T11:00:00Z",
+      "scope": "Institutional Enclave purpose, allowlisting, and triparty UTXO-backed custody overview.",
+      "limitations": [
+        "The page does not establish the deployed Enclave or debt-manager addresses, source generations, roles, or live allowlist."
+      ]
+    },
+    {
+      "id": "official-docs-mezo-bridge",
+      "type": "official-documentation",
+      "url": "https://mezo.org/docs/developers/bridge/mezo-bridge",
+      "retrievedAt": "2026-08-23T11:00:00Z",
+      "scope": "AssetsBridge developer boundary referenced by triparty bridge requests."
+    },
+    {
+      "id": "institutional-debt-fixed-block-state",
+      "type": "local-evidence",
+      "path": "evidence/fixed-block-state-2026-08-23.json",
+      "sha256": "9a9dca836737979d4de7588e1bac45f4383a698febdf2863a2e724df7d9be3d9",
+      "scope": "Pinned proxy slots/history, roles, target-selector pairs, UTXOs, parameters, known positions, totals, and event summaries at Mezo Mainnet block 11334441."
+    },
+    {
+      "id": "institutional-debt-source-reproduction",
+      "type": "local-evidence",
+      "path": "evidence/source-reproduction-2026-08-23.json",
+      "sha256": "8f458128a3ca0f4d1463078279fc1f2012e58e04302585890c399e49f87017d5",
+      "scope": "Official explorer source/compiler/ABI captures and exact executable reproduction for two Enclave and two debt-manager implementation generations."
+    },
+    {
+      "id": "musd-system-model",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-system-model"
+      },
+      "scope": "Accepted classic MUSD terminology and aggregate boundaries."
+    },
+    {
+      "id": "borrowing-position",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-position"
+      },
+      "scope": "Accepted classic trove/borrowing model kept separate from institutional positions."
+    },
+    {
+      "id": "incentives-locks",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-locks"
+      },
+      "scope": "veBTC lock and ownership semantics referenced by institutional pledge custody."
+    },
+    {
+      "id": "transaction-client-requirements",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "workflows/transactions",
+        "resourceId": "transaction-client-requirements"
+      },
+      "scope": "Future exact-call preflight, simulation, submission, confirmation, and reconciliation requirements."
+    }
+  ]
+}

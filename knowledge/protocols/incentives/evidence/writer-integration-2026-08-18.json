@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-historical-writer-integration-observation",
+  "id": "mezo-incentives-writer-integration-2026-08-18",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-historical-integration-not-support",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "observedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "historicalOperations": [
+      "vebtc-create-lock-historical-replay",
+      "pools-vote-replacement-historical-replay"
+    ]
+  },
+  "networkId": "mezo-mainnet",
+  "evmChainId": 31612,
+  "methodology": [
+    "Selected successful current-generation createLock and vote transactions directly from deployed ERC-721 and Voter events.",
+    "Fetched each canonical transaction and successful receipt, pinned its block plus exact parent pre-state block, and retained calldata, sender, target, gas, and relevant events.",
+    "Replayed each original call with eth_call from the original sender against the exact parent block; neither replay submitted a transaction.",
+    "Compared operation-specific state immediately before and after inclusion rather than treating a receipt status or transaction hash as sufficient proof.",
+    "Kept these two historical integrations separate from current writer support, current precondition resolution, and operation-specific qualified review."
+  ],
+  "operations": [
+    {
+      "id": "vebtc-create-lock-historical-replay",
+      "operationId": "create-lock",
+      "targetRole": "vebtc-current",
+      "target": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "sender": "0x7dae08563b85de04fb48ac211184718f259458a1",
+      "transactionHash": "0x12d2845930823ecfb8253e6338640b6dc09576423de5cd61cc3f599c95f24bfd",
+      "blockNumber": 11206448,
+      "blockHash": "0x73080b5b370f1d7b839b8cc99b97e00892ce844888a408aae6193dacd1796166",
+      "blockTimestamp": "2026-08-18T03:48:25.000Z",
+      "preState": {
+        "blockNumber": 11206447,
+        "blockHash": "0xf641d147e10801333ca756f93d0f1bdbda0382af4360527f88c9c040638f1f34"
+      },
+      "call": {
+        "signature": "createLock(uint256,uint256)",
+        "selector": "0xb52c05fe",
+        "calldata": "0xb52c05fe000000000000000000000000000000000000000000000000058d15e176280000000000000000000000000000000000000000000000000000000000000024ea00",
+        "amountRaw": "400000000000000000",
+        "requestedDurationSeconds": "2419200",
+        "valueRaw": "0"
+      },
+      "preStateReplay": {
+        "resultRaw": "0x00000000000000000000000000000000000000000000000000000000000017d0",
+        "decodedTokenId": "6096"
+      },
+      "receipt": {
+        "status": "success",
+        "gasUsed": "550129",
+        "nftTransfer": {
+          "from": "0x0000000000000000000000000000000000000000",
+          "to": "0x7dae08563b85de04fb48ac211184718f259458a1",
+          "tokenId": "6096"
+        },
+        "underlyingTransferRaw": "400000000000000000",
+        "lockEventAmountRaw": "400000000000000000",
+        "lockEventEnd": "1788998400"
+      },
+      "stateReconciliation": {
+        "ownerBefore": "0x0000000000000000000000000000000000000000",
+        "ownerAfter": "0x7dae08563b85de04fb48ac211184718f259458a1",
+        "lockBefore": {
+          "amount": "0",
+          "end": "0",
+          "isPermanent": false,
+          "storedBoost": "0"
+        },
+        "lockAfter": {
+          "amount": "400000000000000000",
+          "end": "1788998400",
+          "isPermanent": false,
+          "storedBoost": "0"
+        }
+      }
+    },
+    {
+      "id": "pools-vote-replacement-historical-replay",
+      "operationId": "vote-pools",
+      "targetRole": "pools-voter",
+      "target": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "sender": "0xfef6503a2cf17db14fae5d5874a50522677cfcec",
+      "transactionHash": "0xa147960fc6b7900d571b84f0d6575f7c5d4e0994fd8e7e5d22d87ddd3139841c",
+      "blockNumber": 11201407,
+      "blockHash": "0x7293392f6f8248da95ae3ee268bda36e7ad4df6380a98a7ddab1358ba4cb00fb",
+      "blockTimestamp": "2026-08-17T22:29:00.000Z",
+      "preState": {
+        "blockNumber": 11201406,
+        "blockHash": "0x9b99bf0d9cdba89567142fbaf7be01d97e6d1affb0e370c92b278dca020f8aaa"
+      },
+      "call": {
+        "signature": "vote(uint256,address[],uint256[])",
+        "selector": "0x7ac09bf7",
+        "calldata": "0x7ac09bf70000000000000000000000000000000000000000000000000000000000000952000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006688f868e9c81ee671867e77fbc618bbea2e978200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000064",
+        "tokenId": "2386",
+        "pools": ["0x6688f868e9c81ee671867e77fbc618bbea2e9782"],
+        "relativeWeights": ["100"],
+        "valueRaw": "0"
+      },
+      "preStateReplay": {
+        "resultRaw": "0x"
+      },
+      "receipt": {
+        "status": "success",
+        "gasUsed": "304018",
+        "eventOrder": ["Abstained", "Voted"],
+        "abstained": {
+          "pool": "0x6688f868e9c81ee671867e77fbc618bbea2e9782",
+          "tokenId": "2386",
+          "weight": "55560657725238490",
+          "poolTotalWeightAfter": "1786953799106816831"
+        },
+        "voted": {
+          "pool": "0x6688f868e9c81ee671867e77fbc618bbea2e9782",
+          "tokenId": "2386",
+          "weight": "55560657725238490",
+          "poolTotalWeightAfter": "1842514456832055321"
+        }
+      },
+      "stateReconciliation": {
+        "lastVotedBefore": "1786115350",
+        "lastVotedAfter": "1787005740",
+        "selectedPoolVoteBefore": "55560657725238490",
+        "selectedPoolVoteAfter": "55560657725238490",
+        "usedWeightBefore": "55560657725238490",
+        "usedWeightAfter": "55560657725238490",
+        "interpretation": "The successful replacement vote resets and redeposits the same allocation. Persistent storage equality does not mean no execution: receipt order and the advanced lastVoted timestamp prove the replacement transition."
+      }
+    }
+  ],
+  "limitations": [
+    "Historical replay proves the original calldata was valid against its exact pre-state; it is not a simulation against current state and does not establish current allowance, ownership, epoch eligibility, gauge liveness, or implementation identity.",
+    "Only current-generation createLock and one single-pool replacement vote are covered. Reset, poke, permanent-lock, boost-gauge, distribution, and claim writers remain without equivalent integration evidence.",
+    "No transaction was submitted by MDK. Current writer support remains none until current registry identities, fresh preconditions, exact-call simulation, and operation-specific qualified review are complete."
+  ]
+}

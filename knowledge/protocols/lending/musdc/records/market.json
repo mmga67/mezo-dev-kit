@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-market-model",
+  "id": "musdc-lending-market",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db"},
+  "limitations": ["One market only; no generic Morpho or other Mezo market support.", "Current parameters and state require same-block reads before use."],
+  "loanAssetReference": {"moduleId": "workflows/bridges", "resourceId": "bridge-assets", "recordId": "usdc-native-bridge"},
+  "collateralAsset": {"id": "native-btc-on-mezo", "unitDecimals": 18},
+  "priceReference": {"moduleId": "prices", "resourceId": "price-sources-feeds"},
+  "contractReferences": [
+    {"id": "morpho", "deployment": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "lending.morpho@mezo-mainnet"}, "abi": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "lending.morpho"}},
+    {"id": "adaptive-curve-irm", "deployment": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "lending.adaptive-curve-irm@mezo-mainnet"}, "abi": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "lending.adaptive-curve-irm"}},
+    {"id": "musdc-btc-oracle", "deployment": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "lending.musdc-btc-oracle@mezo-mainnet"}, "abi": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "lending.musdc-btc-oracle"}}
+  ],
+  "marketTuple": {"loanDecimals": 6, "collateralDecimals": 18, "lltvScale": "1000000000000000000", "oraclePriceScale": "1000000000000000000000000000000000000"},
+  "stateDimensions": [
+    {"id": "supply-assets", "unit": "mUSDC assets", "rounding": "conversion depends on call path"},
+    {"id": "supply-shares", "unit": "Morpho supply shares", "rounding": "not an asset amount"},
+    {"id": "borrow-assets", "unit": "mUSDC debt including accrued interest at the evaluation timestamp"},
+    {"id": "borrow-shares", "unit": "Morpho borrow shares", "rounding": "debt conversion rounds up"},
+    {"id": "collateral", "unit": "native BTC wei", "rounding": "no lending shares"},
+    {"id": "liquidity", "unit": "mUSDC assets", "definition": "loan-token balance available to Morpho, not total supply assets"}
+  ],
+  "aggregateBoundary": "Market debt, supply, liquidity, and collateral are independent of classic MUSD debt and supply."
+}

@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-source-feed-catalog",
+  "id": "price-sources-feeds",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-03T14:24:36.881Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "sourceCount": 2,
+    "feedCount": 3
+  },
+  "limitations": [
+    "oracle re-verification accepted the two roots, post-upgrade current implementations, and bounded feed evidence; feed/current support remains proposed.",
+    "Post-upgrade Pyth one-hour reads remained stale on both networks and must not be represented as live feed support.",
+    "No feed updater, hosted provider, credential, subscription, route, or writer is included."
+  ],
+  "sources": [
+    {
+      "id": "source.skip-price-oracle-v1",
+      "provider": "Skip Connect",
+      "transport": "Mezo PriceOracle precompile",
+      "sourceClass": "pushed-feed-observation",
+      "networkIds": [
+        "mezo-mainnet",
+        "mezo-testnet"
+      ],
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "oracle.skip-btc-usd@mezo-mainnet"
+      },
+      "networkScopedContractReferences": {
+        "mezo-mainnet": {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments",
+          "recordId": "oracle.skip-btc-usd@mezo-mainnet"
+        },
+        "mezo-testnet": {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments",
+          "recordId": "oracle.skip-btc-usd@mezo-testnet"
+        }
+      },
+      "interface": [
+        "decimals()",
+        "latestRoundData()"
+      ],
+      "unsupportedInterface": [
+        "description()"
+      ],
+      "confidenceSemantics": null,
+      "supportStatus": "proposed",
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "source.pyth-core-v1",
+      "provider": "Pyth Network",
+      "transport": "Pyth Core EVM price-feed proxy",
+      "sourceClass": "pushed-feed-observation",
+      "networkIds": [
+        "mezo-mainnet",
+        "mezo-testnet"
+      ],
+      "networkScopedContractReferences": {
+        "mezo-mainnet": {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments",
+          "recordId": "oracle.pyth-price-feed@mezo-mainnet"
+        },
+        "mezo-testnet": {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments",
+          "recordId": "oracle.pyth-price-feed@mezo-testnet"
+        }
+      },
+      "readMethod": "getPriceNoOlderThan(bytes32,uint256)",
+      "datumFields": [
+        "price",
+        "conf",
+        "expo",
+        "publishTime"
+      ],
+      "confidenceSemantics": "The unsigned confidence value shares the price exponent and qualifies the paired observation.",
+      "supportStatus": "proposed",
+      "reviewStatus": "accepted",
+      "observedVersion": "1.4.6",
+      "lastUpgradeBoundary": "2026-08-26T16:00:00.000Z",
+      "postUpgradeEvidenceReference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-2026-08-27"
+      },
+      "currentEvidenceByNetwork": {
+        "mezo-mainnet": {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+        },
+        "mezo-testnet": {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-2026-08-27"
+        }
+      }
+    }
+  ],
+  "feeds": [
+    {
+      "id": "feed.skip-btc-usd",
+      "sourceId": "source.skip-price-oracle-v1",
+      "baseAsset": "BTC",
+      "quoteAsset": "USD",
+      "providerFeedId": null,
+      "sourceDecimals": 18,
+      "confidence": null,
+      "publicationCoordinate": "latestRoundData.updatedAt",
+      "roundSemantics": "roundId and answeredInRound are retained exactly; answeredInRound was zero at the fixed blocks.",
+      "supportStatus": "proposed"
+    },
+    {
+      "id": "feed.pyth-btc-usd",
+      "sourceId": "source.pyth-core-v1",
+      "baseAsset": "BTC",
+      "quoteAsset": "USD",
+      "providerFeedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+      "sourceScale": "signed expo per observation",
+      "confidence": "conf with the same expo",
+      "publicationCoordinate": "publishTime",
+      "fixedBlockFreshness": "stale-at-3600-seconds",
+      "supportStatus": "proposed"
+    },
+    {
+      "id": "feed.pyth-musd-usd",
+      "sourceId": "source.pyth-core-v1",
+      "baseAsset": "MUSD",
+      "quoteAsset": "USD",
+      "providerFeedId": "0x0617a9b725011a126a2b9fd53563f4236501f32cf76d877644b943394606c6de",
+      "sourceScale": "signed expo per observation",
+      "confidence": "conf with the same expo",
+      "publicationCoordinate": "publishTime",
+      "fixedBlockFreshness": "stale-at-3600-seconds",
+      "supportStatus": "proposed"
+    }
+  ],
+  "protocolConsumers": [
+    {
+      "id": "consumer.musd-price-feed",
+      "sourceClass": "protocol-oracle-state",
+      "componentReference": {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-components",
+        "recordId": "musd.price-feed"
+      },
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments"
+      },
+      "configuredSourceAtEvidenceBlocks": "feed.skip-btc-usd",
+      "semanticsOwner": "protocols/musd",
+      "nonSubstitutionRule": "Direct Skip, Pyth, market, DEX, or analytics results cannot replace or be labeled as the MUSD protocol price."
+    }
+  ]
+}

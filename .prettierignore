@@ -1,0 +1,20 @@
+node_modules/
+coverage/
+dist/
+legacy/
+
+# Deliberately invalid coding standard review negative fixtures.
+scripts/fixtures/coding-gates/
+
+# Generated and drift-checked by scripts/generate-core-transaction-model.ts.
+packages/core/src/model.generated.ts
+
+# Generated and drift-checked by the foundational package generators.
+packages/chains/src/data.generated.ts
+packages/contracts/src/data.generated.ts
+
+# Generated and drift-checked by generate-savings-package.ts.
+packages/protocols/musd-savings/src/model.generated.ts
+
+packages/protocols/musdc-lending/src/model.generated.ts
+packages/protocols/usdc-lending-vault/src/model.generated.ts

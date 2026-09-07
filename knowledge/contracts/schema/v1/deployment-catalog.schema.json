@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo contract deployment catalog v1",
+  "allOf": [
+    {
+      "$ref": "../../../schema/v0.4/common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["registryStatus", "records"],
+  "properties": {
+    "kind": { "const": "contract-deployment-catalog" },
+    "id": { "const": "contract-deployments" },
+    "status": { "const": "verified" },
+    "supportStatus": { "enum": ["proposed", "supported"] },
+    "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+    "registryStatus": { "enum": ["verified-current", "verified-superseded"] },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "contractId",
+          "contractName",
+          "sourceContractName",
+          "protocol",
+          "domains",
+          "networkId",
+          "environment",
+          "address",
+          "provenanceClass",
+          "contractType",
+          "validity",
+          "proxy",
+          "abi",
+          "source",
+          "runtime",
+          "evidenceReference",
+          "status",
+          "supportStatus",
+          "reviewStatus",
+          "limitations"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[./@#-][a-z0-9]+)*$"
+          },
+          "contractId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "contractName": { "type": "string", "minLength": 1 },
+          "sourceContractName": { "type": "string", "minLength": 1 },
+          "protocol": { "type": "string", "minLength": 1 },
+          "domains": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "networkId": { "enum": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"] },
+          "environment": { "enum": ["mainnet", "testnet"] },
+          "address": { "type": "string", "pattern": "^0x[a-f0-9]{40}$" },
+          "provenanceClass": {
+            "enum": [
+              "official-artifact-fully-verified-deployment",
+              "deployed-executable-reproduction",
+              "official-client-precompile-source",
+              "official-deployment-repository-live-configuration"
+            ]
+          },
+          "contractType": {
+            "enum": ["direct", "transparent-proxy", "erc1967-proxy", "precompile"]
+          },
+          "validity": { "type": "object" },
+          "proxy": { "type": ["object", "null"] },
+          "abi": {
+            "type": "object",
+            "required": ["catalogReference", "appliesTo"],
+            "properties": {
+              "catalogReference": {
+                "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+              },
+              "appliesTo": {
+                "enum": ["deployment", "current-implementation-through-proxy"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "source": {
+            "type": "object",
+            "required": ["sourceReference", "artifactPath", "declaredImplementationAddress"],
+            "properties": {
+              "sourceReference": {
+                "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+              },
+              "artifactPath": { "type": "string", "minLength": 1 },
+              "declaredImplementationAddress": {
+                "type": ["string", "null"],
+                "pattern": "^0x[a-f0-9]{40}$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "runtime": { "type": "object" },
+          "provenanceEvidence": {
+            "type": "object",
+            "properties": {
+              "reproduction": {
+                "type": "object",
+                "required": [
+                  "explorerVerification",
+                  "sourceBundleSha256",
+                  "compilerVersion",
+                  "compilerSettingsSha256",
+                  "librariesSha256",
+                  "buildProcedure",
+                  "creationExecutableMatch",
+                  "runtimeExecutableMatch",
+                  "fullBytecodeDifference",
+                  "abiDerivedFromExactBuild",
+                  "activationHistoryReference"
+                ],
+                "properties": {
+                  "explorerVerification": {
+                    "type": "object",
+                    "required": ["isVerified", "isFullyVerified", "isPartiallyVerified"],
+                    "properties": {
+                      "isVerified": { "type": "boolean" },
+                      "isFullyVerified": { "type": "boolean" },
+                      "isPartiallyVerified": { "type": "boolean" }
+                    },
+                    "additionalProperties": false
+                  },
+                  "sourceBundleSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "compilerVersion": { "type": "string", "minLength": 1 },
+                  "compilerSettingsSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "librariesSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "buildProcedure": { "type": "string", "minLength": 1 },
+                  "creationExecutableMatch": { "const": true },
+                  "runtimeExecutableMatch": { "const": true },
+                  "fullBytecodeDifference": { "type": "string", "minLength": 1 },
+                  "abiDerivedFromExactBuild": { "const": true },
+                  "activationHistoryReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "clientPrecompile": {
+                "type": "object",
+                "required": [
+                  "clientRepository",
+                  "commit",
+                  "release",
+                  "liveClientGeneration",
+                  "interfaceSha256",
+                  "fixedBlockReference",
+                  "activationBoundaryReference",
+                  "nodeVersionEvidenceReference"
+                ],
+                "properties": {
+                  "clientRepository": { "type": "string", "format": "uri" },
+                  "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+                  "release": { "type": "string", "minLength": 1 },
+                  "liveClientGeneration": { "type": "string", "minLength": 1 },
+                  "interfaceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "fixedBlockReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  },
+                  "activationBoundaryReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  },
+                  "nodeVersionEvidenceReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "liveConfiguration": {
+                "type": "object",
+                "required": [
+                  "deploymentRepository",
+                  "commit",
+                  "deploymentArtifactPath",
+                  "deploymentArtifactSha256",
+                  "configurationReference",
+                  "activationHistoryReference",
+                  "networkEvidenceReference"
+                ],
+                "properties": {
+                  "deploymentRepository": { "type": "string", "format": "uri" },
+                  "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+                  "deploymentArtifactPath": { "type": "string", "minLength": 1 },
+                  "deploymentArtifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                  "configurationReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  },
+                  "activationHistoryReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  },
+                  "networkEvidenceReference": {
+                    "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "evidenceReference": {
+            "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+          },
+          "status": { "enum": ["verified-current", "verified-superseded"] },
+          "supportStatus": { "enum": ["proposed", "supported", "historical"] },
+          "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+          "limitations": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": { "properties": { "provenanceClass": { "const": "deployed-executable-reproduction" } } },
+            "then": {
+              "required": ["provenanceEvidence"],
+              "properties": { "provenanceEvidence": { "required": ["reproduction"] } }
+            }
+          },
+          {
+            "if": { "properties": { "provenanceClass": { "const": "official-client-precompile-source" } } },
+            "then": {
+              "required": ["provenanceEvidence"],
+              "properties": {
+                "contractType": { "const": "precompile" },
+                "provenanceEvidence": { "required": ["clientPrecompile"] }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "provenanceClass": { "const": "official-deployment-repository-live-configuration" } } },
+            "then": {
+              "required": ["provenanceEvidence"],
+              "properties": { "provenanceEvidence": { "required": ["liveConfiguration"] } }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

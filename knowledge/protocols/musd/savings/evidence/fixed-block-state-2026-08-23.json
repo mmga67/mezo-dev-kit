@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-fixed-block-observation",
+  "id": "musd-savings-fixed-block-state",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkId": "mezo-mainnet", "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0", "blockTimestamp": "2026-08-23T20:17:37Z"},
+  "limitations": ["All addresses and values are observations at one block and do not imply immutable configuration."],
+  "savings": {
+    "proxy": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+    "implementation": "0xB33C3f97BF3B7df59417D114c694353E42929e87",
+    "proxyAdmin": "0x973c1a54b1b8d4ad04ea1d8469cda159672b95d0",
+    "musdToken": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+    "yieldToken": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+    "pcv": "0x391EcC7ffEFc48cff41D0F2Bb36e38b82180B993",
+    "strategy": "0x0C0944713c185ea3e64F5609ECee3fB3C054a295",
+    "vaultGauge": "0x677817bF3e44b90E8F95222F75e2950b7904a401",
+    "totalSupply": "7504423965490150381024223",
+    "pendingYield": "0",
+    "yieldIndex": "210317627923623228",
+    "gaugeYieldClaimCap": "10000000000000000000000"
+  },
+  "pcv": {"feeRecipient": "0xb4D498029af77680cD1eF828b967f010d06C51CC", "btcRecipient": "0x5acC3E627AFCf6a9e51E82a879291Df68376d1c5", "feeSplitPercentage": "50", "debtToPay": "14971272078977772039959591"},
+  "btcConverter": {"implementation": "0x1c5631C5478F7E9De0689e1955c1c40270Bf28d1", "musdSavingsRate": "0xb4D498029af77680cD1eF828b967f010d06C51CC", "maxSlippageBps": "200"},
+  "gauge": {"poolsVoter": "0x48233cCC97B87Ba93bCA212cbEe48e3210211f03", "poolsVoterGaugeForSavings": "0x677817bF3e44b90E8F95222F75e2950b7904a401", "stakingToken": "0xb4D498029af77680cD1eF828b967f010d06C51CC", "rewardToken": "0x7B7c000000000000000000000000000000000001"},
+  "proxyActivation": {"blockNumber": 5045441, "blockHash": "0x8f9f930cce0711a9a6f5304bb5d7c785bf01b77860d05baccbfddb665e384404", "blockTimestamp": "2025-12-02T18:20:46Z", "transactionHash": "0xd8622652aa1275d5e7a7b2817f9c151e0868e11e0e3b4b69406ad29ee5754600"},
+  "runtimeSha256": {"proxy": "3a9bec4cf58ef60c3a34360c2443afcd835cc296e40ec941d7a6d8c211a51111", "implementation": "8739fb3a70a6679d5b5355085505328922150dd91f2db20ee19a2e4cd6bf4565"}
+}

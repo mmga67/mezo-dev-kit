@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-oracle-probes-2026-08-27",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-03T14:24:36.881Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "deploymentIds": [
+      "oracle.pyth-price-feed@mezo-mainnet",
+      "oracle.pyth-price-feed@mezo-testnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the pinned post-upgrade blocks, complete explorer upgrade logs, exact EIP-1967 slot boundaries, official Pyth 1.4.6 source, and preserved explorer verification labels.",
+    "The active in-place implementations are unverified in both Mezo explorers; oracle re-verification qualified review accepted the documented cross-source ABI reconciliation without changing those labels.",
+    "No feed liveness, updater, credential, route, or writer support follows from contract identity evidence."
+  ],
+  "registryStatus": null,
+  "observedFrom": "2026-08-27T14:24:36.881Z",
+  "observedThrough": "2026-08-27T14:24:36.881Z",
+  "methodology": [
+    "Pin current Mezo and Pyth official source commits and exact artifact digests.",
+    "Pin one post-boundary block and hash on each Mezo network.",
+    "Enumerate the complete explorer Upgraded-log history for each legacy proxy.",
+    "Verify every implementation transition with before/at eth_getStorageAt and the exact RPC block hash.",
+    "Read proxy/current implementation bytecode and version() at each fixed block.",
+    "Reconcile the 1.4.6 source-only version change with both fully verified provider-upgraded Mezo generation ABIs.",
+    "Preserve unverified current implementation labels rather than upgrading them by inference."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11430848,
+      "blockHash": "0x4f122eaba677e0f93185c2cb3a3c50d347dc444d8b66772f481387601c030f7a",
+      "blockTimestamp": "2026-08-27T14:24:30.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    },
+    {
+      "networkId": "mezo-testnet",
+      "evmChainId": 31611,
+      "blockNumber": 15150511,
+      "blockHash": "0xe713cb12ba3e6115d328d32b4146fbf841dcda13d357da8947e668f03a8a30fd",
+      "blockTimestamp": "2026-08-27T14:24:35.000Z",
+      "rpcUrl": "https://rpc.test.mezo.org",
+      "explorerApiUrl": "https://api.explorer.test.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-08-27",
+      "deploymentId": "oracle.pyth-price-feed@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-27T14:24:36.881Z",
+      "observationBlock": {
+        "number": 11430848,
+        "hash": "0x4f122eaba677e0f93185c2cb3a3c50d347dc444d8b66772f481387601c030f7a",
+        "timestamp": "2026-08-27T14:24:30.000Z"
+      },
+      "methods": [
+        "official Pyth 1.4.6 source and deployment-store pin",
+        "official Pyth in-place upgrade documentation pin",
+        "official explorer complete Upgraded-log history",
+        "before/at eth_getStorageAt for each EIP-1967 implementation boundary",
+        "eth_getCode at the proxy and current implementation",
+        "eth_call version() at the fixed block",
+        "fully verified provider-upgraded generation ABI comparison on both Mezo networks"
+      ],
+      "activation": {
+        "blockNumber": 493119,
+        "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+        "transactionIndex": 0,
+        "blockHash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+        "blockTimestamp": "2025-05-25T16:02:57.000Z",
+        "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+        "implementationCodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611",
+        "version": "1.4.6"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+            "effectiveFrom": {
+              "blockNumber": 493119,
+              "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+              "transactionIndex": 0,
+              "blockHash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+              "blockTimestamp": "2025-05-25T16:02:57.000Z",
+              "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 11408732,
+              "blockHash": "0x4f02e7b56110a59b898e8e8b9ce467133d93f7d0b022ee67fe799d18ff519e08",
+              "blockTimestamp": "2026-08-26T16:17:19.000Z",
+              "transactionHash": "0x3a96ee652c3744b62e16c5f716ce51dfd327451b374ef6a257d55c722b3e0afe",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+            }
+          },
+          {
+            "implementationAddress": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+            "effectiveFrom": {
+              "blockNumber": 11408732,
+              "blockHash": "0x4f02e7b56110a59b898e8e8b9ce467133d93f7d0b022ee67fe799d18ff519e08",
+              "blockTimestamp": "2026-08-26T16:17:19.000Z",
+              "transactionHash": "0x3a96ee652c3744b62e16c5f716ce51dfd327451b374ef6a257d55c722b3e0afe",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "activeContract": {
+          "address": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+          "name": null,
+          "isVerified": false,
+          "isFullyVerified": false,
+          "isPartiallyVerified": false,
+          "compilerVersion": null,
+          "proxyType": null,
+          "abiEntries": 0,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611"
+        },
+        "proxyContract": {
+          "address": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+          "name": "ERC1967Proxy",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.29+commit.ab55807c",
+          "proxyType": "eip1967",
+          "abiEntries": 6,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc"
+        },
+        "effectiveAbiSource": {
+          "address": "0xd458261e832415cfd3bae5e416fdf3230ce6f134",
+          "name": "PythUpgradable",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.29+commit.ab55807c",
+          "proxyType": null,
+          "abiEntries": 83,
+          "abiSemanticSha256": "821a541364de4aac37ebd6933eb6bfb08a1fc53049590313f57491eb079fcd88",
+          "deployedBytecodeSha256": "f333bfb71aafd4ca98fe2b26baca21d44a117e662cc2537078b9a9b8736bd9f1"
+        },
+        "currentImplementationVerificationLabelPreserved": true,
+        "providerGenerationAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "sourceProvenance": {
+        "repository": "https://github.com/pyth-network/pyth-crosschain",
+        "commit": "68c538458b4050f76a3fa04c0f34c842df2cbff3",
+        "releaseCommit": "d657d97eddaeb8984ee197fc60349dc176d98787",
+        "version": "1.4.6",
+        "artifacts": [
+          {
+            "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/contracts.mdx",
+            "sha256": "b7dc4bde37a768ca1034417083fd2bef6bbdc6b5571ef40f8c150ffcae3a46e9"
+          },
+          {
+            "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/preparing/index.mdx",
+            "sha256": "f38f4261f61046488200989ca322865e0c4ba0f9817be96d4e74c9420fc79af6"
+          },
+          {
+            "path": "contract_manager/src/store/contracts/EvmPriceFeedContracts.json",
+            "sha256": "9c1749df35013c474c0e17e4b3a7b6bfcf8bf07d067ea9aa144c90253b063879"
+          },
+          {
+            "path": "target_chains/ethereum/contracts/contracts/pyth/Pyth.sol",
+            "sha256": "a63794e3455e3e9025f0c1a6f683f87fb2f55915b0eac2c192eaa5df444775cb"
+          },
+          {
+            "path": "target_chains/ethereum/contracts/contracts/pyth/PythUpgradable.sol",
+            "sha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7"
+          },
+          {
+            "path": "target_chains/ethereum/sdk/solidity/abis/IPyth.json",
+            "sha256": "feaa7731ab53c8f24320790eabe485f3ca4f22edbea5e40067e2cf84026b9603"
+          }
+        ],
+        "interpretation": "The official 1.4.6 release changes only the version string from the fully verified provider-upgraded 1.4.5-alpha.1 generation; both current legacy proxies return 1.4.6 and expose the replacement parsePriceFeedUpdatesWithConfig selector."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-oracle-pyth-price-feed-mezo-testnet-2026-08-27",
+      "deploymentId": "oracle.pyth-price-feed@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-27T14:24:36.881Z",
+      "observationBlock": {
+        "number": 15150511,
+        "hash": "0xe713cb12ba3e6115d328d32b4146fbf841dcda13d357da8947e668f03a8a30fd",
+        "timestamp": "2026-08-27T14:24:35.000Z"
+      },
+      "methods": [
+        "official Pyth 1.4.6 source and deployment-store pin",
+        "official Pyth in-place upgrade documentation pin",
+        "official explorer complete Upgraded-log history",
+        "before/at eth_getStorageAt for each EIP-1967 implementation boundary",
+        "eth_getCode at the proxy and current implementation",
+        "eth_call version() at the fixed block",
+        "fully verified provider-upgraded generation ABI comparison on both Mezo networks"
+      ],
+      "activation": {
+        "blockNumber": 4684064,
+        "transactionHash": "0xf61e377c74dafae3efb6a0fbf49508e10fde61060399e5c0abab67e7a23bcb3e",
+        "transactionIndex": 0,
+        "blockHash": "0x95facd99619e9ef5aa349cd6f4e4bbc3b1f61ed3ee36d244ec795250afd07c7b",
+        "blockTimestamp": "2025-05-21T10:07:30.000Z",
+        "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+        "implementationCodeSha256": "bafcceef5f9f91adc7e2fef68e8983fa8d36ae28ac19afb1595677b05c735940",
+        "version": "1.4.6"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0xfc6bd9f9f0c6481c6af3a7eb46b296a5b85ed379",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+            "effectiveFrom": {
+              "blockNumber": 4684064,
+              "transactionHash": "0xf61e377c74dafae3efb6a0fbf49508e10fde61060399e5c0abab67e7a23bcb3e",
+              "transactionIndex": 0,
+              "blockHash": "0x95facd99619e9ef5aa349cd6f4e4bbc3b1f61ed3ee36d244ec795250afd07c7b",
+              "blockTimestamp": "2025-05-21T10:07:30.000Z",
+              "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 15131069,
+              "blockHash": "0x26da27f717031dc96527fa17acb0c1c2f0dfb9a2ba67151fd27352de0ae1d1ee",
+              "blockTimestamp": "2026-08-26T16:17:10.000Z",
+              "transactionHash": "0x35b02486bf8a18b38ea361fcc36b49131285636567adec89fb7ae030dbb21767",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+            }
+          },
+          {
+            "implementationAddress": "0xfc6bd9f9f0c6481c6af3a7eb46b296a5b85ed379",
+            "effectiveFrom": {
+              "blockNumber": 15131069,
+              "blockHash": "0x26da27f717031dc96527fa17acb0c1c2f0dfb9a2ba67151fd27352de0ae1d1ee",
+              "blockTimestamp": "2026-08-26T16:17:10.000Z",
+              "transactionHash": "0x35b02486bf8a18b38ea361fcc36b49131285636567adec89fb7ae030dbb21767",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "activeContract": {
+          "address": "0xfc6bd9f9f0c6481c6af3a7eb46b296a5b85ed379",
+          "name": null,
+          "isVerified": false,
+          "isFullyVerified": false,
+          "isPartiallyVerified": false,
+          "compilerVersion": null,
+          "proxyType": null,
+          "abiEntries": 0,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "bafcceef5f9f91adc7e2fef68e8983fa8d36ae28ac19afb1595677b05c735940"
+        },
+        "proxyContract": {
+          "address": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+          "name": null,
+          "isVerified": false,
+          "isFullyVerified": false,
+          "isPartiallyVerified": false,
+          "compilerVersion": null,
+          "proxyType": "eip1967",
+          "abiEntries": 0,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc"
+        },
+        "effectiveAbiSource": {
+          "address": "0xf8b6a7fd411fff41443980b312c2bab3a0dcaaf5",
+          "name": "PythUpgradable",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.29+commit.ab55807c",
+          "proxyType": null,
+          "abiEntries": 83,
+          "abiSemanticSha256": "821a541364de4aac37ebd6933eb6bfb08a1fc53049590313f57491eb079fcd88",
+          "deployedBytecodeSha256": "5f34bd64dbfb14aade78da86e23a4ae372007bfcc76676be154391b24f0cf9f7"
+        },
+        "currentImplementationVerificationLabelPreserved": true,
+        "providerGenerationAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "sourceProvenance": {
+        "repository": "https://github.com/pyth-network/pyth-crosschain",
+        "commit": "68c538458b4050f76a3fa04c0f34c842df2cbff3",
+        "releaseCommit": "d657d97eddaeb8984ee197fc60349dc176d98787",
+        "version": "1.4.6",
+        "artifacts": [
+          {
+            "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/contracts.mdx",
+            "sha256": "b7dc4bde37a768ca1034417083fd2bef6bbdc6b5571ef40f8c150ffcae3a46e9"
+          },
+          {
+            "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/preparing/index.mdx",
+            "sha256": "f38f4261f61046488200989ca322865e0c4ba0f9817be96d4e74c9420fc79af6"
+          },
+          {
+            "path": "contract_manager/src/store/contracts/EvmPriceFeedContracts.json",
+            "sha256": "9c1749df35013c474c0e17e4b3a7b6bfcf8bf07d067ea9aa144c90253b063879"
+          },
+          {
+            "path": "target_chains/ethereum/contracts/contracts/pyth/Pyth.sol",
+            "sha256": "a63794e3455e3e9025f0c1a6f683f87fb2f55915b0eac2c192eaa5df444775cb"
+          },
+          {
+            "path": "target_chains/ethereum/contracts/contracts/pyth/PythUpgradable.sol",
+            "sha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7"
+          },
+          {
+            "path": "target_chains/ethereum/sdk/solidity/abis/IPyth.json",
+            "sha256": "feaa7731ab53c8f24320790eabe485f3ca4f22edbea5e40067e2cf84026b9603"
+          }
+        ],
+        "interpretation": "The official 1.4.6 release changes only the version string from the fully verified provider-upgraded 1.4.5-alpha.1 generation; both current legacy proxies return 1.4.6 and expose the replacement parsePriceFeedUpdatesWithConfig selector."
+      },
+      "outcome": "passed"
+    }
+  ]
+}

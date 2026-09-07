@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-swap-provider-catalog",
+  "id": "swap-providers",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": { "networkIds": ["mezo-mainnet"], "providerCount": 2 },
+  "limitations": [
+    "Provider verification describes deployed contract capabilities and does not expose an MDK reader or writer.",
+    "A router convenience quote and an exact state-changing eth_call have different meanings and must be returned as different result types.",
+    "Provider availability and historical-state retention are per endpoint and must not be inferred from chain identity."
+  ],
+  "records": [
+    {
+      "id": "basic-router",
+      "architecture": "basic",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "mezo-earn.router@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "mezo-earn.router"
+      },
+      "address": "0x16a76d3cd3c1e3ce843c6680d6b37e9116b5c706",
+      "approvalSpender": "0x16a76d3cd3c1e3ce843c6680d6b37e9116b5c706",
+      "quote": {
+        "method": "getAmountsOut(uint256,(address,address,bool,address)[])",
+        "status": "evidence-verified-not-supported",
+        "meaning": "A block-scoped router calculation for one amount and exact route. It is neither exact-call simulation nor a guaranteed minimum received.",
+        "requiredCoordinates": [
+          "networkId",
+          "router deployment ID",
+          "block number/hash",
+          "amountIn",
+          "route",
+          "assumptions",
+          "freshness policy",
+          "user slippage bound"
+        ]
+      },
+      "execution": {
+        "allowedCandidateEntrypoints": ["swapExactTokensForTokens"],
+        "disabledEntrypoints": [
+          "UNSAFE_swapExactTokensForTokens",
+          "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+          "swapExactBTCForTokensSupportingFeeOnTransferTokens",
+          "swapExactTokensForBTCSupportingFeeOnTransferTokens"
+        ],
+        "payer": "msg.sender; transferFrom sends input directly to the first pool",
+        "recipient": "the explicit to argument; intermediate pool outputs go directly to the next pool",
+        "nativeValue": "zero for the evidenced ERC-20 exact-input route",
+        "factoryRule": "A zero factory tuple selects defaultFactory; every nonzero factory must be approved by factoryRegistry, and every resolved pool must be recognized before a route is usable."
+      }
+    },
+    {
+      "id": "concentrated-liquidity-router",
+      "architecture": "concentrated-liquidity",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "mezo-earn.cl-swap-router@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "mezo-earn.cl-swap-router"
+      },
+      "address": "0x37cdd11919ec3860ead9efb8673d7476e5326225",
+      "approvalSpender": "0x37cdd11919ec3860ead9efb8673d7476e5326225",
+      "quote": {
+        "method": null,
+        "status": "unavailable-no-official-quoter",
+        "meaning": "The router ABI exposes execution entrypoints but no standalone Quoter. Pool math may produce an estimate with explicit assumptions; only an eth_call of the exact intended entrypoint is an exact-call simulation.",
+        "requiredCoordinates": [
+          "networkId",
+          "router/factory deployment IDs",
+          "block number/hash",
+          "path",
+          "amountIn",
+          "pool state assumptions",
+          "freshness policy",
+          "user slippage bound"
+        ]
+      },
+      "execution": {
+        "allowedCandidateEntrypoints": ["exactInputSingle", "exactInput"],
+        "disabledEntrypoints": [
+          "exactOutputSingle",
+          "exactOutput",
+          "sweepToken",
+          "sweepTokenWithFee",
+          "unwrapWBTC",
+          "unwrapWBTCWithFee",
+          "refundBTC",
+          "multicall",
+          "selfPermit",
+          "selfPermitIfNecessary",
+          "selfPermitAllowed",
+          "selfPermitAllowedIfNecessary"
+        ],
+        "payer": "msg.sender for the first hop; the router pays subsequent exactInput hops from intermediate balances held by the router",
+        "recipient": "the explicit recipient; a zero recipient resolves to the router and is not a safe user default",
+        "nativeValue": "route-dependent; zero for the evidenced ERC-20/native-token-address exactInputSingle transaction",
+        "factoryRule": "Each hop resolves from the immutable CL factory by sorted tokens and int24 tick spacing, and the callback validates the computed pool."
+      }
+    }
+  ]
+}

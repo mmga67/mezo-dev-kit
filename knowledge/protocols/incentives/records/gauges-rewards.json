@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-gauge-reward-model",
+  "id": "incentives-gauges-rewards",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253
+  },
+  "limitations": [
+    "Contract mappings resolve to registry provenance review-accepted registry identities and activation histories; incentives evidence review accepted the bounded protocol model, but public reader and writer support remain absent.",
+    "The CL gauge factory and implementation identities added by pool evidence review are accepted Contract registry records; pool and incentives public operations remain separately gated.",
+    "Gauge instances, weights, claimability, reward tokens, depositor identity, and allowlists are volatile state."
+  ],
+  "gaugeTypes": [
+    {
+      "id": "pool-gauge",
+      "creation": "A caller supplies an approved pool factory and a pool recognized by that factory. Non-governor callers require both pool tokens to be voter-whitelisted. The registry-selected gauge and voting-reward factories create a staking gauge plus fee and bribe rewards."
+    },
+    {
+      "id": "vault-gauge",
+      "creation": "Governor-only; fee reward token is the vault yield token."
+    },
+    {
+      "id": "no-fees-gauge",
+      "creation": "Governor-only; created without fee reward tokens."
+    },
+    {
+      "id": "vebtc-boost-gauge",
+      "creation": "The veBTC owner/approved caller may create one gauge for an existing unexpired normal or managed veBTC NFT through an approved factory, optionally supplying whitelisted bribes."
+    }
+  ],
+  "emissionAllocation": {
+    "globalIndex": "On splitter notification: ratio = floor(amount * 1e18 / max(totalWeight, 1)); add ratio to global index only when ratio > 0.",
+    "gaugeAccrual": "On update: delta = globalIndex - gaugeSupplyIndex; share = floor(poolWeight * delta / 1e18). A live gauge accrues share; a killed gauge returns share to the splitter.",
+    "distribution": "Before distribution the voter asks the splitter to update its period, updates the gauge accrual, and notifies the gauge only when claimable > gauge.left() and claimable > 604800 raw reward-token units.",
+    "kill": "Emergency council may kill a live gauge; already claimable rewards are returned to the splitter. The council may revive a killed PoolsVoter gauge.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.notifyRewardAmount, _updateFor, _distribute, killGauge, and reviveGauge"}]
+  },
+  "claims": {
+    "stakingRewards": "claimRewards calls each supplied gauge's getReward for the caller.",
+    "feeAndBribeRewards": "The veNFT owner or approved caller may invoke claimFees, claimBribes, or claimFeesAndBribes for explicit reward-contract and token arrays.",
+    "securityBoundary": "Knowledge does not infer safe reward-contract/token arrays from user input. Future writers must resolve them from the current gauge graph and simulate the exact call.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.claimRewards, claimFees, claimBribes, claimFeesAndBribes, and _claimRewards"}]
+  },
+  "analyticsBoundary": [
+    "Gauge weight and index allocation are protocol accounting facts.",
+    "Reward density, APR, APY, future emissions, token price, and user yield require additional state and assumptions and are not canonical protocol outputs.",
+    "A displayed APY must never be used as an input to construct a vote, claim, or distribution transaction."
+  ],
+  "clPositionBoundary": {
+    "reference": {"moduleId": "protocols/pools", "resourceId": "pools-positions-gauges"},
+    "rule": "The pools module owns CL NFT depositor/contract-owner identity and active-versus-staked-versus-position liquidity. This incentives record owns emission allocation and reward claims; neither boundary may substitute its liquidity or owner meaning for the other."
+  }
+}

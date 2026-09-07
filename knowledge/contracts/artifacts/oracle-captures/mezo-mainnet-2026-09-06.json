@@ -1,0 +1,2538 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-source-capture",
+  "networkIds": [
+    "mezo-mainnet"
+  ],
+  "capturedAt": "2026-09-06T09:52:32.237Z",
+  "expected": {
+    "skipAddress": "0x7b7c000000000000000000000000000000000015",
+    "pythAddress": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+    "previousPythImplementation": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+    "currentPythVersion": "1.4.6",
+    "providerUpgradedPythAddresses": {
+      "mezo-mainnet": "0x5d289ad1ce59fcc25b6892e7a303dfff3a9f7167"
+    },
+    "btcUsdFeedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+    "musdUsdFeedId": "0x0617a9b725011a126a2b9fd53563f4236501f32cf76d877644b943394606c6de",
+    "staleSelector": "0x19abf40e"
+  },
+  "officialDocumentation": {
+    "repository": "https://github.com/mezo-org/documentation",
+    "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+    "artifacts": [
+      {
+        "path": "src/content/docs/docs/developers/architecture/oracles/read-oracle.md",
+        "sha256": "11e9c65b0c75bb919d5f42f07d6b3982e46c75702608914b319ce6cb6ac5b3f1"
+      },
+      {
+        "path": "src/content/docs/docs/developers/architecture/oracles/index.md",
+        "sha256": "823204924d77551e2ce1276872565683934cf508cc43bcd31e637ade723af810"
+      }
+    ]
+  },
+  "officialClient": {
+    "repository": "https://github.com/mezo-org/mezod",
+    "tag": "v12.0.0",
+    "commit": "95a5e0eddbbb92bb0b305185e2349af4c41ac63d",
+    "artifacts": [
+      {
+        "path": "precompile/priceoracle/abi.json",
+        "sha256": "a6edf8ea981d5b6570edd73d965a4023df954986165cac9d65ba8f080ce4378e"
+      },
+      {
+        "path": "precompile/priceoracle/IPriceOracle.sol",
+        "sha256": "520acbd30564376d47441e8bfc0143f30a1e70db7d73ab468f9e2d85c30748a1"
+      },
+      {
+        "path": "precompile/priceoracle/byte_code.go",
+        "sha256": "37c963057cc9cc9f56c47b72e260fc107b0cc3e1dcb50c99dfc518734dfb8952"
+      },
+      {
+        "path": "precompile/priceoracle/price_oracle.go",
+        "sha256": "1734a00dd9fdd56fc3f224f03f205cc32f8b3931b4541dc12ea05e22b05b96ed"
+      },
+      {
+        "path": "app/upgrades/v0_5/constants.go",
+        "sha256": "c25e51417c4bcc49c234c1f944382d70dd646b89a546c5b435d1e8cb2cb8d044"
+      },
+      {
+        "path": "chain/mainnet/mezo_31612-1/genesis.json",
+        "sha256": "c1b9b2736bc0c1e6390dafa80c43fdc9870490d481ebaa71d932a98df3c531f7"
+      }
+    ]
+  },
+  "officialPyth": {
+    "repository": "https://github.com/pyth-network/pyth-crosschain",
+    "commit": "68c538458b4050f76a3fa04c0f34c842df2cbff3",
+    "releaseCommit": "d657d97eddaeb8984ee197fc60349dc176d98787",
+    "version": "1.4.6",
+    "artifacts": [
+      {
+        "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/contracts.mdx",
+        "sha256": "b7dc4bde37a768ca1034417083fd2bef6bbdc6b5571ef40f8c150ffcae3a46e9"
+      },
+      {
+        "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/preparing/index.mdx",
+        "sha256": "f38f4261f61046488200989ca322865e0c4ba0f9817be96d4e74c9420fc79af6"
+      },
+      {
+        "path": "contract_manager/src/store/contracts/EvmPriceFeedContracts.json",
+        "sha256": "9c1749df35013c474c0e17e4b3a7b6bfcf8bf07d067ea9aa144c90253b063879"
+      },
+      {
+        "path": "target_chains/ethereum/contracts/contracts/pyth/Pyth.sol",
+        "sha256": "a63794e3455e3e9025f0c1a6f683f87fb2f55915b0eac2c192eaa5df444775cb"
+      },
+      {
+        "path": "target_chains/ethereum/contracts/contracts/pyth/PythUpgradable.sol",
+        "sha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7"
+      },
+      {
+        "path": "target_chains/ethereum/sdk/solidity/abis/IPyth.json",
+        "sha256": "feaa7731ab53c8f24320790eabe485f3ca4f22edbea5e40067e2cf84026b9603"
+      }
+    ]
+  },
+  "observations": {
+    "mezo-mainnet": {
+      "networkId": "mezo-mainnet",
+      "chainId": 31612,
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org",
+      "block": {
+        "number": 11660852,
+        "hash": "0xda549ebce98d29c5d182d25dfcc9cf06f5dac3d7cd75adb0afad8e4c93e14667",
+        "timestamp": "2026-09-06T09:52:28.000Z"
+      },
+      "contracts": {
+        "musdPriceFeed": {
+          "address": "0xc5ac5a8892230e0a3e1c473881a2de7353ffca88",
+          "codeSha256": "c2cf8602ef14df5ce4a0743af85c345b8d1140abde7b8aaef9742c3eebf912ec",
+          "oracle": "0x7b7c000000000000000000000000000000000015",
+          "fetchPrice": "79862585460000000000000",
+          "targetDigits": 18
+        },
+        "skipBtcUsd": {
+          "address": "0x7b7c000000000000000000000000000000000015",
+          "codeSha256": "10d7d913916ae90441383a41ebb131605db79d4fd72267d6f8dd5b4e885241c7",
+          "decimals": 18,
+          "latestRoundData": {
+            "roundId": "11660759",
+            "answer": "79862585460000000000000",
+            "startedAt": "1788688348",
+            "updatedAt": "1788688348",
+            "answeredInRound": "0"
+          },
+          "description": {
+            "ok": false,
+            "error": {
+              "code": -32000,
+              "message": "rpc error: code = Internal desc = failed to get method by ID: [method not found in ABI: [no method with id: 0x7284e416]]",
+              "data": null
+            }
+          }
+        },
+        "pyth": {
+          "address": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+          "codeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+          "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+          "implementationSlotValue": "0x0000000000000000000000006e7d74fa7d5c90fef9f0512987605a6d546181bb",
+          "implementation": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+          "implementationCodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611",
+          "version": "1.4.6",
+          "implementationHistory": [
+            {
+              "implementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+              "effectiveFrom": {
+                "blockNumber": 493119,
+                "blockHash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+                "blockTimestamp": "2025-05-25T16:02:57.000Z",
+                "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+                "logIndex": 0,
+                "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+              },
+              "implementationBefore": "0x0000000000000000000000000000000000000000",
+              "implementationAt": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+              "effectiveUntilExclusive": {
+                "blockNumber": 11408732,
+                "blockHash": "0x4f02e7b56110a59b898e8e8b9ce467133d93f7d0b022ee67fe799d18ff519e08",
+                "blockTimestamp": "2026-08-26T16:17:19.000Z",
+                "transactionHash": "0x3a96ee652c3744b62e16c5f716ce51dfd327451b374ef6a257d55c722b3e0afe",
+                "logIndex": 0,
+                "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+              }
+            },
+            {
+              "implementationAddress": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+              "effectiveFrom": {
+                "blockNumber": 11408732,
+                "blockHash": "0x4f02e7b56110a59b898e8e8b9ce467133d93f7d0b022ee67fe799d18ff519e08",
+                "blockTimestamp": "2026-08-26T16:17:19.000Z",
+                "transactionHash": "0x3a96ee652c3744b62e16c5f716ce51dfd327451b374ef6a257d55c722b3e0afe",
+                "logIndex": 0,
+                "blockEvidenceMethod": "official explorer Upgraded log plus before/at eth_getStorageAt and eth_getBlockByNumber"
+              },
+              "implementationBefore": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+              "implementationAt": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+              "effectiveUntilExclusive": null
+            }
+          ],
+          "feeds": {
+            "BTC/USD": {
+              "feedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+              "maxAgeSeconds": 3600,
+              "freshResult": {
+                "ok": false,
+                "error": {
+                  "code": 3,
+                  "message": "execution reverted",
+                  "data": "0x19abf40e"
+                }
+              },
+              "diagnosticResult": {
+                "ok": true,
+                "value": {
+                  "price": "6310464500000",
+                  "conf": "1983500000",
+                  "expo": -8,
+                  "publishTime": "1784284881"
+                }
+              }
+            },
+            "MUSD/USD": {
+              "feedId": "0x0617a9b725011a126a2b9fd53563f4236501f32cf76d877644b943394606c6de",
+              "maxAgeSeconds": 3600,
+              "freshResult": {
+                "ok": false,
+                "error": {
+                  "code": 3,
+                  "message": "execution reverted",
+                  "data": "0x19abf40e"
+                }
+              },
+              "diagnosticResult": {
+                "ok": true,
+                "value": {
+                  "price": "100775755",
+                  "conf": "1029338",
+                  "expo": -8,
+                  "publishTime": "1784284881"
+                }
+              }
+            }
+          }
+        },
+        "providerUpgradedPyth": {
+          "address": "0x5d289ad1ce59fcc25b6892e7a303dfff3a9f7167",
+          "codeSha256": "43a632eed320c4b283d47bbcd561b0f1481150cd005b613fecbb0cb08ac6228d",
+          "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+          "implementation": "0xd458261e832415cfd3bae5e416fdf3230ce6f134",
+          "implementationCodeSha256": "f333bfb71aafd4ca98fe2b26baca21d44a117e662cc2537078b9a9b8736bd9f1",
+          "version": "1.4.5-alpha.1"
+        }
+      },
+      "activations": {
+        "skip": {
+          "kind": "genesis-first-observable-block",
+          "release": "mainnet-genesis",
+          "transactionHash": null,
+          "block": {
+            "number": 1,
+            "hash": "0xf2827aa1f110b22854ea79952af806f4dd52ef21eea42131140b70b2bec2c344",
+            "timestamp": "2025-05-05T00:00:00.000Z"
+          }
+        },
+        "pyth": {
+          "kind": "contract-creation",
+          "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+          "transaction": {
+            "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+            "blockNumber": 493119,
+            "transactionIndex": 0,
+            "timestamp": "2025-05-25T16:02:57.000000Z",
+            "contractAddress": "0x2880ab155794e7179c9ee2e38200202908c17b43"
+          },
+          "block": {
+            "number": 493119,
+            "hash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+            "timestamp": "2025-05-25T16:02:57.000Z"
+          }
+        }
+      }
+    }
+  },
+  "explorer": {
+    "mezo-mainnet": {
+      "skip": {
+        "address": "0x7b7c000000000000000000000000000000000015",
+        "name": "PriceOracleCaller",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "optimizationEnabled": true,
+        "optimizationRuns": 200,
+        "evmVersion": "default",
+        "verifiedAt": "2025-05-05T12:38:12.130461Z",
+        "isVerified": true,
+        "isFullyVerified": false,
+        "isPartiallyVerified": true,
+        "language": "solidity",
+        "licenseType": "gnu_lgpl_v3",
+        "proxyType": null,
+        "implementations": [],
+        "abi": [
+          {
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [
+              {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "latestRoundData",
+            "outputs": [
+              {
+                "internalType": "uint80",
+                "name": "roundId",
+                "type": "uint80"
+              },
+              {
+                "internalType": "int256",
+                "name": "answer",
+                "type": "int256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "startedAt",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "updatedAt",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint80",
+                "name": "answeredInRound",
+                "type": "uint80"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          }
+        ],
+        "sourceCodeSha256": "e8e5d0054c704ad1356464373a530f845a233f0c433ffff6ae696832dff8b1b0",
+        "additionalSourcesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "pythProxy": {
+        "address": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+        "name": "ERC1967Proxy",
+        "compilerVersion": "v0.8.29+commit.ab55807c",
+        "optimizationEnabled": true,
+        "optimizationRuns": 200,
+        "evmVersion": "paris",
+        "verifiedAt": "2025-05-26T08:06:15.377525Z",
+        "isVerified": true,
+        "isFullyVerified": true,
+        "isPartiallyVerified": false,
+        "language": "solidity",
+        "licenseType": "apache_2_0",
+        "proxyType": "eip1967",
+        "implementations": [
+          {
+            "address": "0x6E7D74FA7d5c90FEF9F0512987605a6d546181Bb",
+            "name": null
+          }
+        ],
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "_logic",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "constructor"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousAdmin",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+              }
+            ],
+            "name": "AdminChanged",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "beacon",
+                "type": "address"
+              }
+            ],
+            "name": "BeaconUpgraded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+              }
+            ],
+            "name": "Upgraded",
+            "type": "event"
+          },
+          {
+            "stateMutability": "payable",
+            "type": "fallback"
+          },
+          {
+            "stateMutability": "payable",
+            "type": "receive"
+          }
+        ],
+        "sourceCodeSha256": "f64dc961f262436fc9fd3235f16a8495fd43c8f1d98d0a750a376ea8c8d5365d",
+        "additionalSourcesSha256": "38be7cae40244e2993eff723debc4944e3129fdba77e8ad1a9a2ad53b5487659"
+      },
+      "pythImplementation": {
+        "address": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+        "name": null,
+        "compilerVersion": null,
+        "optimizationEnabled": null,
+        "optimizationRuns": null,
+        "evmVersion": null,
+        "verifiedAt": null,
+        "isVerified": false,
+        "isFullyVerified": false,
+        "isPartiallyVerified": false,
+        "language": null,
+        "licenseType": null,
+        "proxyType": null,
+        "implementations": [],
+        "abi": null,
+        "sourceCodeSha256": null,
+        "additionalSourcesSha256": null
+      },
+      "providerUpgradedPythProxy": {
+        "address": "0x5d289ad1ce59fcc25b6892e7a303dfff3a9f7167",
+        "name": "ERC1967Proxy",
+        "compilerVersion": "v0.8.29+commit.ab55807c",
+        "optimizationEnabled": true,
+        "optimizationRuns": 200,
+        "evmVersion": "paris",
+        "verifiedAt": "2026-07-15T18:36:48.408903Z",
+        "isVerified": true,
+        "isFullyVerified": true,
+        "isPartiallyVerified": false,
+        "language": "solidity",
+        "licenseType": "none",
+        "proxyType": "eip1967",
+        "implementations": [
+          {
+            "address": "0xD458261E832415CFd3BAE5E416FdF3230ce6F134",
+            "name": "PythUpgradable"
+          }
+        ],
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "_logic",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "constructor"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousAdmin",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+              }
+            ],
+            "name": "AdminChanged",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "beacon",
+                "type": "address"
+              }
+            ],
+            "name": "BeaconUpgraded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+              }
+            ],
+            "name": "Upgraded",
+            "type": "event"
+          },
+          {
+            "stateMutability": "payable",
+            "type": "fallback"
+          },
+          {
+            "stateMutability": "payable",
+            "type": "receive"
+          }
+        ],
+        "sourceCodeSha256": "f64dc961f262436fc9fd3235f16a8495fd43c8f1d98d0a750a376ea8c8d5365d",
+        "additionalSourcesSha256": "852ab88e055f9f8995ec4be5d646ec5b37c7587b2230da68b35b1f25f55602b0"
+      },
+      "providerUpgradedPythImplementation": {
+        "address": "0xd458261e832415cfd3bae5e416fdf3230ce6f134",
+        "name": "PythUpgradable",
+        "compilerVersion": "v0.8.29+commit.ab55807c",
+        "optimizationEnabled": true,
+        "optimizationRuns": 200,
+        "evmVersion": "paris",
+        "verifiedAt": "2026-07-15T18:34:49.255317Z",
+        "isVerified": true,
+        "isFullyVerified": true,
+        "isPartiallyVerified": false,
+        "language": "solidity",
+        "licenseType": "none",
+        "proxyType": null,
+        "implementations": [],
+        "abi": [
+          {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+          },
+          {
+            "inputs": [],
+            "name": "InsufficientFee",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidArgument",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidGovernanceDataSource",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidGovernanceMessage",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidGovernanceTarget",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidTwapUpdateData",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidTwapUpdateDataSet",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidUpdateData",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidUpdateDataSource",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidWormholeAddressToSet",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "InvalidWormholeVaa",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "NoFreshUpdate",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "OldGovernanceMessage",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "PriceFeedNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "PriceFeedNotFoundWithinRange",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "StalePrice",
+            "type": "error"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousAdmin",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+              }
+            ],
+            "name": "AdminChanged",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "beacon",
+                "type": "address"
+              }
+            ],
+            "name": "BeaconUpgraded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldImplementation",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+              }
+            ],
+            "name": "ContractUpgraded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "indexed": false,
+                "internalType": "struct PythInternalStructs.DataSource[]",
+                "name": "oldDataSources",
+                "type": "tuple[]"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "indexed": false,
+                "internalType": "struct PythInternalStructs.DataSource[]",
+                "name": "newDataSources",
+                "type": "tuple[]"
+              }
+            ],
+            "name": "DataSourcesSet",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldFee",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newFee",
+                "type": "uint256"
+              }
+            ],
+            "name": "FeeSet",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "targetAddress",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+              }
+            ],
+            "name": "FeeWithdrawn",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "indexed": false,
+                "internalType": "struct PythInternalStructs.DataSource",
+                "name": "oldDataSource",
+                "type": "tuple"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "indexed": false,
+                "internalType": "struct PythInternalStructs.DataSource",
+                "name": "newDataSource",
+                "type": "tuple"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "initialSequence",
+                "type": "uint64"
+              }
+            ],
+            "name": "GovernanceDataSourceSet",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+              }
+            ],
+            "name": "Initialized",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+              }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "publishTime",
+                "type": "uint64"
+              },
+              {
+                "indexed": false,
+                "internalType": "int64",
+                "name": "price",
+                "type": "int64"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "conf",
+                "type": "uint64"
+              }
+            ],
+            "name": "PriceFeedUpdate",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldFee",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newFee",
+                "type": "uint256"
+              }
+            ],
+            "name": "TransactionFeeSet",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "startTime",
+                "type": "uint64"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "endTime",
+                "type": "uint64"
+              },
+              {
+                "indexed": false,
+                "internalType": "int64",
+                "name": "twapPrice",
+                "type": "int64"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "twapConf",
+                "type": "uint64"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "downSlotsRatio",
+                "type": "uint32"
+              }
+            ],
+            "name": "TwapPriceFeedUpdate",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+              }
+            ],
+            "name": "Upgraded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldValidPeriod",
+                "type": "uint256"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newValidPeriod",
+                "type": "uint256"
+              }
+            ],
+            "name": "ValidPeriodSet",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldWormholeAddress",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newWormholeAddress",
+                "type": "address"
+              }
+            ],
+            "name": "WormholeAddressSet",
+            "type": "event"
+          },
+          {
+            "inputs": [],
+            "name": "chainId",
+            "outputs": [
+              {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedVM",
+                "type": "bytes"
+              }
+            ],
+            "name": "executeGovernanceInstruction",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "getEmaPrice",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "age",
+                "type": "uint256"
+              }
+            ],
+            "name": "getEmaPriceNoOlderThan",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "getEmaPriceUnsafe",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "getPrice",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256",
+                "name": "age",
+                "type": "uint256"
+              }
+            ],
+            "name": "getPriceNoOlderThan",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "getPriceUnsafe",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "int64",
+                    "name": "price",
+                    "type": "int64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "conf",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "int32",
+                    "name": "expo",
+                    "type": "int32"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "publishTime",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythStructs.Price",
+                "name": "price",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              }
+            ],
+            "name": "getTwapUpdateFee",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              }
+            ],
+            "name": "getUpdateFee",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "updateDataSize",
+                "type": "uint256"
+              }
+            ],
+            "name": "getUpdateFee",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "feeAmount",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "getValidTimePeriod",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "governanceDataSource",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct PythInternalStructs.DataSource",
+                "name": "",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "governanceDataSourceIndex",
+            "outputs": [
+              {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct PythInternalStructs.DataSource",
+                "name": "ds",
+                "type": "tuple"
+              }
+            ],
+            "name": "hashDataSource",
+            "outputs": [
+              {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "wormhole",
+                "type": "address"
+              },
+              {
+                "internalType": "uint16[]",
+                "name": "dataSourceEmitterChainIds",
+                "type": "uint16[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "dataSourceEmitterAddresses",
+                "type": "bytes32[]"
+              },
+              {
+                "internalType": "uint16",
+                "name": "governanceEmitterChainId",
+                "type": "uint16"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "governanceEmitterAddress",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint64",
+                "name": "governanceInitialSequence",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint256",
+                "name": "validTimePeriodSeconds",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "singleUpdateFeeInWei",
+                "type": "uint256"
+              }
+            ],
+            "name": "initialize",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint16",
+                "name": "dataSourceChainId",
+                "type": "uint16"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "dataSourceEmitterAddress",
+                "type": "bytes32"
+              }
+            ],
+            "name": "isValidDataSource",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint16",
+                "name": "governanceChainId",
+                "type": "uint16"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "governanceEmitterAddress",
+                "type": "bytes32"
+              }
+            ],
+            "name": "isValidGovernanceDataSource",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "lastExecutedGovernanceSequence",
+            "outputs": [
+              {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "priceId",
+                "type": "bytes32"
+              }
+            ],
+            "name": "latestPriceInfoPublishTime",
+            "outputs": [
+              {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+              {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseAuthorizeGovernanceDataSourceTransferPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes",
+                    "name": "claimVaa",
+                    "type": "bytes"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.AuthorizeGovernanceDataSourceTransferPayload",
+                "name": "sgds",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedInstruction",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseGovernanceInstruction",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "enum PythGovernanceInstructions.GovernanceModule",
+                    "name": "module",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "enum PythGovernanceInstructions.GovernanceAction",
+                    "name": "action",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "targetChainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes",
+                    "name": "payload",
+                    "type": "bytes"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.GovernanceInstruction",
+                "name": "gi",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "priceIds",
+                "type": "bytes32[]"
+              },
+              {
+                "internalType": "uint64",
+                "name": "minPublishTime",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint64",
+                "name": "maxPublishTime",
+                "type": "uint64"
+              }
+            ],
+            "name": "parsePriceFeedUpdates",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "id",
+                    "type": "bytes32"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "price",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "emaPrice",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct PythStructs.PriceFeed[]",
+                "name": "priceFeeds",
+                "type": "tuple[]"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "priceIds",
+                "type": "bytes32[]"
+              },
+              {
+                "internalType": "uint64",
+                "name": "minPublishTime",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint64",
+                "name": "maxPublishTime",
+                "type": "uint64"
+              }
+            ],
+            "name": "parsePriceFeedUpdatesUnique",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "id",
+                    "type": "bytes32"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "price",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "emaPrice",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct PythStructs.PriceFeed[]",
+                "name": "priceFeeds",
+                "type": "tuple[]"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "priceIds",
+                "type": "bytes32[]"
+              },
+              {
+                "internalType": "uint64",
+                "name": "minAllowedPublishTime",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint64",
+                "name": "maxAllowedPublishTime",
+                "type": "uint64"
+              },
+              {
+                "internalType": "bool",
+                "name": "checkUniqueness",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "checkUpdateDataIsMinimal",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "storeUpdatesIfFresh",
+                "type": "bool"
+              }
+            ],
+            "name": "parsePriceFeedUpdatesWithConfig",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "id",
+                    "type": "bytes32"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "price",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "emaPrice",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct PythStructs.PriceFeed[]",
+                "name": "priceFeeds",
+                "type": "tuple[]"
+              },
+              {
+                "internalType": "uint64[]",
+                "name": "slots",
+                "type": "uint64[]"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseRequestGovernanceDataSourceTransferPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint32",
+                    "name": "governanceDataSourceIndex",
+                    "type": "uint32"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.RequestGovernanceDataSourceTransferPayload",
+                "name": "sgdsClaim",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseSetDataSourcesPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "components": [
+                      {
+                        "internalType": "uint16",
+                        "name": "chainId",
+                        "type": "uint16"
+                      },
+                      {
+                        "internalType": "bytes32",
+                        "name": "emitterAddress",
+                        "type": "bytes32"
+                      }
+                    ],
+                    "internalType": "struct PythInternalStructs.DataSource[]",
+                    "name": "dataSources",
+                    "type": "tuple[]"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.SetDataSourcesPayload",
+                "name": "sds",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseSetFeePayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint256",
+                    "name": "newFee",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.SetFeePayload",
+                "name": "sf",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseSetTransactionFeePayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint256",
+                    "name": "newFee",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.SetTransactionFeePayload",
+                "name": "stf",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseSetValidPeriodPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint256",
+                    "name": "newValidPeriod",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.SetValidPeriodPayload",
+                "name": "svp",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseSetWormholeAddressPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "newWormholeAddress",
+                    "type": "address"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.SetWormholeAddressPayload",
+                "name": "sw",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "priceIds",
+                "type": "bytes32[]"
+              }
+            ],
+            "name": "parseTwapPriceFeedUpdates",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "id",
+                    "type": "bytes32"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "startTime",
+                    "type": "uint64"
+                  },
+                  {
+                    "internalType": "uint64",
+                    "name": "endTime",
+                    "type": "uint64"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "twap",
+                    "type": "tuple"
+                  },
+                  {
+                    "internalType": "uint32",
+                    "name": "downSlotsRatio",
+                    "type": "uint32"
+                  }
+                ],
+                "internalType": "struct PythStructs.TwapPriceFeed[]",
+                "name": "twapPriceFeeds",
+                "type": "tuple[]"
+              }
+            ],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseUpgradeContractPayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "newImplementation",
+                    "type": "address"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.UpgradeContractPayload",
+                "name": "uc",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes",
+                "name": "encodedPayload",
+                "type": "bytes"
+              }
+            ],
+            "name": "parseWithdrawFeePayload",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "targetAddress",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "fee",
+                    "type": "uint256"
+                  }
+                ],
+                "internalType": "struct PythGovernanceInstructions.WithdrawFeePayload",
+                "name": "wf",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "priceFeedExists",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "proxiableUUID",
+            "outputs": [
+              {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "pythUpgradableMagic",
+            "outputs": [
+              {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "id",
+                "type": "bytes32"
+              }
+            ],
+            "name": "queryPriceFeed",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "id",
+                    "type": "bytes32"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "price",
+                    "type": "tuple"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "int64",
+                        "name": "price",
+                        "type": "int64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "conf",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "int32",
+                        "name": "expo",
+                        "type": "int32"
+                      },
+                      {
+                        "internalType": "uint256",
+                        "name": "publishTime",
+                        "type": "uint256"
+                      }
+                    ],
+                    "internalType": "struct PythStructs.Price",
+                    "name": "emaPrice",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct PythStructs.PriceFeed",
+                "name": "priceFeed",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "singleUpdateFeeInWei",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "transactionFeeInWei",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+              }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              }
+            ],
+            "name": "updatePriceFeeds",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes[]",
+                "name": "updateData",
+                "type": "bytes[]"
+              },
+              {
+                "internalType": "bytes32[]",
+                "name": "priceIds",
+                "type": "bytes32[]"
+              },
+              {
+                "internalType": "uint64[]",
+                "name": "publishTimes",
+                "type": "uint64[]"
+              }
+            ],
+            "name": "updatePriceFeedsIfNecessary",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+              }
+            ],
+            "name": "upgradeTo",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+              }
+            ],
+            "name": "upgradeToAndCall",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "validDataSources",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "chainId",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "bytes32",
+                    "name": "emitterAddress",
+                    "type": "bytes32"
+                  }
+                ],
+                "internalType": "struct PythInternalStructs.DataSource[]",
+                "name": "",
+                "type": "tuple[]"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "validTimePeriodSeconds",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "version",
+            "outputs": [
+              {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+              }
+            ],
+            "stateMutability": "pure",
+            "type": "function"
+          },
+          {
+            "inputs": [],
+            "name": "wormhole",
+            "outputs": [
+              {
+                "internalType": "contract IWormhole",
+                "name": "",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          }
+        ],
+        "sourceCodeSha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7",
+        "additionalSourcesSha256": "226c9f7939ea521fcbb75359d5c6310f4d2f861b55bd28a47603253b56ba04ba"
+      }
+    }
+  }
+}

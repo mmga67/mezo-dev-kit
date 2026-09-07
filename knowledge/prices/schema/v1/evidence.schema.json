@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK price evidence v1",
+  "allOf": [{"$ref": "../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "properties": {
+    "owner": {"const": "prices"},
+    "kind": {"const": "price-fixed-block-observation-set"}
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-source-catalog",
+  "id": "price-sources",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-03T14:24:36.881Z",
+  "scope": {
+    "sourceIds": [
+      "official-docs-mezo-oracles",
+      "official-client-mezod-price-oracle",
+      "price-fixed-block-capture",
+      "contract-oracle-roots",
+      "network-capabilities",
+      "musd-price-consumption",
+      "pool-price-mechanics",
+      "transaction-boundary",
+      "pyth-evm-api",
+      "adr-0009-price-ownership"
+    ]
+  },
+  "limitations": [
+    "Source entries establish bounded provenance only for exact commits, paths, URLs, observations, and logical references.",
+    "The completed Pyth upgrade and post-boundary observations are pinned; current feed liveness remains block-scoped and support remains proposed."
+  ],
+  "records": [
+    {
+      "id": "official-docs-mezo-oracles",
+      "kind": "official-documentation-source",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "artifacts": [
+        {
+          "path": "src/content/docs/docs/developers/architecture/oracles/read-oracle.md",
+          "sha256": "11e9c65b0c75bb919d5f42f07d6b3982e46c75702608914b319ce6cb6ac5b3f1"
+        },
+        {
+          "path": "src/content/docs/docs/developers/architecture/oracles/index.md",
+          "sha256": "823204924d77551e2ce1276872565683934cf508cc43bcd31e637ade723af810"
+        }
+      ],
+      "establishes": "Documented Skip/Pyth roots, feed IDs, read surfaces, and datum fields."
+    },
+    {
+      "id": "official-client-mezod-price-oracle",
+      "kind": "official-client-source",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "95a5e0eddbbb92bb0b305185e2349af4c41ac63d",
+      "tag": "v12.0.0",
+      "artifacts": [
+        {
+          "path": "precompile/priceoracle/abi.json",
+          "sha256": "a6edf8ea981d5b6570edd73d965a4023df954986165cac9d65ba8f080ce4378e"
+        },
+        {
+          "path": "precompile/priceoracle/IPriceOracle.sol",
+          "sha256": "520acbd30564376d47441e8bfc0143f30a1e70db7d73ab468f9e2d85c30748a1"
+        },
+        {
+          "path": "precompile/priceoracle/byte_code.go",
+          "sha256": "37c963057cc9cc9f56c47b72e260fc107b0cc3e1dcb50c99dfc518734dfb8952"
+        },
+        {
+          "path": "precompile/priceoracle/price_oracle.go",
+          "sha256": "1734a00dd9fdd56fc3f224f03f205cc32f8b3931b4541dc12ea05e22b05b96ed"
+        },
+        {
+          "path": "app/upgrades/v0_5/constants.go",
+          "sha256": "c25e51417c4bcc49c234c1f944382d70dd646b89a546c5b435d1e8cb2cb8d044"
+        },
+        {
+          "path": "chain/mainnet/mezo_31612-1/genesis.json",
+          "sha256": "c1b9b2736bc0c1e6390dafa80c43fdc9870490d481ebaa71d932a98df3c531f7"
+        }
+      ],
+      "establishes": "PriceOracle precompile address, version, ABI, wrapper bytecode, execution methods, and activation source."
+    },
+    {
+      "id": "price-fixed-block-capture",
+      "kind": "on-chain-observation",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-2026-08-27"
+      },
+      "sha256": "a7f67040045f1558c4e6f2c8b6090aef8499d2fe5a3dfa1f234cd70e1d94bc12",
+      "retrievedAt": "2026-08-27T14:24:36.881Z",
+      "establishes": "Pinned post-upgrade source, adapter, freshness, code, proxy-generation, and ABI observations."
+    },
+    {
+      "id": "contract-oracle-roots",
+      "kind": "logical-knowledge-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-oracle-probes-2026-08-23"
+      },
+      "establishes": "Oracle deployment, ABI, source provenance, activation, and runtime identities."
+    },
+    {
+      "id": "network-capabilities",
+      "kind": "logical-knowledge-reference",
+      "reference": {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints"
+      },
+      "establishes": "Network and RPC capability evidence used for fixed-block reads."
+    },
+    {
+      "id": "musd-price-consumption",
+      "kind": "logical-knowledge-reference",
+      "reference": {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-components",
+        "recordId": "musd.price-feed"
+      },
+      "establishes": "MUSD protocol ownership of configured-oracle consumption, freshness, and normalization."
+    },
+    {
+      "id": "pool-price-mechanics",
+      "kind": "logical-knowledge-reference",
+      "reference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-math"
+      },
+      "establishes": "Pool ownership of reserve, tick, Q64.96, spot, and TWAP mechanics."
+    },
+    {
+      "id": "transaction-boundary",
+      "kind": "logical-knowledge-reference",
+      "reference": {
+        "moduleId": "workflows/transactions",
+        "resourceId": "transaction-client-requirements"
+      },
+      "establishes": "Separate lifecycle gates required before any future updater or writer."
+    },
+    {
+      "id": "pyth-evm-api",
+      "kind": "official-provider-documentation",
+      "urls": [
+        "https://api-reference.pyth.network/price-feeds/evm/getPriceNoOlderThan",
+        "https://docs.pyth.network/price-feeds/core/contract-addresses/evm"
+      ],
+      "retrievedAt": "2026-08-27T14:24:36.881Z",
+      "establishes": "Freshness-gated read semantics, completed in-place upgrade behavior, upgraded Mezo deployment identities, and the Pyth Core 1.4.6 source/ABI boundary.",
+      "repository": "https://github.com/pyth-network/pyth-crosschain",
+      "commit": "68c538458b4050f76a3fa04c0f34c842df2cbff3",
+      "releaseCommit": "d657d97eddaeb8984ee197fc60349dc176d98787",
+      "version": "1.4.6",
+      "artifacts": [
+        {
+          "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/contracts.mdx",
+          "sha256": "b7dc4bde37a768ca1034417083fd2bef6bbdc6b5571ef40f8c150ffcae3a46e9"
+        },
+        {
+          "path": "apps/developer-hub/content/docs/price-feeds/core/upgrade/preparing/index.mdx",
+          "sha256": "f38f4261f61046488200989ca322865e0c4ba0f9817be96d4e74c9420fc79af6"
+        },
+        {
+          "path": "contract_manager/src/store/contracts/EvmPriceFeedContracts.json",
+          "sha256": "9c1749df35013c474c0e17e4b3a7b6bfcf8bf07d067ea9aa144c90253b063879"
+        },
+        {
+          "path": "target_chains/ethereum/contracts/contracts/pyth/Pyth.sol",
+          "sha256": "a63794e3455e3e9025f0c1a6f683f87fb2f55915b0eac2c192eaa5df444775cb"
+        },
+        {
+          "path": "target_chains/ethereum/contracts/contracts/pyth/PythUpgradable.sol",
+          "sha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7"
+        },
+        {
+          "path": "target_chains/ethereum/sdk/solidity/abis/IPyth.json",
+          "sha256": "feaa7731ab53c8f24320790eabe485f3ca4f22edbea5e40067e2cf84026b9603"
+        }
+      ]
+    },
+    {
+      "id": "adr-0009-price-ownership",
+      "kind": "accepted-architecture-decision",
+      "path": "../../docs/decisions/0009-oracle-price-source-ownership.md",
+      "sha256": "e034f6130ee91dd54ec9f1fd3119e442f252e066412635f5058f8ce410568fb3",
+      "establishes": "Accepted Prices ownership, taxonomy, dependency, datum, freshness, and no-substitution boundaries."
+    },
+    {
+      "id": "price-fixed-block-capture-mezo-mainnet-2026-09-06",
+      "kind": "fixed-block-read-only-probes",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+      },
+      "sha256": "f94402dd5053456e5463dc2db33d371143ff0bd2b6129cd59a34a4b6c617bd57",
+      "retrievedAt": "2026-09-06T09:52:32.237Z",
+      "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
+    }
+  ]
+}

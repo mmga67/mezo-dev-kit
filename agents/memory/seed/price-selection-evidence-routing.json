@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "price-selection-evidence-routing",
+  "domain": "prices",
+  "status": "promoted",
+  "title": "Route price selection, DEX quotes, and current versus historical evidence",
+  "summary": "For price usability, Pyth diagnostics, amount-specific DEX quotes, and current-state versus historical-state maintenance, follow the maintained guide and its stable canonical references. Re-read the indexed observations before making liveness claims; this entry is a retrieval pointer, not a feed status cache.",
+  "sources": [
+    "docs/guides/price-selection-and-dex-quotes.md",
+    "docs/guides/oracle-evidence-refresh.md"
+  ],
+  "related": [
+    "prices:price-freshness-fallback-rules",
+    "workflows/swaps",
+    "protocols/pools"
+  ],
+  "updated": "2026-09-07"
+}

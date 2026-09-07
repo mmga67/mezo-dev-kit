@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-source-reproduction-evidence",
+  "id": "usdc-lending-vault-source-reproduction",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:42:59Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "roles": ["vault", "market-adapter", "receipt-wrapper", "vault-gauge"]},
+  "limitations": ["VaultV2 and VaultGauge explorer records omit creation input, so only runtime executable equality is asserted for those direct deployments.", "Executable equality does not establish authorship, audit coverage, support, or writer safety."],
+  "records": [
+    {"id": "vault-v2", "address": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "contractName": "VaultV2", "compiler": "0.8.28", "explorerVerification": "partial", "creationExecutableExact": null, "runtimeExecutableExact": true, "runtimeExecutableSha256": "4ec7428ce3354b249f57df9de19e79a3ccdfe253bc7fb2a83b7820fc2cc5db1e", "immutableSubstitutions": 12},
+    {"id": "morpho-market-adapter", "address": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "contractName": "MorphoMarketV1AdapterV2", "compiler": "0.8.28", "explorerVerification": "partial", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "7d019230b0c4fd59b4f5490e80970cb0d227402f427e47a5aec0a600be86c756", "runtimeExecutableSha256": "41ece35d20616a51fa51618e905ce8ef6fdd08aa1da76b91239cc68425c35db0", "immutableSubstitutions": 20},
+    {"id": "receipt-wrapper", "address": "0x80EC90E54E577dac8Efca30F96bF21fE4efA885D", "contractName": "ERC4626VaultAdapter", "compiler": "0.8.33", "explorerVerification": "fully-verified", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "668edf2e28798bccb7d519b148e6ede5fda0743a956bb0bd5a4c74169db3c192", "runtimeExecutableSha256": "45533af72b382be3a28e8fd683613f0672aed1d734ee113f77d36b8c572831dd", "immutableSubstitutions": 1},
+    {"id": "vault-gauge", "address": "0x11E98DEc5B1965E4eB872552E64Ef8580bBBbae7", "contractName": "VaultGauge", "compiler": "0.8.24", "explorerVerification": "fully-verified", "creationExecutableExact": null, "runtimeExecutableExact": true, "runtimeExecutableSha256": "cf49a8c2ffd17761c4949b5dbfdc2d665fedd7ad95f627335b6b03064ef42139", "immutableSubstitutions": 21}
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-withdrawal-reconciliation-evidence",
+  "id": "musd-savings-withdrawal-reconciliation",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T14:46:00Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkId": "mezo-mainnet",
+    "fromBlock": 11325681,
+    "throughBlock": 11325682,
+    "transactionHash": "0x8e3e5dde7c10071f064cff1afac2f3da92f8348cc49e7bad256b5a302c2f3de2"
+  },
+  "limitations": [
+    "This packet reconciles one representative direct withdrawal that also triggered protocol-yield distribution; it is not a complete Savings or gauge event history.",
+    "The selected account is a public on-chain observation used only to reconcile this transaction and is not a reusable user identity.",
+    "Successful historical execution does not establish current operation safety, writer support, audit coverage, or gauge-claim behavior."
+  ],
+  "modelReference": {
+    "moduleId": "protocols/musd/savings",
+    "resourceId": "musd-savings-model"
+  },
+  "savingsDeploymentReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-deployments",
+    "recordId": "musd.savings-rate@mezo-mainnet"
+  },
+  "savingsAbiReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-abis",
+    "recordId": "musd.savings-rate"
+  },
+  "capture": {
+    "queriedAt": "2026-08-24T14:46:00Z",
+    "methods": [
+      "official-explorer address log query",
+      "eth_getBlockByNumber",
+      "eth_getTransactionByHash",
+      "eth_getTransactionReceipt",
+      "eth_call"
+    ],
+    "endpointReferences": [
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-boar-https"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-drpc-https"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-validation-cloud-https"
+      }
+    ],
+    "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/addresses/0xb4d498029af77680cd1ef828b967f010d06c51cc/logs",
+    "selectionRule": "Select the latest Withdraw event not later than the module fixed block, then reconcile its complete receipt and adjacent archive state."
+  },
+  "subject": {
+    "savings": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+    "musd": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+    "account": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35"
+  },
+  "states": [
+    {
+      "id": "before-withdrawal",
+      "blockNumber": 11325681,
+      "blockHash": "0xbca1af554933d8566ac97fca80188fcec552d2fc2eb01ee91b931fb90a32e0c9",
+      "blockTimestamp": "2026-08-23T04:14:28Z",
+      "global": {
+        "totalSupply": "7504427195739584291896185",
+        "pendingYield": "0",
+        "yieldIndex": "210312734243978524"
+      },
+      "account": {
+        "principalReceipts": "3230249433910871962",
+        "claimableYield": "0",
+        "supplyYieldIndex": "210312734243978524",
+        "musdWalletBalance": "2611140180174857910"
+      }
+    },
+    {
+      "id": "after-withdrawal",
+      "blockNumber": 11325682,
+      "blockHash": "0x8b24bff65ef38adf8b0882776b8afd82c5229110277ac5927637a415aae8fca3",
+      "blockTimestamp": "2026-08-23T04:14:32Z",
+      "global": {
+        "totalSupply": "7504423965490150381024223",
+        "pendingYield": "0",
+        "yieldIndex": "210317627923623228"
+      },
+      "account": {
+        "principalReceipts": "0",
+        "claimableYield": "0",
+        "supplyYieldIndex": "210317627923623228",
+        "musdWalletBalance": "5841405421891631918"
+      }
+    }
+  ],
+  "operation": {
+    "functionSelector": "0x2e1a7d4d",
+    "decodedCall": {
+      "signature": "withdraw(uint256)",
+      "principalAmount": "3230249433910871962"
+    },
+    "transactionHash": "0x8e3e5dde7c10071f064cff1afac2f3da92f8348cc49e7bad256b5a302c2f3de2",
+    "blockNumber": 11325682,
+    "blockHash": "0x8b24bff65ef38adf8b0882776b8afd82c5229110277ac5927637a415aae8fca3",
+    "blockTimestamp": "2026-08-23T04:14:32Z",
+    "receiptStatus": "0x1",
+    "from": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+    "to": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+    "value": "0",
+    "events": {
+      "protocolYieldReceived": {
+        "signature": "ProtocolYieldReceived(uint256)",
+        "topic0": "0xa21ca70f863e6c90ee553103b55e65a7a079e133502a23a02302ed8b7c97fecd",
+        "amount": "36724262612960106044",
+        "logIndex": 4
+      },
+      "yieldClaimed": {
+        "signature": "YieldClaimed(address,uint256)",
+        "topic0": "0xc04825ba3f383b602255d2a13065a68e325c65c9e0ed5d031ea2b06f641873af",
+        "account": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+        "amount": "15807805902046",
+        "logIndex": 7
+      },
+      "yieldTransfer": {
+        "token": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+        "from": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+        "to": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+        "amount": "15807805902046",
+        "logIndex": 6
+      },
+      "principalBurn": {
+        "token": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+        "from": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+        "to": "0x0000000000000000000000000000000000000000",
+        "amount": "3230249433910871962",
+        "logIndex": 10
+      },
+      "principalTransfer": {
+        "token": "0xdD468A1DDc392dcdbEf6db6e34E89AA338F9F186",
+        "from": "0xb4D498029af77680cD1eF828b967f010d06C51CC",
+        "to": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+        "amount": "3230249433910871962",
+        "logIndex": 11
+      },
+      "withdraw": {
+        "signature": "Withdraw(address,uint256)",
+        "topic0": "0x884edad9ce6fa2440d8a54cc123490eb96d2768479d49ff9c7366125a9424364",
+        "account": "0x1E78A36F4BfF568E9Bc79c31b81F2b4cb58dBa35",
+        "amount": "3230249433910871962",
+        "logIndex": 12
+      }
+    },
+    "stateTransition": {
+      "fromStateId": "before-withdrawal",
+      "toStateId": "after-withdrawal"
+    }
+  }
+}

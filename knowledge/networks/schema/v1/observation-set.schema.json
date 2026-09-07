@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo network observation set v1",
+  "allOf": [
+    {
+      "$ref": "../../../schema/v0.4/common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["observedFrom", "observedThrough", "methodology", "observations"],
+  "properties": {
+    "kind": {
+      "const": "network-observation-set"
+    },
+    "observedFrom": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "observedThrough": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "methodology": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "observedAt", "outcome", "methods"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "endpointId": { "type": "string", "minLength": 1 },
+          "targetUrl": { "type": "string", "format": "uri" },
+          "observedAt": { "type": "string", "format": "date-time" },
+          "outcome": { "enum": ["passed", "failed"] },
+          "methods": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "result": { "type": "object" },
+          "error": {
+            "type": "object",
+            "required": ["class", "summary"],
+            "properties": {
+              "class": { "type": "string", "minLength": 1 },
+              "summary": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          },
+          "notes": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

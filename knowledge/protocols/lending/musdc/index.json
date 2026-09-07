@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/lending/musdc",
+  "moduleId": "protocols/lending/musdc",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T14:34:51Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0", "marketIds": ["0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db"]},
+  "limitations": ["Qualified Level 3 review accepted the bounded market model and three Contract identities; protocol support remains proposed and no public capability was enabled.", "Published audit-to-bytecode mapping and broader position histories remain outside the accepted bounded packet.", "No generic Morpho support or public supplier, borrower, authorization, or liquidator writer is supported.", "Market, rate, oracle, liquidity, and position state require same-block evaluation."],
+  "resources": [
+    {"id": "musdc-lending-market", "role": "canonical-record", "kind": "musdc-lending-market-model", "path": "records/market.json"},
+    {"id": "musdc-lending-formulas", "role": "canonical-record", "kind": "musdc-lending-formula-catalog", "path": "records/formulas.json", "recordIds": ["to-shares-down", "to-shares-up", "to-assets-down", "to-assets-up", "interest", "fee-shares", "health", "liquidation-factor", "bad-debt"], "recordCollectionPointer": "/records"},
+    {"id": "musdc-lending-operations", "role": "canonical-record", "kind": "musdc-lending-operation-requirements", "path": "records/operations.json", "recordIds": ["supply-collateral", "borrow", "repay", "withdraw-collateral", "liquidate"], "recordCollectionPointer": "/requirements"},
+    {"id": "musdc-lending-reconciliation", "role": "canonical-record", "kind": "musdc-lending-reconciliation-model", "path": "records/reconciliation.json"},
+    {"id": "musdc-lending-formula-fixtures", "role": "fixture", "kind": "musdc-lending-formula-fixtures", "path": "fixtures/formulas.json", "recordIds": ["shares-down", "shares-up", "assets-down", "assets-up", "fixed-market-debt", "taylor-interest", "health-at-boundary", "health-one-over", "zero-debt-healthy", "liquidity-distinct"], "recordCollectionPointer": "/records"},
+    {"id": "musdc-lending-sources", "role": "source-catalog", "kind": "musdc-lending-source-catalog", "path": "sources/catalog.json", "recordIds": ["official-musdc-borrowing-docs", "official-docs-repository", "morpho-upstream", "bridge-asset", "price-feeds", "fixed-block-state", "source-reproduction", "borrower-reconciliation"], "recordCollectionPointer": "/records"},
+    {"id": "musdc-lending-fixed-block-state", "role": "evidence", "kind": "musdc-lending-fixed-block-observation", "path": "evidence/fixed-block-state-2026-08-23.json"},
+    {"id": "musdc-lending-borrower-reconciliation", "role": "evidence", "kind": "musdc-lending-borrower-reconciliation-evidence", "path": "evidence/borrower-reconciliation-2026-08-24.json"},
+    {"id": "musdc-lending-source-reproduction", "role": "evidence", "kind": "musdc-lending-source-reproduction-evidence", "path": "evidence/source-reproduction-2026-08-23.json", "recordIds": ["morpho", "adaptive-curve-irm", "morpho-price-oracle"], "recordCollectionPointer": "/records"},
+    {"id": "musdc-lending-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "musdc-lending-gaps", "role": "review", "kind": "gap-report", "path": "review/gaps.md"},
+    {"id": "musdc-lending-reference", "role": "generated", "kind": "human-reference", "path": "generated/reference.md", "generatedFrom": [{"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-formulas"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-reconciliation"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-fixed-block-state"}]}
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/lending/musdc"},
+    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/validate-economic-system-knowledge.ts --module protocols/lending/musdc"},
+    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate-economic-system-reference.ts --module protocols/lending/musdc --check"}
+  ],
+  "extensions": {"writerSupport": "none", "classicMusdBoundary": "mUSDC market accounting is independent of MUSD.", "compositionReference": "docs/architecture/mezo-economic-system-composition.md", "blockers": ["fresh same-block reads and exact-operation simulation before any public operation", "separate public API and security review before any reader or writer"]}
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-source-catalog",
+  "id": "pools-sources",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "retrievalDate": "2026-08-23"
+  },
+  "limitations": [
+    "Source authority and evidence scope are per record; documentation does not replace fixed-block contract reads."
+  ],
+  "records": [
+    {
+      "id": "official-docs-mezo-pools-current",
+      "type": "official-documentation",
+      "url": "https://mezo.org/docs/developers/features/mezo-pools",
+      "retrievedAt": "2026-08-23T11:00:00Z",
+      "scope": "Current basic/CL mechanism descriptions, mainnet/testnet roots, fees, position, slippage, oracle, and gauge overview.",
+      "limitations": [
+        "The page supplies no current Quoter address and says one supported CL pool is available only through the explorer."
+      ]
+    },
+    {
+      "id": "official-source-tigris",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-sources",
+        "recordId": "official-source-tigris"
+      },
+      "scope": "Accepted basic Pool, PoolFactory, and Router source/artifacts."
+    },
+    {
+      "id": "pools-mainnet-topology",
+      "type": "local-evidence",
+      "path": "evidence/mainnet-topology-2026-08-23.json",
+      "sha256": "d9d20b3e008e389468a524bcc1b57d5c730ef36d3b82db1d2a8a2825fa7eadad",
+      "scope": "Fixed-block root code, creation provenance, relationships, and factory-enumerated instance observations."
+    },
+    {
+      "id": "pools-source-reproduction",
+      "type": "local-evidence",
+      "path": "evidence/source-reproduction-2026-08-23.json",
+      "sha256": "278e270434df9837a22a68ac1157edb3d191cfc11713d7e76af038d207beb70d",
+      "scope": "Official explorer source/compiler/ABI captures and executable reproduction for seven CL roots."
+    },
+    {
+      "id": "incentives-gauges-rewards",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-gauges-rewards"
+      },
+      "scope": "PoolsVoter gauge creation, emission, voting-reward, and claim boundary."
+    },
+    {
+      "id": "transaction-client-requirements",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "workflows/transactions",
+        "resourceId": "transaction-client-requirements"
+      },
+      "scope": "Future write preflight, approval, simulation, submission, and reconciliation requirements."
+    }
+  ]
+}

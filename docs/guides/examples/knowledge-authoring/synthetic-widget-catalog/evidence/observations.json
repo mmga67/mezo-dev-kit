@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-observation-set",
+  "id": "synthetic-widget-observations",
+  "owner": "documentation-fixtures",
+  "status": "unverified",
+  "supportStatus": "none",
+  "reviewStatus": "unreviewed",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "revision": "synthetic-v1"
+  },
+  "limitations": ["This observation is fictional and cannot support a Mezo claim."],
+  "observations": [
+    {
+      "id": "observe-amber-widget-v1",
+      "subjectId": "amber-widget",
+      "displayName": "Amber Widget",
+      "color": "amber",
+      "sourceRef": {
+        "moduleId": "synthetic/widget-catalog",
+        "resourceId": "widget-sources",
+        "recordId": "synthetic-widget-spec-v1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Institutional MUSD debt fixture catalog v1",
+  "allOf": [{"$ref": "../../../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "required": ["records"],
+  "properties": {"owner": {"const": "protocols/musd/institutional-debt"}, "records": {"type": "array", "items": {"type": "object", "required": ["id", "operation", "input", "expected"]}}}
+}

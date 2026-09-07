@@ -1,0 +1,27 @@
+{
+  "name": "@mezo-dev-kit/example-foundational-readonly",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Built-entrypoint smoke example for the private MDK foundational read modules.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/clean-package-dist.ts foundational-readonly-example && tsc --project tsconfig.build.json",
+    "format:check": "prettier --check src README.md package.json tsconfig.json tsconfig.build.json tsconfig.built.json",
+    "lint": "eslint src",
+    "test": "tsc --project tsconfig.built.json && node dist/index.js",
+    "test:shuffle": "pnpm test",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/chains": "workspace:*",
+    "@mezo-dev-kit/contracts": "workspace:*",
+    "@mezo-dev-kit/core": "workspace:*"
+  }
+}

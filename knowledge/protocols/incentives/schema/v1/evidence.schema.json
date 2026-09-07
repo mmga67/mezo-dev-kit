@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Incentives evidence v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": ["evidenceStatus"],
+  "properties": {
+    "owner": { "const": "protocols/incentives" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+    "evidenceStatus": {
+      "enum": [
+        "verified-point-in-time",
+        "verified-executable-match",
+        "verified-historical-integration-not-support"
+      ]
+    },
+    "kind": {
+      "enum": [
+        "incentives-topology-observation",
+        "incentives-source-reproduction-evidence",
+        "incentives-read-integration-observation",
+        "incentives-historical-writer-integration-observation",
+        "incentives-emissions-observation",
+        "incentives-validator-allocation-observation"
+      ]
+    }
+  }
+}

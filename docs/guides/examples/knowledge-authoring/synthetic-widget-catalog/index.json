@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "synthetic/widget-catalog",
+  "moduleId": "synthetic/widget-catalog",
+  "owner": "documentation-fixtures",
+  "status": "unverified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "documentation-only synthetic example"
+  },
+  "limitations": [
+    "All identities, values, sources, evidence, and lifecycle fields are fictional.",
+    "This module is outside knowledge/index.json and establishes no canonical fact or support."
+  ],
+  "resources": [
+    {
+      "id": "synthetic-specification",
+      "role": "artifact",
+      "kind": "synthetic-source-artifact",
+      "path": "artifacts/widget-specification.json"
+    },
+    {
+      "id": "widget-sources",
+      "role": "source-catalog",
+      "kind": "synthetic-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": ["synthetic-widget-spec-v1"],
+      "recordCollectionPointer": "/sources"
+    },
+    {
+      "id": "widget-observations",
+      "role": "evidence",
+      "kind": "synthetic-observation-set",
+      "path": "evidence/observations.json",
+      "recordIds": ["observe-amber-widget-v1"],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "widget-records",
+      "role": "canonical-record",
+      "kind": "synthetic-widget-catalog",
+      "path": "records/widgets.json",
+      "recordIds": ["amber-widget"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "widget-record-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/widget-catalog.schema.json"
+    },
+    {
+      "id": "widget-review",
+      "role": "review",
+      "kind": "synthetic-review-packet",
+      "path": "review/assessment.md"
+    },
+    {
+      "id": "widget-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "synthetic/widget-catalog",
+          "resourceId": "synthetic-specification"
+        },
+        {
+          "moduleId": "synthetic/widget-catalog",
+          "resourceId": "widget-sources"
+        },
+        {
+          "moduleId": "synthetic/widget-catalog",
+          "resourceId": "widget-observations"
+        },
+        {
+          "moduleId": "synthetic/widget-catalog",
+          "resourceId": "widget-records"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module synthetic/widget-catalog"
+    },
+    {
+      "id": "synthetic-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-knowledge-authoring-example.ts"
+    },
+    {
+      "id": "synthetic-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-knowledge-authoring-example.ts --check"
+    }
+  ]
+}

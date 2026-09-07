@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/incentives",
+  "moduleId": "protocols/incentives",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "blockNumber": 11366264,
+    "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5"
+  },
+  "limitations": [
+    "registry provenance review, emission evidence review, and validator evidence review accepted fifteen bounded registry identities and the validator allocation model; dynamic validator children remain evidence-scoped rather than static registry records.",
+    "No writer workflow is supported until fresh preconditions, exact current simulation, and qualified operation review are complete.",
+    "The block-pinned graph is current only for the recorded block; consumers must resolve current proxy implementations again before use.",
+    "Gauge instances, weights, voting power, reward balances, governed roles, and allowlists are volatile state and are not protocol constants.",
+    "User yield, APY, forecasts, and planner outputs are derived analytics and are outside canonical protocol knowledge.",
+    "The whitepaper locked-supply description conflicts with the active minter's prior-boundary unboosted-voting-power input and is retained as an explicit specification/deployment conflict."
+  ],
+  "resources": [
+    {
+      "id": "incentives-contract-roles",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-contract-role-map",
+      "path": "records/contracts.json",
+      "recordIds": [
+        "pools-voter",
+        "vebtc-current",
+        "boost-voter",
+        "vemezo-current",
+        "factory-registry",
+        "mezo-minter",
+        "mezo-rebase-distributor",
+        "mezo-chain-splitter",
+        "mezo-ecosystem-splitter",
+        "validators-voter",
+        "third-party-voter",
+        "chain-splitter-epoch-governor",
+        "ecosystem-splitter-epoch-governor",
+        "validator-gauge-factory",
+        "validator-voting-rewards-factory"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-locks",
+      "role": "canonical-record",
+      "kind": "mezo-ve-lock-model",
+      "path": "records/locks.json"
+    },
+    {
+      "id": "incentives-boost",
+      "role": "canonical-record",
+      "kind": "mezo-vebtc-boost-model",
+      "path": "records/boost.json"
+    },
+    {
+      "id": "incentives-voting",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-voting-model",
+      "path": "records/voting.json"
+    },
+    {
+      "id": "incentives-gauges-rewards",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-gauge-reward-model",
+      "path": "records/gauges-rewards.json"
+    },
+    {
+      "id": "incentives-emissions",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-emission-model",
+      "path": "records/emissions.json"
+    },
+    {
+      "id": "incentives-validator-voting-rewards",
+      "role": "canonical-record",
+      "kind": "mezo-validator-voting-reward-model",
+      "path": "records/validator-voting-rewards.json"
+    },
+    {
+      "id": "incentives-operations",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-operation-catalog",
+      "path": "records/operations.json",
+      "recordIds": [
+        "create-timed-lock",
+        "increase-lock-amount",
+        "extend-timed-lock",
+        "withdraw-expired-lock",
+        "make-lock-permanent",
+        "return-permanent-lock-to-timed",
+        "vote-or-replace",
+        "reset-vote",
+        "poke-vote",
+        "create-vebtc-boost-gauge",
+        "poke-vebtc-boost",
+        "claim-gauge-or-voting-rewards"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-formula-fixtures",
+      "role": "fixture",
+      "kind": "mezo-incentives-formula-fixtures",
+      "path": "fixtures/formulas.json",
+      "recordIds": [
+        "unlock-rounds-down",
+        "unlock-too-short-after-rounding",
+        "vebtc-one-token-max-lock",
+        "vemezo-one-token-max-lock",
+        "timed-power-expired",
+        "zero-encoded-boost-means-one-x",
+        "boost-default-no-gauge-weight",
+        "boost-cap",
+        "boost-zero-voting-total",
+        "boost-zero-target-power",
+        "epoch-zero",
+        "epoch-last-second",
+        "vote-allocation-floor-dust",
+        "emission-index-zero-total",
+        "emission-share-floor",
+        "mezo-emission-zero-supply",
+        "mezo-emission-epoch-zero",
+        "mezo-emission-before-first-halving",
+        "mezo-emission-at-first-halving",
+        "mezo-emission-tail-floor",
+        "mezo-rebase-zero-emission",
+        "mezo-rebase-zero-period",
+        "mezo-rebase-no-voting-power",
+        "mezo-rebase-voting-power-at-supply",
+        "mezo-rebase-pinned-epoch",
+        "mezo-reward-remainder-pinned-epoch",
+        "mezo-splitter-floor-dust",
+        "mezo-splitter-small-balance",
+        "mezo-catch-up-cap"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-validator-allocation-fixtures",
+      "role": "fixture",
+      "kind": "mezo-validator-allocation-fixtures",
+      "path": "fixtures/validator-allocation.json",
+      "recordIds": [
+        "validator-vote-empty-reset",
+        "validator-vote-zero-result-reverts",
+        "validator-vote-floor-dust",
+        "validator-vote-full-single-gauge",
+        "validator-index-zero-weight",
+        "validator-index-floor-dust",
+        "validator-index-pinned-notification",
+        "validator-distribution-equal-left",
+        "validator-distribution-duration-threshold",
+        "validator-distribution-above-both-thresholds",
+        "validator-reward-rate-pinned-distribution",
+        "validator-history-unavailable-is-not-zero"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-sources",
+      "role": "source-catalog",
+      "kind": "mezo-incentives-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "incentives-mainnet-topology",
+        "incentives-source-reproduction",
+        "incentives-read-integration",
+        "incentives-writer-integration",
+        "source-current-vebtc",
+        "source-current-vemezo",
+        "source-current-pools-voter",
+        "source-current-boost-voter",
+        "official-docs-mezo-pools",
+        "incentives-emissions-mainnet",
+        "source-current-emissions-graph",
+        "incentives-validator-allocation-mainnet",
+        "source-current-validator-allocation-graph",
+        "official-docs-validator-gauge",
+        "official-docs-mezo-earn-for-validators",
+        "official-mezo-earn-whitepaper",
+        "official-mezo-emissions-blog",
+        "official-mezo-splitters-blog",
+        "official-mezo-earn-audit"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "official-mezo-earn-whitepaper-pdf",
+      "role": "artifact",
+      "kind": "official-protocol-specification-pdf",
+      "path": "artifacts/mezo-earn-whitepaper-2025-12.pdf"
+    },
+    {
+      "id": "incentives-mainnet-topology",
+      "role": "evidence",
+      "kind": "incentives-topology-observation",
+      "path": "evidence/mainnet-topology-2026-08-18.json"
+    },
+    {
+      "id": "incentives-emissions-mainnet",
+      "role": "evidence",
+      "kind": "incentives-emissions-observation",
+      "path": "evidence/emissions-mainnet-2026-08-21.json"
+    },
+    {
+      "id": "incentives-validator-allocation-mainnet",
+      "role": "evidence",
+      "kind": "incentives-validator-allocation-observation",
+      "path": "evidence/validator-allocation-mainnet-2026-08-24.json"
+    },
+    {
+      "id": "incentives-source-reproduction",
+      "role": "evidence",
+      "kind": "incentives-source-reproduction-evidence",
+      "path": "evidence/source-reproduction-2026-08-18.json",
+      "recordIds": [
+        "vebtc-current-implementation",
+        "vemezo-current-implementation",
+        "pools-voter-current-implementation",
+        "boost-voter-current-implementation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-read-integration",
+      "role": "evidence",
+      "kind": "incentives-read-integration-observation",
+      "path": "evidence/read-integration-2026-08-18.json"
+    },
+    {
+      "id": "incentives-writer-integration",
+      "role": "evidence",
+      "kind": "incentives-historical-writer-integration-observation",
+      "path": "evidence/writer-integration-2026-08-18.json",
+      "recordIds": [
+        "vebtc-create-lock-historical-replay",
+        "pools-vote-replacement-historical-replay"
+      ],
+      "recordCollectionPointer": "/operations"
+    },
+    {
+      "id": "incentives-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "incentives-fixture-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/fixture.schema.json"
+    },
+    {
+      "id": "incentives-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "incentives-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "incentives-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "incentives-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-contract-roles"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-boost"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-voting"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gauges-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-validator-voting-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-operations"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-formula-fixtures"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-validator-allocation-fixtures"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-mainnet-topology"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions-mainnet"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-validator-allocation-mainnet"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-source-reproduction"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-read-integration"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-writer-integration"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module protocols/incentives"
+    },
+    {
+      "id": "incentives-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-incentives-evidence.ts"
+    },
+    {
+      "id": "incentives-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-incentives-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "protocolStatus": "verified-versioned",
+    "identityBoundary": "Fifteen accepted incentives roots resolve through Contracts deployment and ABI records; dynamic validator children remain dated evidence coordinates.",
+    "networkReference": {
+      "moduleId": "networks",
+      "resourceId": "mezo-mainnet"
+    },
+    "contractRoleMapReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles"
+    },
+    "blockers": [
+      "fresh writer precondition and exact-call verification for any future supported operation"
+    ]
+  }
+}

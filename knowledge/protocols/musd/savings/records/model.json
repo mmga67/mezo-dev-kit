@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-accounting-model",
+  "id": "musd-savings-model",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "implementation": "MUSDSavingsRate at evidence block 11341710"},
+  "limitations": [
+    "This is not an ERC-4626 model and must not use exchange-rate share formulas.",
+    "Mutable index, pending yield, roles, gauge cap, and balances require same-block reads.",
+    "No public read facade, deposit, withdrawal, stake, harvest, or claim writer is supported."
+  ],
+  "assetReference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "musd.token@mezo-mainnet"},
+  "principal": {
+    "receiptSymbol": "sMUSD",
+    "deposit": "transfer amount MUSD in and mint exactly amount sMUSD",
+    "withdraw": "update and claim yield, burn exactly amount sMUSD, then transfer exactly amount MUSD out",
+    "totalSupplyMeaning": "outstanding principal receipts only",
+    "exchangeRate": "one MUSD principal unit per sMUSD receipt unit"
+  },
+  "yieldAccounting": {
+    "scale": "1000000000000000000",
+    "receiveWithSupply": "ratio=floor((amount+pendingYield)*1e18/totalSupply); require ratio>0; yieldIndex+=ratio; pendingYield=0",
+    "receiveWithoutSupply": "pendingYield+=amount; yieldIndex is unchanged",
+    "userUpdate": "delta=yieldIndex-supplyYieldIndex[user]; share=floor(balance[user]*delta/1e18); claimableYield[user]+=share; supplyYieldIndex[user]=yieldIndex",
+    "claim": "transfer claimable MUSD separately; principal receipt balance and totalSupply do not change",
+    "transferBoundary": "update sender and receiver against the current index before changing receipt balances"
+  },
+  "invariants": [
+    "principal receipts and claimable yield are separate values",
+    "unallocated pending yield is not user claimable until a non-zero ratio is applied",
+    "rounding dust is not promoted to principal or classic MUSD debt",
+    "a gauge stake changes custody/accounting of receipts, not the underlying classic MUSD debt aggregate"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-accounting-fixtures",
+  "id": "usdc-lending-vault-accounting-fixtures",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"vaultVirtualShares": "1000000000000", "wrapperVirtualShares": "1000000", "wrapperVirtualAssets": "1000000"},
+  "limitations": ["Fixtures prove integer ordering and ownership boundaries, not current capacity or operation success."],
+  "records": [
+    {"id": "vault-deposit-down", "operation": "vault-preview-deposit", "input": {"assets": "1000000", "totalSupply": "1000000000000000000", "totalAssets": "1000000", "virtualShares": "1000000000000"}, "expected": "1000000000000000000"},
+    {"id": "vault-withdraw-up", "operation": "vault-preview-withdraw", "input": {"assets": "1000000", "totalSupply": "1000000000000000000", "totalAssets": "1000000", "virtualShares": "1000000000000"}, "expected": "1000000000000000000"},
+    {"id": "wrapper-deposit-down", "operation": "wrapper-deposit", "input": {"vaultShares": "1000", "receiptSupply": "9000", "userVaultShares": "8000"}, "expected": "1000"},
+    {"id": "wrapper-withdraw-down", "operation": "wrapper-withdraw", "input": {"receipts": "1000", "receiptSupply": "9000", "userVaultShares": "8000"}, "expected": "999"},
+    {"id": "harvest-high-water", "operation": "wrapper-harvest", "input": {"userVaultShares": "1000000", "currentRatio": "1070000", "lastShareRatio": "1050000", "gaugeSet": true}, "expected": {"yieldShares": "18691", "newLastShareRatio": "1070000"}},
+    {"id": "harvest-dip-no-reset", "operation": "wrapper-harvest", "input": {"userVaultShares": "1000000", "currentRatio": "1020000", "lastShareRatio": "1050000", "gaugeSet": true}, "expected": {"yieldShares": "0", "newLastShareRatio": "1050000"}},
+    {"id": "pre-gauge-no-earmark", "operation": "wrapper-harvest", "input": {"userVaultShares": "1000000", "currentRatio": "1070000", "lastShareRatio": "1050000", "gaugeSet": false}, "expected": {"yieldShares": "0", "newLastShareRatio": "1070000"}},
+    {"id": "illiquid-withdrawal", "operation": "liquidity", "input": {"requested": "100", "idle": "10", "marketLiquidity": "80"}, "expected": {"ordinaryAvailable": "90", "shortfall": "10"}},
+    {"id": "staked-receipt-no-double-count", "operation": "ownership", "input": {"walletReceipts": "20", "gaugeBeneficialReceipts": "80", "gaugeCustodyBalance": "80"}, "expected": {"beneficialReceipts": "100"}}
+  ]
+}

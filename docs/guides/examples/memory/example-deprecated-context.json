@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-first-alpha-package-publication",
+  "domain": "governance/alpha",
+  "status": "deprecated",
+  "title": "First-alpha package publication assumption is obsolete",
+  "summary": "The earlier assumption that the first alpha required package publication was superseded by the accepted GitHub source-alpha boundary in ADR-0013.",
+  "sources": ["docs/decisions/0013-github-source-alpha-governance.md"],
+  "related": ["docs/decisions/0013-github-source-alpha-governance.md"],
+  "updated": "2026-08-29"
+}

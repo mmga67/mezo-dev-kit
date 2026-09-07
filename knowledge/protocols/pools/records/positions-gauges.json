@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-position-gauge-model",
+  "id": "pools-positions-gauges",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11333787
+  },
+  "limitations": [
+    "Depositor, owner, liquidity, fees, rewards, and liveness are volatile reads.",
+    "No enumerable reverse tokenId-to-depositor getter is exposed by the reproduced CLGauge ABI."
+  ],
+  "liquidityDimensions": [
+    {
+      "id": "basic-pool-reserves",
+      "read": "Pool.getReserves",
+      "meaning": "current token0/token1 balances used by the basic invariant"
+    },
+    {
+      "id": "basic-lp-supply",
+      "read": "Pool.totalSupply and balanceOf",
+      "meaning": "fungible LP shares globally and per wallet"
+    },
+    {
+      "id": "cl-pool-active-liquidity",
+      "read": "CLPool.liquidity",
+      "meaning": "aggregate liquidity active at the current tick"
+    },
+    {
+      "id": "cl-pool-staked-active-liquidity",
+      "read": "CLPool.stakedLiquidity",
+      "meaning": "active liquidity attributable to positions currently staked through the pool/gauge accounting"
+    },
+    {
+      "id": "cl-position-liquidity",
+      "read": "NonfungiblePositionManager.positions(tokenId).liquidity",
+      "meaning": "the NFT range's liquidity, whether currently in range or not"
+    },
+    {
+      "id": "cl-gauge-stake-set",
+      "read": "CLGauge.stakedValues/stakedLength/stakedContains",
+      "meaning": "NFT IDs deposited by a specified beneficial depositor"
+    }
+  ],
+  "ownership": {
+    "unstaked": "NonfungiblePositionManager.ownerOf(tokenId) is the wallet or contract with ERC-721 ownership; the position record supplies its tokens, spacing, range, liquidity, and fee-growth accounting.",
+    "deposit": "CLGauge.deposit requires msg.sender to be current ERC-721 owner, validates token pair and tick spacing, collects fees to that sender, transfers the NFT to the gauge, and adds tokenId to the sender's stake set.",
+    "stakedContractOwner": "While staked, ownerOf(tokenId) is the CLGauge contract. This contract owner is not the beneficial/depositor identity.",
+    "beneficialDepositor": "The depositor is the address whose gauge stake set contains tokenId. A known candidate can be verified with stakedContains(depositor, tokenId).",
+    "missingDepositor": "If no depositor coordinate is available, represent beneficialDepositor as null/unknown; do not substitute the gauge address, the pre-stake owner, an NFT approval, or a transaction sender inferred from stale analytics.",
+    "withdraw": "Only the depositor stake set can authorize the deployed withdraw path. Withdrawal settles rewards, removes staked liquidity when nonzero, removes tokenId from that set, and transfers the NFT back to msg.sender."
+  },
+  "rewardBoundaries": [
+    "Pool swap fees and position tokensOwed are position-manager/pool accounting.",
+    "CLGauge MEZO emissions accrue only from the reproduced gauge and pool reward-growth state for staked in-range liquidity.",
+    "PoolsVoter fee/bribe voting rewards belong to veNFT voting allocation, not to wallet LP balance, CL position liquidity, or gauge staking by itself.",
+    "APR, APY, TVL, future rewards, token prices, and allocation recommendations are analytics outside canonical pool state."
+  ],
+  "evidence": [
+    {
+      "sourceArtifactId": "pools-source-reproduction",
+      "locator": "CLGauge deposit/withdraw/staked set, CLPool liquidity/stakedLiquidity, and NonfungiblePositionManager positions/ownerOf"
+    },
+    {
+      "sourceArtifactId": "pools-mainnet-topology",
+      "locator": "dynamicDiscovery.concentrated pool/gauge relationships"
+    },
+    {
+      "sourceArtifactId": "incentives-gauges-rewards",
+      "locator": "pool-gauge creation, emission allocation, and claims"
+    }
+  ]
+}

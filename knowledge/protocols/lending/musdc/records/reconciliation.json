@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-reconciliation-model",
+  "id": "musdc-lending-reconciliation",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"systems": ["native-bridge", "morpho-market", "supplier-vault", "classic-musd"]},
+  "limitations": ["This record defines accounting boundaries, not a cross-system TVL or risk score."],
+  "rules": [
+    "Resolve mUSDC token identity from the Native Bridge asset record; market accounting does not own bridge supply.",
+    "Market total supply assets, total supply shares, total borrow assets, total borrow shares, token liquidity, and collateral remain distinct.",
+    "A supplier vault position is one market supply-share owner; do not add its vault assets to market totalSupplyAssets.",
+    "Interest increases market borrow assets and supply assets; fee shares dilute suppliers without creating mUSDC bridge supply.",
+    "Bad debt reduces market borrow assets and supplier assets; it is not classic MUSD bad debt.",
+    "MUSD redemptions, troves, TCR, Stability Pool, and MUSD supply rules are inapplicable."
+  ]
+}

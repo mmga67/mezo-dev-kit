@@ -1,0 +1,1037 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "contracts",
+  "moduleId": "contracts",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
+    "contractIds": [
+      "musd.active-pool",
+      "musd.borrower-operations",
+      "musd.borrower-operations-signatures",
+      "musd.coll-surplus-pool",
+      "musd.default-pool",
+      "musd.gas-pool",
+      "musd.governable-variables",
+      "musd.hint-helpers",
+      "musd.interest-rate-manager",
+      "musd.token",
+      "musd.pcv",
+      "musd.price-feed",
+      "musd.sorted-troves",
+      "musd.stability-pool",
+      "musd.trove-manager",
+      "mezo-earn.router",
+      "mezo-earn.pool-factory",
+      "mezo-earn.ve-btc-voter",
+      "mezo-earn.ve-btc-rewards-distributor",
+      "mezo-earn.ve-btc-epoch-governor",
+      "mezo-earn.chain-fee-splitter",
+      "bridge.musd-ntt-manager",
+      "bridge.musd-wormhole-transceiver",
+      "bridge.native-assets-precompile",
+      "bridge.native-mezo-bridge",
+      "incentives.pools-voter",
+      "incentives.ve-btc",
+      "incentives.boost-voter",
+      "incentives.ve-mezo",
+      "incentives.factory-registry",
+      "incentives.mezo-minter",
+      "incentives.mezo-rebase-distributor",
+      "incentives.mezo-chain-splitter",
+      "incentives.mezo-ecosystem-splitter",
+      "incentives.validators-voter",
+      "incentives.third-party-voter",
+      "incentives.chain-splitter-epoch-governor",
+      "incentives.ecosystem-splitter-epoch-governor",
+      "mezo-earn.cl-factory",
+      "mezo-earn.cl-pool-implementation",
+      "mezo-earn.cl-swap-router",
+      "mezo-earn.cl-position-manager",
+      "mezo-earn.cl-position-descriptor",
+      "incentives.cl-gauge-factory",
+      "incentives.cl-gauge-implementation",
+      "musd.enclave-v1",
+      "musd.enclave-v2",
+      "musd.enclave-debt-manager",
+      "oracle.skip-btc-usd",
+      "oracle.pyth-price-feed",
+      "musd.savings-rate",
+      "lending.morpho",
+      "lending.adaptive-curve-irm",
+      "lending.musdc-btc-oracle",
+      "vaults.usdc-lending-market-adapter",
+      "vaults.usdc-lending-wrapper",
+      "incentives.non-staking-gauge-factory",
+      "incentives.voting-rewards-factory"
+    ]
+  },
+  "limitations": [
+    "Open deployment validity ranges and current implementation ABIs require re-verification after upgrades or the review window.",
+    "Registry records do not create reader, writer, route, protocol, market, vault, validator-operation, or product support.",
+    "MDK registry support covers 58 accepted Contract ABIs and 85 supported current deployments; one superseded deployment remains historical."
+  ],
+  "resources": [
+    {
+      "id": "contract-deployments",
+      "role": "canonical-record",
+      "kind": "contract-deployment-catalog",
+      "path": "records/deployments.json",
+      "recordIds": [
+        "musd.active-pool@mezo-mainnet",
+        "musd.active-pool@mezo-testnet",
+        "musd.borrower-operations@mezo-mainnet",
+        "musd.borrower-operations@mezo-testnet",
+        "musd.borrower-operations-signatures@mezo-mainnet",
+        "musd.borrower-operations-signatures@mezo-testnet",
+        "musd.coll-surplus-pool@mezo-mainnet",
+        "musd.coll-surplus-pool@mezo-testnet",
+        "musd.default-pool@mezo-mainnet",
+        "musd.default-pool@mezo-testnet",
+        "musd.gas-pool@mezo-mainnet",
+        "musd.gas-pool@mezo-testnet",
+        "musd.governable-variables@mezo-mainnet",
+        "musd.governable-variables@mezo-testnet",
+        "musd.hint-helpers@mezo-mainnet",
+        "musd.hint-helpers@mezo-testnet",
+        "musd.interest-rate-manager@mezo-mainnet",
+        "musd.interest-rate-manager@mezo-testnet",
+        "musd.token@mezo-mainnet",
+        "musd.token@mezo-testnet",
+        "musd.pcv@mezo-mainnet",
+        "musd.pcv@mezo-testnet",
+        "musd.price-feed@mezo-mainnet",
+        "musd.price-feed@mezo-testnet",
+        "musd.sorted-troves@mezo-mainnet",
+        "musd.sorted-troves@mezo-testnet",
+        "musd.stability-pool@mezo-mainnet",
+        "musd.stability-pool@mezo-testnet",
+        "musd.trove-manager@mezo-mainnet",
+        "musd.trove-manager@mezo-testnet",
+        "mezo-earn.router@mezo-mainnet",
+        "mezo-earn.router@mezo-testnet",
+        "mezo-earn.pool-factory@mezo-mainnet",
+        "mezo-earn.pool-factory@mezo-testnet",
+        "mezo-earn.ve-btc-voter@mezo-mainnet",
+        "mezo-earn.ve-btc-voter@mezo-testnet",
+        "mezo-earn.ve-btc-rewards-distributor@mezo-mainnet",
+        "mezo-earn.ve-btc-rewards-distributor@mezo-testnet",
+        "mezo-earn.ve-btc-epoch-governor@mezo-mainnet",
+        "mezo-earn.ve-btc-epoch-governor@mezo-testnet",
+        "mezo-earn.chain-fee-splitter@mezo-mainnet",
+        "mezo-earn.chain-fee-splitter@mezo-testnet",
+        "bridge.musd-ntt-manager@mezo-mainnet",
+        "bridge.musd-ntt-manager@ethereum-mainnet",
+        "bridge.musd-ntt-manager@base-mainnet",
+        "bridge.musd-wormhole-transceiver@mezo-mainnet",
+        "bridge.musd-wormhole-transceiver@ethereum-mainnet",
+        "bridge.musd-wormhole-transceiver@base-mainnet",
+        "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v5-execution",
+        "bridge.native-mezo-bridge@ethereum-mainnet",
+        "mezo-earn.cl-factory@mezo-mainnet",
+        "mezo-earn.cl-pool-implementation@mezo-mainnet",
+        "mezo-earn.cl-swap-router@mezo-mainnet",
+        "mezo-earn.cl-position-manager@mezo-mainnet",
+        "mezo-earn.cl-position-descriptor@mezo-mainnet",
+        "incentives.cl-gauge-factory@mezo-mainnet",
+        "incentives.cl-gauge-implementation@mezo-mainnet",
+        "musd.enclave-v1@mezo-mainnet",
+        "musd.enclave-v2@mezo-mainnet",
+        "musd.enclave-debt-manager@mezo-mainnet",
+        "oracle.skip-btc-usd@mezo-mainnet",
+        "oracle.pyth-price-feed@mezo-mainnet",
+        "oracle.skip-btc-usd@mezo-testnet",
+        "oracle.pyth-price-feed@mezo-testnet",
+        "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution",
+        "musd.savings-rate@mezo-mainnet",
+        "lending.morpho@mezo-mainnet",
+        "lending.adaptive-curve-irm@mezo-mainnet",
+        "lending.musdc-btc-oracle@mezo-mainnet",
+        "vaults.usdc-lending-market-adapter@mezo-mainnet",
+        "vaults.usdc-lending-wrapper@mezo-mainnet",
+        "incentives.pools-voter@mezo-mainnet",
+        "incentives.ve-btc@mezo-mainnet",
+        "incentives.boost-voter@mezo-mainnet",
+        "incentives.ve-mezo@mezo-mainnet",
+        "incentives.factory-registry@mezo-mainnet",
+        "incentives.mezo-minter@mezo-mainnet",
+        "incentives.mezo-rebase-distributor@mezo-mainnet",
+        "incentives.mezo-chain-splitter@mezo-mainnet",
+        "incentives.mezo-ecosystem-splitter@mezo-mainnet",
+        "incentives.validators-voter@mezo-mainnet",
+        "incentives.third-party-voter@mezo-mainnet",
+        "incentives.chain-splitter-epoch-governor@mezo-mainnet",
+        "incentives.ecosystem-splitter-epoch-governor@mezo-mainnet",
+        "incentives.non-staking-gauge-factory@mezo-mainnet",
+        "incentives.voting-rewards-factory@mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "contract-abis",
+      "role": "canonical-record",
+      "kind": "contract-abi-catalog",
+      "path": "records/abis.json",
+      "recordIds": [
+        "musd.active-pool",
+        "musd.borrower-operations",
+        "musd.borrower-operations-signatures",
+        "musd.coll-surplus-pool",
+        "musd.default-pool",
+        "musd.gas-pool",
+        "musd.governable-variables",
+        "musd.hint-helpers",
+        "musd.interest-rate-manager",
+        "musd.token",
+        "musd.pcv",
+        "musd.price-feed",
+        "musd.sorted-troves",
+        "musd.stability-pool",
+        "musd.trove-manager",
+        "mezo-earn.router",
+        "mezo-earn.pool-factory",
+        "mezo-earn.ve-btc-voter",
+        "mezo-earn.ve-btc-rewards-distributor",
+        "mezo-earn.ve-btc-epoch-governor",
+        "mezo-earn.chain-fee-splitter",
+        "bridge.musd-ntt-manager",
+        "bridge.musd-wormhole-transceiver",
+        "bridge.native-assets-precompile",
+        "bridge.native-mezo-bridge",
+        "mezo-earn.cl-factory",
+        "mezo-earn.cl-pool-implementation",
+        "mezo-earn.cl-swap-router",
+        "mezo-earn.cl-position-manager",
+        "mezo-earn.cl-position-descriptor",
+        "incentives.cl-gauge-factory",
+        "incentives.cl-gauge-implementation",
+        "musd.enclave-v1",
+        "musd.enclave-v2",
+        "musd.enclave-debt-manager",
+        "oracle.skip-btc-usd",
+        "oracle.pyth-price-feed",
+        "musd.savings-rate",
+        "lending.morpho",
+        "lending.adaptive-curve-irm",
+        "lending.musdc-btc-oracle",
+        "vaults.usdc-lending-market-adapter",
+        "vaults.usdc-lending-wrapper",
+        "incentives.pools-voter",
+        "incentives.ve-btc",
+        "incentives.boost-voter",
+        "incentives.ve-mezo",
+        "incentives.factory-registry",
+        "incentives.mezo-minter",
+        "incentives.mezo-rebase-distributor",
+        "incentives.mezo-chain-splitter",
+        "incentives.mezo-ecosystem-splitter",
+        "incentives.validators-voter",
+        "incentives.third-party-voter",
+        "incentives.chain-splitter-epoch-governor",
+        "incentives.ecosystem-splitter-epoch-governor",
+        "incentives.non-staking-gauge-factory",
+        "incentives.voting-rewards-factory"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "contract-sources",
+      "role": "source-catalog",
+      "kind": "contract-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-source-musd",
+        "official-source-tigris",
+        "official-docs-contract-reference",
+        "official-docs-mezo-pools",
+        "official-docs-musd-development",
+        "official-docs-musd-redemptions",
+        "official-explorer-contract-observations",
+        "official-ntt-musd-live-deployment",
+        "official-ntt-musd-initial-deployments",
+        "official-mezod-assets-bridge-current",
+        "official-mezod-v13-upgrade-schedule",
+        "native-bridge-etherscan-executable-reproduction",
+        "pools-explorer-executable-reproductions",
+        "institutional-debt-explorer-executable-reproductions",
+        "official-mezod-price-oracle-v12",
+        "oracle-pyth-live-configuration",
+        "economic-system-explorer-executable-reproductions",
+        "incentives-explorer-executable-reproductions",
+        "validator-incentives-explorer-executable-reproductions"
+      ],
+      "recordCollectionPointer": "/sources"
+    },
+    {
+      "id": "contract-probes-2026-08-18",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/contract-probes-2026-08-18.json",
+      "recordIds": [
+        "observe-musd-active-pool-mezo-mainnet",
+        "observe-musd-active-pool-mezo-testnet",
+        "observe-musd-borrower-operations-mezo-mainnet",
+        "observe-musd-borrower-operations-mezo-testnet",
+        "observe-musd-borrower-operations-signatures-mezo-mainnet",
+        "observe-musd-borrower-operations-signatures-mezo-testnet",
+        "observe-musd-coll-surplus-pool-mezo-mainnet",
+        "observe-musd-coll-surplus-pool-mezo-testnet",
+        "observe-musd-default-pool-mezo-mainnet",
+        "observe-musd-default-pool-mezo-testnet",
+        "observe-musd-gas-pool-mezo-mainnet",
+        "observe-musd-gas-pool-mezo-testnet",
+        "observe-musd-governable-variables-mezo-mainnet",
+        "observe-musd-governable-variables-mezo-testnet",
+        "observe-musd-hint-helpers-mezo-mainnet",
+        "observe-musd-hint-helpers-mezo-testnet",
+        "observe-musd-interest-rate-manager-mezo-mainnet",
+        "observe-musd-interest-rate-manager-mezo-testnet",
+        "observe-musd-token-mezo-mainnet",
+        "observe-musd-token-mezo-testnet",
+        "observe-musd-pcv-mezo-mainnet",
+        "observe-musd-pcv-mezo-testnet",
+        "observe-musd-price-feed-mezo-mainnet",
+        "observe-musd-price-feed-mezo-testnet",
+        "observe-musd-sorted-troves-mezo-mainnet",
+        "observe-musd-sorted-troves-mezo-testnet",
+        "observe-musd-stability-pool-mezo-mainnet",
+        "observe-musd-stability-pool-mezo-testnet",
+        "observe-musd-trove-manager-mezo-mainnet",
+        "observe-musd-trove-manager-mezo-testnet",
+        "observe-mezo-earn-router-mezo-mainnet",
+        "observe-mezo-earn-router-mezo-testnet",
+        "observe-mezo-earn-pool-factory-mezo-mainnet",
+        "observe-mezo-earn-pool-factory-mezo-testnet",
+        "observe-mezo-earn-ve-btc-voter-mezo-mainnet",
+        "observe-mezo-earn-ve-btc-voter-mezo-testnet",
+        "observe-mezo-earn-ve-btc-rewards-distributor-mezo-mainnet",
+        "observe-mezo-earn-ve-btc-rewards-distributor-mezo-testnet",
+        "observe-mezo-earn-ve-btc-epoch-governor-mezo-mainnet",
+        "observe-mezo-earn-ve-btc-epoch-governor-mezo-testnet",
+        "observe-mezo-earn-chain-fee-splitter-mezo-mainnet",
+        "observe-mezo-earn-chain-fee-splitter-mezo-testnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.musd.active-pool",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/active-pool.json"
+    },
+    {
+      "id": "abi.musd.borrower-operations",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/borrower-operations.json"
+    },
+    {
+      "id": "abi.musd.borrower-operations-signatures",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/borrower-operations-signatures.json"
+    },
+    {
+      "id": "abi.musd.coll-surplus-pool",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/coll-surplus-pool.json"
+    },
+    {
+      "id": "abi.musd.default-pool",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/default-pool.json"
+    },
+    {
+      "id": "abi.musd.gas-pool",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/gas-pool.json"
+    },
+    {
+      "id": "abi.musd.governable-variables",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/governable-variables.json"
+    },
+    {
+      "id": "abi.musd.hint-helpers",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/hint-helpers.json"
+    },
+    {
+      "id": "abi.musd.interest-rate-manager",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/interest-rate-manager.json"
+    },
+    {
+      "id": "abi.musd.token",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/token.json"
+    },
+    {
+      "id": "abi.musd.pcv",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/pcv.json"
+    },
+    {
+      "id": "abi.musd.price-feed",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/price-feed.json"
+    },
+    {
+      "id": "abi.musd.sorted-troves",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/sorted-troves.json"
+    },
+    {
+      "id": "abi.musd.stability-pool",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/stability-pool.json"
+    },
+    {
+      "id": "abi.musd.trove-manager",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/trove-manager.json"
+    },
+    {
+      "id": "abi.mezo-earn.router",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/router.json"
+    },
+    {
+      "id": "abi.mezo-earn.pool-factory",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/pool-factory.json"
+    },
+    {
+      "id": "abi.mezo-earn.ve-btc-voter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/ve-btc-voter.json"
+    },
+    {
+      "id": "abi.mezo-earn.ve-btc-rewards-distributor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/ve-btc-rewards-distributor.json"
+    },
+    {
+      "id": "abi.mezo-earn.ve-btc-epoch-governor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/ve-btc-epoch-governor.json"
+    },
+    {
+      "id": "abi.mezo-earn.chain-fee-splitter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/chain-fee-splitter.json"
+    },
+    {
+      "id": "contract-deployment-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/deployment-catalog.schema.json"
+    },
+    {
+      "id": "contract-abi-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/abi-catalog.schema.json"
+    },
+    {
+      "id": "contract-source-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/source-catalog.schema.json"
+    },
+    {
+      "id": "contract-observation-set-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/observation-set.schema.json"
+    },
+    {
+      "id": "contract-abi-artifact-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/abi-artifact.schema.json"
+    },
+    {
+      "id": "contract-bridge-probes-2026-08-24",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/bridge-contracts-2026-08-24.json",
+      "recordIds": [
+        "observe-bridge-musd-ntt-manager-mezo-mainnet",
+        "observe-bridge-musd-ntt-manager-ethereum-mainnet",
+        "observe-bridge-musd-ntt-manager-base-mainnet",
+        "observe-bridge-musd-wormhole-transceiver-mezo-mainnet",
+        "observe-bridge-musd-wormhole-transceiver-ethereum-mainnet",
+        "observe-bridge-musd-wormhole-transceiver-base-mainnet",
+        "observe-bridge-native-assets-precompile-mezo-mainnet-v6-wrapper",
+        "observe-bridge-native-mezo-bridge-ethereum-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.bridge.musd-ntt-manager",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/bridge/musd-ntt-manager.json"
+    },
+    {
+      "id": "abi.bridge.musd-wormhole-transceiver",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/bridge/musd-wormhole-transceiver.json"
+    },
+    {
+      "id": "abi.bridge.native-assets-precompile",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/bridge/native-assets-precompile.json"
+    },
+    {
+      "id": "abi.bridge.native-mezo-bridge",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/bridge/native-mezo-bridge.json"
+    },
+    {
+      "id": "contract-incentives-probes-2026-08-21",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/incentives-contracts-2026-08-21.json",
+      "recordIds": [
+        "observe-incentives-pools-voter-mezo-mainnet",
+        "observe-incentives-ve-btc-mezo-mainnet",
+        "observe-incentives-boost-voter-mezo-mainnet",
+        "observe-incentives-ve-mezo-mezo-mainnet",
+        "observe-incentives-factory-registry-mezo-mainnet",
+        "observe-incentives-mezo-minter-mezo-mainnet",
+        "observe-incentives-mezo-rebase-distributor-mezo-mainnet",
+        "observe-incentives-mezo-chain-splitter-mezo-mainnet",
+        "observe-incentives-mezo-ecosystem-splitter-mezo-mainnet",
+        "observe-incentives-validators-voter-mezo-mainnet",
+        "observe-incentives-third-party-voter-mezo-mainnet",
+        "observe-incentives-chain-splitter-epoch-governor-mezo-mainnet",
+        "observe-incentives-ecosystem-splitter-epoch-governor-mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.incentives.pools-voter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/pools-voter.json"
+    },
+    {
+      "id": "abi.incentives.ve-btc",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/ve-btc.json"
+    },
+    {
+      "id": "abi.incentives.boost-voter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/boost-voter.json"
+    },
+    {
+      "id": "abi.incentives.ve-mezo",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/ve-mezo.json"
+    },
+    {
+      "id": "abi.incentives.factory-registry",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/factory-registry.json"
+    },
+    {
+      "id": "abi.incentives.mezo-minter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/mezo-minter.json"
+    },
+    {
+      "id": "abi.incentives.mezo-rebase-distributor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/mezo-rebase-distributor.json"
+    },
+    {
+      "id": "abi.incentives.mezo-chain-splitter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/mezo-chain-splitter.json"
+    },
+    {
+      "id": "abi.incentives.mezo-ecosystem-splitter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/mezo-ecosystem-splitter.json"
+    },
+    {
+      "id": "abi.incentives.validators-voter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/validators-voter.json"
+    },
+    {
+      "id": "abi.incentives.third-party-voter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/third-party-voter.json"
+    },
+    {
+      "id": "abi.incentives.chain-splitter-epoch-governor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/chain-splitter-epoch-governor.json"
+    },
+    {
+      "id": "abi.incentives.ecosystem-splitter-epoch-governor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/ecosystem-splitter-epoch-governor.json"
+    },
+    {
+      "id": "contract-validator-incentives-probes-2026-08-24",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/validator-incentives-contracts-2026-08-24.json",
+      "recordIds": [
+        "observe-incentives-non-staking-gauge-factory-mezo-mainnet",
+        "observe-incentives-voting-rewards-factory-mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.incentives.non-staking-gauge-factory",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/non-staking-gauge-factory.json"
+    },
+    {
+      "id": "abi.incentives.voting-rewards-factory",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/voting-rewards-factory.json"
+    },
+    {
+      "id": "contract-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "legacy-schema-notes",
+      "role": "review",
+      "kind": "superseded-schema-notes",
+      "path": "review/legacy-schema-v1.md"
+    },
+    {
+      "id": "contract-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-abis"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-sources"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-probes-2026-08-18"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-institutional-debt-probes-2026-08-23"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-2026-08-23"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-2026-08-27"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-06"
+        }
+      ]
+    },
+    {
+      "id": "contract-pool-probes-2026-08-23",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/pool-contracts-2026-08-23.json",
+      "recordIds": [
+        "observe-mezo-earn-cl-factory-mezo-mainnet",
+        "observe-mezo-earn-cl-pool-implementation-mezo-mainnet",
+        "observe-mezo-earn-cl-swap-router-mezo-mainnet",
+        "observe-mezo-earn-cl-position-manager-mezo-mainnet",
+        "observe-mezo-earn-cl-position-descriptor-mezo-mainnet",
+        "observe-incentives-cl-gauge-factory-mezo-mainnet",
+        "observe-incentives-cl-gauge-implementation-mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.mezo-earn.cl-factory",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/cl-factory.json"
+    },
+    {
+      "id": "abi.mezo-earn.cl-pool-implementation",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/cl-pool-implementation.json"
+    },
+    {
+      "id": "abi.mezo-earn.cl-swap-router",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/cl-swap-router.json"
+    },
+    {
+      "id": "abi.mezo-earn.cl-position-manager",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/cl-position-manager.json"
+    },
+    {
+      "id": "abi.mezo-earn.cl-position-descriptor",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/mezo-earn/cl-position-descriptor.json"
+    },
+    {
+      "id": "abi.incentives.cl-gauge-factory",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/cl-gauge-factory.json"
+    },
+    {
+      "id": "abi.incentives.cl-gauge-implementation",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/incentives/cl-gauge-implementation.json"
+    },
+    {
+      "id": "contract-institutional-debt-probes-2026-08-23",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/institutional-debt-contracts-2026-08-23.json",
+      "recordIds": [
+        "observe-musd-enclave-v1-mezo-mainnet",
+        "observe-musd-enclave-v2-mezo-mainnet",
+        "observe-musd-enclave-debt-manager-mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.musd.enclave-v1",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/enclave-v1.json"
+    },
+    {
+      "id": "abi.musd.enclave-v2",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/enclave-v2.json"
+    },
+    {
+      "id": "abi.musd.enclave-debt-manager",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/enclave-debt-manager.json"
+    },
+    {
+      "id": "contract-oracle-probes-2026-08-23",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-2026-08-23.json",
+      "recordIds": [
+        "observe-oracle-skip-btc-usd-mezo-mainnet",
+        "observe-oracle-pyth-price-feed-mezo-mainnet",
+        "observe-oracle-skip-btc-usd-mezo-testnet",
+        "observe-oracle-pyth-price-feed-mezo-testnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.oracle.skip-btc-usd",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/oracle/skip-btc-usd.json"
+    },
+    {
+      "id": "abi.oracle.pyth-price-feed",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/oracle/pyth-price-feed.json"
+    },
+    {
+      "id": "contract-bridge-v13-probes-2026-08-24",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/bridge-v13-contracts-2026-08-24.json",
+      "recordIds": [
+        "observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "contract-economic-system-probes-2026-08-23",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/economic-system-contracts-2026-08-23.json",
+      "recordIds": [
+        "observe-musd-savings-rate-mezo-mainnet",
+        "observe-lending-morpho-mezo-mainnet",
+        "observe-lending-adaptive-curve-irm-mezo-mainnet",
+        "observe-lending-musdc-btc-oracle-mezo-mainnet",
+        "observe-vaults-usdc-lending-market-adapter-mezo-mainnet",
+        "observe-vaults-usdc-lending-wrapper-mezo-mainnet"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.musd.savings-rate",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/musd/savings-rate.json"
+    },
+    {
+      "id": "abi.lending.morpho",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/lending/morpho.json"
+    },
+    {
+      "id": "abi.lending.adaptive-curve-irm",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/lending/adaptive-curve-irm.json"
+    },
+    {
+      "id": "abi.lending.musdc-btc-oracle",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/lending/musdc-btc-oracle.json"
+    },
+    {
+      "id": "abi.vaults.usdc-lending-market-adapter",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/vaults/usdc-lending-market-adapter.json"
+    },
+    {
+      "id": "abi.vaults.usdc-lending-wrapper",
+      "role": "artifact",
+      "kind": "contract-abi",
+      "path": "artifacts/abis/vaults/usdc-lending-wrapper.json"
+    },
+    {
+      "id": "contract-oracle-probes-2026-08-27",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-2026-08-27.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-08-27",
+        "observe-oracle-pyth-price-feed-mezo-testnet-2026-08-27"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "savings-strategy-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/savings-strategy-explorer.json"
+    },
+    {
+      "id": "savings-converter-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/savings-converter-explorer.json"
+    },
+    {
+      "id": "savings-gauge-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/savings-gauge-explorer.json"
+    },
+    {
+      "id": "savings-dynamic-read-interfaces",
+      "role": "canonical-record",
+      "kind": "dynamic-contract-read-interface-catalog",
+      "path": "records/savings-dynamic-read-interfaces.json",
+      "recordIds": [
+        "strategy",
+        "converter",
+        "gauge"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "savings-current-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/savings-current-explorer.json"
+    },
+    {
+      "id": "oracle-capture-mezo-mainnet-2026-09-06",
+      "role": "artifact",
+      "kind": "price-source-capture",
+      "path": "artifacts/oracle-captures/mezo-mainnet-2026-09-06.json"
+    },
+    {
+      "id": "contract-oracle-probes-mezo-mainnet-2026-09-06",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-06.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "lending-mainnet-runtime-bytes",
+      "role": "artifact",
+      "kind": "canonical-runtime-fixture-capture",
+      "path": "artifacts/read-runtime/lending-mainnet.json"
+    },
+    {
+      "id": "vault-dynamic-read-interfaces",
+      "role": "canonical-record",
+      "kind": "dynamic-contract-read-interface-catalog",
+      "path": "records/vault-dynamic-read-interfaces.json",
+      "recordIds": [
+        "vault-v2",
+        "morpho-market-adapter",
+        "receipt-wrapper",
+        "vault-gauge"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "vault-vault-v2-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/vault-vault-v2-explorer.json"
+    },
+    {
+      "id": "vault-morpho-market-adapter-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/vault-morpho-market-adapter-explorer.json"
+    },
+    {
+      "id": "vault-receipt-wrapper-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/vault-receipt-wrapper-explorer.json"
+    },
+    {
+      "id": "vault-vault-gauge-explorer-source",
+      "role": "artifact",
+      "kind": "official-explorer-source-response",
+      "path": "artifacts/dynamic-interfaces/vault-vault-gauge-explorer.json"
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module contracts"
+    },
+    {
+      "id": "contract-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-contract-knowledge.ts"
+    },
+    {
+      "id": "contract-provenance-negative-tests",
+      "type": "semantic",
+      "command": "node scripts/test-contract-provenance.ts"
+    },
+    {
+      "id": "contract-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-contract-reference.ts --check"
+    },
+    {
+      "id": "savings-interface-projection",
+      "type": "semantic",
+      "command": "node scripts/generate-savings-package.ts --check"
+    }
+  ],
+  "extensions": {
+    "registryStatus": "verified-current",
+    "networkReferences": [
+      {
+        "moduleId": "networks",
+        "resourceId": "mezo-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "mezo-testnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "ethereum-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "base-mainnet"
+      }
+    ]
+  }
+}

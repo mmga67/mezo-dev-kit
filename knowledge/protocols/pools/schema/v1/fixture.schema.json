@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo pool math fixtures v1",
+  "allOf": [{"$ref": "../../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "required": ["records"],
+  "properties": {
+    "kind": {"const": "mezo-pool-math-fixtures"},
+    "owner": {"const": "protocols/pools"},
+    "records": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["id", "operation", "input", "expected"]}}
+  }
+}

@@ -1,0 +1,2278 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-validator-allocation-observation",
+  "id": "incentives-validator-allocation-mainnet",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-point-in-time",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "blockNumber": 11366264,
+    "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5"
+  },
+  "limitations": [
+    "Current weights and claimable amounts are point-in-time state; settled events remain historical facts and are not replaced by later reads.",
+    "Explorer event-topic queries and historical RPC reads establish the bounded observations only; archive failures are retained as typed unavailable outcomes.",
+    "Dynamic validator gauges and voting-reward contracts are factory-created instances, not static Contract registry identities.",
+    "This evidence creates no vote, distribution, claim, validator-operation, analytics, reader, or writer support."
+  ],
+  "networkSnapshot": {
+    "networkId": "mezo-mainnet",
+    "evmChainId": 31612,
+    "blockNumber": 11366264,
+    "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5",
+    "blockTimestamp": "2026-08-24T21:34:23.000Z",
+    "rpcUrl": "https://mezo-mainnet.boar.network",
+    "explorerApiUrl": "https://api.explorer.mezo.org"
+  },
+  "methods": [
+    "eth_chainId",
+    "eth_getBlockByNumber",
+    "eth_call at fixed, pre-event, and post-event blocks",
+    "eth_getTransactionByHash",
+    "eth_getTransactionReceipt",
+    "official explorer paginated decoded logs"
+  ],
+  "topology": {
+    "voter": {
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.validators-voter@mezo-mainnet"
+      },
+      "address": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a",
+      "ve": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "splitter": "0x5c6ef634e279a77d64e21d24b1a1bb4a5e59c5da",
+      "rewardToken": "0x7b7c000000000000000000000000000000000001",
+      "factoryRegistry": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "validatorPool": "0x7b7c000000000000000000000000000000000011",
+      "governor": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "maxVotingNum": "30"
+    },
+    "gaugeFactory": {
+      "address": "0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad",
+      "approved": true,
+      "votingRewardsFactory": "0x30019d85a86abd3cda1167f4c052690c32fbdec2"
+    }
+  },
+  "currentBoundaryState": {
+    "gaugeCount": 24,
+    "totalWeightRaw": "933684830061702759518",
+    "sumGaugeWeightsRaw": "933684830061702759518",
+    "weightSumMatches": true,
+    "gauges": [
+      {
+        "index": 0,
+        "address": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000001c1c1b0d27570dea0",
+          "value": "32408378811494751904"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007c48e94230f5ab95583494158f61e35d02026cce",
+          "value": "0x7c48e94230f5ab95583494158f61e35d02026cce"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000069bb6d685d21a1d8e79401ea4bc275cf5910",
+          "value": "0x000069bb6d685d21a1d8e79401ea4bc275cf5910"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000013a43b30d68da0a5d84",
+          "value": "5797155896710157458820"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000717391edcd2904",
+          "value": "31933742965401860"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8647b9",
+          "value": "1787185081"
+        }
+      },
+      {
+        "index": 1,
+        "address": "0xbfa0e5d71b60b3efb8acc72e04f6219c42538f1d",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000006edf2a079e",
+          "value": "476190476190"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": false
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000c9723cff7beeadc0ea0501873cb7e53a2f7843da",
+          "value": "0xc9723cff7beeadc0ea0501873cb7e53a2f7843da"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000057849ba3af7fa2547e1c520f59b7d5a46be439d",
+          "value": "0x057849ba3af7fa2547e1c520f59b7d5a46be439d"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000d6773fe90e59b",
+          "value": "3772922587047323"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000069f29b80",
+          "value": "1777507200"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000069e96524",
+          "value": "1776903460"
+        }
+      },
+      {
+        "index": 2,
+        "address": "0x8bf9b85295b59a36cb86ff3761cdbb45b0d721ab",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc50821a98eac038",
+          "value": "51615898380039536696"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000bab2e5e1318d2650642ca1d986c13e5055b525f0",
+          "value": "0xbab2e5e1318d2650642ca1d986c13e5055b525f0"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000148c5b29cea37000b8b8fe0e48382d18b1cf522c",
+          "value": "0x148c5b29cea37000b8b8fe0e48382d18b1cf522c"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f6368dc87f64ebc1bf",
+          "value": "9264196543501438796223"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b54d55de36cadf",
+          "value": "51032001980320479"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86476a",
+          "value": "1787185002"
+        }
+      },
+      {
+        "index": 3,
+        "address": "0x29faa7e91a18217cd603b84ce946834bda545b15",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc508131c02d1b7c",
+          "value": "51615897379970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000009ef26db391b64ba31c16f1160929192e41e805ec",
+          "value": "0x9ef26db391b64ba31c16f1160929192e41e805ec"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000001abd621cd9d76663991c46230e712a96265ba6f4",
+          "value": "0x1abd621cd9d76663991c46230e712a96265ba6f4"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f62ee2e6e9be6d5d98",
+          "value": "9263644041564272811416"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b54a91416c1298",
+          "value": "51028958512943768"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864746",
+          "value": "1787184966"
+        }
+      },
+      {
+        "index": 4,
+        "address": "0x491c842cf791c323966df0591916ba3288bbce0e",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000032024331933099c24",
+          "value": "57656264512827399204"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000c3f83bfd297aea9470cb48f73567338edce13260",
+          "value": "0xc3f83bfd297aea9470cb48f73567338edce13260"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000274642b8a3a06c98459c218c43d3d3bfff779674",
+          "value": "0x274642b8a3a06c98459c218c43d3d3bfff779674"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000230f5e8f20add17a9c6",
+          "value": "10347896360139711031750"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000ca82a33e1aab06",
+          "value": "57001582928767750"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864750",
+          "value": "1787184976"
+        }
+      },
+      {
+        "index": 5,
+        "address": "0x5c76f39a11699d2a9efd3dd5faf9f0ba4171f42e",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000009872d9ca79e",
+          "value": "10476190476190"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": false
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e8f5f15b0597f0d321c5cc917b3d797704dc6dd2",
+          "value": "0xe8f5f15b0597f0d321c5cc917b3d797704dc6dd2"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000002907ed26e30d4c54a6dddd34ecdea44f006da46b",
+          "value": "0x2907ed26e30d4c54a6dddd34ecdea44f006da46b"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000002158f09fee0",
+          "value": "2291617365728"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a615980",
+          "value": "1784764800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a58233c",
+          "value": "1784161084"
+        }
+      },
+      {
+        "index": 6,
+        "address": "0xef26859a19f7e44c82ab4e534df17046e1d5de6d",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000004c32545f79e",
+          "value": "5236190476190"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000075e6d91ea2946117cd86694fa38f72547f5ceb0e",
+          "value": "0x75e6d91ea2946117cd86694fa38f72547f5ceb0e"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000003c67d8020bf8aa75542f65e8152f74086be71f20",
+          "value": "0x3c67d8020bf8aa75542f65e8152f74086be71f20"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000356d50bf260bc",
+          "value": "939897958588604"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000134998d3c",
+          "value": "5177445692"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8647a3",
+          "value": "1787185059"
+        }
+      },
+      {
+        "index": 7,
+        "address": "0x96da117eef70240ecd12075d072cb028b32d45f0",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000001e6185b88b62cff75",
+          "value": "35026846744604114805"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000009f69ccb7de953941adbef538efbe9127fcab8990",
+          "value": "0x9f69ccb7de953941adbef538efbe9127fcab8990"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x00000000000000000000000041b1a7f633eb9dac1fc19adae41aa7562c620971",
+          "value": "0x41b1a7f633eb9dac1fc19adae41aa7562c620971"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000154ce707fe1f7dafffd",
+          "value": "6286768515238954991613"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000007b0883934a035d",
+          "value": "34630783340249949"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8749f3",
+          "value": "1787251187"
+        }
+      },
+      {
+        "index": 8,
+        "address": "0xba6cd12bb2905e5df73558cbe51d276c74ae5ec9",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000016628d44dae3b3019",
+          "value": "25808111094747312153"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000071921d05b112ec50fac7104b8f1b031e8067b28b",
+          "value": "0x71921d05b112ec50fac7104b8f1b031e8067b28b"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000021f2ab3cd8dd82aafc1cb78501b21d7543221c0",
+          "value": "0x021f2ab3cd8dd82aafc1cb78501b21d7543221c0"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000fb20422fd10d2f97e9",
+          "value": "4632457235433689946089"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000005aa87752d7b1c9",
+          "value": "25517978348401097"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864795",
+          "value": "1787185045"
+        }
+      },
+      {
+        "index": 9,
+        "address": "0xf3e7894a340bfdaf969014a26849b76f1b25dc3b",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc5078171dae977c",
+          "value": "51615887369970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000fc71fb6b322ef5198763b8531de150de526bc72c",
+          "value": "0xfc71fb6b322ef5198763b8531de150de526bc72c"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x00000000000000000000000049956c1b40e5a6d30f1a354bd76e8ece4cbcbe13",
+          "value": "0x49956c1b40e5a6d30f1a354bd76e8ece4cbcbe13"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f6445e4b53ea5d78ab",
+          "value": "9265191982868371175595"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b55252921eb84b",
+          "value": "51037485376911435"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8647ab",
+          "value": "1787185067"
+        }
+      },
+      {
+        "index": 10,
+        "address": "0xadab6af871f7d5f7de2f6d78363e8216979f3e23",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc5078171dae977c",
+          "value": "51615887369970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000796cc25486465d1d1fb635c7b124efa76be28668",
+          "value": "0x796cc25486465d1d1fb635c7b124efa76be28668"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000004f54ed6523efc24c8d7d083a290b0c06ba24e911",
+          "value": "0x4f54ed6523efc24c8d7d083a290b0c06ba24e911"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f63bd991afdb97da29",
+          "value": "9264578163304868338217"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b54f3f50b56c09",
+          "value": "51034104140229641"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864783",
+          "value": "1787185027"
+        }
+      },
+      {
+        "index": 11,
+        "address": "0x6246913089c909744d355dcc5ac8d6c6f246212e",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000000ddb73b8979e",
+          "value": "15236190476190"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000c28f8d462c972629592123fac95638c493767dc3",
+          "value": "0xc28f8d462c972629592123fac95638c493767dc3"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000005c3c57f3bdac5c81f7e272d364e66c66284d40cc",
+          "value": "0x5c3c57f3bdac5c81f7e272d364e66c66284d40cc"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000009b714e8944c94",
+          "value": "2734575219657876"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000381da2614",
+          "value": "15063459348"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86475b",
+          "value": "1787184987"
+        }
+      },
+      {
+        "index": 12,
+        "address": "0x58550195349715f9e6b93eb5648cc12e15861c37",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000001662847856fece78d",
+          "value": "25807956303080646541"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000082b5c3e0f42a534f683b9bfa9072e4541986e47e",
+          "value": "0x82b5c3e0f42a534f683b9bfa9072e4541986e47e"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000688e6ebf21a5f4f4e7262ba328009e418b3e0504",
+          "value": "0x688e6ebf21a5f4f4e7262ba328009e418b3e0504"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000fb1960da03cddfe8ce",
+          "value": "4631961463659683637454"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000005aa5fb7874010e",
+          "value": "25515247380201742"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8c3829",
+          "value": "1787574313"
+        }
+      },
+      {
+        "index": 13,
+        "address": "0xb5717c6dc106183e79d4c65386792166416f21cf",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc50812f6c21377c",
+          "value": "51615897369970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000099d710bdb1a20e8cea6b26a93dd6d9811e4847a5",
+          "value": "0x99d710bdb1a20e8cea6b26a93dd6d9811e4847a5"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000b74cd21732e72746561bf9ad87ee6cc9649208e5",
+          "value": "0xb74cd21732e72746561bf9ad87ee6cc9649208e5"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f63e379dda791c82b9",
+          "value": "9264748750517925872313"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b5501a1a2c7299",
+          "value": "51035043823121049"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86478e",
+          "value": "1787185038"
+        }
+      },
+      {
+        "index": 14,
+        "address": "0xa25d87e77aa7e04751cd77422c732602acaf25fe",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000004c32545f79e",
+          "value": "5236190476190"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000cb117094c25bfd389571bc7becfecf2742ccdb60",
+          "value": "0xcb117094c25bfd389571bc7becfecf2742ccdb60"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000ccb42587e690eb963b510713309e791c69ab7938",
+          "value": "0xccb42587e690eb963b510713309e791c69ab7938"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000356c6e94bf401",
+          "value": "939837247714305"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000000001349472e1",
+          "value": "5177111265"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86477c",
+          "value": "1787185020"
+        }
+      },
+      {
+        "index": 15,
+        "address": "0x19d200f61f5ea3ee1712026a7099b2a53fec2807",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000043278bad96855876c",
+          "value": "77423838436860987244"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000005641be787eae6066c6068bdec2950e83e1de4485",
+          "value": "0x5641be787eae6066c6068bdec2950e83e1de4485"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000d056656123bea72fe9139bac0539b8f53d850247",
+          "value": "0xd056656123bea72fe9139bac0539b8f53d850247"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000002f1441334b0cb34cc99",
+          "value": "13895303609856357092505"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000010fef098791a079",
+          "value": "76542542896799865"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86473f",
+          "value": "1787184959"
+        }
+      },
+      {
+        "index": 16,
+        "address": "0xf538957f39bd3c893996898ed0dd9c16e96ef89c",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000001662847856fece78d",
+          "value": "25807956303080646541"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000a4ef69444715236a12b20323bb57350abbb9ee87",
+          "value": "0xa4ef69444715236a12b20323bb57350abbb9ee87"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000d53ef9ab89abf6721086dbbe94f7715d451ac844",
+          "value": "0xd53ef9ab89abf6721086dbbe94f7715d451ac844"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000fb22f605b9412e79e7",
+          "value": "4632651969835878480359"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000005aa97114a25607",
+          "value": "25519051046540807"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8647b2",
+          "value": "1787185074"
+        }
+      },
+      {
+        "index": 17,
+        "address": "0xb33c01520cd287c37f94f1eb857c9419dc80d619",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000009025990f405b729a5",
+          "value": "166190022502131378597"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000d128ba4c5ce7a07641cdd32cca6783e818e007d9",
+          "value": "0xd128ba4c5ce7a07641cdd32cca6783e818e007d9"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000acc7499cb483633615fb3c4e1fc9cc9edca44cc8",
+          "value": "0xacc7499cb483633615fb3c4e1fc9cc9edca44cc8"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000064f4b2289c6dfada6af",
+          "value": "29796905720230227846831"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000024721913a2721cf",
+          "value": "164136819051930063"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a86e53a",
+          "value": "1787225402"
+        }
+      },
+      {
+        "index": 18,
+        "address": "0x0cf67adb34e3b15cba81677b2a5cbfd33efb3316",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc5078171dae977c",
+          "value": "51615887369970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000001f561f3294e3c41b9ea345dd83156401985547fa",
+          "value": "0x1f561f3294e3c41b9ea345dd83156401985547fa"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000d7fb1de0a4c2ffe5474e003656302a3f3a388a8a",
+          "value": "0xd7fb1de0a4c2ffe5474e003656302a3f3a388a8a"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f62baafcbb5561c7fd",
+          "value": "9263412130173388179453"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b54967d12fcb5d",
+          "value": "51027681024658269"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864737",
+          "value": "1787184951"
+        }
+      },
+      {
+        "index": 19,
+        "address": "0xd7bd531d5f137af1ed4bc5ddceb084d44d16440c",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000002cc5078171dae977c",
+          "value": "51615887369970816892"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000028588e960448be4e9d8932874e932318a024c121",
+          "value": "0x28588e960448be4e9d8932874e932318a024c121"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000dd442f7a14a8a9b170e46aa2734a5d551ab60595",
+          "value": "0xdd442f7a14a8a9b170e46aa2734a5d551ab60595"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000001f64088eea2a0435a27",
+          "value": "9264915753999695829543"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000b550f04afaee47",
+          "value": "51035963764960839"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a870887",
+          "value": "1787234439"
+        }
+      },
+      {
+        "index": 20,
+        "address": "0x445c7007a9ee838eae98eac7be98e85d7e9fd904",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000166283e6d217a478d",
+          "value": "25807946303080646541"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x000000000000000000000000426dfc8a0237c734cf14c6a1241ce483432e2565",
+          "value": "0x426dfc8a0237c734cf14c6a1241ce483432e2565"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x000000000000000000000000ee119ea2ab5c4b7989806c26b093d01bc72d039c",
+          "value": "0xee119ea2ab5c4b7989806c26b093d01bc72d039c"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000fb17c1af4b777c0bbe",
+          "value": "4631844604573136980926"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000005aa56597b8d5fe",
+          "value": "25514603659711998"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a864749",
+          "value": "1787184969"
+        }
+      },
+      {
+        "index": 21,
+        "address": "0x9d069ac2e523bdb07a2848728214aab5c1f44417",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000192c1c8a823c1dc0f",
+          "value": "29021698098232155151"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000a626a8787fe09a3d4c3262f4dd608977f39ddcf",
+          "value": "0x0a626a8787fe09a3d4c3262f4dd608977f39ddcf"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000006e358257006be847e7bd0bab5ea461befc5823b5",
+          "value": "0x6e358257006be847e7bd0bab5ea461befc5823b5"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000011a6181003802b24b8a",
+          "value": "5209007725920331647882"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000065f0f74feb504a",
+          "value": "28693917636186186"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8aa33f",
+          "value": "1787470655"
+        }
+      },
+      {
+        "index": 22,
+        "address": "0x67613981a8bafd014e9e8be17b3735ccd3e7b76f",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000003537a626d6d240419",
+          "value": "61355460695557407769"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000609c19b4aeea7bfcf89b6b524f02c588fb46535",
+          "value": "0x0609c19b4aeea7bfcf89b6b524f02c588fb46535"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000001e76d3e3d8b4fa81e8610db5239c944c79fe266a",
+          "value": "0x1e76d3e3d8b4fa81e8610db5239c944c79fe266a"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000257b22f36f7c4c05d61",
+          "value": "11062439241652463754593"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x00000000000000000000000000000000000000000000000000d87e79a6325041",
+          "value": "60937655913959489"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8bded2",
+          "value": "1787551442"
+        }
+      },
+      {
+        "index": 23,
+        "address": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+        "weightRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000008b98ffc40a994af6",
+          "value": "10059070985188494070"
+        },
+        "claimableRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "value": "0"
+        },
+        "alive": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": true
+        },
+        "bribe": {
+          "status": "available",
+          "raw": "0x00000000000000000000000085292d29d25775155ceb861c18aea688fbcf2446",
+          "value": "0x85292d29d25775155ceb861c18aea688fbcf2446"
+        },
+        "rewardsBeneficiary": {
+          "status": "available",
+          "raw": "0x0000000000000000000000008192ed1e1aacd2f198da1513c32775e4582316a5",
+          "value": "0x8192ed1e1aacd2f198da1513c32775e4582316a5"
+        },
+        "voter": {
+          "status": "available",
+          "raw": "0x000000000000000000000000e99a9ad5ed26bd30e4db25397f378817e9b9515a",
+          "value": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a"
+        },
+        "rewardToken": {
+          "status": "available",
+          "raw": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+          "value": "0x7b7c000000000000000000000000000000000001"
+        },
+        "totalSupplyRaw": {
+          "status": "available",
+          "raw": "0x0000000000000000000000000000000000000000000000000000000000000001",
+          "value": "1"
+        },
+        "leftRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000061e1b194efb9cedc2c",
+          "value": "1805597118636573514796"
+        },
+        "rewardRateRaw": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000002355fc353b2aac",
+          "value": "9946165898062508"
+        },
+        "periodFinish": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+          "value": "1787788800"
+        },
+        "lastUpdateTime": {
+          "status": "available",
+          "raw": "0x000000000000000000000000000000000000000000000000000000006a8647a0",
+          "value": "1787185056"
+        }
+      }
+    ]
+  },
+  "lifecycleHistory": {
+    "voterLogCount": 1145,
+    "voterLogDigest": "25505e8b8f9d3be71982617328d8017469573c856af2c9a644ec13cbd98c8df0",
+    "eventCounts": [
+      {
+        "event": "Abstained",
+        "count": 302
+      },
+      {
+        "event": "DistributeReward",
+        "count": 396
+      },
+      {
+        "event": "NotifyReward",
+        "count": 20
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "count": 24
+      },
+      {
+        "event": "ValidatorLeft",
+        "count": 2
+      },
+      {
+        "event": "Voted",
+        "count": 401
+      }
+    ],
+    "validatorGaugeCreations": [
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289094,
+        "blockHash": "0x8e9b175493154c0e99984941317fc3060089c2906b8b2b3847e695e03af531dd",
+        "transactionHash": "0x4ae43073023763e162efb1dd399e1b1c00513bbd271ebd70d64fd718fdae7be5",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x000069bb6d685d21a1d8e79401ea4bc275cf5910",
+          "gauge": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+          "beneficiary": "0x000069bb6d685d21a1d8e79401ea4bc275cf5910"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289095,
+        "blockHash": "0x3acb6d6f1952dc58934d82b4a452ad8457166072a38eda1f26707d90bcee002b",
+        "transactionHash": "0xb8c5a40f793dde2d022dd787dc58c9456299aeeb8c97e3207d789a02fa0c39c3",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x057849ba3af7fa2547e1c520f59b7d5a46be439d",
+          "gauge": "0xbfa0e5d71b60b3efb8acc72e04f6219c42538f1d",
+          "beneficiary": "0x057849ba3af7fa2547e1c520f59b7d5a46be439d"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289096,
+        "blockHash": "0x725587929a6eba140fb8163a1a2ab3b8adf1d42232b9cfdcb6e59f33bc8cf471",
+        "transactionHash": "0x897d80ddfe26b7e0eed7b1aa155fec17213b9da61da5030f53570073def4f50e",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x148c5b29cea37000b8b8fe0e48382d18b1cf522c",
+          "gauge": "0x8bf9b85295b59a36cb86ff3761cdbb45b0d721ab",
+          "beneficiary": "0x148c5b29cea37000b8b8fe0e48382d18b1cf522c"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289097,
+        "blockHash": "0xd2048601ce524ef1b45da7861c1ef81d56794548488e110d249094f658130473",
+        "transactionHash": "0xe5a370db563357200e627e3583adaae5a9836e374c9e0a45a5c9a5f80bad9d6c",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x1abd621cd9d76663991c46230e712a96265ba6f4",
+          "gauge": "0x29faa7e91a18217cd603b84ce946834bda545b15",
+          "beneficiary": "0x1abd621cd9d76663991c46230e712a96265ba6f4"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289098,
+        "blockHash": "0x136c1a7ba44c072eacbff7866ea3741c8bbf9485b36b1d6bc0f3898a88eaa124",
+        "transactionHash": "0x049c5fd3eb3a13600979a851e2379278218c4d061bc7f486f2a111f6c7ec93a1",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x274642b8a3a06c98459c218c43d3d3bfff779674",
+          "gauge": "0x491c842cf791c323966df0591916ba3288bbce0e",
+          "beneficiary": "0x274642b8a3a06c98459c218c43d3d3bfff779674"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289099,
+        "blockHash": "0x734d18fcdd7e556d7db2de5d350f802d4a6ea9df58fc536000fd978538d3d8de",
+        "transactionHash": "0x40fcdf956a2871117f2d452f88712a4dab312cf08c895dba95a40648f68ad106",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x2907ed26e30d4c54a6dddd34ecdea44f006da46b",
+          "gauge": "0x5c76f39a11699d2a9efd3dd5faf9f0ba4171f42e",
+          "beneficiary": "0x2907ed26e30d4c54a6dddd34ecdea44f006da46b"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289100,
+        "blockHash": "0xc9558064994ec70fc629250209407de9f681e740bc7061e35556cb6f7a0e3157",
+        "transactionHash": "0x5a7e2053b2aaf0e268d2faaa1fef3c9806b9bdf385d8b9cd16af736bc70090f4",
+        "logIndex": 3,
+        "parameters": {
+          "operator": "0x3c67d8020bf8aa75542f65e8152f74086be71f20",
+          "gauge": "0xef26859a19f7e44c82ab4e534df17046e1d5de6d",
+          "beneficiary": "0x3c67d8020bf8aa75542f65e8152f74086be71f20"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289101,
+        "blockHash": "0xe68509a40c7476c358bc159fb50a0cd3cead8f72c6f11d84f65778e3b7b175ac",
+        "transactionHash": "0x7ff5f9edc3389533ddec0a6a7847b007fd7b4415372d103eaf8fe8c57ba2d926",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x41b1a7f633eb9dac1fc19adae41aa7562c620971",
+          "gauge": "0x96da117eef70240ecd12075d072cb028b32d45f0",
+          "beneficiary": "0x41b1a7f633eb9dac1fc19adae41aa7562c620971"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289102,
+        "blockHash": "0xe99b5b2c06448d88b4fb3bae8f7100ba9bf70bc78950f73dab162c4bddfe62cf",
+        "transactionHash": "0x4d20749d5f919d6d044f43faa258da0359bead03cdf3e21842978200657c25d0",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x42b898ac7b7bcb369355d269360b6c8b29256928",
+          "gauge": "0xba6cd12bb2905e5df73558cbe51d276c74ae5ec9",
+          "beneficiary": "0x42b898ac7b7bcb369355d269360b6c8b29256928"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289103,
+        "blockHash": "0xdd3b5043731456a381a5a0b503c1b8fb101745a5ec412b684131c32b3e953b6d",
+        "transactionHash": "0x573e031677e4b7931593ee103b7f201faebc3e860615e76a0195f26aae244b23",
+        "logIndex": 3,
+        "parameters": {
+          "operator": "0x49956c1b40e5a6d30f1a354bd76e8ece4cbcbe13",
+          "gauge": "0xf3e7894a340bfdaf969014a26849b76f1b25dc3b",
+          "beneficiary": "0x49956c1b40e5a6d30f1a354bd76e8ece4cbcbe13"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289104,
+        "blockHash": "0x72465a62bd1a6c0500e3eefa0b9e7acf7d0432d3247621411cef2de230720470",
+        "transactionHash": "0xb3eda6d8778368c6d7d7cfce5f20f06f3e24a3413b2599b8a977657bc64dc56b",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x4f54ed6523efc24c8d7d083a290b0c06ba24e911",
+          "gauge": "0xadab6af871f7d5f7de2f6d78363e8216979f3e23",
+          "beneficiary": "0x4f54ed6523efc24c8d7d083a290b0c06ba24e911"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289105,
+        "blockHash": "0xb61a4dcb0691e892c041c844e78c6f28cd687924104ae2a6ee915b983826b756",
+        "transactionHash": "0xd690dd81520e54af9825c8d5747951341d95b5eda5285d0c11f066926271426f",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x5c3c57f3bdac5c81f7e272d364e66c66284d40cc",
+          "gauge": "0x6246913089c909744d355dcc5ac8d6c6f246212e",
+          "beneficiary": "0x5c3c57f3bdac5c81f7e272d364e66c66284d40cc"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289106,
+        "blockHash": "0xeee8678ced0eae195b424aaafc13507601565eef68ad8560f75d102f43a3357f",
+        "transactionHash": "0xce74b56eae6bcb75dd7ec6bb62603054aa8521adcedbdc5245784fcd38d1111b",
+        "logIndex": 3,
+        "parameters": {
+          "operator": "0x688e6ebf21a5f4f4e7262ba328009e418b3e0504",
+          "gauge": "0x58550195349715f9e6b93eb5648cc12e15861c37",
+          "beneficiary": "0x688e6ebf21a5f4f4e7262ba328009e418b3e0504"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289107,
+        "blockHash": "0x18f89bbf2127e58e5c9626c19bd26392f126898d31e540217c38dee8b407da51",
+        "transactionHash": "0x28d101dd5a2e4730f3c4c7c1a0c009b4a5893525784b0c2eecd64de7ae5fc4a7",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xb74cd21732e72746561bf9ad87ee6cc9649208e5",
+          "gauge": "0xb5717c6dc106183e79d4c65386792166416f21cf",
+          "beneficiary": "0xb74cd21732e72746561bf9ad87ee6cc9649208e5"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289108,
+        "blockHash": "0xa29dc81e50a6a6805c5710d98ad209b31f1a33812b626e83c893afed10bc2a97",
+        "transactionHash": "0x971e1e9bfc98344250c94034a39b33c619bfdaa0979c520fdb8d7fd9bc59af46",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xccb42587e690eb963b510713309e791c69ab7938",
+          "gauge": "0xa25d87e77aa7e04751cd77422c732602acaf25fe",
+          "beneficiary": "0xccb42587e690eb963b510713309e791c69ab7938"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289109,
+        "blockHash": "0x6e9f3354386367e8cef3580d8cd6e6d1fe3e1bc0f35ed113c650df25ba9a70a9",
+        "transactionHash": "0x1995d232572e821350dc5db3c166899cbdfd5d34e4f95eefdee3cc44e7961393",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xd056656123bea72fe9139bac0539b8f53d850247",
+          "gauge": "0x19d200f61f5ea3ee1712026a7099b2a53fec2807",
+          "beneficiary": "0xd056656123bea72fe9139bac0539b8f53d850247"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289110,
+        "blockHash": "0x87c16240683680ca1f543a9a9eaa04a89677b2d007c32c162948075379810c34",
+        "transactionHash": "0x363bab34496df2f983ec2f84c8df25cbd236d078c828b4c28672eff3725f068e",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xd53ef9ab89abf6721086dbbe94f7715d451ac844",
+          "gauge": "0xf538957f39bd3c893996898ed0dd9c16e96ef89c",
+          "beneficiary": "0xd53ef9ab89abf6721086dbbe94f7715d451ac844"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289111,
+        "blockHash": "0x223b7631eee42bc69b69b5482b10977a75baaabdbcd322ddf76b6f6d9f2d6c1f",
+        "transactionHash": "0x5b9c015e1472f01ad4c3a1d0918bd72f8cf94ff1139e45476a1aad6e222d18cc",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xd6234339cf3b6dd0b00c8a76c526a24488cb57dc",
+          "gauge": "0xb33c01520cd287c37f94f1eb857c9419dc80d619",
+          "beneficiary": "0xd6234339cf3b6dd0b00c8a76c526a24488cb57dc"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289112,
+        "blockHash": "0xbb65724bb209bf4fcd66deed0484299f8481b8107da408074b34d1fc01c377f6",
+        "transactionHash": "0x8ae7a216d0132c9a917001af8e784ce818a699d550b42c73a4df531b35f43ec7",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xd7fb1de0a4c2ffe5474e003656302a3f3a388a8a",
+          "gauge": "0x0cf67adb34e3b15cba81677b2a5cbfd33efb3316",
+          "beneficiary": "0xd7fb1de0a4c2ffe5474e003656302a3f3a388a8a"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289113,
+        "blockHash": "0x002208cb854f19c465e4bb18b69276533f817571187ce6a84ec3a6ccd115b4ab",
+        "transactionHash": "0x5735178369a9ef73396215964b6cbd1cde4ca39231029e1fee0d61f5e9b15513",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xdd442f7a14a8a9b170e46aa2734a5d551ab60595",
+          "gauge": "0xd7bd531d5f137af1ed4bc5ddceb084d44d16440c",
+          "beneficiary": "0xdd442f7a14a8a9b170e46aa2734a5d551ab60595"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 6289114,
+        "blockHash": "0x83f9e1e4bf0c3dfa9006f784d07da1ab265d36d33b387282b1f162a51230eb9b",
+        "transactionHash": "0x64a13bdef49d30b91c24b0ef3e63e02050047a70b3b3891784edbac8af44fa0a",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0xee119ea2ab5c4b7989806c26b093d01bc72d039c",
+          "gauge": "0x445c7007a9ee838eae98eac7be98e85d7e9fd904",
+          "beneficiary": "0xee119ea2ab5c4b7989806c26b093d01bc72d039c"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 9056909,
+        "blockHash": "0x0bf38152d17c57124a9a955b0e997bccb4ef26d835bc2237a94fa75e1b0616f4",
+        "transactionHash": "0x744386fd015880361cdf377c6ec8996250f5a7ac6341872ecc0ea7e02b473a50",
+        "logIndex": 2,
+        "parameters": {
+          "operator": "0x6e358257006be847e7bd0bab5ea461befc5823b5",
+          "gauge": "0x9d069ac2e523bdb07a2848728214aab5c1f44417",
+          "beneficiary": "0x6e358257006be847e7bd0bab5ea461befc5823b5"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 10364053,
+        "blockHash": "0x7842e409b27a9b6103c2dde0029d9626d885daec0a476d1a695609041423024e",
+        "transactionHash": "0x2cbcb74c0f23f112c3949c1891479dfc311bba3859f82d2f6ac89d07e72971d2",
+        "logIndex": 4,
+        "parameters": {
+          "operator": "0x1e76d3e3d8b4fa81e8610db5239c944c79fe266a",
+          "gauge": "0x67613981a8bafd014e9e8be17b3735ccd3e7b76f",
+          "beneficiary": "0x1e76d3e3d8b4fa81e8610db5239c944c79fe266a"
+        }
+      },
+      {
+        "event": "ValidatorGaugeCreated",
+        "blockNumber": 11120999,
+        "blockHash": "0x5f867e1cda9bb06fd10c97b63d849c224f55a3b846b589e9d939287c34ce8fa4",
+        "transactionHash": "0x633ff99f7f1f8bb7b43036a66fdbf1d16c1f1cf7eba0e9e1fea69f12f0fcb423",
+        "logIndex": 4,
+        "parameters": {
+          "operator": "0x8192ed1e1aacd2f198da1513c32775e4582316a5",
+          "gauge": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+          "beneficiary": "0x8192ed1e1aacd2f198da1513c32775e4582316a5"
+        }
+      }
+    ],
+    "validatorDepartures": [
+      {
+        "event": "ValidatorLeft",
+        "blockNumber": 8587739,
+        "blockHash": "0xe135cee5839139f2879c5b9b9eced1ff624bb1cf423bfdaaece4d31499d2da25",
+        "transactionHash": "0xbe0c846f8962b694237b3ffd6993165ef6f7232fa31a157ac9009f291b45e13c",
+        "logIndex": 1,
+        "parameters": {
+          "operator": "0x057849ba3af7fa2547e1c520f59b7d5a46be439d",
+          "gauge": "0xbfa0e5d71b60b3efb8acc72e04f6219c42538f1d"
+        }
+      },
+      {
+        "event": "ValidatorLeft",
+        "blockNumber": 10438232,
+        "blockHash": "0x93d5c520be51e44910bbedb5ca9b277311c4ea93bd1507c52eb507628c8e6c4c",
+        "transactionHash": "0x2c86f06248fd3cc991e0062039123b5635f25184d94e8246a3bf58960106ab06",
+        "logIndex": 1,
+        "parameters": {
+          "operator": "0x2907ed26e30d4c54a6dddd34ecdea44f006da46b",
+          "gauge": "0x5c76f39a11699d2a9efd3dd5faf9f0ba4171f42e"
+        }
+      }
+    ],
+    "currentGaugeListMatchesCreationHistory": true
+  },
+  "representativeVote": {
+    "transactionHash": "0xb18309b54034e92fcbd95443fb76c76790fdc586399e35d8e74cb33a4c55d506",
+    "blockNumber": 11359222,
+    "tokenId": "575",
+    "rawLockedBTC": {
+      "amountRaw": "43846473268494402",
+      "unlockTimestamp": "0",
+      "permanent": true,
+      "storedBoostRaw": "5000000000000000000"
+    },
+    "unboostedVotingPowerRaw": "43846473268494402",
+    "boostedVotingPowerRaw": "219232366342472010",
+    "externalVoteWeightTotal": "10000",
+    "allocations": [
+      {
+        "gauge": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+        "externalWeight": "10000",
+        "expectedGaugeVoteRaw": "219232366342472010",
+        "preVoteRaw": "219229314065289790",
+        "postVoteRaw": "219232366342472010"
+      }
+    ],
+    "expectedUsedWeightRaw": "219232366342472010",
+    "postUsedWeightRaw": "219232366342472010",
+    "allocationFloorDustRaw": "0",
+    "abstainedEvents": [
+      {
+        "event": "Abstained",
+        "blockNumber": 11359222,
+        "blockHash": "0xcebe9ade4d8834272bbb50ae21458a57a879339db30d8b7af69f71e3fb814962",
+        "transactionHash": "0xb18309b54034e92fcbd95443fb76c76790fdc586399e35d8e74cb33a4c55d506",
+        "logIndex": 1,
+        "parameters": {
+          "voter": "0x8babff20654aef596613916f495050668d116f0c",
+          "gauge": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+          "tokenId": "575",
+          "weight": "219229314065289790",
+          "totalWeight": "9839838618846022060",
+          "timestamp": "1787580925"
+        }
+      }
+    ],
+    "votedEvents": [
+      {
+        "event": "Voted",
+        "blockNumber": 11359222,
+        "blockHash": "0xcebe9ade4d8834272bbb50ae21458a57a879339db30d8b7af69f71e3fb814962",
+        "transactionHash": "0xb18309b54034e92fcbd95443fb76c76790fdc586399e35d8e74cb33a4c55d506",
+        "logIndex": 3,
+        "parameters": {
+          "voter": "0x8babff20654aef596613916f495050668d116f0c",
+          "gauge": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+          "tokenId": "575",
+          "weight": "219232366342472010",
+          "totalWeight": "10059070985188494070",
+          "timestamp": "1787580925"
+        }
+      }
+    ],
+    "abstainedWeightSumRaw": "219229314065289790",
+    "votedWeightSumRaw": "219232366342472010",
+    "totalWeightPreRaw": "933684827009425577298",
+    "totalWeightPostRaw": "933684830061702759518",
+    "totalWeightTransitionMatches": true,
+    "receiptStatus": "0x1"
+  },
+  "representativeRewardNotification": {
+    "event": {
+      "event": "NotifyReward",
+      "blockNumber": 11249834,
+      "blockHash": "0x8afab0393accba8a71b44b005c6953a0adeb5fae5bf53c2bc232b993f208f7e6",
+      "transactionHash": "0x1d99d5cb9e843f6997ec11977c92125e31daaa795261a9fe8aa94245e05ea333",
+      "logIndex": 3,
+      "parameters": {
+        "sender": "0x5c6ef634e279a77d64e21d24b1a1bb4a5e59c5da",
+        "reward": "0x7b7c000000000000000000000000000000000001",
+        "amount": "557369832853916620093286"
+      }
+    },
+    "preState": {
+      "totalWeightRaw": "933668428784635396680",
+      "gaugeCount": 24,
+      "sumGaugeWeightsRaw": "933668428784635396680",
+      "weightSumMatches": true
+    },
+    "indexDeltaRaw": "596967633980566261366",
+    "perGaugeIndexShares": [
+      {
+        "gauge": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+        "weightRaw": "32294895521851786904",
+        "indexShareRaw": "19279007369329445967969"
+      },
+      {
+        "gauge": "0xbfa0e5d71b60b3efb8acc72e04f6219c42538f1d",
+        "weightRaw": "476190476190",
+        "indexShareRaw": "284270301895223"
+      },
+      {
+        "gauge": "0x8bf9b85295b59a36cb86ff3761cdbb45b0d721ab",
+        "weightRaw": "51615898380039536696",
+        "indexShareRaw": "30813020731713545169390"
+      },
+      {
+        "gauge": "0x29faa7e91a18217cd603b84ce946834bda545b15",
+        "weightRaw": "51615897379970816892",
+        "indexShareRaw": "30813020134704887690022"
+      },
+      {
+        "gauge": "0x491c842cf791c323966df0591916ba3288bbce0e",
+        "weightRaw": "57656264512827399204",
+        "indexShareRaw": "34418923810380258378030"
+      },
+      {
+        "gauge": "0x5c76f39a11699d2a9efd3dd5faf9f0ba4171f42e",
+        "weightRaw": "10476190476190",
+        "indexShareRaw": "6253946641700886"
+      },
+      {
+        "gauge": "0xef26859a19f7e44c82ab4e534df17046e1d5de6d",
+        "weightRaw": "5236190476190",
+        "indexShareRaw": "3125836239642718"
+      },
+      {
+        "gauge": "0x96da117eef70240ecd12075d072cb028b32d45f0",
+        "weightRaw": "35026846744604114805",
+        "indexShareRaw": "20909893826926218096997"
+      },
+      {
+        "gauge": "0xba6cd12bb2905e5df73558cbe51d276c74ae5ec9",
+        "weightRaw": "25808111094747312153",
+        "indexShareRaw": "15406607017738904678183"
+      },
+      {
+        "gauge": "0xf3e7894a340bfdaf969014a26849b76f1b25dc3b",
+        "weightRaw": "51615887369970816892",
+        "indexShareRaw": "30813014159058871544554"
+      },
+      {
+        "gauge": "0xadab6af871f7d5f7de2f6d78363e8216979f3e23",
+        "weightRaw": "51615887369970816892",
+        "indexShareRaw": "30813014159058871544554"
+      },
+      {
+        "gauge": "0x6246913089c909744d355dcc5ac8d6c6f246212e",
+        "weightRaw": "15236190476190",
+        "indexShareRaw": "9095512579448381"
+      },
+      {
+        "gauge": "0x58550195349715f9e6b93eb5648cc12e15861c37",
+        "weightRaw": "25807956303080646541",
+        "indexShareRaw": "15406514612123895399299"
+      },
+      {
+        "gauge": "0xb5717c6dc106183e79d4c65386792166416f21cf",
+        "weightRaw": "51615897369970816892",
+        "indexShareRaw": "30813020128735211350217"
+      },
+      {
+        "gauge": "0xa25d87e77aa7e04751cd77422c732602acaf25fe",
+        "weightRaw": "5236190476190",
+        "indexShareRaw": "3125836239642718"
+      },
+      {
+        "gauge": "0x19d200f61f5ea3ee1712026a7099b2a53fec2807",
+        "weightRaw": "77423838436860987244",
+        "indexShareRaw": "46219525645346527301731"
+      },
+      {
+        "gauge": "0xf538957f39bd3c893996898ed0dd9c16e96ef89c",
+        "weightRaw": "25807956303080646541",
+        "indexShareRaw": "15406514612123895399299"
+      },
+      {
+        "gauge": "0xb33c01520cd287c37f94f1eb857c9419dc80d619",
+        "weightRaw": "166006861111319305323",
+        "indexShareRaw": "99100723102164762366906"
+      },
+      {
+        "gauge": "0x0cf67adb34e3b15cba81677b2a5cbfd33efb3316",
+        "weightRaw": "51615887369970816892",
+        "indexShareRaw": "30813014159058871544554"
+      },
+      {
+        "gauge": "0xd7bd531d5f137af1ed4bc5ddceb084d44d16440c",
+        "weightRaw": "51615887369970816892",
+        "indexShareRaw": "30813014159058871544554"
+      },
+      {
+        "gauge": "0x445c7007a9ee838eae98eac7be98e85d7e9fd904",
+        "weightRaw": "25807946303080646541",
+        "indexShareRaw": "15406508642447555593636"
+      },
+      {
+        "gauge": "0x9d069ac2e523bdb07a2848728214aab5c1f44417",
+        "weightRaw": "29021698098232155151",
+        "indexShareRaw": "17325014447799949147657"
+      },
+      {
+        "gauge": "0x67613981a8bafd014e9e8be17b3735ccd3e7b76f",
+        "weightRaw": "61635707151222265425",
+        "indexShareRaw": "36794522266784223775583"
+      },
+      {
+        "gauge": "0xde3593718dcf024daa1e76fcba80e5ce99cd0ea9",
+        "weightRaw": "10059067932911311850",
+        "indexShareRaw": "6004937983959851269820"
+      }
+    ],
+    "shareSumRaw": "557369832853916620092881",
+    "floorDustRaw": "405"
+  },
+  "representativeDistribution": {
+    "event": {
+      "event": "DistributeReward",
+      "blockNumber": 11249964,
+      "blockHash": "0x6836f796947ea2f140639465e1fe906279cb07e148a8d8609d03607ff050d4b0",
+      "transactionHash": "0xf2e21c01f8f5ec18fa5070fb0a801200c02d77b2ae25f93289b119fa68d95d2f",
+      "logIndex": 4,
+      "parameters": {
+        "sender": "0xf8176df5b9fbcf0ed38c06970371ba89b7701bbb",
+        "gauge": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+        "amount": "19279007369329445967969"
+      }
+    },
+    "blockTimestamp": "2026-08-17T00:18:01.000Z",
+    "timestampRaw": "1787185081",
+    "gauge": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+    "preClaimable": {
+      "status": "available",
+      "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "value": "0"
+    },
+    "postClaimable": {
+      "status": "available",
+      "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "value": "0"
+    },
+    "preRewardRate": {
+      "status": "available",
+      "raw": "0x000000000000000000000000000000000000000000000000006d782115a0a055",
+      "value": "30812855953563733"
+    },
+    "prePeriodFinish": {
+      "status": "available",
+      "raw": "0x000000000000000000000000000000000000000000000000000000006a864380",
+      "value": "1787184000"
+    },
+    "rolloverLeftoverRaw": "0",
+    "expectedPostRewardRateRaw": "31933742965401860",
+    "observedPostRewardRate": {
+      "status": "available",
+      "raw": "0x00000000000000000000000000000000000000000000000000717391edcd2904",
+      "value": "31933742965401860"
+    },
+    "expectedPostPeriodFinish": "1787788800",
+    "observedPostPeriodFinish": {
+      "status": "available",
+      "raw": "0x000000000000000000000000000000000000000000000000000000006a8f7e00",
+      "value": "1787788800"
+    },
+    "downstreamNotifyEvents": [
+      {
+        "address": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+        "from": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a",
+        "amountRaw": "19279007369329445967969",
+        "logIndex": 2
+      }
+    ],
+    "rewardTokenTransfers": [
+      {
+        "token": "0x7b7c000000000000000000000000000000000001",
+        "from": "0xe99a9ad5ed26bd30e4db25397f378817e9b9515a",
+        "to": "0xf84b0ab58bd7d72d648b59848af42a84dbe3d033",
+        "amountRaw": "19279007369329445967969",
+        "logIndex": 1
+      }
+    ]
+  },
+  "representativeClaim": {
+    "status": "available",
+    "event": {
+      "event": "ClaimRewards",
+      "blockNumber": 8250370,
+      "blockHash": "0x6bacb09bbb3e823e254e31feac91a9b124511b1cccf3210a22e792cd4efa90c7",
+      "transactionHash": "0xc3e82fc7a4d333e06942f2f653329e198235d3869709296c06ab5e44ed22851a",
+      "logIndex": 1,
+      "parameters": {
+        "from": "0xacc7499cb483633615fb3c4e1fc9cc9edca44cc8",
+        "amount": "34783103238720412599252"
+      },
+      "gauge": "0xb33c01520cd287c37f94f1eb857c9419dc80d619"
+    },
+    "gauge": "0xb33c01520cd287c37f94f1eb857c9419dc80d619",
+    "account": "0xacc7499cb483633615fb3c4e1fc9cc9edca44cc8",
+    "amountRaw": "34783103238720412599252",
+    "rewardsStoragePre": {
+      "status": "available",
+      "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "value": "0"
+    },
+    "rewardsStoragePost": {
+      "status": "available",
+      "raw": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "value": "0"
+    },
+    "rewardTransfers": [
+      {
+        "token": "0x7b7c000000000000000000000000000000000001",
+        "from": "0xb33c01520cd287c37f94f1eb857c9419dc80d619",
+        "to": "0xacc7499cb483633615fb3c4e1fc9cc9edca44cc8",
+        "amountRaw": "34783103238720412599252",
+        "logIndex": 0
+      }
+    ]
+  },
+  "sourceEvidenceReferences": [
+    {
+      "moduleId": "contracts",
+      "resourceId": "contract-incentives-probes-2026-08-21",
+      "recordId": "observe-incentives-validators-voter-mezo-mainnet"
+    },
+    {
+      "moduleId": "contracts",
+      "resourceId": "contract-sources",
+      "recordId": "incentives-explorer-executable-reproductions"
+    }
+  ]
+}

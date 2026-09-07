@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "workflows/bridges",
+  "moduleId": "workflows/bridges",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T13:39:35.987Z",
+  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": [],
+    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
+  },
+  "limitations": [
+    "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
+    "Native Bridge has its own verified lifecycle and is not normalized into the MUSD NTT lifecycle; MEZO NTT remains out of the initial route slice.",
+    "Fees, capacities, pause state, peer state, mappings, implementations, and relayer behavior are volatile."
+  ],
+  "resources": [
+    {
+      "id": "bridge-providers",
+      "role": "canonical-record",
+      "kind": "bridge-provider-catalog",
+      "path": "records/providers.json",
+      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "bridge-assets",
+      "role": "canonical-record",
+      "kind": "bridge-asset-catalog",
+      "path": "records/assets.json",
+      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "bridge-routes",
+      "role": "canonical-record",
+      "kind": "bridge-route-catalog",
+      "path": "records/routes.json",
+      "recordIds": [
+        "wormhole-ntt-musd-mezo-to-ethereum",
+        "wormhole-ntt-musd-ethereum-to-mezo",
+        "wormhole-ntt-musd-mezo-to-base",
+        "wormhole-ntt-musd-base-to-mezo",
+        "mezo-native-usdc-ethereum-to-mezo",
+        "mezo-native-btc-mezo-to-ethereum"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "bridge-contract-roles",
+      "role": "canonical-record",
+      "kind": "bridge-contract-role-map",
+      "path": "records/contracts.json",
+      "recordIds": [
+        "musd-ntt-manager-mezo-mainnet",
+        "musd-wormhole-transceiver-mezo-mainnet",
+        "musd-ntt-manager-ethereum-mainnet",
+        "musd-wormhole-transceiver-ethereum-mainnet",
+        "musd-ntt-manager-base-mainnet",
+        "musd-wormhole-transceiver-base-mainnet",
+        "native-assets-bridge-mezo-mainnet",
+        "native-mezo-bridge-ethereum-mainnet"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "bridge-ntt-lifecycle",
+      "role": "canonical-record",
+      "kind": "wormhole-ntt-lifecycle",
+      "path": "records/ntt-lifecycle.json"
+    },
+    {
+      "id": "bridge-native-lifecycle",
+      "role": "canonical-record",
+      "kind": "mezo-native-bridge-lifecycle",
+      "path": "records/native-lifecycle.json"
+    },
+    {
+      "id": "bridge-sources",
+      "role": "source-catalog",
+      "kind": "bridge-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-source-musd-ntt-mainnet",
+        "official-wormhole-chain-ids",
+        "official-wormhole-ntt-lifecycle-source",
+        "official-mezod-native-bridge-v12",
+        "ethereum-native-bridge-deployed-source"
+      ],
+      "recordCollectionPointer": "/sources"
+    },
+    {
+      "id": "bridge-musd-ntt-evidence",
+      "role": "evidence",
+      "kind": "bridge-deployment-and-transfer-observation-set",
+      "path": "evidence/musd-ntt-mainnet-2026-08-18.json"
+    },
+    {
+      "id": "bridge-native-evidence",
+      "role": "evidence",
+      "kind": "mezo-native-bridge-evidence",
+      "path": "evidence/native-mainnet-2026-08-18.json"
+    },
+    {
+      "id": "bridge-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "bridge-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "bridge-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "bridge-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "bridge-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-providers"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-contract-roles"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-ntt-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-musd-ntt-evidence"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-evidence"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module workflows/bridges"
+    },
+    {
+      "id": "bridge-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-bridge-knowledge.ts"
+    },
+    {
+      "id": "bridge-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-bridge-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "workflowStatus": "evidence-verified-promotion-blocked",
+    "canonicalNetworkReferences": [
+      {
+        "moduleId": "networks",
+        "resourceId": "mezo-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "ethereum-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "base-mainnet"
+      }
+    ],
+    "evidenceLocalNetworkLabels": [],
+    "registryBoundary": "Reusable network and bridge contract identities resolve through accepted Networks and Contracts records; dated evidence retains addresses only as checked observation coordinates. Token representation identities remain workflow-owned.",
+    "contractRoleMapReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-contract-roles"
+    },
+    "blockers": ["current exact-call writer verification for any future supported route"],
+    "currentContractEvidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-bridge-v13-probes-2026-08-24"
+    }
+  }
+}

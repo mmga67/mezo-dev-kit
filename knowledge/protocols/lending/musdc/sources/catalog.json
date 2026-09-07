@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-source-catalog",
+  "id": "musdc-lending-sources",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T14:34:51Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"retrievalDate": "2026-08-24", "networkIds": ["mezo-mainnet"]},
+  "limitations": ["Current upstream main does not replace the exact deployed explorer bundle."],
+  "records": [
+    {"id": "official-musdc-borrowing-docs", "type": "official-documentation", "url": "https://mezo.org/docs/users/borrow/how-to-borrow-musdc/", "retrievedAt": "2026-08-23T18:00:00Z", "scope": "Product lifecycle and mUSDC terminology."},
+    {"id": "official-docs-repository", "type": "official-source-repository", "repository": "https://github.com/mezo-org/docs", "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555"},
+    {"id": "morpho-upstream", "type": "upstream-source-repository", "repository": "https://github.com/morpho-org/morpho-blue", "commit": "d09dd1c4b9c7d9d05f976faa7ebfdc424dae5e8c", "scope": "Current upstream context only; deployed truth comes from reproduction evidence."},
+    {"id": "bridge-asset", "type": "logical-reference", "reference": {"moduleId": "workflows/bridges", "resourceId": "bridge-assets", "recordId": "usdc-native-bridge"}},
+    {"id": "price-feeds", "type": "logical-reference", "reference": {"moduleId": "prices", "resourceId": "price-sources-feeds"}},
+    {"id": "fixed-block-state", "type": "local-evidence", "path": "evidence/fixed-block-state-2026-08-23.json"},
+    {"id": "source-reproduction", "type": "local-evidence", "path": "evidence/source-reproduction-2026-08-23.json"},
+    {"id": "borrower-reconciliation", "type": "local-evidence", "path": "evidence/borrower-reconciliation-2026-08-24.json", "scope": "Bounded collateral-supply and borrow receipt/event/pre-state/post-state reconciliation."}
+  ]
+}

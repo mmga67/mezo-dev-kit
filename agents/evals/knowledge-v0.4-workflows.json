@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "kind": "knowledge-workflow-eval-set",
+  "id": "knowledge-v0.4-workflows",
+  "cases": [
+    {
+      "id": "human-discover-module",
+      "audience": "human-consumer",
+      "intent": "Find the canonical module and human reference without browsing directories by file type.",
+      "route": ["knowledge/README.md", "knowledge/index.json", "knowledge/records/modules.json"],
+      "knowledgeReferences": [
+        {
+          "moduleId": "knowledge",
+          "resourceId": "knowledge-module-catalog",
+          "recordId": "networks"
+        }
+      ],
+      "requiredOutcomes": [
+        "Resolve a stable module ID before selecting a physical path.",
+        "Treat child lifecycle state as authoritative over catalog membership."
+      ],
+      "prohibitedOutcomes": [
+        "Infer support from catalog inclusion.",
+        "Load every module by default."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/README.md",
+          "includes": ["knowledge-module-catalog", "not cross-domain identities"]
+        }
+      ]
+    },
+    {
+      "id": "human-read-supported-network",
+      "audience": "human-consumer",
+      "intent": "Answer a supported-network identity question and see endpoint freshness limitations.",
+      "route": [
+        "knowledge/README.md",
+        "knowledge/networks/README.md",
+        "knowledge/networks/generated/reference.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "networks", "resourceId": "network-reference" },
+        { "moduleId": "networks", "resourceId": "mezo-mainnet" }
+      ],
+      "requiredOutcomes": [
+        "Distinguish stable chain identity from volatile provider availability.",
+        "Read support, review, and freshness before use."
+      ],
+      "prohibitedOutcomes": [
+        "Claim complete Ethereum compatibility.",
+        "Treat one endpoint probe as an uptime guarantee."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/networks/generated/reference.md",
+          "includes": ["Module support: `supported`", "Stable chain identity does not imply"]
+        }
+      ]
+    },
+    {
+      "id": "human-resolve-deployment",
+      "audience": "human-consumer",
+      "intent": "Find deployment identity, implementation, ABI provenance, and evidence without copying an address from prose.",
+      "route": [
+        "knowledge/README.md",
+        "knowledge/contracts/README.md",
+        "knowledge/contracts/generated/reference.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "contracts", "resourceId": "contract-reference" },
+        { "moduleId": "contracts", "resourceId": "contract-deployments" }
+      ],
+      "requiredOutcomes": [
+        "Resolve deployment and ABI by stable record/resource IDs.",
+        "Observe validity, support, review, and evidence coordinates."
+      ],
+      "prohibitedOutcomes": [
+        "Treat an open validity range as immutability.",
+        "Use the generated page as an independent address authority."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/contracts/generated/reference.md",
+          "includes": ["not an independent address/ABI authority", "An open validity range"]
+        }
+      ]
+    },
+    {
+      "id": "human-read-protocol",
+      "audience": "human-consumer",
+      "intent": "Understand MUSD borrowing formulas and operation capability boundaries.",
+      "route": [
+        "knowledge/README.md",
+        "knowledge/protocols/musd/borrowing/README.md",
+        "knowledge/protocols/musd/borrowing/generated/reference.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-reference" },
+        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas" }
+      ],
+      "requiredOutcomes": [
+        "Read formulas with units, scope, evidence, and fixtures.",
+        "Keep accepted knowledge separate from proposed writer capabilities."
+      ],
+      "prohibitedOutcomes": [
+        "Infer that a writer ships because operation knowledge is accepted.",
+        "Recompute formulas from descriptive prose."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/protocols/musd/borrowing/generated/reference.md",
+          "includes": [
+            "Operation capability state",
+            "does not imply that MDK ships a transaction writer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "human-read-workflow-boundary",
+      "audience": "human-consumer",
+      "intent": "Review accepted transaction architecture without mistaking it for verified Mezo observations or a public implementation.",
+      "route": [
+        "knowledge/README.md",
+        "knowledge/workflows/transactions/README.md",
+        "knowledge/workflows/transactions/generated/reference.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "workflows/transactions", "resourceId": "transaction-reference" },
+        { "moduleId": "workflows/transactions", "resourceId": "transaction-mezo-observations" }
+      ],
+      "requiredOutcomes": [
+        "Keep submitted, included, confirmed, and reconciled distinct.",
+        "Separate accepted architecture from verified observations and runtime support."
+      ],
+      "prohibitedOutcomes": [
+        "Claim a public client implementation exists.",
+        "Treat architecture acceptance as protocol evidence or writer support."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/workflows/transactions/generated/reference.md",
+          "includes": ["Fact and proposal boundary", "ADR-0002 and ADR-0003 are accepted"]
+        }
+      ]
+    },
+    {
+      "id": "human-diagnose-known-issue",
+      "audience": "human-consumer",
+      "intent": "Diagnose a known symptom using a bounded issue, control, mitigation, and canonical owner.",
+      "route": [
+        "knowledge/README.md",
+        "knowledge/troubleshooting/README.md",
+        "knowledge/troubleshooting/generated/reference.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "troubleshooting", "resourceId": "troubleshooting-reference" },
+        { "moduleId": "troubleshooting", "resourceId": "issue-testnet-rpc-historical-data-gap" }
+      ],
+      "requiredOutcomes": [
+        "Match exact scope and review window.",
+        "Follow logical links to the owner of underlying facts."
+      ],
+      "prohibitedOutcomes": [
+        "Generalize a point-in-time provider omission.",
+        "Publish a security finding through troubleshooting."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/troubleshooting/generated/reference.md",
+          "includes": ["Safety boundary", "Security findings follow `SECURITY.md`"]
+        }
+      ]
+    },
+    {
+      "id": "maintainer-lifecycle-update",
+      "audience": "human-maintainer",
+      "intent": "Add, update, reverify, deprecate, or move knowledge without creating a second owner or hand-editing generated output.",
+      "route": [
+        "docs/standards/knowledge-management.md",
+        "docs/guides/KNOWLEDGE_AUTHORING.md",
+        "knowledge/README.md",
+        "knowledge/index.json"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "knowledge", "resourceId": "knowledge-module-catalog" }
+      ],
+      "requiredOutcomes": [
+        "Update evidence and canonical input before generation.",
+        "Preserve stable IDs and run structural, semantic, drift, and review checks."
+      ],
+      "prohibitedOutcomes": [
+        "Reprocess unchanged evidence merely because a file moved.",
+        "Delete a referenced ID before deprecation rules permit it."
+      ],
+      "assertions": [
+        {
+          "path": "docs/standards/knowledge-management.md",
+          "includes": [
+            "### Add or update a fact",
+            "### Reverify stale knowledge",
+            "### Deprecate or supersede",
+            "### Move or migrate files"
+          ]
+        },
+        {
+          "path": "docs/guides/KNOWLEDGE_AUTHORING.md",
+          "includes": [
+            "## Update an existing fact manually",
+            "## Create a new module manually",
+            "## Request coding-agent work",
+            "## Final review matrix"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agent-maintain-network",
+      "audience": "agent",
+      "intent": "Reverify one endpoint observation while loading only network and maintenance context.",
+      "route": [
+        "AGENTS.md",
+        "knowledge/AGENTS.md",
+        "agents/skills/mdk-knowledge-maintenance/SKILL.md",
+        "agents/skills/mdk-network-knowledge/SKILL.md",
+        "knowledge/networks/index.json"
+      ],
+      "excludedByDefault": [
+        "knowledge/contracts/index.json",
+        "knowledge/protocols/incentives/index.json",
+        "knowledge/workflows/bridges/index.json"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "networks", "resourceId": "rpc-endpoints" },
+        { "moduleId": "networks", "resourceId": "network-probes-2026-08-18" }
+      ],
+      "requiredOutcomes": [
+        "Preserve provider/network/time scope and control checks.",
+        "Regenerate and run the named module checks."
+      ],
+      "prohibitedOutcomes": [
+        "Copy endpoint state into agent instructions.",
+        "Load unrelated protocol modules by default."
+      ],
+      "assertions": [
+        {
+          "path": "knowledge/AGENTS.md",
+          "includes": [
+            "only the resources needed",
+            "Update canonical inputs before generated outputs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agent-review-transaction",
+      "audience": "agent",
+      "intent": "Review a transaction lifecycle change while preserving accepted architecture and unimplemented runtime boundaries.",
+      "route": [
+        "AGENTS.md",
+        "knowledge/AGENTS.md",
+        "agents/skills/mdk-transaction-execution/SKILL.md",
+        "knowledge/workflows/transactions/index.json"
+      ],
+      "excludedByDefault": [
+        "knowledge/protocols/incentives/index.json",
+        "knowledge/troubleshooting/index.json"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "workflows/transactions", "resourceId": "transaction-state-machine" },
+        { "moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements" }
+      ],
+      "requiredOutcomes": [
+        "Model-test every changed reachable transition.",
+        "Keep accepted architecture separate from public runtime and writer support."
+      ],
+      "prohibitedOutcomes": [
+        "Infer a dependency or public API from ADR acceptance.",
+        "Treat a receipt as protocol success."
+      ],
+      "assertions": [
+        {
+          "path": "agents/skills/mdk-transaction-execution/SKILL.md",
+          "includes": ["The decisions accept", "never blindly rebuild and resubmit"]
+        }
+      ]
+    },
+    {
+      "id": "agent-diagnose-issue",
+      "audience": "agent",
+      "intent": "Use one troubleshooting issue and its canonical owner without loading all issues or disclosing security material.",
+      "route": [
+        "AGENTS.md",
+        "knowledge/AGENTS.md",
+        "agents/skills/mdk-troubleshooting/SKILL.md",
+        "knowledge/troubleshooting/index.json"
+      ],
+      "excludedByDefault": [
+        "knowledge/troubleshooting/records/native-bridge-system-receipt-not-delivery.json",
+        "knowledge/protocols/incentives/index.json"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "troubleshooting", "resourceId": "issue-musd-borrowing-capacity-snapshot" },
+        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-operations" }
+      ],
+      "requiredOutcomes": [
+        "Run the issue's exact control and bounded mitigation.",
+        "Correct an underlying owner before its troubleshooting projection when drifted."
+      ],
+      "prohibitedOutcomes": [
+        "Load unrelated issues by default.",
+        "Bypass validation or expose a security finding."
+      ],
+      "assertions": [
+        {
+          "path": "agents/skills/mdk-troubleshooting/SKILL.md",
+          "includes": ["Match the exact symptom and scope", "A security finding would be disclosed"]
+        }
+      ]
+    }
+  ]
+}

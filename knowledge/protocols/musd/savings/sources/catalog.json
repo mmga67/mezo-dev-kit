@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-source-catalog",
+  "id": "musd-savings-sources",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T14:46:00Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"retrievalDate": "2026-08-24", "networkIds": ["mezo-mainnet"]},
+  "limitations": ["Whitepaper and product documentation establish intent and topology, not current code or mutable state."],
+  "records": [
+    {"id": "official-musd-savings-docs", "type": "official-documentation", "url": "https://mezo.org/docs/users/mezo-earn/vaults/musd-savings-vault/", "retrievedAt": "2026-08-23T18:00:00Z", "scope": "Current product description and user lifecycle."},
+    {"id": "official-docs-repository", "type": "official-source-repository", "repository": "https://github.com/mezo-org/docs", "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555", "scope": "Execution-pinned official documentation state."},
+    {"id": "official-whitepaper", "type": "logical-reference", "reference": {"moduleId": "protocols/incentives", "resourceId": "official-mezo-earn-whitepaper-pdf"}, "scope": "Economic flywheel intent; not deployed-state authority."},
+    {"id": "fixed-block-state", "type": "local-evidence", "path": "evidence/fixed-block-state-2026-08-23.json", "scope": "Same-block Savings, PCV, converter, strategy, voter, and gauge observations."},
+    {"id": "source-reproduction", "type": "local-evidence", "path": "evidence/source-reproduction-2026-08-23.json", "scope": "Exact implementation executable reproduction."},
+    {"id": "withdrawal-reconciliation", "type": "local-evidence", "path": "evidence/withdrawal-reconciliation-2026-08-24.json", "scope": "Bounded protocol-yield, user-yield, principal-burn, transfer, and archive-state reconciliation."}
+  ]
+}

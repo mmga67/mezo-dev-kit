@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "testnet-rpc-historical-data-gap-2026-08-18",
+  "owner": "troubleshooting",
+  "category": "rpc-provider",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-point-in-time",
+  "severity": "medium",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "symptom": "A historical Mezo Testnet deployment transaction receipt or block returns no result from the official public RPC even though the official explorer retains matching transaction, block, and/or log evidence.",
+  "scope": {
+    "networkId": "mezo-testnet",
+    "endpointId": "mezo-testnet-official-https",
+    "observationSet": {
+      "moduleId": "contracts",
+      "resourceId": "contract-probes-2026-08-18"
+    },
+    "validity": "Only the recorded historical coordinates and probe date; not a universal testnet or provider claim."
+  },
+  "prerequisites": [
+    "Select one listed contract observation and its activation transaction/block coordinate.",
+    "Use a fresh chain assertion before comparing providers or explorer data."
+  ],
+  "diagnosticSteps": [
+    "Request the recorded transaction receipt and block from the configured official testnet RPC.",
+    "If either result is absent, resolve the same coordinate through a second eligible source or the official explorer and retain which source established each field.",
+    "Check a current block/state call as a control so a general endpoint or chain mismatch is not mislabeled as historical omission."
+  ],
+  "expected": "The selected historical coordinate is available from the RPC used for deployment evidence.",
+  "observed": "Multiple independent deployment coordinates required official-explorer fallback for a missing receipt, block, or both.",
+  "control": "The same official endpoint returned the expected chain ID and current block/state during the bounded network and contract probes, and it returned some other historical receipts.",
+  "verifiedCause": "A provider-history availability gap exists at the recorded coordinates. The evidence does not establish whether retention, indexing, pruning, or another provider implementation detail is the deeper cause.",
+  "safeMitigation": "Treat an absent historical RPC result as unknown, not as proof the transaction or block never existed. Reassert chain identity, use another eligible evidence source, record provenance per field, and keep current runtime bytecode/state verification separate.",
+  "reproduction": {
+    "basis": "repeated-read-only-observations",
+    "minimumCaseCount": 2,
+    "receiptMissingObservationIds": [
+      "observe-musd-borrower-operations-mezo-testnet",
+      "observe-musd-coll-surplus-pool-mezo-testnet",
+      "observe-musd-default-pool-mezo-testnet",
+      "observe-musd-governable-variables-mezo-testnet",
+      "observe-musd-hint-helpers-mezo-testnet",
+      "observe-musd-interest-rate-manager-mezo-testnet",
+      "observe-musd-pcv-mezo-testnet",
+      "observe-musd-stability-pool-mezo-testnet",
+      "observe-musd-trove-manager-mezo-testnet",
+      "observe-mezo-earn-pool-factory-mezo-testnet"
+    ],
+    "blockFallbackObservationIds": [
+      "observe-musd-borrower-operations-mezo-testnet",
+      "observe-musd-borrower-operations-signatures-mezo-testnet",
+      "observe-musd-coll-surplus-pool-mezo-testnet",
+      "observe-musd-default-pool-mezo-testnet",
+      "observe-musd-gas-pool-mezo-testnet",
+      "observe-musd-hint-helpers-mezo-testnet",
+      "observe-musd-token-mezo-testnet",
+      "observe-musd-pcv-mezo-testnet",
+      "observe-mezo-earn-router-mezo-testnet"
+    ]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "networks",
+      "resourceId": "rpc-endpoints",
+      "recordId": "mezo-testnet-official-https"
+    },
+    {
+      "moduleId": "contracts",
+      "resourceId": "contract-probes-2026-08-18"
+    }
+  ],
+  "limitations": [
+    "Recheck after reviewAfter and before relying on the workaround.",
+    "Explorer availability is also volatile and does not replace runtime state or bytecode checks.",
+    "Do not advertise archive support or failure from this observation."
+  ]
+}

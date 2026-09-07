@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-flow-reconciliation-evidence",
+  "id": "usdc-lending-vault-flow-reconciliation",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T20:47:49Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkId": "mezo-mainnet",
+    "roleHistoryFromBlock": 9274376,
+    "throughBlock": 11341710,
+    "depositBlocks": [11283984, 11283985],
+    "withdrawalBlocks": [11339800, 11339801]
+  },
+  "limitations": [
+    "This packet reconciles one representative deposit/allocation and one representative withdrawal/deallocation; it is not a complete user, allocation, wrapper, or gauge history.",
+    "The selected accounts are public on-chain observations used only for transaction reconciliation and are not reusable user identities.",
+    "The complete allocator/sentinel event history through the module coordinate resolves current membership for observed candidates; any future operation must rescan and directly confirm candidates at its own coordinate.",
+    "Successful historical execution does not establish current operation safety, writer support, audit coverage, VaultV2/VaultGauge Contract provenance, or wrapper/gauge claim behavior."
+  ],
+  "architectureReference": {
+    "moduleId": "protocols/vaults/usdc-lending",
+    "resourceId": "usdc-lending-vault-architecture"
+  },
+  "marketReference": {
+    "moduleId": "protocols/lending/musdc",
+    "resourceId": "musdc-lending-market"
+  },
+  "adapterDeploymentReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-deployments",
+    "recordId": "vaults.usdc-lending-market-adapter@mezo-mainnet"
+  },
+  "capture": {
+    "queriedAt": "2026-08-24T20:47:49Z",
+    "methods": [
+      "official-explorer contract ABI and address-log queries",
+      "official-explorer decoded transaction query",
+      "eth_getBlockByNumber",
+      "eth_getTransactionByHash",
+      "eth_getTransactionReceipt",
+      "eth_call"
+    ],
+    "endpointReferences": [
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-boar-https"
+      }
+    ],
+    "explorerEndpoints": [
+      "https://api.explorer.mezo.org/api/v2/smart-contracts/0x06291b67e3d7660240ab44afc9a708d82b976a8b",
+      "https://api.explorer.mezo.org/api/v2/addresses/0x06291b67e3d7660240ab44afc9a708d82b976a8b/logs",
+      "https://api.explorer.mezo.org/api/v2/transactions/{transactionHash}"
+    ],
+    "roleEventRange": {
+      "fromBlock": 9274376,
+      "toBlock": 11341710,
+      "allocatorMatches": 3,
+      "sentinelMatches": 0,
+      "paginationComplete": true
+    },
+    "flowSelectionRule": "For each flow type, select the latest matching VaultV2 event not later than block 11341710 and reconcile its receipt plus adjacent archive state."
+  },
+  "subject": {
+    "vault": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B",
+    "marketAdapter": "0xb0EE3a01d9134733155B28289c09f084Acca4F61",
+    "musdc": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197",
+    "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+    "allocationIds": [
+      "0x5a101b9ffb5c4beb9d848db3878cd4f61809fc9c898b9bce99da4c4e4b7e611a",
+      "0x39b4ab85fdc98e86381a5d77443f8c38c424a7f4bf578b7491d93b0a8d04016c",
+      "0xff4deb37dbaf144fd2356578e98d384a483e9f7147b6148dcdbe3a7c3d8632f1"
+    ]
+  },
+  "roleReconciliation": {
+    "events": [
+      {
+        "blockNumber": 9274376,
+        "blockHash": "0x12c29e52773c61ef8684a8a08c5061633f05f035d7408c16db3ad3d228431579",
+        "transactionHash": "0x8456e4ba1045ccaff8175ac6f52e1ca97d22e33b801277daedd15ac31e302bca",
+        "logIndex": 1,
+        "signature": "SetIsAllocator(address,bool)",
+        "account": "0x123694886DBf5Ac94DDA07135349534536D14cAf",
+        "enabled": true
+      },
+      {
+        "blockNumber": 9274412,
+        "blockHash": "0xf2a1347b494dca53782e75b749fe9c393c7f0635accb3650110d20108d40f570",
+        "transactionHash": "0xc1e984f9953b3d5a4cf86ff2d2f5e7fbbef647959fa34428015c09e3b32548c3",
+        "logIndex": 1,
+        "signature": "SetIsAllocator(address,bool)",
+        "account": "0x98D8899c3030741925BE630C710A98B57F397C7a",
+        "enabled": true
+      },
+      {
+        "blockNumber": 9274422,
+        "blockHash": "0xfb86a5495fd62c6b366c2a380aa9614c64d322501d650f8182961978d26d1bb0",
+        "transactionHash": "0xcfb67f3c1e41c31770c58ae4ebaa458b2db6d4ed302e0209690818c5a7f7ded1",
+        "logIndex": 1,
+        "signature": "SetIsAllocator(address,bool)",
+        "account": "0x123694886DBf5Ac94DDA07135349534536D14cAf",
+        "enabled": false
+      }
+    ],
+    "fixedBlockReads": {
+      "blockNumber": 11341710,
+      "currentAllocator": {
+        "account": "0x98D8899c3030741925BE630C710A98B57F397C7a",
+        "isAllocator": true,
+        "isSentinel": false
+      },
+      "retiredAllocator": {
+        "account": "0x123694886DBf5Ac94DDA07135349534536D14cAf",
+        "isAllocator": false,
+        "isSentinel": false
+      },
+      "sentinelEventCount": 0
+    }
+  },
+  "states": [
+    {
+      "id": "before-deposit",
+      "blockNumber": 11283984,
+      "blockHash": "0xc9b3b9f75e8796758bc7b0db9c56c0a7eca874ac716d22182516819cb48a9a3a",
+      "blockTimestamp": "2026-08-21T10:25:56Z",
+      "account": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde",
+      "vaultShares": "0",
+      "musdcWalletBalance": "7285742",
+      "vaultTotalSupply": "215789692379944734956819",
+      "vaultStoredTotalAssets": "216285854692",
+      "adapterRealAssets": "216287942705",
+      "adapterAllocation": "216285854692"
+    },
+    {
+      "id": "after-deposit",
+      "blockNumber": 11283985,
+      "blockHash": "0xcd37ddfdf0fd300b81d43e5fdd594370fbeb234f5c1df86496b8782ea5683c72",
+      "blockTimestamp": "2026-08-21T10:26:00Z",
+      "account": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde",
+      "vaultShares": "7268958233793340441",
+      "musdcWalletBalance": "0",
+      "vaultTotalSupply": "215796961338178528297260",
+      "vaultStoredTotalAssets": "216295228852",
+      "adapterRealAssets": "216295228852",
+      "adapterAllocation": "216295228852"
+    },
+    {
+      "id": "before-withdrawal",
+      "blockNumber": 11339800,
+      "blockHash": "0xa33ce885b19549245e0d2fb37906ef4226707f992f5bddf1ecd8ea44abd76adf",
+      "blockTimestamp": "2026-08-23T18:22:40Z",
+      "account": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+      "vaultShares": "1596172798920106945553",
+      "musdcWalletBalance": "0",
+      "vaultTotalSupply": "215030360361499773509534",
+      "vaultStoredTotalAssets": "215539900065",
+      "adapterRealAssets": "215546001416",
+      "adapterAllocation": "215539900065"
+    },
+    {
+      "id": "after-withdrawal",
+      "blockNumber": 11339801,
+      "blockHash": "0x9eba52733768c954777edc369bd67617cb5f1dfde19ce18ddbea92a07e9c636e",
+      "blockTimestamp": "2026-08-23T18:22:43Z",
+      "account": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+      "vaultShares": "99761183336299155392",
+      "musdcWalletBalance": "1500000000",
+      "vaultTotalSupply": "213533948745915965719373",
+      "vaultStoredTotalAssets": "214046001637",
+      "adapterRealAssets": "214046001637",
+      "adapterAllocation": "214046001637"
+    }
+  ],
+  "operations": [
+    {
+      "id": "deposit-and-allocate",
+      "transactionHash": "0x2a036fe30280f00c79e6f72c3b9d4b6d0d235a54f97cc8938d1c534ed2a05ed9",
+      "blockNumber": 11283985,
+      "blockHash": "0xcd37ddfdf0fd300b81d43e5fdd594370fbeb234f5c1df86496b8782ea5683c72",
+      "blockTimestamp": "2026-08-21T10:26:00Z",
+      "receiptStatus": "0x1",
+      "from": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde",
+      "to": "0x305CaB84Bd6FE3017EeC281463D56C096745d240",
+      "decodedTopLevelCall": "Bundler3.multicall((address,bytes,uint256,bool,bytes32)[])",
+      "assets": "7285742",
+      "shares": "7268958233793340441",
+      "interestAccrual": {
+        "previousTotalAssets": "216285854692",
+        "newTotalAssets": "216287943110",
+        "performanceFeeShares": "0",
+        "managementFeeShares": "0",
+        "logIndex": 3
+      },
+      "events": {
+        "deposit": {
+          "signature": "Deposit(address,address,uint256,uint256)",
+          "topic0": "0xdcbc1c05240f31ff3ad067ef1ee35ce4997762752e3a095284754544f4c709d7",
+          "sender": "0x6f49B3b6893f7701F2cdD468e3cFD818d2A2369F",
+          "onBehalf": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde",
+          "assets": "7285742",
+          "shares": "7268958233793340441",
+          "logIndex": 6
+        },
+        "allocate": {
+          "signature": "Allocate(address,address,uint256,bytes32[],int256)",
+          "topic0": "0x2bc7948a96a066968d2a58aaf46eb0b305aa166b1d1951d2f7ef0919746b8c2a",
+          "sender": "0x6f49B3b6893f7701F2cdD468e3cFD818d2A2369F",
+          "adapter": "0xb0EE3a01d9134733155B28289c09f084Acca4F61",
+          "assets": "7285742",
+          "change": "9374160",
+          "logIndex": 14
+        },
+        "adapterAllocate": {
+          "signature": "Allocate(bytes32,uint256,uint256)",
+          "topic0": "0x67bd2993814767565e883edd1e76edf105cdd33766384ca8495e53562e20bea7",
+          "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+          "newAllocation": "216295228852",
+          "mintedShares": "7264947552137",
+          "logIndex": 13
+        }
+      },
+      "tokenTransfers": [
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde", "to": "0x6f49B3b6893f7701F2cdD468e3cFD818d2A2369F", "amount": "7285742", "logIndex": 1},
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0x6f49B3b6893f7701F2cdD468e3cFD818d2A2369F", "to": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "amount": "7285742", "logIndex": 4},
+        {"token": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "from": "0x0000000000000000000000000000000000000000", "to": "0x9677B632c2520a3E23BcebF2B2288dB59facDdde", "amount": "7268958233793340441", "logIndex": 5},
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "to": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "amount": "7285742", "logIndex": 8},
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "to": "0x565834cE7E40b8987BC20EbF83E2159467bDA311", "amount": "7285742", "logIndex": 12}
+      ],
+      "stateTransition": {"fromStateId": "before-deposit", "toStateId": "after-deposit"}
+    },
+    {
+      "id": "withdraw-and-deallocate",
+      "functionSelector": "0xb460af94",
+      "transactionHash": "0xb8e2a13efb9d5a0ad4714322e209ca33b96df5dd0cd7e231d8eb3c3ed2bed84b",
+      "blockNumber": 11339801,
+      "blockHash": "0x9eba52733768c954777edc369bd67617cb5f1dfde19ce18ddbea92a07e9c636e",
+      "blockTimestamp": "2026-08-23T18:22:43Z",
+      "receiptStatus": "0x1",
+      "from": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+      "to": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B",
+      "decodedCall": {
+        "signature": "withdraw(uint256,address,address)",
+        "assets": "1500000000",
+        "receiver": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+        "onBehalf": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153"
+      },
+      "shares": "1496411615583807790161",
+      "interestAccrual": {
+        "previousTotalAssets": "215539900065",
+        "newTotalAssets": "215546001637",
+        "performanceFeeShares": "0",
+        "managementFeeShares": "0",
+        "logIndex": 0
+      },
+      "events": {
+        "deallocate": {
+          "signature": "Deallocate(address,address,uint256,bytes32[],int256)",
+          "topic0": "0xd602b36fb24934aef1bc2a658de029b486fa4c664a6e45de1f48e3fd1be25dd9",
+          "sender": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+          "adapter": "0xb0EE3a01d9134733155B28289c09f084Acca4F61",
+          "assets": "1500000000",
+          "change": "-1493898428",
+          "logIndex": 7
+        },
+        "adapterDeallocate": {
+          "signature": "Deallocate(bytes32,uint256,uint256)",
+          "topic0": "0xc3505702fbdd1c334673aa66559f4546d749681c4d2509c99c07fabf01b3227f",
+          "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+          "newAllocation": "214046001637",
+          "burnedShares": "1495585963494207",
+          "logIndex": 5
+        },
+        "withdraw": {
+          "signature": "Withdraw(address,address,address,uint256,uint256)",
+          "topic0": "0xfbde797d201c681b91056529119e0b02407c7bb96a4a2c75c01fc9667232c8db",
+          "sender": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+          "receiver": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+          "onBehalf": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153",
+          "assets": "1500000000",
+          "shares": "1496411615583807790161",
+          "logIndex": 10
+        }
+      },
+      "tokenTransfers": [
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0x565834cE7E40b8987BC20EbF83E2159467bDA311", "to": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "amount": "1500000000", "logIndex": 4},
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "to": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "amount": "1500000000", "logIndex": 6},
+        {"token": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "from": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153", "to": "0x0000000000000000000000000000000000000000", "amount": "1496411615583807790161", "logIndex": 8},
+        {"token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "from": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "to": "0xdEa6ADedEbF650404b2f461467a3Df8C3658e153", "amount": "1500000000", "logIndex": 9}
+      ],
+      "stateTransition": {"fromStateId": "before-withdrawal", "toStateId": "after-withdrawal"}
+    }
+  ]
+}

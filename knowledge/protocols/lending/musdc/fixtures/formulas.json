@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-formula-fixtures",
+  "id": "musdc-lending-formula-fixtures",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"deployedFormulaGeneration": "Morpho 0.8.19"},
+  "limitations": ["Fixtures use explicit integers and do not replace current oracle, rate, market, or position reads."],
+  "records": [
+    {"id": "shares-down", "operation": "to-shares-down", "input": {"assets": "10", "totalAssets": "1000", "totalShares": "1000000"}, "expected": "19980"},
+    {"id": "shares-up", "operation": "to-shares-up", "input": {"assets": "10", "totalAssets": "1000", "totalShares": "1000000"}, "expected": "19981"},
+    {"id": "assets-down", "operation": "to-assets-down", "input": {"shares": "19980", "totalAssets": "1000", "totalShares": "1000000"}, "expected": "9"},
+    {"id": "assets-up", "operation": "to-assets-up", "input": {"shares": "19980", "totalAssets": "1000", "totalShares": "1000000"}, "expected": "10"},
+    {"id": "fixed-market-debt", "operation": "to-assets-up", "input": {"shares": "135100133166644254", "totalAssets": "135552034713", "totalShares": "135100133166644254"}, "expected": "135552034713"},
+    {"id": "taylor-interest", "operation": "interest", "input": {"borrowRate": "1000000000000", "elapsed": "3600", "totalBorrowAssets": "1000000"}, "expected": {"compound": "3606487776000000", "interest": "3606"}},
+    {"id": "health-at-boundary", "operation": "health", "input": {"collateral": "1000000000000000000", "price": "77292270770000000000000000000", "lltv": "860000000000000000", "borrowed": "66471352862"}, "expected": true},
+    {"id": "health-one-over", "operation": "health", "input": {"collateral": "1000000000000000000", "price": "77292270770000000000000000000", "lltv": "860000000000000000", "borrowed": "66471352863"}, "expected": false},
+    {"id": "zero-debt-healthy", "operation": "zero-debt-health", "input": {"borrowShares": "0", "collateral": "0", "price": "0"}, "expected": true},
+    {"id": "liquidity-distinct", "operation": "liquidity", "input": {"totalSupplyAssets": "214046001638", "totalBorrowAssets": "135552034713"}, "expected": "78493966925"}
+  ]
+}

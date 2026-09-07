@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-reconciliation",
+  "id": "usdc-lending-vault-reconciliation",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"systems": ["native-bridge", "morpho-market", "vault-v2", "receipt-wrapper", "gauge"]},
+  "limitations": ["No combined APR, TVL, or risk score is defined."],
+  "rules": [
+    "VaultV2 totalAssets includes the adapter value; the adapter's market supply assets are not additive.",
+    "VaultV2 shares held by the wrapper split into userVaultShares and accumulatedYield exactly once.",
+    "Wrapper totalSupply is receipt accounting and is not VaultV2 totalSupply or mUSDC assets.",
+    "Gauge totalSupply represents staked wrapper receipts; beneficial ownership replaces wallet custody for those receipts.",
+    "Borrower debt and collateral remain in protocols/lending/musdc.",
+    "MEZO emissions and redirected vault-share yield are different assets and different accounting owners.",
+    "mUSDC representation supply remains a Native Bridge fact, not vault TVL."
+  ]
+}

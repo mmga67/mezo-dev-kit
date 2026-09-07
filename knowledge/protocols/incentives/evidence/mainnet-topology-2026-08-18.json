@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-topology-observation",
+  "id": "mezo-incentives-mainnet-topology-2026-08-18",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-point-in-time",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T09:56:38Z",
+  "observedAt": "2026-08-18T09:56:38Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "blockNumber": 11212253
+  },
+  "authorityRule": "Deployed block-pinned state and bytecode identity override documentation. Source-derived behavior is accepted only where the source is fully verified or independently reproduces the deployed executable; explorer labels remain recorded verbatim.",
+  "networkSnapshot": {
+    "networkId": "mezo-mainnet",
+    "evmChainId": 31612,
+    "blockNumber": 11212253,
+    "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+    "blockTimestamp": "2026-08-18T09:56:38Z",
+    "rpcEndpointId": "mezo-mainnet-boar-https",
+    "explorerApi": "https://api.explorer.mezo.org"
+  },
+  "documentationInputs": [
+    {
+      "sourceId": "official-docs-mezo-pools",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/features/mezo-pools.md",
+      "sha256": "5fc741e405f8cfd865340c3be3ec3db632b7d9d9e33ead77522002cf21a3ece6",
+      "classification": "discovery-and-conflict-evidence"
+    },
+    {
+      "sourceId": "official-docs-deploying-incentives",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/features/mezo-earn/deploying-incentives.md",
+      "sha256": "fef4caa96871fa012c3e8235d8a9cd8c3ca015182513d2e36463db59f5dd2a16",
+      "classification": "discovery-evidence"
+    }
+  ],
+  "contracts": [
+    {
+      "role": "pools-voter",
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "contractType": "eip-1967-proxy",
+      "implementation": "0xa62060d57e04d6c799b58188dc654b85addd1465",
+      "implementationName": "Voter",
+      "sourceVerification": "fully-verified",
+      "observedReferences": {
+        "ve": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+        "splitter": "0xe9e697d49d47c7042e768177f42d5789666d99fa",
+        "factoryRegistry": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+        "governor": "0x98d8899c3030741925be630c710a98b57f397c7a"
+      }
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "contractType": "eip-1967-proxy",
+      "implementation": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+      "implementationName": "VeBTC",
+      "sourceVerification": "explorer-partial-executable-reproduced",
+      "explorerVerification": "partially-verified",
+      "sourceReproductionReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-source-reproduction",
+        "recordId": "vebtc-current-implementation"
+      },
+      "proxyInitialization": {
+        "source": "official-explorer-decoded-constructor-args",
+        "initializerSelector": "0xcf756fdf",
+        "implementationAtCreation": "0x4e9db3399c84006f56569746128eb3155ba63390",
+        "maxLockTimeHex": "0x24ea00",
+        "maxLockTimeSeconds": "2419200"
+      },
+      "storageObservations": {
+        "maxLockTime": {
+          "slot": "0x52",
+          "rawValue": "0x000000000000000000000000000000000000000000000000000000000024ea00",
+          "decodedSeconds": "2419200",
+          "method": "eth_getStorageAt at networkSnapshot.blockNumber; slot derived from executable-matched source storage layout"
+        }
+      },
+      "observedReferences": {
+        "underlyingToken": "0x7b7c000000000000000000000000000000000000",
+        "voter": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+        "distributor": "0xb58477e074265bdc7f7ca6100ed0f7de264f74a2",
+        "factoryRegistry": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+        "booster": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1"
+      },
+      "observedValues": {
+        "version": "1.0.0",
+        "name": "veBTC",
+        "symbol": "veBTC",
+        "supply": "827402681641648094595",
+        "totalVotingPower": "1158838188523725117214",
+        "unboostedTotalVotingPower": "464234454753711065138",
+        "lastMintedTokenId": "6096"
+      }
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "contractType": "eip-1967-proxy",
+      "implementation": "0xa696dc56522e41811d06bbda83c1a6d976637624",
+      "implementationName": "BoostVoter",
+      "sourceVerification": "fully-verified",
+      "observedReferences": {
+        "boostableVe": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+        "ve": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+        "factoryRegistry": "0x04b94f55780682478c8d8329368aaafd320f4d32"
+      },
+      "observedValues": {
+        "gaugeCount": "706",
+        "maxVotingNum": "30"
+      }
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "contractType": "eip-1967-proxy",
+      "implementation": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+      "implementationName": "VeMEZO",
+      "sourceVerification": "explorer-partial-executable-reproduced",
+      "explorerVerification": "partially-verified",
+      "sourceReproductionReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-source-reproduction",
+        "recordId": "vemezo-current-implementation"
+      },
+      "storageObservations": {
+        "maxLockTime": {
+          "slot": "0x52",
+          "rawValue": "0x00000000000000000000000000000000000000000000000000000000077f8800",
+          "decodedSeconds": "125798400",
+          "method": "eth_getStorageAt at networkSnapshot.blockNumber; slot derived from executable-matched source storage layout"
+        }
+      },
+      "observedReferences": {
+        "underlyingToken": "0x7b7c000000000000000000000000000000000001",
+        "voter": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+        "distributor": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+        "factoryRegistry": "0x04b94f55780682478c8d8329368aaafd320f4d32"
+      },
+      "observedValues": {
+        "version": "1.0.0",
+        "name": "veMEZO",
+        "symbol": "veMEZO",
+        "supply": "376034813831669054498020563",
+        "totalVotingPower": "96889019777247857468240427",
+        "lastMintedTokenId": "2759"
+      }
+    },
+    {
+      "role": "factory-registry",
+      "address": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "contractType": "direct",
+      "sourceVerification": "fully-verified",
+      "observedValues": {
+        "gaugeFactories": [
+          "0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad",
+          "0xfc41e1aae0e58e8bdc32e85d8c995a902fedeb13"
+        ],
+        "documentedClGaugeFactoryApproved": true
+      }
+    }
+  ],
+  "documentationConflict": {
+    "publishedVeBTCAddress": "0x7d807e9ce1ef73048fee9a4214e75e894ea25914",
+    "deployedPoolsVoterVeReference": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+    "resolution": "The deployed PoolsVoter reference is authoritative for the current graph. The published address is retained only as stale-generation evidence until its lifecycle is fully reconstructed."
+  },
+  "limitations": [
+    "Addresses in this observation are evidence coordinates, not promoted registry records; reusable identity remains owned by contract registry review.",
+    "Point-in-time getters do not establish activation or upgrade history.",
+    "The ve implementation sources reproduce the deployed executables exactly after stripping Solidity metadata, but the official explorer labels remain partially verified and source provenance/audit history is not established by reproduction.",
+    "Observed supply and voting values are volatile snapshots, not protocol constants."
+  ]
+}

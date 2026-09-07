@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "kind": "knowledge-module-catalog",
+  "id": "knowledge-module-catalog",
+  "owner": "knowledge-governance",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59Z",
+  "reviewAfter": null,
+  "scope": {
+    "repository": "mezo-dev-kit",
+    "knowledgeVersion": "0.4"
+  },
+  "limitations": [
+    "This catalog maps stable module IDs to entry points; it does not duplicate or override child-module lifecycle state.",
+    "Use the selected module index for resource resolution and the selected record's evidence, support, review, scope, freshness, and limitations before relying on content."
+  ],
+  "modules": [
+    {
+      "id": "knowledge",
+      "moduleId": "knowledge",
+      "domain": "governance",
+      "indexPath": "index.json",
+      "humanEntryPoint": "README.md",
+      "generatedReferenceResourceId": null
+    },
+    {
+      "id": "networks",
+      "moduleId": "networks",
+      "domain": "chains-registry",
+      "indexPath": "networks/index.json",
+      "humanEntryPoint": "networks/README.md",
+      "generatedReferenceResourceId": "network-reference"
+    },
+    {
+      "id": "contracts",
+      "moduleId": "contracts",
+      "domain": "contracts-registry",
+      "indexPath": "contracts/index.json",
+      "humanEntryPoint": "contracts/README.md",
+      "generatedReferenceResourceId": "contract-reference"
+    },
+    {
+      "id": "protocols/musd",
+      "moduleId": "protocols/musd",
+      "domain": "protocol",
+      "indexPath": "protocols/musd/index.json",
+      "humanEntryPoint": "protocols/musd/README.md",
+      "generatedReferenceResourceId": "musd-reference"
+    },
+    {
+      "id": "protocols/musd/borrowing",
+      "moduleId": "protocols/musd/borrowing",
+      "domain": "protocol",
+      "indexPath": "protocols/musd/borrowing/index.json",
+      "humanEntryPoint": "protocols/musd/borrowing/README.md",
+      "generatedReferenceResourceId": "borrowing-reference"
+    },
+    {
+      "id": "protocols/musd/redemptions",
+      "moduleId": "protocols/musd/redemptions",
+      "domain": "protocol",
+      "indexPath": "protocols/musd/redemptions/index.json",
+      "humanEntryPoint": "protocols/musd/redemptions/README.md",
+      "generatedReferenceResourceId": "redemption-reference"
+    },
+    {
+      "id": "protocols/musd/institutional-debt",
+      "moduleId": "protocols/musd/institutional-debt",
+      "domain": "protocol",
+      "indexPath": "protocols/musd/institutional-debt/index.json",
+      "humanEntryPoint": "protocols/musd/institutional-debt/README.md",
+      "generatedReferenceResourceId": "institutional-debt-reference"
+    },
+    {
+      "id": "protocols/musd/savings",
+      "moduleId": "protocols/musd/savings",
+      "domain": "protocol",
+      "indexPath": "protocols/musd/savings/index.json",
+      "humanEntryPoint": "protocols/musd/savings/README.md",
+      "generatedReferenceResourceId": "musd-savings-reference"
+    },
+    {
+      "id": "protocols/lending/musdc",
+      "moduleId": "protocols/lending/musdc",
+      "domain": "protocol",
+      "indexPath": "protocols/lending/musdc/index.json",
+      "humanEntryPoint": "protocols/lending/musdc/README.md",
+      "generatedReferenceResourceId": "musdc-lending-reference"
+    },
+    {
+      "id": "protocols/vaults/usdc-lending",
+      "moduleId": "protocols/vaults/usdc-lending",
+      "domain": "protocol",
+      "indexPath": "protocols/vaults/usdc-lending/index.json",
+      "humanEntryPoint": "protocols/vaults/usdc-lending/README.md",
+      "generatedReferenceResourceId": "usdc-lending-vault-reference"
+    },
+    {
+      "id": "protocols/incentives",
+      "moduleId": "protocols/incentives",
+      "domain": "protocol",
+      "indexPath": "protocols/incentives/index.json",
+      "humanEntryPoint": "protocols/incentives/README.md",
+      "generatedReferenceResourceId": "incentives-reference"
+    },
+    {
+      "id": "protocols/pools",
+      "moduleId": "protocols/pools",
+      "domain": "protocol",
+      "indexPath": "protocols/pools/index.json",
+      "humanEntryPoint": "protocols/pools/README.md",
+      "generatedReferenceResourceId": "pools-reference"
+    },
+    {
+      "id": "prices",
+      "moduleId": "prices",
+      "domain": "prices",
+      "indexPath": "prices/index.json",
+      "humanEntryPoint": "prices/README.md",
+      "generatedReferenceResourceId": "price-reference"
+    },
+    {
+      "id": "workflows/bridges",
+      "moduleId": "workflows/bridges",
+      "domain": "workflow",
+      "indexPath": "workflows/bridges/index.json",
+      "humanEntryPoint": "workflows/bridges/README.md",
+      "generatedReferenceResourceId": "bridge-reference"
+    },
+    {
+      "id": "workflows/swaps",
+      "moduleId": "workflows/swaps",
+      "domain": "workflow",
+      "indexPath": "workflows/swaps/index.json",
+      "humanEntryPoint": "workflows/swaps/README.md",
+      "generatedReferenceResourceId": "swap-reference"
+    },
+    {
+      "id": "workflows/transactions",
+      "moduleId": "workflows/transactions",
+      "domain": "workflow",
+      "indexPath": "workflows/transactions/index.json",
+      "humanEntryPoint": "workflows/transactions/README.md",
+      "generatedReferenceResourceId": "transaction-reference"
+    },
+    {
+      "id": "troubleshooting",
+      "moduleId": "troubleshooting",
+      "domain": "troubleshooting",
+      "indexPath": "troubleshooting/index.json",
+      "humanEntryPoint": "troubleshooting/README.md",
+      "generatedReferenceResourceId": "troubleshooting-reference"
+    }
+  ]
+}

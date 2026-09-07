@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo pool evidence v1",
+  "allOf": [{"$ref": "../../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "properties": {
+    "owner": {"const": "protocols/pools"},
+    "kind": {"enum": ["mezo-pool-topology-observation", "mezo-pool-source-reproduction-evidence"]}
+  }
+}

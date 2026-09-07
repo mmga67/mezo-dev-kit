@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "kind": "protocol-transaction-requirement-matrix",
+  "id": "protocol-workflow-requirements-v1",
+  "owner": "core-transactions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "architectureDecisionIds": [
+      "ADR-0002",
+      "ADR-0003"
+    ]
+  },
+  "limitations": [
+    "This matrix routes accepted shared execution requirements to domain-owned knowledge; it does not create writer support.",
+    "Every domain's own support, review, freshness, and evidence gates remain authoritative."
+  ],
+  "proposalStatus": "accepted",
+  "domainReviewStatus": "pending-domain-review",
+  "domains": [
+    {
+      "taskId": "implementation review",
+      "domain": "musd-system",
+      "knowledgeReference": {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-system-model"
+      },
+      "supportStatus": "read-model-ready-for-review",
+      "requirements": [
+        "Resolve every component by registry ID and deployment coordinate.",
+        "Read system-wide values at one block coordinate and preserve component-call failures.",
+        "Do not infer writer entrypoints from component relationships alone."
+      ]
+    },
+    {
+      "taskId": "implementation review",
+      "domain": "borrowing-and-collateral",
+      "knowledgeReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-operations"
+      },
+      "supportStatus": "writer-requirements-ready-for-review",
+      "requirements": [
+        "Bind the position, price, rate, fee, cap, and recovery-mode inputs to a recorded read set.",
+        "Apply operation-specific max-fee/value/approval preconditions and simulate the exact borrower entrypoint.",
+        "Reconcile receipt events and the post-state position; do not use UI maximum-capacity prose as the borrowable amount."
+      ]
+    },
+    {
+      "taskId": "implementation review",
+      "domain": "redemptions",
+      "knowledgeReference": {
+        "moduleId": "protocols/musd/redemptions",
+        "resourceId": "redemption-model"
+      },
+      "supportStatus": "writer-requirements-ready-for-review",
+      "requirements": [
+        "Bind hints, rate, price, attempted amount, and user minimum-fill/net-output policy to a fresh quote/read set.",
+        "Simulate the exact call; the deployed entrypoint has no on-chain minimum-received argument.",
+        "Reconcile attempted versus actual fill, fees, events, and remaining MUSD; a successful receipt can still represent a partial economic outcome."
+      ]
+    },
+    {
+      "taskId": "incentives evidence review",
+      "domain": "gauges-and-ve",
+      "knowledgeReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-operations"
+      },
+      "supportStatus": "writer-requirements-ready-with-registry-and-review-gates",
+      "requirements": [
+        "Resolve current registry identities and proxy implementations, bind lock maximums and epoch windows to the selected deployment, and simulate the exact entrypoint.",
+        "Preserve Solidity floor order for lock power, relative vote allocation, boost, and emission-index calculations.",
+        "Reconcile lock ownership/amount/end, vote target weights and voting flag, stored boost checkpoints, or explicit gauge/reward claim outcomes as appropriate; do not reconcile from APY or planner output."
+      ]
+    },
+    {
+      "taskId": "bridge evidence review",
+      "domain": "bridges",
+      "knowledgeReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-routes"
+      },
+      "supportStatus": "musd-ntt-and-scoped-native-evidence-ready-with-registry-and-review-gates",
+      "requirements": [
+        "Do not publish route writers until active route peers, representations, direction, contract/network registry identities, quote/instruction construction, and qualified review are complete.",
+        "Source receipt confirmation is not cross-chain success; reconciliation must track provider message/attestation evidence and destination delivery.",
+        "For the scoped MUSD NTT routes, join source TransferSent and destination TransferRedeemed by the same transfer digest; contract manual-relaying mode does not establish a user-manual requirement or automatic-delivery SLA.",
+        "For Native Bridge, join the direction-specific sequence tuple rather than an NTT digest. Inbound ERC-20 completion additionally requires mapped-token recipient post-state because sequence acceptance can skip a blocked, unmapped, or failed mint; outbound completion requires AssetsUnlockConfirmed plus gross equals fee plus net delivery.",
+        "Timeout or absent destination evidence remains pending or ambiguous unless provider-specific proof establishes failure."
+      ]
+    }
+  ]
+}

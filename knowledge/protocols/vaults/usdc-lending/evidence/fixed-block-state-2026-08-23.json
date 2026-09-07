@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-fixed-block-observation",
+  "id": "usdc-lending-vault-fixed-block-state",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkId": "mezo-mainnet", "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0", "blockTimestamp": "2026-08-23T20:17:37Z"},
+  "limitations": ["All roles, balances, fees, ratios, and liquidity are point-in-time observations."],
+  "roles": {"vault": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "marketAdapter": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "receiptWrapperProxy": "0xd3f6F147662Bf2943ca09ee16beDaEa28AE28788", "receiptWrapperImplementation": "0x80EC90E54E577dac8Efca30F96bF21fE4efA885D", "vaultGauge": "0x11E98DEc5B1965E4eB872552E64Ef8580bBBbae7", "morpho": "0x565834cE7E40b8987BC20EbF83E2159467bDA311"},
+  "vault": {"asset": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197", "owner": "0x98D8899c3030741925BE630C710A98B57F397C7a", "curator": "0x98D8899c3030741925BE630C710A98B57F397C7a", "totalSupply": "213533948745915965719373", "totalAssetsView": "214046510838", "storedTotalAssets": "214046001637", "virtualShares": "1000000000000", "firstTotalAssets": "0", "maxRate": "15854895991", "performanceFee": "0", "managementFee": "0", "lastUpdate": "1787509363", "adaptersLength": 1, "liquidityAdapter": "0xb0EE3a01d9134733155B28289c09f084Acca4F61", "convertToAssets1e18Shares": "1002400", "previewDeposit1Musdc": "997605370486652923"},
+  "marketAdapter": {"realAssets": "214046510838", "adapterId": "0x5a101b9ffb5c4beb9d848db3878cd4f61809fc9c898b9bce99da4c4e4b7e611a", "supplyShares": "213416130394564144", "borrowShares": "0", "collateral": "0"},
+  "configuration": {
+    "capture": {
+      "endpointReference": {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-boar-https"
+      },
+      "method": "eth_call",
+      "blockTag": "0xad0f8e",
+      "readFamilies": ["adapter queue and registry", "liquidity adapter tuple", "adapter-returned allocation IDs and caps", "four gates", "curator timelocks and abdications"]
+    },
+    "adapterRegistry": "0x0000000000000000000000000000000000000000",
+    "gates": {
+      "receiveAssets": "0x0000000000000000000000000000000000000000",
+      "receiveShares": "0x0000000000000000000000000000000000000000",
+      "sendAssets": "0x0000000000000000000000000000000000000000",
+      "sendShares": "0x0000000000000000000000000000000000000000"
+    },
+    "adapterQueue": ["0xb0EE3a01d9134733155B28289c09f084Acca4F61"],
+    "liquidityAdapter": {
+      "address": "0xb0EE3a01d9134733155B28289c09f084Acca4F61",
+      "data": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c1970000000000000000000000007b7c000000000000000000000000000000000000000000000000000000000000ea0597d3d44ff2ea1e4c35501e153f4c025e48d10000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e70000000000000000000000000000000000000000000000000bef55718ad60000",
+      "forceDeallocatePenalty": "0"
+    },
+    "allocationCaps": [
+      {"dimension": "adapter", "id": "0x5a101b9ffb5c4beb9d848db3878cd4f61809fc9c898b9bce99da4c4e4b7e611a", "allocation": "214046001637", "absoluteCap": "1000000000000000000000000000000000000", "relativeCap": "1000000000000000000"},
+      {"dimension": "collateral-token", "id": "0x39b4ab85fdc98e86381a5d77443f8c38c424a7f4bf578b7491d93b0a8d04016c", "allocation": "214046001637", "absoluteCap": "1000000000000000000000000000000000000", "relativeCap": "1000000000000000000"},
+      {"dimension": "adapter-market", "id": "0xff4deb37dbaf144fd2356578e98d384a483e9f7147b6148dcdbe3a7c3d8632f1", "allocation": "214046001637", "absoluteCap": "1000000000000000000000000000000000000", "relativeCap": "1000000000000000000"}
+    ],
+    "timelockedFunctions": [
+      {"signature": "setIsAllocator(address,bool)", "selector": "0xb192a84a", "duration": "0", "abdicated": false},
+      {"signature": "setReceiveSharesGate(address)", "selector": "0x2cb19f98", "duration": "0", "abdicated": false},
+      {"signature": "setSendSharesGate(address)", "selector": "0xc21ad028", "duration": "0", "abdicated": false},
+      {"signature": "setReceiveAssetsGate(address)", "selector": "0x04dbf0ce", "duration": "0", "abdicated": false},
+      {"signature": "setSendAssetsGate(address)", "selector": "0x871c979c", "duration": "0", "abdicated": false},
+      {"signature": "setAdapterRegistry(address)", "selector": "0x5b34b823", "duration": "0", "abdicated": false},
+      {"signature": "addAdapter(address)", "selector": "0x60d54d41", "duration": "0", "abdicated": false},
+      {"signature": "removeAdapter(address)", "selector": "0x585cd34b", "duration": "0", "abdicated": false},
+      {"signature": "increaseTimelock(bytes4,uint256)", "selector": "0x47966291", "duration": "0", "abdicated": false},
+      {"signature": "decreaseTimelock(bytes4,uint256)", "selector": "0x5c1a1a4f", "duration": "0", "abdicated": false, "effectiveDelayRule": "target-selector-duration"},
+      {"signature": "abdicate(bytes4)", "selector": "0xb2e32848", "duration": "0", "abdicated": false},
+      {"signature": "setPerformanceFee(uint256)", "selector": "0x70897b23", "duration": "0", "abdicated": false},
+      {"signature": "setManagementFee(uint256)", "selector": "0xfe56e232", "duration": "0", "abdicated": false},
+      {"signature": "setPerformanceFeeRecipient(address)", "selector": "0x6a5f1aa2", "duration": "0", "abdicated": false},
+      {"signature": "setManagementFeeRecipient(address)", "selector": "0x9faae464", "duration": "0", "abdicated": false},
+      {"signature": "increaseAbsoluteCap(bytes,uint256)", "selector": "0xf6f98fd5", "duration": "0", "abdicated": false},
+      {"signature": "increaseRelativeCap(bytes,uint256)", "selector": "0x2438525b", "duration": "0", "abdicated": false},
+      {"signature": "setForceDeallocatePenalty(address,uint256)", "selector": "0x3e9d2ac7", "duration": "0", "abdicated": false}
+    ]
+  },
+  "wrapper": {"vault": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "gauge": "0x11E98DEc5B1965E4eB872552E64Ef8580bBBbae7", "yieldToken": "0x06291b67e3d7660240ab44Afc9a708d82b976a8B", "totalSupply": "203467332276561200733370", "vaultShareBalance": "203014228155693433198718", "accumulatedYield": "33643321564473710328", "lastShareRatio": "1002398"},
+  "gauge": {"stakingToken": "0xd3f6F147662Bf2943ca09ee16beDaEa28AE28788", "totalSupply": "203467332276561200733370", "voter": "0x48233cCC97B87Ba93bCA212cbEe48e3210211f03", "rewardToken": "0x7B7c000000000000000000000000000000000001", "feesVotingReward": "0x6f11f79AA37814EEFb3e40B3D9984eD832C50205"}
+}

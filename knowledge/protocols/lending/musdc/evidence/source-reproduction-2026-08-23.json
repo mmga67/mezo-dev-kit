@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-source-reproduction-evidence",
+  "id": "musdc-lending-source-reproduction",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:42:59Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "roles": ["morpho", "adaptive-curve-irm", "btc-musdc-oracle"]},
+  "limitations": ["Partial explorer labels are preserved; exact executable reproduction does not establish authorship, audit coverage, support, or writer safety."],
+  "records": [
+    {"id": "morpho", "address": "0x565834cE7E40b8987BC20EbF83E2159467bDA311", "contractName": "Morpho", "compiler": "0.8.19", "explorerVerification": "partial", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "eedc07021adfd8f032f932cba6f63a8a418857ef9c8096b0a7e93a8541662088", "runtimeExecutableSha256": "613e1df79c1eb308ca305d1d9f91bf38478603e94a70a151eff1d5e10d7ef9f0", "immutableSubstitutions": 2},
+    {"id": "adaptive-curve-irm", "address": "0x3760Ebc636F912a4dB9540fdA4Dec09C25C6C1e7", "contractName": "AdaptiveCurveIrm", "compiler": "0.8.19", "explorerVerification": "partial", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "8d0bb13b00cd09b0e98dd86828b830fef4127891006ea1f0fa0a484faff78380", "runtimeExecutableSha256": "52c08d3ea42ab6ae28c6783069aaf0921bb2d04efbb7b0b15f76c09d7c485ada", "immutableSubstitutions": 2},
+    {"id": "morpho-price-oracle", "address": "0x799C63c61b885EF546C1469c182eaA54A36554d4", "contractName": "MorphoPriceOracle", "compiler": "0.8.33", "explorerVerification": "fully-verified", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "cbb3c43a785406d34e186dd184f83b0b3c62d38c153b1642e38e722a1e7f34c9", "runtimeExecutableSha256": "629ed18258333b121018c9cc8bce5043eecc57bd54633dc393846f5a5233cc1f", "immutableSubstitutions": 0}
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "networks",
+  "moduleId": "networks",
+  "owner": "chains-registry",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:21:02Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ]
+  },
+  "limitations": [
+    "MDK registry support covers four accepted chain identities and the Mezo endpoint entries marked supported.",
+    "RPC endpoint state is more volatile than stable chain identity and retains its shorter review window.",
+    "The Ethereum and Base records select no RPC endpoint; identity support does not imply provider availability, bridge-route support, protocol support, or untested RPC capabilities."
+  ],
+  "resources": [
+    {
+      "id": "mezo-mainnet",
+      "role": "canonical-record",
+      "kind": "network",
+      "path": "records/mezo-mainnet.json",
+      "recordIds": [
+        "mezo-mainnet"
+      ]
+    },
+    {
+      "id": "mezo-testnet",
+      "role": "canonical-record",
+      "kind": "network",
+      "path": "records/mezo-testnet.json",
+      "recordIds": [
+        "mezo-testnet"
+      ]
+    },
+    {
+      "id": "ethereum-mainnet",
+      "role": "canonical-record",
+      "kind": "network",
+      "path": "records/ethereum-mainnet.json",
+      "recordIds": [
+        "ethereum-mainnet"
+      ]
+    },
+    {
+      "id": "base-mainnet",
+      "role": "canonical-record",
+      "kind": "network",
+      "path": "records/base-mainnet.json",
+      "recordIds": [
+        "base-mainnet"
+      ]
+    },
+    {
+      "id": "rpc-endpoints",
+      "role": "canonical-record",
+      "kind": "rpc-endpoint-catalog",
+      "path": "records/rpc-endpoints.json",
+      "recordIds": [
+        "mezo-testnet-official-https",
+        "mezo-testnet-official-wss",
+        "mezo-mainnet-boar-https",
+        "mezo-mainnet-boar-wss",
+        "mezo-mainnet-imperator-https",
+        "mezo-mainnet-imperator-wss",
+        "mezo-mainnet-validation-cloud-https",
+        "mezo-mainnet-validation-cloud-wss",
+        "mezo-mainnet-drpc-https",
+        "mezo-mainnet-drpc-wss"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "network-sources",
+      "role": "source-catalog",
+      "kind": "source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-docs-getting-started",
+        "official-docs-mezod",
+        "official-source-mainnet-genesis",
+        "official-source-testnet-genesis",
+        "network-probes-2026-08-18",
+        "official-ethereum-eip-155",
+        "official-ethereum-networks",
+        "official-ethereum-intro-to-ether",
+        "official-base-connecting-to-base",
+        "official-base-chain-metadata",
+        "bridge-musd-ntt-network-snapshots"
+      ],
+      "recordCollectionPointer": "/sources"
+    },
+    {
+      "id": "network-probes-2026-08-18",
+      "role": "evidence",
+      "kind": "network-observation-set",
+      "path": "evidence/rpc-probes-2026-08-18.json",
+      "recordIds": [
+        "testnet-official-https",
+        "mainnet-boar-https",
+        "mainnet-validation-cloud-https",
+        "mainnet-drpc-https",
+        "mainnet-imperator-https",
+        "historical-mainnet-rpc-https",
+        "testnet-official-wss",
+        "mainnet-boar-wss",
+        "mainnet-imperator-wss",
+        "mainnet-validation-cloud-wss",
+        "mainnet-drpc-wss",
+        "mainnet-explorer-https",
+        "testnet-explorer-https"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "network-record-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/network.schema.json"
+    },
+    {
+      "id": "rpc-endpoint-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/rpc-endpoint-catalog.schema.json"
+    },
+    {
+      "id": "network-source-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/source-catalog.schema.json"
+    },
+    {
+      "id": "network-observation-set-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/observation-set.schema.json"
+    },
+    {
+      "id": "network-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "legacy-schema-notes",
+      "role": "review",
+      "kind": "superseded-schema-notes",
+      "path": "review/legacy-schema-v1.md"
+    },
+    {
+      "id": "network-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "networks",
+          "resourceId": "mezo-mainnet"
+        },
+        {
+          "moduleId": "networks",
+          "resourceId": "mezo-testnet"
+        },
+        {
+          "moduleId": "networks",
+          "resourceId": "ethereum-mainnet"
+        },
+        {
+          "moduleId": "networks",
+          "resourceId": "base-mainnet"
+        },
+        {
+          "moduleId": "networks",
+          "resourceId": "rpc-endpoints"
+        },
+        {
+          "moduleId": "networks",
+          "resourceId": "network-sources"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module networks"
+    },
+    {
+      "id": "network-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-network-knowledge.ts"
+    },
+    {
+      "id": "network-profile-negative-tests",
+      "type": "semantic",
+      "command": "node scripts/test-network-profiles.ts"
+    },
+    {
+      "id": "network-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-network-reference.ts --check"
+    }
+  ]
+}

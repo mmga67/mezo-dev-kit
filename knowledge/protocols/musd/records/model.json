@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-system-model",
+  "id": "musd-system-model",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:08:06Z",
+  "reviewAfter": null,
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Governed parameters and deployment state must be read at an explicit block; this model does not freeze their values."],
+  "claims": [
+    {
+      "id": "musd-classic-cdp-model",
+      "statement": "The classic MUSD system issues a USD-denominated token through native BTC-collateralized troves and is derived from Threshold USD/Liquity architecture with Mezo-specific interest and PCV changes.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "introduction; Architectural Overview; Key Changes from THUSD",
+          "establishes": "Published lineage and BTC-collateralized CDP model."
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "payable trove operations; MUSD mint/burn paths",
+          "establishes": "Current native-collateral borrower entrypoints and issuance mechanics."
+        }
+      ],
+      "limitations": [
+        "This does not assert that every possible MUSD issuance domain is part of classic trove TCR.",
+        "Marketing statements such as 100% backing are not encoded as accounting equalities."
+      ]
+    },
+    {
+      "id": "musd-active-custody",
+      "statement": "Native BTC supplied through borrower operations is added to ActivePool's tracked collateral and remains in the pool system until an authorized protocol path transfers it.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "_openTrove and _adjustTrove collateral paths",
+          "establishes": "Borrower operations forward native collateral into the pool system."
+        },
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "receive; sendCollateral",
+          "establishes": "Tracked receipt and authorized outbound transfer behavior."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Contract Custody",
+          "establishes": "Published high-level custody flow."
+        }
+      ]
+    },
+    {
+      "id": "musd-accounted-not-raw-balances",
+      "statement": "Pool collateral getters return protocol-maintained tracked balances, which need not equal a contract's raw native-currency balance after an unsolicited transfer.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "getCollateralBalance comment",
+          "establishes": "ActivePool explicitly distinguishes tracked and raw balances."
+        },
+        {
+          "sourceArtifactId": "source-coll-surplus-pool",
+          "locator": "getCollateralBalance comment",
+          "establishes": "The same distinction applies to surplus-pool accounting."
+        }
+      ]
+    },
+    {
+      "id": "musd-system-aggregate-boundary",
+      "statement": "Classic-trove entire system collateral is ActivePool tracked collateral plus DefaultPool tracked collateral; classic-trove entire system debt is ActivePool debt plus DefaultPool debt.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "formula": {
+        "entireSystemCollateral": "activePool.collateral + defaultPool.collateral",
+        "entireSystemDebt": "activePool.debt + defaultPool.debt"
+      },
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "getEntireSystemColl; getEntireSystemDebt",
+          "establishes": "Exact aggregate composition."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Entire system collateral; Entire system debt",
+          "establishes": "Published terminology."
+        }
+      ],
+      "limitations": [
+        "Do not silently merge another product's MUSD debt or collateral into TCR."
+      ]
+    },
+    {
+      "id": "musd-default-pool-redistribution",
+      "statement": "Liquidation collateral, principal, and interest that are redistributed to active troves are accounted in DefaultPool until a trove operation applies the pending amounts and moves them into active accounting.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-default-pool",
+          "locator": "contract comment; debt trackers; sendCollateralToActivePool",
+          "establishes": "DefaultPool's unapplied redistribution role."
+        },
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "RewardSnapshot; pending reward getters",
+          "establishes": "Per-trove pending redistribution state."
+        }
+      ],
+      "limitations": [
+        "implementation review owns exact liquidation branching, reward calculations, and application rules."
+      ]
+    },
+    {
+      "id": "musd-stability-offset-model",
+      "statement": "StabilityPool deposits can be burned to offset liquidated principal and interest while the associated native BTC collateral is transferred into StabilityPool accounting for depositor gains.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-stability-pool",
+          "locator": "offset; _moveOffsetCollAndDebt; collateral-gain accounting",
+          "establishes": "Current debt-offset and collateral accounting."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Protocol Bootstrap Loan & Stability Pool; Liquidation Flows",
+          "establishes": "Published high-level offset model."
+        }
+      ],
+      "limitations": [
+        "implementation review owns eligibility, ordering, compensation, and partial/empty-pool behavior."
+      ]
+    },
+    {
+      "id": "musd-fixed-simple-interest",
+      "statement": "A trove stores the annual rate assigned when it is opened or refinanced, and its interest accrues linearly on principal over elapsed time rather than compounding.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "formula": {
+        "conceptual": "principal * annualRateBps * elapsedSeconds / (10000 * secondsInYear)"
+      },
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove.interestRate; lastInterestUpdateTime; _getTotalDebt",
+          "establishes": "Per-trove stored rate and timestamp."
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-math",
+          "locator": "calculateInterestOwed",
+          "establishes": "Current linear interest formula."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Fixed-Interest Borrowing",
+          "establishes": "Published fixed simple-interest behavior and refinance exception."
+        }
+      ],
+      "limitations": [
+        "implementation review owns quote timing, rounding, refinancing, repayment allocation, and transaction semantics."
+      ]
+    },
+    {
+      "id": "musd-system-interest-accounting",
+      "statement": "When aggregate system interest is materialized, InterestRateManager mints the amount to PCV and increases ActivePool interest debt by the same amount.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "updateSystemInterest",
+          "establishes": "Matching MUSD mint and ActivePool debt increase."
+        },
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "increaseDebt; getInterest",
+          "establishes": "Pool side of aggregate interest accounting."
+        }
+      ]
+    },
+    {
+      "id": "musd-bootstrap-pcv-model",
+      "statement": "PCV can initialize a protocol bootstrap loan by minting MUSD, recording the amount as debt to pay, and depositing the MUSD into StabilityPool; later PCV MUSD can burn that debt before excess protocol allocation.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "initializeDebt; distributeMUSD; _repayDebt; _depositToStabilityPool",
+          "establishes": "Current bootstrap and repayment mechanics at system-model level."
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "mintBootstrapLoanFromPCV; burnDebtFromPCV",
+          "establishes": "Restricted token supply hooks used by PCV."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Protocol Bootstrap Loan",
+          "establishes": "Published bootstrap intent."
+        }
+      ],
+      "limitations": [
+        "The current debt, split, recipients, and StabilityPool position are live state, not constants in this record."
+      ]
+    },
+    {
+      "id": "musd-sorted-position-model",
+      "statement": "Active troves are indexed by borrower address in a descending linked list ordered by a price-independent nominal collateral ratio; state-changing integrations provide insertion hints, while HintHelpers can assist with approximate positions.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-sorted-troves",
+          "locator": "contract comment; insert; reInsert",
+          "establishes": "List identity, ordering, and hint behavior."
+        },
+        {
+          "sourceArtifactId": "source-hint-helpers",
+          "locator": "getApproxHint",
+          "establishes": "Approximate read-only hint calculation."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Opening a Trove",
+          "establishes": "Published integration requirement for hints."
+        }
+      ],
+      "limitations": [
+        "implementation review and implementation review own operation-specific hint construction and validation."
+      ]
+    },
+    {
+      "id": "musd-protocol-price-model",
+      "statement": "MUSD collateral-ratio logic consumes a BTC/USD price from PriceFeed, which reads its configured external oracle, rejects stale observations under the current freshness bound, and normalizes the answer to 18-digit precision.",
+      "classification": "external-fact",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-price-feed",
+          "locator": "fetchPrice; _scalePriceByDigits",
+          "establishes": "Oracle read, freshness enforcement, and output precision."
+        },
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "priceFeed; _getTCR; _checkRecoveryMode",
+          "establishes": "Use of the protocol price in aggregate risk state."
+        }
+      ],
+      "limitations": [
+        "The bound and oracle address are versioned/deployment state and must not be inferred from a market-data fallback.",
+        "Operational oracle incidents belong in implementation review after reproduction."
+      ]
+    },
+    {
+      "id": "musd-peg-mechanisms",
+      "statement": "The published peg model combines MUSD-for-BTC redemption as downward-price arbitrage support with collateralized issuance as upward-price arbitrage support.",
+      "classification": "external-fact",
+      "stability": "stable-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "docs-user-overview",
+          "locator": "How MUSD works",
+          "establishes": "Published mint-and-redeem peg model."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Maintaining the Peg",
+          "establishes": "Published developer explanation of the two arbitrage directions."
+        },
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "redeemCollateral",
+          "establishes": "Current redemption capability."
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "openTrove; withdrawMUSD",
+          "establishes": "Current collateralized issuance capability."
+        }
+      ],
+      "limitations": [
+        "This is an economic mechanism, not a guarantee that market price always equals one USD.",
+        "Exact collateral thresholds, fee bands, redemption ordering, and profitability examples belong to implementation review and implementation review."
+      ]
+    },
+    {
+      "id": "musd-governed-state-rule",
+      "statement": "Initial values in Solidity are not authoritative current values for governable rates, limits, roles, recipients, splits, exemptions, or oracle bindings; current consumers must resolve the deployment and read the relevant state at an explicit block.",
+      "classification": "architecture-rule",
+      "stability": "stable-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "governance setters and proposal/approval functions",
+          "establishes": "Borrowing and redemption parameters can change."
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "proposeInterestRate; approveInterestRate",
+          "establishes": "The offered interest rate can change."
+        },
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "role, recipient, distributor, and split setters",
+          "establishes": "PCV configuration can change."
+        },
+        {
+          "sourceArtifactId": "source-price-feed",
+          "locator": "setOracle",
+          "establishes": "The external oracle binding can change."
+        }
+      ]
+    }
+  ],
+  "units": [
+    {
+      "id": "musd-token-amount",
+      "quantity": "MUSD token amount",
+      "representation": "uint256 smallest units",
+      "scale": "1e18 smallest units per MUSD",
+      "decimals": 18,
+      "stability": "deployment-state",
+      "evidence": [
+        {
+          "sourceArtifactId": "protocol-read-observations",
+          "locator": "musd-decimals-mezo-mainnet; musd-decimals-mezo-testnet",
+          "establishes": "Both proposed deployments returned decimals() = 18 at fixed verified blocks."
+        }
+      ]
+    },
+    {
+      "id": "native-btc-amount",
+      "quantity": "Mezo native BTC amount",
+      "representation": "uint256 EVM native-currency smallest units",
+      "scale": "1e18 smallest units per BTC",
+      "decimals": 18,
+      "stability": "deployment-state",
+      "evidence": [
+        {
+          "canonicalReference": {
+            "moduleId": "networks",
+            "resourceId": "mezo-mainnet",
+            "pointer": "/values/nativeCurrency"
+          },
+          "establishes": "Canonical mainnet native-currency decimals."
+        },
+        {
+          "canonicalReference": {
+            "moduleId": "networks",
+            "resourceId": "mezo-testnet",
+            "pointer": "/values/nativeCurrency"
+          },
+          "establishes": "Canonical testnet native-currency decimals."
+        }
+      ]
+    },
+    {
+      "id": "decimal-fixed-point",
+      "quantity": "collateral ratios and 1e18-scaled percentages",
+      "representation": "uint256 fixed point",
+      "scale": "1e18 represents 1.0 or 100%",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-base-math",
+          "locator": "DECIMAL_PRECISION",
+          "establishes": "Shared fixed-point scale."
+        },
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "_100pct; collateral-ratio constants",
+          "establishes": "Ratio interpretation."
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "borrowingRate; redemptionRate comments and calculations",
+          "establishes": "Fee-rate scale."
+        }
+      ]
+    },
+    {
+      "id": "protocol-price",
+      "quantity": "BTC/USD protocol price",
+      "representation": "uint256 fixed point",
+      "scale": "1e18 represents one USD per BTC unit",
+      "decimals": 18,
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-price-feed",
+          "locator": "TARGET_DIGITS; _scalePriceByDigits",
+          "establishes": "Normalized output precision."
+        }
+      ]
+    },
+    {
+      "id": "nicr-ordering-value",
+      "quantity": "nominal collateral ratio ordering value",
+      "representation": "uint256 fixed point",
+      "scale": "collateral * 1e20 / principal",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-math",
+          "locator": "NICR_PRECISION; _computeNominalCR",
+          "establishes": "Ordering-value scale and formula."
+        }
+      ]
+    },
+    {
+      "id": "annual-interest-rate",
+      "quantity": "annual trove interest rate",
+      "representation": "uint16 basis points",
+      "scale": "10000 basis points represents 100% per year",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "interestRate declaration and comments",
+          "establishes": "Stored offered-rate representation."
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-math",
+          "locator": "BPS; calculateInterestOwed",
+          "establishes": "Calculation scale."
+        }
+      ]
+    },
+    {
+      "id": "interest-time",
+      "quantity": "interest accrual time",
+      "representation": "EVM timestamp seconds",
+      "scale": "31556952 seconds per calculation year",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-interest-rate-math",
+          "locator": "SECONDS_IN_A_YEAR; calculateInterestOwed",
+          "establishes": "Elapsed-time unit and current year constant."
+        }
+      ]
+    },
+    {
+      "id": "pcv-percentage",
+      "quantity": "PCV fee split",
+      "representation": "uint8 integer percentage",
+      "scale": "100 represents 100%",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "feeSplitPercentage; PERCENT_MAX; distributeMUSD",
+          "establishes": "Current PCV split representation."
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "id": "minimum-collateral-ratio",
+      "ownerContractId": "musd.trove-manager",
+      "sourceOwner": "LiquityBase.MCR",
+      "mutability": "compile-time constant in current implementation",
+      "stability": "versioned-design",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "MCR"
+        }
+      ]
+    },
+    {
+      "id": "critical-collateral-ratio",
+      "ownerContractId": "musd.trove-manager",
+      "sourceOwner": "LiquityBase.CCR",
+      "mutability": "compile-time constant in current implementation",
+      "stability": "versioned-design",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "CCR"
+        }
+      ]
+    },
+    {
+      "id": "musd-gas-compensation",
+      "ownerContractId": "musd.trove-manager",
+      "sourceOwner": "LiquityBase.MUSD_GAS_COMPENSATION",
+      "mutability": "compile-time constant in current implementation",
+      "stability": "versioned-design",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "MUSD_GAS_COMPENSATION"
+        }
+      ]
+    },
+    {
+      "id": "minimum-net-debt",
+      "ownerContractId": "musd.borrower-operations",
+      "sourceOwner": "BorrowerOperations.minNetDebt",
+      "mutability": "governed proposal and delayed approval, bounded by a compile-time floor",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "minNetDebt; proposeMinNetDebt; approveMinNetDebt"
+        }
+      ]
+    },
+    {
+      "id": "borrowing-rate",
+      "ownerContractId": "musd.borrower-operations",
+      "sourceOwner": "BorrowerOperations.borrowingRate",
+      "mutability": "governed proposal and delayed approval",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "borrowingRate; proposeBorrowingRate; approveBorrowingRate"
+        }
+      ]
+    },
+    {
+      "id": "refinancing-fee-percentage",
+      "ownerContractId": "musd.borrower-operations",
+      "sourceOwner": "BorrowerOperations.refinancingFeePercentage",
+      "mutability": "direct governance setter",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "refinancingFeePercentage; setRefinancingFeePercentage"
+        }
+      ]
+    },
+    {
+      "id": "redemption-rate",
+      "ownerContractId": "musd.borrower-operations",
+      "sourceOwner": "BorrowerOperations.redemptionRate",
+      "mutability": "governed proposal and delayed approval",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "redemptionRate; proposeRedemptionRate; approveRedemptionRate"
+        }
+      ]
+    },
+    {
+      "id": "offered-interest-rate",
+      "ownerContractId": "musd.interest-rate-manager",
+      "sourceOwner": "InterestRateManager.interestRate",
+      "mutability": "council proposal and delayed council approval",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "interestRate; proposeInterestRate; approveInterestRate"
+        }
+      ]
+    },
+    {
+      "id": "fee-exempt-accounts",
+      "ownerContractId": "musd.governable-variables",
+      "sourceOwner": "GovernableVariables.feeExemptAccounts",
+      "mutability": "direct council-or-treasury governed set",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review/implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-governable-variables",
+          "locator": "feeExemptAccounts; add/remove functions"
+        }
+      ]
+    },
+    {
+      "id": "price-oracle-binding",
+      "ownerContractId": "musd.price-feed",
+      "sourceOwner": "PriceFeed.oracle",
+      "mutability": "owner-set deployment state",
+      "stability": "deployment-state",
+      "valueOwnerTask": "implementation review",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-price-feed",
+          "locator": "oracle; setOracle"
+        }
+      ]
+    },
+    {
+      "id": "pcv-governance-and-distribution",
+      "ownerContractId": "musd.pcv",
+      "sourceOwner": "PCV roles, debt, recipients, distributor, and feeSplitPercentage",
+      "mutability": "mixed initialized, governed, role-delayed, and live accounting state",
+      "stability": "governed-state",
+      "valueOwnerTask": "implementation review system reads; workflow-specific consumers must define scope",
+      "currentValueIncluded": false,
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "state declarations; role and distribution setters; debtToPay"
+        }
+      ]
+    }
+  ],
+  "futureModuleBoundary": {
+    "pure": [
+      "typed terminology and state snapshots",
+      "unit-safe amount and ratio representations",
+      "deterministic system aggregate and interest calculations after implementation review review",
+      "parameter metadata that distinguishes constants from governed/live state"
+    ],
+    "rpcAdapters": [
+      "resolve stable contract IDs through the contract registry",
+      "read block-pinned component state",
+      "return raw typed values plus block/timestamp provenance"
+    ],
+    "excluded": [
+      "addresses and ABIs",
+      "wallet and transaction lifecycle",
+      "React state",
+      "indexers, caches, databases, and analytics fallbacks",
+      "borrowing/liquidation implementation before implementation review",
+      "redemption implementation before implementation review"
+    ]
+  }
+}

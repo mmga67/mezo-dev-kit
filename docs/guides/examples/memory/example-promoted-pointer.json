@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-source-alpha-governance-pointer",
+  "domain": "governance/alpha",
+  "status": "promoted",
+  "title": "Source-alpha governance moved to ADR-0013",
+  "summary": "The authoritative GitHub source-alpha, MIT license, manual review, and branch-promotion decision is maintained in ADR-0013; consult that ADR rather than this retrieval pointer.",
+  "sources": ["docs/decisions/0013-github-source-alpha-governance.md"],
+  "related": ["README.md", "SECURITY.md"],
+  "updated": "2026-08-29"
+}

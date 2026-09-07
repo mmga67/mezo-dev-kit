@@ -1,0 +1,17 @@
+packages:
+  - "packages/**"
+  - "extensions/**"
+  - "templates/**"
+  - "examples/**"
+
+# testing standard review explicitly reviewed and pinned this release before the pnpm
+# migration. Keep the environment's minimum-release-age policy for every
+# dependency that has not received that review.
+minimumReleaseAgeExclude:
+  - vitest
+  - "@vitest/*"
+  # coding standard review reviewed and exact-pins this family. The registry metadata for
+  # @typescript-eslint packages omits publish times, so pnpm cannot apply the
+  # normal minimum-release-age calculation to them.
+  - typescript-eslint
+  - "@typescript-eslint/*"

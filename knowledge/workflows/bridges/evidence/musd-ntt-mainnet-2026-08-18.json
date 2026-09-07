@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-deployment-and-transfer-observation-set",
+  "id": "musd-ntt-mainnet-2026-08-18",
+  "owner": "workflows/bridges",
+  "providerId": "wormhole-ntt",
+  "assetId": "musd",
+  "status": "verified",
+  "evidenceStatus": "verified-evidence-not-support",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "observedFrom": "2026-08-18T09:56:38Z",
+  "observedThrough": "2026-08-18T10:14:37Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": [],
+    "routeCount": 4
+  },
+  "source": {
+    "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
+    "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
+    "deploymentPath": "deployment.json",
+    "deploymentSha256": "826fbb0694a3e78e624b7e8532d739ccefb14dfd8d2f4e96dc22a56d930a1909",
+    "nttVersion": "1.1.0"
+  },
+  "methodology": [
+    "Pinned the official Mezo MUSD NTT repository and deployment artifact by full commit and SHA-256.",
+    "Asserted EVM chain identity and captured a block number/hash/timestamp independently on Mezo, Ethereum, and Base.",
+    "At each fixed block, read manager token, mode, Wormhole chain ID, threshold, pause state, owner, transceiver, manager peers, transceiver peers, and transceiver-to-manager binding.",
+    "Read volatile capacity and relay-mode fields at the same fixed blocks without submitting writes.",
+    "For every Mezo-facing route direction, joined source TransferSent and destination TransferRedeemed by the same NTT transfer digest and retained both successful transaction coordinates.",
+    "Excluded product documentation and indexer labels from the completion rule."
+  ],
+  "networkSnapshots": [
+    {
+      "id": "mezo-mainnet-snapshot",
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "wormholeChainId": 50,
+      "blockNumber": 11212253,
+      "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+      "blockTimestamp": "2026-08-18T09:56:38Z",
+      "rpc": "https://mezo-mainnet.boar.network"
+    },
+    {
+      "id": "ethereum-mainnet-snapshot",
+      "networkId": "ethereum-mainnet",
+      "evmChainId": 1,
+      "wormholeChainId": 2,
+      "blockNumber": 25781309,
+      "blockHash": "0xdad946a14320eab4ede64b7319b5c5cf15c4f60ed5740c82e930e327e2ff0fb4",
+      "blockTimestamp": "2026-08-18T10:14:11Z",
+      "rpc": "https://ethereum-rpc.publicnode.com"
+    },
+    {
+      "id": "base-mainnet-snapshot",
+      "networkId": "base-mainnet",
+      "evmChainId": 8453,
+      "wormholeChainId": 30,
+      "blockNumber": 50129365,
+      "blockHash": "0x83789ee5fb071b32701f8b3184a708b7184a663dfd388b513e7603f84ed0ea66",
+      "blockTimestamp": "2026-08-18T10:14:37Z",
+      "rpc": "https://base-rpc.publicnode.com"
+    }
+  ],
+  "deploymentObservations": [
+    {
+      "id": "musd-ntt-mezo-snapshot",
+      "networkSnapshotId": "mezo-mainnet-snapshot",
+      "managerAddress": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+      "tokenAddress": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+      "mode": "locking",
+      "paused": false,
+      "threshold": 1,
+      "owner": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "transceiverAddress": "0x62deeafee06c7442a21c93ededc79a0cb5791c83",
+      "transceiverManagerBinding": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+      "outboundCapacity": "184467440737095516150000000000",
+      "peers": [
+        {
+          "wormholeChainId": 2,
+          "manager": "0x0000000000000000000000005293158bf7a81ed05418da497a80f7e6dbf4477e",
+          "transceiver": "0x000000000000000000000000147379a0174780570d07d70a14fb244ee5f2d786",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        },
+        {
+          "wormholeChainId": 30,
+          "manager": "0x0000000000000000000000003eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+          "transceiver": "0x00000000000000000000000015c465e7df34f8ca06fdcae0569206cedf3f4467",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        }
+      ]
+    },
+    {
+      "id": "musd-ntt-ethereum-snapshot",
+      "networkSnapshotId": "ethereum-mainnet-snapshot",
+      "managerAddress": "0x5293158bf7a81ed05418da497a80f7e6dbf4477e",
+      "tokenAddress": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+      "mode": "burning",
+      "paused": false,
+      "threshold": 1,
+      "owner": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "transceiverAddress": "0x147379a0174780570d07d70a14fb244ee5f2d786",
+      "transceiverManagerBinding": "0x5293158bf7a81ed05418da497a80f7e6dbf4477e",
+      "outboundCapacity": "184467440737095516150000000000",
+      "peers": [
+        {
+          "wormholeChainId": 30,
+          "manager": "0x0000000000000000000000003eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+          "transceiver": "0x00000000000000000000000015c465e7df34f8ca06fdcae0569206cedf3f4467",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        },
+        {
+          "wormholeChainId": 50,
+          "manager": "0x0000000000000000000000007efb386675d75280d39aae42964a6776de0ee0bd",
+          "transceiver": "0x00000000000000000000000062deeafee06c7442a21c93ededc79a0cb5791c83",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        }
+      ]
+    },
+    {
+      "id": "musd-ntt-base-snapshot",
+      "networkSnapshotId": "base-mainnet-snapshot",
+      "managerAddress": "0x3eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+      "tokenAddress": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+      "mode": "burning",
+      "paused": false,
+      "threshold": 1,
+      "owner": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "transceiverAddress": "0x15c465e7df34f8ca06fdcae0569206cedf3f4467",
+      "transceiverManagerBinding": "0x3eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+      "outboundCapacity": "184467440737095516150000000000",
+      "peers": [
+        {
+          "wormholeChainId": 2,
+          "manager": "0x0000000000000000000000005293158bf7a81ed05418da497a80f7e6dbf4477e",
+          "transceiver": "0x000000000000000000000000147379a0174780570d07d70a14fb244ee5f2d786",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        },
+        {
+          "wormholeChainId": 50,
+          "manager": "0x0000000000000000000000007efb386675d75280d39aae42964a6776de0ee0bd",
+          "transceiver": "0x00000000000000000000000062deeafee06c7442a21c93ededc79a0cb5791c83",
+          "tokenDecimals": 18,
+          "inboundCapacity": "10000000000000000000000000",
+          "standardRelayingEnabled": false,
+          "specialRelayingEnabled": false
+        }
+      ]
+    }
+  ],
+  "completedTransfers": [
+    {
+      "id": "musd-mezo-to-ethereum-completed",
+      "sourceNetwork": "mezo-mainnet",
+      "destinationNetwork": "ethereum-mainnet",
+      "transferDigest": "0x7ebc81f92eb4096cd6ca90896c9653bbf65f32979d32d79de56dd12422309392",
+      "source": {
+        "transactionHash": "0x46eba9c2719c4279ed262e3d605e60a1abfbf2c171b1150af802ce0dae237e7a",
+        "blockNumber": 8606608,
+        "blockHash": "0xf422f68a4f4bddd6ff94adca72aff9cf43af4276458049d57c170cab3d284af1",
+        "blockTimestamp": "2026-04-30T14:05:01Z",
+        "receiptStatus": "success",
+        "event": "TransferSent(bytes32)",
+        "recipientWormholeChainId": 2,
+        "relayingType": "manual"
+      },
+      "destination": {
+        "transactionHash": "0xbc93f43ee14ccb5e022c17dc66dd2dadd1deb8861c161c10ca9a7aa3abc3b8b1",
+        "blockNumber": 24993407,
+        "blockHash": "0xb9af2fdef62d560592c4127406b3f959e6e163d536b2c2c8d5bb409ea7cb9743",
+        "blockTimestamp": "2026-04-30T14:05:23Z",
+        "receiptStatus": "success",
+        "event": "TransferRedeemed(bytes32)"
+      }
+    },
+    {
+      "id": "musd-ethereum-to-mezo-completed",
+      "sourceNetwork": "ethereum-mainnet",
+      "destinationNetwork": "mezo-mainnet",
+      "transferDigest": "0xe9ca2af75d2529d27fa1b2766014ad6377fbedf36ace7a785227ea9da6aefc8b",
+      "source": {
+        "transactionHash": "0x7770c22f978ec97fe9af2e2dd9719b0ec10f59a170c05fafe041a51674b7cdab",
+        "blockNumber": 24875465,
+        "blockHash": "0xf7d820acc357482a5e9c8b8b133e985919f5fad8994b33dddf8773420ce5b3f3",
+        "blockTimestamp": "2026-04-14T03:53:11Z",
+        "receiptStatus": "success",
+        "event": "TransferSent(bytes32)"
+      },
+      "destination": {
+        "transactionHash": "0xa8fcd5ba06f5b86afca6bb20568a616feb2233a17455aafda85ff8cd2db7bad8",
+        "blockNumber": 8211140,
+        "blockHash": "0x878f32be12a9a06544675693240276e1a4a7aa6ceadc4b7c10f9f6a4bcc957b8",
+        "blockTimestamp": "2026-04-14T04:07:01Z",
+        "receiptStatus": "success",
+        "event": "TransferRedeemed(bytes32)",
+        "sourceWormholeChainId": 2,
+        "sourceSequence": 756
+      }
+    },
+    {
+      "id": "musd-mezo-to-base-completed",
+      "sourceNetwork": "mezo-mainnet",
+      "destinationNetwork": "base-mainnet",
+      "transferDigest": "0xdef2ea14a00b0d67c46b9355d44d820d8f5a4a987b257831d800861ce9f879c8",
+      "source": {
+        "transactionHash": "0xdc08ff10cfc9ce73e678e7ad5701091681e6ef3872b64ec1284283d836f1db02",
+        "blockNumber": 7957637,
+        "blockHash": "0x3c570b7cecdc79ede9b9c4144e61220504f8d86766e781ae1201c4ebbb4aad54",
+        "blockTimestamp": "2026-04-03T13:56:26Z",
+        "receiptStatus": "success",
+        "event": "TransferSent(bytes32)",
+        "recipientWormholeChainId": 30,
+        "relayingType": "manual"
+      },
+      "destination": {
+        "transactionHash": "0xbac53b7660078125b5745533f565fbf7b50e028c740c8b0803fe9577802dcfea",
+        "blockNumber": 44217628,
+        "blockHash": "0xf6ad43db43d473605e72c9ab920c3fb23247bab7d3a0e4109ab03ec9fd1daacb",
+        "blockTimestamp": "2026-04-03T13:56:43Z",
+        "receiptStatus": "success",
+        "event": "TransferRedeemed(bytes32)"
+      }
+    },
+    {
+      "id": "musd-base-to-mezo-completed",
+      "sourceNetwork": "base-mainnet",
+      "destinationNetwork": "mezo-mainnet",
+      "transferDigest": "0x4c1d2081f968094e5b6e37573408731324139404bb5d3c47ef6c35c0021ea421",
+      "source": {
+        "transactionHash": "0x48613d8d6ff57ea964d851066db66af3428c3149d2e78f1f4a928969fb2b82e3",
+        "blockNumber": 45380326,
+        "blockHash": "0x947e5dbe486ceb1cc481408a87cc52834d48aaac214d1ca3b7e6e9b7edf0d66b",
+        "blockTimestamp": "2026-04-30T11:53:19Z",
+        "receiptStatus": "success",
+        "event": "TransferSent(bytes32)"
+      },
+      "destination": {
+        "transactionHash": "0x648bbbe2f0cbe32a2d1d4b00d10b2bca3e67759a3b54b29ce76863d24c26e526",
+        "blockNumber": 8604787,
+        "blockHash": "0xbe4d2f5718c3426bfbccc6f5627a703145464acad73dd2b99ac82de156a6990c",
+        "blockTimestamp": "2026-04-30T12:16:16Z",
+        "receiptStatus": "success",
+        "event": "TransferRedeemed(bytes32)",
+        "sourceWormholeChainId": 30,
+        "sourceSequence": 1365
+      }
+    }
+  ],
+  "volatileObservations": {
+    "emptyInstructionQuoteResult": "reverted on all three managers at the recorded blocks",
+    "interpretation": "The selected NTT version requires correctly encoded transceiver instructions. This is not a stable fee quote or availability result.",
+    "relayingInterpretation": "All three transceivers reported standard and special relaying disabled for recorded peers; representative Mezo source events selected manual mode, while separate off-chain delivery still completed."
+  },
+  "limitations": [
+    "This file is evidence, not the canonical contract-address owner and not a support catalog.",
+    "External Blockscout indexes supplied historical Base coordinates when the selected public RPC rejected old receipt access.",
+    "The four completed transfers prove those historical executions, not current availability, timing, limits, relayer SLA, or future completion.",
+    "No live value-bearing transfer was submitted.",
+    "Native Bridge and MEZO NTT are out of this evidence set."
+  ]
+}

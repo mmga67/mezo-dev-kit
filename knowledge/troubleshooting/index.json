@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "troubleshooting",
+  "moduleId": "troubleshooting",
+  "owner": "troubleshooting",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "issueIds": [
+      "testnet-rpc-historical-data-gap-2026-08-18",
+      "musd-borrowing-capacity-snapshot",
+      "musd-refinance-fee-doc-drift",
+      "musd-redemption-fee-doc-drift",
+      "mezo-earn-deployment-doc-drift-2026-08-18",
+      "musd-ntt-deployment-doc-drift-2026-08-18",
+      "native-bridge-system-receipt-not-delivery-2026-08-18"
+    ]
+  },
+  "limitations": [
+    "Qualified acceptance covers only the seven bounded diagnoses and mitigations; it does not create writer, route, provider-availability, or security support.",
+    "Bridge and gauge/ve deployment drift plus the Native Bridge inbound delivery-proof boundary are reproduced, but their writer/protocol surfaces remain blocked by incentives evidence review and bridge evidence review promotion gates."
+  ],
+  "resources": [
+    {
+      "id": "issue-testnet-rpc-historical-data-gap",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/testnet-rpc-historical-data-gap.json",
+      "recordIds": ["testnet-rpc-historical-data-gap-2026-08-18"]
+    },
+    {
+      "id": "issue-musd-borrowing-capacity-snapshot",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/musd-borrowing-capacity-snapshot.json",
+      "recordIds": ["musd-borrowing-capacity-snapshot"]
+    },
+    {
+      "id": "issue-musd-refinance-fee-doc-drift",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/musd-refinance-fee-doc-drift.json",
+      "recordIds": ["musd-refinance-fee-doc-drift"]
+    },
+    {
+      "id": "issue-musd-redemption-fee-doc-drift",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/musd-redemption-fee-doc-drift.json",
+      "recordIds": ["musd-redemption-fee-doc-drift"]
+    },
+    {
+      "id": "issue-mezo-earn-deployment-doc-drift",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/mezo-earn-deployment-doc-drift.json",
+      "recordIds": ["mezo-earn-deployment-doc-drift-2026-08-18"]
+    },
+    {
+      "id": "issue-musd-ntt-deployment-doc-drift",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/musd-ntt-deployment-doc-drift.json",
+      "recordIds": ["musd-ntt-deployment-doc-drift-2026-08-18"]
+    },
+    {
+      "id": "issue-native-bridge-system-receipt-not-delivery",
+      "role": "canonical-record",
+      "kind": "troubleshooting-issue",
+      "path": "records/native-bridge-system-receipt-not-delivery.json",
+      "recordIds": ["native-bridge-system-receipt-not-delivery-2026-08-18"]
+    },
+    {
+      "id": "troubleshooting-index-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/index.schema.json"
+    },
+    {
+      "id": "troubleshooting-issue-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/issue.schema.json"
+    },
+    {
+      "id": "troubleshooting-legacy-schema-v1",
+      "role": "review",
+      "kind": "legacy-schema-notes",
+      "path": "review/legacy-schema-v1.md"
+    },
+    {
+      "id": "troubleshooting-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {"moduleId": "troubleshooting", "resourceId": "issue-testnet-rpc-historical-data-gap"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-musd-borrowing-capacity-snapshot"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-musd-refinance-fee-doc-drift"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-musd-redemption-fee-doc-drift"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-mezo-earn-deployment-doc-drift"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-musd-ntt-deployment-doc-drift"},
+        {"moduleId": "troubleshooting", "resourceId": "issue-native-bridge-system-receipt-not-delivery"}
+      ]
+    }
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module troubleshooting"},
+    {"id": "troubleshooting-semantics", "type": "semantic", "command": "node scripts/validate-troubleshooting-knowledge.ts"},
+    {"id": "troubleshooting-reference-drift", "type": "drift", "command": "node scripts/generate-troubleshooting-reference.ts --check"}
+  ],
+  "extensions": {
+    "catalogStatus": "verified-versioned",
+    "issueResourceIds": [
+      "issue-testnet-rpc-historical-data-gap",
+      "issue-musd-borrowing-capacity-snapshot",
+      "issue-musd-refinance-fee-doc-drift",
+      "issue-musd-redemption-fee-doc-drift",
+      "issue-mezo-earn-deployment-doc-drift",
+      "issue-musd-ntt-deployment-doc-drift",
+      "issue-native-bridge-system-receipt-not-delivery"
+    ],
+    "securityPlaceholderDecision": "removed-empty-placeholder-security-policy-remains-in-SECURITY.md"
+  }
+}

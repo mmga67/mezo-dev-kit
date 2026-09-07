@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-operation-requirements",
+  "id": "usdc-lending-vault-operations",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"operationStatus": "requirements-only"},
+  "limitations": ["No public vault, allocation, receipt, gauge, or claim writer is supported."],
+  "transactionReference": {"moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements"},
+  "requirements": [
+    {"id": "vault-deposit", "rules": ["refresh gates, fees, totalAssets, totalSupply, liquidity adapter, and allowance", "simulate exact assets and receiver", "reconcile mUSDC and VaultV2 shares"]},
+    {"id": "vault-withdraw", "rules": ["preview with upward share rounding", "refresh idle and market liquidity", "simulate exact deallocation", "do not imply max* getters provide capacity because this generation returns zero"]},
+    {"id": "wrap-or-stake", "rules": ["harvest before receipt conversion", "separate user vault shares from accumulated yield", "reconcile either wallet receipts or gauge beneficial stake, never both"]},
+    {"id": "claim", "rules": ["separate redirected VaultV2 yield shares from MEZO emissions and other voter rewards", "resolve current gauge and claimable values", "reconcile token by token"]}
+  ]
+}

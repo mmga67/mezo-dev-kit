@@ -1,0 +1,8 @@
+{
+  "revision": "synthetic-v1",
+  "widget": {
+    "id": "amber-widget",
+    "displayName": "Amber Widget",
+    "color": "amber"
+  }
+}

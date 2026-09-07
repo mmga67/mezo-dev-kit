@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Troubleshooting knowledge module index v1",
+  "allOf": [
+    {"$ref": "../../../schema/v0.4/module-index.schema.json"}
+  ],
+  "type": "object",
+  "properties": {
+    "id": {"const": "troubleshooting"},
+    "moduleId": {"const": "troubleshooting"},
+    "owner": {"const": "troubleshooting"},
+    "status": {"const": "verified"},
+    "supportStatus": {"const": "none"},
+    "reviewStatus": {"const": "accepted"}
+  }
+}

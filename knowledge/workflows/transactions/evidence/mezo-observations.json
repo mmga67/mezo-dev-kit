@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-transaction-observation-index",
+  "id": "mezo-execution-observations-2026-08-18",
+  "owner": "core-transactions",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "observationDate": "2026-08-18"
+  },
+  "observations": [
+    {
+      "id": "mezo-evm-json-rpc-surface",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "statement": "The supported Mezo network records expose an EVM JSON-RPC capability, but do not claim every optional Ethereum method or feature.",
+      "canonicalEvidence": [
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "mezo-mainnet"
+          },
+          "claimId": "mezo-mainnet-architecture-capabilities"
+        },
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "mezo-testnet"
+          },
+          "claimId": "mezo-testnet-architecture-capabilities"
+        }
+      ],
+      "workflowConsequence": "Declare and probe the exact methods a workflow needs; do not infer optional capabilities from chain identity."
+    },
+    {
+      "id": "mezo-provider-batch-limit-varies",
+      "classification": "observed-behavior",
+      "disposition": "promote",
+      "statement": "During the bounded 2026-08-18 probe, the unauthenticated dRPC mainnet endpoint rejected a JSON-RPC batch larger than three while accepting the tested methods individually.",
+      "canonicalEvidence": [
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "network-probes-2026-08-18",
+            "recordId": "mainnet-drpc-https"
+          }
+        }
+      ],
+      "validity": "Point-in-time provider and plan observation only.",
+      "workflowConsequence": "Batch size is a provider capability; split or fall back without changing required/optional item semantics."
+    },
+    {
+      "id": "mezo-provider-health-is-volatile",
+      "classification": "observed-behavior",
+      "disposition": "promote",
+      "statement": "Officially listed Mezo providers had different outcomes during the bounded probe, including successful responses and point-in-time HTTP/WebSocket failures.",
+      "canonicalEvidence": [
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "rpc-endpoints",
+            "recordId": "mezo-mainnet-boar-https"
+          }
+        },
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "rpc-endpoints",
+            "recordId": "mezo-mainnet-imperator-https"
+          }
+        },
+        {
+          "reference": {
+            "moduleId": "networks",
+            "resourceId": "rpc-endpoints",
+            "recordId": "mezo-mainnet-validation-cloud-https"
+          }
+        }
+      ],
+      "validity": "Endpoint status must be rechecked after the network catalog review date or before sensitive use.",
+      "workflowConsequence": "Select only eligible fresh providers, assert chain identity after failover, and do not treat one failure as permanent unavailability."
+    }
+  ],
+  "limitations": [
+    "These observations do not establish archive access, subscriptions, debug methods, transaction-pool behavior, rate limits, or provider uptime.",
+    "No Mezo-specific transaction deviation from standard EVM receipt semantics is promoted here."
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-enclave-vault-model",
+  "id": "institutional-debt-enclave-vaults",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11334441
+  },
+  "limitations": [
+    "Role members, allowed target-selector pairs, and triparty UTXOs are block-scoped governed state, not timeless constants.",
+    "ABI presence does not imply that the selector is executable through an Enclave."
+  ],
+  "sharedBoundaries": {
+    "executor": "EXECUTOR_ROLE may invoke only a currently allowed exact (target, bytes4 selector) pair. executeBatch preserves input order and reverts atomically when any call fails or array lengths differ.",
+    "receiver": "The vault can receive native value and token/NFT assets according to the reproduced interfaces, but receipt alone creates no debt position or accounting mutation.",
+    "tripartyUtxo": "A triparty bridge request records a unique transaction-hash/output-index key before calling AssetsBridge; the whole transaction reverts if the bridge call fails.",
+    "veBtcCustody": "veBTC token IDs are owned/custodied by the Enclave. A token ID becomes debt collateral only while explicitly pledged in an active debt-manager position.",
+    "allowlist": "Target authorization is the exact target-plus-selector pair at a current block. Past TargetAdded events and ABI functions are candidate history, not current authorization."
+  },
+  "generations": [
+    {
+      "id": "original",
+      "contractId": "musd.enclave-v1",
+      "roleBoundary": {
+        "DEFAULT_ADMIN_ROLE": "manages roles and target-selector pairs",
+        "EXECUTOR_ROLE": "executes currently allowed calls and batches",
+        "BTC_MANAGER_ROLE": "manages BTC/veBTC custody and triparty bridge requests",
+        "BRIDGE_MODULE_ROLE": "receives native-bridge callbacks"
+      },
+      "fixedBlockSummary": {
+        "targetSelectorPairCount": 36,
+        "debtManagerSelectorCount": 10,
+        "tripartyUtxoCount": 2
+      },
+      "debtManagerSelectors": [
+        "0xe487893f",
+        "0x1322e56e",
+        "0x12bf2ba1",
+        "0x59d31fb3",
+        "0x23c8521b",
+        "0x00f989ad",
+        "0xec83fd03",
+        "0xfeee0d9d",
+        "0xa6afed95",
+        "0x4b68f8a1"
+      ]
+    },
+    {
+      "id": "second",
+      "contractId": "musd.enclave-v2",
+      "roleBoundary": {
+        "DEFAULT_ADMIN_ROLE": "manages roles and target-selector pairs",
+        "EXECUTOR_ROLE": "executes currently allowed calls and batches",
+        "BTC_MANAGER_ROLE": "manages BTC/veBTC custody",
+        "BRIDGE_MANAGER_ROLE": "requests triparty bridge operations independently of BTC management",
+        "BRIDGE_MODULE_ROLE": "receives native-bridge callbacks"
+      },
+      "genericTargetExclusions": [
+        "AssetsBridge",
+        "veBTC"
+      ],
+      "fixedBlockSummary": {
+        "targetSelectorPairCount": 24,
+        "debtManagerSelectorCount": 1,
+        "tripartyUtxoCount": 1
+      },
+      "debtManagerSelectors": [
+        "0xe487893f"
+      ]
+    }
+  ],
+  "knownDebtSelectorNames": {
+    "0xe487893f": "openPosition",
+    "0x1322e56e": "increaseDebt",
+    "0x00f989ad": "repay",
+    "0x4b68f8a1": "repayAll",
+    "0x12bf2ba1": "addPledgedVeBtc",
+    "0x59d31fb3": "removePledgedVeBtc",
+    "0xec83fd03": "setPositionInterestRate",
+    "0xfeee0d9d": "setPositionOriginatorFeeRate",
+    "0x23c8521b": "setPositionCRThresholds",
+    "0xa6afed95": "accrueInterest"
+  },
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-fixed-block-state",
+      "locator": "enclaves and events"
+    },
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "musd.enclave-v1 and musd.enclave-v2"
+    }
+  ]
+}

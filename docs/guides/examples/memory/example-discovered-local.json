@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-rpc-timeout-observation",
+  "domain": "troubleshooting/rpc",
+  "status": "discovered",
+  "title": "Unverified synthetic timeout observation",
+  "summary": "A local synthetic harness appeared to reproduce a transport timeout. The cause and relevance are not verified; follow the source pointer before relying on this observation.",
+  "sources": [".mdk/memory/entries/example-local-investigation.json"],
+  "related": [],
+  "updated": "2026-08-29"
+}

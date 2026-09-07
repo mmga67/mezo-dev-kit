@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-math-model",
+  "id": "pools-math",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "sourceGeneration": "documented-mainnet-cl-roots-2026-08-23"
+  },
+  "limitations": [
+    "Pure math does not supply current fees, initialized state, price impact across ticks, token transfer behavior, or transaction safety.",
+    "All integer operations must preserve the recorded floor/ceil direction; floating-point approximations are display-only."
+  ],
+  "constants": {
+    "Q96": "79228162514264337593543950336",
+    "Q128": "340282366920938463463374607431768211456",
+    "minTick": -887272,
+    "maxTick": 887272,
+    "minSqrtRatioX96": "4295128739",
+    "maxSqrtRatioX96": "1461446703485210103287273052203988822378723970342"
+  },
+  "tickAndPrice": {
+    "sqrtRatio": "sqrtPriceX96 = ceil(sqrt(1.0001^tick) * 2^96) using the deployed TickMath bit-exact algorithm.",
+    "rawPrice": "token1/token0 = sqrtPriceX96^2 / 2^192 as an exact rational.",
+    "decimalAdjustedDisplay": "Multiply the raw token1/token0 ratio by 10^(token0Decimals-token1Decimals). Token ordering and both decimals must be explicit.",
+    "readBoundary": "A slot0 tick anywhere in [-887272, 887272] is representable contract state.",
+    "writeBoundary": "Position ticks must also be strictly ordered and divisible by tickSpacing. For spacing 200 the usable aligned bounds are -887200 and 887200.",
+    "inverseBoundary": "getTickAtSqrtRatio accepts sqrtPriceX96 >= minSqrtRatioX96 and strictly less than maxSqrtRatioX96."
+  },
+  "liquidityAmounts": {
+    "token0ForRange": "floor(floor((liquidity << 96) * (sqrtUpper - sqrtLower) / sqrtUpper) / sqrtLower)",
+    "token1ForRange": "floor(liquidity * (sqrtUpper - sqrtLower) / 2^96)",
+    "belowRange": "All principal is token0; value with [sqrtLower, sqrtUpper].",
+    "insideRange": "Token0 uses [sqrtCurrent, sqrtUpper] and token1 uses [sqrtLower, sqrtCurrent].",
+    "aboveRange": "All principal is token1; value with [sqrtLower, sqrtUpper].",
+    "liquidityFromAmount0": "floor(amount0 * floor(sqrtLower * sqrtUpper / 2^96) / (sqrtUpper - sqrtLower))",
+    "liquidityFromAmount1": "floor(amount1 * 2^96 / (sqrtUpper - sqrtLower))",
+    "liquidityFromBoth": "Below/above range use the applicable single-token formula; inside uses min(liquidity0, liquidity1).",
+    "roundingBoundary": "Position-manager quote math floors received liquidity and principal estimates. Core swap/mint deltas use direction-specific floor or ceil operations; a future writer must match the exact called function rather than reuse a display estimate."
+  },
+  "stateBoundaries": {
+    "uninitializedImplementation": "A template implementation may expose zero/default storage and is not a usable initialized pool instance.",
+    "initializedEmptyPool": "A factory-recognized pool may have nonzero initialized sqrtPriceX96 while active liquidity and staked liquidity are zero.",
+    "zeroLiquidityRead": "Zero active liquidity, zero LP supply, or a missing gauge is valid read state and must be represented without division or fabricated APY.",
+    "partialRead": "Preserve each successful field plus an explicit per-field error/unknown when an optional or batched read fails. A partial row is not executable identity and missing values must not be synthesized.",
+    "staleRow": "A row observed at another block or without a same-block factory mapping is analytics evidence only, even when its address and tokens look plausible.",
+    "strictWriteValidation": "A write must reject zero desired liquidity/output, invalid or unaligned ranges, expired deadlines, uninitialized pools, and absent/mismatched dynamic mappings even though those states may be representable in reads."
+  },
+  "evidence": [
+    {
+      "sourceArtifactId": "pools-source-reproduction",
+      "locator": "TickMath, SqrtPriceMath, LiquidityAmounts, CLPool, and NonfungiblePositionManager"
+    },
+    {
+      "sourceArtifactId": "official-source-tigris",
+      "locator": "Pool stable/volatile invariant and quote implementation"
+    },
+    {
+      "sourceArtifactId": "pools-mainnet-topology",
+      "locator": "zero LP supply, zero CL liquidity, missing gauge, and slot0 observations"
+    }
+  ]
+}

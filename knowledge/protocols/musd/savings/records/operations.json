@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-operation-requirements",
+  "id": "musd-savings-operations",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "operationStatus": "requirements-only"},
+  "limitations": ["These requirements do not expose or authorize any public writer."],
+  "workflowReference": {"moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements"},
+  "requirements": [
+    {"id": "deposit", "rules": ["refresh proxy/roles", "check MUSD balance and allowance", "simulate exact deposit amount", "reconcile MUSD decrease and equal sMUSD mint"]},
+    {"id": "withdraw", "rules": ["refresh claimable yield and receipt custody", "simulate exact withdraw", "reconcile equal principal burn/return separately from claimed yield"]},
+    {"id": "stake", "rules": ["resolve gauge through PoolsVoter", "simulate approval/deposit", "do not count wallet receipts and staked receipts twice"]},
+    {"id": "claim", "rules": ["separate Savings MUSD yield, redirected voter revenue, and MEZO gauge rewards", "respect current gaugeYieldClaimCap", "reconcile each token independently"]}
+  ]
+}

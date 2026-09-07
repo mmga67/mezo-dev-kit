@@ -1,0 +1,55 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_forwarder",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_rewards",
+        "type": "address[]"
+      }
+    ],
+    "name": "createBribeReward",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "bribeVotingReward",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_forwarder",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_rewards",
+        "type": "address[]"
+      }
+    ],
+    "name": "createRewards",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "feesVotingReward",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "bribeVotingReward",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

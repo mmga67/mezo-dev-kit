@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-protocol-read-observations",
+  "id": "musd-protocol-observations",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:11:43Z",
+  "reviewAfter": null,
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "method": "eth_call"},
+  "observedAt": "2026-08-17T23:11:43Z",
+  "method": "eth_call",
+  "observations": [
+    {
+      "id": "musd-decimals-mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "endpointId": "mezo-mainnet-boar-https",
+      "deploymentId": "musd.token@mezo-mainnet",
+      "blockNumber": 11201821,
+      "blockHash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+      "function": "decimals()",
+      "callData": "0x313ce567",
+      "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000012",
+      "decodedResult": 18,
+      "status": "verified"
+    },
+    {
+      "id": "musd-decimals-mezo-testnet",
+      "networkId": "mezo-testnet",
+      "endpointId": "mezo-testnet-official-https",
+      "deploymentId": "musd.token@mezo-testnet",
+      "blockNumber": 14952836,
+      "blockHash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+      "function": "decimals()",
+      "callData": "0x313ce567",
+      "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000012",
+      "decodedResult": 18,
+      "status": "verified"
+    }
+  ],
+  "limitations": [
+    "These are read-only observations at the same fixed blocks used by the contract registry review deployment evidence.",
+    "Deployment addresses are deliberately resolved from knowledge/contracts and are not duplicated here."
+  ]
+}

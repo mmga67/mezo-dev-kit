@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-position-accounting-model",
+  "id": "institutional-debt-positions-accounting",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11334441
+  },
+  "limitations": [
+    "Position values, price, rates, thresholds, caps, role members, and totals require same-block reads for current use.",
+    "The reproduced source has a closedByLiquidation enum value but no implemented liquidation operation; do not infer liquidation support."
+  ],
+  "positionModel": {
+    "identity": "bytes32 position ID; an active record stores Enclave, borrower, originator, principal, rates, thresholds, timestamps, status, and pledged veBTC token IDs.",
+    "authorization": "Opening requires ENCLAVE_ROLE. Mutations require the recorded position Enclave and that caller must still hold ENCLAVE_ROLE.",
+    "collateral": "Current collateral is the sum of veBTC.locked(tokenId).amount for the position's pledged token IDs; each token must be owned by the calling Enclave when pledged.",
+    "status": [
+      "nonExistent",
+      "active",
+      "closedByRepayment",
+      "closedByLiquidation"
+    ],
+    "closure": "Repayment to zero principal releases pledged-token mappings and closes as closedByRepayment. Zero debt returns max uint256 as the collateral-ratio sentinel."
+  },
+  "accountingDimensions": [
+    {
+      "id": "principal",
+      "meaning": "Outstanding institutional principal only."
+    },
+    {
+      "id": "interest",
+      "meaning": "Time-proportional debt fee at the position interest rate; settled interest is minted to PCV."
+    },
+    {
+      "id": "originator-fee",
+      "meaning": "Time-proportional fee at the position originator rate; settled fee is minted to the recorded originator."
+    },
+    {
+      "id": "total-minted-debt",
+      "meaning": "Cumulative institutional principal minted, separate from fee minting."
+    },
+    {
+      "id": "total-debt-burned",
+      "meaning": "Cumulative institutional principal repaid and burned."
+    },
+    {
+      "id": "total-fee-settled",
+      "meaning": "Cumulative system fee debt settled; distinct from principal burned and fee tokens minted."
+    },
+    {
+      "id": "pledged-vebtc",
+      "meaning": "Custodied veBTC explicitly pledged to an active position; not all Enclave assets."
+    }
+  ],
+  "repayment": {
+    "ordering": "Accrue system and position fees, require payment at least equal to all position fees, settle fees first, and apply only the remainder to principal.",
+    "bounds": "Reject a remainder greater than principal. The Enclave caller supplies and burns the full MUSD payment. repayAll is present only in debt-manager implementation v2.",
+    "aggregateUpdates": "Principal repayment decreases totalPrincipal and increases totalDebtBurned; interest/originator settlement uses separate fee totals and recipients."
+  },
+  "fixedBlockSummary": {
+    "knownPositionCount": 3,
+    "activePositionCount": 2,
+    "closedByRepaymentCount": 1,
+    "activePrincipal": "14500000000000000000000000",
+    "totalMintedDebt": "25088622000000000000000000",
+    "totalDebtBurned": "10588622000000000000000000",
+    "originatorFeeMinted": "0"
+  },
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-fixed-block-state",
+      "locator": "debtManager.parameters, totals, positions, originators, roles, and events"
+    },
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "EnclaveDebtManager v1 and v2"
+    }
+  ]
+}

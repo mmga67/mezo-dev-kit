@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-role-topology",
+  "id": "musd-savings-roles",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "blockNumber": 11341710},
+  "limitations": [
+    "Only accepted stable roots are logical references; other addresses remain fixed-block role observations.",
+    "Strategy, converter, recipient, gauge, and reward roles are governed or root-discovered and must not be frozen into another module."
+  ],
+  "stableReferences": [
+    {"id": "savings-deployment", "reference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "musd.savings-rate@mezo-mainnet"}},
+    {"id": "savings-abi", "reference": {"moduleId": "contracts", "resourceId": "contract-abis", "recordId": "musd.savings-rate"}},
+    {"id": "musd-token", "reference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "musd.token@mezo-mainnet"}},
+    {"id": "pcv", "reference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "musd.pcv@mezo-mainnet"}},
+    {"id": "pools-voter", "reference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "incentives.pools-voter@mezo-mainnet"}},
+    {"id": "gauge-semantics", "reference": {"moduleId": "protocols/incentives", "resourceId": "incentives-gauges-rewards"}},
+    {"id": "classic-musd", "reference": {"moduleId": "protocols/musd", "resourceId": "musd-system-model"}}
+  ],
+  "roleResolution": [
+    {"id": "savings", "rule": "Savings evidence review candidate root; verify proxy code, slots, implementation and source at the operation block"},
+    {"id": "strategy", "rule": "read savings.strategy(); require strategy.vault()==savings and strategy.token()==MUSD"},
+    {"id": "vault-gauge", "rule": "read savings.vaultGauge() and PoolsVoter.gauges(savings); require equality"},
+    {"id": "pcv-fee-recipient", "rule": "read PCV.feeRecipient(); require it equals the active savings root before attributing MUSD revenue"},
+    {"id": "btc-yield-converter", "rule": "read PCV.btcRecipient(), resolve proxy implementation, and require converter.musdSavingsRate()==savings"}
+  ]
+}

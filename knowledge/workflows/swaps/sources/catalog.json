@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-swap-source-catalog",
+  "id": "swap-sources",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": { "networkIds": ["mezo-mainnet"], "retrievalDate": "2026-08-25" },
+  "limitations": [
+    "Documentation establishes the published split-router surface but does not replace source, ABI, deployment, or fixed-block evidence.",
+    "Explorer/RPC observations are bounded to their recorded coordinates and do not create runtime support."
+  ],
+  "records": [
+    {
+      "id": "official-docs-mezo-pools-current",
+      "type": "official-documentation",
+      "url": "https://mezo.org/docs/developers/features/mezo-pools",
+      "retrievedAt": "2026-08-25T06:45:00.000Z",
+      "scope": "Current basic Router and CL Swap Router addresses and documented swap entrypoint examples.",
+      "limitations": ["The page publishes no Quoter or Universal Router address."]
+    },
+    {
+      "id": "basic-router-deployment",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "mezo-earn.router@mezo-mainnet"
+      },
+      "scope": "Accepted basic Router identity, activation, runtime, and provenance."
+    },
+    {
+      "id": "basic-router-abi",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "mezo-earn.router"
+      },
+      "scope": "Accepted full Router ABI and source-owned entrypoint surface."
+    },
+    {
+      "id": "cl-router-deployment",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "mezo-earn.cl-swap-router@mezo-mainnet"
+      },
+      "scope": "Accepted CL Swap Router identity, activation, executable reproduction, and immutable factory relationship."
+    },
+    {
+      "id": "cl-router-abi",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "mezo-earn.cl-swap-router"
+      },
+      "scope": "Accepted full CL Swap Router ABI and reproduced source semantics."
+    },
+    {
+      "id": "pool-architectures",
+      "type": "logical-reference",
+      "reference": { "moduleId": "protocols/pools", "resourceId": "pools-architectures" },
+      "scope": "Accepted basic/CL identity, discovery, math, and Quoter boundaries."
+    },
+    {
+      "id": "network-rpc-endpoints",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-validation-cloud-https"
+      },
+      "scope": "Accepted endpoint publication and bounded operational identity; swap evidence separately proves exact methods used."
+    },
+    {
+      "id": "transaction-client-requirements",
+      "type": "logical-reference",
+      "reference": {
+        "moduleId": "workflows/transactions",
+        "resourceId": "transaction-client-requirements"
+      },
+      "scope": "Accepted architecture requirements for quote context, exact simulation, approvals, tracking, and reconciliation."
+    },
+    {
+      "id": "swap-mainnet-routing-evidence",
+      "type": "local-evidence",
+      "path": "evidence/mainnet-routing-2026-08-25.json",
+      "sha256": "f5b3e10eb2d4feca6446d44b84a884a29aa4f46b14776deab40031dcaa29a5a7",
+      "scope": "Current router relationships and quote plus exact historical basic multi-hop and CL direct replay/reconciliation evidence."
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-contract-role-map",
+  "id": "bridge-contract-roles",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "workflowStatus": "evidence-verified-promotion-blocked",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T13:39:35.987Z",
+  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
+  },
+  "limitations": [
+    "The referenced Network and Contract records received qualified registry acceptance under registry provenance review; this map creates no route, relayer, quote, writer, or product support.",
+    "Addresses in dated bridge evidence remain observation coordinates and must equal the referenced stable deployment identity.",
+    "The August 18 Native evidence remains historical. bridge evidence review accepted Contracts evidence contract-bridge-v13-probes-2026-08-24 and its v13 execution-generation-6 deployment for current behavior; route and writer support remain absent."
+  ],
+  "networkReferences": [
+    {
+      "moduleId": "networks",
+      "resourceId": "mezo-mainnet"
+    },
+    {
+      "moduleId": "networks",
+      "resourceId": "ethereum-mainnet"
+    },
+    {
+      "moduleId": "networks",
+      "resourceId": "base-mainnet"
+    }
+  ],
+  "evidenceReferences": [
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-musd-ntt-evidence"
+    },
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-native-evidence"
+    }
+  ],
+  "records": [
+    {
+      "id": "musd-ntt-manager-mezo-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "ntt-manager",
+      "networkId": "mezo-mainnet",
+      "evidenceObservationId": "musd-ntt-mezo-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-ntt-manager"
+      }
+    },
+    {
+      "id": "musd-wormhole-transceiver-mezo-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "wormhole-transceiver",
+      "networkId": "mezo-mainnet",
+      "evidenceObservationId": "musd-ntt-mezo-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-wormhole-transceiver@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-wormhole-transceiver"
+      }
+    },
+    {
+      "id": "musd-ntt-manager-ethereum-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "ntt-manager",
+      "networkId": "ethereum-mainnet",
+      "evidenceObservationId": "musd-ntt-ethereum-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@ethereum-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-ntt-manager"
+      }
+    },
+    {
+      "id": "musd-wormhole-transceiver-ethereum-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "wormhole-transceiver",
+      "networkId": "ethereum-mainnet",
+      "evidenceObservationId": "musd-ntt-ethereum-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-wormhole-transceiver@ethereum-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-wormhole-transceiver"
+      }
+    },
+    {
+      "id": "musd-ntt-manager-base-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "ntt-manager",
+      "networkId": "base-mainnet",
+      "evidenceObservationId": "musd-ntt-base-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@base-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-ntt-manager"
+      }
+    },
+    {
+      "id": "musd-wormhole-transceiver-base-mainnet",
+      "providerId": "wormhole-ntt",
+      "role": "wormhole-transceiver",
+      "networkId": "base-mainnet",
+      "evidenceObservationId": "musd-ntt-base-snapshot",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-wormhole-transceiver@base-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.musd-wormhole-transceiver"
+      }
+    },
+    {
+      "id": "native-assets-bridge-mezo-mainnet",
+      "providerId": "mezo-native-bridge",
+      "role": "native-assets-precompile",
+      "networkId": "mezo-mainnet",
+      "evidenceObservationId": "native-mezo-assets-bridge-v12",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.native-assets-precompile"
+      }
+    },
+    {
+      "id": "native-mezo-bridge-ethereum-mainnet",
+      "providerId": "mezo-native-bridge",
+      "role": "native-ethereum-portal",
+      "networkId": "ethereum-mainnet",
+      "evidenceObservationId": "native-ethereum-mezo-bridge-proxy-history",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.native-mezo-bridge@ethereum-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "bridge.native-mezo-bridge"
+      }
+    }
+  ]
+}

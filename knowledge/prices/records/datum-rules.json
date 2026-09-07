@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-datum-rules",
+  "id": "price-datum-rules",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T17:52:25.719Z",
+  "reviewAfter": "2026-08-26T16:00:00.000Z",
+  "scope": {
+    "arithmetic": "integer-or-exact-rational",
+    "maxPowerOfTenExponent": 77
+  },
+  "limitations": [
+    "These are provider-neutral deterministic rules, not a released runtime API or protocol-specific price adapter.",
+    "Consumers may impose stricter scale, zero, confidence, or numeric-range rules and must name them explicitly."
+  ],
+  "datumEnvelope": {
+    "required": [
+      "sourceId",
+      "feedOrInstrumentId",
+      "sourceClass",
+      "baseAsset",
+      "quoteAsset",
+      "networkOrProviderScope",
+      "rawValue",
+      "scale",
+      "publicationOrBlockCoordinate",
+      "observedAt",
+      "confidence",
+      "asOf",
+      "freshnessRule",
+      "result",
+      "limitations",
+      "references"
+    ],
+    "rawValue": "signed base-10 integer or exact rational; never an unqualified floating-point number",
+    "scale": "decimal exponent or decimals with explicit interpretation",
+    "confidence": "source-defined raw value and semantics, or null with an unsupported limitation",
+    "successAdds": [
+      "normalizedValue",
+      "targetDecimals",
+      "rounding"
+    ],
+    "results": [
+      "valid",
+      "stale",
+      "future-dated",
+      "negative",
+      "zero-invalid",
+      "missing",
+      "unsupported",
+      "partial",
+      "disagreement",
+      "failed"
+    ]
+  },
+  "scaling": {
+    "formula": "normalizedInteger = rawPrice * 10^(sourceExponent + targetDecimals)",
+    "multiplication": "When sourceExponent + targetDecimals is non-negative, multiply exactly after checking the declared exponent and target numeric range.",
+    "division": "When sourceExponent + targetDecimals is negative, divide by the exact power of ten and apply the named rounding rule; preserve whether a remainder was discarded.",
+    "roundingRules": [
+      "toward-zero",
+      "floor",
+      "ceiling",
+      "nearest-ties-to-even"
+    ],
+    "defaultFixtureRounding": "toward-zero",
+    "maxAbsolutePowerOfTenExponent": 77,
+    "failures": [
+      "negative",
+      "exponent-overflow",
+      "numeric-overflow",
+      "unsupported-precision-loss",
+      "zero-invalid"
+    ]
+  },
+  "confidence": {
+    "rule": "Normalize a feed-defined confidence integer with the same exponent and target scale as its paired raw price.",
+    "absent": "Return null and a source limitation; never infer zero, a percentage, or an interval.",
+    "pairing": "Confidence never survives without the exact source price, exponent, feed identity, and publication coordinate it qualifies."
+  },
+  "invalidInputRule": "An unavailable or invalid input is never converted to zero, a last-known value, or another source without an explicit typed result."
+}

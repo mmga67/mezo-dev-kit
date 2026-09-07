@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-debt-formula-catalog",
+  "id": "institutional-debt-formulas",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "implementationGeneration": "enclave-debt-manager-v2"
+  },
+  "limitations": [
+    "All quantities are nonnegative Solidity integers and each division floors at its written position.",
+    "Fixtures do not replace a same-block price, position, accumulator, role, pause, cap, or allowlist read."
+  ],
+  "constants": {
+    "basisPoints": "10000",
+    "secondsInYear": "31556952",
+    "ratioPrecision": "1000000000000000000",
+    "maxUint256": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+  },
+  "records": [
+    {
+      "id": "simple-fee",
+      "expression": "floor(elapsedSeconds * principal * rateBps / (basisPoints * secondsInYear))",
+      "appliesTo": [
+        "position interest",
+        "position originator fee",
+        "aggregate accumulator accrual"
+      ]
+    },
+    {
+      "id": "position-total-debt",
+      "expression": "principal + storedInterest + newlyAccruedInterest + storedOriginatorFee + newlyAccruedOriginatorFee"
+    },
+    {
+      "id": "pledged-collateral",
+      "expression": "sum(veBTC.locked(tokenId).amount for every pledged tokenId)"
+    },
+    {
+      "id": "collateral-ratio",
+      "expression": "debt == 0 ? maxUint256 : floor(collateral * price / debt)",
+      "units": "1e18 fixed-point when collateral, BTC/USD price, and MUSD debt use their deployed 18-decimal units"
+    },
+    {
+      "id": "position-health",
+      "expression": "belowWarning = currentCR < warningCR; belowMinimum = currentCR < minimumCR",
+      "boundary": "Equality is not below the threshold."
+    },
+    {
+      "id": "repayment-split",
+      "expression": "require payment >= totalFees; principalPayment = payment - totalFees; require principalPayment <= principal; remainingPrincipal = principal - principalPayment",
+      "ordering": "fees first, then principal"
+    },
+    {
+      "id": "combined-rate",
+      "expression": "interestRateBps + originatorFeeRateBps <= maxCombinedRateBps"
+    },
+    {
+      "id": "outstanding-debt",
+      "expression": "totalPrincipal + max(totalFeesStored + combinedAccumulatorAccrued - totalFeeSettled, 0)",
+      "rounding": "The combined accumulator is calculated independently and the clamp prevents underflow after settlement."
+    },
+    {
+      "id": "principal-conservation",
+      "expression": "totalMintedDebt - totalDebtBurned == totalPrincipal",
+      "scope": "institutional principal only at a consistent state coordinate"
+    },
+    {
+      "id": "aggregate-separation",
+      "expression": "classicDebt and institutionalOutstandingDebt remain separately named; no combined product ratio exists without a separately accepted definition",
+      "scope": "classic TCR/ICR/Recovery Mode remain classic-only"
+    }
+  ],
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "FeeAccrualMath and EnclaveDebtManager"
+    }
+  ]
+}

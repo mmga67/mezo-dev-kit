@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-borrowing-formula-catalog",
+  "id": "borrowing-formulas",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Formula support assumes exact integer inputs, units, ordering, and floor semantics from the selected deployment state."],
+  "integerSemantics": "Solidity uint256 arithmetic with floor division; callers must reject overflow and underflow.",
+  "constants": {
+    "decimalPrecision": "1000000000000000000",
+    "nicrPrecision": "100000000000000000000",
+    "basisPoints": "10000",
+    "secondsInProtocolYear": "31556952",
+    "uint256Max": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+  },
+  "records": [
+    {
+      "id": "collateral-value",
+      "inputs": {"collateral": "native-btc-amount", "price": "btc-usd-price"},
+      "output": "musd-value",
+      "expression": "floor(collateral * price / decimalPrecision)",
+      "evidence": [{"sourceArtifactId": "source-liquity-math", "locator": "_computeCR numerator scaling"}]
+    },
+    {
+      "id": "collateral-ratio",
+      "inputs": {"collateral": "native-btc-amount", "debt": "musd-token-amount", "price": "btc-usd-price"},
+      "output": "decimal-fixed-point",
+      "expression": "debt == 0 ? uint256Max : floor(collateral * price / debt)",
+      "evidence": [{"sourceArtifactId": "source-liquity-math", "locator": "_computeCR"}]
+    },
+    {
+      "id": "nominal-collateral-ratio",
+      "inputs": {"collateral": "native-btc-amount", "principal": "musd-token-amount"},
+      "output": "nicr-fixed-point",
+      "expression": "principal == 0 ? uint256Max : floor(collateral * nicrPrecision / principal)",
+      "evidence": [{"sourceArtifactId": "source-liquity-math", "locator": "_computeNominalCR"}]
+    },
+    {
+      "id": "simple-interest",
+      "inputs": {"principal": "musd-token-amount", "annualRateBps": "annual-interest-rate", "elapsedSeconds": "seconds"},
+      "output": "musd-token-amount",
+      "expression": "floor(principal * annualRateBps * elapsedSeconds / (basisPoints * secondsInProtocolYear))",
+      "evidence": [{"sourceArtifactId": "source-interest-rate-math", "locator": "calculateInterestOwed"}]
+    },
+    {
+      "id": "borrowing-fee",
+      "inputs": {"requestedDebt": "musd-token-amount", "borrowingRate": "decimal-fixed-point"},
+      "output": "musd-token-amount",
+      "expression": "floor(requestedDebt * borrowingRate / decimalPrecision)",
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "getBorrowingFee"}]
+    },
+    {
+      "id": "refinancing-fee",
+      "inputs": {"netDebt": "musd-token-amount", "refinancingFeePercentage": "integer-percent-of-refinance-fee-base", "borrowingRate": "decimal-fixed-point"},
+      "output": "musd-token-amount",
+      "expression": "feeBase = floor(refinancingFeePercentage * netDebt / 100); fee = floor(feeBase * borrowingRate / decimalPrecision)",
+      "note": "At the recorded 20 and 0.1% parameters, this is an effective 0.02% of net debt before floor rounding. Published 0.1% refinance prose is stale for the scoped deployments.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_refinance and getBorrowingFee"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "refinancingFeePercentage() and borrowingRate() fixed-block reads"},
+        {"sourceArtifactId": "docs-borrow-fees", "locator": "stale conflicting Refinance fee prose"}
+      ]
+    },
+    {
+      "id": "net-debt-on-open",
+      "inputs": {"requestedDebt": "musd-token-amount", "borrowingFee": "musd-token-amount"},
+      "output": "musd-token-amount",
+      "expression": "requestedDebt + borrowingFee",
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "_openTrove netDebt"}]
+    },
+    {
+      "id": "composite-debt",
+      "inputs": {"netDebt": "musd-token-amount", "gasCompensation": "musd-token-amount"},
+      "output": "musd-token-amount",
+      "expression": "netDebt + gasCompensation",
+      "evidence": [{"sourceArtifactId": "source-liquity-base", "locator": "_getCompositeDebt"}]
+    },
+    {
+      "id": "max-borrowing-capacity",
+      "inputs": {"collateral": "native-btc-amount", "price": "btc-usd-price", "minimumCollateralRatio": "decimal-fixed-point"},
+      "output": "musd-token-amount",
+      "expression": "floor(collateral * price / minimumCollateralRatio)",
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "_calculateMaxBorrowingCapacity"}]
+    },
+    {
+      "id": "debt-payment-split",
+      "inputs": {"interestOwed": "musd-token-amount", "payment": "musd-token-amount"},
+      "outputs": {"principalAdjustment": "musd-token-amount", "interestAdjustment": "musd-token-amount"},
+      "expression": "interestAdjustment = min(payment, interestOwed); principalAdjustment = payment - interestAdjustment",
+      "evidence": [{"sourceArtifactId": "source-interest-rate-math", "locator": "calculateDebtAdjustment"}]
+    },
+    {
+      "id": "collateral-gas-compensation",
+      "inputs": {"entireCollateral": "native-btc-amount", "percentDivisor": "integer"},
+      "output": "native-btc-amount",
+      "expression": "floor(entireCollateral / percentDivisor)",
+      "evidence": [{"sourceArtifactId": "source-liquity-base", "locator": "_getCollGasCompensation"}]
+    },
+    {
+      "id": "liquidation-offset",
+      "inputs": {"principal": "musd-token-amount", "interest": "musd-token-amount", "liquidatableCollateral": "native-btc-amount", "stabilityPoolDeposits": "musd-token-amount"},
+      "outputs": {"interestToOffset": "musd-token-amount", "principalToOffset": "musd-token-amount", "collateralToStabilityPool": "native-btc-amount", "interestToRedistribute": "musd-token-amount", "principalToRedistribute": "musd-token-amount", "collateralToRedistribute": "native-btc-amount"},
+      "expression": "interestToOffset=min(interest,deposits); principalToOffset=min(principal,deposits-interestToOffset); collateralToStabilityPool=floor(liquidatableCollateral*(interestToOffset+principalToOffset)/(principal+interest)); each redistribution output is its input remainder",
+      "precondition": "principal + interest > 0",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_getOffsetAndRedistributionVals"}]
+    },
+    {
+      "id": "pending-reward",
+      "inputs": {"stake": "stake-amount", "cumulativePerUnit": "decimal-fixed-point", "snapshotPerUnit": "decimal-fixed-point"},
+      "output": "amount",
+      "expression": "floor(stake * (cumulativePerUnit - snapshotPerUnit) / decimalPrecision)",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "getPendingCollateral and getPendingDebt"}]
+    },
+    {
+      "id": "redistribution-per-unit",
+      "inputs": {"amount": "amount", "previousError": "scaled-remainder", "totalStakes": "stake-amount"},
+      "outputs": {"perUnit": "decimal-fixed-point", "nextError": "scaled-remainder"},
+      "expression": "numerator = amount * decimalPrecision + previousError; perUnit = floor(numerator / totalStakes); nextError = numerator - perUnit * totalStakes",
+      "precondition": "totalStakes > 0",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_redistributeDebtAndColl error-correction calculation"}]
+    },
+    {
+      "id": "reciprocal-ltv-display",
+      "inputs": {"collateralRatio": "decimal-fixed-point"},
+      "output": "decimal-fixed-point",
+      "expression": "collateralRatio == 0 ? undefined : floor(decimalPrecision * decimalPrecision / collateralRatio)",
+      "classification": "derived-display-only",
+      "warning": "Never use a rounded display LTV to reconstruct write-path CR inputs.",
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-math", "locator": "_computeCR establishes the protocol-native ratio"}
+      ]
+    }
+  ]
+}

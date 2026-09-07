@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-architecture-model",
+  "id": "pools-architectures",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11333787
+  },
+  "limitations": [
+    "Dynamic pool and gauge instances are volatile deployment state and are not accepted Contract identities by appearing here.",
+    "No official current Quoter deployment was established.",
+    "The accepted CL registry roots create no route or writer support."
+  ],
+  "architectures": [
+    {
+      "id": "basic",
+      "poolKey": [
+        "sortedToken0",
+        "sortedToken1",
+        "stable",
+        "factory"
+      ],
+      "positionType": "fungible ERC-20 LP balance and total supply",
+      "mechanisms": {
+        "volatile": "Constant-product invariant over raw reserves: reserve0 * reserve1, with the factory-selected volatile fee applied by the deployed pool.",
+        "stable": "Aerodrome-style stable invariant after normalizing each reserve to 18 decimals: a = x*y/1e18; b = x*x/1e18 + y*y/1e18; k = a*b/1e18. Stable and volatile pools with the same token pair remain distinct identities.",
+        "reserves": "Pool getReserves returns reserves in token0/token1 order. Router getReserves and quote methods are convenience reads, not an authorization or freshness proof.",
+        "liquidity": "LP totalSupply and a wallet LP balance describe fungible positions; neither is interchangeable with either reserve or with a CL liquidity scalar."
+      },
+      "roots": [
+        {
+          "role": "router",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.router@mezo-mainnet"
+          }
+        },
+        {
+          "role": "factory",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.pool-factory@mezo-mainnet"
+          }
+        }
+      ],
+      "discovery": {
+        "rule": "Sort nonidentical token addresses, preserve the stable flag, resolve getPool(token0, token1, stable), and require factory.isPool(result) at the same block. allPools/PoolCreated may enumerate candidates but do not replace the mapping check.",
+        "validityCoordinates": [
+          "networkId",
+          "factory Contract deployment validity",
+          "observation block number/hash"
+        ],
+        "staleRowRule": "An analytics or cached row is display evidence only until the current factory mapping, bytecode, tokens, stable flag, and intended network are revalidated."
+      }
+    },
+    {
+      "id": "concentrated-liquidity",
+      "poolKey": [
+        "sortedToken0",
+        "sortedToken1",
+        "tickSpacing",
+        "factory"
+      ],
+      "positionType": "ERC-721 position whose record owns a tick range and uint128 liquidity",
+      "mechanisms": {
+        "price": "slot0.sqrtPriceX96 is Q64.96 sqrt(token1/token0); slot0.tick is the greatest tick whose ratio does not exceed the current ratio.",
+        "range": "A position has tickLower and tickUpper aligned to the pool tick spacing. Pool active liquidity counts liquidity active at the current tick, not all position liquidity.",
+        "fees": "Factory tickSpacingToFee supplies a default swap fee and fee modules may override current pool fees. Read the deployed pool/factory at the target block rather than treating documentation tables as immutable constants.",
+        "oracle": "Pool observations are time-indexed cumulative state. They require cardinality/age validation and are not an automatic safe quote."
+      },
+      "roots": [
+        {
+          "role": "factory",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.cl-factory@mezo-mainnet"
+          }
+        },
+        {
+          "role": "pool-implementation",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.cl-pool-implementation@mezo-mainnet"
+          }
+        },
+        {
+          "role": "swap-router",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.cl-swap-router@mezo-mainnet"
+          }
+        },
+        {
+          "role": "position-manager",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.cl-position-manager@mezo-mainnet"
+          }
+        },
+        {
+          "role": "position-descriptor",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "mezo-earn.cl-position-descriptor@mezo-mainnet"
+          }
+        },
+        {
+          "role": "gauge-factory",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "incentives.cl-gauge-factory@mezo-mainnet"
+          }
+        },
+        {
+          "role": "gauge-implementation",
+          "contractReference": {
+            "moduleId": "contracts",
+            "resourceId": "contract-deployments",
+            "recordId": "incentives.cl-gauge-implementation@mezo-mainnet"
+          }
+        }
+      ],
+      "discovery": {
+        "poolRule": "Sort nonidentical tokens, validate enabled tick spacing, resolve factory.getPool(token0, token1, tickSpacing), and require factory.isPool(result) plus matching pool factory/token0/token1/tickSpacing reads at one block.",
+        "gaugeRule": "Read pool.gauge as optional. For a nonzero gauge require CLGaugeFactory.isGauge, matching gauge pool/NFT/tokens/tickSpacing, and current incentives-voter liveness before relying on it.",
+        "validityCoordinates": [
+          "networkId",
+          "root Contract deployment validity",
+          "observation block number/hash"
+        ],
+        "quoterBoundary": "No current official Quoter coordinate was found. Do not substitute a guessed upstream address; future quote support must add a separately evidenced root or use exact read-only simulation/math with explicit limitations."
+      }
+    }
+  ],
+  "nonNormalizationRules": [
+    "A basic stable flag is not a CL tick spacing.",
+    "A basic LP token amount is not CL uint128 liquidity.",
+    "A CL pool's liquidity read is not reserves, wallet position liquidity, or gauge staked liquidity.",
+    "A factory-discovered instance is not a supported route until its current mapping and operation preconditions are validated."
+  ],
+  "evidence": [
+    {
+      "sourceArtifactId": "official-docs-mezo-pools-current",
+      "locator": "Basic Pools; Concentrated Liquidity; contract addresses"
+    },
+    {
+      "sourceArtifactId": "pools-mainnet-topology",
+      "locator": "roots, relationships, and dynamicDiscovery"
+    },
+    {
+      "sourceArtifactId": "pools-source-reproduction",
+      "locator": "CL root source bundles and full ABIs"
+    },
+    {
+      "sourceArtifactId": "official-source-tigris",
+      "locator": "Pool, PoolFactory, and Router verified source/artifacts"
+    }
+  ]
+}

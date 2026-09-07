@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK knowledge v0.4 common envelope",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "owner",
+    "status",
+    "supportStatus",
+    "reviewStatus",
+    "verifiedAt",
+    "reviewAfter",
+    "scope",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[./-][a-z0-9]+)*$"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "unverified",
+        "verified",
+        "conflicting",
+        "superseded"
+      ]
+    },
+    "supportStatus": {
+      "enum": [
+        "none",
+        "proposed",
+        "supported",
+        "historical",
+        "deprecated"
+      ]
+    },
+    "reviewStatus": {
+      "enum": [
+        "unreviewed",
+        "pending-architecture-review",
+        "pending-qualified-review",
+        "accepted",
+        "rejected"
+      ]
+    },
+    "verifiedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "reviewAfter": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "scope": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "musd-redemption-fee-doc-drift",
+  "owner": "troubleshooting",
+  "category": "documentation-drift",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-versioned",
+  "severity": "high",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2026-11-18T00:00:00Z",
+  "symptom": "An integration expects a documented borrower-status redemption-fee waiver, but deployed-source simulation applies the governed fee path without that branch.",
+  "scope": {
+    "protocol": "MUSD redemption",
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "sourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c",
+    "parameterEvidence": {
+      "moduleId": "protocols/musd/redemptions",
+      "resourceId": "redemption-parameter-observations"
+    }
+  },
+  "prerequisites": ["The integration used borrower status or descriptive prose to remove the fee rather than the active call path."],
+  "diagnosticSteps": [
+    "Resolve the active BorrowerOperations and TroveManager deployments and version-matched source.",
+    "Read the governed redemption input at one block and evaluate the canonical actual-fill fee model.",
+    "Simulate the exact redemption and reconcile actual fill and fee events rather than assuming the attempted amount."
+  ],
+  "expected": "The documentation-derived waiver removes the fee for the described account status.",
+  "observed": "The pinned deployed call path contains no such account-status branch; the discrepancy is resolved by the redemption canonical owner.",
+  "control": "Independent mainnet and testnet fixed-block reads reported the governed input, and source inspection covers fee calculation and settlement.",
+  "verifiedCause": "The waiver prose is stale for the recorded deployments. This record does not infer intended future policy.",
+  "safeMitigation": "Use active deployment/source evidence, current governed reads, canonical actual-fill math, exact-call simulation, and event/post-state reconciliation. Do not hard-code a waiver from account labels or docs.",
+  "reproduction": {
+    "basis": "version-matched-source-plus-two-network-fixed-block-reads",
+    "deterministicEvidenceIsStrongerThanLiveWrites": true,
+    "canonicalDiscrepancyId": "borrower-redemption-fee-waiver",
+    "evidenceNetworks": ["mezo-mainnet", "mezo-testnet"]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "protocols/musd/redemptions",
+      "resourceId": "redemption-model",
+      "recordId": "fee-and-settlement"
+    },
+    {
+      "moduleId": "protocols/musd/redemptions",
+      "resourceId": "redemption-parameters",
+      "recordId": "redemption-rate"
+    }
+  ],
+  "limitations": [
+    "Governed inputs and deployments are volatile and must be reread/resolved.",
+    "The redemption entrypoint has no minimum-received argument; fee diagnosis does not replace fill reconciliation."
+  ]
+}

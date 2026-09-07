@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-contract-role-map",
+  "id": "incentives-contract-roles",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11366264
+  },
+  "limitations": [
+    "Fifteen referenced Contract records received qualified registry acceptance under registry provenance review, emission evidence review, and validator evidence review; acceptance creates no reader, writer, validator-operation, or product support.",
+    "Addresses in dated incentives evidence remain observation coordinates and must agree with the referenced deployment validity range at their evidence block.",
+    "Dynamic validator gauges and voting-reward children are not static role records; resolve them through accepted factory roots plus point-in-time evidence."
+  ],
+  "networkReference": {
+    "moduleId": "networks",
+    "resourceId": "mezo-mainnet"
+  },
+  "topologyEvidenceReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-mainnet-topology"
+  },
+  "emissionsEvidenceReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-emissions-mainnet"
+  },
+  "validatorEvidenceReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-validator-allocation-mainnet"
+  },
+  "records": [
+    {
+      "id": "pools-voter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.pools-voter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.pools-voter"
+      }
+    },
+    {
+      "id": "vebtc-current",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.ve-btc@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.ve-btc"
+      }
+    },
+    {
+      "id": "boost-voter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.boost-voter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.boost-voter"
+      }
+    },
+    {
+      "id": "vemezo-current",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.ve-mezo@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.ve-mezo"
+      }
+    },
+    {
+      "id": "factory-registry",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.factory-registry@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.factory-registry"
+      }
+    },
+    {
+      "id": "mezo-minter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.mezo-minter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.mezo-minter"
+      }
+    },
+    {
+      "id": "mezo-rebase-distributor",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.mezo-rebase-distributor@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.mezo-rebase-distributor"
+      }
+    },
+    {
+      "id": "mezo-chain-splitter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.mezo-chain-splitter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.mezo-chain-splitter"
+      }
+    },
+    {
+      "id": "mezo-ecosystem-splitter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.mezo-ecosystem-splitter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.mezo-ecosystem-splitter"
+      }
+    },
+    {
+      "id": "validators-voter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.validators-voter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.validators-voter"
+      }
+    },
+    {
+      "id": "third-party-voter",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.third-party-voter@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.third-party-voter"
+      }
+    },
+    {
+      "id": "chain-splitter-epoch-governor",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.chain-splitter-epoch-governor@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.chain-splitter-epoch-governor"
+      }
+    },
+    {
+      "id": "ecosystem-splitter-epoch-governor",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.ecosystem-splitter-epoch-governor@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.ecosystem-splitter-epoch-governor"
+      }
+    },
+    {
+      "id": "validator-gauge-factory",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.non-staking-gauge-factory@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.non-staking-gauge-factory"
+      }
+    },
+    {
+      "id": "validator-voting-rewards-factory",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "incentives.voting-rewards-factory@mezo-mainnet"
+      },
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis",
+        "recordId": "incentives.voting-rewards-factory"
+      }
+    }
+  ]
+}

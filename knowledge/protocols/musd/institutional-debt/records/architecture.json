@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-debt-architecture",
+  "id": "institutional-debt-architecture",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11334441
+  },
+  "limitations": [
+    "The architecture describes the reproduced deployment generations through the evidence block; later upgrades require re-verification.",
+    "No public reader or writer is enabled by these records."
+  ],
+  "ownership": {
+    "ownedHere": [
+      "Enclave custody and role boundaries",
+      "Enclave target-selector execution boundary",
+      "institutional position principal, interest, originator fee, veBTC pledge, thresholds, status, and totals",
+      "institutional-versus-classic accounting separation"
+    ],
+    "referencedOwners": [
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments"
+      },
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis"
+      },
+      {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-system-model"
+      },
+      {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-position"
+      },
+      {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-locks"
+      },
+      {
+        "moduleId": "workflows/transactions",
+        "resourceId": "transaction-client-requirements"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "original-enclave",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "musd.enclave-v1@mezo-mainnet"
+      },
+      "role": "First simultaneously active custody/execution vault; its BTC manager also owns triparty bridge requests."
+    },
+    {
+      "id": "second-enclave",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "musd.enclave-v2@mezo-mainnet"
+      },
+      "role": "Second simultaneously active custody/execution vault; triparty bridge authority is separated into BRIDGE_MANAGER_ROLE."
+    },
+    {
+      "id": "enclave-debt-manager",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "musd.enclave-debt-manager@mezo-mainnet"
+      },
+      "role": "Shared institutional position ledger, MUSD mint/burn boundary, fee accounting, veBTC pledge registry, and health-threshold reader."
+    }
+  ],
+  "nonNormalizationRules": [
+    "An Enclave is an institutional custody/execution vault, not a classic borrower-keyed trove.",
+    "The two live Enclave generations are not one ABI identity merely because both delegate institutional positions to the same debt manager.",
+    "The debt manager's proxy upgrade history is one logical deployment identity with generation-bounded behavior; repayAll exists only in the current implementation generation.",
+    "Assets held, bridged, transferred, approved, locked, or withdrawn by an Enclave are not debt-manager collateral or debt changes unless the debt-manager position call/event/post-state establishes that mutation."
+  ],
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-fixed-block-state",
+      "locator": "contracts, proxies, enclaves, debtManager, events"
+    },
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "four implementation generations and three current ABI identities"
+    }
+  ]
+}

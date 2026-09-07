@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "musd-refinance-fee-doc-drift",
+  "owner": "troubleshooting",
+  "category": "documentation-drift",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-versioned",
+  "severity": "high",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2026-11-18T00:00:00Z",
+  "symptom": "A refinance fee quoted from descriptive documentation does not match exact deployed-source calculation and simulation for the recorded deployments.",
+  "scope": {
+    "protocol": "MUSD refinance",
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "sourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c",
+    "parameterEvidence": {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-parameter-observations"
+    }
+  },
+  "prerequisites": ["The integration used prose as the fee authority instead of the scoped deployment/source and current governed reads."],
+  "diagnosticSteps": [
+    "Resolve the active BorrowerOperations deployment and version-matched source.",
+    "Read current governed inputs at one block and evaluate the canonical refinance formula/fixtures.",
+    "Simulate the exact refinance entrypoint and compare the result with the documentation-derived expectation."
+  ],
+  "expected": "The prose-derived fee matches deployed execution.",
+  "observed": "The pinned source plus block-pinned governed inputs establish a different deployed result; the discrepancy is already resolved by the borrowing canonical owner.",
+  "control": "Independent mainnet and testnet fixed-block reads reported the scoped governed inputs, and the source-linked formula fixtures cover nested rounding.",
+  "verifiedCause": "The descriptive page is stale for the recorded deployment behavior. This record does not infer intended future policy.",
+  "safeMitigation": "Use the active registry identity, version-matched deployed source, current governed reads, canonical formula, and exact-call simulation. Keep documentation as discrepancy evidence and never hard-code either prose or an old observed value.",
+  "reproduction": {
+    "basis": "version-matched-source-plus-two-network-fixed-block-reads",
+    "deterministicEvidenceIsStrongerThanLiveWrites": true,
+    "canonicalDiscrepancyId": "refinance-fee-docs-vs-deployment",
+    "evidenceNetworks": ["mezo-mainnet", "mezo-testnet"]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-formulas",
+      "recordId": "refinancing-fee"
+    },
+    {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-parameters",
+      "recordId": "refinancing-fee-percentage"
+    }
+  ],
+  "limitations": [
+    "Governed inputs and deployments are volatile and must be reread/resolved.",
+    "Qualified protocol review remains required before writer release."
+  ]
+}

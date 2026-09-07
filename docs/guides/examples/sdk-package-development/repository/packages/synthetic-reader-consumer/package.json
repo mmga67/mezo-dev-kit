@@ -1,0 +1,19 @@
+{
+  "name": "@mezo-dev-kit/synthetic-reader-consumer",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Disposable built-entrypoint consumer for the workspace-module guide.",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm build",
+    "format:check": "prettier --check index.ts package.json tsconfig.json tsconfig.build.json",
+    "lint": "eslint index.ts",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/synthetic-reader": "workspace:*"
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "kind": "network-observation-set",
+  "id": "network-probes-2026-08-18",
+  "owner": "chains-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:21:02Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "observedFrom": "2026-08-17T22:18:07Z",
+    "observedThrough": "2026-08-17T22:21:02Z"
+  },
+  "limitations": [
+    "Observations establish only the recorded targets, methods, results, failures, and times.",
+    "Point-in-time success or failure is not a provider reliability, retention, or complete compatibility claim."
+  ],
+  "observedFrom": "2026-08-17T22:18:07Z",
+  "observedThrough": "2026-08-17T22:21:02Z",
+  "methodology": [
+    "HTTPS endpoints received read-only JSON-RPC requests for eth_chainId, eth_blockNumber, eth_getBlockByNumber(latest,false), web3_clientVersion, and net_version. Provider batch limits required individual requests for dRPC.",
+    "WSS endpoints received one read-only eth_chainId request using the platform WebSocket client.",
+    "Explorer URLs were followed with HTTPS GET and only final status/content type were retained.",
+    "A successful bounded probe establishes only the recorded methods at that time; it is not a reliability, archive, rate-limit, or complete compatibility claim."
+  ],
+  "observations": [
+    {
+      "id": "testnet-official-https",
+      "endpointId": "mezo-testnet-official-https",
+      "observedAt": "2026-08-17T22:18:07Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7b",
+        "evmChainId": 31611,
+        "netVersion": "31611",
+        "clientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xe427a8",
+          "number": 14952360,
+          "hash": "0xa9fe18723e58fbda23ace6ed15eda0edb4391f64c7c4279fa83f838372c6e5bc",
+          "timestampHex": "0x6a838895",
+          "timestamp": "2026-08-17T22:17:57Z"
+        }
+      }
+    },
+    {
+      "id": "mainnet-boar-https",
+      "endpointId": "mezo-mainnet-boar-https",
+      "observedAt": "2026-08-17T22:18:07Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xaaead1",
+          "number": 11201233,
+          "hash": "0xa49101e533e2425e57de7587ea3aeb6b47e3a0e924c20ac8477e140bfa3087c0",
+          "timestampHex": "0x6a838898",
+          "timestamp": "2026-08-17T22:18:00Z"
+        }
+      }
+    },
+    {
+      "id": "mainnet-validation-cloud-https",
+      "endpointId": "mezo-mainnet-validation-cloud-https",
+      "observedAt": "2026-08-17T22:18:07Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xaaead1",
+          "number": 11201233,
+          "hash": "0xa49101e533e2425e57de7587ea3aeb6b47e3a0e924c20ac8477e140bfa3087c0",
+          "timestampHex": "0x6a838898",
+          "timestamp": "2026-08-17T22:18:00Z"
+        }
+      }
+    },
+    {
+      "id": "mainnet-drpc-https",
+      "endpointId": "mezo-mainnet-drpc-https",
+      "observedAt": "2026-08-17T22:18:34Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Geth/v10.0.0/drpc",
+        "latestBlock": {
+          "numberHex": "0xaaead9",
+          "number": 11201241,
+          "hash": "0x1d2f9c812b2b540c48ad9f34074a4a2854b0cf24e2756b8157afaddd7adcaffe",
+          "timestampHex": "0x6a8388b4",
+          "timestamp": "2026-08-17T22:18:28Z"
+        }
+      },
+      "notes": [
+        "The provider rejected a batch larger than three on its free plan, so the recorded methods were requested individually.",
+        "web3_clientVersion is a provider response and is not used as proof of the upstream node implementation."
+      ]
+    },
+    {
+      "id": "mainnet-imperator-https",
+      "endpointId": "mezo-mainnet-imperator-https",
+      "observedAt": "2026-08-17T22:18:34Z",
+      "outcome": "failed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "error": {
+        "class": "http-method-not-accepted",
+        "summary": "JSON-RPC POST requests returned HTTP 405; one later request ended with an unexpected TLS EOF."
+      },
+      "notes": [
+        "This is a time-bounded operational failure, not proof that the provider is permanently unavailable."
+      ]
+    },
+    {
+      "id": "historical-mainnet-rpc-https",
+      "targetUrl": "https://rpc.mezo.org",
+      "observedAt": "2026-08-17T22:18:07Z",
+      "outcome": "failed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "error": {
+        "class": "tls-connection-error",
+        "summary": "The request ended with an unexpected TLS EOF."
+      },
+      "notes": [
+        "The older mezod guide contains this endpoint as an example, but the current mainnet provider table does not list it. It is not a canonical supported endpoint."
+      ]
+    },
+    {
+      "id": "testnet-official-wss",
+      "endpointId": "mezo-testnet-official-wss",
+      "observedAt": "2026-08-17T22:20:44.660Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7b",
+        "evmChainId": 31611
+      }
+    },
+    {
+      "id": "mainnet-boar-wss",
+      "endpointId": "mezo-mainnet-boar-wss",
+      "observedAt": "2026-08-17T22:20:45.838Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "mainnet-imperator-wss",
+      "endpointId": "mezo-mainnet-imperator-wss",
+      "observedAt": "2026-08-17T22:20:46.659Z",
+      "outcome": "failed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "error": {
+        "class": "websocket-handshake-error",
+        "summary": "The WebSocket client reported a connection error before a JSON-RPC response."
+      },
+      "notes": [
+        "This is a time-bounded operational failure, not proof that the provider is permanently unavailable."
+      ]
+    },
+    {
+      "id": "mainnet-validation-cloud-wss",
+      "endpointId": "mezo-mainnet-validation-cloud-wss",
+      "observedAt": "2026-08-17T22:20:48.087Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "mainnet-drpc-wss",
+      "endpointId": "mezo-mainnet-drpc-wss",
+      "observedAt": "2026-08-17T22:20:49.076Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "mainnet-explorer-https",
+      "targetUrl": "https://explorer.mezo.org",
+      "observedAt": "2026-08-17T22:20:59Z",
+      "outcome": "passed",
+      "methods": [
+        "https-get"
+      ],
+      "result": {
+        "httpStatus": 200,
+        "contentType": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "testnet-explorer-https",
+      "targetUrl": "https://explorer.test.mezo.org",
+      "observedAt": "2026-08-17T22:21:02Z",
+      "outcome": "passed",
+      "methods": [
+        "https-get"
+      ],
+      "result": {
+        "httpStatus": 200,
+        "contentType": "text/html; charset=utf-8"
+      }
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "kind": "source-catalog",
+  "id": "network-sources",
+  "owner": "chains-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:21:02Z",
+  "reviewAfter": null,
+  "scope": {
+    "moduleId": "networks",
+    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"]
+  },
+  "limitations": [
+    "A source establishes only the claim scope stated in its note and cited locator.",
+    "Source verification does not create an MDK network or endpoint support promise."
+  ],
+  "sources": [
+    {
+      "id": "official-docs-getting-started",
+      "kind": "official-docs",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/developers/getting-started/index.mdx",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/getting-started/index.mdx",
+      "sha256": "86c32d81e934e5aeee29c00b98997c46f92c8269cc1e010f42501fd8375792af",
+      "retrievedAt": "2026-08-17T22:18:07Z",
+      "note": "Official developer page publishing Mezo architecture, mainnet/testnet EVM parameters, explorers, and the current RPC provider table."
+    },
+    {
+      "id": "official-docs-mezod",
+      "kind": "official-docs",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/developers/getting-started/mezod.mdx",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/getting-started/mezod.mdx",
+      "sha256": "afeddeb4872fcb88ade0df645a5c1cc1625e401a40723168d50ff5b2c371e625",
+      "retrievedAt": "2026-08-17T22:18:07Z",
+      "note": "Official mezod guide describing the Cosmos SDK/CometBFT and EVM architecture plus node-local Cosmos and EVM RPC surfaces."
+    },
+    {
+      "id": "official-source-mainnet-genesis",
+      "kind": "official-source",
+      "url": "https://github.com/mezo-org/mezod/blob/9babc8419d14ceee37b3fde36fa007ff7deb518e/chain/mainnet/mezo_31612-1/genesis.json",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "9babc8419d14ceee37b3fde36fa007ff7deb518e",
+      "path": "chain/mainnet/mezo_31612-1/genesis.json",
+      "sha256": "c1b9b2736bc0c1e6390dafa80c43fdc9870490d481ebaa71d932a98df3c531f7",
+      "retrievedAt": "2026-08-17T22:18:07Z",
+      "note": "Pinned official mainnet genesis establishing the Cosmos chain ID and EVM base denomination."
+    },
+    {
+      "id": "official-source-testnet-genesis",
+      "kind": "official-source",
+      "url": "https://github.com/mezo-org/mezod/blob/9babc8419d14ceee37b3fde36fa007ff7deb518e/chain/testnet/mezo_31611-1/genesis.json",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "9babc8419d14ceee37b3fde36fa007ff7deb518e",
+      "path": "chain/testnet/mezo_31611-1/genesis.json",
+      "sha256": "e83d6701584357bd8cea87d5d1b7564831272813c074d9ee882848fd0078d022",
+      "retrievedAt": "2026-08-17T22:18:07Z",
+      "note": "Pinned official testnet genesis establishing the Cosmos chain ID and EVM base denomination."
+    },
+    {
+      "id": "network-probes-2026-08-18",
+      "kind": "on-chain-observation",
+      "path": "knowledge/networks/evidence/rpc-probes-2026-08-18.json",
+      "sha256": "f7ced4eb0c37d44babbaae179cb6b7b81ce575c2c9b888ecff214bd2d9049509",
+      "retrievedAt": "2026-08-17T22:21:02Z",
+      "note": "Bounded read-only JSON-RPC, WebSocket, and explorer observations with exact targets, methods, times, blocks, results, and failures."
+    },
+    {
+      "id": "official-ethereum-eip-155",
+      "kind": "official-standard",
+      "url": "https://github.com/ethereum/EIPs/blob/275bc1631a855bca7b8c9b162e68e4d8dab5043b/EIPS/eip-155.md",
+      "repository": "https://github.com/ethereum/EIPs",
+      "commit": "275bc1631a855bca7b8c9b162e68e4d8dab5043b",
+      "path": "EIPS/eip-155.md",
+      "sha256": "3c208813585d8fca67a92d908ece47402f87a18a14f1b20ee5ebcb3e702dcc9c",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Final Ethereum standard establishing EIP-155 transaction chain-ID semantics and Ethereum Mainnet chain ID 1."
+    },
+    {
+      "id": "official-ethereum-networks",
+      "kind": "official-docs",
+      "url": "https://github.com/ethereum/ethereum-org-website/blob/8a3fca16bf16b4ab14e574c91076a0224ed6c02a/public/content/developers/docs/networks/index.md",
+      "repository": "https://github.com/ethereum/ethereum-org-website",
+      "commit": "8a3fca16bf16b4ab14e574c91076a0224ed6c02a",
+      "path": "public/content/developers/docs/networks/index.md",
+      "sha256": "ae632abe1c15f5c8850082b9b5f0c97dc0d14d2b4dfeae6da3357998faa5ec06",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Pinned official Ethereum developer page identifying Ethereum Mainnet as the primary public production blockchain."
+    },
+    {
+      "id": "official-ethereum-intro-to-ether",
+      "kind": "official-docs",
+      "url": "https://github.com/ethereum/ethereum-org-website/blob/8a3fca16bf16b4ab14e574c91076a0224ed6c02a/public/content/developers/docs/intro-to-ether/index.md",
+      "repository": "https://github.com/ethereum/ethereum-org-website",
+      "commit": "8a3fca16bf16b4ab14e574c91076a0224ed6c02a",
+      "path": "public/content/developers/docs/intro-to-ether/index.md",
+      "sha256": "9fb80f16e8729c15f32ff263defc77bf27be0f495014d72072746259526666be",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Pinned official Ethereum developer page establishing Ether/ETH, the 10^-18 wei denomination, transaction-fee use, and the Etherscan explorer URL."
+    },
+    {
+      "id": "official-base-connecting-to-base",
+      "kind": "official-docs",
+      "url": "https://github.com/base/docs/blob/97f64f6afe262faafb261312f9a324d3d9bf86bb/docs/base-chain/quickstart/connecting-to-base.mdx",
+      "repository": "https://github.com/base/docs",
+      "commit": "97f64f6afe262faafb261312f9a324d3d9bf86bb",
+      "path": "docs/base-chain/quickstart/connecting-to-base.mdx",
+      "sha256": "17ea2b5b80f151cbab0abdb76accb9fb54ea94d80e685d99dc6171d1cc3727ff",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Pinned official Base connection page establishing the EVM-compatible profile, Base Mainnet name, chain ID 8453, ETH symbol, and BaseScan explorer."
+    },
+    {
+      "id": "official-base-chain-metadata",
+      "kind": "official-source",
+      "url": "https://github.com/base/chains/blob/16efd0a7257ebd7f1e2ba55caef2a4496851a36e/_data/chains/eip155-8453.json",
+      "repository": "https://github.com/base/chains",
+      "commit": "16efd0a7257ebd7f1e2ba55caef2a4496851a36e",
+      "path": "_data/chains/eip155-8453.json",
+      "sha256": "0b5ab7dea923f22667e3358bc60b49cc459e3665dae4f9880554f5da73260036",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Pinned Base-owned archived chain metadata establishing Ether/ETH with 18 native-currency decimals for Base Mainnet."
+    },
+    {
+      "id": "bridge-musd-ntt-network-snapshots",
+      "kind": "on-chain-observation",
+      "path": "knowledge/workflows/bridges/evidence/musd-ntt-mainnet-2026-08-18.json",
+      "sha256": "d23c799ba704d19e1905154bda33fca4eb5c3170ce41024578713ff7c310f93e",
+      "retrievedAt": "2026-08-21T00:00:00Z",
+      "note": "Existing bounded bridge evidence reused by logical source reference for fixed-block Ethereum and Base eth_chainId observations; it does not select or support either RPC endpoint."
+    }
+  ]
+}

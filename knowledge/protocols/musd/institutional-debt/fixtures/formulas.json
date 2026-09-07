@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-debt-formula-fixtures",
+  "id": "institutional-debt-formula-fixtures",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "implementationGeneration": "enclave-debt-manager-v2"
+  },
+  "limitations": [
+    "Fixtures prove deterministic integer and classification semantics only; they do not quote current execution."
+  ],
+  "records": [
+    {
+      "id": "interest-one-protocol-year",
+      "operation": "simple-fee",
+      "input": {
+        "elapsedSeconds": "31556952",
+        "principal": "1000000",
+        "rateBps": "100"
+      },
+      "expected": {
+        "fee": "10000"
+      }
+    },
+    {
+      "id": "interest-rounds-down-to-zero",
+      "operation": "simple-fee",
+      "input": {
+        "elapsedSeconds": "1",
+        "principal": "1",
+        "rateBps": "1"
+      },
+      "expected": {
+        "fee": "0"
+      }
+    },
+    {
+      "id": "interest-thirty-days",
+      "operation": "simple-fee",
+      "input": {
+        "elapsedSeconds": "2592000",
+        "principal": "1000000",
+        "rateBps": "100"
+      },
+      "expected": {
+        "fee": "821"
+      }
+    },
+    {
+      "id": "position-total-debt",
+      "operation": "position-total-debt",
+      "input": {
+        "principal": "1000000",
+        "storedInterest": "10000",
+        "newInterest": "821",
+        "storedOriginatorFee": "100",
+        "newOriginatorFee": "0"
+      },
+      "expected": {
+        "totalDebt": "1010921"
+      }
+    },
+    {
+      "id": "pledged-collateral-sum",
+      "operation": "pledged-collateral",
+      "input": {
+        "lockedAmounts": [
+          "250",
+          "500"
+        ]
+      },
+      "expected": {
+        "collateral": "750"
+      }
+    },
+    {
+      "id": "collateral-ratio-exact-warning",
+      "operation": "collateral-ratio",
+      "input": {
+        "collateral": "2000000000000000000",
+        "price": "30000000000000000000000",
+        "debt": "40000000000000000000000"
+      },
+      "expected": {
+        "ratio": "1500000000000000000"
+      }
+    },
+    {
+      "id": "collateral-ratio-zero-debt",
+      "operation": "collateral-ratio",
+      "input": {
+        "collateral": "0",
+        "price": "30000000000000000000000",
+        "debt": "0"
+      },
+      "expected": {
+        "ratio": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+      }
+    },
+    {
+      "id": "health-at-minimum",
+      "operation": "position-health",
+      "input": {
+        "currentCr": "1100000000000000000",
+        "warningCr": "1500000000000000000",
+        "minimumCr": "1100000000000000000"
+      },
+      "expected": {
+        "belowWarning": true,
+        "belowMinimum": false
+      }
+    },
+    {
+      "id": "health-one-wei-below-minimum",
+      "operation": "position-health",
+      "input": {
+        "currentCr": "1099999999999999999",
+        "warningCr": "1500000000000000000",
+        "minimumCr": "1100000000000000000"
+      },
+      "expected": {
+        "belowWarning": true,
+        "belowMinimum": true
+      }
+    },
+    {
+      "id": "repayment-fees-first",
+      "operation": "repayment-split",
+      "input": {
+        "principal": "1000",
+        "totalFees": "100",
+        "payment": "400"
+      },
+      "expected": {
+        "accepted": true,
+        "feePayment": "100",
+        "principalPayment": "300",
+        "remainingPrincipal": "700"
+      }
+    },
+    {
+      "id": "repayment-below-fees",
+      "operation": "repayment-split",
+      "input": {
+        "principal": "1000",
+        "totalFees": "100",
+        "payment": "99"
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "payment-below-fees"
+      }
+    },
+    {
+      "id": "repayment-exceeds-principal",
+      "operation": "repayment-split",
+      "input": {
+        "principal": "1000",
+        "totalFees": "100",
+        "payment": "1200"
+      },
+      "expected": {
+        "accepted": false,
+        "reason": "principal-payment-exceeds-principal"
+      }
+    },
+    {
+      "id": "combined-rate-at-cap",
+      "operation": "combined-rate",
+      "input": {
+        "interestRateBps": "400",
+        "originatorFeeRateBps": "100",
+        "maxCombinedRateBps": "500"
+      },
+      "expected": {
+        "accepted": true
+      }
+    },
+    {
+      "id": "combined-rate-above-cap",
+      "operation": "combined-rate",
+      "input": {
+        "interestRateBps": "401",
+        "originatorFeeRateBps": "100",
+        "maxCombinedRateBps": "500"
+      },
+      "expected": {
+        "accepted": false
+      }
+    },
+    {
+      "id": "outstanding-fee-clamp",
+      "operation": "outstanding-debt",
+      "input": {
+        "totalPrincipal": "1000",
+        "totalFeesStored": "100",
+        "accrued": "10",
+        "totalFeeSettled": "200"
+      },
+      "expected": {
+        "outstandingDebt": "1000"
+      }
+    },
+    {
+      "id": "principal-conservation-fixed-block",
+      "operation": "principal-conservation",
+      "input": {
+        "totalMintedDebt": "25088622000000000000000000",
+        "totalDebtBurned": "10588622000000000000000000"
+      },
+      "expected": {
+        "totalPrincipal": "14500000000000000000000000"
+      }
+    },
+    {
+      "id": "classic-institutional-separation",
+      "operation": "aggregate-separation",
+      "input": {
+        "classicDebt": "700",
+        "institutionalPrincipal": "1000",
+        "institutionalFees": "20"
+      },
+      "expected": {
+        "classicDebt": "700",
+        "institutionalOutstandingDebt": "1020",
+        "combinedProductRatioDefined": false
+      }
+    }
+  ]
+}

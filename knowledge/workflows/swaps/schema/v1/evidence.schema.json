@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo swap routing evidence v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": ["rpcCapability", "currentRoots", "historicalReplays", "sourceSemantics"],
+  "properties": {
+    "kind": { "const": "mezo-swap-routing-observation" },
+    "owner": { "const": "workflows/swaps" },
+    "historicalReplays": { "type": "array", "minItems": 2 }
+  }
+}

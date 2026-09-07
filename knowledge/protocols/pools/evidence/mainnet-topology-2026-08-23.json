@@ -1,0 +1,2439 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-topology-observation",
+  "id": "pools-mainnet-topology",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:20:55.991Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11333787,
+    "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1"
+  },
+  "providerReference": {
+    "moduleId": "networks",
+    "resourceId": "mezo-mainnet-boar-https"
+  },
+  "block": {
+    "blockNumber": 11333787,
+    "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+    "blockTimestamp": "2026-08-23T12:20:49.000Z"
+  },
+  "roots": {
+    "basicRouter": {
+      "address": "0x16a76d3cd3c1e3ce843c6680d6b37e9116b5c706",
+      "explorerName": "Router",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0x262f46c86f9f00f67e4a9bf5818652c8ed31a7867cdb10fb56e58f00eef509d0",
+        "blockNumber": 535237,
+        "blockHash": "0x6a518807a4b7f017d41d7ce7b44fe47bf8394ecbf2df004b0acb7de662e973ed",
+        "blockTimestamp": "2025-05-27T10:39:54.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "ee6ee375e9bf6bbf9c28165a7c933fec7b8516d223f89e8406ed34cea2fd9112"
+      }
+    },
+    "clFactory": {
+      "address": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79",
+      "explorerName": "CLFactory",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0x0dbae088fd891095a34ace593b9e335c9838a9ffd7af3b6297f6b9c19d519b28",
+        "blockNumber": 6025392,
+        "blockHash": "0x05c4235058d67c8b98203cd879e81a37a35835a3e264cca5919b0ba4c7ee5683",
+        "blockTimestamp": "2026-01-12T10:01:13.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "cf0f53a25054d24f328973f1a77e45a2ca324ceae49e3dc49efe53fce1609a67"
+      }
+    },
+    "poolsVoter": {
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "explorerName": "TransparentUpgradeableProxy",
+      "explorerVerified": true,
+      "explorerProxyType": "eip1967",
+      "creation": {
+        "transactionHash": "0x32e9f37a4e278526d2d6cec6f4d3a505f0ce60957a175195a04226447c877131",
+        "blockNumber": 5044813,
+        "blockHash": "0x9142e9a97d01daebe5a4399664418c5513685b7afca07f16f630484a0c86051e",
+        "blockTimestamp": "2025-12-02T17:42:56.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "717c6534bd413e9f995fd0f32e5a2a472c2b149d09e88ec115f8a3e8aed80bb2"
+      }
+    },
+    "positionManager": {
+      "address": "0x509bc221df2b83927c695fa0bb0f5b21053c874c",
+      "explorerName": "NonfungiblePositionManager",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0xf54060f1b21c5a3bc6fbb7b577dffe29e45bb40aa04b282e9f466db563b77377",
+        "blockNumber": 6025761,
+        "blockHash": "0xc57378d905cd80b1585edebba000b9e51ca190f5a252a9a852ebc821879576de",
+        "blockTimestamp": "2026-01-12T10:23:06.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "991cebd92cba6078f16b3e250140978e3ad8269dfee8ee15b4fe5213472344b5"
+      }
+    },
+    "positionDescriptor": {
+      "address": "0x818f6ccfbee90202b967567bcf2a5fb9b73cfeca",
+      "explorerName": "NonfungibleTokenPositionDescriptor",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0x10e8e6386feab9a5159b138b0fae44a87d7929fa32815fa0bf84a4e3a0d67be3",
+        "blockNumber": 6025748,
+        "blockHash": "0x0d6aa0619ef7ed8517d7eb4a39d0b6fb821a8b80c26dcd461c3a9789a11a8717",
+        "blockTimestamp": "2026-01-12T10:22:20.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "b1301ba9ffa0564cb0906e1a88bf677f9849e054c1890f676486fb292e167e08"
+      }
+    },
+    "basicFactory": {
+      "address": "0x83fe469c636c4081b87ba5b3ae9991c6ed104248",
+      "explorerName": "PoolFactory",
+      "explorerVerified": true,
+      "explorerProxyType": "basic_implementation",
+      "creation": {
+        "transactionHash": "0xecccfbd75acd2c8953bd89152e015f2b1d575d3de49d1223db4d70f5308cfc18",
+        "blockNumber": 199767,
+        "blockHash": "0x7374dada2624b439c6e49a42e61de794c6d4af310957a3c0a118d3967ee2e7dd",
+        "blockTimestamp": "2025-05-13T13:10:01.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "5e6953102ad25e6223c13ab5bc24c42cfc0f18956b10b1272383022325eb165b"
+      }
+    },
+    "clPoolImplementation": {
+      "address": "0x819cfadd7f5bc0854fa3b7f5749ea0410a943e5f",
+      "explorerName": "CLPool",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0xc8a617cc19e8fc6330bc4b202372f94421906f1751ab9e1e356876763adabe59",
+        "blockNumber": 6025379,
+        "blockHash": "0x668450e3ae9136965918668ca568b7e37d7d381e4510e64f9d747948dfea284f",
+        "blockTimestamp": "2026-01-12T10:00:27.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "478c0e2b6aeb38735a30d050d9772b7382248901473a1293e7e9f8ac7e4e8910"
+      }
+    },
+    "factoryRegistry": {
+      "address": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "explorerName": "FactoryRegistry",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0x64488fff6636669e90b4237970c86304fd894bb47d15d5b7aa7a918378f3ce88",
+        "blockNumber": 5043414,
+        "blockHash": "0x39c156c247fe3d0cdd964796b2fda5870b8f6c90a41d3b8e85fb49acfa81b1ca",
+        "blockTimestamp": "2025-12-02T16:18:46.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "95c7373c5bbe6324b5ecad865a8cfec567c7052010ba8928170a1d7f790b1247"
+      }
+    },
+    "clGaugeFactory": {
+      "address": "0xfc41e1aae0e58e8bdc32e85d8c995a902fedeb13",
+      "explorerName": "CLGaugeFactory",
+      "explorerVerified": true,
+      "explorerProxyType": "basic_implementation",
+      "creation": {
+        "transactionHash": "0x303d709fa2afe6c4cc249fcf13149711a6da84657c565924ca86fc6cbfc7f2a9",
+        "blockNumber": 6025417,
+        "blockHash": "0x7442b0937cf3929b11a830c8c6f1c9d832ef7445cf68c5267b8be6da8020ea7e",
+        "blockTimestamp": "2026-01-12T10:02:42.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "009ae39e03d178b8531d41ea2db90479ec31406ff00173e38aaf72a3dd01784d"
+      }
+    },
+    "clSwapRouter": {
+      "address": "0x37cdd11919ec3860ead9efb8673d7476e5326225",
+      "explorerName": "CLSwapRouter",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0xe8e0eedbb7fe51de09a8ad78b37d4bed2cfef96718bc3d96f757233799b5f977",
+        "blockNumber": 6025829,
+        "blockHash": "0x7b5705a9f2ec69e99e45ef15654af9ba04fbcef541c8220a3c8297ea223f94e4",
+        "blockTimestamp": "2026-01-12T10:27:08.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "3cb4fa6e48fe0e6ac4e448e3991e5a66bb33cd1e93d3f2054bffef0de180598e"
+      }
+    },
+    "clGaugeImplementation": {
+      "address": "0x8f11a90265f7a784b46fe326638ec37a5cc29c33",
+      "explorerName": "CLGauge",
+      "explorerVerified": true,
+      "explorerProxyType": null,
+      "creation": {
+        "transactionHash": "0xe746b448fe05b895eb3a287cff4487e844fb52de61906fd06b440dd36f62730d",
+        "blockNumber": 6025404,
+        "blockHash": "0x45b376ba5a8adea49392ab2164775f70790726525a4784de4b6cf9db9c0b4255",
+        "blockTimestamp": "2026-01-12T10:01:56.000Z",
+        "transactionStatus": "ok"
+      },
+      "runtime": {
+        "blockNumber": 11333787,
+        "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "codeSha256": "cdb5ad0aacf88c16fffc308718048e193d18cf8944a67025b9ab94668d31620c"
+      }
+    }
+  },
+  "relationships": {
+    "basicRouter": {
+      "defaultFactory": {
+        "callData": "0xd4b6846d",
+        "rawResult": "0x00000000000000000000000083fe469c636c4081b87ba5b3ae9991c6ed104248",
+        "decoded": "0x83fe469c636c4081b87ba5b3ae9991c6ed104248"
+      },
+      "factoryRegistry": {
+        "callData": "0x3bf0c9fb",
+        "rawResult": "0x000000000000000000000000265054f72bad343fdee3e018269cbb899e2e2ec5",
+        "decoded": "0x265054f72bad343fdee3e018269cbb899e2e2ec5"
+      },
+      "voter": {
+        "callData": "0x46c96aac",
+        "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "decoded": "0x0000000000000000000000000000000000000000"
+      }
+    },
+    "basicFactory": {
+      "implementation": {
+        "callData": "0x5c60da1b",
+        "rawResult": "0x000000000000000000000000ee8287b903cbba2dea6a9cfda296a05ada1a6cef",
+        "decoded": "0xee8287b903cbba2dea6a9cfda296a05ada1a6cef"
+      },
+      "voter": {
+        "callData": "0x46c96aac",
+        "rawResult": "0x00000000000000000000000098d8899c3030741925be630c710a98b57f397c7a",
+        "decoded": "0x98d8899c3030741925be630c710a98b57f397c7a"
+      },
+      "allPoolsLength": {
+        "callData": "0xefde4e64",
+        "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000021",
+        "decoded": 33
+      }
+    },
+    "clFactory": {
+      "poolImplementation": {
+        "callData": "0xcefa7799",
+        "rawResult": "0x000000000000000000000000819cfadd7f5bc0854fa3b7f5749ea0410a943e5f",
+        "decoded": "0x819cfadd7f5bc0854fa3b7f5749ea0410a943e5f"
+      },
+      "factoryRegistry": {
+        "callData": "0x3bf0c9fb",
+        "rawResult": "0x00000000000000000000000004b94f55780682478c8d8329368aaafd320f4d32",
+        "decoded": "0x04b94f55780682478c8d8329368aaafd320f4d32"
+      },
+      "voter": {
+        "callData": "0x46c96aac",
+        "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+        "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+      },
+      "allPoolsLength": {
+        "callData": "0xefde4e64",
+        "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000d",
+        "decoded": 13
+      }
+    },
+    "clSwapRouter": {
+      "factory": {
+        "callData": "0xc45a0155",
+        "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+        "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+      }
+    },
+    "positionManager": {
+      "factory": {
+        "callData": "0xc45a0155",
+        "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+        "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+      },
+      "tokenDescriptor": {
+        "callData": "0x5a9d7a68",
+        "rawResult": "0x000000000000000000000000818f6ccfbee90202b967567bcf2a5fb9b73cfeca",
+        "decoded": "0x818f6ccfbee90202b967567bcf2a5fb9b73cfeca"
+      }
+    },
+    "clGaugeFactory": {
+      "implementation": {
+        "callData": "0x5c60da1b",
+        "rawResult": "0x0000000000000000000000008f11a90265f7a784b46fe326638ec37a5cc29c33",
+        "decoded": "0x8f11a90265f7a784b46fe326638ec37a5cc29c33"
+      },
+      "nft": {
+        "callData": "0x47ccca02",
+        "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+        "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+      },
+      "voter": {
+        "callData": "0x46c96aac",
+        "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+        "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+      },
+      "rewardToken": {
+        "callData": "0xf7c618c1",
+        "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+        "decoded": "0x7b7c000000000000000000000000000000000001"
+      }
+    }
+  },
+  "dynamicDiscovery": {
+    "basic": {
+      "allPoolsLength": 33,
+      "pools": [
+        {
+          "index": 0,
+          "address": "0x52e604c44417233b6ccedddc0d640a405caacefb",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000339fbd18039f50a3000000000000000000000000000000000000000000003d2a371253db52b582a9000000000000000000000000000000000000000000000000000000006a8ada04",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000339fbd18039f50a3",
+              "000000000000000000000000000000000000000000003d2a371253db52b582a9",
+              "000000000000000000000000000000000000000000000000000000006a8ada04"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000038313ac4276a952ac6",
+            "decoded": "1036565031457813506758"
+          }
+        },
+        {
+          "index": 1,
+          "address": "0xed812aec0fecc8fd882ac3eccc43f3aa80a6c356",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000124ace2e200000000000000000000000000000000000000000000016fdd9be7b15e57b59c000000000000000000000000000000000000000000000000000000006a8ad8a7",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000124ace2e2",
+              "00000000000000000000000000000000000000000000016fdd9be7b15e57b59c",
+              "000000000000000000000000000000000000000000000000000000006a8ad8a7"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000014c5edc84074b4",
+            "decoded": 5847124591801524
+          }
+        },
+        {
+          "index": 2,
+          "address": "0x10906a9e9215939561597b4c8e4b98f93c02031a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000eb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+            "decoded": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000001ad37def9e03046094500000000000000000000000000000000000000000000000000000001404817ee000000000000000000000000000000000000000000000000000000006a8820db",
+            "decoded": [
+              "0000000000000000000000000000000000000000000001ad37def9e030460945",
+              "00000000000000000000000000000000000000000000000000000001404817ee",
+              "000000000000000000000000000000000000000000000000000000006a8820db"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000179a0f873ea763",
+            "decoded": 6643315948562275
+          }
+        },
+        {
+          "index": 3,
+          "address": "0x2a1ab0224a7a608d3a992cb15594a2934f74f4c0",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000eb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+            "decoded": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000002986cd70000000000000000000000000000000000000000000000000000000001efc0e1000000000000000000000000000000000000000000000000000000006a891b50",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000002986cd7",
+              "0000000000000000000000000000000000000000000000000000000001efc0e1",
+              "000000000000000000000000000000000000000000000000000000006a891b50"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000243fb4b",
+            "decoded": 38009675
+          }
+        },
+        {
+          "index": 4,
+          "address": "0xb07c2172c4b7bbc3ac52088d30cb103853b0b403",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000050b99c60000000000000000000000000000000000000000000000000003ddbe2725a138000000000000000000000000000000000000000000000000000000006a891589",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000000000000050b99c6",
+              "0000000000000000000000000000000000000000000000000003ddbe2725a138",
+              "000000000000000000000000000000000000000000000000000000006a891589"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000046aa469739",
+            "decoded": 303504463673
+          }
+        },
+        {
+          "index": 5,
+          "address": "0x9e60cd4d5b718178fab0137200a36a5472191302",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000eb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+            "decoded": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000a454fdf173d00000000000000000000000000000000000000000000000000000000000e6d37000000000000000000000000000000000000000000000000000000006a88664a",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000000000a454fdf173d",
+              "00000000000000000000000000000000000000000000000000000000000e6d37",
+              "000000000000000000000000000000000000000000000000000000006a88664a"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000060eef",
+            "decoded": 397039
+          }
+        },
+        {
+          "index": 6,
+          "address": "0xf6f950485b0a65828f07581ca979ef1271778d6a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000a10ad2570ea7b93d19fdae6bd7189ff4929bc747",
+            "decoded": "0xa10ad2570ea7b93d19fdae6bd7189ff4929bc747"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000463839a8464bc50000000000000000000000000000000000000000000000000073348279c7bca0000000000000000000000000000000000000000000000000000000006a8aae94",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000000463839a8464bc5",
+              "0000000000000000000000000000000000000000000000000073348279c7bca0",
+              "000000000000000000000000000000000000000000000000000000006a8aae94"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000000005ca1be483a74aa",
+            "decoded": "26073536485029034"
+          }
+        },
+        {
+          "index": 7,
+          "address": "0x5cd2a025c001e07ae354a4c22c3009908de1ac59",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000a10ad2570ea7b93d19fdae6bd7189ff4929bc747",
+            "decoded": "0xa10ad2570ea7b93d19fdae6bd7189ff4929bc747"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000062b6fd51ba9ce4000000000000000000000000000000000000000000000070a569d499b011bea6000000000000000000000000000000000000000000000000000000006a8aae94",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000062b6fd51ba9ce4",
+              "000000000000000000000000000000000000000000000070a569d499b011bea6",
+              "000000000000000000000000000000000000000000000000000000006a8aae94"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000069735e805807a855",
+            "decoded": "7598520901629880405"
+          }
+        },
+        {
+          "index": 8,
+          "address": "0x329d64572f8922c3fe90d23a3c74a360d8ea6235",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000df708431162ba247ddae362d2c919e0fbafcf9de",
+            "decoded": "0xdf708431162ba247ddae362d2c919e0fbafcf9de"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000002f0f0da31d2c40000000000000000000000000000000000000000000000000004a53cd1cbd9850000000000000000000000000000000000000000000000000000000006a56121c",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000002f0f0da31d2c40",
+              "000000000000000000000000000000000000000000000000004a53cd1cbd9850",
+              "000000000000000000000000000000000000000000000000000000006a56121c"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000000003ca78690304705",
+            "decoded": "17072694989178629"
+          }
+        },
+        {
+          "index": 9,
+          "address": "0xb7fd1db5228e4d9f4109c5635f66375e5af0d8f5",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000df708431162ba247ddae362d2c919e0fbafcf9de",
+            "decoded": "0xdf708431162ba247ddae362d2c919e0fbafcf9de"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 10,
+          "address": "0xfbcc89586780ac6f41e9cec97663e5592be41331",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000221b2d9ad7b994861af3f4c8a80c86c4aa86bf53",
+            "decoded": "0x221b2d9ad7b994861af3f4c8a80c86c4aa86bf53"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 11,
+          "address": "0x58c8f6d2e589928c46425eaf4254b6a41c45a584",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000221b2d9ad7b994861af3f4c8a80c86c4aa86bf53",
+            "decoded": "0x221b2d9ad7b994861af3f4c8a80c86c4aa86bf53"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 12,
+          "address": "0x6688f868e9c81ee671867e77fbc618bbea2e9782",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000aac423edc4e3ee9ef81517e8093d52737165b71f",
+            "decoded": "0xaac423edc4e3ee9ef81517e8093d52737165b71f"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000779e63cf40b031986f320000000000000000000000000000000000000000000000716d2ae680a0c168dc000000000000000000000000000000000000000000000000000000006a835c95",
+            "decoded": [
+              "00000000000000000000000000000000000000000000779e63cf40b031986f32",
+              "0000000000000000000000000000000000000000000000716d2ae680a0c168dc",
+              "000000000000000000000000000000000000000000000000000000006a835c95"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000747b3f1ff2011d98e91",
+            "decoded": "34379250634636274536081"
+          }
+        },
+        {
+          "index": 13,
+          "address": "0x72e6b3f126cf4f6c90c08114ac29038a0e269210",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000006a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7",
+            "decoded": "0x6a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000191065000000000000000000000000000000000000000000000000003772da70e81019000000000000000000000000000000000000000000000000000000006a89eb12",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000191065",
+              "000000000000000000000000000000000000000000000000003772da70e81019",
+              "000000000000000000000000000000000000000000000000000000006a89eb12"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000002549f593ca",
+            "decoded": 160154620874
+          }
+        },
+        {
+          "index": 14,
+          "address": "0xa67503685d5be91ced5112e66457553887497be7",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000005f800000000000000000000000000000000000000000000000000000000000001fc000000000000000000000000000000000000000000000000000000006a3f0a08",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000000000000000005f8",
+              "00000000000000000000000000000000000000000000000000000000000001fc",
+              "000000000000000000000000000000000000000000000000000000006a3f0a08"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 15,
+          "address": "0x6cbf990188d269872fcd0fd3bb004eb706d27c9d",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000004da5094b574a69e6cbd20a2930dd174e68445a9f",
+            "decoded": "0x4da5094b574a69e6cbd20a2930dd174e68445a9f"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c80000000000000000000000000000000000000000000000000000000000001389000000000000000000000000000000000000000000000000000000006916103a",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000000000000000000c8",
+              "0000000000000000000000000000000000000000000000000000000000001389",
+              "000000000000000000000000000000000000000000000000000000006916103a"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 16,
+          "address": "0x0bfa59dab97138d9a20bf70009dbb0da160d5ced",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000286ee472b3f5e34ff4f89f1d903eb67e4ef0c821",
+            "decoded": "0x286ee472b3f5e34ff4f89f1d903eb67e4ef0c821"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000452e47169d5284808000000000000000000000000000000000000000000000000000000006917ba6d",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "00000000000000000000000000000000000000000000000452e47169d5284808",
+              "000000000000000000000000000000000000000000000000000000006917ba6d"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 17,
+          "address": "0x59d102aa31d0a6557be4db0c76d5e13b1bc274a9",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000088433da57bf1ae4c80f58b3f625531ea8c1bd757",
+            "decoded": "0x88433da57bf1ae4c80f58b3f625531ea8c1bd757"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000024200000000000000000000000000000000000000000000000000000000000006c5000000000000000000000000000000000000000000000000000000006916103a",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000242",
+              "00000000000000000000000000000000000000000000000000000000000006c5",
+              "000000000000000000000000000000000000000000000000000000006916103a"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 18,
+          "address": "0xb5c8ad6de45240336fb7c022eafbb094b88a0d6a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000f9a19f86c23eb31f32fa93468e18ed36e97f1957",
+            "decoded": "0xf9a19f86c23eb31f32fa93468e18ed36e97f1957"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000114b91c5a754a07d100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000069446af1",
+            "decoded": [
+              "00000000000000000000000000000000000000000000000114b91c5a754a07d1",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000069446af1"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 19,
+          "address": "0xde0700fd962aad61f6e048871c8ec1ce8794aaf9",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000005eac2040b1d86f480aba1040d62febc26142ebb",
+            "decoded": "0x05eac2040b1d86f480aba1040d62febc26142ebb"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000002b3cec6e2253918b5000000000000000000000000000000000000000000000000000000006944687d",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "000000000000000000000000000000000000000000000002b3cec6e2253918b5",
+              "000000000000000000000000000000000000000000000000000000006944687d"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 20,
+          "address": "0x3965f05380b588d5a3bc69db479aa6dde51b9197",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000bcdf0b3178ba6aa47fbac3bde0e639b1a9225121",
+            "decoded": "0xbcdf0b3178ba6aa47fbac3bde0e639b1a9225121"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000e4fde3d37b1f5c780c66ed42b7a1ffd941dce383",
+            "decoded": "0xe4fde3d37b1f5c780c66ed42b7a1ffd941dce383"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000452e47169d52befd00000000000000000000000000000000000000000000000000000000691e3e10",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "000000000000000000000000000000000000000000000000452e47169d52befd",
+              "00000000000000000000000000000000000000000000000000000000691e3e10"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 21,
+          "address": "0xa41bebbdd2578d3e88dc3d066cfb2bced88b7556",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000004da5094b574a69e6cbd20a2930dd174e68445a9f",
+            "decoded": "0x4da5094b574a69e6cbd20a2930dd174e68445a9f"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000001170000000000000000000000000000000000000000000000000000000000000e0700000000000000000000000000000000000000000000000000000000694c0d7c",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000117",
+              "0000000000000000000000000000000000000000000000000000000000000e07",
+              "00000000000000000000000000000000000000000000000000000000694c0d7c"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 22,
+          "address": "0x157ff1e1e21ba869ead1c22326743252ac3a7d5a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000bbb219430a39047489014189ad16959f0dc1215a",
+            "decoded": "0xbbb219430a39047489014189ad16959f0dc1215a"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000580000000000000000000000000000000000000000000000000000000000002cd8000000000000000000000000000000000000000000000000000000006a3f0688",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000058",
+              "0000000000000000000000000000000000000000000000000000000000002cd8",
+              "000000000000000000000000000000000000000000000000000000006a3f0688"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 23,
+          "address": "0x9b5e94c5ba3ea0a61768e3cd4fcc4d00b8c8b670",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000d128c8e5b1b52c05d5f54e17ca72534ae903c0d2",
+            "decoded": "0xd128c8e5b1b52c05d5f54e17ca72534ae903c0d2"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000004b00000000000000000000000000000000000000000000000000000000000034af000000000000000000000000000000000000000000000000000000006a3f06e6",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000000000000000004b",
+              "00000000000000000000000000000000000000000000000000000000000034af",
+              "000000000000000000000000000000000000000000000000000000006a3f06e6"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 24,
+          "address": "0xdb12c053a801c12dc22d55c1079930c3d5354879",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000006ab225217fc57bddd7c7052faeec218e20d39df1",
+            "decoded": "0x6ab225217fc57bddd7c7052faeec218e20d39df1"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000006d00000000000000000000000000000000000000000000000000000000000023fb000000000000000000000000000000000000000000000000000000006a3f06f1",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000000000000000006d",
+              "00000000000000000000000000000000000000000000000000000000000023fb",
+              "000000000000000000000000000000000000000000000000000000006a3f06f1"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 25,
+          "address": "0xfa14f3e68123c3d0a65233a1216db13804f8fb54",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000b2644a0ec940299d46b2212b04f6497a36bed434",
+            "decoded": "0xb2644a0ec940299d46b2212b04f6497a36bed434"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000013950558bcd7810000000000000000000000000000000000000000000000000dd61ba2f8e27c98000000000000000000000000000000000000000000000000000000006a3f06c5",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000013950558bcd781",
+              "0000000000000000000000000000000000000000000000000dd61ba2f8e27c98",
+              "000000000000000000000000000000000000000000000000000000006a3f06c5"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000106d3625dac9d4d",
+            "decoded": "73978863330041165"
+          }
+        },
+        {
+          "index": 26,
+          "address": "0x9316de47269d838686533375e26fe4616e12b7cf",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000080a356f24a85c7e18c3980a450ae73288e90ceda",
+            "decoded": "0x80a356f24a85c7e18c3980a450ae73288e90ceda"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000003a000000000000000000000000000000000000000000000000000000000000445b000000000000000000000000000000000000000000000000000000006a3f06db",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000000000000000003a",
+              "000000000000000000000000000000000000000000000000000000000000445b",
+              "000000000000000000000000000000000000000000000000000000006a3f06db"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+            "decoded": 1000
+          }
+        },
+        {
+          "index": 27,
+          "address": "0xcc2075075ed2c72ff6b78607188bc43270bfb7c3",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000584971b36729b83fb3b19bf3b4ae92d50e3023f4",
+            "decoded": "0x584971b36729b83fb3b19bf3b4ae92d50e3023f4"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000001191cd3adfe9380000000000000000000000000000000000000000000000001b6b130a1f80acd5000000000000000000000000000000000000000000000000000000006a3f06d0",
+            "decoded": [
+              "000000000000000000000000000000000000000000000000001191cd3adfe938",
+              "0000000000000000000000000000000000000000000000001b6b130a1f80acd5",
+              "000000000000000000000000000000000000000000000000000000006a3f06d0"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000000015f2c134c18f5bc",
+            "decoded": "98846178218145212"
+          }
+        },
+        {
+          "index": 28,
+          "address": "0x5422ec6c4bf2fb4eb5a45234c12284d911155fb6",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000006c199af0437683baacba9210609f0948007c8d4a",
+            "decoded": "0x6c199af0437683baacba9210609f0948007c8d4a"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 29,
+          "address": "0x0f6c78727dc2f4c04c3d1bc0c2f49667141e924a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000068bba5ecc126dedfa52c0399671e3a7a514d311c",
+            "decoded": "0x68bba5ecc126dedfa52c0399671e3a7a514d311c"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000f5e6e978b677a21108300000000000000000000000000000000000000000000006eb17cda0adda617a5000000000000000000000000000000000000000000000000000000006a6af98b",
+            "decoded": [
+              "000000000000000000000000000000000000000000000f5e6e978b677a211083",
+              "00000000000000000000000000000000000000000000006eb17cda0adda617a5",
+              "000000000000000000000000000000000000000000000000000000006a6af98b"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x00000000000000000000000000000000000000000000054b40b1f852bda00000",
+            "decoded": "25000000000000000000000"
+          }
+        },
+        {
+          "index": 30,
+          "address": "0x09087cbba636b18a2ffd60118f473ce2057bbdf3",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000021e250a81692b66c53de84cd5bbef0052922b184",
+            "decoded": "0x21e250a81692b66c53de84cd5bbef0052922b184"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": true
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 31,
+          "address": "0xd9ae5f6b79514c2867463973866d408e9a1d8cba",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000021e250a81692b66c53de84cd5bbef0052922b184",
+            "decoded": "0x21e250a81692b66c53de84cd5bbef0052922b184"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": [
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000000"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          }
+        },
+        {
+          "index": 32,
+          "address": "0x43bf22e79977e6e1e4a6fbd89fbaf4d1eadff435",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000de402d7021f3f7f00be5d0ab5c238b2be1d2904f",
+            "decoded": "0xde402d7021f3f7f00be5d0ab5c238b2be1d2904f"
+          },
+          "stable": {
+            "callData": "0x22be3de1",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": false
+          },
+          "reserves": {
+            "callData": "0x0902f1ac",
+            "rawResult": "0x000000000000000000000000000000000000000000000001a5d2f422124aefc5000000000000000000000000000000000000000000000001bc3f49abe2ad2341000000000000000000000000000000000000000000000000000000006a7d53ca",
+            "decoded": [
+              "000000000000000000000000000000000000000000000001a5d2f422124aefc5",
+              "000000000000000000000000000000000000000000000001bc3f49abe2ad2341",
+              "000000000000000000000000000000000000000000000000000000006a7d53ca"
+            ]
+          },
+          "totalSupply": {
+            "callData": "0x18160ddd",
+            "rawResult": "0x000000000000000000000000000000000000000000000001b0e301920813087c",
+            "decoded": "31192777170810505340"
+          }
+        }
+      ]
+    },
+    "concentrated": {
+      "allPoolsLength": 13,
+      "pools": [
+        {
+          "index": 0,
+          "address": "0x734722a240298a3bf56094570ede5a7399c052bb",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": 1
+          },
+          "gauge": {
+            "address": "0x94d85f179d6752dce74ff3bc7e45e5804d21ce16",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b00000000000000000000000094d85f179d6752dce74ff3bc7e45e5804d21ce16",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000734722a240298a3bf56094570ede5a7399c052bb",
+                "decoded": "0x734722a240298a3bf56094570ede5a7399c052bb"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": 1
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x00000000000000000000000000000000000f4bf6155aec243a3077a4295112ad00000000000000000000000000000000000000000000000000000000000437950000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "00000000000000000000000000000000000f4bf6155aec243a3077a4295112ad",
+              "0000000000000000000000000000000000000000000000000000000000043795",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 1,
+          "address": "0x9cbc1537d255768b431488305b1c7efc2ac95022",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+            "decoded": 200
+          },
+          "gauge": {
+            "address": "0x21d7acb0d128fa039064b6ace8db88c0ade0209e",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b00000000000000000000000021d7acb0d128fa039064b6ace8db88c0ade0209e",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x0000000000000000000000009cbc1537d255768b431488305b1c7efc2ac95022",
+                "decoded": "0x9cbc1537d255768b431488305b1c7efc2ac95022"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+                "decoded": 200
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000b3194c63b635a273a6",
+            "decoded": "3303790130777422984102"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000b2d15971000ae21a5c",
+            "decoded": "3298605657792150903388"
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000011648470d26d35c4e0b76ac13b3000000000000000000000000000000000000000000000000000000000001b7c2000000000000000000000000000000000000000000000000000000000000001a000000000000000000000000000000000000000000000000000000000000009600000000000000000000000000000000000000000000000000000000000000960000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000011648470d26d35c4e0b76ac13b3",
+              "000000000000000000000000000000000000000000000000000000000001b7c2",
+              "000000000000000000000000000000000000000000000000000000000000001a",
+              "0000000000000000000000000000000000000000000000000000000000000096",
+              "0000000000000000000000000000000000000000000000000000000000000096",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 2,
+          "address": "0xbcdea1a9de74d13d5380a632f23ec0599c32db26",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000006a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7",
+            "decoded": "0x6a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+            "decoded": 200
+          },
+          "gauge": {
+            "address": "0x5d447966c2ddc6900af32ce54077a7d6199960d3",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b0000000000000000000000005d447966c2ddc6900af32ce54077a7d6199960d3",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000bcdea1a9de74d13d5380a632f23ec0599c32db26",
+                "decoded": "0xbcdea1a9de74d13d5380a632f23ec0599c32db26"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+                "decoded": 200
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000000009ea26832b2a521f4f85449effffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01fd0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000000009ea26832b2a521f4f85449e",
+              "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01fd",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 3,
+          "address": "0xcc372b7e15535ab225fe17c1075831d38ef7ac1a",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000a",
+            "decoded": 10
+          },
+          "gauge": {
+            "address": "0x6d446e27505c71ee39d632488ce849fef6affc57",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b0000000000000000000000006d446e27505c71ee39d632488ce849fef6affc57",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000cc372b7e15535ab225fe17c1075831d38ef7ac1a",
+                "decoded": "0xcc372b7e15535ab225fe17c1075831d38ef7ac1a"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000a",
+                "decoded": 10
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x000000000000000000000000000000000000000000000031e48a53475d818271",
+            "decoded": "920358526165178221169"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x000000000000000000000000000000000000000000000031e48a5342cfd329ab",
+            "decoded": "920358526145621338539"
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x00000000000000000000000000000000000f5438ab7c90b029a5eee89c460ef400000000000000000000000000000000000000000000000000000000000437bf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "00000000000000000000000000000000000f5438ab7c90b029a5eee89c460ef4",
+              "00000000000000000000000000000000000000000000000000000000000437bf",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 4,
+          "address": "0x76fd06b064063ade870e5f005277e17acb42d292",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+            "decoded": 2000
+          },
+          "gauge": {
+            "address": "0xc6a284361b9f923c18c1b0f5251db1e7a2718f56",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b000000000000000000000000c6a284361b9f923c18c1b0f5251db1e7a2718f56",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x00000000000000000000000076fd06b064063ade870e5f005277e17acb42d292",
+                "decoded": "0x76fd06b064063ade870e5f005277e17acb42d292"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+                "decoded": 2000
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x000000000000000000000000000000000000000000000000001338fdc719fb5c",
+            "decoded": 5410687175752540
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000011679b266aa6e0c30917e9a1c40000000000000000000000000000000000000000000000000000000000001b7d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000011679b266aa6e0c30917e9a1c40",
+              "000000000000000000000000000000000000000000000000000000000001b7d0",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 5,
+          "address": "0x1d6e8d24c133535f2d00676f66a0e824f84765ff",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+            "decoded": "0x7b7c000000000000000000000000000000000001"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+            "decoded": 200
+          },
+          "gauge": {
+            "address": "0xa763cee0cbe643e2381ce2b0c457b4451d59c40d",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b000000000000000000000000a763cee0cbe643e2381ce2b0c457b4451d59c40d",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x0000000000000000000000001d6e8d24c133535f2d00676f66a0e824f84765ff",
+                "decoded": "0x1d6e8d24c133535f2d00676f66a0e824f84765ff"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+                "decoded": 200
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x000000000000000000000000000000000000000000009d8f96dbdea524805ef9",
+            "decoded": "744060292740001216618233"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x000000000000000000000000000000000000000000009d6c26f67a0becefbf4d",
+            "decoded": "743406593736104280571725"
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000000015cd6a6126441cdfb0e0690effffffffffffffffffffffffffffffffffffffffffffffffffffffffffff3f8e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000000015cd6a6126441cdfb0e0690e",
+              "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff3f8e",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 6,
+          "address": "0x907d055978943c69cffd5ed969f5603af104acc5",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+            "decoded": "0x7b7c000000000000000000000000000000000001"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+            "decoded": 2000
+          },
+          "gauge": {
+            "address": "0xed64532bcc10d8a587f11e2ba47d4c738a64843e",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b000000000000000000000000ed64532bcc10d8a587f11e2ba47d4c738a64843e",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000907d055978943c69cffd5ed969f5603af104acc5",
+                "decoded": "0x907d055978943c69cffd5ed969f5603af104acc5"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+                "decoded": 2000
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000ae509b4d7429c8c142",
+            "decoded": "3215541790131198935362"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000ae2df9819cf5432a4d",
+            "decoded": "3213046290337499392589"
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x0000000000000000000000000000000000000cac5ea6e6057971b3bcfbd1a00200000000000000000000000000000000000000000000000000000000000277a50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "0000000000000000000000000000000000000cac5ea6e6057971b3bcfbd1a002",
+              "00000000000000000000000000000000000000000000000000000000000277a5",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 7,
+          "address": "0x96185a2f430c1183c1a01c0931bfe528af6d7cc0",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197",
+            "decoded": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+            "decoded": 200
+          },
+          "gauge": {
+            "address": "0x65e35015b3a4dcdccc0fc0114799740ffe4e4c5f",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b00000000000000000000000065e35015b3a4dcdccc0fc0114799740ffe4e4c5f",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x00000000000000000000000096185a2f430c1183c1a01c0931bfe528af6d7cc0",
+                "decoded": "0x96185a2f430c1183c1a01c0931bfe528af6d7cc0"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000000c8",
+                "decoded": 200
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000005076d885fbaa9",
+            "decoded": 1415541904358057
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000005076d885fbaa9",
+            "decoded": 1415541904358057
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x0000000000000000000000000000000000000e1515b28ac266017652d07216af0000000000000000000000000000000000000000000000000000000000027fe20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "0000000000000000000000000000000000000e1515b28ac266017652d07216af",
+              "0000000000000000000000000000000000000000000000000000000000027fe2",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 8,
+          "address": "0xd3c5253187177ef880f114989b74173727bd6809",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000aac423edc4e3ee9ef81517e8093d52737165b71f",
+            "decoded": "0xaac423edc4e3ee9ef81517e8093d52737165b71f"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+            "decoded": 2000
+          },
+          "gauge": {
+            "address": "0xc94195a80ecce896cbce9ffc9004bac2364d51fe",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b000000000000000000000000c94195a80ecce896cbce9ffc9004bac2364d51fe",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000d3c5253187177ef880f114989b74173727bd6809",
+                "decoded": "0xd3c5253187177ef880f114989b74173727bd6809"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+                "decoded": 2000
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x0000000000000000000000000000000000000fd6fc6f3d1cf32238a5d5b5ffa700000000000000000000000000000000000000000000000000000000000289120000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "0000000000000000000000000000000000000fd6fc6f3d1cf32238a5d5b5ffa7",
+              "0000000000000000000000000000000000000000000000000000000000028912",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 9,
+          "address": "0xd224da9c9870d6e1e87605ee249d5ea6bc608b90",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000009d36f8f62347538440a212e9162f534f797542df",
+            "decoded": "0x9d36f8f62347538440a212e9162f534f797542df"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000a",
+            "decoded": 10
+          },
+          "gauge": {
+            "address": "0x2fcc247ef544ca336553340157e4c3809815bb3f",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b0000000000000000000000002fcc247ef544ca336553340157e4c3809815bb3f",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x000000000000000000000000d224da9c9870d6e1e87605ee249d5ea6bc608b90",
+                "decoded": "0xd224da9c9870d6e1e87605ee249d5ea6bc608b90"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000a",
+                "decoded": 10
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000005aae989c66fb9491e0b",
+            "decoded": "26764607106544648658443"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x000000000000000000000000000000000000000000000168b8cd1f0a4b82edaa",
+            "decoded": "6654144200337720012202"
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000271756be8e71f91370715084d23e000000000000000000000000000000000000000000000000000000000002cfa60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000271756be8e71f91370715084d23e",
+              "000000000000000000000000000000000000000000000000000000000002cfa6",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 10,
+          "address": "0x13e9d0f708aa3328f2660f5a7343e8e8011239ff",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000009d36f8f62347538440a212e9162f534f797542df",
+            "decoded": "0x9d36f8f62347538440a212e9162f534f797542df"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+            "decoded": 2000
+          },
+          "gauge": {
+            "address": "0x469670086070d823490b4672f432cd0e7a0144cb",
+            "factoryRecognizesGauge": {
+              "isGauge": {
+                "callData": "0xaa79979b000000000000000000000000469670086070d823490b4672f432cd0e7a0144cb",
+                "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000001",
+                "decoded": true
+              }
+            },
+            "state": {
+              "pool": {
+                "callData": "0x16f0115b",
+                "rawResult": "0x00000000000000000000000013e9d0f708aa3328f2660f5a7343e8e8011239ff",
+                "decoded": "0x13e9d0f708aa3328f2660f5a7343e8e8011239ff"
+              },
+              "nft": {
+                "callData": "0x47ccca02",
+                "rawResult": "0x000000000000000000000000509bc221df2b83927c695fa0bb0f5b21053c874c",
+                "decoded": "0x509bc221df2b83927c695fa0bb0f5b21053c874c"
+              },
+              "voter": {
+                "callData": "0x46c96aac",
+                "rawResult": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03",
+                "decoded": "0x48233ccc97b87ba93bca212cbee48e3210211f03"
+              },
+              "rewardToken": {
+                "callData": "0xf7c618c1",
+                "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000001",
+                "decoded": "0x7b7c000000000000000000000000000000000001"
+              },
+              "tickSpacing": {
+                "callData": "0xd0c93a7c",
+                "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+                "decoded": 2000
+              }
+            }
+          },
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000010fcaed0e816058a24f3",
+            "decoded": "80219040055828165567731"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x000000000000000000000000000000000000000006fe24b3b2a071b12b5feddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffee6b60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "000000000000000000000000000000000000000006fe24b3b2a071b12b5feddf",
+              "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffee6b6",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 11,
+          "address": "0xd96add177cf07f39935641dd68deafd8d16c9cc4",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x0000000000000000000000006a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7",
+            "decoded": "0x6a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x0000000000000000000000007b7c000000000000000000000000000000000000",
+            "decoded": "0x7b7c000000000000000000000000000000000000"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x000000000000000000000000000000000000000000000000000000000000000a",
+            "decoded": 10
+          },
+          "gauge": null,
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x00000000000000000000000000000000000186856aae940d0af41873f968991400000000000000000000000000000000000000000000000000000000000383780000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "00000000000000000000000000000000000186856aae940d0af41873f9689914",
+              "0000000000000000000000000000000000000000000000000000000000038378",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        },
+        {
+          "index": 12,
+          "address": "0xc637c6bedaf4ca2c6eec74bfa62f5c38c3a6b054",
+          "token0": {
+            "callData": "0x0dfe1681",
+            "rawResult": "0x000000000000000000000000dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "decoded": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+          },
+          "token1": {
+            "callData": "0xd21220a7",
+            "rawResult": "0x000000000000000000000000de402d7021f3f7f00be5d0ab5c238b2be1d2904f",
+            "decoded": "0xde402d7021f3f7f00be5d0ab5c238b2be1d2904f"
+          },
+          "factory": {
+            "callData": "0xc45a0155",
+            "rawResult": "0x000000000000000000000000bb24af5c6fb88f1d191fa76055e30bf881beeb79",
+            "decoded": "0xbb24af5c6fb88f1d191fa76055e30bf881beeb79"
+          },
+          "tickSpacing": {
+            "callData": "0xd0c93a7c",
+            "rawResult": "0x00000000000000000000000000000000000000000000000000000000000007d0",
+            "decoded": 2000
+          },
+          "gauge": null,
+          "liquidity": {
+            "callData": "0x1a686502",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000dc6276dbf3fd985",
+            "decoded": "992524120195324293"
+          },
+          "stakedLiquidity": {
+            "callData": "0x3ab04b20",
+            "rawResult": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "decoded": 0
+          },
+          "slot0": {
+            "callData": "0x3850c7bd",
+            "rawResult": "0x0000000000000000000000000000000000000001084e8dea63d79c15ad86c628000000000000000000000000000000000000000000000000000000000000027e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001",
+            "decoded": [
+              "0000000000000000000000000000000000000001084e8dea63d79c15ad86c628",
+              "000000000000000000000000000000000000000000000000000000000000027e",
+              "0000000000000000000000000000000000000000000000000000000000000000",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001",
+              "0000000000000000000000000000000000000000000000000000000000000001"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "This is a point-in-time read-only capture, not a static registry of dynamic pools or gauges.",
+    "Explorer verification labels and executable hashes do not establish source authorship or support.",
+    "Dynamic instances and their balances, reserves, liquidity, ownership, and gauge associations must be refreshed for current use."
+  ]
+}

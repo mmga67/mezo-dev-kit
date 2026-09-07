@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "kind": "rpc-endpoint-catalog",
+  "id": "rpc-endpoints",
+  "owner": "chains-registry",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:20:49.076Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "transports": [
+      "https",
+      "wss"
+    ]
+  },
+  "limitations": [
+    "Catalog support is the aggregate ceiling; each endpoint retains its own supported or docs-only support state.",
+    "Operational status is a bounded observation and must be rechecked after reviewAfter or before sensitive use."
+  ],
+  "records": [
+    {
+      "id": "mezo-testnet-official-https",
+      "networkId": "mezo-testnet",
+      "provider": "Mezo",
+      "transport": "https",
+      "url": "https://rpc.test.mezo.org",
+      "publicationStatus": "official",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:18:07Z",
+      "evidenceObservationId": "testnet-official-https",
+      "limitations": [
+        "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
+      ]
+    },
+    {
+      "id": "mezo-testnet-official-wss",
+      "networkId": "mezo-testnet",
+      "provider": "Mezo",
+      "transport": "wss",
+      "url": "wss://rpc-ws.test.mezo.org",
+      "publicationStatus": "official",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:20:44.660Z",
+      "evidenceObservationId": "testnet-official-wss",
+      "limitations": [
+        "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-boar-https",
+      "networkId": "mezo-mainnet",
+      "provider": "Boar",
+      "transport": "https",
+      "url": "https://mezo-mainnet.boar.network",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:18:07Z",
+      "evidenceObservationId": "mainnet-boar-https",
+      "limitations": [
+        "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-boar-wss",
+      "networkId": "mezo-mainnet",
+      "provider": "Boar",
+      "transport": "wss",
+      "url": "wss://mezo-mainnet.boar.network",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:20:45.838Z",
+      "evidenceObservationId": "mainnet-boar-wss",
+      "limitations": [
+        "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-imperator-https",
+      "networkId": "mezo-mainnet",
+      "provider": "Imperator",
+      "transport": "https",
+      "url": "https://rpc_evm-mezo.imperator.co",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "docs-only",
+      "operationalStatus": "failed-verification",
+      "lastVerifiedAt": "2026-08-17T22:18:34Z",
+      "evidenceObservationId": "mainnet-imperator-https",
+      "limitations": [
+        "The endpoint returned HTTP 405 for JSON-RPC POST during verification; recheck before use.",
+        "A failed point-in-time probe is not proof of permanent provider unavailability."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-imperator-wss",
+      "networkId": "mezo-mainnet",
+      "provider": "Imperator",
+      "transport": "wss",
+      "url": "wss://ws_evm-mezo.imperator.co",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "docs-only",
+      "operationalStatus": "failed-verification",
+      "lastVerifiedAt": "2026-08-17T22:20:46.659Z",
+      "evidenceObservationId": "mainnet-imperator-wss",
+      "limitations": [
+        "The endpoint failed the WebSocket handshake during verification; recheck before use.",
+        "A failed point-in-time probe is not proof of permanent provider unavailability."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-validation-cloud-https",
+      "networkId": "mezo-mainnet",
+      "provider": "Validation Cloud",
+      "transport": "https",
+      "url": "https://mainnet.mezo.public.validationcloud.io",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:18:07Z",
+      "evidenceObservationId": "mainnet-validation-cloud-https",
+      "limitations": [
+        "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-validation-cloud-wss",
+      "networkId": "mezo-mainnet",
+      "provider": "Validation Cloud",
+      "transport": "wss",
+      "url": "wss://mainnet.mezo.public.validationcloud.io",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:20:48.087Z",
+      "evidenceObservationId": "mainnet-validation-cloud-wss",
+      "limitations": [
+        "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-drpc-https",
+      "networkId": "mezo-mainnet",
+      "provider": "dRPC NodeCloud",
+      "transport": "https",
+      "url": "https://mezo.drpc.org",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:18:34Z",
+      "evidenceObservationId": "mainnet-drpc-https",
+      "limitations": [
+        "The unauthenticated free endpoint rejected a JSON-RPC batch larger than three during verification.",
+        "A successful bounded probe is not an uptime, archive-data, or complete compatibility guarantee."
+      ]
+    },
+    {
+      "id": "mezo-mainnet-drpc-wss",
+      "networkId": "mezo-mainnet",
+      "provider": "dRPC NodeCloud",
+      "transport": "wss",
+      "url": "wss://mezo.drpc.org",
+      "publicationStatus": "official-recommended",
+      "publicationSourceId": "official-docs-getting-started",
+      "supportStatus": "supported",
+      "operationalStatus": "verified",
+      "lastVerifiedAt": "2026-08-17T22:20:49.076Z",
+      "evidenceObservationId": "mainnet-drpc-wss",
+      "limitations": [
+        "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
+      ]
+    }
+  ]
+}

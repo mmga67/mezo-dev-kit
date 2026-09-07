@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "transaction-error-taxonomy",
+  "id": "core-transaction-errors-v1",
+  "owner": "core-transactions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "architectureDecisionIds": ["ADR-0002", "ADR-0003"],
+    "runtimeFamily": "EVM"
+  },
+  "limitations": [
+    "This taxonomy is an accepted shared architecture model and is not yet an accepted public error interface.",
+    "Protocol-specific errors and reconciliation details remain owned by their workflow modules."
+  ],
+  "proposalStatus": "accepted",
+  "errors": [
+    { "id": "UnsupportedNetwork", "stage": "validate", "retry": "after-configuration-change", "requiredContext": ["requestedNetworkId"] },
+    { "id": "MissingDeployment", "stage": "resolve-deployment", "retry": "after-registry-change", "requiredContext": ["networkId", "contractId", "validityCoordinate"] },
+    { "id": "ChainMismatch", "stage": "validate", "retry": "after-chain-change", "requiredContext": ["expectedChainId", "transportChainId", "signerChainId"] },
+    { "id": "InvalidUnits", "stage": "validate", "retry": "after-input-change", "requiredContext": ["field", "input", "expectedDecimals"] },
+    { "id": "StaleQuote", "stage": "pre-submit", "retry": "after-requote", "requiredContext": ["quoteBlock", "currentBlock", "freshnessPolicy"] },
+    { "id": "PartialReadError", "stage": "read", "retry": "required-item-policy", "requiredContext": ["blockCoordinate", "failedItems", "requiredItems"] },
+    { "id": "ProviderError", "stage": "transport", "retry": "operation-dependent", "requiredContext": ["providerId", "operation", "acceptedUnknown"] },
+    { "id": "ContractRevert", "stage": "simulation", "retry": "after-state-or-input-change", "requiredContext": ["contractId", "entrypoint", "decodedError", "rawRevertData"] },
+    { "id": "ApprovalError", "stage": "approval", "retry": "after-allowance-or-policy-check", "requiredContext": ["tokenContractId", "spender", "requiredAmount", "approvalHash"] },
+    { "id": "TransactionReplaced", "stage": "tracking", "retry": "track-linked-successor", "requiredContext": ["originalHash", "replacementHash", "reason"] },
+    { "id": "TransactionCancelled", "stage": "tracking", "retry": "explicit-new-intent-only", "requiredContext": ["originalHash", "cancellationHash"] },
+    { "id": "TransactionFailed", "stage": "receipt", "retry": "after-root-cause-review", "requiredContext": ["transactionHash", "receiptStatus", "blockNumber"] },
+    { "id": "TransactionTimeout", "stage": "tracking", "retry": "continue-tracking-or-rebroadcast-exact-bytes", "requiredContext": ["transactionHash", "deadline", "lastCheckedBlock"] },
+    { "id": "TransactionReorged", "stage": "confirmation", "retry": "resume-tracking", "requiredContext": ["transactionHash", "formerBlockHash", "detectionBlock"] },
+    { "id": "ReconciliationError", "stage": "reconciliation", "retry": "workflow-specific", "requiredContext": ["transactionHash", "receiptBlock", "expectedOutcome", "observedOutcome"] }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "kind": "wormhole-ntt-lifecycle",
+  "id": "bridge-ntt-lifecycle",
+  "owner": "workflows/bridges",
+  "providerId": "wormhole-ntt",
+  "status": "verified",
+  "workflowStatus": "verified-source-model-not-supported",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": [],
+    "assetIds": ["musd"]
+  },
+  "limitations": [
+    "This lifecycle applies only to the recorded MUSD NTT generation and must not be applied to Native Bridge.",
+    "A successful source receipt is not destination completion."
+  ],
+  "states": [
+    { "id": "source-submitted", "terminal": false, "evidence": "transaction hash only" },
+    {
+      "id": "source-reverted",
+      "terminal": true,
+      "evidence": "included source receipt with failure status"
+    },
+    {
+      "id": "source-queued",
+      "terminal": false,
+      "evidence": "successful source receipt with OutboundTransferQueued or OutboundTransferRateLimited"
+    },
+    {
+      "id": "source-sent",
+      "terminal": false,
+      "evidence": "successful source receipt with TransferSent digest and transceiver send evidence"
+    },
+    {
+      "id": "message-pending",
+      "terminal": false,
+      "evidence": "source sent but no conclusive destination evidence"
+    },
+    {
+      "id": "destination-received",
+      "terminal": false,
+      "evidence": "successful destination receipt with provider transceiver receive event"
+    },
+    {
+      "id": "destination-queued",
+      "terminal": false,
+      "evidence": "successful destination receipt with InboundTransferQueued and no TransferRedeemed"
+    },
+    {
+      "id": "completed",
+      "terminal": true,
+      "evidence": "successful destination receipt with TransferRedeemed for the source NTT digest"
+    },
+    {
+      "id": "ambiguous",
+      "terminal": false,
+      "evidence": "conflicting, incomplete, provider-limited, or non-final evidence"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "source-submitted",
+      "to": "source-reverted",
+      "condition": "source receipt is included with failure"
+    },
+    {
+      "from": "source-submitted",
+      "to": "source-queued",
+      "condition": "source receipt succeeds but outbound capacity queues the transfer"
+    },
+    {
+      "from": "source-submitted",
+      "to": "source-sent",
+      "condition": "source receipt succeeds and emits the NTT transfer digest"
+    },
+    {
+      "from": "source-sent",
+      "to": "message-pending",
+      "condition": "no conclusive destination receipt is available"
+    },
+    {
+      "from": "message-pending",
+      "to": "destination-received",
+      "condition": "the destination transceiver receives the Wormhole message"
+    },
+    {
+      "from": "destination-received",
+      "to": "destination-queued",
+      "condition": "inbound capacity queues execution"
+    },
+    {
+      "from": "destination-received",
+      "to": "completed",
+      "condition": "the same destination receipt emits TransferRedeemed"
+    },
+    {
+      "from": "destination-queued",
+      "to": "completed",
+      "condition": "a later successful completion receipt emits TransferRedeemed"
+    }
+  ],
+  "reconciliationRequirements": [
+    "Assert source and destination network identity independently.",
+    "Retain the source transaction, TransferSent digest, Wormhole emitter tuple when available, destination transaction, and TransferRedeemed digest.",
+    "Treat receipt absence and negative scans as unknown unless the selected provider supplies stronger terminal evidence.",
+    "Re-read pause, peer, threshold, capacity, recipient, and fee inputs before any future writer call.",
+    "Do not collapse Native Bridge states into this NTT model."
+  ]
+}

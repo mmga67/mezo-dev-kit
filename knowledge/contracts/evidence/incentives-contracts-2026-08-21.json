@@ -1,0 +1,1621 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-incentives-probes-2026-08-21",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:31:04.189Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "deploymentIds": [
+      "incentives.pools-voter@mezo-mainnet",
+      "incentives.ve-btc@mezo-mainnet",
+      "incentives.boost-voter@mezo-mainnet",
+      "incentives.ve-mezo@mezo-mainnet",
+      "incentives.factory-registry@mezo-mainnet",
+      "incentives.mezo-minter@mezo-mainnet",
+      "incentives.mezo-rebase-distributor@mezo-mainnet",
+      "incentives.mezo-chain-splitter@mezo-mainnet",
+      "incentives.mezo-ecosystem-splitter@mezo-mainnet",
+      "incentives.validators-voter@mezo-mainnet",
+      "incentives.third-party-voter@mezo-mainnet",
+      "incentives.chain-splitter-epoch-governor@mezo-mainnet",
+      "incentives.ecosystem-splitter-epoch-governor@mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the recorded block, activation logs, source responses, compiler builds, and implementation generations.",
+    "Executable equality does not establish source authorship, audit coverage, writer safety, or future proxy identity."
+  ],
+  "observedFrom": "2026-08-24T21:29:20.734Z",
+  "observedThrough": "2026-08-24T21:31:04.189Z",
+  "methodology": [
+    "Pinned a fresh incentives-emissions topology block after independently confirming chain ID and block hash.",
+    "Reconstructed every proxy implementation range from successful official-explorer Upgraded logs and read current ERC-1967 slots at the fixed block.",
+    "Read proxy, implementation, and direct runtime code at the fixed block and matched implementation/direct bytes to the official explorer response.",
+    "Built each exact explorer source bundle in an isolated Foundry directory with the recorded compiler/settings and matched creation/runtime executables after explicit immutable substitution.",
+    "Compared each generated full ABI semantically with the exact reproduced build and retained full/partial explorer verification labels unchanged.",
+    "Preserved registry provenance review/emission evidence review qualified acceptance for all thirteen bounded deployment and ABI identities without implying protocol or writer support."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11291582,
+      "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+      "blockTimestamp": "2026-08-21T18:04:49.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-incentives-pools-voter-mezo-mainnet",
+      "deploymentId": "incentives.pools-voter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5044813,
+        "blockHash": "0x9142e9a97d01daebe5a4399664418c5513685b7afca07f16f630484a0c86051e",
+        "blockTimestamp": "2025-12-02T17:42:56.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x32e9f37a4e278526d2d6cec6f4d3a505f0ce60957a175195a04226447c877131",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "717c6534bd413e9f995fd0f32e5a2a472c2b149d09e88ec115f8a3e8aed80bb2",
+        "implementationCodeSha256": "4f5949739ad463e691414ce46bb2f9c9bff2cfaab00ec123c2c81a319d2c2b42",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 4,
+          "creationExecutableSha256": "5de583b8d005130d185d0361062ade1290adb0c4f16985841bf5812d46d3f9b2",
+          "runtimeExecutableSha256": "9269778e57299bdc4b83dfbff23fde9e63095b32baf361ebbc7d18491eb1e487",
+          "explorerFullRuntimeSha256": "4f5949739ad463e691414ce46bb2f9c9bff2cfaab00ec123c2c81a319d2c2b42",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x23e9dc1077a0587196ce148bab6eeab30e773e92",
+        "currentImplementationAddress": "0xa62060d57e04d6c799b58188dc654b85addd1465",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x2da3f3a20cb05a756e7d3fe7083fb195dc95c73c",
+            "effectiveFrom": {
+              "blockNumber": 5044813,
+              "blockHash": "0x9142e9a97d01daebe5a4399664418c5513685b7afca07f16f630484a0c86051e",
+              "blockTimestamp": "2025-12-02T17:42:56.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x32e9f37a4e278526d2d6cec6f4d3a505f0ce60957a175195a04226447c877131",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 2
+            }
+          },
+          {
+            "implementationAddress": "0xa62060d57e04d6c799b58188dc654b85addd1465",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 2
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T17:44:18.431638Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "717c6534bd413e9f995fd0f32e5a2a472c2b149d09e88ec115f8a3e8aed80bb2"
+        },
+        "activeContract": {
+          "name": "Voter",
+          "filePath": "contracts/Voter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-01-21T08:29:16.266529Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 94,
+          "abiSemanticSha256": "b6bc7e8b060d0a486aee4d782f3e357fe8a984922f90c2b82ef994abcea01da0",
+          "deployedBytecodeSha256": "4f5949739ad463e691414ce46bb2f9c9bff2cfaab00ec123c2c81a319d2c2b42"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "b6faf26155bad4f444ccdcb59ad8e9c638a546d8c48125b463c51a9eaf4e866b",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 4 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-pools-voter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-ve-btc-mezo-mainnet",
+      "deploymentId": "incentives.ve-btc@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5043592,
+        "blockHash": "0x67afe7cb53bd7f190cc9503d9b9cbd1c5be85e768917a66e035662ed50847c92",
+        "blockTimestamp": "2025-12-02T16:29:33.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0xfba52804ea8de5461a37e5e0f139ea19b7bebfc09e017d7613cb66e2368e43b8",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "6de90fefbb565fba1c964adc17f34b7963fd7cd4646a1cea212c9a37c218bf0d",
+        "implementationCodeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "0043eae26f8ce5f1889be837290febed6214dde5fbb8e75684ea951078b74fce",
+          "runtimeExecutableSha256": "2c30b0960ce10cec8022632974abf0d9dbbd6ce3826fab1a3a92878f741f7cfb",
+          "explorerFullRuntimeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x6afe056221024c189e38ff3cc712ac2e850a8515",
+        "currentImplementationAddress": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x4e9db3399c84006f56569746128eb3155ba63390",
+            "effectiveFrom": {
+              "blockNumber": 5043592,
+              "blockHash": "0x67afe7cb53bd7f190cc9503d9b9cbd1c5be85e768917a66e035662ed50847c92",
+              "blockTimestamp": "2025-12-02T16:29:33.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xfba52804ea8de5461a37e5e0f139ea19b7bebfc09e017d7613cb66e2368e43b8",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5231297,
+              "blockHash": "0xd2a05fed13f6aaba3b089ebfcd35dc17dd3ee2df32cc939656eef83077aae784",
+              "blockTimestamp": "2025-12-10T14:35:01.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xd7a310545a62e8e4b57114524bd836b7f099f78e65ed3930bac550bd7224d616",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xdf217efd8f3ecb5e837aedf203c28c1f06854017",
+            "effectiveFrom": {
+              "blockNumber": 5231297,
+              "blockHash": "0xd2a05fed13f6aaba3b089ebfcd35dc17dd3ee2df32cc939656eef83077aae784",
+              "blockTimestamp": "2025-12-10T14:35:01.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xd7a310545a62e8e4b57114524bd836b7f099f78e65ed3930bac550bd7224d616",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x6c6571dd02c0f3ff07e7371c3d6202177d994f6b",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 8199968,
+              "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+              "blockTimestamp": "2026-04-13T17:01:04.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+            "effectiveFrom": {
+              "blockNumber": 8199968,
+              "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+              "blockTimestamp": "2026-04-13T17:01:04.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T16:37:22.667909Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "6de90fefbb565fba1c964adc17f34b7963fd7cd4646a1cea212c9a37c218bf0d"
+        },
+        "activeContract": {
+          "name": "VeBTC",
+          "filePath": "contracts/VeBTC.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "verifiedAt": "2026-04-09T14:51:35.225817Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 181,
+          "abiSemanticSha256": "de62ca878151fe2a7381246c9ed3157303aa257a7b35205be1f90dcf7f805b33",
+          "deployedBytecodeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "2b58547eed2db904cbe285d993f8aa5c01a9f1f6fac9725cd3380f6a218df767",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "88390e2b8a6f87f3c1a33036251abecf38135008115800dffc580b8f9fa18d15",
+        "librariesSha256": "d263f3889b58813e07be5a0febecd11a1dbe81f8e1b9708aa6fc6758e8ec0e81",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 0 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-ve-btc-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-boost-voter-mezo-mainnet",
+      "deploymentId": "incentives.boost-voter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5184186,
+        "blockHash": "0x7cf440ec462890e41c7562e799810bf34954cf907d7e4a823f8470721255faf4",
+        "blockTimestamp": "2025-12-08T13:55:04.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0xa9be61c8d8e5286fde56d49b6de28aaee4c89a0ed1b28e51bf21e5977871ce0d",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "fe9c4700343eb58f8dda128abb3bf2559fbfef28ad8d4661b1aca70e4a17af5a",
+        "implementationCodeSha256": "9c84d580cbcacca181b716d42ce17c455d23bbb81126620f864c8699d30a97cc",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 4,
+          "creationExecutableSha256": "7f8cf126797c2856e254613b372b11ed8f2e5717915a08831f46eec51a8a230c",
+          "runtimeExecutableSha256": "77e5d5f2a73599747ba8a8eca0cede4d75702a2a806eba026fdbfe421cfccb8c",
+          "explorerFullRuntimeSha256": "9c84d580cbcacca181b716d42ce17c455d23bbb81126620f864c8699d30a97cc",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x8a40d77df7a609f640f33c7333437146d9fe4cb4",
+        "currentImplementationAddress": "0xa696dc56522e41811d06bbda83c1a6d976637624",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x10b4c343f0e992c1ff12f6ec874fadfee36a5438",
+            "effectiveFrom": {
+              "blockNumber": 5184186,
+              "blockHash": "0x7cf440ec462890e41c7562e799810bf34954cf907d7e4a823f8470721255faf4",
+              "blockTimestamp": "2025-12-08T13:55:04.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xa9be61c8d8e5286fde56d49b6de28aaee4c89a0ed1b28e51bf21e5977871ce0d",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6276236,
+              "blockHash": "0xbc8244d6acfc2d5a93cae73d5f52eeabf73f9a95be32b2fc0f25aa6786766004",
+              "blockTimestamp": "2026-01-22T20:04:39.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xe6f845a3e8ffc6be998ee9dc2a8c16b7b25adbbfa208e38f4f4a527dcd3f2f22",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xa696dc56522e41811d06bbda83c1a6d976637624",
+            "effectiveFrom": {
+              "blockNumber": 6276236,
+              "blockHash": "0xbc8244d6acfc2d5a93cae73d5f52eeabf73f9a95be32b2fc0f25aa6786766004",
+              "blockTimestamp": "2026-01-22T20:04:39.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xe6f845a3e8ffc6be998ee9dc2a8c16b7b25adbbfa208e38f4f4a527dcd3f2f22",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-08T13:55:45.535471Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "fe9c4700343eb58f8dda128abb3bf2559fbfef28ad8d4661b1aca70e4a17af5a"
+        },
+        "activeContract": {
+          "name": "BoostVoter",
+          "filePath": "contracts/BoostVoter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-01-22T11:49:16.358840Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 98,
+          "abiSemanticSha256": "1199dad34c0d3ee9df09881ff89c6f909b8bf55adba213b94efb95b94376aa7b",
+          "deployedBytecodeSha256": "9c84d580cbcacca181b716d42ce17c455d23bbb81126620f864c8699d30a97cc"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "47e1dbe56a479ddeaecda95ef26bf582ead5e3d95332b7e99da933790ab8d371",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 4 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-boost-voter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-ve-mezo-mezo-mainnet",
+      "deploymentId": "incentives.ve-mezo@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5184093,
+        "blockHash": "0x2a363dd2199d1fb59c153991555d794d7c3a4e9a89df03e2799c915588cd8411",
+        "blockTimestamp": "2025-12-08T13:49:28.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0xae10742dcfdc7fea5ea9ce05f64fb1c7f43aa750fc7029e0537c8e2796787d9e",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "8945810c74adaa3c14e9d37ea70a0d0889a98743781c77abea66ec15684fbff4",
+        "implementationCodeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "c6a293e6da455b482a250d2ed44b94a453f70abcdc3a0f5146b25df673514a09",
+          "runtimeExecutableSha256": "06160bcb391ecedf7404d1e93061db8fcdb51f71216a2676d1e672a20e735bbf",
+          "explorerFullRuntimeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x10ad4cbc4ee5347a5decd7edb1b6bcdcfd96a4cb",
+        "currentImplementationAddress": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xb9ee960ad3c70c319cd3253eee40d4de5f25f423",
+            "effectiveFrom": {
+              "blockNumber": 5184093,
+              "blockHash": "0x2a363dd2199d1fb59c153991555d794d7c3a4e9a89df03e2799c915588cd8411",
+              "blockTimestamp": "2025-12-08T13:49:28.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xae10742dcfdc7fea5ea9ce05f64fb1c7f43aa750fc7029e0537c8e2796787d9e",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 1
+            }
+          },
+          {
+            "implementationAddress": "0x68fd8a69287c905e0d2a5592899994db2f92c455",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 1
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 8199968,
+              "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+              "blockTimestamp": "2026-04-13T17:01:04.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+              "logIndex": 1
+            }
+          },
+          {
+            "implementationAddress": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+            "effectiveFrom": {
+              "blockNumber": 8199968,
+              "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+              "blockTimestamp": "2026-04-13T17:01:04.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+              "logIndex": 1
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-08T13:50:12.400749Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "8945810c74adaa3c14e9d37ea70a0d0889a98743781c77abea66ec15684fbff4"
+        },
+        "activeContract": {
+          "name": "VeMEZO",
+          "filePath": "contracts/VeMEZO.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "verifiedAt": "2026-04-09T15:09:03.182391Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 181,
+          "abiSemanticSha256": "2e437af68b2ce7c1d8a8dfd1aba8601b2625edf3871dc8c2c065f30aa051fc6f",
+          "deployedBytecodeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "41292ec5aeb286b9e0ae175ae67d7cfc9e8a551c4b5e4d3eec9258a2735a672e",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "88390e2b8a6f87f3c1a33036251abecf38135008115800dffc580b8f9fa18d15",
+        "librariesSha256": "d263f3889b58813e07be5a0febecd11a1dbe81f8e1b9708aa6fc6758e8ec0e81",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 0 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-ve-mezo-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-factory-registry-mezo-mainnet",
+      "deploymentId": "incentives.factory-registry@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5043414,
+        "blockHash": "0x39c156c247fe3d0cdd964796b2fda5870b8f6c90a41d3b8e85fb49acfa81b1ca",
+        "blockTimestamp": "2025-12-02T16:18:46.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x64488fff6636669e90b4237970c86304fd894bb47d15d5b7aa7a918378f3ce88"
+      },
+      "runtime": {
+        "addressCodeSha256": "95c7373c5bbe6324b5ecad865a8cfec567c7052010ba8928170a1d7f790b1247",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 3,
+          "creationExecutableSha256": "055ab5f6d1c6ca0eeb3125d40578b9aa382d3a77f22b23855b72702e58807e35",
+          "runtimeExecutableSha256": "e9a979c3bb0a0e4ca2741516733df1e5d31c6744901b38dfabfb8a61b73d26cc",
+          "explorerFullRuntimeSha256": "95c7373c5bbe6324b5ecad865a8cfec567c7052010ba8928170a1d7f790b1247",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "FactoryRegistry",
+          "filePath": "contracts/factories/FactoryRegistry.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T16:19:23.039032Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 32,
+          "abiSemanticSha256": "2d6d52adf95fd47590dc768d7ae1fca41c2ea96fd8ff833099bcad6aecc96dbc",
+          "deployedBytecodeSha256": "95c7373c5bbe6324b5ecad865a8cfec567c7052010ba8928170a1d7f790b1247"
+        },
+        "activeContract": {
+          "name": "FactoryRegistry",
+          "filePath": "contracts/factories/FactoryRegistry.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T16:19:23.039032Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 32,
+          "abiSemanticSha256": "2d6d52adf95fd47590dc768d7ae1fca41c2ea96fd8ff833099bcad6aecc96dbc",
+          "deployedBytecodeSha256": "95c7373c5bbe6324b5ecad865a8cfec567c7052010ba8928170a1d7f790b1247"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "4697ae0a8f173db67bd3b47963d331f975525387e6de791dbd63ff470d61dd25",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 3 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-factory-registry-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-mezo-minter-mezo-mainnet",
+      "deploymentId": "incentives.mezo-minter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7904577,
+        "blockHash": "0x34ac641a40129d8419083ecb1cd4191ffb5c47aada718281b22a5edf4099186b",
+        "blockTimestamp": "2026-04-01T08:59:45.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x5433e6f41384f76e4a309b3ead7b8189369e025cd73719682124e863f368d411"
+      },
+      "runtime": {
+        "addressCodeSha256": "3cc47d2238ddf7b94681c22d1033c66c2f46f1dd8d729adc720338bfb658c1cf",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 14,
+          "creationExecutableSha256": "a9a9bf54b26c83b35c640e0d5156a69c70d9573598761f65f61454e0cf0a7a0f",
+          "runtimeExecutableSha256": "6079337d174a673afc49463664c9c2368ecee84dcc8f323de0075ade52514b5f",
+          "explorerFullRuntimeSha256": "3cc47d2238ddf7b94681c22d1033c66c2f46f1dd8d729adc720338bfb658c1cf",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "MEZOMinter",
+          "filePath": "contracts/MEZOMinter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T09:00:36.288513Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "5ec9c8e80b1d290a765b68a5435d1224cab06a5ac5fa1ff238e4b69901290982",
+          "deployedBytecodeSha256": "3cc47d2238ddf7b94681c22d1033c66c2f46f1dd8d729adc720338bfb658c1cf"
+        },
+        "activeContract": {
+          "name": "MEZOMinter",
+          "filePath": "contracts/MEZOMinter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T09:00:36.288513Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "5ec9c8e80b1d290a765b68a5435d1224cab06a5ac5fa1ff238e4b69901290982",
+          "deployedBytecodeSha256": "3cc47d2238ddf7b94681c22d1033c66c2f46f1dd8d729adc720338bfb658c1cf"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "5e49381d98b600952c325dbcba40bbd8aa022eb0d635b06b10d8411030dad05a",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 14 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-mezo-minter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-mezo-rebase-distributor-mezo-mainnet",
+      "deploymentId": "incentives.mezo-rebase-distributor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7904531,
+        "blockHash": "0x04e3782155e96e24f7c1c8bae8f13c8f7e561428956c354ae134fa67ae8f232c",
+        "blockTimestamp": "2026-04-01T08:57:00.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0xf3cf94138a6a9b0043309f90a887f795f5089cd3552fc3dc6fb3def626bbd414"
+      },
+      "runtime": {
+        "addressCodeSha256": "4ab624cec4fd173193a46c9841f008eb5c0ef8db8bc0f34c083c85a0dab6cf79",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 14,
+          "creationExecutableSha256": "4a554ca88ce111e38d1a2cb8339eca0f7af459ea806425ba8c55fccfee84b048",
+          "runtimeExecutableSha256": "67436e7247e7398a84d4e9b4c9390236c759b71dac8e6be652bc2d8478c574e7",
+          "explorerFullRuntimeSha256": "4ab624cec4fd173193a46c9841f008eb5c0ef8db8bc0f34c083c85a0dab6cf79",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:57:50.675024Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "4ab624cec4fd173193a46c9841f008eb5c0ef8db8bc0f34c083c85a0dab6cf79"
+        },
+        "activeContract": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:57:50.675024Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "4ab624cec4fd173193a46c9841f008eb5c0ef8db8bc0f34c083c85a0dab6cf79"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "5f76997011d76d6f6a8d49a5b0cf90ed1e86dbd990a5b13edb4f73436ded0d4f",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 14 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-mezo-rebase-distributor-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-mezo-chain-splitter-mezo-mainnet",
+      "deploymentId": "incentives.mezo-chain-splitter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7904148,
+        "blockHash": "0x02ee03193e3d9bf2d40b850a493164bf3d27647cb6b35a6840a648422b1ce3b7",
+        "blockTimestamp": "2026-04-01T08:34:11.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x90c1a780408c72fa1716bcc9e7c310941abf8bac7912a57882b9e9b9cf12fe1d"
+      },
+      "runtime": {
+        "addressCodeSha256": "c6527728f961407c357e51fb5fb2e710167e8b8a1669a9b00f4845e382af61ce",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 13,
+          "creationExecutableSha256": "ba62d4073589e791c0a9722c13b2a2320333e134ba5fe0c42adba99e33ee47bf",
+          "runtimeExecutableSha256": "0f6a1c95a88e8caeab5fa08deff94550af8fbffec37c170a34acd8042d3fc7c8",
+          "explorerFullRuntimeSha256": "c6527728f961407c357e51fb5fb2e710167e8b8a1669a9b00f4845e382af61ce",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "MEZOChainSplitter",
+          "filePath": "contracts/MEZOChainSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:35:03.029968Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "d21d8fdba5258ac70b5ec5f575dc08310495edc746dc33989f47c0693ca34a9f",
+          "deployedBytecodeSha256": "c6527728f961407c357e51fb5fb2e710167e8b8a1669a9b00f4845e382af61ce"
+        },
+        "activeContract": {
+          "name": "MEZOChainSplitter",
+          "filePath": "contracts/MEZOChainSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:35:03.029968Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "d21d8fdba5258ac70b5ec5f575dc08310495edc746dc33989f47c0693ca34a9f",
+          "deployedBytecodeSha256": "c6527728f961407c357e51fb5fb2e710167e8b8a1669a9b00f4845e382af61ce"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "adb26320e9317fe413fb6705c8a99e75f5c6a247ed590ab068f289d4b9cccb2b",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 13 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-mezo-chain-splitter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-mezo-ecosystem-splitter-mezo-mainnet",
+      "deploymentId": "incentives.mezo-ecosystem-splitter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7903944,
+        "blockHash": "0xa9cf391a15e883e16cb0ca5c63158e0772686fe227786d2195053cf82ec22058",
+        "blockTimestamp": "2026-04-01T08:22:01.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x12f687885a951ff423d078544ddfefea8e322974bcae5ae7b8d280adf2c47e43"
+      },
+      "runtime": {
+        "addressCodeSha256": "8cbbef3fbaf658efcee1dae99000ef4d7b9966a671a3ab187b9dca2e724e6919",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 16,
+          "creationExecutableSha256": "2b0d1926102b6dcccc1c18dcf3dc81667dcdf79b422abf6455cf32286c3ec61b",
+          "runtimeExecutableSha256": "a04831547aba96ff9fb907d8ea646fcede1afaec4534c4425881f11136665eaf",
+          "explorerFullRuntimeSha256": "8cbbef3fbaf658efcee1dae99000ef4d7b9966a671a3ab187b9dca2e724e6919",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "MEZOEcosystemSplitter",
+          "filePath": "contracts/MEZOEcosystemSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:22:51.809554Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "ea51bc559ab80d04f51289d40d2d647fb0f41eff6c211e1484607582b239b151",
+          "deployedBytecodeSha256": "8cbbef3fbaf658efcee1dae99000ef4d7b9966a671a3ab187b9dca2e724e6919"
+        },
+        "activeContract": {
+          "name": "MEZOEcosystemSplitter",
+          "filePath": "contracts/MEZOEcosystemSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:22:51.809554Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "ea51bc559ab80d04f51289d40d2d647fb0f41eff6c211e1484607582b239b151",
+          "deployedBytecodeSha256": "8cbbef3fbaf658efcee1dae99000ef4d7b9966a671a3ab187b9dca2e724e6919"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "d49387fb5159ccf00bd667f092b3d7a8b7a2e412b2a6a0493746605525f576f4",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 16 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-mezo-ecosystem-splitter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-validators-voter-mezo-mainnet",
+      "deploymentId": "incentives.validators-voter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5185279,
+        "blockHash": "0x08fdc7bb7dfb87dcf46cb2263d33768aa224d0b518b05a1057c039631afc467e",
+        "blockTimestamp": "2025-12-08T15:00:43.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x9cb8e8280d673882a2a403adc311649619b149560ea17c7fdf8e3f71ff5acff9",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "3a9890c18a8711b547d14d6a33978d4aed799a480bc16144204d42372faecf7e",
+        "implementationCodeSha256": "28669ac5b44a1ce68f011b4f7c80a1160cc059693916d52732bfc8a3ff594c6c",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 4,
+          "creationExecutableSha256": "d134c18460278f3a995d52937c3adc989cf90669afa498d90dc5c39246fa9151",
+          "runtimeExecutableSha256": "183e98c1fd3df4ae3767ada208d897cff7998c52eac869e11ca5ad436eb63ce0",
+          "explorerFullRuntimeSha256": "28669ac5b44a1ce68f011b4f7c80a1160cc059693916d52732bfc8a3ff594c6c",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x9b6eafc00bc7f769f17d052a98e82453151ff147",
+        "currentImplementationAddress": "0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa2437892a5426247a55ade65778f720b923b7a1d",
+            "effectiveFrom": {
+              "blockNumber": 5185279,
+              "blockHash": "0x08fdc7bb7dfb87dcf46cb2263d33768aa224d0b518b05a1057c039631afc467e",
+              "blockTimestamp": "2025-12-08T15:00:43.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x9cb8e8280d673882a2a403adc311649619b149560ea17c7fdf8e3f71ff5acff9",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 3
+            }
+          },
+          {
+            "implementationAddress": "0xc0442b2c52378dcc060bd22d04156b08e1ba4de2",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 3
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 10032053,
+              "blockHash": "0x8742003ccbcfc0aedd3998471c95bc92628e39cbf79a6615e93de7de1290f705",
+              "blockTimestamp": "2026-06-29T10:26:21.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xd3d3ac1e96e8588628fae784f9bd31a254144857d637e21d33d18de7d3727307",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157",
+            "effectiveFrom": {
+              "blockNumber": 10032053,
+              "blockHash": "0x8742003ccbcfc0aedd3998471c95bc92628e39cbf79a6615e93de7de1290f705",
+              "blockTimestamp": "2026-06-29T10:26:21.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0xd3d3ac1e96e8588628fae784f9bd31a254144857d637e21d33d18de7d3727307",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-08T15:01:55.651718Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "3a9890c18a8711b547d14d6a33978d4aed799a480bc16144204d42372faecf7e"
+        },
+        "activeContract": {
+          "name": "ValidatorsVoter",
+          "filePath": "contracts/ValidatorsVoter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-06-22T14:14:32.176676Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 93,
+          "abiSemanticSha256": "e65944d519c2688642ce838ebd72afafe1a1e8cfc29b076f802f5d8e923e38a6",
+          "deployedBytecodeSha256": "28669ac5b44a1ce68f011b4f7c80a1160cc059693916d52732bfc8a3ff594c6c"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "2845021c94246282df39a69cf021de2f048cf223f5706d4f415d305311d0f47b",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "5dbdf2dadb50c165ba1bf9c76427d7ead95afc67ec4808731852f83e17fed663",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 4 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-validators-voter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-third-party-voter-mezo-mainnet",
+      "deploymentId": "incentives.third-party-voter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official explorer Upgraded logs",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5185433,
+        "blockHash": "0xf0c4220795eb28ab5fbf881b7f9c6a33acac42990a7fb43685354932990f3929",
+        "blockTimestamp": "2025-12-08T15:09:59.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x6c397fc0fb4962ca0f934f1ac89095d97b1fbabb23c3f61fa6b20c5fdf05fb79",
+        "logIndex": 0
+      },
+      "runtime": {
+        "addressCodeSha256": "91f1f6fad07b0bd676f7cf9defc53bf6697da803004369ba2c2d430fabfd121e",
+        "implementationCodeSha256": "28cb1826e170088b852928606370599fd9e26605a3fd4c286d7e459a57dd9992",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 4,
+          "creationExecutableSha256": "102663ba7000e81aebf579be7997455f9226263c7b0f4390c2d8a6543bbb040d",
+          "runtimeExecutableSha256": "7aac4c2d5d45c0a81605bfa16b9eb1d9b2518189052b2f0ee3bc151484930b01",
+          "explorerFullRuntimeSha256": "28cb1826e170088b852928606370599fd9e26605a3fd4c286d7e459a57dd9992",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xd56209a4f1c5caa0950eac90784192bb79e2c3ae",
+        "currentImplementationAddress": "0x8d696ae943b97ff36449014e4400a9560d1664dc",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xe662e3523baf1d3f578ef38e097d53b484e2962d",
+            "effectiveFrom": {
+              "blockNumber": 5185433,
+              "blockHash": "0xf0c4220795eb28ab5fbf881b7f9c6a33acac42990a7fb43685354932990f3929",
+              "blockTimestamp": "2025-12-08T15:09:59.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x6c397fc0fb4962ca0f934f1ac89095d97b1fbabb23c3f61fa6b20c5fdf05fb79",
+              "logIndex": 0
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 4
+            }
+          },
+          {
+            "implementationAddress": "0x8d696ae943b97ff36449014e4400a9560d1664dc",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 4
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-08T15:10:36.519060Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "91f1f6fad07b0bd676f7cf9defc53bf6697da803004369ba2c2d430fabfd121e"
+        },
+        "activeContract": {
+          "name": "ThirdPartyVoter",
+          "filePath": "contracts/ThirdPartyVoter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-01-21T08:38:45.596646Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 89,
+          "abiSemanticSha256": "745e381f4a3827b70175007de38461619961e222701b89a6aec255c9de84c7ad",
+          "deployedBytecodeSha256": "28cb1826e170088b852928606370599fd9e26605a3fd4c286d7e459a57dd9992"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "2685d6468cf4ca542c339d7515e5dc5662ad212864bb68ec45e7fddcf2d42613",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 4 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-third-party-voter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-chain-splitter-epoch-governor-mezo-mainnet",
+      "deploymentId": "incentives.chain-splitter-epoch-governor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7904319,
+        "blockHash": "0xa29ba269cdc24f3b20f48a0d23cfe00fa6636c03078f1ece80601d5de0266005",
+        "blockTimestamp": "2026-04-01T08:44:22.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x59303fd9aa85b15810075ff585aa35abefb33801f2aa8bce4bfa5eadd86f79ae"
+      },
+      "runtime": {
+        "addressCodeSha256": "7b7efc7ca35b5296c70a79d52842f87093419aa91db6175c807c0a79aec0dee9",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 12,
+          "creationExecutableSha256": "f6cf1adca5eca9484978122c442ad1a7ba056d4d6ead11e6afb60b6cae5e3844",
+          "runtimeExecutableSha256": "220a79f19d9d1f9b375a2d1dbcb023164a61c6367d6ec1b173e7ba79cdaf970d",
+          "explorerFullRuntimeSha256": "7b7efc7ca35b5296c70a79d52842f87093419aa91db6175c807c0a79aec0dee9",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:45:14.104018Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "7b7efc7ca35b5296c70a79d52842f87093419aa91db6175c807c0a79aec0dee9"
+        },
+        "activeContract": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:45:14.104018Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "7b7efc7ca35b5296c70a79d52842f87093419aa91db6175c807c0a79aec0dee9"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "2f73cd9aa41d145cc6abd6d7ae6f891a0c2c73f7d9a51f8d7e5ff4518e326463",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 12 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-chain-splitter-epoch-governor-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-ecosystem-splitter-epoch-governor-mezo-mainnet",
+      "deploymentId": "incentives.ecosystem-splitter-epoch-governor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T21:29:20.734Z",
+      "observationBlock": {
+        "number": 11291582,
+        "hash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "timestamp": "2026-08-21T18:04:49.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 7904275,
+        "blockHash": "0x32e43c8007e0794680b851c09bbad1a8fdae90848c421d3e40ea2f8964eb4f81",
+        "blockTimestamp": "2026-04-01T08:41:44.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0xc8e9352037619dd1a309148741aae7f60fffc2823af0f47669604e26c301eebc"
+      },
+      "runtime": {
+        "addressCodeSha256": "8d737f2aa09b597b4ab022bfd2cc29b452840f7107c85293afe83b13b2269f44",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 12,
+          "creationExecutableSha256": "f6cf1adca5eca9484978122c442ad1a7ba056d4d6ead11e6afb60b6cae5e3844",
+          "runtimeExecutableSha256": "7d68605edb36cc89815420ce4851e11892ee539886b5f674178f92cf43528758",
+          "explorerFullRuntimeSha256": "8d737f2aa09b597b4ab022bfd2cc29b452840f7107c85293afe83b13b2269f44",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:42:35.759238Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "8d737f2aa09b597b4ab022bfd2cc29b452840f7107c85293afe83b13b2269f44"
+        },
+        "activeContract": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-04-01T08:42:35.759238Z",
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "8d737f2aa09b597b4ab022bfd2cc29b452840f7107c85293afe83b13b2269f44"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "2f73cd9aa41d145cc6abd6d7ae6f891a0c2c73f7d9a51f8d7e5ff4518e326463",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly after 12 recorded runtime immutable substitution(s); full bytecode differs only in Solidity metadata and expected immutable placeholders before substitution.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-ecosystem-splitter-epoch-governor-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    }
+  ]
+}

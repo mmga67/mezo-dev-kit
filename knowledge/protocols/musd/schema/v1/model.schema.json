@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MUSD system model v1",
+  "allOf": [{"$ref": "../../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "required": ["protocolStatus", "claims", "units", "parameters"],
+  "properties": {
+    "kind": {"const": "musd-system-model"},
+    "protocolStatus": {"const": "verified-versioned"},
+    "claims": {"type": "array", "minItems": 1},
+    "units": {"type": "array", "minItems": 1},
+    "parameters": {"type": "array", "minItems": 1}
+  }
+}

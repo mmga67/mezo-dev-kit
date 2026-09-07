@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-swap-execution-requirements",
+  "id": "swap-execution-requirements",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": { "networkIds": ["mezo-mainnet"], "writerStatus": "requirements-only" },
+  "limitations": [
+    "These requirements do not enable a public quote, route, approval, simulation, or writer API.",
+    "Historical evidence does not waive fresh deployment, code, pool, allowance, balance, fee, deadline, slippage, and exact-call checks."
+  ],
+  "phases": [
+    {
+      "id": "discover",
+      "rules": [
+        "Resolve accepted router/factory deployments by stable Contract ID, network, and validity coordinate.",
+        "Discover every dynamic pool through the owning pool module at one block and reject missing code, unrecognized factories/pools, mismatched tokens, stable flags, or tick spacing.",
+        "Bound search to at most three hops and an explicit caller allowlist of intermediate assets; do not perform unbounded graph search."
+      ]
+    },
+    {
+      "id": "quote",
+      "rules": [
+        "Return an estimate with provider ID, architecture, route encoding, amount units, deployment IDs, block number/hash, assumptions, freshness deadline, and user slippage policy.",
+        "Reject zero, stale, partial, overflowed, malformed, or architecture-mismatched results.",
+        "Basic getAmountsOut is a convenience quote. CL pool math is an estimate. Neither is exact-call simulation or a guaranteed minimum."
+      ]
+    },
+    {
+      "id": "rank",
+      "rules": [
+        "Compare only candidates with identical network, assets, amount units, freshness policy, and explicit required-result completeness.",
+        "Exclude unsupported mixed/universal families and any candidate without a path to exact-call simulation.",
+        "Preserve optional provider failures as diagnostics and fail if no eligible candidate remains."
+      ]
+    },
+    {
+      "id": "compile",
+      "rules": [
+        "Compile only an allowlisted router entrypoint and its architecture-specific encoding.",
+        "Require caller-authorized nonzero amountOutMinimum, bounded future deadline, explicit recipient, exact sender, chain ID, destination, calldata, and native value.",
+        "Treat CL sqrtPriceLimitX96 zero only as the deployed full-range sentinel after an explicit caller policy choice; it does not replace amountOutMinimum."
+      ]
+    },
+    {
+      "id": "approve",
+      "rules": [
+        "Resolve the selected router as the exact spender and prefer an allowance equal to the required input amount.",
+        "Unlimited approval requires separate explicit opt-in, current accepted spender identity, risk disclosure, and review; it is never a silent default.",
+        "Track approval as its own transaction, reread allowance after confirmation, and rebuild/re-simulate the swap if state or quote freshness changed."
+      ]
+    },
+    {
+      "id": "simulate",
+      "rules": [
+        "Use an endpoint with explicitly evidenced eth_call behavior and simulate the exact destination, calldata, value, sender, chain, and intended block/state.",
+        "Preserve revert data and reject any simulated output below amountOutMinimum or any sender/balance/allowance/deadline/pool failure.",
+        "Simulation must use the exact call later authorized for signing; mutation after simulation invalidates it."
+      ]
+    },
+    {
+      "id": "submit-track",
+      "rules": [
+        "Revalidate freshness and all volatile inputs immediately before signing.",
+        "Submit the exact simulated call, track replacements by nonce, and only rebroadcast identical signed bytes during uncertain write failover.",
+        "Receipt success proves inclusion only; configured confirmation and reconciliation remain mandatory."
+      ]
+    },
+    {
+      "id": "reconcile",
+      "rules": [
+        "At a pinned reconciliation block, derive actual recipient input/output token deltas and validate architecture-specific pool events/transfers.",
+        "Require actual output at least amountOutMinimum and expected asset/recipient movement; preserve fee-on-transfer or unrelated-transfer ambiguity as failure because those variants are unsupported.",
+        "Return a structured mismatch when receipt status, decoded logs, balance deltas, or intended route disagree; never coerce it to success."
+      ]
+    }
+  ],
+  "debugEvidence": [
+    "network/chain ID",
+    "RPC provider ID",
+    "block number/hash",
+    "router/factory deployment and ABI IDs",
+    "route family and normalized hops",
+    "amount units and user bounds",
+    "calldata hash or redacted calldata",
+    "simulation result/revert",
+    "approval and swap transaction identities",
+    "receipt/replacement links",
+    "reconciliation token deltas and mismatch"
+  ],
+  "references": [
+    { "moduleId": "protocols/pools", "resourceId": "pools-architectures" },
+    { "moduleId": "protocols/pools", "resourceId": "pools-operation-requirements" },
+    { "moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements" },
+    { "moduleId": "workflows/transactions", "resourceId": "transaction-state-machine" }
+  ]
+}

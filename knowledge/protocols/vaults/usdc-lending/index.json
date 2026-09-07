@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/vaults/usdc-lending",
+  "moduleId": "protocols/vaults/usdc-lending",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:42:59Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0"},
+  "limitations": ["Qualified Level 3 review accepted the bounded vault model and adapter/wrapper Contract identities; protocol support remains proposed and no public capability was enabled.", "VaultV2 and VaultGauge are accepted only as runtime-verified, role-resolved candidates rather than Contract registry identities because official explorer creation input is absent.", "Published audit-to-deployed-generation mapping is not established by the accepted bounded packet.", "No public vault, adapter, receipt, gauge, allocation, or claim writer is supported.", "Caps, queues, gates, timelocks, liquidity, ratios, and rewards require fresh same-block reads."],
+  "resources": [
+    {"id": "usdc-lending-vault-architecture", "role": "canonical-record", "kind": "usdc-lending-vault-architecture", "path": "records/architecture.json"},
+    {"id": "usdc-lending-vault-accounting", "role": "canonical-record", "kind": "usdc-lending-vault-accounting", "path": "records/accounting.json"},
+    {"id": "usdc-lending-vault-liquidity", "role": "canonical-record", "kind": "usdc-lending-vault-liquidity-model", "path": "records/liquidity.json"},
+    {"id": "usdc-lending-vault-operations", "role": "canonical-record", "kind": "usdc-lending-vault-operation-requirements", "path": "records/operations.json", "recordIds": ["vault-deposit", "vault-withdraw", "wrap-or-stake", "claim"], "recordCollectionPointer": "/requirements"},
+    {"id": "usdc-lending-vault-reconciliation", "role": "canonical-record", "kind": "usdc-lending-vault-reconciliation", "path": "records/reconciliation.json"},
+    {"id": "usdc-lending-vault-accounting-fixtures", "role": "fixture", "kind": "usdc-lending-vault-accounting-fixtures", "path": "fixtures/accounting.json", "recordIds": ["vault-deposit-down", "vault-withdraw-up", "wrapper-deposit-down", "wrapper-withdraw-down", "harvest-high-water", "harvest-dip-no-reset", "pre-gauge-no-earmark", "illiquid-withdrawal", "staked-receipt-no-double-count"], "recordCollectionPointer": "/records"},
+    {"id": "usdc-lending-vault-sources", "role": "source-catalog", "kind": "usdc-lending-vault-source-catalog", "path": "sources/catalog.json", "recordIds": ["official-usdc-lending-vault-docs", "official-vault-notices", "official-docs-repository", "morpho-vault-upstream", "underlying-market", "incentives-gauge-model", "fixed-block-state", "source-reproduction", "flow-reconciliation"], "recordCollectionPointer": "/records"},
+    {"id": "usdc-lending-vault-fixed-block-state", "role": "evidence", "kind": "usdc-lending-vault-fixed-block-observation", "path": "evidence/fixed-block-state-2026-08-23.json"},
+    {"id": "usdc-lending-vault-source-reproduction", "role": "evidence", "kind": "usdc-lending-vault-source-reproduction-evidence", "path": "evidence/source-reproduction-2026-08-23.json", "recordIds": ["vault-v2", "morpho-market-adapter", "receipt-wrapper", "vault-gauge"], "recordCollectionPointer": "/records"},
+    {"id": "usdc-lending-vault-flow-reconciliation", "role": "evidence", "kind": "usdc-lending-vault-flow-reconciliation-evidence", "path": "evidence/flow-reconciliation-2026-08-24.json", "recordIds": ["deposit-and-allocate", "withdraw-and-deallocate"], "recordCollectionPointer": "/operations"},
+    {"id": "usdc-lending-vault-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "usdc-lending-vault-gaps", "role": "review", "kind": "gap-report", "path": "review/gaps.md"},
+    {"id": "usdc-lending-vault-reference", "role": "generated", "kind": "human-reference", "path": "generated/reference.md", "generatedFrom": [{"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-architecture"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-accounting"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-liquidity"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-fixed-block-state"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-flow-reconciliation"}]}
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/vaults/usdc-lending"},
+    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/validate-economic-system-knowledge.ts --module protocols/vaults/usdc-lending"},
+    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate-economic-system-reference.ts --module protocols/vaults/usdc-lending --check"}
+  ],
+  "extensions": {"writerSupport": "none", "underlyingMarketReference": {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"}, "compositionReference": "docs/architecture/mezo-economic-system-composition.md", "blockers": ["fresh same-block reads and exact-operation simulation before any public operation", "separate public API and security review before any reader or writer"]}
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-native-bridge-lifecycle",
+  "id": "bridge-native-lifecycle",
+  "owner": "workflows/bridges",
+  "providerId": "mezo-native-bridge",
+  "status": "verified",
+  "workflowStatus": "verified-source-model-not-supported",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet"],
+    "evidenceLocalNetworkLabels": [],
+    "assetIds": ["usdc-native-bridge", "btc-native-bridge"]
+  },
+  "limitations": [
+    "This lifecycle applies only to the recorded Native Bridge v12 evidence and must not be normalized into NTT digest semantics.",
+    "A successful inbound system receipt or sequence advance does not alone prove ERC-20 delivery."
+  ],
+  "directions": [
+    {
+      "id": "ethereum-to-mezo",
+      "sourceState": "ethereum-assets-locked",
+      "messageState": "validator-canonicalization-pending",
+      "destinationExecutionState": "mezo-sequence-accepted",
+      "terminalSuccessState": "mezo-recipient-delivered",
+      "sourceEvidence": "A successful Ethereum receipt with AssetsLocked(sequence, recipient, sourceToken, amount).",
+      "messageEvidence": "The source tuple is included in the validator-canonicalized sequence consumed by the Mezo pre-block handler.",
+      "destinationEvidence": "The matching Mezo system bridge payload and sequence advancement plus recipient balance/post-state delivery for the mapped representation.",
+      "warning": "System-receipt success or sequence advancement alone is insufficient for ERC-20 delivery because the deployed keeper may skip an unmapped/blocked/failed mint while continuing the sequence."
+    },
+    {
+      "id": "mezo-to-ethereum",
+      "sourceState": "mezo-assets-unlocked",
+      "messageState": "ethereum-attestation-pending",
+      "destinationExecutionState": "ethereum-assets-unlock-attested",
+      "terminalSuccessState": "ethereum-assets-unlock-confirmed",
+      "sourceEvidence": "A successful Mezo bridgeOut receipt with AssetsUnlocked(sequence, recipient, targetToken, sender, amount, chain).",
+      "messageEvidence": "Ethereum AssetsUnlockAttested for the same sequence and tuple.",
+      "destinationEvidence": "A successful Ethereum receipt with AssetsUnlockConfirmed for the same tuple plus recipient asset delivery; fee-adjusted net delivery must reconcile to the gross source amount.",
+      "warning": "An attestation is progress, not completion; reconcile the confirmation event and delivered asset."
+    }
+  ],
+  "sharedStates": [
+    { "id": "source-submitted", "terminal": false },
+    { "id": "source-reverted", "terminal": true },
+    { "id": "message-pending", "terminal": false },
+    { "id": "destination-progress", "terminal": false },
+    { "id": "completed", "terminal": true },
+    { "id": "ambiguous", "terminal": false }
+  ],
+  "reconciliationRequirements": [
+    "Assert Ethereum and Mezo network identity independently and pin every observation to a block coordinate.",
+    "Join the provider sequence and full direction-specific tuple; do not apply an NTT digest join to Native Bridge.",
+    "Treat absent destination evidence as pending or ambiguous, not failed.",
+    "For inbound ERC-20 delivery, require recipient post-state or equivalent mint/delivery proof beyond the logless system transaction.",
+    "For outbound delivery, separate gross amount, withdrawal fee, and recipient net amount and require exact reconciliation.",
+    "Re-read active proxy implementation, mappings, minima, capacity, pause/validator state, fee, recipient encoding, and allowance/authorization requirements before future writes."
+  ]
+}

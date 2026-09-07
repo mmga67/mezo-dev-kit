@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "memory-index",
+  "scope": "local",
+  "entries": [
+    {
+      "id": "example-rpc-timeout-observation",
+      "domain": "troubleshooting/rpc",
+      "status": "discovered",
+      "title": "Unverified synthetic timeout observation",
+      "path": "example-discovered-local.json"
+    }
+  ]
+}

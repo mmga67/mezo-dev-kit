@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-validator-voting-reward-model",
+  "id": "incentives-validator-voting-rewards",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11366264,
+    "activeVoterGenerationFromBlock": 10032053
+  },
+  "limitations": [
+    "This model is bound to the active ValidatorsVoter generation, its accepted proxy history, and the recorded factory generations; future upgrades require generation-specific re-verification.",
+    "Gauge lists, operator mappings, beneficiaries, liveness, weights, claimable balances, reward schedules, and votes are volatile state and must be read at the relevant block.",
+    "Dynamic validator gauges and voting-reward children are evidence-scoped instances, not static Contract registry identities.",
+    "No validator operation, beneficiary change, vote, reset, poke, distribution, bribe, claim, reader, writer, analytics, APR, APY, or recommendation support is enabled.",
+    "Consensus rewards, validator liveness policy, infrastructure, slashing, and validator-set operations are outside this model."
+  ],
+  "evidenceReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-validator-allocation-mainnet"
+  },
+  "roleReferences": {
+    "validatorsVoter": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "validators-voter"
+    },
+    "veBTC": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "vebtc-current"
+    },
+    "chainSplitter": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "mezo-chain-splitter"
+    },
+    "gaugeFactoryDeployment": {
+      "moduleId": "contracts",
+      "resourceId": "contract-deployments",
+      "recordId": "incentives.non-staking-gauge-factory@mezo-mainnet"
+    },
+    "votingRewardsFactoryDeployment": {
+      "moduleId": "contracts",
+      "resourceId": "contract-deployments",
+      "recordId": "incentives.voting-rewards-factory@mezo-mainnet"
+    }
+  },
+  "units": {
+    "lockedBTC": "raw BTC base units held by the veBTC NFT",
+    "votingPower": "raw veBTC voting-power units",
+    "externalVoteWeights": "caller-supplied dimensionless relative integers",
+    "gaugeWeight": "raw boosted veBTC voting-power units allocated after flooring",
+    "rewardAmounts": "raw MEZO base units",
+    "rewardIndex": "MEZO-per-gauge-weight scaled by 1e18",
+    "epoch": "604800 seconds aligned to Unix-week boundaries"
+  },
+  "domainSeparation": {
+    "validatorVoting": "ValidatorsVoter owns validator-gauge votes, weights, reward indexing, distribution, and dynamic validator lifecycle.",
+    "poolVoting": "PoolsVoter owns pool/staking-gauge votes and weights independently; allocating all voting power in one voter does not consume the other voter's allocation.",
+    "emissionBoundary": "The chain splitter transfers the settled validator branch budget into ValidatorsVoter; validator allocation does not redefine or mint that upstream budget.",
+    "independenceRule": "The same boosted veBTC voting power may be allocated independently in each voter domain because each contract maintains separate vote and weight mappings."
+  },
+  "validatorGaugeLifecycle": {
+    "identity": "The validator operator address is the validator identifier used with the ValidatorPool precompile.",
+    "creation": [
+      "The operator must be active according to ValidatorPool.validator(operator).",
+      "validatorToGauge(operator) must be zero, and the chosen gauge factory must be approved by FactoryRegistry.",
+      "The factory deploys a direct NonStakingGauge and the paired voting-rewards factory deploys its bribe reward; both children are dynamic instances.",
+      "The default beneficiary is the operator; the operator or governor overload may select another beneficiary."
+    ],
+    "departure": [
+      "Only the governor may notify a validator departure.",
+      "A failed or zero ValidatorPool lookup is treated as inactive for this guarded path.",
+      "The current operator mapping is deleted, the gauge is killed, and any already-stored claimable voter amount is returned to the splitter.",
+      "Killed validator gauges are not revived; a returning operator can receive a newly created gauge."
+    ],
+    "beneficiary": "A NonStakingGauge maintains one virtual unit for its current beneficiary. Switching beneficiary first checkpoints the old beneficiary, preserves its accrued rewards, moves the virtual unit to the new beneficiary, and does not transfer old accrued rewards."
+  },
+  "epochRules": {
+    "epochStart": "timestamp - (timestamp mod 604800)",
+    "nextEpoch": "epochStart(timestamp) + 604800",
+    "voteStart": "epochStart(timestamp) + 3600",
+    "voteEnd": "nextEpoch(timestamp) - 3600",
+    "actionGate": "A token may vote or reset at most once per epoch and only strictly after voteStart. After voteEnd, a direct vote requires the NFT to be whitelisted.",
+    "persistence": "Epoch rollover re-enables an action but does not clear stored validator votes or weights. Votes persist until reset, replacement vote, poke, managed-NFT transition, or gauge lifecycle change.",
+    "poke": "Poke recomputes the token's current boosted voting power, removes killed gauges from the stored allocation, and proportionally reallocates their share among the surviving gauges using the prior stored gauge votes as relative inputs."
+  },
+  "formulas": [
+    {
+      "id": "validator-vote-allocation",
+      "inputs": ["boostedVotingPowerRaw", "externalWeightRaw[i]"],
+      "integerOrder": [
+        "externalWeightTotal = sum(externalWeightRaw[i])",
+        "gaugeVoteRaw[i] = floor(externalWeightRaw[i] * boostedVotingPowerRaw / externalWeightTotal)",
+        "usedWeightRaw = sum(gaugeVoteRaw[i])",
+        "allocationFloorDustRaw = boostedVotingPowerRaw - usedWeightRaw"
+      ],
+      "guards": [
+        "Gauge and weight arrays must have equal length and no more than maxVotingNum entries.",
+        "Every target must be a live registered validator gauge.",
+        "Every resulting gaugeVoteRaw must be non-zero, and a gauge may not appear twice.",
+        "An empty allocation resets without division; a non-empty all-zero external allocation fails during division."
+      ],
+      "rounding": "Each gauge division floors independently; allocationFloorDustRaw is not assigned to a gauge.",
+      "scope": "Active ValidatorsVoter/NonStakingVoter generation at the evidence block."
+    },
+    {
+      "id": "validator-reward-index-notification",
+      "inputs": ["notifiedRewardRaw", "preNotificationTotalWeightRaw"],
+      "integerOrder": [
+        "indexDelta18 = floor(notifiedRewardRaw * 1e18 / max(preNotificationTotalWeightRaw, 1))",
+        "globalIndex increases by indexDelta18 only when indexDelta18 > 0"
+      ],
+      "rounding": "The transfer and NotifyReward event retain the actual notified amount even when index division floors or no gauge can accrue it.",
+      "scope": "Reward tokens transferred by the configured splitter into ValidatorsVoter."
+    },
+    {
+      "id": "validator-gauge-index-accrual",
+      "inputs": ["gaugeWeightRaw", "globalIndex18", "gaugeSupplyIndex18"],
+      "integerOrder": [
+        "indexDelta18 = globalIndex18 - gaugeSupplyIndex18",
+        "gaugeShareRaw = floor(gaugeWeightRaw * indexDelta18 / 1e18)",
+        "Advance gaugeSupplyIndex18 to globalIndex18",
+        "Add gaugeShareRaw to claimable only while the gauge is alive; otherwise return the share to the splitter"
+      ],
+      "rounding": "Each gauge accrual floors independently; summed gauge shares may be below the actual notified amount.",
+      "scope": "Lazy per-gauge accrual in the active ValidatorsVoter generation."
+    },
+    {
+      "id": "validator-gauge-distribution-gate",
+      "inputs": ["updatedClaimableRaw", "gaugeLeftRaw"],
+      "integerOrder": [
+        "Update the gauge's index accrual before reading claimable.",
+        "Distribute only when updatedClaimableRaw > gaugeLeftRaw and updatedClaimableRaw > 604800.",
+        "Set voter claimable to zero, transfer the exact amount to the gauge, and emit DistributeReward with that actual amount."
+      ],
+      "rounding": "Both comparisons are strict. The integer 604800 is compared directly to raw reward-token units.",
+      "scope": "Active ValidatorsVoter distribution path; a settled DistributeReward event is authoritative for the transferred amount."
+    },
+    {
+      "id": "validator-gauge-reward-rate",
+      "inputs": ["distributionAmountRaw", "timestamp", "priorPeriodFinish", "priorRewardRateRaw"],
+      "integerOrder": [
+        "nextEpoch = timestamp - (timestamp mod 604800) + 604800",
+        "timeUntilNext = nextEpoch - timestamp",
+        "leftoverRaw = timestamp < priorPeriodFinish ? (priorPeriodFinish - timestamp) * priorRewardRateRaw : 0",
+        "newRewardRateRaw = floor((distributionAmountRaw + leftoverRaw) / timeUntilNext)",
+        "periodFinish = nextEpoch"
+      ],
+      "rounding": "The per-second reward rate floors; any division remainder stays in the gauge token balance.",
+      "scope": "Direct NonStakingGauge instances created by the recorded gauge factory generation."
+    }
+  ],
+  "distributionAndClaims": {
+    "currentWeight": "weights(gauge) and totalWeight are live persistent allocation state, not a settled epoch amount.",
+    "claimable": "ValidatorsVoter claimable(gauge) is lazily indexed pending distribution and is distinct from the gauge's continuously streamed earned(beneficiary).",
+    "settledDistribution": "DistributeReward plus the same-transaction gauge NotifyReward and reward-token Transfer establish the actual settled gauge amount.",
+    "streaming": "A gauge streams its notified budget from the distribution timestamp to the next epoch boundary; before that boundary only elapsed rewards are earned.",
+    "claim": "ValidatorsVoter.claimRewards accepts a gauge array and calls each gauge's getReward for the caller. The gauge checkpoints the caller, zeros stored rewards, transfers the actual amount, and emits ClaimRewards.",
+    "eventPriority": "For historical settlement, actual DistributeReward, gauge NotifyReward, ClaimRewards, and token Transfer amounts take precedence over recomputation. Recomputed values are explanatory only when they match Solidity integer order exactly."
+  },
+  "partialResultContract": {
+    "available": "Return the value with its block/event coordinates and provenance.",
+    "unavailable": "Return status unavailable with the failed method/range and reason when archive state, logs, or post-state cannot be read.",
+    "rule": "Never replace an unavailable historical field with synthetic zero, current state, or a scenario estimate."
+  },
+  "documentationDisposition": [
+    {
+      "claim": "Validator gauges receive emissions according to independent persistent veBTC votes and stream rewards to one beneficiary.",
+      "disposition": "confirmed-for-current-generation",
+      "reason": "The pinned Validator Gauge guide, active executable source, current state, and historical vote/distribution/claim events agree."
+    },
+    {
+      "claim": "Validator rewards are divided equally among active validators and cannot be directed by veBTC votes.",
+      "disposition": "rejected-for-current-generation",
+      "reason": "A second pinned official guide conflicts with the active ValidatorsVoter executable and 401 observed Voted events; it remains documentation-drift evidence, not calculation authority."
+    },
+    {
+      "claim": "claimRewards takes one gauge address.",
+      "disposition": "documentation-signature-shorthand",
+      "reason": "The current accepted ABI and executable take address[]; callers must follow the ABI generation rather than the singular prose signature."
+    }
+  ],
+  "analyticsBoundary": [
+    "Validator APR, APY, future reward estimates, MEZO price, expected votes, validator opportunity cost, and portfolio recommendations require non-protocol assumptions and are excluded.",
+    "Current gauge weights and remaining rewards may be reported as dated observations but must not be presented as future epoch outcomes."
+  ]
+}

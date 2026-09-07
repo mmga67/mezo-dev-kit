@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-oracle-probes-2026-08-23",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T17:52:25.719Z",
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "deploymentIds": [
+      "oracle.skip-btc-usd@mezo-mainnet",
+      "oracle.pyth-price-feed@mezo-mainnet",
+      "oracle.skip-btc-usd@mezo-testnet",
+      "oracle.pyth-price-feed@mezo-testnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the pinned blocks, official source/documentation commits, explorer metadata, and exact live bytecode/slot observations.",
+    "Skip explorer wrappers are partially verified and testnet Pyth source is unverified; those labels are preserved instead of upgraded by inference.",
+    "The Pyth generation observed here was superseded by the completed 2026-08-26 upgrade; use the linked post-boundary evidence for current state.",
+    "Current-state freshness moved to contract-oracle-probes-2026-08-27; these fixed-block observations remain immutable historical evidence."
+  ],
+  "registryStatus": null,
+  "observedFrom": "2026-08-23T17:52:25.719Z",
+  "observedThrough": "2026-08-23T17:52:25.719Z",
+  "methodology": [
+    "Pin the official Mezo oracle guide and the live mezod v12 PriceOracle source.",
+    "Resolve Pyth creation transactions and activation blocks through official explorers.",
+    "Pin current network blocks and query live bytecode on each network.",
+    "Resolve the Pyth EIP-1967 implementation slot and implementation bytecode.",
+    "Compare Skip official ABI with both explorer wrapper ABIs.",
+    "Preserve explorer verification labels exactly and retain the scheduled-upgrade review gate."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11339297,
+      "blockHash": "0x29e8883e9fdf64f020c23dcc028ab3d386d8dfc6b74a36f73e522009558f45d7",
+      "blockTimestamp": "2026-08-23T17:52:20.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    },
+    {
+      "networkId": "mezo-testnet",
+      "evmChainId": 31611,
+      "blockNumber": 15069764,
+      "blockHash": "0x28fe83919122fd4b68f4b3db93c9163b4a4a08bc99e20e36f4313d75b943cdd5",
+      "blockTimestamp": "2026-08-23T17:52:24.000Z",
+      "rpcUrl": "https://rpc.test.mezo.org",
+      "explorerApiUrl": "https://api.explorer.test.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-oracle-skip-btc-usd-mezo-mainnet",
+      "deploymentId": "oracle.skip-btc-usd@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T17:52:25.719Z",
+      "observationBlock": {
+        "number": 11339297,
+        "hash": "0x29e8883e9fdf64f020c23dcc028ab3d386d8dfc6b74a36f73e522009558f45d7",
+        "timestamp": "2026-08-23T17:52:20.000Z"
+      },
+      "methods": [
+        "official mezod v12 source and ABI pin",
+        "official genesis/upgrade activation source",
+        "official explorer activation-block metadata",
+        "eth_getCode at the fixed block",
+        "eth_call decimals() and latestRoundData() at the fixed block",
+        "official explorer smart-contract metadata"
+      ],
+      "activation": {
+        "blockNumber": 1,
+        "transactionHash": null,
+        "blockHash": "0xf2827aa1f110b22854ea79952af806f4dd52ef21eea42131140b70b2bec2c344",
+        "blockTimestamp": "2025-05-05T00:00:00.000Z",
+        "activationKind": "genesis-first-observable-block",
+        "release": "mainnet-genesis",
+        "blockEvidenceMethod": "official client activation source plus official explorer block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "10d7d913916ae90441383a41ebb131605db79d4fd72267d6f8dd5b4e885241c7",
+        "implementationCodeSha256": null,
+        "officialWrapperBytecodeSourceSha256": "37c963057cc9cc9f56c47b72e260fc107b0cc3e1dcb50c99dfc518734dfb8952"
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "PriceOracleCaller",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "proxyType": null,
+          "abiEntries": 2,
+          "abiSemanticSha256": "0fce25fdf81d90e48dc6ee237fe9a880099c14a70df91a4af9eaa3adbe7bd271",
+          "deployedBytecodeSha256": "10d7d913916ae90441383a41ebb131605db79d4fd72267d6f8dd5b4e885241c7"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true,
+        "verificationLabelPreserved": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-oracle-pyth-price-feed-mezo-mainnet",
+      "deploymentId": "oracle.pyth-price-feed@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T17:52:25.719Z",
+      "observationBlock": {
+        "number": 11339297,
+        "hash": "0x29e8883e9fdf64f020c23dcc028ab3d386d8dfc6b74a36f73e522009558f45d7",
+        "timestamp": "2026-08-23T17:52:20.000Z"
+      },
+      "methods": [
+        "official Mezo oracle deployment documentation pin",
+        "official explorer creation transaction and activation-block metadata",
+        "eth_getCode at proxy and implementation",
+        "eth_getStorageAt EIP-1967 implementation slot",
+        "official explorer proxy and implementation metadata",
+        "mainnet verified implementation ABI with cross-network runtime identity"
+      ],
+      "activation": {
+        "blockNumber": 493119,
+        "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+        "transactionIndex": 0,
+        "blockHash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+        "blockTimestamp": "2025-05-25T16:02:57.000Z",
+        "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+        "implementationCodeSha256": "850baeef55466a4eddf403d6b1927b18b458852eeffba691c34c6bb5ce38faf3"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+            "effectiveFrom": {
+              "blockNumber": 493119,
+              "transactionHash": "0x06c4f5ca8f7f6d8855a8ce39825be70db813950f56d57ddb6a42ce3ab8c2fbce",
+              "transactionIndex": 0,
+              "blockHash": "0x78886b0a5e16bdb34c36cb69f3967fbdff61f2c635a2e7b3a957e7a388a039d7",
+              "blockTimestamp": "2025-05-25T16:02:57.000Z",
+              "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "activeContract": {
+          "name": "PythUpgradable",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.29+commit.ab55807c",
+          "proxyType": null,
+          "abiEntries": 83,
+          "abiSemanticSha256": "6cfc775cb042a5ba6f4de9df360f7ef7d4039cdecf3cd41d2b331bc8c38145a6",
+          "deployedBytecodeSha256": "850baeef55466a4eddf403d6b1927b18b458852eeffba691c34c6bb5ce38faf3"
+        },
+        "proxyContract": {
+          "name": "ERC1967Proxy",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.29+commit.ab55807c",
+          "proxyType": "eip1967",
+          "abiEntries": 6,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true,
+        "crossNetworkImplementationRuntimeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-oracle-skip-btc-usd-mezo-testnet",
+      "deploymentId": "oracle.skip-btc-usd@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-23T17:52:25.719Z",
+      "observationBlock": {
+        "number": 15069764,
+        "hash": "0x28fe83919122fd4b68f4b3db93c9163b4a4a08bc99e20e36f4313d75b943cdd5",
+        "timestamp": "2026-08-23T17:52:24.000Z"
+      },
+      "methods": [
+        "official mezod v12 source and ABI pin",
+        "official genesis/upgrade activation source",
+        "official explorer activation-block metadata",
+        "eth_getCode at the fixed block",
+        "eth_call decimals() and latestRoundData() at the fixed block",
+        "official explorer smart-contract metadata"
+      ],
+      "activation": {
+        "blockNumber": 2213000,
+        "transactionHash": null,
+        "blockHash": "0x46f0c4e5763dd24b433d1875d3a014c3ba6b6bbc3707fb16b358f9fa13f08c33",
+        "blockTimestamp": "2025-02-03T11:25:22.000Z",
+        "activationKind": "hard-fork",
+        "release": "v0.5.0",
+        "blockEvidenceMethod": "official client activation source plus official explorer block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "10d7d913916ae90441383a41ebb131605db79d4fd72267d6f8dd5b4e885241c7",
+        "implementationCodeSha256": null,
+        "officialWrapperBytecodeSourceSha256": "37c963057cc9cc9f56c47b72e260fc107b0cc3e1dcb50c99dfc518734dfb8952"
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "PriceOracleCaller",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "proxyType": null,
+          "abiEntries": 2,
+          "abiSemanticSha256": "0fce25fdf81d90e48dc6ee237fe9a880099c14a70df91a4af9eaa3adbe7bd271",
+          "deployedBytecodeSha256": "10d7d913916ae90441383a41ebb131605db79d4fd72267d6f8dd5b4e885241c7"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true,
+        "verificationLabelPreserved": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-oracle-pyth-price-feed-mezo-testnet",
+      "deploymentId": "oracle.pyth-price-feed@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-23T17:52:25.719Z",
+      "observationBlock": {
+        "number": 15069764,
+        "hash": "0x28fe83919122fd4b68f4b3db93c9163b4a4a08bc99e20e36f4313d75b943cdd5",
+        "timestamp": "2026-08-23T17:52:24.000Z"
+      },
+      "methods": [
+        "official Mezo oracle deployment documentation pin",
+        "official explorer creation transaction and activation-block metadata",
+        "eth_getCode at proxy and implementation",
+        "eth_getStorageAt EIP-1967 implementation slot",
+        "official explorer proxy and implementation metadata",
+        "mainnet verified implementation ABI with cross-network runtime identity"
+      ],
+      "activation": {
+        "blockNumber": 4684064,
+        "transactionHash": "0xf61e377c74dafae3efb6a0fbf49508e10fde61060399e5c0abab67e7a23bcb3e",
+        "transactionIndex": 0,
+        "blockHash": "0x95facd99619e9ef5aa349cd6f4e4bbc3b1f61ed3ee36d244ec795250afd07c7b",
+        "blockTimestamp": "2025-05-21T10:07:30.000Z",
+        "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+      },
+      "runtime": {
+        "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+        "implementationCodeSha256": "850baeef55466a4eddf403d6b1927b18b458852eeffba691c34c6bb5ce38faf3"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa2aa501b19aff244d90cc15a4cf739d2725b5729",
+            "effectiveFrom": {
+              "blockNumber": 4684064,
+              "transactionHash": "0xf61e377c74dafae3efb6a0fbf49508e10fde61060399e5c0abab67e7a23bcb3e",
+              "transactionIndex": 0,
+              "blockHash": "0x95facd99619e9ef5aa349cd6f4e4bbc3b1f61ed3ee36d244ec795250afd07c7b",
+              "blockTimestamp": "2025-05-21T10:07:30.000Z",
+              "blockEvidenceMethod": "official explorer creation transaction and block metadata"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "activeContract": {
+          "name": null,
+          "isVerified": false,
+          "isFullyVerified": false,
+          "isPartiallyVerified": false,
+          "compilerVersion": null,
+          "proxyType": null,
+          "abiEntries": 0,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "850baeef55466a4eddf403d6b1927b18b458852eeffba691c34c6bb5ce38faf3"
+        },
+        "proxyContract": {
+          "name": null,
+          "isVerified": false,
+          "isFullyVerified": false,
+          "isPartiallyVerified": false,
+          "compilerVersion": null,
+          "proxyType": "eip1967",
+          "abiEntries": 0,
+          "abiSemanticSha256": null,
+          "deployedBytecodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc"
+        },
+        "officialArtifactAbiMatch": false,
+        "rpcBytecodeMatch": true,
+        "crossNetworkImplementationRuntimeMatch": true
+      },
+      "outcome": "passed"
+    }
+  ],
+  "supersededBy": {
+    "moduleId": "contracts",
+    "resourceId": "contract-oracle-probes-2026-08-27"
+  }
+}

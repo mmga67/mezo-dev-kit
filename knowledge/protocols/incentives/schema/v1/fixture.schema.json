@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Incentives formula fixtures v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": ["protocolStatus", "records"],
+  "properties": {
+    "kind": {
+      "enum": ["mezo-incentives-formula-fixtures", "mezo-validator-allocation-fixtures"]
+    },
+    "id": {
+      "enum": ["incentives-formula-fixtures", "incentives-validator-allocation-fixtures"]
+    },
+    "owner": { "const": "protocols/incentives" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "enum": ["accepted", "pending-qualified-review"] },
+    "protocolStatus": { "const": "verified-versioned" },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "formulaId", "inputs", "expected"]
+      }
+    }
+  }
+}

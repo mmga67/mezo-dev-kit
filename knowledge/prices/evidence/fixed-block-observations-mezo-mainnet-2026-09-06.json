@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-fixed-block-observation-set",
+  "id": "price-fixed-block-observations-mezo-mainnet-2026-09-06",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-06T09:52:32.237Z",
+  "reviewAfter": "2026-09-13T09:52:32.237Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "feedIds": [
+      "feed.skip-btc-usd",
+      "feed.pyth-btc-usd",
+      "feed.pyth-musd-usd"
+    ]
+  },
+  "limitations": [
+    "Observations are immutable block-scoped evidence and never mutable current-price constants.",
+    "Post-upgrade Pyth results were stale under the explicit one-hour rule on mainnet; identity and bytecode presence do not establish feed liveness.",
+    "The evidence creates no public reader, updater, hosted-provider, route, credential, or writer support.",
+    "Mainnet-only re-verification. Testnet evidence remains expired; no Pyth liveness or public reader support is promoted."
+  ],
+  "methodology": [
+    "Resolve current RPC endpoints through the Networks module and verify chain IDs.",
+    "Pin one post-upgrade block per network before reading code, storage, and oracle results.",
+    "Read the MUSD configured oracle and normalized adapter result at each pinned block.",
+    "Read Skip decimals and latestRoundData while preserving the unsupported description call.",
+    "Read the Pyth proxy implementation slot, version, generation history, and code identities.",
+    "Call getPriceNoOlderThan with an explicit one-hour bound and retain typed StalePrice failures.",
+    "Use an oversized max age only to preserve raw Pyth tuple decoding, marking every payload stale diagnostic."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11660852,
+      "blockHash": "0xda549ebce98d29c5d182d25dfcc9cf06f5dac3d7cd75adb0afad8e4c93e14667",
+      "blockTimestamp": "2026-09-06T09:52:28.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-skip-mezo-mainnet-2026-09-06",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-09-06T09:52:32.237Z",
+      "block": {
+        "number": 11660852,
+        "hash": "0xda549ebce98d29c5d182d25dfcc9cf06f5dac3d7cd75adb0afad8e4c93e14667",
+        "timestamp": "2026-09-06T09:52:28.000Z"
+      },
+      "sourceId": "source.skip-price-oracle-v1",
+      "feedId": "feed.skip-btc-usd",
+      "sourceClass": "pushed-feed-observation",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "oracle.skip-btc-usd@mezo-mainnet"
+      },
+      "rawDatum": {
+        "price": "79862585460000000000000",
+        "expo": -18,
+        "decimals": 18,
+        "roundId": "11660759",
+        "startedAt": "1788688348",
+        "updatedAt": "1788688348",
+        "answeredInRound": "0",
+        "confidence": null
+      },
+      "protocolAdapterObservation": {
+        "sourceClass": "protocol-oracle-state",
+        "componentReference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-components",
+          "recordId": "musd.price-feed"
+        },
+        "configuredOracle": "0x7b7c000000000000000000000000000000000015",
+        "fetchPrice": "79862585460000000000000",
+        "targetDigits": 18,
+        "equalsDirectSourceAtBlock": true
+      },
+      "interfaceObservation": {
+        "decimals": "succeeded",
+        "latestRoundData": "succeeded",
+        "description": {
+          "ok": false,
+          "error": {
+            "code": -32000,
+            "message": "rpc error: code = Internal desc = failed to get method by ID: [method not found in ABI: [no method with id: 0x7284e416]]",
+            "data": null
+          }
+        }
+      },
+      "result": "valid-bounded-observation",
+      "limitations": [
+        "This is a fixed-block observation, not a current-value constant or availability guarantee.",
+        "The MUSD adapter equality is established only at this block and retains protocol-oracle-state as a distinct source class."
+      ]
+    },
+    {
+      "id": "observe-pyth-mezo-mainnet-2026-09-06",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-09-06T09:52:32.237Z",
+      "block": {
+        "number": 11660852,
+        "hash": "0xda549ebce98d29c5d182d25dfcc9cf06f5dac3d7cd75adb0afad8e4c93e14667",
+        "timestamp": "2026-09-06T09:52:28.000Z"
+      },
+      "sourceId": "source.pyth-core-v1",
+      "sourceClass": "pushed-feed-observation",
+      "contractReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "oracle.pyth-price-feed@mezo-mainnet"
+      },
+      "proxy": {
+        "address": "0x2880ab155794e7179c9ee2e38200202908c17b43",
+        "codeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "implementation": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb",
+        "implementationCodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611",
+        "version": "1.4.6",
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-06",
+          "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
+        }
+      },
+      "feeds": [
+        {
+          "pair": "BTC/USD",
+          "feedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+          "maxAgeSeconds": 3600,
+          "freshnessResult": {
+            "status": "stale",
+            "errorSelector": "0x19abf40e",
+            "errorName": "StalePrice()"
+          },
+          "diagnosticResult": {
+            "ok": true,
+            "value": {
+              "price": "6310464500000",
+              "conf": "1983500000",
+              "expo": -8,
+              "publishTime": "1784284881"
+            }
+          },
+          "diagnosticClassification": "stale-diagnostic-not-current-price"
+        },
+        {
+          "pair": "MUSD/USD",
+          "feedId": "0x0617a9b725011a126a2b9fd53563f4236501f32cf76d877644b943394606c6de",
+          "maxAgeSeconds": 3600,
+          "freshnessResult": {
+            "status": "stale",
+            "errorSelector": "0x19abf40e",
+            "errorName": "StalePrice()"
+          },
+          "diagnosticResult": {
+            "ok": true,
+            "value": {
+              "price": "100775755",
+              "conf": "1029338",
+              "expo": -8,
+              "publishTime": "1784284881"
+            }
+          },
+          "diagnosticClassification": "stale-diagnostic-not-current-price"
+        }
+      ],
+      "result": "stale-at-3600-seconds",
+      "limitations": [
+        "Both one-hour reads reverted StalePrice() at this post-upgrade block; retained tuples came only from an oversized diagnostic max age.",
+        "Diagnostic payloads preserve raw price, confidence, exponent, and publication time but must not be displayed or normalized as current, selected as fallback, or used to assert live Pyth feed support.",
+        "oracle re-verification qualified Level 3 review accepted the in-place proxy generation and effective ABI for bounded registry-only use."
+      ]
+    }
+  ],
+  "captureReference": {
+    "moduleId": "contracts",
+    "resourceId": "oracle-capture-mezo-mainnet-2026-09-06"
+  },
+  "captureSha256": "1d3ff94228e26892e63e468c1c429b1e317b69dd1fcade309f369f94f04c7798"
+}

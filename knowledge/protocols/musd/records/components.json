@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-component-catalog",
+  "id": "musd-components",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:08:06Z",
+  "reviewAfter": null,
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Component roles are version-scoped protocol knowledge; deployment addresses and ABIs remain owned by the Contracts module."],
+  "records": [
+    {
+      "id": "musd.token",
+      "name": "MUSD",
+      "group": "token",
+      "contractId": "musd.token",
+      "role": "ERC-20 stablecoin whose supply can be minted or burned only by addresses on owner-managed role lists.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.trove-manager",
+        "musd.stability-pool",
+        "musd.interest-rate-manager"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-musd-token",
+          "locator": "MUSD constructor; mint; burn; setSystemContracts",
+          "establishes": "Token identity and role-gated supply control."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Architectural Overview; System Overview",
+          "establishes": "Published stablecoin purpose and component grouping."
+        }
+      ]
+    },
+    {
+      "id": "musd.borrower-operations",
+      "name": "BorrowerOperations",
+      "group": "core-protocol",
+      "contractId": "musd.borrower-operations",
+      "role": "User-facing orchestration entrypoint for opening, adjusting, refinancing, closing, and collateral-claim operations on troves.",
+      "relationships": [
+        "musd.trove-manager",
+        "musd.token",
+        "musd.active-pool",
+        "musd.coll-surplus-pool",
+        "musd.price-feed",
+        "musd.sorted-troves",
+        "musd.interest-rate-manager",
+        "musd.pcv",
+        "musd.governable-variables"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "Borrower Trove Operations; restricted operations; setAddresses",
+          "establishes": "Current entrypoints and connected system components."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Contract Custody",
+          "establishes": "Published custody entrypoint and high-level position flow."
+        }
+      ]
+    },
+    {
+      "id": "musd.borrower-operations-signatures",
+      "name": "BorrowerOperationsSignatures",
+      "group": "supporting-contract",
+      "contractId": "musd.borrower-operations-signatures",
+      "role": "EIP-712 signature adapter that relays authorized borrower operations to BorrowerOperations while preserving the borrower identity in signed messages.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.interest-rate-manager"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations-signatures",
+          "locator": "EIP712Upgradeable inheritance; signed operation structs; restricted BorrowerOperations calls",
+          "establishes": "Signature relay role and borrower/recipient separation."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "System Overview; Key Changes from THUSD",
+          "establishes": "Published supporting-contract and EIP-712 role."
+        }
+      ]
+    },
+    {
+      "id": "musd.trove-manager",
+      "name": "TroveManager",
+      "group": "core-protocol",
+      "contractId": "musd.trove-manager",
+      "role": "Canonical trove state manager; accounts for collateral, principal, interest, stake, status, redistribution rewards, liquidations, and redemptions.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.token",
+        "musd.active-pool",
+        "musd.default-pool",
+        "musd.coll-surplus-pool",
+        "musd.gas-pool",
+        "musd.stability-pool",
+        "musd.price-feed",
+        "musd.sorted-troves",
+        "musd.interest-rate-manager",
+        "musd.pcv"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove; RewardSnapshot; connected contracts; getEntireDebtAndColl",
+          "establishes": "State ownership and current system relationships."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Custody; System Overview",
+          "establishes": "Published core-protocol role."
+        }
+      ]
+    },
+    {
+      "id": "musd.stability-pool",
+      "name": "StabilityPool",
+      "group": "core-protocol",
+      "contractId": "musd.stability-pool",
+      "role": "Accounts for deposited MUSD used to offset liquidated debt and for the corresponding collateral gains of depositors.",
+      "relationships": [
+        "musd.token",
+        "musd.trove-manager",
+        "musd.active-pool",
+        "musd.price-feed",
+        "musd.sorted-troves",
+        "musd.borrower-operations",
+        "musd.pcv"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-stability-pool",
+          "locator": "state trackers; provideToSP; offset; collateral-gain accounting",
+          "establishes": "Deposit, debt-offset, and collateral-gain role."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Contract Custody; Offset definition",
+          "establishes": "Published high-level liquidation-offset role."
+        }
+      ]
+    },
+    {
+      "id": "musd.active-pool",
+      "name": "ActivePool",
+      "group": "asset-pool",
+      "contractId": "musd.active-pool",
+      "role": "Tracks native BTC collateral, principal, and interest assigned to active troves; it does not custody MUSD debt tokens for those troves.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.trove-manager",
+        "musd.default-pool",
+        "musd.stability-pool",
+        "musd.coll-surplus-pool",
+        "musd.interest-rate-manager"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "contract comment; collateral/principal/interest trackers; getDebt",
+          "establishes": "Active-trove collateral and debt accounting role."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Contract Custody",
+          "establishes": "Published active-collateral custody flow."
+        }
+      ]
+    },
+    {
+      "id": "musd.default-pool",
+      "name": "DefaultPool",
+      "group": "asset-pool",
+      "contractId": "musd.default-pool",
+      "role": "Tracks redistributed liquidation collateral and debt that belongs to active troves but has not yet been applied to their individual state.",
+      "relationships": [
+        "musd.trove-manager",
+        "musd.active-pool"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-default-pool",
+          "locator": "contract comment; increaseDebt; decreaseDebt; sendCollateralToActivePool",
+          "establishes": "Pending redistribution accounting role."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Contract Custody; Entire system definitions",
+          "establishes": "Published redistribution and aggregate-state role."
+        }
+      ]
+    },
+    {
+      "id": "musd.coll-surplus-pool",
+      "name": "CollSurplusPool",
+      "group": "asset-pool",
+      "contractId": "musd.coll-surplus-pool",
+      "role": "Tracks native BTC collateral surplus claimable by a trove owner after protocol operations assign that surplus.",
+      "relationships": [
+        "musd.trove-manager",
+        "musd.borrower-operations",
+        "musd.active-pool"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-coll-surplus-pool",
+          "locator": "balances; accountSurplus; claimColl",
+          "establishes": "Per-account surplus accounting and claim path."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Collateral Surplus definition",
+          "establishes": "Published surplus terminology."
+        }
+      ]
+    },
+    {
+      "id": "musd.gas-pool",
+      "name": "GasPool",
+      "group": "asset-pool",
+      "contractId": "musd.gas-pool",
+      "role": "Holds the MUSD gas-compensation reserve associated with troves and transfers compensation only when instructed by TroveManager.",
+      "relationships": [
+        "musd.token",
+        "musd.trove-manager"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-gas-pool",
+          "locator": "contract purpose; setAddresses; sendMUSD",
+          "establishes": "Reserve custody and authorized transfer role; the stale numeric comment is excluded."
+        },
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "MUSD_GAS_COMPENSATION; composite/net debt helpers",
+          "establishes": "The reserve is represented as a debt component in the current implementation."
+        }
+      ]
+    },
+    {
+      "id": "musd.price-feed",
+      "name": "PriceFeed",
+      "group": "supporting-contract",
+      "contractId": "musd.price-feed",
+      "role": "Reads the configured external BTC/USD oracle, enforces its freshness bound, and normalizes the result to protocol price precision.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.trove-manager",
+        "musd.stability-pool"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-price-feed",
+          "locator": "setOracle; fetchPrice; _scalePriceByDigits",
+          "establishes": "External-oracle binding, freshness check, and normalization role."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Maintaining the Peg; System Overview",
+          "establishes": "Published use of an external BTC/USD price oracle."
+        }
+      ]
+    },
+    {
+      "id": "musd.sorted-troves",
+      "name": "SortedTroves",
+      "group": "supporting-contract",
+      "contractId": "musd.sorted-troves",
+      "role": "Maintains a descending doubly linked list of active trove-owner addresses ordered by nominal collateral ratio.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.trove-manager",
+        "musd.hint-helpers"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-sorted-troves",
+          "locator": "contract comment; Data; insert; reInsert",
+          "establishes": "Ordering key, direction, node identity, and mutation role."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Opening a Trove; System Overview",
+          "establishes": "Published role of hints and the sorted list in integration."
+        }
+      ]
+    },
+    {
+      "id": "musd.hint-helpers",
+      "name": "HintHelpers",
+      "group": "supporting-contract",
+      "contractId": "musd.hint-helpers",
+      "role": "Provides read-only approximate insertion and redemption-hint calculations for consumers of the sorted-trove structure.",
+      "relationships": [
+        "musd.sorted-troves",
+        "musd.trove-manager",
+        "musd.borrower-operations"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-hint-helpers",
+          "locator": "getApproxHint; getRedemptionHints",
+          "establishes": "Read-only helper role."
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Opening a Trove",
+          "establishes": "Published integration purpose for hints."
+        }
+      ]
+    },
+    {
+      "id": "musd.interest-rate-manager",
+      "name": "InterestRateManager",
+      "group": "supporting-contract",
+      "contractId": "musd.interest-rate-manager",
+      "role": "Owns the global rate offered to new/refinanced troves and accrues aggregate simple interest into ActivePool debt while minting the matching MUSD to PCV.",
+      "relationships": [
+        "musd.trove-manager",
+        "musd.borrower-operations",
+        "musd.active-pool",
+        "musd.token",
+        "musd.pcv"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "interestRate; interestNumerator; updateSystemInterest; governance functions",
+          "establishes": "Global-rate ownership and aggregate accrual behavior."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Fixed-Interest Borrowing",
+          "establishes": "Published fixed simple-interest model."
+        }
+      ]
+    },
+    {
+      "id": "musd.pcv",
+      "name": "PCV",
+      "group": "supporting-contract",
+      "contractId": "musd.pcv",
+      "role": "Receives protocol interest and fees, accounts for the bootstrap loan and protocol StabilityPool position, and distributes MUSD or BTC according to current governed recipients and splits.",
+      "relationships": [
+        "musd.borrower-operations",
+        "musd.trove-manager",
+        "musd.interest-rate-manager",
+        "musd.stability-pool",
+        "musd.token"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "contract notice; initializeDebt; distributeMUSD; distributeBTC; StabilityPool functions",
+          "establishes": "Current fee, bootstrap-loan, StabilityPool, and distribution responsibilities."
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Protocol Controlled Value; Protocol Bootstrap Loan",
+          "establishes": "Published high-level PCV and bootstrap model; recipient wording is not promoted."
+        }
+      ]
+    },
+    {
+      "id": "musd.governable-variables",
+      "name": "GovernableVariables",
+      "group": "supporting-contract",
+      "contractId": "musd.governable-variables",
+      "role": "Owns council/treasury role bindings and the fee-exempt-account set consumed by BorrowerOperations.",
+      "relationships": [
+        "musd.borrower-operations"
+      ],
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-governable-variables",
+          "locator": "roles; role-change flow; feeExemptAccounts",
+          "establishes": "Current governance-role and fee-exemption ownership."
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "governableVariables; fee exemption checks",
+          "establishes": "BorrowerOperations consumption of this configuration."
+        }
+      ]
+    }
+  ]
+}

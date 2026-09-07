@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mezo contract ABI catalog v1",
+  "allOf": [
+    {
+      "$ref": "../../../schema/v0.4/common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["registryStatus", "records"],
+  "properties": {
+    "kind": { "const": "contract-abi-catalog" },
+    "id": { "const": "contract-abis" },
+    "status": { "const": "verified" },
+    "supportStatus": { "enum": ["proposed", "supported"] },
+    "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+    "registryStatus": { "const": "verified-current" },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "contractId",
+          "provenanceClass",
+          "intendedNetworkIds",
+          "artifactReference",
+          "entryCount",
+          "fileSha256",
+          "abiSha256",
+          "abiSemanticSha256",
+          "sourceReference",
+          "sourceArtifacts",
+          "status",
+          "supportStatus",
+          "reviewStatus",
+          "limitations"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "contractId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "provenanceClass": {
+            "enum": [
+              "official-artifact-fully-verified-deployment",
+              "deployed-executable-reproduction",
+              "official-client-precompile-source",
+              "official-deployment-repository-live-configuration"
+            ]
+          },
+          "intendedNetworkIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"]
+            },
+            "uniqueItems": true
+          },
+          "artifactReference": {
+            "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+          },
+          "entryCount": { "type": "integer", "minimum": 1 },
+          "fileSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "abiSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "abiSemanticSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sourceReference": {
+            "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+          },
+          "sourceArtifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["path", "sha256"],
+              "properties": {
+                "networkId": {
+                  "enum": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"]
+                },
+                "networkIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "enum": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"]
+                  },
+                  "uniqueItems": true
+                },
+                "version": { "type": "string", "minLength": 1 },
+                "path": { "type": "string", "minLength": 1 },
+                "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+              },
+              "additionalProperties": false,
+              "oneOf": [
+                { "required": ["networkId"], "not": { "required": ["networkIds"] } },
+                { "required": ["networkIds"], "not": { "required": ["networkId"] } }
+              ]
+            }
+          },
+          "status": { "const": "verified" },
+          "supportStatus": { "enum": ["proposed", "supported"] },
+          "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+          "limitations": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

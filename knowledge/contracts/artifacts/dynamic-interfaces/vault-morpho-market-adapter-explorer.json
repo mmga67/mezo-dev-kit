@@ -1,0 +1,1038 @@
+{
+  "has_methods_read": true,
+  "is_self_destructed": false,
+  "has_custom_methods_write": false,
+  "file_path": "src/adapters/MorphoMarketV1AdapterV2.sol",
+  "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity 0.8.28;\n\nimport {IMorpho, MarketParams, Id} from \"../../lib/morpho-blue/src/interfaces/IMorpho.sol\";\nimport {MarketParamsLib} from \"../../lib/morpho-blue/src/libraries/MarketParamsLib.sol\";\nimport {SharesMathLib} from \"../../lib/morpho-blue/src/libraries/SharesMathLib.sol\";\nimport {IVaultV2} from \"../interfaces/IVaultV2.sol\";\nimport {IERC20} from \"../interfaces/IERC20.sol\";\nimport {IMorphoMarketV1AdapterV2} from \"./interfaces/IMorphoMarketV1AdapterV2.sol\";\nimport {SafeERC20Lib} from \"../libraries/SafeERC20Lib.sol\";\nimport {\n    AdaptiveCurveIrmLib\n} from \"../../lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/periphery/AdaptiveCurveIrmLib.sol\";\n\n/// @dev Morpho Market V1 is also known as Morpho Blue.\n/// @dev This adapter must be used with Morpho Market V1 that are protected against inflation attacks with an initial\n/// supply. Following resource is relevant: https://docs.openzeppelin.com/contracts/5.x/erc4626#inflation-attack.\n/// @dev Rounding error losses on supply/withdraw are realizable.\n/// @dev If expectedSupplyAssets reverts for a market of the marketIds, realAssets will revert and the vault will not be\n/// able to accrueInterest.\n/// @dev Upon interest accrual, the vault calls realAssets(). If there are too many markets, it could cause issues such\n/// as expensive interactions, even DOS, because of the gas.\n/// @dev Shouldn't be used alongside another adapter that re-uses the last id (abi.encode(\"this/marketParams\",\n/// address(this), marketParams)).\n/// @dev Markets get removed from the marketIds when the allocation is zero, but it doesn't mean that the adapter has\n/// zero shares on the market.\n/// @dev This adapter can only be used for markets with the adaptive curve irm.\n/// @dev Before adding the adapter to the vault, its timelocks must be properly set.\n/// @dev Donated shares are lost forever.\n///\n/// TIMELOCKS\n/// @dev The system is the same as the one used in VaultV2. Dev comments in VaultV2.sol on timelocks also apply here.\n///\n/// BURN SHARES\n/// @dev When submitting burnShares, it's recommended to put the caps of the market to zero to avoid losing more.\n/// @dev Burning shares takes time, so reactive depositors might be able to exit before the share price reduction.\n/// @dev It is possible to burn the shares of a market whose IRM reverts.\n/// @dev Burnt shares are lost forever.\ncontract MorphoMarketV1AdapterV2 is IMorphoMarketV1AdapterV2 {\n    using MarketParamsLib for MarketParams;\n    using SharesMathLib for uint256;\n\n    /* IMMUTABLES */\n\n    address public immutable factory;\n    address public immutable parentVault;\n    address public immutable asset;\n    address public immutable morpho;\n    bytes32 public immutable adapterId;\n    address public immutable adaptiveCurveIrm;\n\n    /* TIMELOCKS STORAGE */\n\n    mapping(bytes4 selector => uint256) public timelock;\n    mapping(bytes4 selector => bool) public abdicated;\n    mapping(bytes data => uint256) public executableAt;\n\n    /* OTHER STORAGE */\n\n    address public skimRecipient;\n    bytes32[] public marketIds;\n    mapping(bytes32 marketId => uint256) public supplyShares;\n\n    /* GETTERS */\n\n    function marketIdsLength() external view returns (uint256) {\n        return marketIds.length;\n    }\n\n    /* CONSTRUCTOR */\n\n    constructor(address _parentVault, address _morpho, address _adaptiveCurveIrm) {\n        factory = msg.sender;\n        parentVault = _parentVault;\n        morpho = _morpho;\n        asset = IVaultV2(_parentVault).asset();\n        adapterId = keccak256(abi.encode(\"this\", address(this)));\n        adaptiveCurveIrm = _adaptiveCurveIrm;\n        SafeERC20Lib.safeApprove(asset, _morpho, type(uint256).max);\n        SafeERC20Lib.safeApprove(asset, _parentVault, type(uint256).max);\n    }\n\n    /* TIMELOCKS FUNCTIONS */\n\n    /// @dev Will revert if the timelock value is type(uint256).max or any value that overflows when added to the block\n    /// timestamp.\n    function submit(bytes calldata data) external {\n        require(msg.sender == IVaultV2(parentVault).curator(), Unauthorized());\n        require(executableAt[data] == 0, DataAlreadyPending());\n\n        // forge-lint: disable-next-item(unsafe-typecast) we explicitly want only the first bytes4.\n        bytes4 selector = bytes4(data);\n        // forge-lint: disable-next-item(unsafe-typecast) we explicitly want only the second bytes4.\n        uint256 _timelock = selector == IMorphoMarketV1AdapterV2.decreaseTimelock.selector\n            ? timelock[bytes4(data[4:8])]\n            : timelock[selector];\n        executableAt[data] = block.timestamp + _timelock;\n        emit Submit(selector, data, executableAt[data]);\n    }\n\n    function timelocked() internal {\n        bytes4 selector = bytes4(msg.data);\n        require(executableAt[msg.data] != 0, DataNotTimelocked());\n        require(block.timestamp >= executableAt[msg.data], TimelockNotExpired());\n        require(!abdicated[selector], Abdicated());\n        executableAt[msg.data] = 0;\n        emit Accept(selector, msg.data);\n    }\n\n    function revoke(bytes calldata data) external {\n        require(\n            msg.sender == IVaultV2(parentVault).curator() || IVaultV2(parentVault).isSentinel(msg.sender),\n            Unauthorized()\n        );\n        require(executableAt[data] != 0, DataNotTimelocked());\n        executableAt[data] = 0;\n        // forge-lint: disable-next-item(unsafe-typecast) we explicitly want only the first bytes4.\n        bytes4 selector = bytes4(data);\n        emit Revoke(msg.sender, selector, data);\n    }\n\n    /* CURATOR FUNCTIONS */\n\n    /// @dev This function requires great caution because it can irreversibly disable submit for a selector.\n    /// @dev Existing pending operations submitted before increasing a timelock can still be executed at the initial\n    /// executableAt.\n    function increaseTimelock(bytes4 selector, uint256 newDuration) external {\n        timelocked();\n        require(selector != IMorphoMarketV1AdapterV2.decreaseTimelock.selector, AutomaticallyTimelocked());\n        require(newDuration >= timelock[selector], TimelockNotIncreasing());\n\n        timelock[selector] = newDuration;\n        emit IncreaseTimelock(selector, newDuration);\n    }\n\n    function decreaseTimelock(bytes4 selector, uint256 newDuration) external {\n        timelocked();\n        require(selector != IMorphoMarketV1AdapterV2.decreaseTimelock.selector, AutomaticallyTimelocked());\n        require(newDuration <= timelock[selector], TimelockNotDecreasing());\n\n        timelock[selector] = newDuration;\n        emit DecreaseTimelock(selector, newDuration);\n    }\n\n    /// @dev This function requires great caution because it will irreversibly disable submit for a selector.\n    /// @dev Existing pending operations submitted before abdicating can not be executed at the initial executableAt.\n    function abdicate(bytes4 selector) external {\n        timelocked();\n        abdicated[selector] = true;\n        emit Abdicate(selector);\n    }\n\n    function setSkimRecipient(address newSkimRecipient) external {\n        timelocked();\n        skimRecipient = newSkimRecipient;\n        emit SetSkimRecipient(newSkimRecipient);\n    }\n\n    /// @dev Deallocate 0 from the vault after burning shares to update the allocation there.\n    function burnShares(bytes32 marketId) external {\n        timelocked();\n        uint256 supplySharesBefore = supplyShares[marketId];\n        supplyShares[marketId] = 0;\n        emit BurnShares(marketId, supplySharesBefore);\n    }\n\n    /* OTHER FUNCTIONS */\n\n    /// @dev Skims the adapter's balance of `token` and sends it to `skimRecipient`.\n    /// @dev This is useful to handle rewards that the adapter has earned.\n    function skim(address token) external {\n        require(msg.sender == skimRecipient, Unauthorized());\n        uint256 balance = IERC20(token).balanceOf(address(this));\n        SafeERC20Lib.safeTransfer(token, skimRecipient, balance);\n        emit Skim(token, balance);\n    }\n\n    /// @dev Returns the ids of the allocation and the change in allocation.\n    function allocate(bytes memory data, uint256 assets, bytes4, address) external returns (bytes32[] memory, int256) {\n        MarketParams memory marketParams = abi.decode(data, (MarketParams));\n        require(msg.sender == parentVault, Unauthorized());\n        require(marketParams.loanToken == asset, LoanAssetMismatch());\n        require(marketParams.irm == adaptiveCurveIrm, IrmMismatch());\n        bytes32 marketId = Id.unwrap(marketParams.id());\n\n        uint256 mintedShares;\n        if (assets > 0) {\n            (, mintedShares) = IMorpho(morpho).supply(marketParams, assets, 0, address(this), hex\"\");\n            require(mintedShares >= assets, SharePriceAboveOne());\n            supplyShares[marketId] += mintedShares;\n        }\n\n        uint256 oldAllocation = allocation(marketParams);\n        uint256 newAllocation = expectedSupplyAssets(marketId);\n        updateList(marketId, oldAllocation, newAllocation);\n\n        emit Allocate(marketId, newAllocation, mintedShares);\n\n        // forge-lint: disable-next-item(unsafe-typecast) safe because Market V1 bounds the total supply of the\n        // underlying token, and allocation is less than the max total assets of the vault.\n        return (ids(marketParams), int256(newAllocation) - int256(oldAllocation));\n    }\n\n    /// @dev Returns the ids of the deallocation and the change in allocation.\n    function deallocate(bytes memory data, uint256 assets, bytes4, address)\n        external\n        returns (bytes32[] memory, int256)\n    {\n        MarketParams memory marketParams = abi.decode(data, (MarketParams));\n        require(msg.sender == parentVault, Unauthorized());\n        require(marketParams.loanToken == asset, LoanAssetMismatch());\n        require(marketParams.irm == adaptiveCurveIrm, IrmMismatch());\n        bytes32 marketId = Id.unwrap(marketParams.id());\n\n        uint256 burnedShares;\n        if (assets > 0) {\n            (, burnedShares) = IMorpho(morpho).withdraw(marketParams, assets, 0, address(this), address(this));\n            supplyShares[marketId] -= burnedShares;\n        }\n\n        uint256 oldAllocation = allocation(marketParams);\n        uint256 newAllocation = expectedSupplyAssets(marketId);\n        updateList(marketId, oldAllocation, newAllocation);\n\n        emit Deallocate(marketId, newAllocation, burnedShares);\n\n        // forge-lint: disable-next-item(unsafe-typecast) safe because Market V1 bounds the total supply of the\n        // underlying token, and allocation is less than the max total assets of the vault.\n        return (ids(marketParams), int256(newAllocation) - int256(oldAllocation));\n    }\n\n    function updateList(bytes32 marketId, uint256 oldAllocation, uint256 newAllocation) internal {\n        if (oldAllocation > 0 && newAllocation == 0) {\n            for (uint256 i = 0; i < marketIds.length; i++) {\n                if (marketIds[i] == marketId) {\n                    marketIds[i] = marketIds[marketIds.length - 1];\n                    marketIds.pop();\n                    break;\n                }\n            }\n        } else if (oldAllocation == 0 && newAllocation > 0) {\n            marketIds.push(marketId);\n        }\n    }\n\n    /* VIEW FUNCTIONS */\n\n    /// @dev Returns the expected supply assets of the market, taking into account the internal shares accounting.\n    function expectedSupplyAssets(bytes32 marketId) public view returns (uint256) {\n        uint256 _supplyShares = supplyShares[marketId];\n        if (_supplyShares == 0) {\n            return 0;\n        } else {\n            (uint256 totalSupplyAssets, uint256 totalSupplyShares,,) =\n                AdaptiveCurveIrmLib.expectedMarketBalances(morpho, marketId, adaptiveCurveIrm);\n            return _supplyShares.toAssetsDown(totalSupplyAssets, totalSupplyShares);\n        }\n    }\n\n    /// @dev Returns the Vault's allocation for this market.\n    function allocation(MarketParams memory marketParams) public view returns (uint256) {\n        return IVaultV2(parentVault).allocation(keccak256(abi.encode(\"this/marketParams\", address(this), marketParams)));\n    }\n\n    /// @dev Returns adapter's ids.\n    function ids(MarketParams memory marketParams) public view returns (bytes32[] memory) {\n        bytes32[] memory ids_ = new bytes32[](3);\n        ids_[0] = adapterId;\n        ids_[1] = keccak256(abi.encode(\"collateralToken\", marketParams.collateralToken));\n        ids_[2] = keccak256(abi.encode(\"this/marketParams\", address(this), marketParams));\n        return ids_;\n    }\n\n    function realAssets() external view returns (uint256) {\n        uint256 _realAssets = 0;\n        for (uint256 i = 0; i < marketIds.length; i++) {\n            _realAssets += expectedSupplyAssets(marketIds[i]);\n        }\n        return _realAssets;\n    }\n}\n",
+  "deployed_bytecode": "0x6080806040526004361015610012575f80fd5b5f3560e01c9081630b467b9b14611672575080630fe36536146116045780631eadd7781461131d5780632b30997b14611278578063388af5b51461122757806338d52e0f146111b9578063399e3a501461114b5780633b2de5ac146110d35780634796629114610fd35780634e45f1ff14610c7657806356c0757314610c015780635c1a1a4f14610ad95780635fb86b0114610a815780636ead54d814610a39578063779a9683146109e35780638639fb071461096f57806399ee14c31461095757806399f7e86114610913578063ace48b45146108d8578063b2e328481461081c578063bc25cf77146105d6578063c45a015514610568578063cc3802bf14610537578063d8fbc833146104c9578063e470b8bc14610455578063e78ab14e146103e75763ef7fa71b14610145575f80fd5b3461030557610153366118ab565b6040517fe66f53b700000000000000000000000000000000000000000000000000000000815260208160048173ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b165afa80156103dc575f9061038f575b73ffffffffffffffffffffffffffffffffffffffff9150163303610367576040518183823760208183810160028152030190205461033f577fffffffff000000000000000000000000000000000000000000000000000000006102288284611cb3565b16917f5c1a1a4f0000000000000000000000000000000000000000000000000000000083036103095781600811610305577f8b18afeb361b83b025999ed5b42f1d90c68aaa5a0fd49c015f04c3b8b81e80eb917fffffffff000000000000000000000000000000000000000000000000000000006004830135165f525f6020526102b760405f20545b42611dcf565b60405182848237602081848101600281520301902055604051818382376020818381016002815203019020546102fa604051938493604085526040850191611d19565b9060208301520390a2005b5f80fd5b7f8b18afeb361b83b025999ed5b42f1d90c68aaa5a0fd49c015f04c3b8b81e80eb91835f525f6020526102b760405f20546102b1565b7fd91ff208000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f82b42900000000000000000000000000000000000000000000000000000000005f5260045ffd5b506020813d6020116103d4575b816103a960209383611963565b81010312610305576103cf73ffffffffffffffffffffffffffffffffffffffff91611c7a565b6101c5565b3d915061039c565b6040513d5f823e3d90fd5b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff0000000000000000000000000000000000000000000000000000000061043f611a24565b165f525f602052602060405f2054604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff000000000000000000000000000000000000000000000000000000006104ad611a24565b165f526001602052602060ff60405f2054166040519015158152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda311168152f35b346103055761056461055061054b36611ba8565b61270d565b604051918291602083526020830190611b14565b0390f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000123694886dbf5ac94dda07135349534536d14caf168152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055761060d611a53565b73ffffffffffffffffffffffffffffffffffffffff600354168033036103675773ffffffffffffffffffffffffffffffffffffffff821691604051917f70a08231000000000000000000000000000000000000000000000000000000008352306004840152602083602481875afa9283156103dc575f936107e8575b50813b156107c0575f9182918260405160208101927fa9059cbb0000000000000000000000000000000000000000000000000000000084526024820152866044820152604481526106db606482611963565b51925af13d156107b8573d906106f0826119a4565b916106fe6040519384611963565b82523d5f602084013e5b15610790578051908115918215610776575b50501561074e5760207f5e99aaf6d3588fb2497fde044168e8c046704a3223559cfe107f8f94b42cefdd91604051908152a2005b7f2f0470fc000000000000000000000000000000000000000000000000000000005f5260045ffd5b6107899250602080918301019101611c9b565b838061071a565b7face2a47e000000000000000000000000000000000000000000000000000000005f5260045ffd5b606090610708565b7ff046a714000000000000000000000000000000000000000000000000000000005f5260045ffd5b9092506020813d602011610814575b8161080460209383611963565b8101031261030557519184610689565b3d91506107f7565b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff00000000000000000000000000000000000000000000000000000000610874611a24565b61087c612993565b16805f52600160205260405f2060017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff008254161790557fa8480b135a28741e8c059528bf8f82de70278485fb86bfc816a183801f0a85705f80a2005b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305576020600454604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602061094f600435612003565b604051908152f35b3461030557602061094f61096a36611ba8565b611f13565b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043567ffffffffffffffff8111610305576020806109c2819336906004016119de565b604051928184925191829101835e8101600281520301902054604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043560045481101561030557610a2a602091611b63565b90549060031b1c604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305576004355f526005602052602060405f2054604051908152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760206040517f5a101b9ffb5c4beb9d848db3878cd4f61809fc9c898b9bce99da4c4e4b7e611a8152f35b346103055760407ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557610b10611a24565b7fffffffff0000000000000000000000000000000000000000000000000000000060243591610b3d612993565b16907f5c1a1a4f000000000000000000000000000000000000000000000000000000008214610bd957815f525f60205260405f20548111610bb15760207f488e0bfafe0a9580c2271bee1f563a47d309f0105ca950ea525d909b43b36daf91835f525f82528060405f2055604051908152a2005b7f17e0a21c000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f07e895b1000000000000000000000000000000000000000000000000000000005f5260045ffd5b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305575f5f906004545b808310610c4857602082604051908152f35b90610c6d600191610c67610c5b86611b63565b90549060031b1c612003565b90611dcf565b92019190610c36565b3461030557610c9a610c8736611a76565b5050919060208082518301019101611d57565b9073ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b1633036103675773ffffffffffffffffffffffffffffffffffffffff82511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c1971603610fab5773ffffffffffffffffffffffffffffffffffffffff60608301511673ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e71603610f835760a082205f9180610e01575b50610deb83610da1610df19495611f13565b927fc3505702fbdd1c334673aa66559f4546d749681c4d2509c99c07fabf01b3227f6040610dce83612003565b97610dda8988866127f8565b8151908982526020820152a261270d565b92611e09565b9061056460405192839283611b47565b9150604051917f5c2bea49000000000000000000000000000000000000000000000000000000008352610eb760048401856080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b60a48301525f60c48301523060e483015230610104830152604082610124815f73ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda311165af19182156103dc575f92610f4a575b50610deb8293610df19394835f526005602052610f4060405f20918254611e21565b9055939250610d8f565b610df19250610f73610deb9160403d604011610f7c575b610f6b8183611963565b810190611db9565b90509250610f1e565b503d610f61565b7f6a7ca6c7000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f58ec95f2000000000000000000000000000000000000000000000000000000005f5260045ffd5b346103055760407ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055761100a611a24565b7fffffffff0000000000000000000000000000000000000000000000000000000060243591611037612993565b16907f5c1a1a4f000000000000000000000000000000000000000000000000000000008214610bd957815f525f60205260405f205481106110ab5760207fed380a7a1f0afc99b313ac7d9f1e52e44430d32b4639c7993bd0021974e30c0e91835f525f82528060405f2055604051908152a2005b7f470f70c2000000000000000000000000000000000000000000000000000000005f5260045ffd5b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043561110d612993565b5f8181526005602090815260408083208054939055519182527f82234a83a62d451b7758221f55cd21fe22d35d7798bdfea8a44168fd355880cb91a2005b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e7168152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c197168152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602073ffffffffffffffffffffffffffffffffffffffff60035416604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055773ffffffffffffffffffffffffffffffffffffffff6112c4611a53565b6112cc612993565b16807fffffffffffffffffffffffff000000000000000000000000000000000000000060035416176003557f2e7908865670e21b9779422cadf5f1cba271a62bb95c71eaaf615c0a1c48ebee5f80a2005b346103055761132e610c8736611a76565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b1633036103675773ffffffffffffffffffffffffffffffffffffffff81511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000004671c72aab5ac02a03c1098314b1bb6b560c1971603610fab5773ffffffffffffffffffffffffffffffffffffffff60608201511673ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e71603610f835760a08120905f9280611462575b5090610deb82611435610df194611f13565b927f67bd2993814767565e883edd1e76edf105cdd33766384ca8495e53562e20bea76040610dce83612003565b9250906040517fa99aad8900000000000000000000000000000000000000000000000000000000815261151860048201846080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b8360a48201525f60c48201523060e48201526101206101048201525f610124820152604081610144815f73ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda311165af19081156103dc575f916115e3575b50809381106115bb57610df192610deb91835f5260056020526115b160405f20918254611dcf565b9055919250611423565b7fff8d32ad000000000000000000000000000000000000000000000000000000005f5260045ffd5b6115fc915060403d604011610f7c57610f6b8183611963565b905084611589565b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b168152f35b3461030557611680366118ab565b909173ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b16907fe66f53b7000000000000000000000000000000000000000000000000000000008152602081600481855afa80156103dc575f9061185e575b73ffffffffffffffffffffffffffffffffffffffff91501633149081156117e1575b50156103675760405181838237602081838101600281520301902054156117b9575f604051828482376020818481016002815203019020557f70521cf6a7c2458c5ad406081ad7b3bc4afd31b01b586a157a9780fcee6a77cb6117b47fffffffff0000000000000000000000000000000000000000000000000000000061179c8486611cb3565b16936040519182916020835233956020840191611d19565b0390a3005b7f1ea942a8000000000000000000000000000000000000000000000000000000005f5260045ffd5b60249150602090604051928380927fba03a75f0000000000000000000000000000000000000000000000000000000082523360048301525afa9081156103dc575f9161182f575b5083611715565b611851915060203d602011611857575b6118498183611963565b810190611c9b565b83611828565b503d61183f565b506020813d6020116118a3575b8161187860209383611963565b810103126103055761189e73ffffffffffffffffffffffffffffffffffffffff91611c7a565b6116f3565b3d915061186b565b9060207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc8301126103055760043567ffffffffffffffff811161030557826023820112156103055780600401359267ffffffffffffffff84116103055760248483010111610305576024019190565b60a0810190811067ffffffffffffffff82111761193657604052565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761193657604052565b67ffffffffffffffff811161193657601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01660200190565b81601f82011215610305578035906119f5826119a4565b92611a036040519485611963565b8284526020838301011161030557815f926020809301838601378301015290565b600435907fffffffff000000000000000000000000000000000000000000000000000000008216820361030557565b6004359073ffffffffffffffffffffffffffffffffffffffff8216820361030557565b60807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc820112610305576004359067ffffffffffffffff821161030557611abf916004016119de565b90602435906044357fffffffff0000000000000000000000000000000000000000000000000000000081168103610305579060643573ffffffffffffffffffffffffffffffffffffffff811681036103055790565b90602080835192838152019201905f5b818110611b315750505090565b8251845260209384019390920191600101611b24565b929190611b5e602091604086526040860190611b14565b930152565b600454811015611b7b5760045f5260205f2001905f90565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52603260045260245ffd5b7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc60a091011261030557604051611bde8161191a565b60043573ffffffffffffffffffffffffffffffffffffffff8116810361030557815260243573ffffffffffffffffffffffffffffffffffffffff8116810361030557602082015260443573ffffffffffffffffffffffffffffffffffffffff8116810361030557604082015260643573ffffffffffffffffffffffffffffffffffffffff81168103610305576060820152608435608082015290565b519073ffffffffffffffffffffffffffffffffffffffff8216820361030557565b90816020910312610305575180151581036103055790565b919091357fffffffff0000000000000000000000000000000000000000000000000000000081169260048110611ce7575050565b7fffffffff00000000000000000000000000000000000000000000000000000000929350829060040360031b1b161690565b601f82602094937fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe093818652868601375f8582860101520116010190565b908160a091031261030557608060405191611d718361191a565b611d7a81611c7a565b8352611d8860208201611c7a565b6020840152611d9960408201611c7a565b6040840152611daa60608201611c7a565b60608401520151608082015290565b9190826040910312610305576020825192015190565b91908201809211611ddc57565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b81810392915f138015828513169184121617611ddc57565b91908203918211611ddc57565b916040611f1192949360e08152601160e08201527f746869732f6d61726b6574506172616d7300000000000000000000000000000061010082015273ffffffffffffffffffffffffffffffffffffffff61012082019616602082015201906080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b565b604051611f5581611f2960208201943086611e2e565b037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08101835282611963565b519020604051907fc69507dd000000000000000000000000000000000000000000000000000000008252600482015260208160248173ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b165afa9081156103dc575f91611fd4575090565b90506020813d602011611ffb575b81611fef60209383611963565b81010312610305575190565b3d9150611fe2565b5f90805f52600560205260405f205480155f1461201f57505090565b604051917f5c60e39a00000000000000000000000000000000000000000000000000000000835280600484015260c08360248173ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda311165afa9283156103dc575f9361265b575b5060808301906120bc6fffffffffffffffffffffffffffffffff83511642611e21565b908115158061263c575b612146575b5050506fffffffffffffffffffffffffffffffff60208184511693015116926001830180931161211957620f424084018094116121195750612116929161211191612b8c565b612c7a565b90565b807f4e487b7100000000000000000000000000000000000000000000000000000000602492526011600452fd5b8451929591926fffffffffffffffffffffffffffffffff168015612635576fffffffffffffffffffffffffffffffff60408701511690670de0b6b3a7640000820291808304670de0b6b3a76400001490151715611ddc576121a691612c7a565b670c7d713b49da00008113156126265767016345785d8a0000905b7ffffffffffffffffffffffffffffffffffffffffffffffffff3828ec4b62600008101908113600116611ddc57670de0b6b3a7640000810290808205670de0b6b3a76400001490151715611ddc5781156125f9577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82147f8000000000000000000000000000000000000000000000000000000000000000821416611ddc570595604051917f01977b57000000000000000000000000000000000000000000000000000000008352600483015260208260248173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e7165afa9182156103dc575f926125c5575b5081612536575050634b9a1eff905b5f86121561251a5750670de0b6b3a7640000612310670a688906bd8b0000965f97612c84565b05670de0b6b3a764000081019086670de0b6b3a7640000831291129080158216911516176124ed57670de0b6b3a764000061234f81936123b193612c84565b056123ab61237560408801956fffffffffffffffffffffffffffffffff87511693612b8c565b6123a6671bc16d674ec8000061238b8380612b8c565b046729a2241af62c000061239f8483612b8c565b0492611dcf565b611dcf565b90612b8c565b04906fffffffffffffffffffffffffffffffff6123d96123d084612b9f565b82845116612b5a565b1690526fffffffffffffffffffffffffffffffff6124026123f983612b9f565b82865116612b5a565b1683526fffffffffffffffffffffffffffffffff60a0840151169081612429575b806120cb565b670de0b6b3a76400009161243c91612b8c565b0461245a816fffffffffffffffffffffffffffffffff855116611e21565b60208401916fffffffffffffffffffffffffffffffff83511690620f424082018092116124c057600183018093116124c0576124b16fffffffffffffffffffffffffffffffff936121116124b6946123d094612b8c565b612b9f565b1690525f80612423565b6024877f4e487b710000000000000000000000000000000000000000000000000000000081526011600452fd5b6024867f4e487b710000000000000000000000000000000000000000000000000000000081526011600452fd5b94612310670de0b6b3a7640000916729a2241af62c0000612c84565b612577906125716fffffffffffffffffffffffffffffffff670de0b6b3a76400006125678b650171268b5ad4612c84565b0592511642611e21565b90612c84565b806125835750906122ea565b8061259e60026125966125a49486612cdd565b920584612cdd565b92612cc2565b8160011b916002830503611ddc576004916125be91612cc2565b05906122ea565b9091506020813d6020116125f1575b816125e160209383611963565b810103126103055751905f6122db565b3d91506125d4565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601260045260245ffd5b670c7d713b49da0000906121c1565b505f6121a6565b506fffffffffffffffffffffffffffffffff60408601511615156120c6565b90925060c0813d60c011612705575b8161267760c09383611963565b81010312610305576040519060c0820182811067ffffffffffffffff821117611936576126f99160a0916040526126ad81612b3d565b84526126bb60208201612b3d565b60208501526126cc60408201612b3d565b60408501526126dd60608201612b3d565b60608501526126ee60808201612b3d565b608085015201612b3d565b60a0820152915f612099565b3d915061266a565b6040519061271c608083611963565b60038252602082016060368237825115611b7b577f5a101b9ffb5c4beb9d848db3878cd4f61809fc9c898b9bce99da4c4e4b7e611a905273ffffffffffffffffffffffffffffffffffffffff602082015116604051602081019160408352600f60608301527f636f6c6c61746572616c546f6b656e000000000000000000000000000000000060808301526040820152608081526127bb60a082611963565b519020825160011015611b7b5760408301526040516127e381611f2960208201943086611e2e565b519020815160021015611b7b57606082015290565b9190159081158061298b575b1561294b5750505f5b60045480821015612946578261282283611b63565b90549060031b1c14612837575060010161280d565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff810192508211611ddc5761287e6128716128b493611b63565b90549060031b1c91611b63565b9091907fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff83549160031b92831b921b1916179055565b6004548015612919577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016128e881611b63565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82549160031b1b19169055600455565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52603160045260245ffd5b505050565b81612981575b506129595750565b60045490680100000000000000008210156119365761287e826001611f119401600455611b63565b905015155f612951565b508015612804565b5f357fffffffff0000000000000000000000000000000000000000000000000000000081169060043610612b09575b50604051365f8237602081368101600281520301902054156117b957604051365f82376020813681016002815203019020544210612ae1577fffffffff0000000000000000000000000000000000000000000000000000000016805f52600160205260ff60405f205416612ab9575f604051368282376020813681016002815203019020557f29aa42fc192ff77ef42105abba283197ac841341e196e417a7fc2784cdc4e5fb60405160208152366020820152365f60408301375f602080368401010152602081817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f360116820101030190a2565b7f281df4aa000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f621e25c3000000000000000000000000000000000000000000000000000000005f5260045ffd5b7fffffffff000000000000000000000000000000000000000000000000000000008092503660040360031b1b16165f6129c2565b51906fffffffffffffffffffffffffffffffff8216820361030557565b906fffffffffffffffffffffffffffffffff809116911601906fffffffffffffffffffffffffffffffff8211611ddc57565b81810292918115918404141715611ddc57565b604051612bad604082611963565b6014815260208101907f6d61782075696e7431323820657863656564656400000000000000000000000082526fffffffffffffffffffffffffffffffff8311612c075750506fffffffffffffffffffffffffffffffff1690565b6044907fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f6040519485937f08c379a0000000000000000000000000000000000000000000000000000000008552602060048601525180918160248701528686015e5f85828601015201168101030190fd5b81156125f9570490565b81810292915f82127f8000000000000000000000000000000000000000000000000000000000000000821416611ddc578184051490151715611ddc57565b9190915f8382019384129112908015821691151617611ddc57565b612cf390612571670de0b6b3a764000093612d14565b056301e3da5f90640ec41a0ddf818112908218021890818113908218021890565b7ffffffffffffffffffffffffffffffffffffffffffffffffdc0d0570925a462d88112612df6576805168fd0946fc0415f811215612dd8575f811215612db857670de0b6b3a764000067099e8db03256ce5d7ffffffffffffffffffffffffffffffffffffffffffffffffffb30b927e6d498d25b8301059167099e8db03256ce5d8302900360028282800205050101905f8112155f14612db2571b90565b5f031d90565b670de0b6b3a764000067099e8db03256ce5d6704cf46d8192b672e612d88565b50780931d81650c7d88b800000000000000000000000000000000090565b505f9056fea164736f6c634300081c000a",
+  "optimization_enabled": true,
+  "verified_twin_address_hash": null,
+  "is_verified": true,
+  "compiler_settings": {
+    "evmVersion": "cancun",
+    "libraries": {},
+    "metadata": {
+      "appendCBOR": true,
+      "bytecodeHash": "none",
+      "useLiteralContent": false
+    },
+    "optimizer": {
+      "enabled": true,
+      "runs": 100000
+    },
+    "outputSelection": {
+      "*": {
+        "": [
+          "*"
+        ],
+        "*": [
+          "*"
+        ]
+      }
+    },
+    "remappings": [
+      "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+      "ds-test/=lib/morpho-blue-irm/lib/forge-std/lib/ds-test/src/",
+      "erc4626-tests/=lib/metamorpho/lib/erc4626-tests/",
+      "forge-std/=lib/forge-std/src/",
+      "halmos-cheatcodes/=lib/morpho-blue/lib/halmos-cheatcodes/src/",
+      "metamorpho-v1.1/=lib/metamorpho-v1.1/",
+      "metamorpho/=lib/metamorpho/",
+      "morpho-blue-irm/=lib/morpho-blue-irm/",
+      "morpho-blue/=lib/morpho-blue/",
+      "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+      "solmate/=lib/morpho-blue-irm/lib/solmate/src/"
+    ],
+    "viaIR": true
+  },
+  "optimization_runs": 100000,
+  "sourcify_repo_url": null,
+  "decoded_constructor_args": [
+    [
+      "0x06291b67e3d7660240ab44Afc9a708d82b976a8B",
+      {
+        "internalType": "address",
+        "name": "_parentVault",
+        "type": "address"
+      }
+    ],
+    [
+      "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+      {
+        "internalType": "address",
+        "name": "_morpho",
+        "type": "address"
+      }
+    ],
+    [
+      "0x3760Ebc636F912a4dB9540fdA4Dec09C25C6C1e7",
+      {
+        "internalType": "address",
+        "name": "_adaptiveCurveIrm",
+        "type": "address"
+      }
+    ]
+  ],
+  "has_methods_write": true,
+  "compiler_version": "v0.8.28+commit.7893614a",
+  "is_verified_via_verifier_alliance": false,
+  "verified_at": "2026-05-28T12:30:01.383032Z",
+  "implementations": [],
+  "proxy_type": null,
+  "external_libraries": [],
+  "creation_bytecode": "0x61014080604052346101de5760608161313a803803809161002082856101f5565b8339810103126101de576100338161022c565b61004b60406100446020850161022c565b930161022c565b3360805260a082905260e08390526040516338d52e0f60e01b81529092906020816004816001600160a01b0387165afa9081156101ea575f916101a1575b50906100f8936100e79260c05260405160208101906040825260046060820152637468697360e01b6080820152306040820152608081526100cb60a0826101f5565b519020610100526101205260c0516001600160a01b0316610240565b60c0516001600160a01b0316610240565b604051612e0890816103328239608051816105b2015260a05181818161019601528181610cb2015281816113450152818161164e015281816116990152611fa1015260c051818181610d0701528181611203015261139a015260e05181818161051301528181610eee015281816115590152612069015261010051818181610ab60152612732015261012051818181610d5e01528181611195015281816113f101526122ab0152f35b9190506020823d6020116101e2575b816101bd602093836101f5565b810103126101de576100f8936101d56100e79361022c565b91925093610089565b5f80fd5b3d91506101b0565b6040513d5f823e3d90fd5b601f909101601f19168101906001600160401b0382119082101761021857604052565b634e487b7160e01b5f52604160045260245ffd5b51906001600160a01b03821682036101de57565b90813b15610322575f91829182604051602081019263095ea7b360e01b845260018060a01b0316602482015281196044820152604481526102826064826101f5565b51925af13d1561031a573d906001600160401b03821161021857604051916102b4601f8201601f1916602001846101f5565b82523d5f602084013e5b1561030b5780519081159182156102e8575b5050156102d957565b631f55ddd960e21b5f5260045ffd5b81925090602091810103126101de576020015180151581036101de575f806102d0565b637cceae2560e01b5f5260045ffd5b6060906102be565b633c11a9c560e21b5f5260045ffdfe6080806040526004361015610012575f80fd5b5f3560e01c9081630b467b9b14611672575080630fe36536146116045780631eadd7781461131d5780632b30997b14611278578063388af5b51461122757806338d52e0f146111b9578063399e3a501461114b5780633b2de5ac146110d35780634796629114610fd35780634e45f1ff14610c7657806356c0757314610c015780635c1a1a4f14610ad95780635fb86b0114610a815780636ead54d814610a39578063779a9683146109e35780638639fb071461096f57806399ee14c31461095757806399f7e86114610913578063ace48b45146108d8578063b2e328481461081c578063bc25cf77146105d6578063c45a015514610568578063cc3802bf14610537578063d8fbc833146104c9578063e470b8bc14610455578063e78ab14e146103e75763ef7fa71b14610145575f80fd5b3461030557610153366118ab565b6040517fe66f53b700000000000000000000000000000000000000000000000000000000815260208160048173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165afa80156103dc575f9061038f575b73ffffffffffffffffffffffffffffffffffffffff9150163303610367576040518183823760208183810160028152030190205461033f577fffffffff000000000000000000000000000000000000000000000000000000006102288284611cb3565b16917f5c1a1a4f0000000000000000000000000000000000000000000000000000000083036103095781600811610305577f8b18afeb361b83b025999ed5b42f1d90c68aaa5a0fd49c015f04c3b8b81e80eb917fffffffff000000000000000000000000000000000000000000000000000000006004830135165f525f6020526102b760405f20545b42611dcf565b60405182848237602081848101600281520301902055604051818382376020818381016002815203019020546102fa604051938493604085526040850191611d19565b9060208301520390a2005b5f80fd5b7f8b18afeb361b83b025999ed5b42f1d90c68aaa5a0fd49c015f04c3b8b81e80eb91835f525f6020526102b760405f20546102b1565b7fd91ff208000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f82b42900000000000000000000000000000000000000000000000000000000005f5260045ffd5b506020813d6020116103d4575b816103a960209383611963565b81010312610305576103cf73ffffffffffffffffffffffffffffffffffffffff91611c7a565b6101c5565b3d915061039c565b6040513d5f823e3d90fd5b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff0000000000000000000000000000000000000000000000000000000061043f611a24565b165f525f602052602060405f2054604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff000000000000000000000000000000000000000000000000000000006104ad611a24565b165f526001602052602060ff60405f2054166040519015158152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000168152f35b346103055761056461055061054b36611ba8565b61270d565b604051918291602083526020830190611b14565b0390f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000168152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055761060d611a53565b73ffffffffffffffffffffffffffffffffffffffff600354168033036103675773ffffffffffffffffffffffffffffffffffffffff821691604051917f70a08231000000000000000000000000000000000000000000000000000000008352306004840152602083602481875afa9283156103dc575f936107e8575b50813b156107c0575f9182918260405160208101927fa9059cbb0000000000000000000000000000000000000000000000000000000084526024820152866044820152604481526106db606482611963565b51925af13d156107b8573d906106f0826119a4565b916106fe6040519384611963565b82523d5f602084013e5b15610790578051908115918215610776575b50501561074e5760207f5e99aaf6d3588fb2497fde044168e8c046704a3223559cfe107f8f94b42cefdd91604051908152a2005b7f2f0470fc000000000000000000000000000000000000000000000000000000005f5260045ffd5b6107899250602080918301019101611c9b565b838061071a565b7face2a47e000000000000000000000000000000000000000000000000000000005f5260045ffd5b606090610708565b7ff046a714000000000000000000000000000000000000000000000000000000005f5260045ffd5b9092506020813d602011610814575b8161080460209383611963565b8101031261030557519184610689565b3d91506107f7565b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305577fffffffff00000000000000000000000000000000000000000000000000000000610874611a24565b61087c612993565b16805f52600160205260405f2060017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff008254161790557fa8480b135a28741e8c059528bf8f82de70278485fb86bfc816a183801f0a85705f80a2005b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305576020600454604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602061094f600435612003565b604051908152f35b3461030557602061094f61096a36611ba8565b611f13565b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043567ffffffffffffffff8111610305576020806109c2819336906004016119de565b604051928184925191829101835e8101600281520301902054604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043560045481101561030557610a2a602091611b63565b90549060031b1c604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305576004355f526005602052602060405f2054604051908152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760206040517f00000000000000000000000000000000000000000000000000000000000000008152f35b346103055760407ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557610b10611a24565b7fffffffff0000000000000000000000000000000000000000000000000000000060243591610b3d612993565b16907f5c1a1a4f000000000000000000000000000000000000000000000000000000008214610bd957815f525f60205260405f20548111610bb15760207f488e0bfafe0a9580c2271bee1f563a47d309f0105ca950ea525d909b43b36daf91835f525f82528060405f2055604051908152a2005b7f17e0a21c000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f07e895b1000000000000000000000000000000000000000000000000000000005f5260045ffd5b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc360112610305575f5f906004545b808310610c4857602082604051908152f35b90610c6d600191610c67610c5b86611b63565b90549060031b1c612003565b90611dcf565b92019190610c36565b3461030557610c9a610c8736611a76565b5050919060208082518301019101611d57565b9073ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001633036103675773ffffffffffffffffffffffffffffffffffffffff82511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001603610fab5773ffffffffffffffffffffffffffffffffffffffff60608301511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001603610f835760a082205f9180610e01575b50610deb83610da1610df19495611f13565b927fc3505702fbdd1c334673aa66559f4546d749681c4d2509c99c07fabf01b3227f6040610dce83612003565b97610dda8988866127f8565b8151908982526020820152a261270d565b92611e09565b9061056460405192839283611b47565b9150604051917f5c2bea49000000000000000000000000000000000000000000000000000000008352610eb760048401856080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b60a48301525f60c48301523060e483015230610104830152604082610124815f73ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165af19182156103dc575f92610f4a575b50610deb8293610df19394835f526005602052610f4060405f20918254611e21565b9055939250610d8f565b610df19250610f73610deb9160403d604011610f7c575b610f6b8183611963565b810190611db9565b90509250610f1e565b503d610f61565b7f6a7ca6c7000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f58ec95f2000000000000000000000000000000000000000000000000000000005f5260045ffd5b346103055760407ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055761100a611a24565b7fffffffff0000000000000000000000000000000000000000000000000000000060243591611037612993565b16907f5c1a1a4f000000000000000000000000000000000000000000000000000000008214610bd957815f525f60205260405f205481106110ab5760207fed380a7a1f0afc99b313ac7d9f1e52e44430d32b4639c7993bd0021974e30c0e91835f525f82528060405f2055604051908152a2005b7f470f70c2000000000000000000000000000000000000000000000000000000005f5260045ffd5b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055760043561110d612993565b5f8181526005602090815260408083208054939055519182527f82234a83a62d451b7758221f55cd21fe22d35d7798bdfea8a44168fd355880cb91a2005b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000168152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000168152f35b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602073ffffffffffffffffffffffffffffffffffffffff60035416604051908152f35b346103055760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc3601126103055773ffffffffffffffffffffffffffffffffffffffff6112c4611a53565b6112cc612993565b16807fffffffffffffffffffffffff000000000000000000000000000000000000000060035416176003557f2e7908865670e21b9779422cadf5f1cba271a62bb95c71eaaf615c0a1c48ebee5f80a2005b346103055761132e610c8736611a76565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001633036103675773ffffffffffffffffffffffffffffffffffffffff81511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001603610fab5773ffffffffffffffffffffffffffffffffffffffff60608201511673ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001603610f835760a08120905f9280611462575b5090610deb82611435610df194611f13565b927f67bd2993814767565e883edd1e76edf105cdd33766384ca8495e53562e20bea76040610dce83612003565b9250906040517fa99aad8900000000000000000000000000000000000000000000000000000000815261151860048201846080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b8360a48201525f60c48201523060e48201526101206101048201525f610124820152604081610144815f73ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165af19081156103dc575f916115e3575b50809381106115bb57610df192610deb91835f5260056020526115b160405f20918254611dcf565b9055919250611423565b7fff8d32ad000000000000000000000000000000000000000000000000000000005f5260045ffd5b6115fc915060403d604011610f7c57610f6b8183611963565b905084611589565b34610305575f7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261030557602060405173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000168152f35b3461030557611680366118ab565b909173ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000000016907fe66f53b7000000000000000000000000000000000000000000000000000000008152602081600481855afa80156103dc575f9061185e575b73ffffffffffffffffffffffffffffffffffffffff91501633149081156117e1575b50156103675760405181838237602081838101600281520301902054156117b9575f604051828482376020818481016002815203019020557f70521cf6a7c2458c5ad406081ad7b3bc4afd31b01b586a157a9780fcee6a77cb6117b47fffffffff0000000000000000000000000000000000000000000000000000000061179c8486611cb3565b16936040519182916020835233956020840191611d19565b0390a3005b7f1ea942a8000000000000000000000000000000000000000000000000000000005f5260045ffd5b60249150602090604051928380927fba03a75f0000000000000000000000000000000000000000000000000000000082523360048301525afa9081156103dc575f9161182f575b5083611715565b611851915060203d602011611857575b6118498183611963565b810190611c9b565b83611828565b503d61183f565b506020813d6020116118a3575b8161187860209383611963565b810103126103055761189e73ffffffffffffffffffffffffffffffffffffffff91611c7a565b6116f3565b3d915061186b565b9060207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc8301126103055760043567ffffffffffffffff811161030557826023820112156103055780600401359267ffffffffffffffff84116103055760248483010111610305576024019190565b60a0810190811067ffffffffffffffff82111761193657604052565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52604160045260245ffd5b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761193657604052565b67ffffffffffffffff811161193657601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01660200190565b81601f82011215610305578035906119f5826119a4565b92611a036040519485611963565b8284526020838301011161030557815f926020809301838601378301015290565b600435907fffffffff000000000000000000000000000000000000000000000000000000008216820361030557565b6004359073ffffffffffffffffffffffffffffffffffffffff8216820361030557565b60807ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc820112610305576004359067ffffffffffffffff821161030557611abf916004016119de565b90602435906044357fffffffff0000000000000000000000000000000000000000000000000000000081168103610305579060643573ffffffffffffffffffffffffffffffffffffffff811681036103055790565b90602080835192838152019201905f5b818110611b315750505090565b8251845260209384019390920191600101611b24565b929190611b5e602091604086526040860190611b14565b930152565b600454811015611b7b5760045f5260205f2001905f90565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52603260045260245ffd5b7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc60a091011261030557604051611bde8161191a565b60043573ffffffffffffffffffffffffffffffffffffffff8116810361030557815260243573ffffffffffffffffffffffffffffffffffffffff8116810361030557602082015260443573ffffffffffffffffffffffffffffffffffffffff8116810361030557604082015260643573ffffffffffffffffffffffffffffffffffffffff81168103610305576060820152608435608082015290565b519073ffffffffffffffffffffffffffffffffffffffff8216820361030557565b90816020910312610305575180151581036103055790565b919091357fffffffff0000000000000000000000000000000000000000000000000000000081169260048110611ce7575050565b7fffffffff00000000000000000000000000000000000000000000000000000000929350829060040360031b1b161690565b601f82602094937fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe093818652868601375f8582860101520116010190565b908160a091031261030557608060405191611d718361191a565b611d7a81611c7a565b8352611d8860208201611c7a565b6020840152611d9960408201611c7a565b6040840152611daa60608201611c7a565b60608401520151608082015290565b9190826040910312610305576020825192015190565b91908201809211611ddc57565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b81810392915f138015828513169184121617611ddc57565b91908203918211611ddc57565b916040611f1192949360e08152601160e08201527f746869732f6d61726b6574506172616d7300000000000000000000000000000061010082015273ffffffffffffffffffffffffffffffffffffffff61012082019616602082015201906080809173ffffffffffffffffffffffffffffffffffffffff815116845273ffffffffffffffffffffffffffffffffffffffff602082015116602085015273ffffffffffffffffffffffffffffffffffffffff604082015116604085015273ffffffffffffffffffffffffffffffffffffffff60608201511660608501520151910152565b565b604051611f5581611f2960208201943086611e2e565b037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08101835282611963565b519020604051907fc69507dd000000000000000000000000000000000000000000000000000000008252600482015260208160248173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165afa9081156103dc575f91611fd4575090565b90506020813d602011611ffb575b81611fef60209383611963565b81010312610305575190565b3d9150611fe2565b5f90805f52600560205260405f205480155f1461201f57505090565b604051917f5c60e39a00000000000000000000000000000000000000000000000000000000835280600484015260c08360248173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165afa9283156103dc575f9361265b575b5060808301906120bc6fffffffffffffffffffffffffffffffff83511642611e21565b908115158061263c575b612146575b5050506fffffffffffffffffffffffffffffffff60208184511693015116926001830180931161211957620f424084018094116121195750612116929161211191612b8c565b612c7a565b90565b807f4e487b7100000000000000000000000000000000000000000000000000000000602492526011600452fd5b8451929591926fffffffffffffffffffffffffffffffff168015612635576fffffffffffffffffffffffffffffffff60408701511690670de0b6b3a7640000820291808304670de0b6b3a76400001490151715611ddc576121a691612c7a565b670c7d713b49da00008113156126265767016345785d8a0000905b7ffffffffffffffffffffffffffffffffffffffffffffffffff3828ec4b62600008101908113600116611ddc57670de0b6b3a7640000810290808205670de0b6b3a76400001490151715611ddc5781156125f9577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82147f8000000000000000000000000000000000000000000000000000000000000000821416611ddc570595604051917f01977b57000000000000000000000000000000000000000000000000000000008352600483015260208260248173ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000165afa9182156103dc575f926125c5575b5081612536575050634b9a1eff905b5f86121561251a5750670de0b6b3a7640000612310670a688906bd8b0000965f97612c84565b05670de0b6b3a764000081019086670de0b6b3a7640000831291129080158216911516176124ed57670de0b6b3a764000061234f81936123b193612c84565b056123ab61237560408801956fffffffffffffffffffffffffffffffff87511693612b8c565b6123a6671bc16d674ec8000061238b8380612b8c565b046729a2241af62c000061239f8483612b8c565b0492611dcf565b611dcf565b90612b8c565b04906fffffffffffffffffffffffffffffffff6123d96123d084612b9f565b82845116612b5a565b1690526fffffffffffffffffffffffffffffffff6124026123f983612b9f565b82865116612b5a565b1683526fffffffffffffffffffffffffffffffff60a0840151169081612429575b806120cb565b670de0b6b3a76400009161243c91612b8c565b0461245a816fffffffffffffffffffffffffffffffff855116611e21565b60208401916fffffffffffffffffffffffffffffffff83511690620f424082018092116124c057600183018093116124c0576124b16fffffffffffffffffffffffffffffffff936121116124b6946123d094612b8c565b612b9f565b1690525f80612423565b6024877f4e487b710000000000000000000000000000000000000000000000000000000081526011600452fd5b6024867f4e487b710000000000000000000000000000000000000000000000000000000081526011600452fd5b94612310670de0b6b3a7640000916729a2241af62c0000612c84565b612577906125716fffffffffffffffffffffffffffffffff670de0b6b3a76400006125678b650171268b5ad4612c84565b0592511642611e21565b90612c84565b806125835750906122ea565b8061259e60026125966125a49486612cdd565b920584612cdd565b92612cc2565b8160011b916002830503611ddc576004916125be91612cc2565b05906122ea565b9091506020813d6020116125f1575b816125e160209383611963565b810103126103055751905f6122db565b3d91506125d4565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601260045260245ffd5b670c7d713b49da0000906121c1565b505f6121a6565b506fffffffffffffffffffffffffffffffff60408601511615156120c6565b90925060c0813d60c011612705575b8161267760c09383611963565b81010312610305576040519060c0820182811067ffffffffffffffff821117611936576126f99160a0916040526126ad81612b3d565b84526126bb60208201612b3d565b60208501526126cc60408201612b3d565b60408501526126dd60608201612b3d565b60608501526126ee60808201612b3d565b608085015201612b3d565b60a0820152915f612099565b3d915061266a565b6040519061271c608083611963565b60038252602082016060368237825115611b7b577f0000000000000000000000000000000000000000000000000000000000000000905273ffffffffffffffffffffffffffffffffffffffff602082015116604051602081019160408352600f60608301527f636f6c6c61746572616c546f6b656e000000000000000000000000000000000060808301526040820152608081526127bb60a082611963565b519020825160011015611b7b5760408301526040516127e381611f2960208201943086611e2e565b519020815160021015611b7b57606082015290565b9190159081158061298b575b1561294b5750505f5b60045480821015612946578261282283611b63565b90549060031b1c14612837575060010161280d565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff810192508211611ddc5761287e6128716128b493611b63565b90549060031b1c91611b63565b9091907fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff83549160031b92831b921b1916179055565b6004548015612919577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016128e881611b63565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82549160031b1b19169055600455565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52603160045260245ffd5b505050565b81612981575b506129595750565b60045490680100000000000000008210156119365761287e826001611f119401600455611b63565b905015155f612951565b508015612804565b5f357fffffffff0000000000000000000000000000000000000000000000000000000081169060043610612b09575b50604051365f8237602081368101600281520301902054156117b957604051365f82376020813681016002815203019020544210612ae1577fffffffff0000000000000000000000000000000000000000000000000000000016805f52600160205260ff60405f205416612ab9575f604051368282376020813681016002815203019020557f29aa42fc192ff77ef42105abba283197ac841341e196e417a7fc2784cdc4e5fb60405160208152366020820152365f60408301375f602080368401010152602081817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f360116820101030190a2565b7f281df4aa000000000000000000000000000000000000000000000000000000005f5260045ffd5b7f621e25c3000000000000000000000000000000000000000000000000000000005f5260045ffd5b7fffffffff000000000000000000000000000000000000000000000000000000008092503660040360031b1b16165f6129c2565b51906fffffffffffffffffffffffffffffffff8216820361030557565b906fffffffffffffffffffffffffffffffff809116911601906fffffffffffffffffffffffffffffffff8211611ddc57565b81810292918115918404141715611ddc57565b604051612bad604082611963565b6014815260208101907f6d61782075696e7431323820657863656564656400000000000000000000000082526fffffffffffffffffffffffffffffffff8311612c075750506fffffffffffffffffffffffffffffffff1690565b6044907fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f6040519485937f08c379a0000000000000000000000000000000000000000000000000000000008552602060048601525180918160248701528686015e5f85828601015201168101030190fd5b81156125f9570490565b81810292915f82127f8000000000000000000000000000000000000000000000000000000000000000821416611ddc578184051490151715611ddc57565b9190915f8382019384129112908015821691151617611ddc57565b612cf390612571670de0b6b3a764000093612d14565b056301e3da5f90640ec41a0ddf818112908218021890818113908218021890565b7ffffffffffffffffffffffffffffffffffffffffffffffffdc0d0570925a462d88112612df6576805168fd0946fc0415f811215612dd8575f811215612db857670de0b6b3a764000067099e8db03256ce5d7ffffffffffffffffffffffffffffffffffffffffffffffffffb30b927e6d498d25b8301059167099e8db03256ce5d8302900360028282800205050101905f8112155f14612db2571b90565b5f031d90565b670de0b6b3a764000067099e8db03256ce5d6704cf46d8192b672e612d88565b50780931d81650c7d88b800000000000000000000000000000000090565b505f9056fea164736f6c634300081c000a00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda3110000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e7",
+  "name": "MorphoMarketV1AdapterV2",
+  "is_blueprint": false,
+  "license_type": "none",
+  "is_fully_verified": false,
+  "has_methods_read_proxy": false,
+  "is_vyper_contract": false,
+  "is_verified_via_eth_bytecode_db": false,
+  "language": "solidity",
+  "evm_version": "cancun",
+  "can_be_visualized_via_sol2uml": false,
+  "has_methods_write_proxy": false,
+  "has_custom_methods_read": false,
+  "is_verified_via_sourcify": false,
+  "additional_sources": [
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/interfaces/IIrm.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity >=0.5.0;\n\nimport {MarketParams, Market} from \"./IMorpho.sol\";\n\n/// @title IIrm\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Interface that Interest Rate Models (IRMs) used by Morpho must implement.\ninterface IIrm {\n    /// @notice Returns the borrow rate per second (scaled by WAD) of the market `marketParams`.\n    /// @dev Assumes that `market` corresponds to `marketParams`.\n    function borrowRate(MarketParams memory marketParams, Market memory market) external returns (uint256);\n\n    /// @notice Returns the borrow rate per second (scaled by WAD) of the market `marketParams` without modifying any\n    /// storage.\n    /// @dev Assumes that `market` corresponds to `marketParams`.\n    function borrowRateView(MarketParams memory marketParams, Market memory market) external view returns (uint256);\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/interfaces/IMorpho.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity >=0.5.0;\n\ntype Id is bytes32;\n\nstruct MarketParams {\n    address loanToken;\n    address collateralToken;\n    address oracle;\n    address irm;\n    uint256 lltv;\n}\n\n/// @dev Warning: For `feeRecipient`, `supplyShares` does not contain the accrued shares since the last interest\n/// accrual.\nstruct Position {\n    uint256 supplyShares;\n    uint128 borrowShares;\n    uint128 collateral;\n}\n\n/// @dev Warning: `totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n/// @dev Warning: `totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n/// @dev Warning: `totalSupplyShares` does not contain the additional shares accrued by `feeRecipient` since the last\n/// interest accrual.\nstruct Market {\n    uint128 totalSupplyAssets;\n    uint128 totalSupplyShares;\n    uint128 totalBorrowAssets;\n    uint128 totalBorrowShares;\n    uint128 lastUpdate;\n    uint128 fee;\n}\n\nstruct Authorization {\n    address authorizer;\n    address authorized;\n    bool isAuthorized;\n    uint256 nonce;\n    uint256 deadline;\n}\n\nstruct Signature {\n    uint8 v;\n    bytes32 r;\n    bytes32 s;\n}\n\n/// @dev This interface is used for factorizing IMorphoStaticTyping and IMorpho.\n/// @dev Consider using the IMorpho interface instead of this one.\ninterface IMorphoBase {\n    /// @notice The EIP-712 domain separator.\n    /// @dev Warning: Every EIP-712 signed message based on this domain separator can be reused on chains sharing the\n    /// same chain id and on forks because the domain separator would be the same.\n    function DOMAIN_SEPARATOR() external view returns (bytes32);\n\n    /// @notice The owner of the contract.\n    /// @dev It has the power to change the owner.\n    /// @dev It has the power to set fees on markets and set the fee recipient.\n    /// @dev It has the power to enable but not disable IRMs and LLTVs.\n    function owner() external view returns (address);\n\n    /// @notice The fee recipient of all markets.\n    /// @dev The recipient receives the fees of a given market through a supply position on that market.\n    function feeRecipient() external view returns (address);\n\n    /// @notice Whether the `irm` is enabled.\n    function isIrmEnabled(address irm) external view returns (bool);\n\n    /// @notice Whether the `lltv` is enabled.\n    function isLltvEnabled(uint256 lltv) external view returns (bool);\n\n    /// @notice Whether `authorized` is authorized to modify `authorizer`'s position on all markets.\n    /// @dev Anyone is authorized to modify their own positions, regardless of this variable.\n    function isAuthorized(address authorizer, address authorized) external view returns (bool);\n\n    /// @notice The `authorizer`'s current nonce. Used to prevent replay attacks with EIP-712 signatures.\n    function nonce(address authorizer) external view returns (uint256);\n\n    /// @notice Sets `newOwner` as `owner` of the contract.\n    /// @dev Warning: No two-step transfer ownership.\n    /// @dev Warning: The owner can be set to the zero address.\n    function setOwner(address newOwner) external;\n\n    /// @notice Enables `irm` as a possible IRM for market creation.\n    /// @dev Warning: It is not possible to disable an IRM.\n    function enableIrm(address irm) external;\n\n    /// @notice Enables `lltv` as a possible LLTV for market creation.\n    /// @dev Warning: It is not possible to disable a LLTV.\n    function enableLltv(uint256 lltv) external;\n\n    /// @notice Sets the `newFee` for the given market `marketParams`.\n    /// @param newFee The new fee, scaled by WAD.\n    /// @dev Warning: The recipient can be the zero address.\n    function setFee(MarketParams memory marketParams, uint256 newFee) external;\n\n    /// @notice Sets `newFeeRecipient` as `feeRecipient` of the fee.\n    /// @dev Warning: If the fee recipient is set to the zero address, fees will accrue there and will be lost.\n    /// @dev Modifying the fee recipient will allow the new recipient to claim any pending fees not yet accrued. To\n    /// ensure that the current recipient receives all due fees, accrue interest manually prior to making any changes.\n    function setFeeRecipient(address newFeeRecipient) external;\n\n    /// @notice Creates the market `marketParams`.\n    /// @dev Here is the list of assumptions on the market's dependencies (tokens, IRM and oracle) that guarantees\n    /// Morpho behaves as expected:\n    /// - The token should be ERC-20 compliant, except that it can omit return values on `transfer` and `transferFrom`.\n    /// - The token balance of Morpho should only decrease on `transfer` and `transferFrom`. In particular, tokens with\n    /// burn functions are not supported.\n    /// - The token should not re-enter Morpho on `transfer` nor `transferFrom`.\n    /// - The token balance of the sender (resp. receiver) should decrease (resp. increase) by exactly the given amount\n    /// on `transfer` and `transferFrom`. In particular, tokens with fees on transfer are not supported.\n    /// - The IRM should not re-enter Morpho.\n    /// - The oracle should return a price with the correct scaling.\n    /// - The oracle price should not be able to change instantly such that the new price is less than the old price\n    /// multiplied by LLTV*LIF. In particular, if the loan asset is a vault that can receive donations, the oracle\n    /// should not price its shares using the AUM.\n    /// @dev Here is a list of assumptions on the market's dependencies which, if broken, could break Morpho's liveness\n    /// properties (funds could get stuck):\n    /// - The token should not revert on `transfer` and `transferFrom` if balances and approvals are right.\n    /// - The amount of assets supplied and borrowed should not be too high (max ~1e32), otherwise the number of shares\n    /// might not fit within 128 bits.\n    /// - The IRM should not revert on `borrowRate`.\n    /// - The IRM should not return a very high borrow rate (otherwise the computation of `interest` in\n    /// `_accrueInterest` can overflow).\n    /// - The oracle should not revert `price`.\n    /// - The oracle should not return a very high price (otherwise the computation of `maxBorrow` in `_isHealthy` or of\n    /// `assetsRepaid` in `liquidate` can overflow).\n    /// @dev The borrow share price of a market with less than 1e4 assets borrowed can be decreased by manipulations, to\n    /// the point where `totalBorrowShares` is very large and borrowing overflows.\n    function createMarket(MarketParams memory marketParams) external;\n\n    /// @notice Supplies `assets` or `shares` on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoSupply` function with the given `data`.\n    /// @dev Either `assets` or `shares` should be zero. Most use cases should rely on `assets` as an input so the\n    /// caller is guaranteed to have `assets` tokens pulled from their balance, but the possibility to mint a specific\n    /// amount of shares is given for full compatibility and precision.\n    /// @dev Supplying a large amount can revert for overflow.\n    /// @dev Supplying an amount of shares may lead to supply more or fewer assets than expected due to slippage.\n    /// Consider using the `assets` parameter to avoid this.\n    /// @param marketParams The market to supply assets to.\n    /// @param assets The amount of assets to supply.\n    /// @param shares The amount of shares to mint.\n    /// @param onBehalf The address that will own the increased supply position.\n    /// @param data Arbitrary data to pass to the `onMorphoSupply` callback. Pass empty data if not needed.\n    /// @return assetsSupplied The amount of assets supplied.\n    /// @return sharesSupplied The amount of shares minted.\n    function supply(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        bytes memory data\n    ) external returns (uint256 assetsSupplied, uint256 sharesSupplied);\n\n    /// @notice Withdraws `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev Either `assets` or `shares` should be zero. To withdraw max, pass the `shares`'s balance of `onBehalf`.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Withdrawing an amount corresponding to more shares than supplied will revert for underflow.\n    /// @dev It is advised to use the `shares` input when withdrawing the full position to avoid reverts due to\n    /// conversion roundings between shares and assets.\n    /// @param marketParams The market to withdraw assets from.\n    /// @param assets The amount of assets to withdraw.\n    /// @param shares The amount of shares to burn.\n    /// @param onBehalf The address of the owner of the supply position.\n    /// @param receiver The address that will receive the withdrawn assets.\n    /// @return assetsWithdrawn The amount of assets withdrawn.\n    /// @return sharesWithdrawn The amount of shares burned.\n    function withdraw(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        address receiver\n    ) external returns (uint256 assetsWithdrawn, uint256 sharesWithdrawn);\n\n    /// @notice Borrows `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev Either `assets` or `shares` should be zero. Most use cases should rely on `assets` as an input so the\n    /// caller is guaranteed to borrow `assets` of tokens, but the possibility to mint a specific amount of shares is\n    /// given for full compatibility and precision.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Borrowing a large amount can revert for overflow.\n    /// @dev Borrowing an amount of shares may lead to borrow fewer assets than expected due to slippage.\n    /// Consider using the `assets` parameter to avoid this.\n    /// @param marketParams The market to borrow assets from.\n    /// @param assets The amount of assets to borrow.\n    /// @param shares The amount of shares to mint.\n    /// @param onBehalf The address that will own the increased borrow position.\n    /// @param receiver The address that will receive the borrowed assets.\n    /// @return assetsBorrowed The amount of assets borrowed.\n    /// @return sharesBorrowed The amount of shares minted.\n    function borrow(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        address receiver\n    ) external returns (uint256 assetsBorrowed, uint256 sharesBorrowed);\n\n    /// @notice Repays `assets` or `shares` on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoRepay` function with the given `data`.\n    /// @dev Either `assets` or `shares` should be zero. To repay max, pass the `shares`'s balance of `onBehalf`.\n    /// @dev Repaying an amount corresponding to more shares than borrowed will revert for underflow.\n    /// @dev It is advised to use the `shares` input when repaying the full position to avoid reverts due to conversion\n    /// roundings between shares and assets.\n    /// @dev An attacker can front-run a repay with a small repay making the transaction revert for underflow.\n    /// @param marketParams The market to repay assets to.\n    /// @param assets The amount of assets to repay.\n    /// @param shares The amount of shares to burn.\n    /// @param onBehalf The address of the owner of the debt position.\n    /// @param data Arbitrary data to pass to the `onMorphoRepay` callback. Pass empty data if not needed.\n    /// @return assetsRepaid The amount of assets repaid.\n    /// @return sharesRepaid The amount of shares burned.\n    function repay(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        bytes memory data\n    ) external returns (uint256 assetsRepaid, uint256 sharesRepaid);\n\n    /// @notice Supplies `assets` of collateral on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoSupplyCollateral` function with the given `data`.\n    /// @dev Interest are not accrued since it's not required and it saves gas.\n    /// @dev Supplying a large amount can revert for overflow.\n    /// @param marketParams The market to supply collateral to.\n    /// @param assets The amount of collateral to supply.\n    /// @param onBehalf The address that will own the increased collateral position.\n    /// @param data Arbitrary data to pass to the `onMorphoSupplyCollateral` callback. Pass empty data if not needed.\n    function supplyCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, bytes memory data)\n        external;\n\n    /// @notice Withdraws `assets` of collateral on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Withdrawing an amount corresponding to more collateral than supplied will revert for underflow.\n    /// @param marketParams The market to withdraw collateral from.\n    /// @param assets The amount of collateral to withdraw.\n    /// @param onBehalf The address of the owner of the collateral position.\n    /// @param receiver The address that will receive the collateral assets.\n    function withdrawCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, address receiver)\n        external;\n\n    /// @notice Liquidates the given `repaidShares` of debt asset or seize the given `seizedAssets` of collateral on the\n    /// given market `marketParams` of the given `borrower`'s position, optionally calling back the caller's\n    /// `onMorphoLiquidate` function with the given `data`.\n    /// @dev Either `seizedAssets` or `repaidShares` should be zero.\n    /// @dev Seizing more than the collateral balance will underflow and revert without any error message.\n    /// @dev Repaying more than the borrow balance will underflow and revert without any error message.\n    /// @dev An attacker can front-run a liquidation with a small repay making the transaction revert for underflow.\n    /// @param marketParams The market of the position.\n    /// @param borrower The owner of the position.\n    /// @param seizedAssets The amount of collateral to seize.\n    /// @param repaidShares The amount of shares to repay.\n    /// @param data Arbitrary data to pass to the `onMorphoLiquidate` callback. Pass empty data if not needed.\n    /// @return The amount of assets seized.\n    /// @return The amount of assets repaid.\n    function liquidate(\n        MarketParams memory marketParams,\n        address borrower,\n        uint256 seizedAssets,\n        uint256 repaidShares,\n        bytes memory data\n    ) external returns (uint256, uint256);\n\n    /// @notice Executes a flash loan.\n    /// @dev Flash loans have access to the whole balance of the contract (the liquidity and deposited collateral of all\n    /// markets combined, plus donations).\n    /// @dev Warning: Not ERC-3156 compliant but compatibility is easily reached:\n    /// - `flashFee` is zero.\n    /// - `maxFlashLoan` is the token's balance of this contract.\n    /// - The receiver of `assets` is the caller.\n    /// @param token The token to flash loan.\n    /// @param assets The amount of assets to flash loan.\n    /// @param data Arbitrary data to pass to the `onMorphoFlashLoan` callback.\n    function flashLoan(address token, uint256 assets, bytes calldata data) external;\n\n    /// @notice Sets the authorization for `authorized` to manage `msg.sender`'s positions.\n    /// @param authorized The authorized address.\n    /// @param newIsAuthorized The new authorization status.\n    function setAuthorization(address authorized, bool newIsAuthorized) external;\n\n    /// @notice Sets the authorization for `authorization.authorized` to manage `authorization.authorizer`'s positions.\n    /// @dev Warning: Reverts if the signature has already been submitted.\n    /// @dev The signature is malleable, but it has no impact on the security here.\n    /// @dev The nonce is passed as argument to be able to revert with a different error message.\n    /// @param authorization The `Authorization` struct.\n    /// @param signature The signature.\n    function setAuthorizationWithSig(Authorization calldata authorization, Signature calldata signature) external;\n\n    /// @notice Accrues interest for the given market `marketParams`.\n    function accrueInterest(MarketParams memory marketParams) external;\n\n    /// @notice Returns the data stored on the different `slots`.\n    function extSloads(bytes32[] memory slots) external view returns (bytes32[] memory);\n}\n\n/// @dev This interface is inherited by Morpho so that function signatures are checked by the compiler.\n/// @dev Consider using the IMorpho interface instead of this one.\ninterface IMorphoStaticTyping is IMorphoBase {\n    /// @notice The state of the position of `user` on the market corresponding to `id`.\n    /// @dev Warning: For `feeRecipient`, `supplyShares` does not contain the accrued shares since the last interest\n    /// accrual.\n    function position(Id id, address user)\n        external\n        view\n        returns (uint256 supplyShares, uint128 borrowShares, uint128 collateral);\n\n    /// @notice The state of the market corresponding to `id`.\n    /// @dev Warning: `totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `totalSupplyShares` does not contain the accrued shares by `feeRecipient` since the last interest\n    /// accrual.\n    function market(Id id)\n        external\n        view\n        returns (\n            uint128 totalSupplyAssets,\n            uint128 totalSupplyShares,\n            uint128 totalBorrowAssets,\n            uint128 totalBorrowShares,\n            uint128 lastUpdate,\n            uint128 fee\n        );\n\n    /// @notice The market params corresponding to `id`.\n    /// @dev This mapping is not used in Morpho. It is there to enable reducing the cost associated to calldata on layer\n    /// 2s by creating a wrapper contract with functions that take `id` as input instead of `marketParams`.\n    function idToMarketParams(Id id)\n        external\n        view\n        returns (address loanToken, address collateralToken, address oracle, address irm, uint256 lltv);\n}\n\n/// @title IMorpho\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @dev Use this interface for Morpho to have access to all the functions with the appropriate function signatures.\ninterface IMorpho is IMorphoBase {\n    /// @notice The state of the position of `user` on the market corresponding to `id`.\n    /// @dev Warning: For `feeRecipient`, `p.supplyShares` does not contain the accrued shares since the last interest\n    /// accrual.\n    function position(Id id, address user) external view returns (Position memory p);\n\n    /// @notice The state of the market corresponding to `id`.\n    /// @dev Warning: `m.totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `m.totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `m.totalSupplyShares` does not contain the accrued shares by `feeRecipient` since the last\n    /// interest accrual.\n    function market(Id id) external view returns (Market memory m);\n\n    /// @notice The market params corresponding to `id`.\n    /// @dev This mapping is not used in Morpho. It is there to enable reducing the cost associated to calldata on layer\n    /// 2s by creating a wrapper contract with functions that take `id` as input instead of `marketParams`.\n    function idToMarketParams(Id id) external view returns (MarketParams memory);\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/libraries/ErrorsLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\n/// @title ErrorsLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library exposing error messages.\nlibrary ErrorsLib {\n    /// @notice Thrown when the caller is not the owner.\n    string internal constant NOT_OWNER = \"not owner\";\n\n    /// @notice Thrown when the LLTV to enable exceeds the maximum LLTV.\n    string internal constant MAX_LLTV_EXCEEDED = \"max LLTV exceeded\";\n\n    /// @notice Thrown when the fee to set exceeds the maximum fee.\n    string internal constant MAX_FEE_EXCEEDED = \"max fee exceeded\";\n\n    /// @notice Thrown when the value is already set.\n    string internal constant ALREADY_SET = \"already set\";\n\n    /// @notice Thrown when the IRM is not enabled at market creation.\n    string internal constant IRM_NOT_ENABLED = \"IRM not enabled\";\n\n    /// @notice Thrown when the LLTV is not enabled at market creation.\n    string internal constant LLTV_NOT_ENABLED = \"LLTV not enabled\";\n\n    /// @notice Thrown when the market is already created.\n    string internal constant MARKET_ALREADY_CREATED = \"market already created\";\n\n    /// @notice Thrown when a token to transfer doesn't have code.\n    string internal constant NO_CODE = \"no code\";\n\n    /// @notice Thrown when the market is not created.\n    string internal constant MARKET_NOT_CREATED = \"market not created\";\n\n    /// @notice Thrown when not exactly one of the input amount is zero.\n    string internal constant INCONSISTENT_INPUT = \"inconsistent input\";\n\n    /// @notice Thrown when zero assets is passed as input.\n    string internal constant ZERO_ASSETS = \"zero assets\";\n\n    /// @notice Thrown when a zero address is passed as input.\n    string internal constant ZERO_ADDRESS = \"zero address\";\n\n    /// @notice Thrown when the caller is not authorized to conduct an action.\n    string internal constant UNAUTHORIZED = \"unauthorized\";\n\n    /// @notice Thrown when the collateral is insufficient to `borrow` or `withdrawCollateral`.\n    string internal constant INSUFFICIENT_COLLATERAL = \"insufficient collateral\";\n\n    /// @notice Thrown when the liquidity is insufficient to `withdraw` or `borrow`.\n    string internal constant INSUFFICIENT_LIQUIDITY = \"insufficient liquidity\";\n\n    /// @notice Thrown when the position to liquidate is healthy.\n    string internal constant HEALTHY_POSITION = \"position is healthy\";\n\n    /// @notice Thrown when the authorization signature is invalid.\n    string internal constant INVALID_SIGNATURE = \"invalid signature\";\n\n    /// @notice Thrown when the authorization signature is expired.\n    string internal constant SIGNATURE_EXPIRED = \"signature expired\";\n\n    /// @notice Thrown when the nonce is invalid.\n    string internal constant INVALID_NONCE = \"invalid nonce\";\n\n    /// @notice Thrown when a token transfer reverted.\n    string internal constant TRANSFER_REVERTED = \"transfer reverted\";\n\n    /// @notice Thrown when a token transfer returned false.\n    string internal constant TRANSFER_RETURNED_FALSE = \"transfer returned false\";\n\n    /// @notice Thrown when a token transferFrom reverted.\n    string internal constant TRANSFER_FROM_REVERTED = \"transferFrom reverted\";\n\n    /// @notice Thrown when a token transferFrom returned false\n    string internal constant TRANSFER_FROM_RETURNED_FALSE = \"transferFrom returned false\";\n\n    /// @notice Thrown when the maximum uint128 is exceeded.\n    string internal constant MAX_UINT128_EXCEEDED = \"max uint128 exceeded\";\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/libraries/MathLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nuint256 constant WAD = 1e18;\n\n/// @title MathLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library to manage fixed-point arithmetic.\nlibrary MathLib {\n    /// @dev Returns (`x` * `y`) / `WAD` rounded down.\n    function wMulDown(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivDown(x, y, WAD);\n    }\n\n    /// @dev Returns (`x` * `WAD`) / `y` rounded down.\n    function wDivDown(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivDown(x, WAD, y);\n    }\n\n    /// @dev Returns (`x` * `WAD`) / `y` rounded up.\n    function wDivUp(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivUp(x, WAD, y);\n    }\n\n    /// @dev Returns (`x` * `y`) / `d` rounded down.\n    function mulDivDown(uint256 x, uint256 y, uint256 d) internal pure returns (uint256) {\n        return (x * y) / d;\n    }\n\n    /// @dev Returns (`x` * `y`) / `d` rounded up.\n    function mulDivUp(uint256 x, uint256 y, uint256 d) internal pure returns (uint256) {\n        return (x * y + (d - 1)) / d;\n    }\n\n    /// @dev Returns the sum of the first three non-zero terms of a Taylor expansion of e^(nx) - 1, to approximate a\n    /// continuous compound interest rate.\n    function wTaylorCompounded(uint256 x, uint256 n) internal pure returns (uint256) {\n        uint256 firstTerm = x * n;\n        uint256 secondTerm = mulDivDown(firstTerm, firstTerm, 2 * WAD);\n        uint256 thirdTerm = mulDivDown(secondTerm, firstTerm, 3 * WAD);\n\n        return firstTerm + secondTerm + thirdTerm;\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/libraries/SharesMathLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nimport {MathLib} from \"./MathLib.sol\";\n\n/// @title SharesMathLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Shares management library.\n/// @dev This implementation mitigates share price manipulations, using OpenZeppelin's method of virtual shares:\n/// https://docs.openzeppelin.com/contracts/4.x/erc4626#inflation-attack.\nlibrary SharesMathLib {\n    using MathLib for uint256;\n\n    /// @dev The number of virtual shares has been chosen low enough to prevent overflows, and high enough to ensure\n    /// high precision computations.\n    /// @dev Virtual shares can never be redeemed for the assets they are entitled to, but it is assumed the share price\n    /// stays low enough not to inflate these assets to a significant value.\n    /// @dev Warning: The assets to which virtual borrow shares are entitled behave like unrealizable bad debt.\n    uint256 internal constant VIRTUAL_SHARES = 1e6;\n\n    /// @dev A number of virtual assets of 1 enforces a conversion rate between shares and assets when a market is\n    /// empty.\n    uint256 internal constant VIRTUAL_ASSETS = 1;\n\n    /// @dev Calculates the value of `assets` quoted in shares, rounding down.\n    function toSharesDown(uint256 assets, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return assets.mulDivDown(totalShares + VIRTUAL_SHARES, totalAssets + VIRTUAL_ASSETS);\n    }\n\n    /// @dev Calculates the value of `shares` quoted in assets, rounding down.\n    function toAssetsDown(uint256 shares, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return shares.mulDivDown(totalAssets + VIRTUAL_ASSETS, totalShares + VIRTUAL_SHARES);\n    }\n\n    /// @dev Calculates the value of `assets` quoted in shares, rounding up.\n    function toSharesUp(uint256 assets, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return assets.mulDivUp(totalShares + VIRTUAL_SHARES, totalAssets + VIRTUAL_ASSETS);\n    }\n\n    /// @dev Calculates the value of `shares` quoted in assets, rounding up.\n    function toAssetsUp(uint256 shares, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return shares.mulDivUp(totalAssets + VIRTUAL_ASSETS, totalShares + VIRTUAL_SHARES);\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/lib/morpho-blue/src/libraries/UtilsLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nimport {ErrorsLib} from \"../libraries/ErrorsLib.sol\";\n\n/// @title UtilsLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library exposing helpers.\n/// @dev Inspired by https://github.com/morpho-org/morpho-utils.\nlibrary UtilsLib {\n    /// @dev Returns true if there is exactly one zero among `x` and `y`.\n    function exactlyOneZero(uint256 x, uint256 y) internal pure returns (bool z) {\n        assembly {\n            z := xor(iszero(x), iszero(y))\n        }\n    }\n\n    /// @dev Returns the min of `x` and `y`.\n    function min(uint256 x, uint256 y) internal pure returns (uint256 z) {\n        assembly {\n            z := xor(x, mul(xor(x, y), lt(y, x)))\n        }\n    }\n\n    /// @dev Returns `x` safely cast to uint128.\n    function toUint128(uint256 x) internal pure returns (uint128) {\n        require(x <= type(uint128).max, ErrorsLib.MAX_UINT128_EXCEEDED);\n        return uint128(x);\n    }\n\n    /// @dev Returns max(0, x - y).\n    function zeroFloorSub(uint256 x, uint256 y) internal pure returns (uint256 z) {\n        assembly {\n            z := mul(gt(x, y), sub(x, y))\n        }\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/interfaces/IAdaptiveCurveIrm.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity >=0.5.0;\n\nimport {IIrm} from \"../../../lib/morpho-blue/src/interfaces/IIrm.sol\";\nimport {Id} from \"../../../lib/morpho-blue/src/interfaces/IMorpho.sol\";\n\n/// @title IAdaptiveCurveIrm\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Interface exposed by the AdaptiveCurveIrm.\ninterface IAdaptiveCurveIrm is IIrm {\n    /// @notice Address of Morpho.\n    function MORPHO() external view returns (address);\n\n    /// @notice Rate at target utilization.\n    /// @dev Tells the height of the curve.\n    function rateAtTarget(Id id) external view returns (int256);\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/ConstantsLib.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n/// @title ConstantsLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\nlibrary ConstantsLib {\n    /// @notice Curve steepness (scaled by WAD).\n    /// @dev Curve steepness = 4.\n    int256 public constant CURVE_STEEPNESS = 4 ether;\n\n    /// @notice Adjustment speed per second (scaled by WAD).\n    /// @dev The speed is per second, so the rate moves at a speed of ADJUSTMENT_SPEED * err each second (while being\n    /// continuously compounded).\n    /// @dev Adjustment speed = 50/year.\n    int256 public constant ADJUSTMENT_SPEED = 50 ether / int256(365 days);\n\n    /// @notice Target utilization (scaled by WAD).\n    /// @dev Target utilization = 90%.\n    int256 public constant TARGET_UTILIZATION = 0.9 ether;\n\n    /// @notice Initial rate at target per second (scaled by WAD).\n    /// @dev Initial rate at target = 4% (rate between 1% and 16%).\n    int256 public constant INITIAL_RATE_AT_TARGET = 0.04 ether / int256(365 days);\n\n    /// @notice Minimum rate at target per second (scaled by WAD).\n    /// @dev Minimum rate at target = 0.1% (minimum rate = 0.025%).\n    int256 public constant MIN_RATE_AT_TARGET = 0.001 ether / int256(365 days);\n\n    /// @notice Maximum rate at target per second (scaled by WAD).\n    /// @dev Maximum rate at target = 200% (maximum rate = 800%).\n    int256 public constant MAX_RATE_AT_TARGET = 2.0 ether / int256(365 days);\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/ExpLib.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {WAD_INT} from \"./MathLib.sol\";\n\n/// @title ExpLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library to approximate the exponential function.\nlibrary ExpLib {\n    /// @dev ln(2).\n    int256 internal constant LN_2_INT = 0.693147180559945309 ether;\n\n    /// @dev ln(1e-18).\n    int256 internal constant LN_WEI_INT = -41.446531673892822312 ether;\n\n    /// @dev Above this bound, `wExp` is clipped to avoid overflowing when multiplied with 1 ether.\n    /// @dev This upper bound corresponds to: ln(type(int256).max / 1e36) (scaled by WAD, floored).\n    int256 internal constant WEXP_UPPER_BOUND = 93.859467695000404319 ether;\n\n    /// @dev The value of wExp(`WEXP_UPPER_BOUND`).\n    int256 internal constant WEXP_UPPER_VALUE = 57716089161558943949701069502944508345128.422502756744429568 ether;\n\n    /// @dev Returns an approximation of exp.\n    function wExp(int256 x) internal pure returns (int256) {\n        unchecked {\n            // If x < ln(1e-18) then exp(x) < 1e-18 so it is rounded to zero.\n            if (x < LN_WEI_INT) return 0;\n            // `wExp` is clipped to avoid overflowing when multiplied with 1 ether.\n            if (x >= WEXP_UPPER_BOUND) return WEXP_UPPER_VALUE;\n\n            // Decompose x as x = q * ln(2) + r with q an integer and -ln(2)/2 <= r <= ln(2)/2.\n            // q = x / ln(2) rounded half toward zero.\n            int256 roundingAdjustment = (x < 0) ? -(LN_2_INT / 2) : (LN_2_INT / 2);\n            // Safe unchecked because x is bounded.\n            int256 q = (x + roundingAdjustment) / LN_2_INT;\n            // Safe unchecked because |q * ln(2) - x| <= ln(2)/2.\n            int256 r = x - q * LN_2_INT;\n\n            // Compute e^r with a 2nd-order Taylor polynomial.\n            // Safe unchecked because |r| < 1e18.\n            int256 expR = WAD_INT + r + (r * r) / WAD_INT / 2;\n\n            // Return e^x = 2^q * e^r.\n            if (q >= 0) return expR << uint256(q);\n            else return expR >> uint256(-q);\n        }\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/MathLib.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {WAD} from \"../../../lib/morpho-blue/src/libraries/MathLib.sol\";\n\nint256 constant WAD_INT = int256(WAD);\n\n/// @title MathLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library to manage fixed-point arithmetic on signed integers.\nlibrary MathLib {\n    /// @dev Returns the multiplication of `x` by `y` (in WAD) rounded towards 0.\n    function wMulToZero(int256 x, int256 y) internal pure returns (int256) {\n        return (x * y) / WAD_INT;\n    }\n\n    /// @dev Returns the division of `x` by `y` (in WAD) rounded towards 0.\n    function wDivToZero(int256 x, int256 y) internal pure returns (int256) {\n        return (x * WAD_INT) / y;\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/UtilsLib.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n/// @title UtilsLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library exposing helpers.\nlibrary UtilsLib {\n    /// @dev Bounds `x` between `low` and `high`.\n    /// @dev Assumes that `low` <= `high`. If it is not the case it returns `low`.\n    function bound(int256 x, int256 low, int256 high) internal pure returns (int256 z) {\n        assembly {\n            // z = min(x, high).\n            z := xor(x, mul(xor(x, high), slt(high, x)))\n            // z = max(z, low).\n            z := xor(z, mul(xor(z, low), sgt(low, z)))\n        }\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue-irm/src/adaptive-curve-irm/libraries/periphery/AdaptiveCurveIrmLib.sol",
+      "source_code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {Id, Market, IMorpho} from \"../../../../lib/morpho-blue/src/interfaces/IMorpho.sol\";\nimport {IAdaptiveCurveIrm} from \"../../interfaces/IAdaptiveCurveIrm.sol\";\n\nimport {ExpLib} from \"../ExpLib.sol\";\nimport {UtilsLib} from \"../UtilsLib.sol\";\nimport {ConstantsLib} from \"../ConstantsLib.sol\";\nimport {MathLib, WAD_INT as WAD} from \"../MathLib.sol\";\nimport {SharesMathLib} from \"../../../../lib/morpho-blue/src/libraries/SharesMathLib.sol\";\nimport {MathLib as MorphoMathLib} from \"../../../../lib/morpho-blue/src/libraries/MathLib.sol\";\nimport {UtilsLib as MorphoUtilsLib} from \"../../../../lib/morpho-blue/src/libraries/UtilsLib.sol\";\n\n/// @dev Library to compute borrowRateView and expectedMarketBalances with only the market id.\n/// @dev Must be used only for markets with an AdaptiveCurveIrm as irm.\nlibrary AdaptiveCurveIrmLib {\n    using MathLib for int256;\n    using UtilsLib for int256;\n    using MorphoMathLib for uint256;\n    using MorphoMathLib for uint128;\n    using SharesMathLib for uint256;\n    using MorphoUtilsLib for uint256;\n\n    /// @dev Same as the MorphoBalancesLib.expectedMarketBalances function, but takes the market id as input.\n    /// @dev Works only for markets with an AdaptiveCurveIrm as irm.\n    /// @dev Returns the expected totalSupplyAssets, totalSupplyShares, totalBorrowAssets, totalBorrowShares.\n    function expectedMarketBalances(address morpho, bytes32 id, address adaptiveCurveIrm)\n        internal\n        view\n        returns (uint256, uint256, uint256, uint256)\n    {\n        Market memory market = IMorpho(morpho).market(Id.wrap(id));\n\n        uint256 elapsed = block.timestamp - market.lastUpdate;\n\n        // Skipped if elapsed == 0 or totalBorrowAssets == 0 because interest would be null.\n        if (elapsed != 0 && market.totalBorrowAssets != 0) {\n            uint256 borrowRate = borrowRateView(id, market, adaptiveCurveIrm);\n            uint256 interest = market.totalBorrowAssets.wMulDown(borrowRate.wTaylorCompounded(elapsed));\n            market.totalBorrowAssets += interest.toUint128();\n            market.totalSupplyAssets += interest.toUint128();\n\n            if (market.fee != 0) {\n                uint256 feeAmount = interest.wMulDown(market.fee);\n                // The fee amount is subtracted from the total supply in this calculation to compensate for the fact\n                // that total supply is already updated.\n                uint256 feeShares =\n                    feeAmount.toSharesDown(market.totalSupplyAssets - feeAmount, market.totalSupplyShares);\n                market.totalSupplyShares += feeShares.toUint128();\n            }\n        }\n\n        return (market.totalSupplyAssets, market.totalSupplyShares, market.totalBorrowAssets, market.totalBorrowShares);\n    }\n\n    /// @dev Same as the AdaptiveCurveIrm.borrowRateView function, but takes the market id as input.\n    /// @dev Works only for markets with an AdaptiveCurveIrm as irm.\n    /// @dev Returns avgRate.\n    function borrowRateView(bytes32 id, Market memory market, address adaptiveCurveIrm)\n        internal\n        view\n        returns (uint256)\n    {\n        (uint256 avgRate,) = _borrowRate(Id.wrap(id), market, adaptiveCurveIrm);\n        return avgRate;\n    }\n\n    /// @dev Same as the AdaptiveCurveIrm.borrowRate function, but takes the market id as input.\n    /// @dev Returns avgRate and endRateAtTarget.\n    function _borrowRate(Id id, Market memory market, address adaptiveCurveIrm)\n        internal\n        view\n        returns (uint256, int256)\n    {\n        // Safe \"unchecked\" cast because the utilization is smaller than 1 (scaled by WAD).\n        int256 utilization =\n            int256(market.totalSupplyAssets > 0 ? market.totalBorrowAssets.wDivDown(market.totalSupplyAssets) : 0);\n\n        int256 errNormFactor = utilization > ConstantsLib.TARGET_UTILIZATION\n            ? WAD - ConstantsLib.TARGET_UTILIZATION\n            : ConstantsLib.TARGET_UTILIZATION;\n        int256 err = (utilization - ConstantsLib.TARGET_UTILIZATION).wDivToZero(errNormFactor);\n\n        int256 startRateAtTarget = IAdaptiveCurveIrm(adaptiveCurveIrm).rateAtTarget(id);\n\n        int256 avgRateAtTarget;\n        int256 endRateAtTarget;\n\n        if (startRateAtTarget == 0) {\n            // First interaction.\n            avgRateAtTarget = ConstantsLib.INITIAL_RATE_AT_TARGET;\n            endRateAtTarget = ConstantsLib.INITIAL_RATE_AT_TARGET;\n        } else {\n            // The speed is assumed constant between two updates, but it is in fact not constant because of interest.\n            // So the rate is always underestimated.\n            int256 speed = ConstantsLib.ADJUSTMENT_SPEED.wMulToZero(err);\n            // market.lastUpdate != 0 because it is not the first interaction with this market.\n            // Safe \"unchecked\" cast because block.timestamp - market.lastUpdate <= block.timestamp <= type(int256).max.\n            int256 elapsed = int256(block.timestamp - market.lastUpdate);\n            int256 linearAdaptation = speed * elapsed;\n\n            if (linearAdaptation == 0) {\n                // If linearAdaptation == 0, avgRateAtTarget = endRateAtTarget = startRateAtTarget;\n                avgRateAtTarget = startRateAtTarget;\n                endRateAtTarget = startRateAtTarget;\n            } else {\n                // Formula of the average rate that should be returned to Morpho Blue:\n                // avg = 1/T * ∫_0^T curve(startRateAtTarget*exp(speed*x), err) dx\n                // The integral is approximated with the trapezoidal rule:\n                // avg ~= 1/T * Σ_i=1^N [curve(f((i-1) * T/N), err) + curve(f(i * T/N), err)] / 2 * T/N\n                // Where f(x) = startRateAtTarget*exp(speed*x)\n                // avg ~= Σ_i=1^N [curve(f((i-1) * T/N), err) + curve(f(i * T/N), err)] / (2 * N)\n                // As curve is linear in its first argument:\n                // avg ~= curve([Σ_i=1^N [f((i-1) * T/N) + f(i * T/N)] / (2 * N), err)\n                // avg ~= curve([(f(0) + f(T))/2 + Σ_i=1^(N-1) f(i * T/N)] / N, err)\n                // avg ~= curve([(startRateAtTarget + endRateAtTarget)/2 + Σ_i=1^(N-1) f(i * T/N)] / N, err)\n                // With N = 2:\n                // avg ~= curve([(startRateAtTarget + endRateAtTarget)/2 + startRateAtTarget*exp(speed*T/2)] / 2, err)\n                // avg ~= curve([startRateAtTarget + endRateAtTarget + 2*startRateAtTarget*exp(speed*T/2)] / 4, err)\n                endRateAtTarget = _newRateAtTarget(startRateAtTarget, linearAdaptation);\n                int256 midRateAtTarget = _newRateAtTarget(startRateAtTarget, linearAdaptation / 2);\n                avgRateAtTarget = (startRateAtTarget + endRateAtTarget + 2 * midRateAtTarget) / 4;\n            }\n        }\n\n        // Safe \"unchecked\" cast because avgRateAtTarget >= 0.\n        return (uint256(_curve(avgRateAtTarget, err)), endRateAtTarget);\n    }\n\n    /// @dev Returns the rate for a given `_rateAtTarget` and an `err`.\n    /// The formula of the curve is the following:\n    /// r = ((1-1/C)*err + 1) * rateAtTarget if err < 0\n    ///     ((C-1)*err + 1) * rateAtTarget else.\n    function _curve(int256 _rateAtTarget, int256 err) internal pure returns (int256) {\n        // Non negative because 1 - 1/C >= 0, C - 1 >= 0.\n        int256 coeff = err < 0 ? WAD - WAD.wDivToZero(ConstantsLib.CURVE_STEEPNESS) : ConstantsLib.CURVE_STEEPNESS - WAD;\n        // Non negative if _rateAtTarget >= 0 because if err < 0, coeff <= 1.\n        return (coeff.wMulToZero(err) + WAD).wMulToZero(int256(_rateAtTarget));\n    }\n\n    /// @dev Returns the new rate at target, for a given `startRateAtTarget` and a given `linearAdaptation`.\n    /// The formula is: max(min(startRateAtTarget * exp(linearAdaptation), maxRateAtTarget), minRateAtTarget).\n    function _newRateAtTarget(int256 startRateAtTarget, int256 linearAdaptation) internal pure returns (int256) {\n        // Non negative because MIN_RATE_AT_TARGET > 0.\n        return startRateAtTarget.wMulToZero(ExpLib.wExp(linearAdaptation))\n            .bound(ConstantsLib.MIN_RATE_AT_TARGET, ConstantsLib.MAX_RATE_AT_TARGET);\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue/src/interfaces/IMorpho.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity >=0.5.0;\n\ntype Id is bytes32;\n\nstruct MarketParams {\n    address loanToken;\n    address collateralToken;\n    address oracle;\n    address irm;\n    uint256 lltv;\n}\n\n/// @dev Warning: For `feeRecipient`, `supplyShares` does not contain the accrued shares since the last interest\n/// accrual.\nstruct Position {\n    uint256 supplyShares;\n    uint128 borrowShares;\n    uint128 collateral;\n}\n\n/// @dev Warning: `totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n/// @dev Warning: `totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n/// @dev Warning: `totalSupplyShares` does not contain the additional shares accrued by `feeRecipient` since the last\n/// interest accrual.\nstruct Market {\n    uint128 totalSupplyAssets;\n    uint128 totalSupplyShares;\n    uint128 totalBorrowAssets;\n    uint128 totalBorrowShares;\n    uint128 lastUpdate;\n    uint128 fee;\n}\n\nstruct Authorization {\n    address authorizer;\n    address authorized;\n    bool isAuthorized;\n    uint256 nonce;\n    uint256 deadline;\n}\n\nstruct Signature {\n    uint8 v;\n    bytes32 r;\n    bytes32 s;\n}\n\n/// @dev This interface is used for factorizing IMorphoStaticTyping and IMorpho.\n/// @dev Consider using the IMorpho interface instead of this one.\ninterface IMorphoBase {\n    /// @notice The EIP-712 domain separator.\n    /// @dev Warning: Every EIP-712 signed message based on this domain separator can be reused on chains sharing the\n    /// same chain id and on forks because the domain separator would be the same.\n    function DOMAIN_SEPARATOR() external view returns (bytes32);\n\n    /// @notice The owner of the contract.\n    /// @dev It has the power to change the owner.\n    /// @dev It has the power to set fees on markets and set the fee recipient.\n    /// @dev It has the power to enable but not disable IRMs and LLTVs.\n    function owner() external view returns (address);\n\n    /// @notice The fee recipient of all markets.\n    /// @dev The recipient receives the fees of a given market through a supply position on that market.\n    function feeRecipient() external view returns (address);\n\n    /// @notice Whether the `irm` is enabled.\n    function isIrmEnabled(address irm) external view returns (bool);\n\n    /// @notice Whether the `lltv` is enabled.\n    function isLltvEnabled(uint256 lltv) external view returns (bool);\n\n    /// @notice Whether `authorized` is authorized to modify `authorizer`'s position on all markets.\n    /// @dev Anyone is authorized to modify their own positions, regardless of this variable.\n    function isAuthorized(address authorizer, address authorized) external view returns (bool);\n\n    /// @notice The `authorizer`'s current nonce. Used to prevent replay attacks with EIP-712 signatures.\n    function nonce(address authorizer) external view returns (uint256);\n\n    /// @notice Sets `newOwner` as `owner` of the contract.\n    /// @dev Warning: No two-step transfer ownership.\n    /// @dev Warning: The owner can be set to the zero address.\n    function setOwner(address newOwner) external;\n\n    /// @notice Enables `irm` as a possible IRM for market creation.\n    /// @dev Warning: It is not possible to disable an IRM.\n    function enableIrm(address irm) external;\n\n    /// @notice Enables `lltv` as a possible LLTV for market creation.\n    /// @dev Warning: It is not possible to disable a LLTV.\n    function enableLltv(uint256 lltv) external;\n\n    /// @notice Sets the `newFee` for the given market `marketParams`.\n    /// @param newFee The new fee, scaled by WAD.\n    /// @dev Warning: The recipient can be the zero address.\n    function setFee(MarketParams memory marketParams, uint256 newFee) external;\n\n    /// @notice Sets `newFeeRecipient` as `feeRecipient` of the fee.\n    /// @dev Warning: If the fee recipient is set to the zero address, fees will accrue there and will be lost.\n    /// @dev Modifying the fee recipient will allow the new recipient to claim any pending fees not yet accrued. To\n    /// ensure that the current recipient receives all due fees, accrue interest manually prior to making any changes.\n    function setFeeRecipient(address newFeeRecipient) external;\n\n    /// @notice Creates the market `marketParams`.\n    /// @dev Here is the list of assumptions on the market's dependencies (tokens, IRM and oracle) that guarantees\n    /// Morpho behaves as expected:\n    /// - The token should be ERC-20 compliant, except that it can omit return values on `transfer` and `transferFrom`.\n    /// - The token balance of Morpho should only decrease on `transfer` and `transferFrom`. In particular, tokens with\n    /// burn functions are not supported.\n    /// - The token should not re-enter Morpho on `transfer` nor `transferFrom`.\n    /// - The token balance of the sender (resp. receiver) should decrease (resp. increase) by exactly the given amount\n    /// on `transfer` and `transferFrom`. In particular, tokens with fees on transfer are not supported.\n    /// - The IRM should not re-enter Morpho.\n    /// - The oracle should return a price with the correct scaling.\n    /// - The oracle price should not be able to change instantly such that the new price is less than the old price\n    /// multiplied by LLTV*LIF. In particular, if the loan asset is a vault that can receive donations, the oracle\n    /// should not price its shares using the AUM.\n    /// @dev Here is a list of assumptions on the market's dependencies which, if broken, could break Morpho's liveness\n    /// properties (funds could get stuck):\n    /// - The token should not revert on `transfer` and `transferFrom` if balances and approvals are right.\n    /// - The amount of assets supplied and borrowed should not be too high (max ~1e32), otherwise the number of shares\n    /// might not fit within 128 bits.\n    /// - The IRM should not revert on `borrowRate`.\n    /// - The IRM should not return a very high borrow rate (otherwise the computation of `interest` in\n    /// `_accrueInterest` can overflow).\n    /// - The oracle should not revert `price`.\n    /// - The oracle should not return a very high price (otherwise the computation of `maxBorrow` in `_isHealthy` or of\n    /// `assetsRepaid` in `liquidate` can overflow).\n    /// @dev The borrow share price of a market with less than 1e4 assets borrowed can be decreased by manipulations, to\n    /// the point where `totalBorrowShares` is very large and borrowing overflows.\n    function createMarket(MarketParams memory marketParams) external;\n\n    /// @notice Supplies `assets` or `shares` on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoSupply` function with the given `data`.\n    /// @dev Either `assets` or `shares` should be zero. Most use cases should rely on `assets` as an input so the\n    /// caller is guaranteed to have `assets` tokens pulled from their balance, but the possibility to mint a specific\n    /// amount of shares is given for full compatibility and precision.\n    /// @dev Supplying a large amount can revert for overflow.\n    /// @dev Supplying an amount of shares may lead to supply more or fewer assets than expected due to slippage.\n    /// Consider using the `assets` parameter to avoid this.\n    /// @param marketParams The market to supply assets to.\n    /// @param assets The amount of assets to supply.\n    /// @param shares The amount of shares to mint.\n    /// @param onBehalf The address that will own the increased supply position.\n    /// @param data Arbitrary data to pass to the `onMorphoSupply` callback. Pass empty data if not needed.\n    /// @return assetsSupplied The amount of assets supplied.\n    /// @return sharesSupplied The amount of shares minted.\n    function supply(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        bytes memory data\n    ) external returns (uint256 assetsSupplied, uint256 sharesSupplied);\n\n    /// @notice Withdraws `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev Either `assets` or `shares` should be zero. To withdraw max, pass the `shares`'s balance of `onBehalf`.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Withdrawing an amount corresponding to more shares than supplied will revert for underflow.\n    /// @dev It is advised to use the `shares` input when withdrawing the full position to avoid reverts due to\n    /// conversion roundings between shares and assets.\n    /// @param marketParams The market to withdraw assets from.\n    /// @param assets The amount of assets to withdraw.\n    /// @param shares The amount of shares to burn.\n    /// @param onBehalf The address of the owner of the supply position.\n    /// @param receiver The address that will receive the withdrawn assets.\n    /// @return assetsWithdrawn The amount of assets withdrawn.\n    /// @return sharesWithdrawn The amount of shares burned.\n    function withdraw(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        address receiver\n    ) external returns (uint256 assetsWithdrawn, uint256 sharesWithdrawn);\n\n    /// @notice Borrows `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev Either `assets` or `shares` should be zero. Most use cases should rely on `assets` as an input so the\n    /// caller is guaranteed to borrow `assets` of tokens, but the possibility to mint a specific amount of shares is\n    /// given for full compatibility and precision.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Borrowing a large amount can revert for overflow.\n    /// @dev Borrowing an amount of shares may lead to borrow fewer assets than expected due to slippage.\n    /// Consider using the `assets` parameter to avoid this.\n    /// @param marketParams The market to borrow assets from.\n    /// @param assets The amount of assets to borrow.\n    /// @param shares The amount of shares to mint.\n    /// @param onBehalf The address that will own the increased borrow position.\n    /// @param receiver The address that will receive the borrowed assets.\n    /// @return assetsBorrowed The amount of assets borrowed.\n    /// @return sharesBorrowed The amount of shares minted.\n    function borrow(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        address receiver\n    ) external returns (uint256 assetsBorrowed, uint256 sharesBorrowed);\n\n    /// @notice Repays `assets` or `shares` on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoRepay` function with the given `data`.\n    /// @dev Either `assets` or `shares` should be zero. To repay max, pass the `shares`'s balance of `onBehalf`.\n    /// @dev Repaying an amount corresponding to more shares than borrowed will revert for underflow.\n    /// @dev It is advised to use the `shares` input when repaying the full position to avoid reverts due to conversion\n    /// roundings between shares and assets.\n    /// @dev An attacker can front-run a repay with a small repay making the transaction revert for underflow.\n    /// @param marketParams The market to repay assets to.\n    /// @param assets The amount of assets to repay.\n    /// @param shares The amount of shares to burn.\n    /// @param onBehalf The address of the owner of the debt position.\n    /// @param data Arbitrary data to pass to the `onMorphoRepay` callback. Pass empty data if not needed.\n    /// @return assetsRepaid The amount of assets repaid.\n    /// @return sharesRepaid The amount of shares burned.\n    function repay(\n        MarketParams memory marketParams,\n        uint256 assets,\n        uint256 shares,\n        address onBehalf,\n        bytes memory data\n    ) external returns (uint256 assetsRepaid, uint256 sharesRepaid);\n\n    /// @notice Supplies `assets` of collateral on behalf of `onBehalf`, optionally calling back the caller's\n    /// `onMorphoSupplyCollateral` function with the given `data`.\n    /// @dev Interest are not accrued since it's not required and it saves gas.\n    /// @dev Supplying a large amount can revert for overflow.\n    /// @param marketParams The market to supply collateral to.\n    /// @param assets The amount of collateral to supply.\n    /// @param onBehalf The address that will own the increased collateral position.\n    /// @param data Arbitrary data to pass to the `onMorphoSupplyCollateral` callback. Pass empty data if not needed.\n    function supplyCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, bytes memory data)\n        external;\n\n    /// @notice Withdraws `assets` of collateral on behalf of `onBehalf` and sends the assets to `receiver`.\n    /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.\n    /// @dev Withdrawing an amount corresponding to more collateral than supplied will revert for underflow.\n    /// @param marketParams The market to withdraw collateral from.\n    /// @param assets The amount of collateral to withdraw.\n    /// @param onBehalf The address of the owner of the collateral position.\n    /// @param receiver The address that will receive the collateral assets.\n    function withdrawCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, address receiver)\n        external;\n\n    /// @notice Liquidates the given `repaidShares` of debt asset or seize the given `seizedAssets` of collateral on the\n    /// given market `marketParams` of the given `borrower`'s position, optionally calling back the caller's\n    /// `onMorphoLiquidate` function with the given `data`.\n    /// @dev Either `seizedAssets` or `repaidShares` should be zero.\n    /// @dev Seizing more than the collateral balance will underflow and revert without any error message.\n    /// @dev Repaying more than the borrow balance will underflow and revert without any error message.\n    /// @dev An attacker can front-run a liquidation with a small repay making the transaction revert for underflow.\n    /// @param marketParams The market of the position.\n    /// @param borrower The owner of the position.\n    /// @param seizedAssets The amount of collateral to seize.\n    /// @param repaidShares The amount of shares to repay.\n    /// @param data Arbitrary data to pass to the `onMorphoLiquidate` callback. Pass empty data if not needed.\n    /// @return The amount of assets seized.\n    /// @return The amount of assets repaid.\n    function liquidate(\n        MarketParams memory marketParams,\n        address borrower,\n        uint256 seizedAssets,\n        uint256 repaidShares,\n        bytes memory data\n    ) external returns (uint256, uint256);\n\n    /// @notice Executes a flash loan.\n    /// @dev Flash loans have access to the whole balance of the contract (the liquidity and deposited collateral of all\n    /// markets combined, plus donations).\n    /// @dev Warning: Not ERC-3156 compliant but compatibility is easily reached:\n    /// - `flashFee` is zero.\n    /// - `maxFlashLoan` is the token's balance of this contract.\n    /// - The receiver of `assets` is the caller.\n    /// @param token The token to flash loan.\n    /// @param assets The amount of assets to flash loan.\n    /// @param data Arbitrary data to pass to the `onMorphoFlashLoan` callback.\n    function flashLoan(address token, uint256 assets, bytes calldata data) external;\n\n    /// @notice Sets the authorization for `authorized` to manage `msg.sender`'s positions.\n    /// @param authorized The authorized address.\n    /// @param newIsAuthorized The new authorization status.\n    function setAuthorization(address authorized, bool newIsAuthorized) external;\n\n    /// @notice Sets the authorization for `authorization.authorized` to manage `authorization.authorizer`'s positions.\n    /// @dev Warning: Reverts if the signature has already been submitted.\n    /// @dev The signature is malleable, but it has no impact on the security here.\n    /// @dev The nonce is passed as argument to be able to revert with a different error message.\n    /// @param authorization The `Authorization` struct.\n    /// @param signature The signature.\n    function setAuthorizationWithSig(Authorization calldata authorization, Signature calldata signature) external;\n\n    /// @notice Accrues interest for the given market `marketParams`.\n    function accrueInterest(MarketParams memory marketParams) external;\n\n    /// @notice Returns the data stored on the different `slots`.\n    function extSloads(bytes32[] memory slots) external view returns (bytes32[] memory);\n}\n\n/// @dev This interface is inherited by Morpho so that function signatures are checked by the compiler.\n/// @dev Consider using the IMorpho interface instead of this one.\ninterface IMorphoStaticTyping is IMorphoBase {\n    /// @notice The state of the position of `user` on the market corresponding to `id`.\n    /// @dev Warning: For `feeRecipient`, `supplyShares` does not contain the accrued shares since the last interest\n    /// accrual.\n    function position(Id id, address user)\n        external\n        view\n        returns (uint256 supplyShares, uint128 borrowShares, uint128 collateral);\n\n    /// @notice The state of the market corresponding to `id`.\n    /// @dev Warning: `totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `totalSupplyShares` does not contain the accrued shares by `feeRecipient` since the last interest\n    /// accrual.\n    function market(Id id)\n        external\n        view\n        returns (\n            uint128 totalSupplyAssets,\n            uint128 totalSupplyShares,\n            uint128 totalBorrowAssets,\n            uint128 totalBorrowShares,\n            uint128 lastUpdate,\n            uint128 fee\n        );\n\n    /// @notice The market params corresponding to `id`.\n    /// @dev This mapping is not used in Morpho. It is there to enable reducing the cost associated to calldata on layer\n    /// 2s by creating a wrapper contract with functions that take `id` as input instead of `marketParams`.\n    function idToMarketParams(Id id)\n        external\n        view\n        returns (address loanToken, address collateralToken, address oracle, address irm, uint256 lltv);\n}\n\n/// @title IMorpho\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @dev Use this interface for Morpho to have access to all the functions with the appropriate function signatures.\ninterface IMorpho is IMorphoBase {\n    /// @notice The state of the position of `user` on the market corresponding to `id`.\n    /// @dev Warning: For `feeRecipient`, `p.supplyShares` does not contain the accrued shares since the last interest\n    /// accrual.\n    function position(Id id, address user) external view returns (Position memory p);\n\n    /// @notice The state of the market corresponding to `id`.\n    /// @dev Warning: `m.totalSupplyAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `m.totalBorrowAssets` does not contain the accrued interest since the last interest accrual.\n    /// @dev Warning: `m.totalSupplyShares` does not contain the accrued shares by `feeRecipient` since the last\n    /// interest accrual.\n    function market(Id id) external view returns (Market memory m);\n\n    /// @notice The market params corresponding to `id`.\n    /// @dev This mapping is not used in Morpho. It is there to enable reducing the cost associated to calldata on layer\n    /// 2s by creating a wrapper contract with functions that take `id` as input instead of `marketParams`.\n    function idToMarketParams(Id id) external view returns (MarketParams memory);\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue/src/libraries/MarketParamsLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nimport {Id, MarketParams} from \"../interfaces/IMorpho.sol\";\n\n/// @title MarketParamsLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library to convert a market to its id.\nlibrary MarketParamsLib {\n    /// @notice The length of the data used to compute the id of a market.\n    /// @dev The length is 5 * 32 because `MarketParams` has 5 variables of 32 bytes each.\n    uint256 internal constant MARKET_PARAMS_BYTES_LENGTH = 5 * 32;\n\n    /// @notice Returns the id of the market `marketParams`.\n    function id(MarketParams memory marketParams) internal pure returns (Id marketParamsId) {\n        assembly (\"memory-safe\") {\n            marketParamsId := keccak256(marketParams, MARKET_PARAMS_BYTES_LENGTH)\n        }\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue/src/libraries/MathLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nuint256 constant WAD = 1e18;\n\n/// @title MathLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Library to manage fixed-point arithmetic.\nlibrary MathLib {\n    /// @dev Returns (`x` * `y`) / `WAD` rounded down.\n    function wMulDown(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivDown(x, y, WAD);\n    }\n\n    /// @dev Returns (`x` * `WAD`) / `y` rounded down.\n    function wDivDown(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivDown(x, WAD, y);\n    }\n\n    /// @dev Returns (`x` * `WAD`) / `y` rounded up.\n    function wDivUp(uint256 x, uint256 y) internal pure returns (uint256) {\n        return mulDivUp(x, WAD, y);\n    }\n\n    /// @dev Returns (`x` * `y`) / `d` rounded down.\n    function mulDivDown(uint256 x, uint256 y, uint256 d) internal pure returns (uint256) {\n        return (x * y) / d;\n    }\n\n    /// @dev Returns (`x` * `y`) / `d` rounded up.\n    function mulDivUp(uint256 x, uint256 y, uint256 d) internal pure returns (uint256) {\n        return (x * y + (d - 1)) / d;\n    }\n\n    /// @dev Returns the sum of the first three non-zero terms of a Taylor expansion of e^(nx) - 1, to approximate a\n    /// continuous compound interest rate.\n    function wTaylorCompounded(uint256 x, uint256 n) internal pure returns (uint256) {\n        uint256 firstTerm = x * n;\n        uint256 secondTerm = mulDivDown(firstTerm, firstTerm, 2 * WAD);\n        uint256 thirdTerm = mulDivDown(secondTerm, firstTerm, 3 * WAD);\n\n        return firstTerm + secondTerm + thirdTerm;\n    }\n}\n"
+    },
+    {
+      "file_path": "lib/morpho-blue/src/libraries/SharesMathLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity ^0.8.0;\n\nimport {MathLib} from \"./MathLib.sol\";\n\n/// @title SharesMathLib\n/// @author Morpho Labs\n/// @custom:contact security@morpho.org\n/// @notice Shares management library.\n/// @dev This implementation mitigates share price manipulations, using OpenZeppelin's method of virtual shares:\n/// https://docs.openzeppelin.com/contracts/4.x/erc4626#inflation-attack.\nlibrary SharesMathLib {\n    using MathLib for uint256;\n\n    /// @dev The number of virtual shares has been chosen low enough to prevent overflows, and high enough to ensure\n    /// high precision computations.\n    /// @dev Virtual shares can never be redeemed for the assets they are entitled to, but it is assumed the share price\n    /// stays low enough not to inflate these assets to a significant value.\n    /// @dev Warning: The assets to which virtual borrow shares are entitled behave like unrealizable bad debt.\n    uint256 internal constant VIRTUAL_SHARES = 1e6;\n\n    /// @dev A number of virtual assets of 1 enforces a conversion rate between shares and assets when a market is\n    /// empty.\n    uint256 internal constant VIRTUAL_ASSETS = 1;\n\n    /// @dev Calculates the value of `assets` quoted in shares, rounding down.\n    function toSharesDown(uint256 assets, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return assets.mulDivDown(totalShares + VIRTUAL_SHARES, totalAssets + VIRTUAL_ASSETS);\n    }\n\n    /// @dev Calculates the value of `shares` quoted in assets, rounding down.\n    function toAssetsDown(uint256 shares, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return shares.mulDivDown(totalAssets + VIRTUAL_ASSETS, totalShares + VIRTUAL_SHARES);\n    }\n\n    /// @dev Calculates the value of `assets` quoted in shares, rounding up.\n    function toSharesUp(uint256 assets, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return assets.mulDivUp(totalShares + VIRTUAL_SHARES, totalAssets + VIRTUAL_ASSETS);\n    }\n\n    /// @dev Calculates the value of `shares` quoted in assets, rounding up.\n    function toAssetsUp(uint256 shares, uint256 totalAssets, uint256 totalShares) internal pure returns (uint256) {\n        return shares.mulDivUp(totalAssets + VIRTUAL_ASSETS, totalShares + VIRTUAL_SHARES);\n    }\n}\n"
+    },
+    {
+      "file_path": "src/adapters/interfaces/IMorphoMarketV1AdapterV2.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\nimport {IAdapter} from \"../../interfaces/IAdapter.sol\";\nimport {MarketParams} from \"../../../lib/morpho-blue/src/interfaces/IMorpho.sol\";\n\ninterface IMorphoMarketV1AdapterV2 is IAdapter {\n    /* EVENTS */\n\n    event Submit(bytes4 indexed selector, bytes data, uint256 executableAt);\n    event Revoke(address indexed sender, bytes4 indexed selector, bytes data);\n    event Accept(bytes4 indexed selector, bytes data);\n    event Abdicate(bytes4 indexed selector);\n    event IncreaseTimelock(bytes4 indexed selector, uint256 newDuration);\n    event DecreaseTimelock(bytes4 indexed selector, uint256 newDuration);\n    event SetSkimRecipient(address indexed newSkimRecipient);\n    event Skim(address indexed token, uint256 assets);\n    event BurnShares(bytes32 indexed marketId, uint256 supplyShares);\n    event Allocate(bytes32 indexed marketId, uint256 newAllocation, uint256 mintedShares);\n    event Deallocate(bytes32 indexed marketId, uint256 newAllocation, uint256 burnedShares);\n\n    /* ERRORS */\n\n    error Abdicated();\n    error AutomaticallyTimelocked();\n    error DataAlreadyPending();\n    error DataNotTimelocked();\n    error IrmMismatch();\n    error LoanAssetMismatch();\n    error SharePriceAboveOne();\n    error TimelockNotDecreasing();\n    error TimelockNotExpired();\n    error TimelockNotIncreasing();\n    error Unauthorized();\n\n    /* VIEW FUNCTIONS */\n\n    function factory() external view returns (address);\n    function parentVault() external view returns (address);\n    function asset() external view returns (address);\n    function morpho() external view returns (address);\n    function marketIds(uint256 index) external view returns (bytes32);\n    function supplyShares(bytes32 marketId) external view returns (uint256);\n    function adapterId() external view returns (bytes32);\n    function skimRecipient() external view returns (address);\n    function marketIdsLength() external view returns (uint256);\n    function adaptiveCurveIrm() external view returns (address);\n    function allocation(MarketParams memory marketParams) external view returns (uint256);\n    function expectedSupplyAssets(bytes32 marketId) external view returns (uint256);\n    function ids(MarketParams memory marketParams) external view returns (bytes32[] memory);\n    function timelock(bytes4 selector) external view returns (uint256);\n    function abdicated(bytes4 selector) external view returns (bool);\n    function executableAt(bytes memory data) external view returns (uint256);\n\n    /* NON-VIEW FUNCTIONS */\n\n    function submit(bytes memory data) external;\n    function revoke(bytes memory data) external;\n    function increaseTimelock(bytes4 selector, uint256 newDuration) external;\n    function decreaseTimelock(bytes4 selector, uint256 newDuration) external;\n    function abdicate(bytes4 selector) external;\n    function setSkimRecipient(address newSkimRecipient) external;\n    function burnShares(bytes32 marketId) external;\n    function skim(address token) external;\n}\n"
+    },
+    {
+      "file_path": "src/interfaces/IAdapter.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\n/// @dev See VaultV2 NatSpec comments for more details on adapter's spec.\ninterface IAdapter {\n    /// @dev Returns the market' ids and the change in assets on this market.\n    function allocate(bytes memory data, uint256 assets, bytes4 selector, address sender)\n        external\n        returns (bytes32[] memory ids, int256 change);\n\n    /// @dev Returns the market' ids and the change in assets on this market.\n    function deallocate(bytes memory data, uint256 assets, bytes4 selector, address sender)\n        external\n        returns (bytes32[] memory ids, int256 change);\n\n    /// @dev Returns the current value of the investments of the adapter (in underlying asset).\n    function realAssets() external view returns (uint256 assets);\n}\n"
+    },
+    {
+      "file_path": "src/interfaces/IERC20.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\ninterface IERC20 {\n    function decimals() external view returns (uint8);\n    function name() external view returns (string memory);\n    function symbol() external view returns (string memory);\n    function totalSupply() external view returns (uint256);\n    function balanceOf(address account) external view returns (uint256);\n    function transfer(address to, uint256 shares) external returns (bool success);\n    function transferFrom(address from, address to, uint256 shares) external returns (bool success);\n    function approve(address spender, uint256 shares) external returns (bool success);\n    function allowance(address owner, address spender) external view returns (uint256);\n}\n"
+    },
+    {
+      "file_path": "src/interfaces/IERC2612.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\ninterface IERC2612 {\n    function permit(address owner, address spender, uint256 shares, uint256 deadline, uint8 v, bytes32 r, bytes32 s)\n        external;\n    function nonces(address owner) external view returns (uint256);\n    function DOMAIN_SEPARATOR() external view returns (bytes32);\n}\n"
+    },
+    {
+      "file_path": "src/interfaces/IERC4626.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\nimport {IERC20} from \"./IERC20.sol\";\n\ninterface IERC4626 is IERC20 {\n    function asset() external view returns (address);\n    function totalAssets() external view returns (uint256);\n    function convertToAssets(uint256 shares) external view returns (uint256 assets);\n    function convertToShares(uint256 assets) external view returns (uint256 shares);\n    function deposit(uint256 assets, address onBehalf) external returns (uint256 shares);\n    function mint(uint256 shares, address onBehalf) external returns (uint256 assets);\n    function withdraw(uint256 assets, address receiver, address onBehalf) external returns (uint256 shares);\n    function redeem(uint256 shares, address receiver, address onBehalf) external returns (uint256 assets);\n    function previewDeposit(uint256 assets) external view returns (uint256 shares);\n    function previewMint(uint256 shares) external view returns (uint256 assets);\n    function previewWithdraw(uint256 assets) external view returns (uint256 shares);\n    function previewRedeem(uint256 shares) external view returns (uint256 assets);\n    function maxDeposit(address onBehalf) external view returns (uint256 assets);\n    function maxMint(address onBehalf) external view returns (uint256 shares);\n    function maxWithdraw(address onBehalf) external view returns (uint256 assets);\n    function maxRedeem(address onBehalf) external view returns (uint256 shares);\n}\n"
+    },
+    {
+      "file_path": "src/interfaces/IVaultV2.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity >=0.5.0;\n\nimport {IERC4626} from \"./IERC4626.sol\";\nimport {IERC2612} from \"./IERC2612.sol\";\n\nstruct Caps {\n    uint256 allocation;\n    uint128 absoluteCap;\n    uint128 relativeCap;\n}\n\ninterface IVaultV2 is IERC4626, IERC2612 {\n    // State variables\n    function virtualShares() external view returns (uint256);\n    function owner() external view returns (address);\n    function curator() external view returns (address);\n    function receiveSharesGate() external view returns (address);\n    function sendSharesGate() external view returns (address);\n    function receiveAssetsGate() external view returns (address);\n    function sendAssetsGate() external view returns (address);\n    function adapterRegistry() external view returns (address);\n    function isSentinel(address account) external view returns (bool);\n    function isAllocator(address account) external view returns (bool);\n    function firstTotalAssets() external view returns (uint256);\n    function _totalAssets() external view returns (uint128);\n    function lastUpdate() external view returns (uint64);\n    function maxRate() external view returns (uint64);\n    function adapters(uint256 index) external view returns (address);\n    function adaptersLength() external view returns (uint256);\n    function isAdapter(address account) external view returns (bool);\n    function allocation(bytes32 id) external view returns (uint256);\n    function absoluteCap(bytes32 id) external view returns (uint256);\n    function relativeCap(bytes32 id) external view returns (uint256);\n    function forceDeallocatePenalty(address adapter) external view returns (uint256);\n    function liquidityAdapter() external view returns (address);\n    function liquidityData() external view returns (bytes memory);\n    function timelock(bytes4 selector) external view returns (uint256);\n    function abdicated(bytes4 selector) external view returns (bool);\n    function executableAt(bytes memory data) external view returns (uint256);\n    function performanceFee() external view returns (uint96);\n    function performanceFeeRecipient() external view returns (address);\n    function managementFee() external view returns (uint96);\n    function managementFeeRecipient() external view returns (address);\n\n    // Gating\n    function canSendShares(address account) external view returns (bool);\n    function canReceiveShares(address account) external view returns (bool);\n    function canSendAssets(address account) external view returns (bool);\n    function canReceiveAssets(address account) external view returns (bool);\n\n    // Multicall\n    function multicall(bytes[] memory data) external;\n\n    // Owner functions\n    function setOwner(address newOwner) external;\n    function setCurator(address newCurator) external;\n    function setIsSentinel(address account, bool isSentinel) external;\n    function setName(string memory newName) external;\n    function setSymbol(string memory newSymbol) external;\n\n    // Timelocks for curator functions\n    function submit(bytes memory data) external;\n    function revoke(bytes memory data) external;\n\n    // Curator functions\n    function setIsAllocator(address account, bool newIsAllocator) external;\n    function setReceiveSharesGate(address newReceiveSharesGate) external;\n    function setSendSharesGate(address newSendSharesGate) external;\n    function setReceiveAssetsGate(address newReceiveAssetsGate) external;\n    function setSendAssetsGate(address newSendAssetsGate) external;\n    function setAdapterRegistry(address newAdapterRegistry) external;\n    function addAdapter(address account) external;\n    function removeAdapter(address account) external;\n    function increaseTimelock(bytes4 selector, uint256 newDuration) external;\n    function decreaseTimelock(bytes4 selector, uint256 newDuration) external;\n    function abdicate(bytes4 selector) external;\n    function setPerformanceFee(uint256 newPerformanceFee) external;\n    function setManagementFee(uint256 newManagementFee) external;\n    function setPerformanceFeeRecipient(address newPerformanceFeeRecipient) external;\n    function setManagementFeeRecipient(address newManagementFeeRecipient) external;\n    function increaseAbsoluteCap(bytes memory idData, uint256 newAbsoluteCap) external;\n    function decreaseAbsoluteCap(bytes memory idData, uint256 newAbsoluteCap) external;\n    function increaseRelativeCap(bytes memory idData, uint256 newRelativeCap) external;\n    function decreaseRelativeCap(bytes memory idData, uint256 newRelativeCap) external;\n    function setMaxRate(uint256 newMaxRate) external;\n    function setForceDeallocatePenalty(address adapter, uint256 newForceDeallocatePenalty) external;\n\n    // Allocator functions\n    function allocate(address adapter, bytes memory data, uint256 assets) external;\n    function deallocate(address adapter, bytes memory data, uint256 assets) external;\n    function setLiquidityAdapterAndData(address newLiquidityAdapter, bytes memory newLiquidityData) external;\n\n    // Exchange rate\n    function accrueInterest() external;\n    function accrueInterestView()\n        external\n        view\n        returns (uint256 newTotalAssets, uint256 performanceFeeShares, uint256 managementFeeShares);\n\n    // Force deallocate\n    function forceDeallocate(address adapter, bytes memory data, uint256 assets, address onBehalf)\n        external\n        returns (uint256 penaltyShares);\n}\n"
+    },
+    {
+      "file_path": "src/libraries/ErrorsLib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity ^0.8.0;\n\nlibrary ErrorsLib {\n    error Abdicated();\n    error AbsoluteCapExceeded();\n    error AbsoluteCapNotDecreasing();\n    error AbsoluteCapNotIncreasing();\n    error ApproveReturnedFalse();\n    error ApproveReverted();\n    error AutomaticallyTimelocked();\n    error CannotReceiveShares();\n    error CannotReceiveAssets();\n    error CannotSendShares();\n    error CannotSendAssets();\n    error CapExceeded();\n    error CastOverflow();\n    error DataAlreadyPending();\n    error DataNotTimelocked();\n    error FeeInvariantBroken();\n    error FeeTooHigh();\n    error InvalidSigner();\n    error MaxRateTooHigh();\n    error NoCode();\n    error NotAdapter();\n    error NotInAdapterRegistry();\n    error PenaltyTooHigh();\n    error PermitDeadlineExpired();\n    error RelativeCapAboveOne();\n    error RelativeCapExceeded();\n    error RelativeCapNotDecreasing();\n    error RelativeCapNotIncreasing();\n    error TimelockNotDecreasing();\n    error TimelockNotExpired();\n    error TimelockNotIncreasing();\n    error TransferFromReturnedFalse();\n    error TransferFromReverted();\n    error TransferReturnedFalse();\n    error TransferReverted();\n    error Unauthorized();\n    error ZeroAbsoluteCap();\n    error ZeroAddress();\n    error ZeroAllocation();\n}\n"
+    },
+    {
+      "file_path": "src/libraries/SafeERC20Lib.sol",
+      "source_code": "// SPDX-License-Identifier: GPL-2.0-or-later\n// Copyright (c) 2025 Morpho Association\npragma solidity ^0.8.0;\n\nimport {IERC20} from \"../interfaces/IERC20.sol\";\nimport {ErrorsLib} from \"./ErrorsLib.sol\";\n\nlibrary SafeERC20Lib {\n    function safeTransfer(address token, address to, uint256 value) internal {\n        require(token.code.length > 0, ErrorsLib.NoCode());\n\n        (bool success, bytes memory returndata) = token.call(abi.encodeCall(IERC20.transfer, (to, value)));\n        require(success, ErrorsLib.TransferReverted());\n        require(returndata.length == 0 || abi.decode(returndata, (bool)), ErrorsLib.TransferReturnedFalse());\n    }\n\n    function safeTransferFrom(address token, address from, address to, uint256 value) internal {\n        require(token.code.length > 0, ErrorsLib.NoCode());\n\n        (bool success, bytes memory returndata) = token.call(abi.encodeCall(IERC20.transferFrom, (from, to, value)));\n        require(success, ErrorsLib.TransferFromReverted());\n        require(returndata.length == 0 || abi.decode(returndata, (bool)), ErrorsLib.TransferFromReturnedFalse());\n    }\n\n    function safeApprove(address token, address spender, uint256 value) internal {\n        require(token.code.length > 0, ErrorsLib.NoCode());\n\n        (bool success, bytes memory returndata) = token.call(abi.encodeCall(IERC20.approve, (spender, value)));\n        require(success, ErrorsLib.ApproveReverted());\n        require(returndata.length == 0 || abi.decode(returndata, (bool)), ErrorsLib.ApproveReturnedFalse());\n    }\n}\n"
+    }
+  ],
+  "certified": false,
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_parentVault",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_morpho",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_adaptiveCurveIrm",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "Abdicated",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ApproveReturnedFalse",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ApproveReverted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "AutomaticallyTimelocked",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DataAlreadyPending",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DataNotTimelocked",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "IrmMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "LoanAssetMismatch",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoCode",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SharePriceAboveOne",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TimelockNotDecreasing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TimelockNotExpired",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TimelockNotIncreasing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferReturnedFalse",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferReverted",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "Abdicate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "Accept",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAllocation",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "mintedShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Allocate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "supplyShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "BurnShares",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newAllocation",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "burnedShares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deallocate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "DecreaseTimelock",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "IncreaseTimelock",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "Revoke",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newSkimRecipient",
+          "type": "address"
+        }
+      ],
+      "name": "SetSkimRecipient",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        }
+      ],
+      "name": "Skim",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "executableAt",
+          "type": "uint256"
+        }
+      ],
+      "name": "Submit",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "abdicate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "abdicated",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "adapterId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "adaptiveCurveIrm",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes4",
+          "name": "",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "allocate",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "loanToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "collateralToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "oracle",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "irm",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lltv",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct MarketParams",
+          "name": "marketParams",
+          "type": "tuple"
+        }
+      ],
+      "name": "allocation",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "asset",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "burnShares",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes4",
+          "name": "",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "deallocate",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "int256",
+          "name": "",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "decreaseTimelock",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "executableAt",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "expectedSupplyAssets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "loanToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "collateralToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "oracle",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "irm",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lltv",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct MarketParams",
+          "name": "marketParams",
+          "type": "tuple"
+        }
+      ],
+      "name": "ids",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newDuration",
+          "type": "uint256"
+        }
+      ],
+      "name": "increaseTimelock",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "marketIds",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "marketIdsLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "morpho",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "parentVault",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "realAssets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "revoke",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newSkimRecipient",
+          "type": "address"
+        }
+      ],
+      "name": "setSkimRecipient",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "skim",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "skimRecipient",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "submit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "marketId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "supplyShares",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "timelock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "is_changed_bytecode": false,
+  "is_partially_verified": true,
+  "constructor_args": "0x00000000000000000000000006291b67e3d7660240ab44afc9a708d82b976a8b000000000000000000000000565834ce7e40b8987bc20ebf83e2159467bda3110000000000000000000000003760ebc636f912a4db9540fda4dec09c25c6c1e7"
+}

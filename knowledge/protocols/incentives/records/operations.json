@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-operation-catalog",
+  "id": "incentives-operations",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253
+  },
+  "limitations": [
+    "No operation is a supported writer capability.",
+    "Current identity, ownership, implementation, epoch, gauge, allowance, and reward state must be resolved before any future write."
+  ],
+  "warning": "These are review-accepted state-machine facts, not an enabled writer API. Resolve current registry identities, re-check proxy implementations and volatile preconditions, simulate the exact call, and complete operation-specific qualified review before enabling writes.",
+  "records": [
+    {
+      "id": "create-timed-lock",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["amount > 0", "week-rounded unlock is in the future", "week-rounded unlock is no later than timestamp + asset maxLockSeconds", "caller has balance and allowance for the underlying token"],
+      "stateChanges": ["mint a normal veNFT", "transfer underlying into escrow", "checkpoint amount and voting-power curve"],
+      "failureBoundaries": ["rounding a short duration to a nonfuture boundary", "duration above the deployment maximum", "token transfer/allowance failure"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "VotingEscrow.createLock/createLockFor and ve/Escrow._createLock"}]
+    },
+    {
+      "id": "increase-lock-amount",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["caller is owner or approved", "amount > 0", "lock exists and is not expired unless permanent", "NFT is not a locked child of a managed NFT", "an unvested grant accepts additions only from its distributor"],
+      "stateChanges": ["increase escrowed underlying and supply", "checkpoint actual and virtual voting power", "refresh boost when the asset is boostable"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.increaseAmount and _increaseAmountFor"}]
+    },
+    {
+      "id": "extend-timed-lock",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["caller is owner or approved", "normal nonpermanent lock exists and has not expired", "new week-rounded end is later than old end", "new end is within maxLockSeconds"],
+      "stateChanges": ["replace end time", "checkpoint voting-power curve", "refresh boost when boostable"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.increaseUnlockTime"}]
+    },
+    {
+      "id": "withdraw-expired-lock",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["caller is owner or approved", "NFT is normal, not permanent, and not marked voting", "timestamp >= lock end"],
+      "stateChanges": ["burn veNFT", "zero locked balance", "decrease supply", "checkpoint zero state", "return underlying"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.withdraw"}]
+    },
+    {
+      "id": "make-lock-permanent",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["caller is owner or approved", "normal timed lock exists and has not expired", "lock is not already permanent"],
+      "stateChanges": ["set end to zero and permanent true", "move actual and virtual amount into permanent balances", "checkpoint nondecaying power", "refresh boost when boostable"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.lockPermanent"}]
+    },
+    {
+      "id": "return-permanent-lock-to-timed",
+      "appliesTo": ["vebtc-current", "vemezo-current"],
+      "preconditions": ["caller is owner or approved", "NFT is normal and permanent", "NFT is not marked voting"],
+      "stateChanges": ["set end to floor((timestamp + maxLockSeconds) / weekSeconds) * weekSeconds", "set permanent false", "clear delegation", "checkpoint linearly decaying power"],
+      "evidence": [{"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.unlockPermanent"}]
+    },
+    {
+      "id": "vote-or-replace",
+      "appliesTo": ["pools-voter", "boost-voter"],
+      "preconditions": ["owner/approved caller", "eligible new epoch and voting window", "normal or eligible managed NFT is active", "target list and relative-weight list lengths match", "target count does not exceed current maxVotingNum", "every target has a live gauge and every floor-rounded allocation is nonzero"],
+      "stateChanges": ["reset prior target accounting", "record lastVoted", "allocate current voting power proportionally", "deposit weights into target fee/bribe reward accounting", "mark veNFT voting when used weight is nonzero"],
+      "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.vote and _vote"}]
+    },
+    {
+      "id": "reset-vote",
+      "appliesTo": ["pools-voter", "boost-voter"],
+      "preconditions": ["owner/approved caller", "eligible new epoch and after standardVoteStart"],
+      "stateChanges": ["remove every recorded target weight", "withdraw fee/bribe reward voting deposits", "clear target list and used weight", "mark veNFT not voting"],
+      "lastVotedEffect": "No write. Reset may precede a vote in the same epoch when lastVoted is older, but it cannot follow a vote already recorded in that epoch.",
+      "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.reset and _reset"}]
+    },
+    {
+      "id": "poke-vote",
+      "appliesTo": ["pools-voter", "boost-voter"],
+      "preconditions": ["timestamp strictly after standardVoteStart"],
+      "stateChanges": ["recompute prior allocation proportions from current voting power", "drop killed targets and redistribute their share across surviving targets", "reset if no target survives"],
+      "authorization": "permissionless in the deployed voter source",
+      "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.poke and _poke"}]
+    },
+    {
+      "id": "create-vebtc-boost-gauge",
+      "appliesTo": ["boost-voter"],
+      "preconditions": ["caller owns or is approved for the veBTC NFT", "NFT is normal or managed, exists, and is unexpired unless permanent", "no gauge is already associated", "factory is approved", "optional bribe arrays and token approvals are valid"],
+      "stateChanges": ["create nonstaking gauge and voting rewards", "associate gauge with veBTC token ID", "optionally deposit initial bribes"],
+      "evidence": [{"sourceArtifactId": "source-current-boost-voter", "locator": "BoostVoter.createBoostGauge and _createBoostGauge"}]
+    },
+    {
+      "id": "poke-vebtc-boost",
+      "appliesTo": ["boost-voter", "vebtc-current"],
+      "preconditions": ["target veBTC is an existing unexpired normal or managed NFT, with zero amount allowed only for managed NFTs"],
+      "stateChanges": ["calculate current capped factor", "checkpoint veBTC virtual voting power with the new factor"],
+      "authorization": "permissionless entrypoint; only BoostVoter is authorized to call veBTC.updateBoost",
+      "evidence": [
+        {"sourceArtifactId": "source-current-boost-voter", "locator": "BoostVoter.pokeBoost/pokeBoosts"},
+        {"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.updateBoost"}
+      ]
+    },
+    {
+      "id": "claim-gauge-or-voting-rewards",
+      "appliesTo": ["pools-voter", "boost-voter"],
+      "preconditions": ["staking claim uses caller as recipient", "fee/bribe claim caller owns or is approved for the veNFT", "reward-contract and token arrays identify current graph members"],
+      "stateChanges": ["invoke gauge or reward-contract claim accounting"],
+      "failureBoundaries": ["stale or malicious reward/token coordinates", "lost NFT approval", "token-specific reward failure"],
+      "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter claim entrypoints and _claimRewards"}]
+    }
+  ]
+}

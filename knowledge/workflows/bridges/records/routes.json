@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "kind": "bridge-route-catalog",
+  "id": "bridge-routes",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "workflowStatus": "evidence-verified-promotion-blocked",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidenceLocalNetworkLabels": []
+  },
+  "limitations": [
+    "Every route is evidence-verified-not-supported and must not be exposed as a supported route.",
+    "Fees, capacities, pause state, peers, mappings, implementations, and relayer behavior are volatile."
+  ],
+  "records": [
+    {
+      "id": "wormhole-ntt-musd-mezo-to-ethereum",
+      "providerId": "wormhole-ntt",
+      "assetId": "musd",
+      "sourceRepresentationId": "musd-on-mezo-mainnet",
+      "destinationRepresentationId": "musd-on-ethereum-mainnet",
+      "direction": "outbound-from-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": ["musd-ntt-mezo-snapshot", "musd-ntt-ethereum-snapshot"],
+      "completedTransferEvidence": "musd-mezo-to-ethereum-completed"
+    },
+    {
+      "id": "wormhole-ntt-musd-ethereum-to-mezo",
+      "providerId": "wormhole-ntt",
+      "assetId": "musd",
+      "sourceRepresentationId": "musd-on-ethereum-mainnet",
+      "destinationRepresentationId": "musd-on-mezo-mainnet",
+      "direction": "inbound-to-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": ["musd-ntt-ethereum-snapshot", "musd-ntt-mezo-snapshot"],
+      "completedTransferEvidence": "musd-ethereum-to-mezo-completed"
+    },
+    {
+      "id": "wormhole-ntt-musd-mezo-to-base",
+      "providerId": "wormhole-ntt",
+      "assetId": "musd",
+      "sourceRepresentationId": "musd-on-mezo-mainnet",
+      "destinationRepresentationId": "musd-on-base-mainnet",
+      "direction": "outbound-from-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": ["musd-ntt-mezo-snapshot", "musd-ntt-base-snapshot"],
+      "completedTransferEvidence": "musd-mezo-to-base-completed"
+    },
+    {
+      "id": "wormhole-ntt-musd-base-to-mezo",
+      "providerId": "wormhole-ntt",
+      "assetId": "musd",
+      "sourceRepresentationId": "musd-on-base-mainnet",
+      "destinationRepresentationId": "musd-on-mezo-mainnet",
+      "direction": "inbound-to-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": ["musd-ntt-base-snapshot", "musd-ntt-mezo-snapshot"],
+      "completedTransferEvidence": "musd-base-to-mezo-completed"
+    },
+    {
+      "id": "mezo-native-usdc-ethereum-to-mezo",
+      "providerId": "mezo-native-bridge",
+      "assetId": "usdc-native-bridge",
+      "sourceRepresentationId": "usdc-on-ethereum-mainnet",
+      "destinationRepresentationId": "musdc-on-mezo-mainnet",
+      "direction": "inbound-to-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": [
+        "native-mezo-assets-bridge-v12",
+        "native-ethereum-mezo-bridge-proxy-history"
+      ],
+      "completedTransferEvidence": "native-usdc-ethereum-to-mezo-completed"
+    },
+    {
+      "id": "mezo-native-btc-mezo-to-ethereum",
+      "providerId": "mezo-native-bridge",
+      "assetId": "btc-native-bridge",
+      "sourceRepresentationId": "btc-on-mezo-mainnet",
+      "destinationRepresentationId": "tbtc-on-ethereum-mainnet",
+      "direction": "outbound-from-mezo",
+      "status": "evidence-verified-not-supported",
+      "configurationEvidence": [
+        "native-mezo-assets-bridge-v12",
+        "native-ethereum-mezo-bridge-proxy-history"
+      ],
+      "completedTransferEvidence": "native-btc-mezo-to-ethereum-completed"
+    }
+  ],
+  "supportRule": "evidence-verified-not-supported is an evidence disposition, not authorization for an SDK writer or public support claim"
+}

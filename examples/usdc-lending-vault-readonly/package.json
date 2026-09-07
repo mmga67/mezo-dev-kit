@@ -1,0 +1,25 @@
+{
+  "name": "@mezo-dev-kit/example-usdc-lending-vault-readonly",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Built-entrypoint USDC Lending Vault read example.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/clean-package-dist.ts usdc-lending-vault-example && tsc --project tsconfig.build.json",
+    "format:check": "prettier --check src README.md package.json tsconfig.json tsconfig.build.json tsconfig.built.json",
+    "lint": "eslint src",
+    "test": "tsc --project tsconfig.built.json && node dist/index.js",
+    "test:shuffle": "pnpm test",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/usdc-lending-vault": "workspace:*"
+  }
+}

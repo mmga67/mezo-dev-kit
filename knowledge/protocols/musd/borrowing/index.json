@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/musd/borrowing",
+  "moduleId": "protocols/musd/borrowing",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"
+  },
+  "limitations": [
+    "This module models classic borrower-keyed troves only; institutional EnclaveDebtManager positions and pledged veBTC resolve through protocols/musd/institutional-debt and never enter these ICR/TCR rules.",
+    "Mutable and borrower-specific values must be re-read at an explicit block before quoting or constructing a write.",
+    "Fee-exempt status is borrower-specific and is not enumerated by the protocol.",
+    "Accepted operation knowledge does not imply an implemented public transaction writer."
+  ],
+  "resources": [
+    {"id": "borrowing-position", "role": "canonical-record", "kind": "musd-borrowing-position-model", "path": "records/position.json", "recordIds": ["borrower-keyed-trove", "stored-position-state", "entire-position-state", "net-and-composite-debt", "interest-and-pending-materialization", "native-collateral-custody", "nominal-ordering", "recovery-mode-state"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-formulas", "role": "canonical-record", "kind": "musd-borrowing-formula-catalog", "path": "records/formulas.json", "recordIds": ["collateral-value", "collateral-ratio", "nominal-collateral-ratio", "simple-interest", "borrowing-fee", "refinancing-fee", "net-debt-on-open", "composite-debt", "max-borrowing-capacity", "debt-payment-split", "collateral-gas-compensation", "liquidation-offset", "pending-reward", "redistribution-per-unit", "reciprocal-ltv-display"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-parameters", "role": "canonical-record", "kind": "musd-borrowing-parameter-catalog", "path": "records/parameters.json", "recordIds": ["minimum-net-debt", "borrowing-rate", "refinancing-fee-percentage", "offered-annual-interest-rate", "minimum-collateral-ratio", "critical-collateral-ratio", "musd-gas-compensation", "price-target-digits", "borrower-operations-mint-role"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-operations", "role": "canonical-record", "kind": "musd-borrowing-operation-catalog", "path": "records/operations.json", "recordIds": ["open-trove", "add-collateral", "withdraw-collateral", "increase-debt", "repay-debt", "close-trove", "refinance-trove", "claim-collateral-surplus"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-liquidations", "role": "canonical-record", "kind": "musd-liquidation-model", "path": "records/liquidations.json", "recordIds": ["liquidation-eligibility", "last-trove-guard", "liquidator-compensation", "stability-pool-offset", "redistribution", "borrower-outcome", "batch-semantics"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-formula-fixtures", "role": "fixture", "kind": "musd-borrowing-formula-fixtures", "path": "fixtures/formulas.json", "recordIds": ["collateral-value-two-btc", "cr-exact-mcr", "cr-one-wei-below-mcr", "cr-one-unit-above-mcr", "cr-zero-debt", "cr-maximum-practical-domain", "nicr-principal-only", "interest-fifteen-days", "interest-protocol-year", "interest-rounding", "borrowing-fee-current", "borrowing-fee-rounds-zero", "refinancing-fee-current-deployment", "refinancing-fee-nested-floor", "normal-open-minimum-request", "normal-open-one-wei-too-low", "composite-debt-current", "capacity-two-btc", "repay-interest-first", "collateral-compensation-half-percent", "liquidation-empty-pool", "liquidation-partial-pool", "liquidation-full-pool", "liquidation-interest-priority", "pending-reward-floor", "redistribution-error-correction", "ltv-reciprocal-mcr"], "recordCollectionPointer": "/records"},
+    {"id": "borrowing-parameter-observations", "role": "evidence", "kind": "musd-borrowing-parameter-observations", "path": "evidence/parameter-reads-2026-08-18.json", "recordIds": ["borrowing-parameters-mezo-mainnet", "borrowing-parameters-mezo-testnet"], "recordCollectionPointer": "/observations"},
+    {"id": "borrowing-catalog-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/catalog.schema.json"},
+    {"id": "borrowing-observation-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/observation-set.schema.json"},
+    {"id": "borrowing-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "borrowing-legacy-schema", "role": "review", "kind": "superseded-schema-notes", "path": "review/legacy-schema-v1.md"},
+    {
+      "id": "borrowing-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-position"},
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas"},
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-parameters"},
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-operations"},
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-liquidations"},
+        {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formula-fixtures"}
+      ]
+    }
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/borrowing"},
+    {"id": "borrowing-semantics", "type": "semantic", "command": "node scripts/validate-borrowing-knowledge.ts"},
+    {"id": "musd-reference-drift", "type": "drift", "command": "node scripts/generate-musd-reference.ts --check"}
+  ],
+  "extensions": {
+    "protocolStatus": "verified-versioned",
+    "protocolSource": {"sourceId": "official-source-musd", "commit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+    "deploymentScope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "contractModuleId": "contracts", "networkModuleId": "networks", "registryReviewStatus": "accepted"},
+    "sourceReference": {"moduleId": "protocols/musd", "resourceId": "musd-sources"},
+    "blockedCapabilities": [],
+    "resolvedDiscrepancies": [
+      {
+        "id": "refinance-fee-docs-vs-deployment",
+        "claimScope": "refinance fee behavior on the recorded mezo-mainnet and mezo-testnet deployments at their evidence blocks",
+        "canonicalBehavior": "feeBase = floor(refinancingFeePercentage * netDebt / 100); fee = floor(feeBase * borrowingRate / 1e18). The observed 20 and 0.1% parameters produce an effective 0.02% fee on net debt before floor rounding.",
+        "resolution": "deployment-evidence-prevails",
+        "staleEvidenceArtifactId": "docs-borrow-fees",
+        "authoritativeEvidenceArtifactIds": ["source-borrower-operations", "borrowing-parameter-observations"],
+        "candidateId": "BORROW-C009"
+      }
+    ]
+  }
+}

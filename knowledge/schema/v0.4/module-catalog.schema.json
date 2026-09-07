@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK knowledge module catalog v0.4",
+  "allOf": [
+    {"$ref": "./common-envelope.schema.json"}
+  ],
+  "type": "object",
+  "required": ["modules"],
+  "properties": {
+    "kind": {"const": "knowledge-module-catalog"},
+    "id": {"const": "knowledge-module-catalog"},
+    "owner": {"const": "knowledge-governance"},
+    "status": {"const": "verified"},
+    "supportStatus": {"const": "supported"},
+    "reviewStatus": {"const": "accepted"},
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "moduleId", "domain", "indexPath", "humanEntryPoint", "generatedReferenceResourceId"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[./-][a-z0-9]+)*$"},
+          "moduleId": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[./-][a-z0-9]+)*$"},
+          "domain": {"type": "string", "minLength": 1},
+          "indexPath": {"type": "string", "minLength": 1},
+          "humanEntryPoint": {"type": "string", "minLength": 1},
+          "generatedReferenceResourceId": {
+            "type": ["string", "null"],
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

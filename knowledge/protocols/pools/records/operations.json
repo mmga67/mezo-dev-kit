@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-future-operation-requirements",
+  "id": "pools-operation-requirements",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "operationStatus": "requirements-only"
+  },
+  "limitations": [
+    "No record enables a public writer.",
+    "Exact current simulation and qualified operation review remain mandatory."
+  ],
+  "requirements": [
+    {
+      "id": "resolve-dynamic-instance",
+      "rules": [
+        "Resolve the exact network and accepted/proposed root generation.",
+        "Derive the pool key with sorted, distinct tokens and the architecture-specific stable flag or tick spacing.",
+        "Require a current nonzero factory mapping, factory recognition, bytecode, and matching pool identity reads at one block.",
+        "For gauge actions additionally require current pool.gauge, gauge-factory recognition, matching position manager/pool/tokens/spacing, and voter liveness."
+      ]
+    },
+    {
+      "id": "swap-or-remove-slippage",
+      "rules": [
+        "A future exact-input swap or liquidity removal must require caller-authorized nonzero minimum output values derived from a fresh quote and explicit slippage policy.",
+        "Zero amountOutMinimum, amountAMin, or amountBMin is prohibited as a silent default.",
+        "CL sqrtPriceLimitX96 must be explicit when the operation policy requires a price boundary; zero may only retain the contract's full-range sentinel when the caller deliberately chose that behavior.",
+        "Use a bounded deadline and reject an already expired deadline before simulation."
+      ]
+    },
+    {
+      "id": "add-or-increase-liquidity",
+      "rules": [
+        "Validate nonzero desired amounts, strict ordered/aligned tick bounds for CL, initialized state, and a current pool mapping.",
+        "Require caller-authorized nonzero minimum accepted amounts/liquidity based on a fresh quote; do not turn a floor-rounded display estimate into a guarantee.",
+        "Simulate the exact call from the actual sender with current balance, allowance, fee, pause, token behavior, and native-value state."
+      ]
+    },
+    {
+      "id": "approvals",
+      "rules": [
+        "Default ERC-20 allowance is exact-operation or deliberately bounded; implicit unlimited approval is prohibited.",
+        "Unlimited approval requires an explicit caller choice, trusted current spender identity, risk disclosure, and separate review.",
+        "ERC-721 approval or approval-for-all must be explicit and must not be treated as depositor identity."
+      ]
+    },
+    {
+      "id": "submit-and-reconcile",
+      "rules": [
+        "Follow the transaction workflow for fresh preflight, fee/value sufficiency, signing, submission, replacement-aware tracking, confirmation, and protocol reconciliation.",
+        "Reconcile pool/gauge/NFT state and token deltas; a successful receipt alone does not prove the intended minimum outcome or beneficial ownership."
+      ]
+    }
+  ],
+  "workflowReferences": [
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-state-machine"
+    }
+  ]
+}

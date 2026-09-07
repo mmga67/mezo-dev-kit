@@ -1,0 +1,979 @@
+# Mezo Development Kit — Manifest v0.6.1
+
+**Status:** Community architecture discussion
+
+**Released:** 2026-09-07
+
+**Improvement log:** [`manifest-changelog.md`](./manifest-changelog.md)
+
+Version 0.6.0 reconciles this design input with accepted ADR-0002 through
+ADR-0011 and adds explicit economic-system composition without merging the
+accounting owners for MUSD, savings, mUSDC lending, vaults, pools, and
+incentives. The ADRs and `ARCHITECTURE.md` remain authoritative where this
+manifest is less specific.
+
+Manifest versions use semantic intent: major for a constitutional or mission
+break, minor for a new architectural capability or domain boundary, and patch
+for non-architectural clarification. Every edit bumps the version and adds a
+dated improvement-log entry.
+
+## 1. Mission
+
+Build a **trustworthy, composable and agent-friendly development environment for Mezo** that reduces the distance between an idea and a working application.
+
+The kit should allow developers to:
+
+- understand Mezo-specific development quickly;
+- configure local and testnet environments correctly;
+- deploy and interact with contracts;
+- integrate supported Mezo protocols;
+- reuse verified chain and protocol knowledge;
+- diagnose common problems;
+- work effectively with modern coding agents.
+
+The target audience includes experienced Web3 developers, developers new to Mezo, frontend developers and vibecoders.
+
+“Universal” describes the long-term direction. Early versions should focus on **EVM development and a small number of high-value Mezo workflows**.
+
+---
+
+# 2. Documentation-First Development
+
+The development kit starts with **development rules before development code**.
+
+Before multiple contributors begin implementing packages, the repository should establish a shared operating environment:
+
+```text
+Architecture
++
+Documentation conventions
++
+Coding standards
++
+Agent instructions
++
+Knowledge structure
++
+Memory conventions
++
+Task specifications
++
+Review requirements
+```
+
+These become the specification against which implementation is written and reviewed.
+
+The initial repository should therefore establish:
+
+```text
+README.md
+ARCHITECTURE.md
+AGENTS.md
+CONTRIBUTING.md
+SECURITY.md
+
+docs/
+knowledge/
+agents/
+
+.github/
+    ISSUE_TEMPLATE/
+    PULL_REQUEST_TEMPLATE.md
+    CODEOWNERS
+```
+
+This is not supporting documentation added after development.
+
+It is part of the development infrastructure.
+
+---
+
+# 3. Development Constitution
+
+`ARCHITECTURE.md` should define the rules that contributors and coding agents must follow.
+
+It should establish:
+
+- package boundaries;
+- allowed dependency directions;
+- public API principles;
+- domain ownership;
+- generated-code rules;
+- error conventions;
+- transaction lifecycle;
+- testing expectations;
+- documentation requirements;
+- protocol-sensitive review requirements.
+
+Important architectural decisions should be recorded as ADRs:
+
+```text
+docs/decisions/
+
+ADR-001-package-boundaries.md
+ADR-002-registry-schema.md
+ADR-003-client-model.md
+ADR-004-transaction-lifecycle.md
+ADR-005-agent-knowledge.md
+```
+
+Each ADR should contain:
+
+```text
+Context
+Decision
+Alternatives
+Reasoning
+Consequences
+Status
+```
+
+Important architectural knowledge should never exist only in meetings, chat history or individual contributor context.
+
+---
+
+# 4. Agent Instruction Layers
+
+`AGENTS.md` files are concise, automatically scoped operating rules for coding
+agents. The root file owns repository-wide constraints; a nested file adds only
+the rules needed below its directory. More specific applicable instructions
+take precedence without turning every human document into prompt context.
+
+An `AGENTS.md` should primarily answer:
+
+```text
+What is this repository?
+
+How is it structured?
+
+Where should functionality live?
+
+What must never be done?
+
+What commands verify my work?
+
+Where is authoritative Mezo knowledge?
+
+Which skill should I load for this task?
+```
+
+Example routing:
+
+```text
+Network information
+→ knowledge/AGENTS.md
+→ knowledge/networks/
+→ agents/skills/mdk-knowledge-maintenance/
+→ agents/skills/mdk-network-knowledge/
+
+Contract knowledge
+→ knowledge/AGENTS.md
+→ knowledge/contracts/
+→ agents/skills/mdk-knowledge-maintenance/
+→ agents/skills/mdk-contract-knowledge/
+
+Protocol knowledge
+→ knowledge/AGENTS.md
+→ knowledge/protocols/
+→ agents/skills/mdk-knowledge-maintenance/
+→ the cataloged `mdk-*` protocol skill
+
+Foundry
+→ a cataloged Foundry skill when implemented
+
+Hardhat
+→ a cataloged Hardhat skill when implemented
+```
+
+`README.md` remains the human/general entry point. A maintainer standard defines
+shared policy, while skills define reusable agent procedures. Neither
+`AGENTS.md` nor skills own Mezo facts.
+
+The principle is **progressive retrieval**.
+
+Agents should be directed toward relevant knowledge instead of receiving a huge global prompt containing the entire ecosystem.
+
+---
+
+# 5. Agent Skills
+
+The repository should contain portable, task-specific development guidance
+with separate contributor and consumer audiences:
+
+```text
+agents/
+├── catalog.json
+├── skills/
+│   ├── mdk-knowledge-maintenance/SKILL.md
+│   ├── mdk-network-knowledge/SKILL.md
+│   ├── mdk-contract-knowledge/SKILL.md
+│   └── mdk-*/SKILL.md
+└── consumer/
+    ├── APP_AGENTS.template.md
+    └── skills/
+        └── mdk-*/SKILL.md
+```
+
+Each directory basename should equal its globally unique frontmatter `name`.
+The text source should use the portable Agent Skills core rather than requiring
+vendor-specific metadata. `agents/catalog.json` supplies audience and domain
+routing without duplicating the procedure.
+
+Each `SKILL.md` should have precise discovery metadata and a small procedural
+body with the relevant subset of this common structure:
+
+```text
+Purpose
+
+When to use this skill
+
+Relevant repository areas
+
+Canonical sources
+
+Architecture rules
+
+Preferred implementation patterns
+
+Forbidden / discouraged patterns
+
+Verification commands
+
+Common mistakes
+
+Examples
+```
+
+Skills should explain **how to work inside this repository**, while policy
+stays in maintained standards and canonical technical facts remain in
+`knowledge/` and package documentation. A knowledge-maintenance skill routes to
+the common standard and selected domain skill; it does not repeat their full
+contents.
+
+Consumer skills explain how to build **with released MDK APIs** and must not
+ship contributor maintenance procedures. Agent-specific discovery roots are
+materialized from the selected audience by copying skill directories unchanged;
+they are not separately authored or recompiled prompt trees. Static text skills
+must remain usable without MCP. MCP is an optional adapter for capabilities
+that are genuinely live, remote, authenticated, or structured.
+
+---
+
+# 6. Coding Style and Building Patterns
+
+The repository should define a small number of strong patterns rather than many stylistic preferences.
+
+## TypeScript first
+
+SDK packages, protocol modules, framework adapters, CLI code, tests, templates,
+examples, and generated application source should be authored in TypeScript by
+default. React source should use TSX when JSX is required. Public boundaries
+should preserve useful types and still validate untrusted runtime data.
+
+Solidity remains appropriate for EVM contracts, while canonical JSON, schemas,
+evidence, and Markdown retain their owning formats. Tool-constrained exceptions
+should be narrow and documented; plain JavaScript should not become an equal
+product-code default.
+
+## Dependency direction
+
+```text
+registry / chains
+       ↓
+      core
+       ↓
+   protocols
+       ↓
+    adapters
+       ↓
+templates / applications
+```
+
+Dependencies should not flow upward.
+
+For example:
+
+```text
+core must not depend on React
+protocols must not depend on Scaffold-ETH
+contracts must not depend on an application
+```
+
+## Explicit dependencies
+
+Prefer:
+
+```ts
+createMusdModule({ client });
+```
+
+over implicit global clients or hidden configuration.
+
+## Pure domain logic
+
+Deterministic calculations should be isolated:
+
+```ts
+calculateHealthFactor(...)
+calculateRedemptionFee(...)
+calculateMinimumReceived(...)
+```
+
+These functions should not require RPC access, wallets, React or global state.
+
+## Domain ownership
+
+Avoid generic dumping grounds:
+
+```text
+utils/
+helpers/
+misc/
+common/
+```
+
+Prefer:
+
+```text
+protocols/musd/math.ts
+protocols/redemptions/quote.ts
+core/transactions/simulation.ts
+```
+
+An economic flywheel does not require a monolithic code or knowledge owner.
+Keep classic MUSD, MUSD Savings, mUSDC lending, vault accounting, pools,
+incentives, bridges, prices, and transaction reconciliation separate, then
+compose them through stable typed references. A composition view may describe
+end-to-end value flow but must not copy addresses, ABIs, formulas, governed
+values, or live state from the owning domain.
+
+The initial accepted knowledge owners for the expanded Mezo economic system
+are:
+
+```text
+protocols/musd/savings
+protocols/lending/musdc
+protocols/vaults/usdc-lending
+```
+
+The first owns native MUSD Savings accounting without entering classic trove
+aggregates. The second owns the independent BTC/mUSDC Morpho market. The third
+owns the Vault V2 allocation, share/wrapper accounting, liquidity, and
+vault-specific gauge boundary while consuming generic incentives behavior.
+
+## Generated code
+
+Generated files must never be manually maintained when canonical input exists.
+
+---
+
+# 7. Knowledge Architecture
+
+Knowledge is a maintained development asset with separate human, machine,
+agent, evidence, and executable surfaces. The universal v0.4 contract is
+recorded in ADR-0006 and the knowledge-management standard.
+
+```text
+knowledge/
+├── README.md           # human/domain router
+├── AGENTS.md           # concise subtree agent rules
+├── schema/             # shared executable contracts
+├── networks/
+├── contracts/
+├── protocols/
+├── workflows/
+├── troubleshooting/
+└── security/
+```
+
+Each knowledge module has two required entry points:
+
+```text
+README.md               human orientation and domain routing
+index.json               machine routing and physical-path resolution
+```
+
+Other content is grouped by responsibility and created only when needed:
+
+```text
+records/                 canonical machine-readable facts
+sources/                 pinned source catalogs
+evidence/                bounded observations and reproductions
+fixtures/                deterministic validation inputs
+schema/                  domain structural schemas
+review/                  candidates, gaps, conflicts, review packets
+artifacts/               raw canonical inputs such as ABIs
+generated/               colocated derived output
+```
+
+This organization is universal by role, not by file extension or identical
+domain content. The root `index.json` intentionally remains outside the role
+folders. Empty directories are not part of conformance.
+
+Maintained JSON records use a common envelope that identifies:
+
+```text
+schema version
+stable kind and ID
+status
+owner
+support status
+review status
+verification and review-after times
+scope
+limitations
+```
+
+Evidence maturity, MDK support, and human review are independent states. A
+verified observation is not automatically supported or accepted. Domain
+records may extend the envelope without changing these meanings.
+
+Cross-domain identity uses stable module, resource, and optional record IDs.
+The target module index resolves physical paths, so moving a file is not a
+breaking fact change. JSON Pointer may select a value inside a record; relative
+paths must not serve as cross-domain identity.
+
+The intended flow is:
+
+```text
+verified source
+      ↓
+canonical knowledge
+      ↓
+docs / SDK / skills / examples
+```
+
+Documentation, SDK behavior and agent instructions should not develop independent versions of the same protocol facts.
+
+JSON Schema owns local structural shape. Dependency-free semantic validators
+own cross-record resolution, evidence sufficiency, digests, freshness,
+generated drift, and protocol invariants. Passing either layer does not supply
+missing evidence, review, or support.
+
+Canonical knowledge is a maintained, validated projection of evidence. It is
+not self-authenticating and must never outrank the evidence it cites. For a
+claim about what a particular deployment actually does, block-pinned on-chain
+state and bytecode together with version-matched verified source take
+precedence over explanatory or product documentation. Documentation may lag a
+deployment; when it conflicts, retain it as discrepancy evidence, scope the
+deployed fact to its observed version/block, and derive internal docs from that
+fact. Do not rewrite evidence to preserve an older narrative.
+
+Generated human reference exists for readability and declares its canonical
+inputs. Generators are deterministic and drift-checked; generated output is
+never manually maintained as another authority.
+
+Migration to v0.4 was completed one module at a time. Stable IDs and evidence
+were preserved while index mappings and legacy path references changed. Records
+were re-verified only when freshness, conflict, missing evidence, or domain risk
+required it. The root catalog and all-v0.4 validation are now required.
+
+---
+
+# 8. Memory Management
+
+Agent memory should optimize repeated development work without becoming authoritative.
+
+Authority and context hierarchy:
+
+```text
+Deployed state / bytecode / version-matched verified source
+        ↓
+ factual evidence for deployed behavior
+
+Validated registry / canonical knowledge
+        ↓
+ maintained interpretation and retrieval surface
+
+Derived docs / SDK / skills / examples
+        ↓
+ consumers; never independent fact owners
+
+Agent memory
+        ↓
+durable development context
+
+Tasks / reviews
+        ↓
+implementation history
+
+Session context
+        ↓
+temporary
+```
+
+Repository support:
+
+```text
+agents/memory/
+├── README.md
+├── schema/
+├── seed/
+└── evals/
+```
+
+Useful memory includes:
+
+- accepted development patterns;
+- verified Mezo-specific behavior;
+- architecture decisions;
+- compatibility findings;
+- confirmed root causes;
+- valuable failed approaches.
+
+Do not use memory for:
+
+- raw logs;
+- duplicated source files;
+- speculation;
+- secrets;
+- routine task completion.
+
+Useful discoveries should eventually follow:
+
+```text
+discovery
+   ↓
+memory
+   ↓
+verification
+   ↓
+knowledge / ADR / documentation
+```
+
+The kit must remain usable without the memory system.
+
+---
+
+# 9. Scoped Development
+
+Significant work should have agreed scope and acceptance criteria in an issue
+or pull request. Individual planning records stay outside the public source.
+
+A review should record:
+
+```text
+# Goal
+
+# Developer story
+
+# Scope
+
+Included:
+Excluded:
+
+# Architecture
+
+Affected packages:
+
+# Proposed interface
+
+# Acceptance criteria
+
+[ ] implementation
+[ ] unit tests
+[ ] integration verification
+[ ] documentation
+[ ] example
+[ ] agent guidance
+[ ] knowledge/memory decision
+
+# Sources / evidence
+
+# Risks
+```
+
+This allows multiple contributors to work independently while following the same architectural contract.
+
+---
+
+# 10. Review Model
+
+Changes should be classified by risk.
+
+## Level 1 — Low Risk
+
+Examples:
+
+```text
+documentation
+examples
+minor DX changes
+troubleshooting
+```
+
+Requires:
+
+```text
+review
+CI
+```
+
+## Level 2 — Functional
+
+Examples:
+
+```text
+SDK functionality
+CLI
+framework adapters
+templates
+developer tooling
+```
+
+Requires:
+
+```text
+defined task
+tests
+CODEOWNER review
+CI
+```
+
+## Level 3 — Protocol-Sensitive
+
+Examples:
+
+```text
+contract addresses
+ABIs
+financial calculations
+transaction construction
+write paths
+security guidance
+```
+
+Requires:
+
+```text
+verified evidence
+tests
+integration verification
+qualified review
+CODEOWNER approval
+```
+
+---
+
+# 11. Definition of Done
+
+Implementation alone does not complete an important feature.
+
+A supported capability should normally include:
+
+```text
+implementation
++
+tests
++
+integration verification
++
+documentation
++
+example
++
+agent guidance
++
+knowledge/memory decision
+```
+
+Protocol-sensitive functionality additionally requires:
+
+```text
+source evidence
+registry verification
+qualified review
+```
+
+The documentation and agent instructions therefore evolve together with the implementation.
+
+---
+
+# 12. Technical Architecture
+
+The kit should use a monorepo containing small composable packages.
+
+```text
+mezo-dev-kit/
+│
+├── packages/
+│   ├── chains/
+│   ├── contracts/
+│   │   ├── registry/
+│   │   ├── evidence/
+│   │   └── generated/
+│   │
+│   ├── core/
+│   ├── protocols/
+│   │   ├── musd/
+│   │   └── ...
+│   ├── react/
+│   ├── hardhat/
+│   ├── foundry/
+│   ├── cli/
+│   └── test-utils/
+│
+├── extensions/
+│   └── scaffold-eth/
+│
+├── templates/
+├── examples/
+├── docs/
+├── knowledge/
+├── agents/
+└── scripts/
+```
+
+Do not create packages merely to fill this structure.
+
+A package should exist because it represents a clear responsibility.
+
+---
+
+# 13. Canonical Chain & Contract Registry
+
+Network and protocol configuration require one evidence-backed source of truth.
+
+```text
+authoritative source
+        ↓
+     evidence
+        ↓
+validated registry
+        ↓
+ ┌──────┼────────┐
+ ↓      ↓        ↓
+types   docs   runtime data
+        ↓
+SDK / tooling / agents
+```
+
+Contract records should support:
+
+```text
+stable identifier
+protocol
+chain
+environment
+address
+deployment range
+proxy information
+implementation
+ABI
+ABI digest
+source
+verification date
+support status
+limitations
+owner
+```
+
+CI should reject invalid records and generated-output drift.
+
+Addresses and ABIs must not be independently copied into examples, templates or agent instructions.
+
+Network records use explicit capability profiles. The initial `cosmos-evm`
+profile owns Mezo's EVM and Cosmos fields; the `evm` profile owns the shared EVM
+identity surface and omits rather than fabricates Cosmos-specific values. The
+accepted external scope is initially limited to Ethereum mainnet and Base
+mainnet when required by reviewed workflows. Chain identity does not imply RPC
+provider availability or route support.
+
+Contract deployments and ABI records declare an evidence provenance class.
+Validation applies that class's exact requirements for official artifacts,
+deployed executable reproduction, official-client precompile source, or an
+official deployment repository matched to live configuration. A generic
+`verified` flag, a partial explorer label, or official source without deployed
+identity is not a substitute. Provenance acceptance and protocol support remain
+separate Level 3 decisions.
+
+---
+
+# 14. Core Client
+
+The framework-independent core provides shared execution infrastructure.
+
+```ts
+const client = createMezoClient({
+  chain,
+  transport,
+  registry,
+  confirmationPolicy,
+});
+```
+
+Responsibilities:
+
+```text
+transport
+chain validation
+deployment resolution
+block-coherent reads
+typed required / optional read failures
+provider-aware batching and safe failover
+simulation
+units
+errors
+receipt tracking
+debug information
+```
+
+Chain, transport, registry, and confirmation policy are explicit replaceable
+dependencies. Read failover preserves chain identity and the requested block
+coordinate. Write failover may rebroadcast identical signed bytes but must not
+silently create a second nonce-bearing intent. No external client dependency is
+selected by this manifest or ADR-0002.
+
+Protocol packages consume the client:
+
+```ts
+const musd = createMusdModule({ client });
+```
+
+Framework integrations consume public core/protocol APIs rather than implementing protocol behavior themselves.
+
+---
+
+# 15. Transaction Standard
+
+State-changing operations should follow a consistent lifecycle:
+
+```text
+validate
+   ↓
+resolve deployment
+   ↓
+read / quote
+   ↓
+build typed request
+   ↓
+simulate
+   ↓
+approve if required
+   ↓
+revalidate / resimulate
+   ↓
+submit
+   ↓
+track
+   ↓
+confirm
+   ↓
+reconcile
+```
+
+The toolkit should distinguish:
+
+```text
+constructed
+simulated
+submitted
+included
+confirmed
+reconciled
+```
+
+A transaction hash is not equivalent to successful protocol execution.
+Only the reconciled state represents protocol success. Approval and action
+hashes remain distinct; timeout is non-terminal, replacement links a separately
+tracked successor, and a reorg returns the action to tracking. Each protocol
+writer owns volatile quote inputs, allowed partial outcomes, receipt events,
+post-state checks, and mismatch behavior. Cross-chain reconciliation continues
+through provider message and destination-delivery evidence.
+
+Shared errors should cover common cases such as:
+
+```text
+UnsupportedNetwork
+MissingDeployment
+ChainMismatch
+InvalidUnits
+StaleQuote
+ProviderError
+ContractRevert
+ApprovalError
+TransactionReplaced
+TransactionFailed
+ReconciliationError
+```
+
+---
+
+# 16. Tooling Philosophy
+
+The kit should extend existing ecosystem tools rather than replace them.
+
+Expected integrations:
+
+```text
+Foundry
+Hardhat
+viem
+wagmi
+Scaffold-ETH
+```
+
+Mezo-specific tooling should concentrate on repeated Mezo-specific problems:
+
+```text
+network configuration
+contract metadata
+deployment
+verification
+protocol interactions
+debugging
+testnet workflows
+```
+
+Scaffold-ETH should function as an onboarding layer built on the same underlying packages.
+
+---
+
+# 17. Community Development Model
+
+A small group of contributors should be able to work concurrently around clear ownership boundaries.
+
+Typical areas:
+
+```text
+Registry / chain data
+
+Core / protocol SDK
+
+Development tooling
+
+Knowledge / documentation / DX
+```
+
+Ownership does not mean isolation.
+
+Public interfaces, architectural changes and protocol-sensitive functionality remain shared review responsibilities.
+
+---
+
+# 18. Guiding Principle
+
+The Mezo Development Kit should not merely contain useful code.
+
+It should contain the **context required to produce correct useful code repeatedly**.
+
+The repository therefore consists of three equally important systems:
+
+```text
+             MEZO DEVELOPMENT KIT
+
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+      CODE       KNOWLEDGE    PROCESS
+        │           │           │
+     packages       docs       review
+     tooling       skills      reviews
+     templates     memory      standards
+        │           │           │
+        └───────────┼───────────┘
+                    │
+             DEVELOPER EXPERIENCE
+```
+
+Code, knowledge and development process should evolve together.

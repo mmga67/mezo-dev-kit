@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "kind": "dynamic-contract-read-interface-catalog",
+  "id": "savings-dynamic-read-interfaces",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-06T07:30:42.196Z",
+  "reviewAfter": "2026-10-06T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "task": "Savings reader review",
+    "discoveryReference": {
+      "moduleId": "protocols/musd/savings",
+      "resourceId": "musd-savings-roles"
+    }
+  },
+  "limitations": [
+    "These are exact-runtime interface templates for root-discovered roles, not static registry identities or supported deployments.",
+    "Explorer source and full ABI snapshots establish the interfaces; runtime must match the captured deployed bytes at the requested coordinate.",
+    "Converter profile applies to implementation code after resolving its ERC-1967 slot; gauge and strategy profiles bind the complete direct runtime including immutable values.",
+    "Gauge creation input is unavailable. No creation reproduction, audit coverage, wider role implementation, or writer support is claimed.",
+    "Savings reader review bounded reader/interface review was accepted by the maintainer on 2026-09-07; wider deployment and writer support remain excluded."
+  ],
+  "records": [
+    {
+      "id": "strategy",
+      "contractName": "IdleStrategy",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "savings-strategy-explorer-source"
+      },
+      "sourceSha256": "509f8842a4e0fd9eb34ee1d2c5cecd0cc47067897d30d36f4f1715e7d28ca04c",
+      "runtimeSha256": "4c88bbe8b121f96e87c29460ff853535f8097a981072d1eaca11a1a72f83d01d",
+      "proxy": false,
+      "explorerVerification": "partially-verified",
+      "abiEntryCount": 11,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x0C0944713c185ea3e64F5609ECee3fB3C054a295",
+      "retrievedAt": "2026-09-06T07:16:38.399Z"
+    },
+    {
+      "id": "converter",
+      "contractName": "YieldConverter",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "savings-converter-explorer-source"
+      },
+      "sourceSha256": "90d81adb22b7bd13fa68b3122cc686c37b24c765fe1dfc9d54068b89c4fcc414",
+      "runtimeSha256": "1d190ab63fdba4256fb9d4c43daba20c85603822a6880cb32d08be7ce1970633",
+      "proxy": true,
+      "explorerVerification": "fully-verified",
+      "abiEntryCount": 33,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x1c5631C5478F7E9De0689e1955c1c40270Bf28d1",
+      "retrievedAt": "2026-09-06T07:16:42.243Z"
+    },
+    {
+      "id": "gauge",
+      "contractName": "VaultGauge",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "savings-gauge-explorer-source"
+      },
+      "sourceSha256": "eb035af0e7f859f2e60c59991bdc1f04b468fe2e6ad2346b86bebb03bb60acbb",
+      "runtimeSha256": "8ce22fe1bb4aeca962abd1c1c01e1b4dd9e85629f03e82011c4ea1fa6cfeb654",
+      "proxy": false,
+      "explorerVerification": "partially-verified",
+      "abiEntryCount": 41,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x677817bF3e44b90E8F95222F75e2950b7904a401",
+      "retrievedAt": "2026-09-06T07:15:01.739Z"
+    }
+  ],
+  "savingsSourceReference": {
+    "moduleId": "contracts",
+    "resourceId": "savings-current-explorer-source"
+  },
+  "savingsSourceSha256": "8e4cdc0fc5467450bf4897c8dd510519375353b8e4defd95fdc8151cee3db73e",
+  "savingsSourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xB33C3f97BF3B7df59417D114c694353E42929e87"
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-bridge-v13-probes-2026-08-24",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T13:39:35.987Z",
+  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "deploymentIds": ["bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution"]
+  },
+  "limitations": [
+    "This observation proves the v13 Assets Bridge execution boundary only; it does not create route, quote, relayer, or writer support.",
+    "bridge evidence review accepted the generation-6 deployment record for bounded registry use; route, quote, relayer, and writer support remain absent.",
+    "Enabled bridge-out chains are volatile state and do not prove end-to-end delivery, asset support, or availability."
+  ],
+  "observedFrom": "2026-08-24T13:39:35.987Z",
+  "observedThrough": "2026-08-24T13:39:35.987Z",
+  "methodology": [
+    "Pinned the official v13 Assets Bridge version map, upgrade handler, ABI, interface, and wrapper bytecode by exact source commit.",
+    "Captured Mezo chain identity, live client version, latest block identity, activation-block identity, and current precompile bytecode.",
+    "Confirmed wrapper-v6 bytecode continuity against the accepted pre-v13 observation.",
+    "Called the generation-6-only getBridgeOutChains selector immediately before and at activation to prove the execution-version transition.",
+    "Decoded the activation and latest results as enabled target chains 0 (Ethereum) and 1 (Bitcoin) without submitting a transaction."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11358699,
+      "blockHash": "0xde4756a1f8f3c53cbe795fd3b9247da7adbcfc92fe922862cd22c8585156108a",
+      "blockTimestamp": "2026-08-24T13:39:38.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution",
+      "deploymentId": "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T13:39:35.987Z",
+      "observationBlock": {
+        "number": 11358699,
+        "hash": "0xde4756a1f8f3c53cbe795fd3b9247da7adbcfc92fe922862cd22c8585156108a",
+        "timestamp": "2026-08-24T13:39:38.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "web3_clientVersion",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getTransactionReceipt",
+        "debug_traceTransaction callTracer",
+        "official client source and bytecode digest comparison",
+        "web3_clientVersion post-v13 boundary check",
+        "eth_call generation-6 selector immediately before and at activation",
+        "eth_call generation-6 selector at latest block"
+      ],
+      "activation": {
+        "blockNumber": 11358000,
+        "transactionHash": null,
+        "blockHash": "0x225f5db210b627d378cd6c945bbfb2d3a706241f93883b6149bedd79091a0d2e",
+        "blockTimestamp": "2026-08-24T12:39:35.000Z",
+        "activationKind": "hard-fork",
+        "release": "v13.0.0"
+      },
+      "runtime": {
+        "addressCodeSha256": "bb00751f518e5703ad260e4a94084b621ab426e5a1633da0deb92027029436c5",
+        "implementationCodeSha256": null,
+        "sourceBytecodeSha256": "bb00751f518e5703ad260e4a94084b621ab426e5a1633da0deb92027029436c5",
+        "liveClientVersion": "Mezod/13.0.0/amd64/go1.24.0",
+        "activeExecutionVersion": 6,
+        "wrapperInterfaceGeneration": 6,
+        "wrapperInstalledAtBlock": 11260864,
+        "v13ActivationBlock": 11358000,
+        "enabledBridgeOutChainsAtActivation": [0, 1],
+        "enabledBridgeOutChainsAtObservation": [0, 1],
+        "selectorBoundaryProof": {
+          "selector": "0x8210110d",
+          "immediatelyBeforeActivation": {
+            "blockNumber": 11357999,
+            "outcome": "method-not-found",
+            "errorCode": -32000
+          },
+          "activation": {
+            "blockNumber": 11358000,
+            "decodedResult": [0, 1]
+          },
+          "latest": {
+            "blockNumber": 11358699,
+            "decodedResult": [0, 1]
+          }
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "notApplicable": true,
+        "note": "A protocol precompile is established through official client source, live client generation, fixed-block code, and its successful maintenance-precompile activation call, not explorer source verification."
+      },
+      "outcome": "passed"
+    }
+  ]
+}

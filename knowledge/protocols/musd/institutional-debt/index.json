@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/musd/institutional-debt",
+  "moduleId": "protocols/musd/institutional-debt",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11334441,
+    "blockHash": "0xf71561f21fcb92e0c58b41afc214c30d647c74acb2ca311824fe4f701344192c"
+  },
+  "limitations": [
+    "institutional debt evidence review accepted the module review and three Contract identities/ABIs; protocol support remains proposed and no reader or writer is enabled.",
+    "Roles, target-selector pairs, UTXOs, parameters, positions, price-derived health, and totals are current only at the pinned block.",
+    "Institutional debt and pledged veBTC remain separate from classic troves/TCR and from unpledged Enclave assets, Savings, bridges, pools, and strategy allocations.",
+    "No public read facade, writer, liquidation, product ratio, or portfolio model is supported."
+  ],
+  "resources": [
+    {
+      "id": "institutional-debt-architecture",
+      "role": "canonical-record",
+      "kind": "institutional-musd-debt-architecture",
+      "path": "records/architecture.json"
+    },
+    {
+      "id": "institutional-debt-enclave-vaults",
+      "role": "canonical-record",
+      "kind": "institutional-musd-enclave-vault-model",
+      "path": "records/enclave-vaults.json"
+    },
+    {
+      "id": "institutional-debt-positions-accounting",
+      "role": "canonical-record",
+      "kind": "institutional-musd-position-accounting-model",
+      "path": "records/positions-accounting.json"
+    },
+    {
+      "id": "institutional-debt-formulas",
+      "role": "canonical-record",
+      "kind": "institutional-musd-debt-formula-catalog",
+      "path": "records/formulas.json",
+      "recordIds": [
+        "simple-fee",
+        "position-total-debt",
+        "pledged-collateral",
+        "collateral-ratio",
+        "position-health",
+        "repayment-split",
+        "combined-rate",
+        "outstanding-debt",
+        "principal-conservation",
+        "aggregate-separation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "institutional-debt-operations-events",
+      "role": "canonical-record",
+      "kind": "institutional-musd-debt-operation-event-model",
+      "path": "records/operations-events.json",
+      "recordIds": [
+        "execute-enclave-call",
+        "execute-enclave-batch",
+        "request-triparty-bridge",
+        "open-or-mutate-position",
+        "repay-position"
+      ],
+      "recordCollectionPointer": "/operations"
+    },
+    {
+      "id": "institutional-debt-aggregate-boundaries",
+      "role": "canonical-record",
+      "kind": "institutional-musd-aggregate-boundary-model",
+      "path": "records/aggregate-boundaries.json"
+    },
+    {
+      "id": "institutional-debt-formula-fixtures",
+      "role": "fixture",
+      "kind": "institutional-musd-debt-formula-fixtures",
+      "path": "fixtures/formulas.json",
+      "recordIds": [
+        "interest-one-protocol-year",
+        "interest-rounds-down-to-zero",
+        "interest-thirty-days",
+        "position-total-debt",
+        "pledged-collateral-sum",
+        "collateral-ratio-exact-warning",
+        "collateral-ratio-zero-debt",
+        "health-at-minimum",
+        "health-one-wei-below-minimum",
+        "repayment-fees-first",
+        "repayment-below-fees",
+        "repayment-exceeds-principal",
+        "combined-rate-at-cap",
+        "combined-rate-above-cap",
+        "outstanding-fee-clamp",
+        "principal-conservation-fixed-block",
+        "classic-institutional-separation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "institutional-debt-sources",
+      "role": "source-catalog",
+      "kind": "institutional-musd-debt-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": [
+        "official-docs-enclaves",
+        "official-docs-mezo-bridge",
+        "institutional-debt-fixed-block-state",
+        "institutional-debt-source-reproduction",
+        "musd-system-model",
+        "borrowing-position",
+        "incentives-locks",
+        "transaction-client-requirements"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "institutional-debt-fixed-block-state",
+      "role": "evidence",
+      "kind": "institutional-musd-debt-fixed-block-observation",
+      "path": "evidence/fixed-block-state-2026-08-23.json"
+    },
+    {
+      "id": "institutional-debt-source-reproduction",
+      "role": "evidence",
+      "kind": "institutional-musd-debt-source-reproduction-evidence",
+      "path": "evidence/source-reproduction-2026-08-23.json",
+      "recordIds": [
+        "musd.enclave-v1",
+        "musd.enclave-v2",
+        "musd.enclave-debt-manager-implementation-v1",
+        "musd.enclave-debt-manager"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "institutional-debt-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "institutional-debt-fixture-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/fixture.schema.json"
+    },
+    {
+      "id": "institutional-debt-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "institutional-debt-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "institutional-debt-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "institutional-debt-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-architecture"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-enclave-vaults"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-positions-accounting"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-formulas"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-operations-events"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-aggregate-boundaries"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-formula-fixtures"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-fixed-block-state"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "institutional-debt-source-reproduction"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/institutional-debt"
+    },
+    {
+      "id": "institutional-debt-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-institutional-debt-knowledge.ts"
+    },
+    {
+      "id": "institutional-debt-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-institutional-debt-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "protocolStatus": "verified-proposed-accepted",
+    "identityBoundary": "Two live Enclave ABI generations and one upgraded debt-manager proxy are accepted Contract registry identities; current role and target authorization remains block-scoped evidence.",
+    "networkReference": {
+      "moduleId": "networks",
+      "resourceId": "mezo-mainnet"
+    },
+    "contractReferences": [
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments"
+      },
+      {
+        "moduleId": "contracts",
+        "resourceId": "contract-abis"
+      }
+    ],
+    "classicMusdReference": {
+      "moduleId": "protocols/musd",
+      "resourceId": "musd-system-model"
+    },
+    "incentivesReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-locks"
+    },
+    "transactionReference": {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    "writerSupport": "none",
+    "blockers": [
+      "fresh same-block reads and exact simulation before any future operation",
+      "separate accepted definition before any cross-system product metric"
+    ]
+  }
+}

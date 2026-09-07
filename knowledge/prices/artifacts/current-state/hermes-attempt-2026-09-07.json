@@ -1,0 +1,18 @@
+{
+  "kind": "upstream-price-diagnostic",
+  "attemptedOn": "2026-09-07",
+  "provider": "Pyth Hermes",
+  "endpoint": "https://hermes.pyth.network/v2/updates/price/latest",
+  "feedReferences": [
+    "feed.pyth-btc-usd",
+    "feed.pyth-musd-usd"
+  ],
+  "result": {
+    "httpStatus": 401,
+    "body": "unauthorized"
+  },
+  "limitations": [
+    "This environment returned HTTP 401; this does not establish that these feeds or Hermes are globally unavailable.",
+    "No update data was accepted and no transaction was submitted."
+  ]
+}

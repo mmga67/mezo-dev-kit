@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-source-catalog",
+  "id": "incentives-sources",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T21:59:22.983Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11366264
+  },
+  "limitations": [
+    "Fifteen reusable roles resolve through accepted Contracts records under registry provenance review, emission evidence review, and validator evidence review; acceptance creates no reader, writer, validator-operation, or product support.",
+    "Addresses for dynamic validator gauges and rewards remain dated observation coordinates rather than static registry identities.",
+    "Executable reproduction does not prove source authorship, audit coverage, or future identity."
+  ],
+  "records": [
+    {
+      "id": "incentives-mainnet-topology",
+      "classification": "deployed-state-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-mainnet-topology"
+      },
+      "sha256": "774e5a8e5d9767538900022ff074f04121d58bf063a9892db39d2e98842d98a9",
+      "establishes": [
+        "fixed-block proxy implementations",
+        "live contract references",
+        "point-in-time governed values",
+        "official documentation drift"
+      ]
+    },
+    {
+      "id": "incentives-source-reproduction",
+      "classification": "version-matched-executable-source-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-source-reproduction"
+      },
+      "sha256": "46f4ac703e81ec290c156e551459864c5393fd2b9b6e4d92e3199df5f565fc30",
+      "establishes": [
+        "exact executable match for current veBTC and veMEZO supplied source",
+        "official explorer verification labels",
+        "compiler and bytecode digests"
+      ]
+    },
+    {
+      "id": "incentives-read-integration",
+      "classification": "fixed-block-deployed-read-and-formula-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-read-integration"
+      },
+      "sha256": "61dc9dabcfa8be04a7c89497f6ce63d0518ce246803ebd116851c18c5fb00d34",
+      "establishes": [
+        "representative veBTC lock-power equality",
+        "representative current boost equality",
+        "stored-versus-current boost distinction",
+        "deployed epoch helper equality"
+      ]
+    },
+    {
+      "id": "incentives-writer-integration",
+      "classification": "historical-pre-state-replay-receipt-and-post-state-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-writer-integration"
+      },
+      "sha256": "1eaf4683a69b071c5c0cd837ffde40aabb54d1e82d67fda3ffe7b52d1456171a",
+      "establishes": [
+        "createLock exact pre-state replay and delivery",
+        "vote replacement exact pre-state replay",
+        "Abstained-before-Voted receipt ordering",
+        "operation-specific post-state reconciliation"
+      ]
+    },
+    {
+      "id": "source-current-vebtc",
+      "classification": "executable-reproduced-source",
+      "contractRole": "vebtc-current",
+      "implementation": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+      "sourceEvidenceId": "incentives-source-reproduction",
+      "primaryLocators": [
+        "VeBTC.sol",
+        "VotingEscrow.sol",
+        "ve/Escrow.sol",
+        "ve/Balance.sol",
+        "libraries/BoostLibrary.sol"
+      ]
+    },
+    {
+      "id": "source-current-vemezo",
+      "classification": "executable-reproduced-source",
+      "contractRole": "vemezo-current",
+      "implementation": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+      "sourceEvidenceId": "incentives-source-reproduction",
+      "primaryLocators": [
+        "VeMEZO.sol",
+        "VotingEscrow.sol",
+        "ve/Escrow.sol",
+        "ve/Balance.sol",
+        "libraries/BoostLibrary.sol"
+      ]
+    },
+    {
+      "id": "source-current-pools-voter",
+      "classification": "explorer-fully-verified-source",
+      "contractRole": "pools-voter",
+      "implementation": "0xa62060d57e04d6c799b58188dc654b85addd1465",
+      "sourceEvidenceId": "incentives-source-reproduction",
+      "primaryLocators": ["Voter.sol", "libraries/ProtocolTimeLibrary.sol"]
+    },
+    {
+      "id": "source-current-boost-voter",
+      "classification": "explorer-fully-verified-source",
+      "contractRole": "boost-voter",
+      "implementation": "0xa696dc56522e41811d06bbda83c1a6d976637624",
+      "sourceEvidenceId": "incentives-source-reproduction",
+      "primaryLocators": [
+        "BoostVoter.sol",
+        "NonStakingVoter.sol",
+        "libraries/ProtocolTimeLibrary.sol",
+        "libraries/BoostLibrary.sol"
+      ]
+    },
+    {
+      "id": "official-docs-mezo-pools",
+      "classification": "discovery-and-conflict-evidence",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/features/mezo-pools.md",
+      "warning": "The printed veBTC address conflicts with the deployed PoolsVoter reference at the scoped block and is not current-identity authority."
+    },
+    {
+      "id": "incentives-emissions-mainnet",
+      "classification": "fixed-block-deployed-emission-and-split-integration-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-emissions-mainnet"
+      },
+      "sha256": "1967af1a65a871b1b1bc62759934f1c69f8afb24e19782b3d0a9d35fc67d4f8d",
+      "establishes": [
+        "current emission graph",
+        "one exact epoch reconstruction",
+        "reward/rebase budget partition",
+        "split event reconciliation",
+        "governed needle movement"
+      ]
+    },
+    {
+      "id": "source-current-emissions-graph",
+      "classification": "fully-verified-executable-reproduced-source",
+      "contractRoles": [
+        "mezo-minter",
+        "mezo-rebase-distributor",
+        "mezo-chain-splitter",
+        "mezo-ecosystem-splitter",
+        "validators-voter",
+        "third-party-voter",
+        "chain-splitter-epoch-governor",
+        "ecosystem-splitter-epoch-governor"
+      ],
+      "sourceEvidenceReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-incentives-probes-2026-08-21"
+      },
+      "primaryLocators": [
+        "MEZOMinter.sol",
+        "MEZOEmissionCurve.sol",
+        "Splitter.sol",
+        "MEZOChainSplitter.sol",
+        "MEZOEcosystemSplitter.sol",
+        "RewardsDistributor.sol",
+        "ValidatorsVoter.sol",
+        "ThirdPartyVoter.sol",
+        "EpochGovernor.sol"
+      ]
+    },
+    {
+      "id": "incentives-validator-allocation-mainnet",
+      "classification": "fixed-block-validator-vote-allocation-distribution-and-claim-evidence",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-allocation-mainnet"
+      },
+      "sha256": "dc25ad6b20ac257e612b8e22a662d2224add505770c1792ca39a7e22e161748f",
+      "establishes": [
+        "current validator gauge cohort and exact weight total",
+        "complete bounded validator lifecycle and voter event counts",
+        "one exact boosted vote and allocation replay",
+        "one exact reward-index notification with floor dust",
+        "one distribution-to-gauge transfer and reward-rate reconciliation",
+        "one gauge-to-beneficiary claim transfer reconciliation"
+      ]
+    },
+    {
+      "id": "source-current-validator-allocation-graph",
+      "classification": "version-matched-executable-reproduced-source",
+      "contractRoles": [
+        "validators-voter",
+        "validator-gauge-factory",
+        "validator-voting-rewards-factory"
+      ],
+      "sourceEvidenceReferences": [
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-incentives-probes-2026-08-21",
+          "recordId": "observe-incentives-validators-voter-mezo-mainnet"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-validator-incentives-probes-2026-08-24"
+        }
+      ],
+      "primaryLocators": [
+        "ValidatorsVoter.sol",
+        "NonStakingVoter.sol",
+        "ProtocolTimeLibrary.sol",
+        "GaugeFactory.sol",
+        "NonStakingGaugeFactory.sol",
+        "NonStakingGauge.sol",
+        "Gauge.sol",
+        "VotingRewardsFactory.sol"
+      ]
+    },
+    {
+      "id": "official-docs-validator-gauge",
+      "classification": "official-descriptive-documentation-with-signature-shorthand",
+      "url": "https://mezo.org/docs/developers/mezo-nodes/validator-gauge/",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/mezo-nodes/validator-gauge.md",
+      "retrievedAt": "2026-08-24T21:59:22.983Z",
+      "sha256": "db9288f4a6f0708721d8de089c782b1b64b481cb7ffebcecb14389aee7df93fa",
+      "warning": "The voting, persistence, beneficiary, and streaming descriptions match the active generation, but claimRewards is described with a singular address while the accepted ABI takes address[]."
+    },
+    {
+      "id": "official-docs-mezo-earn-for-validators",
+      "classification": "official-descriptive-documentation-with-deployment-conflict",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "path": "src/content/docs/docs/developers/mezo-earn/mezo-earn-for-validators.md",
+      "retrievedAt": "2026-08-24T21:59:22.983Z",
+      "sha256": "7a47c4be6cdcd3eec92c31921af6c7d236acb8592af6e58111acf2ae577dfdcf",
+      "warning": "Its equal-active-validator and no-validator-voting claims conflict with the active executable, current Validator Gauge guide, and 401 observed Voted events; it is not current calculation authority."
+    },
+    {
+      "id": "official-mezo-earn-whitepaper",
+      "classification": "official-protocol-specification-with-deployment-conflict",
+      "url": "https://mezo.org/docs/Mezo_Earn_Whitepaper.pdf",
+      "retrievedAt": "2026-08-21T18:18:00Z",
+      "currentUrlVerifiedAt": "2026-08-23T19:47:25Z",
+      "sha256": "8ecb0f81eb7a329a8888dd6774a48b50e09155f22e28b659b413b5b8891f0ff1",
+      "artifactReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "official-mezo-earn-whitepaper-pdf"
+      },
+      "locators": [
+        "1 Introduction & Motivation",
+        "2 System Overview",
+        "5 Value Accrual & Incentives",
+        "6.1 Gauges",
+        "6.2 Emissions",
+        "6.3 Dilution Mitigation Through Dynamic Rebasing",
+        "6.4 Splitters"
+      ],
+      "warning": "The locked-supply prose is not treated as deployed calculation authority because the active minter reads prior-boundary unboosted voting power."
+    },
+    {
+      "id": "official-mezo-emissions-blog",
+      "classification": "official-descriptive-documentation",
+      "url": "https://mezo.org/blog/how-mezo-emissions-work/",
+      "retrievedAt": "2026-08-21T18:18:00Z",
+      "sha256": "252ef31351ebbcae232d41fc70e36a3a3f1845a52842c2a72727a6243bbb462f",
+      "warning": "Descriptive documentation is subordinate to version-matched active executable behavior."
+    },
+    {
+      "id": "official-mezo-splitters-blog",
+      "classification": "official-descriptive-documentation-with-current-state-drift",
+      "url": "https://mezo.org/blog/how-gauges-and-splitters-work-on-mezo/",
+      "retrievedAt": "2026-08-21T18:18:00Z",
+      "sha256": "605cc8f23eb248ff2319a383ae0799712d5c945bcfdfc0ce0e1f50c2135dc138",
+      "warning": "Published initial ratios are not current governed needles; fixed-block reads and Nudge events are current-state authority."
+    },
+    {
+      "id": "official-mezo-earn-audit",
+      "classification": "official-published-audit-supporting-evidence",
+      "url": "https://mezo.org/docs/audits/2026-01-30%20-%20Thesis%20Defense%20-%20Mezo%20Earn.pdf",
+      "retrievedAt": "2026-08-21T18:18:00Z",
+      "sha256": "b53c5305fc965cabf5bfd1a2465488eb82bf47dec310d40583a094b1a828b29f",
+      "warning": "Audit publication supports review context but does not replace deployment identity, activation history, or exact executable reproduction."
+    }
+  ]
+}

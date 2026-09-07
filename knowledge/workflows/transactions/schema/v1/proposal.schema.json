@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transaction architecture decision record v1",
+  "allOf": [
+    {"$ref": "../../../schema/v0.4/common-envelope.schema.json"}
+  ],
+  "type": "object",
+  "required": ["proposalStatus"],
+  "properties": {
+    "owner": {"const": "core-transactions"},
+    "status": {"const": "candidate"},
+    "supportStatus": {"const": "none"},
+    "reviewStatus": {"const": "accepted"},
+    "verifiedAt": {"type": "null"},
+    "reviewAfter": {"type": "null"},
+    "proposalStatus": {"const": "accepted"},
+    "kind": {
+      "enum": [
+        "transaction-state-machine",
+        "core-client-requirements",
+        "transaction-error-taxonomy",
+        "protocol-transaction-requirement-matrix"
+      ]
+    }
+  }
+}

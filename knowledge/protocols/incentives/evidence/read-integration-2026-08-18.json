@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-read-integration-observation",
+  "id": "mezo-incentives-read-integration-2026-08-18",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-point-in-time",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T09:56:38Z",
+  "observedAt": "2026-08-18T09:56:38Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "blockNumber": 11212253
+  },
+  "networkSnapshot": {
+    "networkId": "mezo-mainnet",
+    "evmChainId": 31612,
+    "blockNumber": 11212253,
+    "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+    "blockTimestamp": 1787046998,
+    "rpcEndpointId": "mezo-mainnet-boar-https"
+  },
+  "methodology": [
+    "Selected the last minted veBTC token ID reported by the deployed escrow at the same fixed block.",
+    "Read the lock tuple, stored boosted and unboosted power, at-time power, boost gauge, current computed boost, and every formula input with eth_call at the fixed block.",
+    "Recomputed timed voting power with the deployed source's division order and compared it byte-for-byte with both current and explicit-at-time getters.",
+    "Recomputed the BoostVoter factor with the deployed source's ordered floor divisions and compared it with getBoost.",
+    "Called the deployed Voter epoch helper functions at the block timestamp and compared all four results with the pure epoch formula.",
+    "Kept the difference between stored lock boost and current computed boost as positive evidence of checkpoint staleness rather than normalizing the values."
+  ],
+  "vebtcLockObservation": {
+    "tokenId": "6096",
+    "lock": {
+      "amount": "400000000000000000",
+      "end": "1788998400",
+      "isPermanent": false,
+      "storedBoost": "2457718867197499599"
+    },
+    "remainingSeconds": "1951402",
+    "maxLockSeconds": "2419200",
+    "deployedResults": {
+      "unboostedVotingPowerOfNFT": "322652447088160886",
+      "unboostedVotingPowerOfNFTAtBlockTimestamp": "322652447088160886",
+      "votingPowerOfNFT": "792989006760314434",
+      "votingPowerOfNFTAtBlockTimestamp": "792989006760314434"
+    },
+    "recomputed": {
+      "unboostedSlope": "165343915343",
+      "unboostedVotingPower": "322652447088160886",
+      "storedBoostEffectiveAmount": "983087546878999839",
+      "boostedSlope": "406368860317",
+      "boostedVotingPower": "792989006760314434"
+    }
+  },
+  "boostObservation": {
+    "tokenId": "6096",
+    "gauge": "0xf251013a7ef668fbcf8aad4b52116c2d537fb742",
+    "inputs": {
+      "gaugeWeight": "24555892988677225266848",
+      "votingVeTotalWeight": "96889795628895219819764603",
+      "boostableVeTotalWeight": "464299369911610246450",
+      "boostableVeWeight": "322652447088160886"
+    },
+    "intermediates": {
+      "votingRatio": "253441477807741",
+      "boostableRatio": "1439007743786756555411",
+      "boostFraction": "1458816996648394833"
+    },
+    "deployedGetBoost": "2458816996648394833",
+    "recomputedBoost": "2458816996648394833",
+    "storedBoostAtLock": "2457718867197499599",
+    "stalenessObservation": "The current computed factor differs from the stored checkpoint factor. This confirms that formula reads and stored veBTC boost are distinct until a boost-aware state transition updates the checkpoint."
+  },
+  "epochObservation": {
+    "inputTimestamp": "1787046998",
+    "deployedResults": {
+      "epochStart": "1786579200",
+      "epochNext": "1787184000",
+      "epochVoteStart": "1786582800",
+      "epochVoteEnd": "1787180400"
+    },
+    "recomputedResults": {
+      "epochStart": "1786579200",
+      "epochNext": "1787184000",
+      "epochVoteStart": "1786582800",
+      "epochVoteEnd": "1787180400"
+    },
+    "deployedMaxVotingNum": "30"
+  },
+  "rawCalls": [
+    {"targetRole": "vebtc-current", "selector": "locked(uint256)", "arguments": ["6096"], "result": "0x000000000000000000000000000000000000000000000000058d15e176280000000000000000000000000000000000000000000000000000000000006aa1f3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000221b9249c51518cf"},
+    {"targetRole": "vebtc-current", "selector": "unboostedVotingPowerOfNFT(uint256)", "arguments": ["6096"], "result": "0x000000000000000000000000000000000000000000000000047a4ab0ee99b076"},
+    {"targetRole": "vebtc-current", "selector": "votingPowerOfNFT(uint256)", "arguments": ["6096"], "result": "0x0000000000000000000000000000000000000000000000000b01434cdabd0642"},
+    {"targetRole": "boost-voter", "selector": "getBoost(uint256)", "arguments": ["6096"], "result": "0x000000000000000000000000000000000000000000000000221f7907f4eba051"},
+    {"targetRole": "pools-voter", "selector": "epochStart(uint256)", "arguments": ["1787046998"], "result": "0x000000000000000000000000000000000000000000000000000000006a7d0900"},
+    {"targetRole": "pools-voter", "selector": "epochNext(uint256)", "arguments": ["1787046998"], "result": "0x000000000000000000000000000000000000000000000000000000006a864380"},
+    {"targetRole": "pools-voter", "selector": "epochVoteStart(uint256)", "arguments": ["1787046998"], "result": "0x000000000000000000000000000000000000000000000000000000006a7d1710"},
+    {"targetRole": "pools-voter", "selector": "epochVoteEnd(uint256)", "arguments": ["1787046998"], "result": "0x000000000000000000000000000000000000000000000000000000006a863570"}
+  ],
+  "limitations": [
+    "This is representative read-only integration evidence for one live veBTC NFT at one block, not a writer simulation or receipt reconciliation.",
+    "The selected token, gauge, weights, stored boost, and total voting power are volatile state and must not be copied as protocol constants.",
+    "The observation does not establish reward-contract claimability or activation history and does not enable a public reader or writer."
+  ]
+}

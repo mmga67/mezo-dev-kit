@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "musd-borrowing-capacity-snapshot",
+  "owner": "troubleshooting",
+  "category": "protocol-integration",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-versioned",
+  "severity": "medium",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:00:00Z",
+  "reviewAfter": "2027-02-18T00:00:00Z",
+  "symptom": "A position can be healthier after collateral is added or price rises, yet a debt-increase simulation still fails the stored maximum-borrowing-capacity check.",
+  "scope": {
+    "protocol": "MUSD borrowing",
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "sourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c",
+    "deploymentScopeOwner": "protocols/musd/borrowing"
+  },
+  "prerequisites": [
+    "The position is active and its stored capacity was established by open/refinance or reduced by collateral withdrawal.",
+    "Ordinary collateral and ratio checks may pass while the requested debt exceeds the stored capacity."
+  ],
+  "diagnosticSteps": [
+    "Read the stored position capacity and current entire debt at the same block as collateral, price, and mode inputs.",
+    "Evaluate the debt-increase preconditions from the canonical borrowing operation instead of deriving capacity only from current collateral ratio.",
+    "Simulate the exact debt-increase entrypoint and retain the decoded revert if the stored-capacity boundary is exceeded."
+  ],
+  "expected": "An integrator that derives borrowable amount only from current collateral and price expects the capacity to grow automatically.",
+  "observed": "The deployed-source model retains the stored snapshot across ordinary collateral top-ups and price increases; the bounded update and reset paths are owned by the borrowing operation catalog.",
+  "control": "Pinned official tests cover price-rise rejection above stored capacity, downward-only collateral-withdrawal behavior, and refinance reset behavior.",
+  "verifiedCause": "The contract intentionally gates debt increase with stored position state rather than an always-recomputed current-collateral maximum. Exact update/reset semantics are canonical in the borrowing operation catalog.",
+  "safeMitigation": "Read and expose the stored capacity, include it in the quote block, and fail closed before signing. Do not substitute a UI current-ratio estimate or bypass exact-call simulation. Refinance is a separate state-changing operation with fees and safety checks, not an automatic workaround.",
+  "reproduction": {
+    "basis": "version-matched-deployed-source-and-official-tests",
+    "deterministicEvidenceIsStrongerThanLiveWrites": true,
+    "sourceArtifactIds": ["source-borrower-operations", "source-trove-manager", "test-borrower-operations-normal"],
+    "testLocators": [
+      "withdrawMUSD: reverts when withdrawal exceeds maxBorrowingCapacity after price increase",
+      "adjustTrove: does not increase maxBorrowingCapacity on collateral withdrawal even if price has risen",
+      "refinance: updates maxBorrowingCapacity from current collateral and price"
+    ]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-operations",
+      "recordId": "add-collateral"
+    },
+    {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-operations",
+      "recordId": "increase-debt"
+    },
+    {
+      "moduleId": "protocols/musd/borrowing",
+      "resourceId": "borrowing-operations",
+      "recordId": "refinance-trove"
+    },
+    {
+      "moduleId": "protocols/musd",
+      "resourceId": "musd-sources"
+    }
+  ],
+  "limitations": [
+    "This is deployed protocol behavior for the scoped source/deployments, not an RPC failure.",
+    "Do not recommend refinance without a fresh fee, mode, ICR/TCR, and transaction review."
+  ]
+}

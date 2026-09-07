@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-source-catalog",
+  "owner": "contracts-registry",
+  "sources": [
+    {
+      "id": "official-source-musd",
+      "kind": "official-source-and-deployment-artifacts",
+      "repository": "https://github.com/mezo-org/musd",
+      "commit": "43ef44123753fa3e28425beffde42c86693fd03c",
+      "package": "@mezo-org/musd-contracts",
+      "packageVersion": "1.1.0",
+      "license": "GPL-3.0",
+      "note": "Pinned official MUSD source and chain-scoped Hardhat deployment artifacts with full ABIs and declared active proxy implementations."
+    },
+    {
+      "id": "official-source-tigris",
+      "kind": "official-source-and-deployment-artifacts",
+      "repository": "https://github.com/mezo-org/tigris",
+      "commit": "0a3b5e840ac8e187cc705fbeddcf00f88b09247e",
+      "package": "@mezo-org/tigris-contracts",
+      "packageVersion": "1.0.0",
+      "license": "GPL-3.0",
+      "note": "Pinned official Mezo Earn/Tigris source and chain-scoped Hardhat deployment artifacts for the still-published basic-pool and veBTC roots."
+    },
+    {
+      "id": "official-docs-contract-reference",
+      "path": "src/content/docs/docs/users/resources/contracts-reference.md",
+      "note": "Official current token, bridge, pool, and historical Portal address reference.",
+      "kind": "official-docs",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/users/resources/contracts-reference.md",
+      "sha256": "bd8007ec4d1e960a49851a8230bdbf50881f56fa6a117c4eef438accfa5c8ad9",
+      "retrievedAt": "2026-08-17T22:56:59.589Z"
+    },
+    {
+      "id": "official-docs-mezo-pools",
+      "path": "src/content/docs/docs/developers/features/mezo-pools.md",
+      "note": "Official current basic-pool, concentrated-liquidity, and veBTC root contract reference.",
+      "kind": "official-docs",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/developers/features/mezo-pools.md",
+      "sha256": "5fc741e405f8cfd865340c3be3ec3db632b7d9d9e33ead77522002cf21a3ece6",
+      "retrievedAt": "2026-08-17T22:56:59.589Z"
+    },
+    {
+      "id": "official-docs-musd-development",
+      "path": "src/content/docs/docs/developers/musd/index.md",
+      "note": "Official MUSD architecture and contract-component development guide.",
+      "kind": "official-docs",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/developers/musd/index.md",
+      "sha256": "140bd1481e94bcc5d89a8100d681b5ba9e3baf623811601714424ad27d8ba994",
+      "retrievedAt": "2026-08-17T22:56:59.589Z"
+    },
+    {
+      "id": "official-docs-musd-redemptions",
+      "path": "src/content/docs/docs/developers/musd/musd-redemptions/index.md",
+      "note": "Official redemption integration guide and published MUSD root addresses.",
+      "kind": "official-docs",
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555",
+      "url": "https://github.com/mezo-org/documentation/blob/c9e6cb39361c8d71637f40bdfc9378a24e286555/src/content/docs/docs/developers/musd/musd-redemptions/index.md",
+      "sha256": "b476782cbd70d1a7d934bbf315cca4ff843de53e3b1f5eaf5f8f3a524dfad72e",
+      "retrievedAt": "2026-08-17T22:56:59.589Z"
+    },
+    {
+      "id": "official-explorer-contract-observations",
+      "kind": "on-chain-and-verified-explorer-observation",
+      "sha256": "7494eab3a60d6b3100308089e3761249fb5fb85a6b865516d6baef6b819cdc5f",
+      "retrievedAt": "2026-08-17T22:56:59.589Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org",
+        "https://api.explorer.test.mezo.org"
+      ],
+      "note": "Bounded current code, receipt, ERC-1967 slot, upgrade-event, full-ABI, and verified-source observations.",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-probes-2026-08-18"
+      }
+    },
+    {
+      "id": "official-ntt-musd-live-deployment",
+      "kind": "official-deployment-repository-live-configuration",
+      "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
+      "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
+      "note": "Pinned official current MUSD NTT 1.1.0 deployment configuration, generated ABI factories, Base manager deployment, and three transceiver deployment broadcasts."
+    },
+    {
+      "id": "official-ntt-musd-initial-deployments",
+      "kind": "official-deployment-repository-activation-history",
+      "repository": "https://github.com/mezo-org/ntt-bridge-musd",
+      "commit": "0022212b2433d8780f7aba932746b4d6f7b01c57",
+      "note": "Pinned official initial Mezo and Ethereum MUSD NTT manager deployment broadcasts retained for activation history after repository reorganization."
+    },
+    {
+      "id": "official-mezod-assets-bridge-current",
+      "kind": "official-client-precompile-source",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "42ddabe17f20580d145441d8f607f6306d753311",
+      "note": "Exact official Assets Bridge wrapper-v6 interface, ABI, runtime bytecode, and version-map source matching the installed wrapper and active v13 execution generation 6."
+    },
+    {
+      "id": "official-mezod-v13-upgrade-schedule",
+      "kind": "official-client-upgrade-schedule",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "0787e5db684c41142c3021468c660eab60d3e323",
+      "note": "Official upgrade schedule that established v13.0.0 activation at Mezo Mainnet block 11358000; deployed activation is proven by the post-v13 observation resource."
+    },
+    {
+      "id": "native-bridge-etherscan-executable-reproduction",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-bridge-probes-2026-08-24"
+      },
+      "sha256": "15f246147648cea738d94038ff7d1e5d3d00929c5a8456892734eb470339fb25",
+      "retrievedAt": "2026-08-24T13:39:35.987Z",
+      "endpoints": [
+        "https://etherscan.io"
+      ],
+      "note": "Etherscan Exact Match proxy/current-implementation pages, full five-generation activation history, exact Standard JSON build, and fixed-block Ethereum code/slot observations."
+    },
+    {
+      "id": "pools-explorer-executable-reproductions",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-pool-probes-2026-08-23"
+      },
+      "sha256": "cf24c75a4f75389acd4074d4f9950be0931b33dd25bbfad9943ceec330e51486",
+      "retrievedAt": "2026-08-23T12:20:13.399Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org"
+      ],
+      "note": "Official explorer creation/source/ABI captures, fixed-block runtime relationships, and exact isolated executable reproductions for the seven documented Mezo Mainnet CL roots."
+    },
+    {
+      "id": "institutional-debt-explorer-executable-reproductions",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-institutional-debt-probes-2026-08-23"
+      },
+      "sha256": "ea8349822f14fe930ac066a9ef2e682aaf2a0a04de16c2585eabf708e0b85104",
+      "retrievedAt": "2026-08-23T13:00:00.367Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org"
+      ],
+      "note": "Official explorer proxy/source/ABI captures, full activation histories, fixed-block state, and exact isolated executable reproductions for institutional Enclaves and EnclaveDebtManager."
+    },
+    {
+      "id": "official-mezod-price-oracle-v12",
+      "kind": "official-client-precompile-source",
+      "repository": "https://github.com/mezo-org/mezod",
+      "commit": "95a5e0eddbbb92bb0b305185e2349af4c41ac63d",
+      "note": "Official mezod v12 PriceOracle precompile v1 source, interface, ABI, wrapper bytecode, and activation configuration."
+    },
+    {
+      "id": "oracle-pyth-live-configuration",
+      "kind": "official-provider-source-and-on-chain-observation",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-oracle-probes-2026-08-27"
+      },
+      "sha256": "6f4e5921090ff7accc0b5db088e394efdd42d25e6e04989fd64887fc88fb2c27",
+      "retrievedAt": "2026-08-27T14:24:36.881Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org",
+        "https://api.explorer.test.mezo.org"
+      ],
+      "note": "Official Mezo integration address plus official Pyth 1.4.6 source/deployment metadata and complete post-upgrade runtime/slot/ABI observations for the in-place proxy generation.",
+      "repositories": [
+        "https://github.com/mezo-org/documentation",
+        "https://github.com/pyth-network/pyth-crosschain"
+      ]
+    },
+    {
+      "id": "economic-system-explorer-executable-reproductions",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-economic-system-probes-2026-08-23"
+      },
+      "sha256": "69df35483a682714f6ce668c7af66330da6cb5f979d8fc5db84f60bc37b4a5c6",
+      "retrievedAt": "2026-08-24T15:30:07Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org",
+        "https://mezo-mainnet.boar.network"
+      ],
+      "note": "Official explorer activation/source/ABI captures, complete proxy upgrade histories with historical ERC-1967 slot boundaries, fixed-block code/proxy evidence, and exact isolated executable reproductions for the six current Savings/mUSDC-lending/USDC-vault roots."
+    },
+    {
+      "id": "incentives-explorer-executable-reproductions",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-incentives-probes-2026-08-21"
+      },
+      "sha256": "0abaef6c75c41917d923a7e7daaaaf55c30cc29ab7720909dabb148709241043",
+      "retrievedAt": "2026-08-24T21:31:04.189Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org"
+      ],
+      "note": "Bounded official-explorer source/ABI responses, fixed-block runtime identity, activation histories, and exact isolated executable reproductions for the current incentives and emissions graph."
+    },
+    {
+      "id": "validator-incentives-explorer-executable-reproductions",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-validator-incentives-probes-2026-08-24"
+      },
+      "sha256": "cf1389bd7fbcfae3ac418bb5e2d4a14026a3668928cfc20ffcea64a467d780f9",
+      "retrievedAt": "2026-08-24T22:04:33.950Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org"
+      ],
+      "note": "Bounded official-explorer source/ABI responses, fixed-block runtime identity, direct activation, and exact isolated executable reproductions for the validator gauge and voting-rewards factory roots."
+    }
+  ],
+  "sourceArtifacts": [
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/ActivePool.json",
+      "sha256": "6745c69a96be2b6f772fa683a91c4be443f21021fb92ea2d22869a68233ff09d"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/BorrowerOperations.json",
+      "sha256": "edaccc6715295306d96ac94263f5cb6185a993071f7c8d7a5798d6723b3e0f62"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/BorrowerOperationsSignatures.json",
+      "sha256": "33557c1a89ec1993a65d77bc2c6c3bd9d82a8f0873c79a8e19d575ce61c9f4b2"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/CollSurplusPool.json",
+      "sha256": "f6f9eef25099c2715fc864035d552a1e1390132cb7798cbc4a0b28fcdfbbf446"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/DefaultPool.json",
+      "sha256": "7b151ea5946ce90b008ef0271bcb20d2bd182e5242d5f2599564deffeef77e63"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/GasPool.json",
+      "sha256": "2f0ff3d38662b928544766a8e9126daa075ced6040db1dd724355513d139ac84"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/GovernableVariables.json",
+      "sha256": "8d124d13e320908a0141276d7c187b42b6dc3f97f2d2c9ef64a9c2cf3788b252"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/HintHelpers.json",
+      "sha256": "95f562edc2de3d09c486dac83f35c47880c3624d44ab478c35440f2626c22735"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/InterestRateManager.json",
+      "sha256": "3020a99434e340c02137543385a2fac1a7ea75cdb93349bf46d10eaa104a5b68"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/MUSD.json",
+      "sha256": "63fc2cc386618184fc02f935c57e600cbb36bc2d6a4ddbe1abd7afb9b9dc4e0d"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/PCV.json",
+      "sha256": "4677031b3ae91b4a93e3e8d9daffae55ce99aafdead44086b840d21d23940759"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/PriceFeed.json",
+      "sha256": "62d55736c4dfebb027d25467b7b1e59423884cd963d7df469d838b7cce7d8b69"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/SortedTroves.json",
+      "sha256": "005196877d4e1fe204af5e95e8f11ad6bf5836fd2f92d3879e2831c1ac9ef06d"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/StabilityPool.json",
+      "sha256": "8f7ea0ab4b18faeafa452533313fbeb0fd296e1c3287ae583ce8874ce5991695"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/mainnet/TroveManager.json",
+      "sha256": "019e9378b295ab8cf96e9b4bec65dc8e78ebeeca0008c6c133deb392472d6dea"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/ActivePool.json",
+      "sha256": "7f770ea6df6fb559f7820ee68ca694a5bbb31499f69f59f09f40a031e9f49300"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/BorrowerOperations.json",
+      "sha256": "d6a3f6c4371989e0df90602e0ea308e2f7b3c2e49c948091c5d487273eea5865"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/BorrowerOperationsSignatures.json",
+      "sha256": "dcfba13983f0d5bfe24eb02ee69417d1b9908a42054abce8ddda375bcd5563ad"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/CollSurplusPool.json",
+      "sha256": "4d0e2c66183d853700931d1b7cfed9f894b56fb2029f460ed1898bc21c5e469b"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/DefaultPool.json",
+      "sha256": "a3b11d1826c10aa9c985c17c1d5e61fdba34c4be75206328343a44dbcf13c123"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/GasPool.json",
+      "sha256": "5d6bace364f4302ad6687a16da999c662612ca22a47c18a0468ea46dc1d29f75"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/GovernableVariables.json",
+      "sha256": "5982429de5dc656b9ade614cc18f41ab189dfed91bd7d3c78c19dd35fd90500b"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/HintHelpers.json",
+      "sha256": "0a9220c703dfac1500a94f8e325692bd67e1591a7121af9bb36c81c823e50beb"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/InterestRateManager.json",
+      "sha256": "2444180c48632372205f5bde95c207ad83b4239a41741c3a2db9c7e99f0e2982"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/MUSD.json",
+      "sha256": "9e6f944b6cd80ad9743e5120f1c06cd5cb42090b524f0781dcf723cb45386296"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/PCV.json",
+      "sha256": "047926d6d532b3d83de74f570d754a634c3d60a4df50ebed3a7f9c071029b1e2"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/PriceFeed.json",
+      "sha256": "c8f4d5b361c4c8e2a88517f13ecc7bb0b2e6e4f17b5b8f8aee66b3cb741e8547"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/SortedTroves.json",
+      "sha256": "425b32aa760f7d4f4d94e7fb0161cc9e4d55a89e40e7ceeff56694a186846961"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/StabilityPool.json",
+      "sha256": "f6bc36ef95b32a2febcbd6c76076ca73cd2d9c3d7a8fa1cb0a7393b65c0ac589"
+    },
+    {
+      "sourceId": "official-source-musd",
+      "path": "solidity/artifacts/deployments/matsnet/TroveManager.json",
+      "sha256": "0a48a47675b4e837e4355eca5120d9934f9476b69574f9ae6346e3ac3ce53690"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/ChainFeeSplitter.json",
+      "sha256": "7655b76d0bb96871a84ffa4eec9c21489167b92d23e1c90fc8680267017985c0"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/PoolFactory.json",
+      "sha256": "fe6dbb8d1e1f8d2b6b09eb75b9aee29cdb8dcd6db71c9fd9bd0aa1d7a59ad52e"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/Router.json",
+      "sha256": "b814d98ac0562c103903f3c1256a58e7848e7ed4c23e9f0f5e9b175e9a20a8c3"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/VeBTCEpochGovernor.json",
+      "sha256": "40a0ddbf714323568719c0a0165f1892acbcb237680508bb96c2f851f99e21f1"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/VeBTCRewardsDistributor.json",
+      "sha256": "29f86f6c278d07236b9513bca1ae3b34829c3c46caca1a467a34c955d1fac36b"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/mainnet/VeBTCVoter.json",
+      "sha256": "b189b55cf211a1f419d065d120e3783b3dcae844ed927f9be290e3c4c063f372"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/ChainFeeSplitter.json",
+      "sha256": "7b44f49a03bc9418523c8f1634fca749d4b6f5a1bcccd9a990445b48cff4874f"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/PoolFactory.json",
+      "sha256": "5169b2bf242184cb3d3028b99136c9def7e5a4785bfd7cd8997ea792455c66e8"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/Router.json",
+      "sha256": "dfdf8010133617c214a208f49bd61b74dc1df906e6523e02830f8c30fa9d1229"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/VeBTCEpochGovernor.json",
+      "sha256": "24fb7d691cc1722529b4ae1e54c61da1d3aebe9e99fc00c93e0ee1a0080dff4b"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/VeBTCRewardsDistributor.json",
+      "sha256": "7428e1a0ee0304504b38682c7ed51a730082771c1a9456aa003037849364d88c"
+    },
+    {
+      "sourceId": "official-source-tigris",
+      "path": "solidity/deployments/testnet/VeBTCVoter.json",
+      "sha256": "0e743bddca34f4f1260aaa9c44b622691ec26de7bd2909102913739eac23b303"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/ts/src/ethers-contracts/1_1_0/factories/NttManager__factory.ts",
+      "sha256": "11ecedfda4242865639467c005fdfdcae2a417947b182fbc4a8e9b3759b33044"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/ts/src/ethers-contracts/1_1_0/factories/WormholeTransceiver__factory.ts",
+      "sha256": "c15603a88afba883e395fed535a654973c35dbccbefc1783de66be27740421a4"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "deployment.json",
+      "sha256": "826fbb0694a3e78e624b7e8532d739ccefb14dfd8d2f4e96dc22a56d930a1909"
+    },
+    {
+      "sourceId": "official-mezod-assets-bridge-current",
+      "path": "precompile/assetsbridge/IAssetsBridge.sol",
+      "sha256": "78075aa8dd869921c1a1e76090fcec27a47890e8bd642161661d0167b18fea13"
+    },
+    {
+      "sourceId": "official-mezod-assets-bridge-current",
+      "path": "precompile/assetsbridge/abi.json",
+      "sha256": "24f8a28498c9e9f7bf1ed3b1d2ac70b0e72d3269ddc7fbe4f798bea6864bb6e1"
+    },
+    {
+      "sourceId": "official-mezod-assets-bridge-current",
+      "path": "precompile/assetsbridge/byte_code.go",
+      "sha256": "dc5a15956cc9bcd88f8c5ad45ea36e23ca4516ca0cf983f7124c609210330995"
+    },
+    {
+      "sourceId": "official-mezod-assets-bridge-current",
+      "path": "precompile/assetsbridge/assets_bridge.go",
+      "sha256": "dd5dc7018b80a517afd0cb12c5efd678817134f78422a3d980cf866155627352"
+    },
+    {
+      "sourceId": "native-bridge-etherscan-executable-reproduction",
+      "path": "address/0x1f8ed8193b902185c2bd495fe9b1963dc343ba87#code",
+      "sha256": "c4ea3b70c21df548549b18f14c915f67eb4972340e07546ecef85fd912caac45"
+    },
+    {
+      "sourceId": "native-bridge-etherscan-executable-reproduction",
+      "path": "address/0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c#code",
+      "sha256": "38527bdd4912bfd2bb74e367dd354aeaa615a2ad688fcc6eaa9f6dee38cd3488"
+    },
+    {
+      "sourceId": "official-mezod-v13-upgrade-schedule",
+      "path": "docs/upgrades.md",
+      "sha256": "9bd59af211c88f22aaa59eb46b6a84f981301482d7e09280b6c3b1da2d7f0f7e"
+    },
+    {
+      "sourceId": "official-ntt-musd-initial-deployments",
+      "path": "musd/mainnet/evm/broadcast/DeployWormholeNtt.s.sol/31612/run-latest.json",
+      "sha256": "ba915f2ce5e33e17e960a4d0dc2e711e37d3aa1c9c3fe54e042312770b89a093"
+    },
+    {
+      "sourceId": "official-ntt-musd-initial-deployments",
+      "path": "musd/mainnet/evm/broadcast/DeployWormholeNtt.s.sol/1/run-latest.json",
+      "sha256": "c554c50aaf3d1f37f89ad720837cf12df7d754c391bd6578ecafad00e6f51a7f"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/broadcast/DeployWormholeNtt.s.sol/8453/run-latest.json",
+      "sha256": "102c670c516e5e08af4e99a0644c3b3c5c5b4220b87403728660385d48cf676a"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/broadcast/DeployWormholeTransceiver.s.sol/31612/run-latest.json",
+      "sha256": "f015930bb540f1dbd05abfaf7d2be5a34d52d13712b0d814c2b152aff3338725"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/broadcast/DeployWormholeTransceiver.s.sol/1/run-latest.json",
+      "sha256": "707ebc2e02c9023f3bdd2dba8aebedb35592c9e2d1fbc9eb9cf82a08637e5dc1"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/broadcast/DeployWormholeTransceiver.s.sol/8453/run-latest.json",
+      "sha256": "67f8615332c0863c34adc78bf3b2952fbb797931ca810de113728db29e9eb606"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xbb24af5c6fb88f1d191fa76055e30bf881beeb79",
+      "sha256": "b8e0bf0f15ed2702f470c3c7f20168827a05ea4e8b83a1a40e881e3f0fc18b54"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x819cfadd7f5bc0854fa3b7f5749ea0410a943e5f",
+      "sha256": "96204606e615a9a20222b5d89e3d323c70b8ff9828cc4c33c83a1abe6bdc9d8c"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x37cdd11919ec3860ead9efb8673d7476e5326225",
+      "sha256": "d682b7cc75489f9e195c0ecf862713dbc1493cadbe4889d5e7e8266c831d76e3"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x509bc221df2b83927c695fa0bb0f5b21053c874c",
+      "sha256": "2e7db520cd870c1b2f17e53aa5cd6ba27b9fb8472094a1156815bb96935588fc"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x818f6ccfbee90202b967567bcf2a5fb9b73cfeca",
+      "sha256": "beca08f2ce0053f1f7287167f8c015de402367bf1e7fbb938ee158bd4376ce97"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xfc41e1aae0e58e8bdc32e85d8c995a902fedeb13",
+      "sha256": "9481c4bf55ee0f25bb0356c8ff36fc1ac930ba389082b71363a72b6eda439db0"
+    },
+    {
+      "sourceId": "pools-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x8f11a90265f7a784b46fe326638ec37a5cc29c33",
+      "sha256": "6483af29e542817b21d51f6f14126d259ed154ef9870298da99b07c77791c032"
+    },
+    {
+      "sourceId": "institutional-debt-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xf74d1bddc4c37cbc1b1d8a74480ddff30af6273d",
+      "sha256": "a85b95b8dec9b44a8c78d3042a045633c5901be1b6a98acec1ee0d0d229cf2a9"
+    },
+    {
+      "sourceId": "institutional-debt-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x05bd601c3c381fd3d099dbb574cc39ea5d8b4a69",
+      "sha256": "a3835a10d9facb58fce32da2caa09f0b6dafe02900e7c68f4df62060efcd2b13"
+    },
+    {
+      "sourceId": "institutional-debt-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xb98a5fb78780a1523c193a13a3c59600a7f628e7",
+      "sha256": "7feeccd0bf37b0c4b9fa5b8d4cdb2f2cdc8b3dfa1d1716116e82dccea0a550a5"
+    },
+    {
+      "sourceId": "institutional-debt-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x3ea98a11d349b515e628c1cc74ca999230744c43",
+      "sha256": "e9efe513eb0f2214e7f10839708e4eee315f3ac5577410fbc5c4a02f3e40637a"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "precompile/priceoracle/abi.json",
+      "sha256": "a6edf8ea981d5b6570edd73d965a4023df954986165cac9d65ba8f080ce4378e"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "precompile/priceoracle/IPriceOracle.sol",
+      "sha256": "520acbd30564376d47441e8bfc0143f30a1e70db7d73ab468f9e2d85c30748a1"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "precompile/priceoracle/byte_code.go",
+      "sha256": "37c963057cc9cc9f56c47b72e260fc107b0cc3e1dcb50c99dfc518734dfb8952"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "precompile/priceoracle/price_oracle.go",
+      "sha256": "1734a00dd9fdd56fc3f224f03f205cc32f8b3931b4541dc12ea05e22b05b96ed"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "app/upgrades/v0_5/constants.go",
+      "sha256": "c25e51417c4bcc49c234c1f944382d70dd646b89a546c5b435d1e8cb2cb8d044"
+    },
+    {
+      "sourceId": "official-mezod-price-oracle-v12",
+      "path": "chain/mainnet/mezo_31612-1/genesis.json",
+      "sha256": "c1b9b2736bc0c1e6390dafa80c43fdc9870490d481ebaa71d932a98df3c531f7"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xb33c3f97bf3b7df59417d114c694353e42929e87",
+      "sha256": "8e4cdc0fc5467450bf4897c8dd510519375353b8e4defd95fdc8151cee3db73e"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/addresses/0xb4d498029af77680cd1ef828b967f010d06c51cc/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+      "sha256": "77f95424b7d4144dd3735080aa7ff0ddff5ee748d6759b0c7bff1bef856a4812"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x874e281725b75bc9ac138e17768a7471199d7f2c",
+      "sha256": "e69425a40d3855c93993c7c2c70f8c1cd38e774e62586240d6f95a82df294674"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xc8f2626afdedc89b024ef7541faff280889d94a1",
+      "sha256": "29a08d3459fcebed0e36d1260b0683bf73d0cc32fa84926ea8e22e6de15fd767"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x885c04131666f49ede55f84e00b05886314e7514",
+      "sha256": "0e8a11aad50770bfc0bc933a3ddbc6215897081abc8c922c037d6af7b43fb976"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c",
+      "sha256": "cfb6727d4820101e05554204251f25a408da6de931b54aa79d3c590de382af49"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x565834ce7e40b8987bc20ebf83e2159467bda311",
+      "sha256": "11015e89d72feca748e81b9256e7180ffe216d633a1e279caf5ed775d55375d6"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x3760ebc636f912a4db9540fda4dec09c25c6c1e7",
+      "sha256": "7dcc65fa2b7b1ffa3631e9127a4253c060f736111898011f7bec27f539476404"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x799c63c61b885ef546c1469c182eaa54a36554d4",
+      "sha256": "445c7996c581a027c0fa271f8e51438f12597c02d40496f3e54fb26005c7ecaf"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/addresses/0xea0597d3d44ff2ea1e4c35501e153f4c025e48d1/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+      "sha256": "16c18e9d329fb5bd8f3aaa2c8633afdd3cb36684377ff760478dc623cb3e482e"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xb0ee3a01d9134733155b28289c09f084acca4f61",
+      "sha256": "319a1d7df3bfe18e244d9a9cc217e983ec3f69c5bc3d271b9885fb75bdda5124"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x80ec90e54e577dac8efca30f96bf21fe4efa885d",
+      "sha256": "2762fcd82101c844e7ab50e80dc29d22cbc872fd026553f893de969c900b4f95"
+    },
+    {
+      "sourceId": "economic-system-explorer-executable-reproductions",
+      "path": "api/v2/addresses/0xd3f6f147662bf2943ca09ee16bedaea28ae28788/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+      "sha256": "2f0a57918cf8472d81c7f6961e52e5fad34d351990940b1b74be106ff704fc8d"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xa62060d57e04d6c799b58188dc654b85addd1465",
+      "sha256": "eda80d61bbf4fc23b8e7e5e932e311f3b90d2d63c581d5f06bd9c2afe4006838"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+      "sha256": "11b64c68da3e6562ce41088466829a829947fc26c43682f2dd41392bc67c39e1"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xa696dc56522e41811d06bbda83c1a6d976637624",
+      "sha256": "9d6ddaab589a60e346435288e892278088b267ff5f5daa30463b462ccc89f283"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+      "sha256": "50f98955b9fc05e777b844c999e9fb6e5536069adeec91145550f880749d4fab"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "sha256": "16fd68306dd3d757be7a09d5cb9b18c84446431b3ab9a4f510a95e06a1ae57be"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x66bff681611553b3204a226b2019ec621f39ffc3",
+      "sha256": "f50a8babdd21dd6db08f5fde933137c2d330146802a3daee0784683b521e354f"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+      "sha256": "39155a03ee5fe1c25d440d146aee042a86898cea1c02cb31d77997f0dd4e8051"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x5c6ef634e279a77d64e21d24b1a1bb4a5e59c5da",
+      "sha256": "f631a2989b0dc222f3783d9b229d027bbd35558f01ee061f4ed4d00c6e7d667a"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xe9e697d49d47c7042e768177f42d5789666d99fa",
+      "sha256": "4747c1fa78052e08d3746748543f85215a9c5f4d973fdb9fc1ce72f6586085f4"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157",
+      "sha256": "a850e47a0ce479b3d26ad7f13677d920a3e5a6c6878410b11088149be67e2a2a"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x8d696ae943b97ff36449014e4400a9560d1664dc",
+      "sha256": "6675f67de285c2e177f2679414e7148dea0bbd1b59edc41e3e91d90a9aa1b39a"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x7f8c3a8877368d6a3c727ca18661ec1d681f4365",
+      "sha256": "0184527b2276391309ac7f86887088672bf773ee4f6dc4eeba792265c2df2225"
+    },
+    {
+      "sourceId": "incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0xd60f5f641e68a0e2c9bab29e444b22507a0f8ecf",
+      "sha256": "12a47722dde84b17636957b3d16e6aa6571853449ce7818adf8793fc68fc078b"
+    },
+    {
+      "sourceId": "validator-incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad",
+      "sha256": "fe2f534c8c7d8492c8148d89f8be22acc98aadb109926d25da8f9ac705683b12"
+    },
+    {
+      "sourceId": "validator-incentives-explorer-executable-reproductions",
+      "path": "api/v2/smart-contracts/0x30019d85a86abd3cda1167f4c052690c32fbdec2",
+      "sha256": "6d6a8ad09802bc1706a4ca0e3cbc7b22fa14c562b109cc6fd1bc4d27915e4f0d"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "pyth-crosschain/contract_manager/src/store/contracts/EvmPriceFeedContracts.json",
+      "sha256": "9c1749df35013c474c0e17e4b3a7b6bfcf8bf07d067ea9aa144c90253b063879"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "pyth-crosschain/target_chains/ethereum/contracts/contracts/pyth/Pyth.sol",
+      "sha256": "a63794e3455e3e9025f0c1a6f683f87fb2f55915b0eac2c192eaa5df444775cb"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "pyth-crosschain/target_chains/ethereum/contracts/contracts/pyth/PythUpgradable.sol",
+      "sha256": "802a34d1b707827b58a68f9d998bbc6f7b14afc9b01f1b72e7297bb6e566b1e7"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "pyth-crosschain/target_chains/ethereum/sdk/solidity/abis/IPyth.json",
+      "sha256": "feaa7731ab53c8f24320790eabe485f3ca4f22edbea5e40067e2cf84026b9603"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "effective-abi/provider-upgraded-mainnet-testnet-match",
+      "sha256": "4d50e1f796a6d0c329dfa3a04e8515a012b3edef59e081aa191c1ac53d75d4f7"
+    },
+    {
+      "sourceId": "oracle-pyth-live-configuration",
+      "path": "evidence/oracle-contracts-2026-08-27.json",
+      "sha256": "6f4e5921090ff7accc0b5db088e394efdd42d25e6e04989fd64887fc88fb2c27"
+    }
+  ],
+  "id": "contract-sources",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
+    "sourceIds": [
+      "official-source-musd",
+      "official-source-tigris",
+      "official-docs-contract-reference",
+      "official-docs-mezo-pools",
+      "official-docs-musd-development",
+      "official-docs-musd-redemptions",
+      "official-explorer-contract-observations",
+      "official-ntt-musd-live-deployment",
+      "official-ntt-musd-initial-deployments",
+      "official-mezod-assets-bridge-current",
+      "official-mezod-v13-upgrade-schedule",
+      "native-bridge-etherscan-executable-reproduction",
+      "incentives-explorer-executable-reproductions",
+      "pools-explorer-executable-reproductions",
+      "institutional-debt-explorer-executable-reproductions",
+      "official-mezod-price-oracle-v12",
+      "oracle-pyth-live-configuration",
+      "economic-system-explorer-executable-reproductions",
+      "validator-incentives-explorer-executable-reproductions"
+    ]
+  },
+  "limitations": [
+    "Pinned source identity establishes provenance only for the exact commits, paths, artifacts, and observations recorded.",
+    "The observation source is bounded by its own review window and does not create an availability or support promise."
+  ]
+}

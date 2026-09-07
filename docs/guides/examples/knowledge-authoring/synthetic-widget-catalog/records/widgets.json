@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-widget-catalog",
+  "id": "synthetic-widget-records",
+  "owner": "documentation-fixtures",
+  "status": "unverified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "documentation-only synthetic example"
+  },
+  "limitations": ["The record is fictional, unsupported, and outside canonical MDK knowledge."],
+  "records": [
+    {
+      "id": "amber-widget",
+      "displayName": "Amber Widget",
+      "color": "amber",
+      "sourceRef": {
+        "moduleId": "synthetic/widget-catalog",
+        "resourceId": "widget-sources",
+        "recordId": "synthetic-widget-spec-v1"
+      },
+      "evidenceRef": {
+        "moduleId": "synthetic/widget-catalog",
+        "resourceId": "widget-observations",
+        "recordId": "observe-amber-widget-v1"
+      }
+    }
+  ]
+}

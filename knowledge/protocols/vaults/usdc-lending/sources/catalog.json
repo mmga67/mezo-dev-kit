@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-source-catalog",
+  "id": "usdc-lending-vault-sources",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T20:47:49Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"retrievalDate": "2026-08-23", "networkIds": ["mezo-mainnet"]},
+  "limitations": ["Product and lifecycle documentation does not replace deployed source and same-block state."],
+  "records": [
+    {"id": "official-usdc-lending-vault-docs", "type": "official-documentation", "url": "https://mezo.org/docs/users/mezo-earn/vaults/usdc-lending-vault/", "retrievedAt": "2026-08-23T18:00:00Z"},
+    {"id": "official-vault-notices", "type": "official-documentation", "url": "https://mezo.org/docs/users/mezo-earn/vaults/vault-notices/", "retrievedAt": "2026-08-23T18:00:00Z", "scope": "Current versus retired vault lifecycle."},
+    {"id": "official-docs-repository", "type": "official-source-repository", "repository": "https://github.com/mezo-org/docs", "commit": "c9e6cb39361c8d71637f40bdfc9378a24e286555"},
+    {"id": "morpho-vault-upstream", "type": "upstream-source-repository", "repository": "https://github.com/morpho-org/vault-v2", "commit": "bec4dd8c847525efea95e106b38a70eaabeef65f", "scope": "Current upstream context only; exact deployed bundles own behavior."},
+    {"id": "underlying-market", "type": "logical-reference", "reference": {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"}},
+    {"id": "incentives-gauge-model", "type": "logical-reference", "reference": {"moduleId": "protocols/incentives", "resourceId": "incentives-gauges-rewards"}},
+    {"id": "fixed-block-state", "type": "local-evidence", "path": "evidence/fixed-block-state-2026-08-23.json"},
+    {"id": "source-reproduction", "type": "local-evidence", "path": "evidence/source-reproduction-2026-08-23.json"},
+    {"id": "flow-reconciliation", "type": "local-evidence", "path": "evidence/flow-reconciliation-2026-08-24.json"}
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/musd",
+  "moduleId": "protocols/musd",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:08:06Z",
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"
+  },
+  "limitations": [
+    "Support covers the verified classic MUSD system model; borrowing, redemptions, and proposed institutional debt are separate nested modules.",
+    "Institutional EnclaveDebtManager positions, pledged veBTC, and fees are not classic troves and do not enter classic TCR, ICR, Recovery Mode, Stability Pool, redemption, or liquidation accounting.",
+    "Current governed parameter values and oracle bindings are not frozen by these records.",
+    "Accepted protocol knowledge does not imply an implemented public reader or writer package."
+  ],
+  "resources": [
+    {
+      "id": "musd-terminology",
+      "role": "canonical-record",
+      "kind": "musd-terminology-catalog",
+      "path": "records/terminology.json",
+      "recordIds": ["musd", "trove", "native-btc-collateral", "active-collateral", "principal", "current-interest", "active-debt", "pending-redistribution", "entire-collateral", "entire-debt", "icr", "nicr", "entire-system-collateral", "entire-system-debt", "tcr", "recovery-mode", "stability-pool-deposit", "collateral-surplus", "pcv", "bootstrap-loan", "governed-parameter"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "musd-components",
+      "role": "canonical-record",
+      "kind": "musd-component-catalog",
+      "path": "records/components.json",
+      "recordIds": ["musd.token", "musd.borrower-operations", "musd.borrower-operations-signatures", "musd.trove-manager", "musd.stability-pool", "musd.active-pool", "musd.default-pool", "musd.coll-surplus-pool", "musd.gas-pool", "musd.price-feed", "musd.sorted-troves", "musd.hint-helpers", "musd.interest-rate-manager", "musd.pcv", "musd.governable-variables"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "musd-system-model",
+      "role": "canonical-record",
+      "kind": "musd-system-model",
+      "path": "records/model.json",
+      "recordIds": ["musd-system-model"]
+    },
+    {
+      "id": "musd-sources",
+      "role": "source-catalog",
+      "kind": "musd-protocol-source-catalog",
+      "path": "sources/catalog.json",
+      "recordIds": ["official-docs-musd", "official-source-musd", "mdk-protocol-observations"],
+      "recordCollectionPointer": "/sources"
+    },
+    {
+      "id": "musd-protocol-observations",
+      "role": "evidence",
+      "kind": "musd-protocol-read-observations",
+      "path": "evidence/protocol-reads-2026-08-18.json",
+      "recordIds": ["musd-decimals-mezo-mainnet", "musd-decimals-mezo-testnet"],
+      "recordCollectionPointer": "/observations"
+    },
+    {"id": "musd-catalog-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/catalog.schema.json"},
+    {"id": "musd-model-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/model.schema.json"},
+    {"id": "musd-source-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/source-catalog.schema.json"},
+    {"id": "musd-observation-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/observation-set.schema.json"},
+    {"id": "musd-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "musd-legacy-schema", "role": "review", "kind": "superseded-schema-notes", "path": "review/legacy-schema-v1.md"},
+    {
+      "id": "musd-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {"moduleId": "protocols/musd", "resourceId": "musd-terminology"},
+        {"moduleId": "protocols/musd", "resourceId": "musd-components"},
+        {"moduleId": "protocols/musd", "resourceId": "musd-system-model"}
+      ]
+    }
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd"},
+    {"id": "musd-semantics", "type": "semantic", "command": "node scripts/validate-musd-knowledge.ts"},
+    {"id": "musd-reference-drift", "type": "drift", "command": "node scripts/generate-musd-reference.ts --check"}
+  ],
+  "extensions": {
+    "protocolStatus": "verified-versioned",
+    "protocolSource": {"sourceId": "official-source-musd", "commit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+    "deploymentScope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "contractModuleId": "contracts", "networkModuleId": "networks", "registryReviewStatus": "accepted"},
+    "nestedModules": ["protocols/musd/borrowing", "protocols/musd/redemptions", "protocols/musd/institutional-debt", "protocols/musd/savings"],
+    "priceReference": {"moduleId": "prices", "resourceId": "price-sources-feeds"}
+  }
+}

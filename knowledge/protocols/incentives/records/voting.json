@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-voting-model",
+  "id": "incentives-voting",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253
+  },
+  "limitations": [
+    "Contract mappings resolve to registry provenance review-accepted registry identities and activation histories; incentives evidence review accepted the bounded protocol model, but public reader and writer support remain absent.",
+    "Governed voting limits and live gauge state must be re-read before use."
+  ],
+  "epoch": {
+    "lengthSeconds": "604800",
+    "epochStart": "timestamp - (timestamp mod 604800)",
+    "epochNext": "epochStart + 604800",
+    "standardVoteStart": "epochStart + 3600; calls require block.timestamp strictly greater than this value",
+    "standardVoteEnd": "epochStart + 604800 - 3600",
+    "calendarAnchor": "Unix-epoch multiples of seven days; boundaries therefore fall on Thursday 00:00:00 UTC.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "libraries/ProtocolTimeLibrary and Voter.onlyNewEpoch"}]
+  },
+  "vote": {
+    "authorization": "Caller must be owner or approved for the veBTC NFT.",
+    "frequency": "vote and reset both require epochStart(now) > lastVoted[tokenId]. A successful vote writes lastVoted to the current timestamp, so another owner vote or reset is blocked for that epoch. Reset does not write lastVoted: before a new vote it may be called after an older-epoch vote and may be repeated as a no-op; reset-then-vote in the same epoch is possible.",
+    "window": "Non-whitelisted NFTs may vote only after standardVoteStart and at or before standardVoteEnd. Whitelisted NFTs may also vote after standardVoteEnd. All are blocked at or before standardVoteStart.",
+    "maximumTargets": "The live maxVotingNum observation is 30 at the scoped block; it is governed state, not a universal constant.",
+    "allocation": "The call first resets prior allocations. For each requested target: poolWeight = floor(requestedRelativeWeight * currentNFTVotingPower / sumRequestedRelativeWeights). Each result must be nonzero, target a live existing gauge, and the sum of floor-rounded pool weights becomes usedWeights.",
+    "state": "Successful nonzero allocation marks the veNFT as voting and deposits its per-target weight into both fee and bribe reward contracts.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.vote, _vote, _reset, and onlyNewEpoch"}]
+  },
+  "persistenceResolution": {
+    "deployedFact": "Existing vote mappings and aggregate pool weights are not automatically erased at an epoch boundary. They remain until reset, replacement vote, poke, managed-NFT transition, or relevant gauge handling mutates them.",
+    "newEpochEffect": "A new epoch re-enables an eligible vote or reset; it does not itself execute either operation.",
+    "documentationConflict": "Published prose that says votes must be recast every epoch is not treated as execution truth for this deployment. The version-matched deployed Voter state transitions own this scoped answer.",
+    "limit": "This statement concerns deployed voter storage and allocation. Reward-contract epoch accounting must be evaluated separately for a specific fee or bribe claim.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.onlyNewEpoch, vote, reset, _vote, and _reset"}]
+  },
+  "poke": {
+    "claim": "Anyone may call poke after standardVoteStart. It reuses the NFT's current allocation proportions and current voting power, drops killed gauges, and proportionally reallocates killed-gauge weight among surviving targets. If none survive, it resets.",
+    "frequency": "poke is not protected by onlyNewEpoch and does not write lastVoted.",
+    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.poke and _poke"}]
+  },
+  "reset": {
+    "claim": "An authorized, epoch-eligible reset withdraws target weights from fee and bribe rewards, reduces pool and total weights, clears the target list and used weight, and marks the veNFT not voting.",
+    "lastVotedEffect": "reset does not update or clear lastVoted. It therefore does not consume the current epoch's future vote eligibility when lastVoted is older, but it cannot follow a vote already recorded in the current epoch.",
+    "withdrawInteraction": "Timed or permanent escrow exit paths that check voted must first satisfy the relevant voter reset/state requirements.",
+    "evidence": [
+      {"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.reset and _reset"},
+      {"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow.withdraw and unlockPermanent"}
+    ]
+  }
+}

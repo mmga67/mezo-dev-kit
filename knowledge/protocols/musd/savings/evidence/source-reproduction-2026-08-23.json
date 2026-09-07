@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-savings-source-reproduction-evidence",
+  "id": "musd-savings-source-reproduction",
+  "owner": "protocols/musd/savings",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet"], "implementationAddresses": ["0xB33C3f97BF3B7df59417D114c694353E42929e87", "0x1c5631C5478F7E9De0689e1955c1c40270Bf28d1"]},
+  "limitations": ["Executable equality proves correspondence, not authorship, audit coverage, support, or operation safety.", "The root-discovered VaultGauge has exact runtime reproduction only because its explorer record omits creation input."],
+  "records": [
+    {"id": "musd-savings-rate", "contractName": "MUSDSavingsRate", "filePath": "contracts/vaults/MUSDSavingsRate.sol", "compiler": "0.8.33", "explorerVerification": "fully-verified", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "1d36b9a9e3527cb74ded02a45b368b8e132309fc26a33f51454a2e1c300094d6", "runtimeExecutableSha256": "f56a17a5a31b2eb5faf266de4bf593dc30631018ccfad6c23b42aefa73be6b9b", "immutableSubstitutions": 1, "compilerSettings": ["optimizer=100", "evm=london", "metadata.useLiteralContent=true"]},
+    {"id": "musd-yield-converter", "contractName": "YieldConverter", "compiler": "0.8.24", "explorerVerification": "fully-verified", "creationExecutableExact": true, "runtimeExecutableExact": true, "creationExecutableSha256": "ebc337a14d4ce628e8bb382155c00a52a7dccc5c53abf2d28dfd33dc4d2de96f", "runtimeExecutableSha256": "cee18ccf099a3960950d5814608fdd68a96f727726482586ec9d7de247eed130", "immutableSubstitutions": 2}
+  ]
+}

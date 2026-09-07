@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "musd-ntt-deployment-doc-drift-2026-08-18",
+  "owner": "troubleshooting",
+  "category": "documentation-drift",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-point-in-time",
+  "severity": "high",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T10:14:37Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "symptom": "An MUSD NTT integration built from the current bridge documentation targets transceiver addresses that are no longer enabled by the deployed managers.",
+  "scope": {
+    "provider": "wormhole-ntt",
+    "asset": "musd",
+    "networks": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "evidence": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-musd-ntt-evidence"
+    }
+  },
+  "prerequisites": [
+    "The integration copied an NTT transceiver from prose/address documentation rather than resolving the active manager's transceiver set and peers.",
+    "The operation concerns the current mainnet MUSD NTT deployment."
+  ],
+  "diagnosticSteps": [
+    "Assert each source/destination chain and select fixed blocks.",
+    "Read getTransceivers() on each active NTT manager and nttManager()/getWormholePeer() on each returned transceiver.",
+    "Compare those deployed references with the pinned official ntt-bridge-musd-mainnet deployment artifact and only then with descriptive documentation."
+  ],
+  "expected": "The current documentation identifies the same enabled transceivers and peers as the live managers.",
+  "observed": "The March 2026 official deployment repository and August 2026 fixed-block reads agree on replacement MUSD transceivers, while current bridge documentation still prints earlier values.",
+  "control": "Four digest-joined historical transfers using the current graph completed across Mezo↔Ethereum and Mezo↔Base.",
+  "verifiedCause": "The descriptive bridge address reference lags the official deployment artifact and deployed manager/transceiver graph.",
+  "safeMitigation": "Do not copy bridge addresses into a writer. Resolve promoted registry identities once available, re-read manager/transceiver peers and pause state, construct version-correct instructions, simulate, and require destination redemption evidence. A successful source receipt is not completion.",
+  "reproduction": {
+    "basis": "official-deployment-artifact-plus-three-fixed-block-configurations-plus-four-completed-transfer-traces",
+    "deterministicEvidenceIsStrongerThanLiveWrites": true,
+    "evidenceNetworks": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-musd-ntt-evidence"
+    },
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-gaps"
+    }
+  ],
+  "limitations": [
+    "This record does not make the evidence-backed routes an MDK support promise.",
+    "Peer, pause, capacity, fee, relayer, and implementation state remain volatile."
+  ]
+}

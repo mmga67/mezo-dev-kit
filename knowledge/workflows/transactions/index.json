@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "workflows/transactions",
+  "moduleId": "workflows/transactions",
+  "owner": "core-transactions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "architectureDecisionIds": [
+      "ADR-0002",
+      "ADR-0003"
+    ],
+    "runtimeFamily": "EVM"
+  },
+  "limitations": [
+    "The architecture responsibilities and lifecycle are accepted and have a private dependency-free implementation proof, but no public core package interface, external dependency, protocol writer, or runtime support has been accepted.",
+    "Generic EVM architecture requirements are proposals, not Mezo facts.",
+    "incentives evidence review owns deployment-scoped lock/vote/boost semantics plus bounded historical createLock/vote replay and reconciliation, and bridge evidence review owns evidence-verified MUSD NTT and scoped Native routes. Neither supplies a supported writer until registry/activation ownership, fresh exact-call writer verification, and qualified review are complete."
+  ],
+  "resources": [
+    {
+      "id": "transaction-state-machine",
+      "role": "canonical-record",
+      "kind": "transaction-state-machine",
+      "path": "records/state-machine.json",
+      "recordIds": [
+        "evm-action-lifecycle-v1"
+      ]
+    },
+    {
+      "id": "transaction-client-requirements",
+      "role": "canonical-record",
+      "kind": "core-client-requirements",
+      "path": "records/client-requirements.json",
+      "recordIds": [
+        "core-client-proposal-v1"
+      ]
+    },
+    {
+      "id": "transaction-errors",
+      "role": "canonical-record",
+      "kind": "transaction-error-taxonomy",
+      "path": "records/errors.json",
+      "recordIds": [
+        "core-transaction-errors-v1"
+      ]
+    },
+    {
+      "id": "transaction-requirement-matrix",
+      "role": "canonical-record",
+      "kind": "protocol-transaction-requirement-matrix",
+      "path": "records/requirement-matrix.json",
+      "recordIds": [
+        "protocol-workflow-requirements-v1"
+      ]
+    },
+    {
+      "id": "transaction-mezo-observations",
+      "role": "evidence",
+      "kind": "mezo-transaction-observation-index",
+      "path": "evidence/mezo-observations.json",
+      "recordIds": [
+        "mezo-execution-observations-2026-08-18"
+      ]
+    },
+    {
+      "id": "transaction-proposal-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/proposal.schema.json"
+    },
+    {
+      "id": "transaction-observation-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/observation.schema.json"
+    },
+    {
+      "id": "transaction-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "transaction-legacy-schema-v1",
+      "role": "review",
+      "kind": "legacy-schema-notes",
+      "path": "review/legacy-schema-v1.md"
+    },
+    {
+      "id": "transaction-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {
+          "moduleId": "workflows/transactions",
+          "resourceId": "transaction-state-machine"
+        },
+        {
+          "moduleId": "workflows/transactions",
+          "resourceId": "transaction-client-requirements"
+        },
+        {
+          "moduleId": "workflows/transactions",
+          "resourceId": "transaction-errors"
+        },
+        {
+          "moduleId": "workflows/transactions",
+          "resourceId": "transaction-requirement-matrix"
+        },
+        {
+          "moduleId": "workflows/transactions",
+          "resourceId": "transaction-mezo-observations"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module workflows/transactions"
+    },
+    {
+      "id": "transaction-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-transaction-knowledge.ts"
+    },
+    {
+      "id": "transaction-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-transaction-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "architectureStatus": "accepted",
+    "factProposalBoundary": "ADR-0002 and ADR-0003 accept the state machine, client requirements, error taxonomy, and domain-routing semantics. packages/core is a private dependency-free proof only. Transaction-mezo-observations is the sole evidence-backed resource; neither architecture acceptance nor the proof creates a public interface, protocol writer, or runtime support.",
+    "owningDecisionIds": [
+      "ADR-0002",
+      "ADR-0003"
+    ]
+  }
+}

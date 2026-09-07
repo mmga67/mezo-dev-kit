@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-liquidity-surface-classification",
+  "id": "pools-surface-classification",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "classification": "mechanism-ownership"
+  },
+  "limitations": [
+    "This classification does not enumerate every product or analytics surface."
+  ],
+  "classes": [
+    {
+      "id": "basic-amm",
+      "ownedHere": true,
+      "identity": "factory/token pair/stable flag",
+      "position": "fungible LP token",
+      "returns": "swap fees plus any separately validated gauge incentives"
+    },
+    {
+      "id": "concentrated-liquidity-amm",
+      "ownedHere": true,
+      "identity": "CL factory/token pair/tick spacing",
+      "position": "range-bound ERC-721",
+      "returns": "in-range swap fees plus separately validated gauge emissions when staked"
+    },
+    {
+      "id": "savings-or-vault",
+      "ownedHere": false,
+      "reason": "A share-priced or yield-bearing vault has deposit/withdraw/share and strategy semantics, not an AMM invariant or pool key."
+    },
+    {
+      "id": "lending-or-borrowing",
+      "ownedHere": false,
+      "reason": "Collateral, debt, interest, liquidation, and redemption positions are credit-protocol state, not AMM liquidity."
+    },
+    {
+      "id": "analytics-row",
+      "ownedHere": false,
+      "reason": "TVL/APY/volume/price rows are derived observations and cannot establish a live executable pool, gauge, owner, or route."
+    }
+  ],
+  "routing": [
+    "Route MUSD borrowing and redemption mechanics to their owning protocol modules.",
+    "Route gauge voting/emission allocation to protocols/incentives.",
+    "Route transaction submission and tracking to workflows/transactions.",
+    "Route reproduced integration failures to troubleshooting after reproduction."
+  ]
+}

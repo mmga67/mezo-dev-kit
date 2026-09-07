@@ -1,0 +1,3903 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-probes-2026-08-18",
+  "observedFrom": "2026-08-17T22:55:21.010Z",
+  "observedThrough": "2026-08-17T22:56:59.589Z",
+  "reviewAfter": "2026-09-16T22:56:59.589Z",
+  "methodology": [
+    "Resolve one fixed recent block per Mezo network after confirming eth_chainId.",
+    "Confirm each official artifact deployment transaction, activation block, and deployed runtime bytecode using read-only JSON-RPC.",
+    "For transparent proxies, read the standard ERC-1967 implementation and admin slots and reconstruct implementation ranges from Upgraded events.",
+    "Require the official explorer to report fully verified, non-partial active source; compare its full ABI semantically with the pinned official artifact and its deployed bytecode with RPC.",
+    "Compute SHA-256 over decoded bytecode bytes and canonical JSON/ABI representations; no private RPC credentials or unbounded raw responses are retained."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org",
+      "evmChainId": 31612,
+      "blockNumber": 11201821,
+      "blockHash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+      "blockTimestamp": "2026-08-17T22:55:14.000Z",
+      "blockEvidenceMethod": "eth_getBlockByNumber"
+    },
+    {
+      "networkId": "mezo-testnet",
+      "rpcUrl": "https://rpc.test.mezo.org",
+      "explorerApiUrl": "https://api.explorer.test.mezo.org",
+      "evmChainId": 31611,
+      "blockNumber": 14952836,
+      "blockHash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+      "blockTimestamp": "2026-08-17T22:55:17.000Z",
+      "blockEvidenceMethod": "eth_getBlockByNumber"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-musd-active-pool-mezo-mainnet",
+      "deploymentId": "musd.active-pool@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:25.830Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xdd898aed29157de5e51bb472f48aa0c8107de95f73367e1c55ad0c4baa527c5e",
+        "blockNumber": 178755,
+        "blockHash": "0x5c4d0948a06ef34ac5dd5ed63003b8f33f7e8ee18138e43fb6f1336a7d3470f4",
+        "blockTimestamp": "2025-05-12T16:26:22.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "9e2aee1e83b7c2593236e9343661633234c96a621f9ed7c1be35bdce51a243bb",
+        "implementationCodeSha256": "19aae362840eb79ff68b15b749b63f016b1cc93d0de3e3e6d6bd3eeb542b54fa",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x0e340887d6b86fd78d4b1ddf9a90c8f191a87da7",
+        "currentImplementationAddress": "0x964d45256c73df0239a26216cec155d7e12ec157",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x964d45256c73df0239a26216cec155d7e12ec157",
+            "effectiveFrom": {
+              "blockNumber": 178755,
+              "transactionHash": "0xdd898aed29157de5e51bb472f48aa0c8107de95f73367e1c55ad0c4baa527c5e",
+              "logIndex": 0,
+              "blockHash": "0x5c4d0948a06ef34ac5dd5ed63003b8f33f7e8ee18138e43fb6f1336a7d3470f4",
+              "blockTimestamp": "2025-05-12T16:26:22.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:27:56.292184Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "9e2aee1e83b7c2593236e9343661633234c96a621f9ed7c1be35bdce51a243bb"
+        },
+        "activeContract": {
+          "name": "ActivePool",
+          "filePath": "contracts/ActivePool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:27:14.362291Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 37,
+          "abiSemanticSha256": "6fd3d2f52511710c350405ef17cdf21937c73f5d8295f6a77f011d16cdb303d1",
+          "deployedBytecodeSha256": "19aae362840eb79ff68b15b749b63f016b1cc93d0de3e3e6d6bd3eeb542b54fa"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-active-pool-mezo-testnet",
+      "deploymentId": "musd.active-pool@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:28.639Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x5db05b8196989c10c1fada95fdcfbefc7de19974517047a21147c0eb1795f368",
+        "blockNumber": 4518728,
+        "blockHash": "0x8fa887533087b753ebf728093fb93c5d9ab3b234975f4276e6cd957414951ee0",
+        "blockTimestamp": "2025-05-13T18:15:53.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "1c090c0062a96da3c67500a3879271e05397dc5c8840e511f35fd610f27c844c",
+        "implementationCodeSha256": "3f415b98007f7a9fb9c63a9a074c54c6d043e27b7d0a3fe27d3187be24a54bff",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xe1a5fc495197f7918069f89ae1bc043d43063b68",
+        "currentImplementationAddress": "0xbfc8201773bc17cc17e34a9eb4056cd5b7358192",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xbfc8201773bc17cc17e34a9eb4056cd5b7358192",
+            "effectiveFrom": {
+              "blockNumber": 4518728,
+              "transactionHash": "0x5db05b8196989c10c1fada95fdcfbefc7de19974517047a21147c0eb1795f368",
+              "logIndex": 6,
+              "blockHash": "0x8fa887533087b753ebf728093fb93c5d9ab3b234975f4276e6cd957414951ee0",
+              "blockTimestamp": "2025-05-13T18:15:53.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:16:30.973361Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "1c090c0062a96da3c67500a3879271e05397dc5c8840e511f35fd610f27c844c"
+        },
+        "activeContract": {
+          "name": "ActivePool",
+          "filePath": "contracts/ActivePool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-22T19:23:38.032803Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 37,
+          "abiSemanticSha256": "6fd3d2f52511710c350405ef17cdf21937c73f5d8295f6a77f011d16cdb303d1",
+          "deployedBytecodeSha256": "3f415b98007f7a9fb9c63a9a074c54c6d043e27b7d0a3fe27d3187be24a54bff"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-borrower-operations-mezo-mainnet",
+      "deploymentId": "musd.borrower-operations@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:32.031Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x5d9b4b70409d379120c3173f06abaeed8881049bfba9d85f6cf03ccf45849988",
+        "blockNumber": 178630,
+        "blockHash": "0xa14310773cc4aa6a6e55dfe786fb9c3966cc534f8dbb3552a99b976f7d8abb61",
+        "blockTimestamp": "2025-05-12T16:19:00.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "1ba7eecc7665df1d88ebfb9dcba15b2af6f6437b2314682e9647baf64e3b2d6c",
+        "implementationCodeSha256": "75c55798e2c207c67d1523833f7aad2bcd3da3406be9d83f64323bd210ac863c",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x778f4ef6cbe4492a6c87abab98821e4242663e58",
+        "currentImplementationAddress": "0x501670bbbe2ec8c11449c28c0c9e6677d5ea9b61",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa29d7a9e33fa718accd3ab2fb2e59bf3c7456299",
+            "effectiveFrom": {
+              "blockNumber": 178630,
+              "transactionHash": "0x5d9b4b70409d379120c3173f06abaeed8881049bfba9d85f6cf03ccf45849988",
+              "logIndex": 0,
+              "blockHash": "0xa14310773cc4aa6a6e55dfe786fb9c3966cc534f8dbb3552a99b976f7d8abb61",
+              "blockTimestamp": "2025-05-12T16:19:00.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 410525,
+              "transactionHash": "0x12ff88fbd7e24bc545f9a3460851a2861d0c606d80ec0a5a963d38a1c0d0f329",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x35f2a60a5ccf0b2d40c8b6f67b6d0ea90623dadc",
+            "effectiveFrom": {
+              "blockNumber": 410525,
+              "transactionHash": "0x12ff88fbd7e24bc545f9a3460851a2861d0c606d80ec0a5a963d38a1c0d0f329",
+              "logIndex": 0,
+              "blockHash": "0xaeb7e86a5d8739e2e8340ca4b7d3f76605f2c2fee323614fca5f01d9b9e9b076",
+              "blockTimestamp": "2025-05-22T06:21:39.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x501670bbbe2ec8c11449c28c0c9e6677d5ea9b61",
+            "effectiveFrom": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 0,
+              "blockHash": "0x1bf4be13018bb770b2412bde84c5bb1b83cf7fb076cea49604509e91b75327f5",
+              "blockTimestamp": "2025-12-15T12:22:49.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:20:37.461978Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "1ba7eecc7665df1d88ebfb9dcba15b2af6f6437b2314682e9647baf64e3b2d6c"
+        },
+        "activeContract": {
+          "name": "BorrowerOperations",
+          "filePath": "contracts/BorrowerOperations.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T14:29:10.460775Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 96,
+          "abiSemanticSha256": "f0e483362df83993f77bdddeb68af0e720f9aa9c0c678c6147c9c56fc96d767e",
+          "deployedBytecodeSha256": "75c55798e2c207c67d1523833f7aad2bcd3da3406be9d83f64323bd210ac863c"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-borrower-operations-mezo-testnet",
+      "deploymentId": "musd.borrower-operations@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:35.652Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x0939121a6e3b14ab9317c9f8398a5837c2f5d705a10afb91706b334500f0edfd",
+        "blockNumber": 4518645,
+        "blockHash": "0x544582b0608f96cbdb6a16a25490ff0314ae34d9cb02a41fcd15a9c7b92ea889",
+        "blockTimestamp": "2025-05-13T18:10:35.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "a3713966b352436192523b40249ca9068e68783e3f41d2017accaa6453b78cc7",
+        "implementationCodeSha256": "75c55798e2c207c67d1523833f7aad2bcd3da3406be9d83f64323bd210ac863c",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x987dce741cb2608389f3aeb36dc651273b7531bb",
+        "currentImplementationAddress": "0xc05bf344bd5b58825784326dd3112fb6cc160dcc",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x2342f589a20062005db6b3e27812ee57cc0370f7",
+            "effectiveFrom": {
+              "blockNumber": 4518645,
+              "transactionHash": "0x0939121a6e3b14ab9317c9f8398a5837c2f5d705a10afb91706b334500f0edfd",
+              "logIndex": 0,
+              "blockHash": "0x544582b0608f96cbdb6a16a25490ff0314ae34d9cb02a41fcd15a9c7b92ea889",
+              "blockTimestamp": "2025-05-13T18:10:35.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 4661704,
+              "transactionHash": "0x77af79c5e541c863eb87c62e6d70f8b1ebbac67c123b8578163d7937765ec9ee",
+              "logIndex": 8
+            }
+          },
+          {
+            "implementationAddress": "0x575539e5c36d2293b0f506ac34b09ff7e2ae0771",
+            "effectiveFrom": {
+              "blockNumber": 4661704,
+              "transactionHash": "0x77af79c5e541c863eb87c62e6d70f8b1ebbac67c123b8578163d7937765ec9ee",
+              "logIndex": 8,
+              "blockHash": "0x8647a799234562267bcff7cf7357005fc849b4b925aa6e5e472f19243d640603",
+              "blockTimestamp": "2025-05-20T08:44:06.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9366620,
+              "transactionHash": "0xe7d77cd98b0fa0b1a68fbf4abf3658195525eaaa9067fd236df9bddf668feb6b",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xc05bf344bd5b58825784326dd3112fb6cc160dcc",
+            "effectiveFrom": {
+              "blockNumber": 9366620,
+              "transactionHash": "0xe7d77cd98b0fa0b1a68fbf4abf3658195525eaaa9067fd236df9bddf668feb6b",
+              "logIndex": 0,
+              "blockHash": "0x7969680f6cf8db549c65054241bf0bed2ad22c6dcb8608dbbf37caf66c1f9e1f",
+              "blockTimestamp": "2025-12-11T11:54:29.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:11:26.384136Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "a3713966b352436192523b40249ca9068e68783e3f41d2017accaa6453b78cc7"
+        },
+        "activeContract": {
+          "name": "BorrowerOperations",
+          "filePath": "contracts/BorrowerOperations.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T11:54:47.987039Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 96,
+          "abiSemanticSha256": "f0e483362df83993f77bdddeb68af0e720f9aa9c0c678c6147c9c56fc96d767e",
+          "deployedBytecodeSha256": "75c55798e2c207c67d1523833f7aad2bcd3da3406be9d83f64323bd210ac863c"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-borrower-operations-signatures-mezo-mainnet",
+      "deploymentId": "musd.borrower-operations-signatures@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:38.606Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x8109ff29098be9fc54cf8d01195447f06afdc7bed90e4eb8585fb9037d89d74f",
+        "blockNumber": 178960,
+        "blockHash": "0xb865fb3eb43aeacd1b0d7d93d3d9e215bf8e36937e2f356eb5a11907d84de8e8",
+        "blockTimestamp": "2025-05-12T16:38:29.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "abb233c76a51d8a9bf4eb4ae0f114db284f225e062db463a473ff93532bf3518",
+        "implementationCodeSha256": "318134c64ab00be58dd0a883c0157682ef2221f74c99f9ac62cd8c14e3697ccd",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x3b0fa4c0910cb4c9488d08d2e668a7a9bef1f591",
+        "currentImplementationAddress": "0xa60a7ba7eadeb24383cb5eda1a06abf157aa26a9",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x641cb7df30fd3841c8bd854aac5e2b2c8a8ef9bb",
+            "effectiveFrom": {
+              "blockNumber": 178960,
+              "transactionHash": "0x8109ff29098be9fc54cf8d01195447f06afdc7bed90e4eb8585fb9037d89d74f",
+              "logIndex": 0,
+              "blockHash": "0xb865fb3eb43aeacd1b0d7d93d3d9e215bf8e36937e2f356eb5a11907d84de8e8",
+              "blockTimestamp": "2025-05-12T16:38:29.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 1
+            }
+          },
+          {
+            "implementationAddress": "0xa60a7ba7eadeb24383cb5eda1a06abf157aa26a9",
+            "effectiveFrom": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 1,
+              "blockHash": "0x1bf4be13018bb770b2412bde84c5bb1b83cf7fb076cea49604509e91b75327f5",
+              "blockTimestamp": "2025-12-15T12:22:49.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:39:58.791931Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "abb233c76a51d8a9bf4eb4ae0f114db284f225e062db463a473ff93532bf3518"
+        },
+        "activeContract": {
+          "name": "BorrowerOperationsSignatures",
+          "filePath": "contracts/BorrowerOperationsSignatures.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T14:26:19.096518Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 40,
+          "abiSemanticSha256": "dd12a8f7abe64edc8d34d1a9e6230fb4509d96bbcb74054f12bd68167b930538",
+          "deployedBytecodeSha256": "318134c64ab00be58dd0a883c0157682ef2221f74c99f9ac62cd8c14e3697ccd"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-borrower-operations-signatures-mezo-testnet",
+      "deploymentId": "musd.borrower-operations-signatures@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:41.592Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x145148caa3022b2601ea942a5fbb646a00125e39376cea7f83d1f73dd0d54eb2",
+        "blockNumber": 4518828,
+        "blockHash": "0x6c2162799d25c18fb4900f8b6d7f7ea8e2f4abec972c360446fb72c402cc63dc",
+        "blockTimestamp": "2025-05-13T18:22:18.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "959958606e4f9768821e6299a9e4bb3cada63484e195ec24a759da1ad1917878",
+        "implementationCodeSha256": "318134c64ab00be58dd0a883c0157682ef2221f74c99f9ac62cd8c14e3697ccd",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xb38d20e9f25a94110747ad24a436d819189466d4",
+        "currentImplementationAddress": "0xeec635ab00463a4a803de38c9d858a0fe3bdc235",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xeb73ec11a645ddc058a0f8e493f09f86f6c435ac",
+            "effectiveFrom": {
+              "blockNumber": 4518828,
+              "transactionHash": "0x145148caa3022b2601ea942a5fbb646a00125e39376cea7f83d1f73dd0d54eb2",
+              "logIndex": 2,
+              "blockHash": "0x6c2162799d25c18fb4900f8b6d7f7ea8e2f4abec972c360446fb72c402cc63dc",
+              "blockTimestamp": "2025-05-13T18:22:18.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9366702,
+              "transactionHash": "0x2aca7b514d749cfcbfb617b0a6f78e8a304a5ee701d416076e871cb4fbbfa800",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xeec635ab00463a4a803de38c9d858a0fe3bdc235",
+            "effectiveFrom": {
+              "blockNumber": 9366702,
+              "transactionHash": "0x2aca7b514d749cfcbfb617b0a6f78e8a304a5ee701d416076e871cb4fbbfa800",
+              "logIndex": 0,
+              "blockHash": "0xeb2c72b52c7ca86094b07273314e041a3b2578412c21fda5f83a6eafc33334d8",
+              "blockTimestamp": "2025-12-11T11:59:24.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:22:56.601087Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "959958606e4f9768821e6299a9e4bb3cada63484e195ec24a759da1ad1917878"
+        },
+        "activeContract": {
+          "name": "BorrowerOperationsSignatures",
+          "filePath": "contracts/BorrowerOperationsSignatures.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T11:59:45.158493Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 40,
+          "abiSemanticSha256": "dd12a8f7abe64edc8d34d1a9e6230fb4509d96bbcb74054f12bd68167b930538",
+          "deployedBytecodeSha256": "318134c64ab00be58dd0a883c0157682ef2221f74c99f9ac62cd8c14e3697ccd"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-coll-surplus-pool-mezo-mainnet",
+      "deploymentId": "musd.coll-surplus-pool@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:44.145Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xd478a426e9d95add34186273d7962182fcc4c0d16cb2d0ade2f949e81a5434bf",
+        "blockNumber": 178726,
+        "blockHash": "0xfee4f0860fff1cf63e307ff41b6bc4413c197bb3de98aa70d39457df2d55d1d8",
+        "blockTimestamp": "2025-05-12T16:24:40.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "4bc0aad0ad1344d2a2eb75c6189e924b204ea2bc27529927ffb7eb38c5dec723",
+        "implementationCodeSha256": "7b87f256868d75137ec485585a0c9bb086768a8d83c3940bb592fad9049d3754",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xb7e765bb72dc6b5ecc4e00a1197aa66590858666",
+        "currentImplementationAddress": "0x8fec9cf78087064f1f32269f68f94ae343ffbfff",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x8fec9cf78087064f1f32269f68f94ae343ffbfff",
+            "effectiveFrom": {
+              "blockNumber": 178726,
+              "transactionHash": "0xd478a426e9d95add34186273d7962182fcc4c0d16cb2d0ade2f949e81a5434bf",
+              "logIndex": 0,
+              "blockHash": "0xfee4f0860fff1cf63e307ff41b6bc4413c197bb3de98aa70d39457df2d55d1d8",
+              "blockTimestamp": "2025-05-12T16:24:40.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:26:14.476670Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "4bc0aad0ad1344d2a2eb75c6189e924b204ea2bc27529927ffb7eb38c5dec723"
+        },
+        "activeContract": {
+          "name": "CollSurplusPool",
+          "filePath": "contracts/CollSurplusPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:25:32.100541Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "8f643049ea66039eda8649130b241a8d550e9cfcb5021bed4fcf92b1e1681ed7",
+          "deployedBytecodeSha256": "7b87f256868d75137ec485585a0c9bb086768a8d83c3940bb592fad9049d3754"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-coll-surplus-pool-mezo-testnet",
+      "deploymentId": "musd.coll-surplus-pool@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:46.968Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x4204805c2653ceed35b8c73f33a5d7e3f7f9589ad36d1365a980017f40c27a93",
+        "blockNumber": 4518713,
+        "blockHash": "0xbf22189356373419b4bda9fac5a66acd1c581b46c0b82286820f7d243ee9f686",
+        "blockTimestamp": "2025-05-13T18:14:58.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "eb6081878e2fc5dcd35c0a5ecbcaf84cb4ce99c6e42706f48812c30bc910fd24",
+        "implementationCodeSha256": "93dc2ad4b7c498868897a1c6b7b9b02746ecf6f0077d6ad84abe997a1a2113ad",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x815df625b084bdf65698c313a1a7e7987a37be69",
+        "currentImplementationAddress": "0x13af349efde2a7ff4469ef1f98126ffd57c32806",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x13af349efde2a7ff4469ef1f98126ffd57c32806",
+            "effectiveFrom": {
+              "blockNumber": 4518713,
+              "transactionHash": "0x4204805c2653ceed35b8c73f33a5d7e3f7f9589ad36d1365a980017f40c27a93",
+              "logIndex": 0,
+              "blockHash": "0xbf22189356373419b4bda9fac5a66acd1c581b46c0b82286820f7d243ee9f686",
+              "blockTimestamp": "2025-05-13T18:14:58.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:15:51.864153Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "eb6081878e2fc5dcd35c0a5ecbcaf84cb4ce99c6e42706f48812c30bc910fd24"
+        },
+        "activeContract": {
+          "name": "CollSurplusPool",
+          "filePath": "contracts/CollSurplusPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-01T20:21:55.189688Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 26,
+          "abiSemanticSha256": "8f643049ea66039eda8649130b241a8d550e9cfcb5021bed4fcf92b1e1681ed7",
+          "deployedBytecodeSha256": "93dc2ad4b7c498868897a1c6b7b9b02746ecf6f0077d6ad84abe997a1a2113ad"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-default-pool-mezo-mainnet",
+      "deploymentId": "musd.default-pool@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:49.384Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x6d68532ef9587ea30c4d2bab6c481cc55409e571740922c87bd07645100ef340",
+        "blockNumber": 178784,
+        "blockHash": "0xfb529d3736951db6f99a132661848147de6e9a93de3f1b8ad61c4e778968219d",
+        "blockTimestamp": "2025-05-12T16:28:05.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "18c3bfcf00fb45e2d977b30c74bb18442180bc9569fc3b1a89bc8e8dfe2a6030",
+        "implementationCodeSha256": "3fdcb2c91a50639be8c5760398760886e0b953810300567c608eb6742c7700a9",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xa2f5d1eaaa537a04c1c945aeba5ef1a7bb799069",
+        "currentImplementationAddress": "0x24c0fbd3ff8e742080c60881f8527ca3baf07647",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x24c0fbd3ff8e742080c60881f8527ca3baf07647",
+            "effectiveFrom": {
+              "blockNumber": 178784,
+              "transactionHash": "0x6d68532ef9587ea30c4d2bab6c481cc55409e571740922c87bd07645100ef340",
+              "logIndex": 0,
+              "blockHash": "0xfb529d3736951db6f99a132661848147de6e9a93de3f1b8ad61c4e778968219d",
+              "blockTimestamp": "2025-05-12T16:28:05.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:29:38.637576Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "18c3bfcf00fb45e2d977b30c74bb18442180bc9569fc3b1a89bc8e8dfe2a6030"
+        },
+        "activeContract": {
+          "name": "DefaultPool",
+          "filePath": "contracts/DefaultPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:28:57.318623Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 30,
+          "abiSemanticSha256": "45a232c0f0d9a8fa01d54dfd68e4c3f2e1fc948c0b6238e40e439be5090857b1",
+          "deployedBytecodeSha256": "3fdcb2c91a50639be8c5760398760886e0b953810300567c608eb6742c7700a9"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-default-pool-mezo-testnet",
+      "deploymentId": "musd.default-pool@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:52.187Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xec36937591b651ae9fd84ecdb5b8f460375f79e590eb93279554fa67c3a0b1eb",
+        "blockNumber": 4518738,
+        "blockHash": "0x012e3f5c27d54610bb945ca925b9f2971b1b1aa40a715970a64da592ec36abcb",
+        "blockTimestamp": "2025-05-13T18:16:34.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "0b7bb143a40c8c42da4306e64652793184faa83e74bc552e75f6c5b2e9ce7eb2",
+        "implementationCodeSha256": "3bf3b2eed75611544aee0865e6428679f6dc5e6e7c2d6f03f90c09b30b70f3dd",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xd19495894c7583123a32dd46aeaf7ba5f3ad3df8",
+        "currentImplementationAddress": "0xa76a2c7869a82afc7f547b467393709251b4b141",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa76a2c7869a82afc7f547b467393709251b4b141",
+            "effectiveFrom": {
+              "blockNumber": 4518738,
+              "transactionHash": "0xec36937591b651ae9fd84ecdb5b8f460375f79e590eb93279554fa67c3a0b1eb",
+              "logIndex": 6,
+              "blockHash": "0x012e3f5c27d54610bb945ca925b9f2971b1b1aa40a715970a64da592ec36abcb",
+              "blockTimestamp": "2025-05-13T18:16:34.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:17:11.682550Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "0b7bb143a40c8c42da4306e64652793184faa83e74bc552e75f6c5b2e9ce7eb2"
+        },
+        "activeContract": {
+          "name": "DefaultPool",
+          "filePath": "contracts/DefaultPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-01T20:22:49.291494Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 30,
+          "abiSemanticSha256": "45a232c0f0d9a8fa01d54dfd68e4c3f2e1fc948c0b6238e40e439be5090857b1",
+          "deployedBytecodeSha256": "3bf3b2eed75611544aee0865e6428679f6dc5e6e7c2d6f03f90c09b30b70f3dd"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-gas-pool-mezo-mainnet",
+      "deploymentId": "musd.gas-pool@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:55:54.703Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x2fb597757358991ea7c717df5ad5a1d481fe791f1b27410a8d89e0c34a9a8944",
+        "blockNumber": 178872,
+        "blockHash": "0xf9d4982b29658b94e937755fca15fad6374a3bdb3f492c0ff757e0dd34f8e000",
+        "blockTimestamp": "2025-05-12T16:33:17.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "e1a58915a5eab5e48bf3147a3ac5df4ae0c60f7b15a9ce5319215c2cd3454bad",
+        "implementationCodeSha256": "10383e5f2f89f25b6940ae34bf99274c607752e1997ee4edeac9e6e53847ee3a",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x86c26b5f09276a8de639138ea6199601a3a86078",
+        "currentImplementationAddress": "0x7d61512edc44dba19ea9758e9f383547cec38366",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x7d61512edc44dba19ea9758e9f383547cec38366",
+            "effectiveFrom": {
+              "blockNumber": 178872,
+              "transactionHash": "0x2fb597757358991ea7c717df5ad5a1d481fe791f1b27410a8d89e0c34a9a8944",
+              "logIndex": 0,
+              "blockHash": "0xf9d4982b29658b94e937755fca15fad6374a3bdb3f492c0ff757e0dd34f8e000",
+              "blockTimestamp": "2025-05-12T16:33:17.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:34:53.404231Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "e1a58915a5eab5e48bf3147a3ac5df4ae0c60f7b15a9ce5319215c2cd3454bad"
+        },
+        "activeContract": {
+          "name": "GasPool",
+          "filePath": "contracts/GasPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:34:10.852257Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "afe158715ea993349e73817b645cb19c0236ea93d069410c27d76e308883d28e",
+          "deployedBytecodeSha256": "10383e5f2f89f25b6940ae34bf99274c607752e1997ee4edeac9e6e53847ee3a"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-gas-pool-mezo-testnet",
+      "deploymentId": "musd.gas-pool@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:55:57.473Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xddfc669e580de0971336c10912fb472eb74a098129a8d520b66ffa61975ca873",
+        "blockNumber": 4518778,
+        "blockHash": "0x86814b3d45d54ccb309b0503e180b910bc296798ba2c0cacf3036795c6cf3be0",
+        "blockTimestamp": "2025-05-13T18:19:06.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "79354bb08a7d3c698f357d6f100ba93e690f490eeb0a9fa05e5118bbf816916f",
+        "implementationCodeSha256": "2ec8d01b7a34ed2683692c25896dae5a8ce9b92a761575c451dba8381bef0cee",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xd435e0318e0b97d74f2a5d08a2dd9103310f8e3f",
+        "currentImplementationAddress": "0x46c5bc542166b0918d1ccadc8f101517323052eb",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x46c5bc542166b0918d1ccadc8f101517323052eb",
+            "effectiveFrom": {
+              "blockNumber": 4518778,
+              "transactionHash": "0xddfc669e580de0971336c10912fb472eb74a098129a8d520b66ffa61975ca873",
+              "logIndex": 0,
+              "blockHash": "0x86814b3d45d54ccb309b0503e180b910bc296798ba2c0cacf3036795c6cf3be0",
+              "blockTimestamp": "2025-05-13T18:19:06.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:19:42.988039Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "79354bb08a7d3c698f357d6f100ba93e690f490eeb0a9fa05e5118bbf816916f"
+        },
+        "activeContract": {
+          "name": "GasPool",
+          "filePath": "contracts/GasPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-01T20:24:11.894072Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "afe158715ea993349e73817b645cb19c0236ea93d069410c27d76e308883d28e",
+          "deployedBytecodeSha256": "2ec8d01b7a34ed2683692c25896dae5a8ce9b92a761575c451dba8381bef0cee"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-governable-variables-mezo-mainnet",
+      "deploymentId": "musd.governable-variables@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:00.025Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x3d434ed62ba70a93e8f26ecc6c36d91a78534aae2cc944d77c38d86c5d360bb6",
+        "blockNumber": 178988,
+        "blockHash": "0x9460f091c596c41704e5ceee96ce0f2e499a74df0d8067c5e1dc289b894753a5",
+        "blockTimestamp": "2025-05-12T16:40:08.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "75634aacdd8151f2589189f6fa6691ad4966bd0d14611ba97ac6bba90ce26a03",
+        "implementationCodeSha256": "f12eef8514d81b06341cb2710fcab2d35e1ee1ac041d8fe9afa398da94546dde",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xa48b3fde23876e6040a73db5477d95c1b140e1ab",
+        "currentImplementationAddress": "0x7e469b77ec6811031ac616c5242a8c900dc6d9b8",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x7e469b77ec6811031ac616c5242a8c900dc6d9b8",
+            "effectiveFrom": {
+              "blockNumber": 178988,
+              "transactionHash": "0x3d434ed62ba70a93e8f26ecc6c36d91a78534aae2cc944d77c38d86c5d360bb6",
+              "logIndex": 0,
+              "blockHash": "0x9460f091c596c41704e5ceee96ce0f2e499a74df0d8067c5e1dc289b894753a5",
+              "blockTimestamp": "2025-05-12T16:40:08.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:41:33.688771Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "75634aacdd8151f2589189f6fa6691ad4966bd0d14611ba97ac6bba90ce26a03"
+        },
+        "activeContract": {
+          "name": "GovernableVariables",
+          "filePath": "contracts/GovernableVariables.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:40:59.977104Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 28,
+          "abiSemanticSha256": "e273f3a299fe2af61ef5a925edb2b53d0b757bdf0525742a51e1120a0d3af4a0",
+          "deployedBytecodeSha256": "f12eef8514d81b06341cb2710fcab2d35e1ee1ac041d8fe9afa398da94546dde"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-governable-variables-mezo-testnet",
+      "deploymentId": "musd.governable-variables@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:02.659Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x0530ed79d3a07945dee61a415a6e45a4ab89740ec0e6b9f103dd10de673e7886",
+        "blockNumber": 4518841,
+        "blockHash": "0x55e995ed150ed5dafa5176792154e13fef16331d8e621904ea901ed401bf3e11",
+        "blockTimestamp": "2025-05-13T18:23:06.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "5046b9f7e64fad60339e9b290b921f6c5b3f76b556265600b6af9cadd46f7e1d",
+        "implementationCodeSha256": "f12eef8514d81b06341cb2710fcab2d35e1ee1ac041d8fe9afa398da94546dde",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xf7e10ed784543d827431b3e3776b887a9eb6bb4a",
+        "currentImplementationAddress": "0x4edc83c5c5b0c41a594371485554b95280653f94",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x4edc83c5c5b0c41a594371485554b95280653f94",
+            "effectiveFrom": {
+              "blockNumber": 4518841,
+              "transactionHash": "0x0530ed79d3a07945dee61a415a6e45a4ab89740ec0e6b9f103dd10de673e7886",
+              "logIndex": 0,
+              "blockHash": "0x55e995ed150ed5dafa5176792154e13fef16331d8e621904ea901ed401bf3e11",
+              "blockTimestamp": "2025-05-13T18:23:06.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:25:02.271076Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "5046b9f7e64fad60339e9b290b921f6c5b3f76b556265600b6af9cadd46f7e1d"
+        },
+        "activeContract": {
+          "name": "GovernableVariables",
+          "filePath": "contracts/GovernableVariables.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:24:13.169822Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 28,
+          "abiSemanticSha256": "e273f3a299fe2af61ef5a925edb2b53d0b757bdf0525742a51e1120a0d3af4a0",
+          "deployedBytecodeSha256": "f12eef8514d81b06341cb2710fcab2d35e1ee1ac041d8fe9afa398da94546dde"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-hint-helpers-mezo-mainnet",
+      "deploymentId": "musd.hint-helpers@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:05.329Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x0675ccfcdb105368a8a6af4837467c52e4a5a79c99df7fc4e36fe3dcc2747b17",
+        "blockNumber": 178930,
+        "blockHash": "0xb9aa81be4d5368788fc204cfc7f06a7d1923183c85c6620868be81dcb844b413",
+        "blockTimestamp": "2025-05-12T16:36:43.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "0a08c2b580c47ef9620a7d4ab9df9d76c72b47bab3704ef8db0ea3a7ec9cbbf8",
+        "implementationCodeSha256": "796027f2bc2ad6bda2d2a612033da99477ec147f7c6b478bd3d72d74ba399467",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xc64c45e4d8b6b42cf47981b4cfbdb3e2bc15dd73",
+        "currentImplementationAddress": "0x82ab5f02993bf312d9aca03157f26febebc76108",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x82ab5f02993bf312d9aca03157f26febebc76108",
+            "effectiveFrom": {
+              "blockNumber": 178930,
+              "transactionHash": "0x0675ccfcdb105368a8a6af4837467c52e4a5a79c99df7fc4e36fe3dcc2747b17",
+              "logIndex": 0,
+              "blockHash": "0xb9aa81be4d5368788fc204cfc7f06a7d1923183c85c6620868be81dcb844b413",
+              "blockTimestamp": "2025-05-12T16:36:43.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:38:18.622802Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "0a08c2b580c47ef9620a7d4ab9df9d76c72b47bab3704ef8db0ea3a7ec9cbbf8"
+        },
+        "activeContract": {
+          "name": "HintHelpers",
+          "filePath": "contracts/HintHelpers.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:37:45.262227Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 35,
+          "abiSemanticSha256": "b8ddd61b2dfc7d96bc4c519f61d6b5070f0e36c85df9476d8df7e2974ae8f734",
+          "deployedBytecodeSha256": "796027f2bc2ad6bda2d2a612033da99477ec147f7c6b478bd3d72d74ba399467"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-hint-helpers-mezo-testnet",
+      "deploymentId": "musd.hint-helpers@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:08.141Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x8a6b9e7b35cba77312ba8cfe7406de3720f2b49fee499039c8d973067c19c297",
+        "blockNumber": 4518805,
+        "blockHash": "0xb0d1c6882c7702fc7727fea5c48fbc5730189111c318021cc2a8abc0bd970d78",
+        "blockTimestamp": "2025-05-13T18:20:49.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "7973daeadee54af5f3f8f7cdea50f09e41b26c672f6147a8ac6c7b7dcfa5384c",
+        "implementationCodeSha256": "796027f2bc2ad6bda2d2a612033da99477ec147f7c6b478bd3d72d74ba399467",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x7925337259ed8c78361aa9b5b143688079ad386c",
+        "currentImplementationAddress": "0x8adf3f35dbe4026112bcfc078872bcb967732ea8",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x8adf3f35dbe4026112bcfc078872bcb967732ea8",
+            "effectiveFrom": {
+              "blockNumber": 4518805,
+              "transactionHash": "0x8a6b9e7b35cba77312ba8cfe7406de3720f2b49fee499039c8d973067c19c297",
+              "logIndex": 6,
+              "blockHash": "0xb0d1c6882c7702fc7727fea5c48fbc5730189111c318021cc2a8abc0bd970d78",
+              "blockTimestamp": "2025-05-13T18:20:49.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:22:16.793495Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "7973daeadee54af5f3f8f7cdea50f09e41b26c672f6147a8ac6c7b7dcfa5384c"
+        },
+        "activeContract": {
+          "name": "HintHelpers",
+          "filePath": "contracts/HintHelpers.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:21:44.176824Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 35,
+          "abiSemanticSha256": "b8ddd61b2dfc7d96bc4c519f61d6b5070f0e36c85df9476d8df7e2974ae8f734",
+          "deployedBytecodeSha256": "796027f2bc2ad6bda2d2a612033da99477ec147f7c6b478bd3d72d74ba399467"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-interest-rate-manager-mezo-mainnet",
+      "deploymentId": "musd.interest-rate-manager@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:10.670Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xb7a12d601b174f3818441b05cfe51d29be903d84e6bc93a46c76d8aa77ca906e",
+        "blockNumber": 178604,
+        "blockHash": "0x84bb4a1d2db512c762e792aae5a0fa9dd1c34dcfbe8ba966a10f0be4ff4a08d2",
+        "blockTimestamp": "2025-05-12T16:17:28.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "8faa5713e1225f7db280c0ea7d00281bca070d12a42f6a3cf5206e1d5dd86669",
+        "implementationCodeSha256": "435126b121243316439c94f8c30547b1ffeb5a5c52d3b247ddf9866c3b9114c0",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xd10364eacb0a9e9583f1fd56a7c7d860c10c6904",
+        "currentImplementationAddress": "0xf83b2e2f8cd39df2fb71e5dc5297a6fc3c0b2dd3",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xf83b2e2f8cd39df2fb71e5dc5297a6fc3c0b2dd3",
+            "effectiveFrom": {
+              "blockNumber": 178604,
+              "transactionHash": "0xb7a12d601b174f3818441b05cfe51d29be903d84e6bc93a46c76d8aa77ca906e",
+              "logIndex": 0,
+              "blockHash": "0x84bb4a1d2db512c762e792aae5a0fa9dd1c34dcfbe8ba966a10f0be4ff4a08d2",
+              "blockTimestamp": "2025-05-12T16:17:28.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:18:53.239103Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "8faa5713e1225f7db280c0ea7d00281bca070d12a42f6a3cf5206e1d5dd86669"
+        },
+        "activeContract": {
+          "name": "InterestRateManager",
+          "filePath": "contracts/InterestRateManager.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:18:20.155411Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 37,
+          "abiSemanticSha256": "d373264541796ba5dacc5b83edf08ebc9b3c5218b04e9aec32725ace6f5c0a1e",
+          "deployedBytecodeSha256": "435126b121243316439c94f8c30547b1ffeb5a5c52d3b247ddf9866c3b9114c0"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-interest-rate-manager-mezo-testnet",
+      "deploymentId": "musd.interest-rate-manager@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:13.227Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x36e5122660a4d449b9e810dbf79b43087700830bdc4ee4b12b9839db8d74004c",
+        "blockNumber": 4518633,
+        "blockHash": "0x91de4fd77f7a917d723a64d58175544d9b62a5b19d1085f45e6a2b7cf7177a3e",
+        "blockTimestamp": "2025-05-13T18:09:51.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "fa0769c93d3b72055c9214ea697d6533d472820a6bf0e7d8cf16d9577c80728b",
+        "implementationCodeSha256": "435126b121243316439c94f8c30547b1ffeb5a5c52d3b247ddf9866c3b9114c0",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x1306df8eef89e1de84745dae377d52c7535cd573",
+        "currentImplementationAddress": "0xaa13b1d9cffa3f44ab3a8be0dc8774fb7841459c",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xaa13b1d9cffa3f44ab3a8be0dc8774fb7841459c",
+            "effectiveFrom": {
+              "blockNumber": 4518633,
+              "transactionHash": "0x36e5122660a4d449b9e810dbf79b43087700830bdc4ee4b12b9839db8d74004c",
+              "logIndex": 6,
+              "blockHash": "0x91de4fd77f7a917d723a64d58175544d9b62a5b19d1085f45e6a2b7cf7177a3e",
+              "blockTimestamp": "2025-05-13T18:09:51.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:10:29.610849Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "fa0769c93d3b72055c9214ea697d6533d472820a6bf0e7d8cf16d9577c80728b"
+        },
+        "activeContract": {
+          "name": "InterestRateManager",
+          "filePath": "contracts/InterestRateManager.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T16:30:22.711621Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 37,
+          "abiSemanticSha256": "d373264541796ba5dacc5b83edf08ebc9b3c5218b04e9aec32725ace6f5c0a1e",
+          "deployedBytecodeSha256": "435126b121243316439c94f8c30547b1ffeb5a5c52d3b247ddf9866c3b9114c0"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-token-mezo-mainnet",
+      "deploymentId": "musd.token@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:14.409Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "TokenDeployed event",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x2e3ef8a4721c33714b5190541c0b4eb4d1c82156f1a2752fab168475efe7374b",
+        "blockNumber": 178718,
+        "blockHash": "0xbd9e21f41fbd9849f7d354a73e954cde38c6f7f86e40297f0adf050889be40cf",
+        "blockTimestamp": "2025-05-12T16:24:12.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt-plus-token-deployed-event",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "893d9275226a5019c7ad52628010228272d2124732d951a0ca376aded02b4107",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": null
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "MUSD",
+          "filePath": "contracts/token/MUSD.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:59:01.774582Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 60,
+          "abiSemanticSha256": "0207007b07b15d167bb03ab081494052c462591b00e31c4e8d3e072782898236",
+          "deployedBytecodeSha256": "893d9275226a5019c7ad52628010228272d2124732d951a0ca376aded02b4107"
+        },
+        "activeContract": {
+          "name": "MUSD",
+          "filePath": "contracts/token/MUSD.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:59:01.774582Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 60,
+          "abiSemanticSha256": "0207007b07b15d167bb03ab081494052c462591b00e31c4e8d3e072782898236",
+          "deployedBytecodeSha256": "893d9275226a5019c7ad52628010228272d2124732d951a0ca376aded02b4107"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-token-mezo-testnet",
+      "deploymentId": "musd.token@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:15.825Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xc8a7da3f5e76cfc8499648700ead8fdb5b73bedd7be5cde0a1dab1c75ffa4071",
+        "blockNumber": 4518688,
+        "blockHash": "0x095363bbb2fc7e5930c21f74f50393e4219f7261e04485a4c4fae0e2aaa9d810",
+        "blockTimestamp": "2025-05-13T18:13:22.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "0c2f3d6bdad72045f32d963b98db16b14ea340b3a1b788f438301c0a7867de4d",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "107573780ca46de9d4a8c77d19ebb04c810512d524ed05ceb190b811ff5ce641",
+          "rpcCodeSha256": "0c2f3d6bdad72045f32d963b98db16b14ea340b3a1b788f438301c0a7867de4d",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "MUSD",
+          "filePath": "contracts/token/MUSD.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:14:53.464466Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 60,
+          "abiSemanticSha256": "0207007b07b15d167bb03ab081494052c462591b00e31c4e8d3e072782898236",
+          "deployedBytecodeSha256": "0c2f3d6bdad72045f32d963b98db16b14ea340b3a1b788f438301c0a7867de4d"
+        },
+        "activeContract": {
+          "name": "MUSD",
+          "filePath": "contracts/token/MUSD.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:14:53.464466Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 60,
+          "abiSemanticSha256": "0207007b07b15d167bb03ab081494052c462591b00e31c4e8d3e072782898236",
+          "deployedBytecodeSha256": "0c2f3d6bdad72045f32d963b98db16b14ea340b3a1b788f438301c0a7867de4d"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-pcv-mezo-mainnet",
+      "deploymentId": "musd.pcv@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:18.822Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xedb286a43e91948cb02a6ab721d104e32b344d9164eb463ba64dd992cd870180",
+        "blockNumber": 178813,
+        "blockHash": "0x165a414989f6baa66107a99d43cab3b04c0915b69973284ba4a2a25493a72510",
+        "blockTimestamp": "2025-05-12T16:29:48.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "5f17535f300c915c6e0df6fef03bd8286892a78141015b277f194ce8ce151721",
+        "implementationCodeSha256": "f1ef7b5a871528037257d6099d665cf950d6eb35faa2bc8679e086fd6813cdba",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x433859fda802bdb4e335059f97fc8d91dda4b0f0",
+        "currentImplementationAddress": "0x060bbcd07cab70fe2e74acfab42f19f34f8950f5",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x3cdfd2674ae85b2f5a767edcfe823351351a7e17",
+            "effectiveFrom": {
+              "blockNumber": 178813,
+              "transactionHash": "0xedb286a43e91948cb02a6ab721d104e32b344d9164eb463ba64dd992cd870180",
+              "logIndex": 0,
+              "blockHash": "0x165a414989f6baa66107a99d43cab3b04c0915b69973284ba4a2a25493a72510",
+              "blockTimestamp": "2025-05-12T16:29:48.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5350391,
+              "transactionHash": "0x4905a0810d00385d7f8e0a30af8d471380c54b92359eba924843491e984b3c0a",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x930f8aa0bee3de56ddb839cc4e88aaae1ce8c0d0",
+            "effectiveFrom": {
+              "blockNumber": 5350391,
+              "transactionHash": "0x4905a0810d00385d7f8e0a30af8d471380c54b92359eba924843491e984b3c0a",
+              "logIndex": 0,
+              "blockHash": "0x85cb1945111c74452990f7362447b49e5e742f509cc7a56c90886fd2a20a4337",
+              "blockTimestamp": "2025-12-15T12:23:49.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5350391,
+              "transactionHash": "0x4905a0810d00385d7f8e0a30af8d471380c54b92359eba924843491e984b3c0a",
+              "logIndex": 13
+            }
+          },
+          {
+            "implementationAddress": "0x64ae6a75df75e8473bd10f76f0052a78f721a34e",
+            "effectiveFrom": {
+              "blockNumber": 5350391,
+              "transactionHash": "0x4905a0810d00385d7f8e0a30af8d471380c54b92359eba924843491e984b3c0a",
+              "logIndex": 13,
+              "blockHash": "0x85cb1945111c74452990f7362447b49e5e742f509cc7a56c90886fd2a20a4337",
+              "blockTimestamp": "2025-12-15T12:23:49.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9088944,
+              "transactionHash": "0x4692a5a29539efa807c6ae03c73fd7fd459a3cf30555f95d8aa1b275ef075571",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x060bbcd07cab70fe2e74acfab42f19f34f8950f5",
+            "effectiveFrom": {
+              "blockNumber": 9088944,
+              "transactionHash": "0x4692a5a29539efa807c6ae03c73fd7fd459a3cf30555f95d8aa1b275ef075571",
+              "logIndex": 0,
+              "blockHash": "0x5a72392188296b8d79bf28c65437edd9bfea97926c608f7e802d1eaf4aea1400",
+              "blockTimestamp": "2026-05-20T15:57:36.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:31:27.088108Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "5f17535f300c915c6e0df6fef03bd8286892a78141015b277f194ce8ce151721"
+        },
+        "activeContract": {
+          "name": "PCV",
+          "filePath": "contracts/PCV.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-05-19T12:56:24.023686Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 72,
+          "abiSemanticSha256": "565b5e612bb9c6b6a17e1995c11ab7a434f1e968e8fb72f6d07ef9cb60a57dc3",
+          "deployedBytecodeSha256": "f1ef7b5a871528037257d6099d665cf950d6eb35faa2bc8679e086fd6813cdba"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-pcv-mezo-testnet",
+      "deploymentId": "musd.pcv@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:22.505Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x10238fb2b9440bbb70e6e047e939bba531d3994906decb08c89e511d76e44047",
+        "blockNumber": 4518749,
+        "blockHash": "0x5745975a421e249bbbb4ef901c277f833f89fe41d1dd01fec39d6e0db169a149",
+        "blockTimestamp": "2025-05-13T18:17:15.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "20c026401bc739ad129417f132db26ae97a47ec941bd06291f6195d72b35324e",
+        "implementationCodeSha256": "f1ef7b5a871528037257d6099d665cf950d6eb35faa2bc8679e086fd6813cdba",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xde63cb80c897430b21d9bebb9d65c5c33bcccb97",
+        "currentImplementationAddress": "0xe641ab3c04140f3e3befcf60f8eed8ad6e31c300",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xed84dbf67daad975faf99e1ad897482a889d134e",
+            "effectiveFrom": {
+              "blockNumber": 4518749,
+              "transactionHash": "0x10238fb2b9440bbb70e6e047e939bba531d3994906decb08c89e511d76e44047",
+              "logIndex": 0,
+              "blockHash": "0x5745975a421e249bbbb4ef901c277f833f89fe41d1dd01fec39d6e0db169a149",
+              "blockTimestamp": "2025-05-13T18:17:15.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9366791,
+              "transactionHash": "0x368cc13e26a953907d2052026dd949203618ebd293c6bcf92afaecf16e5a2353",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x6c6571dd02c0f3ff07e7371c3d6202177d994f6b",
+            "effectiveFrom": {
+              "blockNumber": 9366791,
+              "transactionHash": "0x368cc13e26a953907d2052026dd949203618ebd293c6bcf92afaecf16e5a2353",
+              "logIndex": 0,
+              "blockHash": "0xeec532e15df4eb512df8c4082645ec11c3f14697bf7b30218a3b5ce4aa2f53d9",
+              "blockTimestamp": "2025-12-11T12:04:46.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9369961,
+              "transactionHash": "0x7ef2c41a36f7afae2b951e22e8479b6bc61e7ee388f5040f973c68ba371814c0",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x7ecb4a0e4462ee9c0c98c5240c6bc9562c545c71",
+            "effectiveFrom": {
+              "blockNumber": 9369961,
+              "transactionHash": "0x7ef2c41a36f7afae2b951e22e8479b6bc61e7ee388f5040f973c68ba371814c0",
+              "logIndex": 0,
+              "blockHash": "0x61fbe281513d408cf80daf44bb270879adc6cffbede1dff11c6e3cc808e06532",
+              "blockTimestamp": "2025-12-11T15:15:25.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 13124042,
+              "transactionHash": "0xb67f25ed8fc115467a2a8dd26fb3902704dee2928b3200379baf4c1a105cce5d",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xe641ab3c04140f3e3befcf60f8eed8ad6e31c300",
+            "effectiveFrom": {
+              "blockNumber": 13124042,
+              "transactionHash": "0xb67f25ed8fc115467a2a8dd26fb3902704dee2928b3200379baf4c1a105cce5d",
+              "logIndex": 0,
+              "blockHash": "0xe4a4d4de739c411d45b3c9ac0994f86bb071700a31cf73fe477fbf18f7a0781d",
+              "blockTimestamp": "2026-05-18T12:33:18.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:18:07.048397Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "20c026401bc739ad129417f132db26ae97a47ec941bd06291f6195d72b35324e"
+        },
+        "activeContract": {
+          "name": "PCV",
+          "filePath": "contracts/PCV.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2026-05-18T12:40:17.508917Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 72,
+          "abiSemanticSha256": "565b5e612bb9c6b6a17e1995c11ab7a434f1e968e8fb72f6d07ef9cb60a57dc3",
+          "deployedBytecodeSha256": "f1ef7b5a871528037257d6099d665cf950d6eb35faa2bc8679e086fd6813cdba"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-price-feed-mezo-mainnet",
+      "deploymentId": "musd.price-feed@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:24.951Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xbbac70883875c6022eefa7ef0779426689e0d8b4f93d88b5e04e3f9944126e7c",
+        "blockNumber": 178901,
+        "blockHash": "0xf82e2a145c1e2c7656f99d353db6e4d3ca5a826e9c1d6d8b4ed2881866b7d1d6",
+        "blockTimestamp": "2025-05-12T16:35:00.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "c2cf8602ef14df5ce4a0743af85c345b8d1140abde7b8aaef9742c3eebf912ec",
+        "implementationCodeSha256": "ef553429f103ca555b252204c2cb03725e8f6f87455c291ade868cba3f733939",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xfdd1c4e079a861ce57ae2153ad5f824d19ac39dc",
+        "currentImplementationAddress": "0xe9ca1abe343515312eb6d13178c5a2dce3c036fa",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xe9ca1abe343515312eb6d13178c5a2dce3c036fa",
+            "effectiveFrom": {
+              "blockNumber": 178901,
+              "transactionHash": "0xbbac70883875c6022eefa7ef0779426689e0d8b4f93d88b5e04e3f9944126e7c",
+              "logIndex": 0,
+              "blockHash": "0xf82e2a145c1e2c7656f99d353db6e4d3ca5a826e9c1d6d8b4ed2881866b7d1d6",
+              "blockTimestamp": "2025-05-12T16:35:00.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:36:33.035345Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "c2cf8602ef14df5ce4a0743af85c345b8d1140abde7b8aaef9742c3eebf912ec"
+        },
+        "activeContract": {
+          "name": "PriceFeed",
+          "filePath": "contracts/PriceFeed.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:36:00.633141Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "f593f98ae767246cb40d9012d502cae941df8a2c609527cecfb73621edcf5de5",
+          "deployedBytecodeSha256": "ef553429f103ca555b252204c2cb03725e8f6f87455c291ade868cba3f733939"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-price-feed-mezo-testnet",
+      "deploymentId": "musd.price-feed@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:27.271Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xf2be6d0fdfd2bda1fb6877ea272e4cb8ffb7c97532776a8df1936feb084663c0",
+        "blockNumber": 4518789,
+        "blockHash": "0xb515c3c03dce5eb266f379d1b9c16cb9e313a6f601909669bad989a92c1a20e3",
+        "blockTimestamp": "2025-05-13T18:19:46.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "8cf21e2ff250bea621c28fac1a4f2c6beb2179802edff1cb8e5f04bf81c2c90b",
+        "implementationCodeSha256": "fce2b97f3e4f82f03ab12d0b5232617a65c5da33fa2ba6442e66f40f1921442a",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xc723d139e7ce77b86423b43ebc7f170b0e182be4",
+        "currentImplementationAddress": "0xec42b37c12b8d73d320f4075a1bcd58b306629c1",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xec42b37c12b8d73d320f4075a1bcd58b306629c1",
+            "effectiveFrom": {
+              "blockNumber": 4518789,
+              "transactionHash": "0xf2be6d0fdfd2bda1fb6877ea272e4cb8ffb7c97532776a8df1936feb084663c0",
+              "logIndex": 0,
+              "blockHash": "0xb515c3c03dce5eb266f379d1b9c16cb9e313a6f601909669bad989a92c1a20e3",
+              "blockTimestamp": "2025-05-13T18:19:46.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:20:41.489594Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "8cf21e2ff250bea621c28fac1a4f2c6beb2179802edff1cb8e5f04bf81c2c90b"
+        },
+        "activeContract": {
+          "name": "PriceFeed",
+          "filePath": "contracts/PriceFeed.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-01T20:24:35.251553Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "f593f98ae767246cb40d9012d502cae941df8a2c609527cecfb73621edcf5de5",
+          "deployedBytecodeSha256": "fce2b97f3e4f82f03ab12d0b5232617a65c5da33fa2ba6442e66f40f1921442a"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-sorted-troves-mezo-mainnet",
+      "deploymentId": "musd.sorted-troves@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:29.791Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xeb188e348ad2533241feb7f5dcc72ecc0f2673130c0b031254181d53d0336926",
+        "blockNumber": 178843,
+        "blockHash": "0x9fd6e73b741eae760f466dec8a5b37b725f179646868150ee3da11295f606688",
+        "blockTimestamp": "2025-05-12T16:31:34.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "e8b0b4aa25fbf22a4b0d5d4081533b6ce276a42c5c6d940975479bcf73342c80",
+        "implementationCodeSha256": "f5073ca709bc25cdf750adfed15c9690db5ab89cd0a171cc86acb74bfbb30aac",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x8c116ac96cdd27233a494bbbb2cd2004b4f5f8a2",
+        "currentImplementationAddress": "0x19868d388668a8e248784e78b0c644b517febaae",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x19868d388668a8e248784e78b0c644b517febaae",
+            "effectiveFrom": {
+              "blockNumber": 178843,
+              "transactionHash": "0xeb188e348ad2533241feb7f5dcc72ecc0f2673130c0b031254181d53d0336926",
+              "logIndex": 0,
+              "blockHash": "0x9fd6e73b741eae760f466dec8a5b37b725f179646868150ee3da11295f606688",
+              "blockTimestamp": "2025-05-12T16:31:34.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:33:07.549022Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "e8b0b4aa25fbf22a4b0d5d4081533b6ce276a42c5c6d940975479bcf73342c80"
+        },
+        "activeContract": {
+          "name": "SortedTroves",
+          "filePath": "contracts/SortedTroves.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:32:26.462158Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 34,
+          "abiSemanticSha256": "1aeac51b67b93dd6e94e2b565e3dab8aedd0014ae6e70a91fe9ce1225619c6cd",
+          "deployedBytecodeSha256": "f5073ca709bc25cdf750adfed15c9690db5ab89cd0a171cc86acb74bfbb30aac"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-sorted-troves-mezo-testnet",
+      "deploymentId": "musd.sorted-troves@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:32.476Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x43bcecc6d1ef46d5f0b1418aae35194f376166ee0cb5277e962534239bfd9a38",
+        "blockNumber": 4518763,
+        "blockHash": "0x3007cc805f1ae887d80ceb6439c2be3aac038d281b40ad9af215f345cfc85e67",
+        "blockTimestamp": "2025-05-13T18:18:11.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "0ec20ef17b4e0694e67f94e752eecc2be9b2d05c83eb45bf084d131730f45ce3",
+        "implementationCodeSha256": "1c1d84f384d4b000d493c8249c20bd4a122707852f056954128f3414e645c14e",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x8d0d03185eb28afa93aadd3fbff5c6c610c43652",
+        "currentImplementationAddress": "0x9177df58a9614b84c8c2f68df27506ab9a5d0323",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x9177df58a9614b84c8c2f68df27506ab9a5d0323",
+            "effectiveFrom": {
+              "blockNumber": 4518763,
+              "transactionHash": "0x43bcecc6d1ef46d5f0b1418aae35194f376166ee0cb5277e962534239bfd9a38",
+              "logIndex": 0,
+              "blockHash": "0x3007cc805f1ae887d80ceb6439c2be3aac038d281b40ad9af215f345cfc85e67",
+              "blockTimestamp": "2025-05-13T18:18:11.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:19:03.009905Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "0ec20ef17b4e0694e67f94e752eecc2be9b2d05c83eb45bf084d131730f45ce3"
+        },
+        "activeContract": {
+          "name": "SortedTroves",
+          "filePath": "contracts/SortedTroves.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-01T20:23:41.500641Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 34,
+          "abiSemanticSha256": "1aeac51b67b93dd6e94e2b565e3dab8aedd0014ae6e70a91fe9ce1225619c6cd",
+          "deployedBytecodeSha256": "1c1d84f384d4b000d493c8249c20bd4a122707852f056954128f3414e645c14e"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-stability-pool-mezo-mainnet",
+      "deploymentId": "musd.stability-pool@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:35.403Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x4cc2b61f5f16f55b617e0b8b21fbdad8d2ac5a3915e69ebf645c6041c62d1ee9",
+        "blockNumber": 178693,
+        "blockHash": "0x58dd4cf356938fe9b424ffe9c379e11a50e045bbd44c2f1672c7081b29b0ad84",
+        "blockTimestamp": "2025-05-12T16:22:43.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "3c9537e14fb18ff703923d3e93055269bb6388cb66c09cd8b7e226a76bb35504",
+        "implementationCodeSha256": "6a6798b5dd2e2d8c514d3140cad9fbe616722a2d10614452713b7bce626d772b",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xf8c7505df104f5bdf28007a7e986736f654e49ca",
+        "currentImplementationAddress": "0xfabb48f4c541bd97cf1eb85540acd7aa8103361f",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xfabb48f4c541bd97cf1eb85540acd7aa8103361f",
+            "effectiveFrom": {
+              "blockNumber": 178693,
+              "transactionHash": "0x4cc2b61f5f16f55b617e0b8b21fbdad8d2ac5a3915e69ebf645c6041c62d1ee9",
+              "logIndex": 0,
+              "blockHash": "0x58dd4cf356938fe9b424ffe9c379e11a50e045bbd44c2f1672c7081b29b0ad84",
+              "blockTimestamp": "2025-05-12T16:22:43.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:24:10.620306Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "3c9537e14fb18ff703923d3e93055269bb6388cb66c09cd8b7e226a76bb35504"
+        },
+        "activeContract": {
+          "name": "StabilityPool",
+          "filePath": "contracts/StabilityPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:23:35.869525Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 63,
+          "abiSemanticSha256": "73cdc3e4438ac2ffbbc0259bff00b0348abb2cd24ec21ea16a4609feb3ec4cab",
+          "deployedBytecodeSha256": "6a6798b5dd2e2d8c514d3140cad9fbe616722a2d10614452713b7bce626d772b"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-stability-pool-mezo-testnet",
+      "deploymentId": "musd.stability-pool@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:38.213Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xa661ce3dac62ecea1206dde8dbd24a072738ea591e9b0add5ff368ee24a63b63",
+        "blockNumber": 4518674,
+        "blockHash": "0xb7880a4b4644ef7fc045a02dc6a4c304ab1a71166686a18737ca12f805e63ca3",
+        "blockTimestamp": "2025-05-13T18:12:26.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "9db0671bdb261e84a544a7a82fc2643c4fd4a0aa4e36a61a02c43dcff17b88aa",
+        "implementationCodeSha256": "672150f1e57c59754004047ef08043ebb11fe3b1e5edab8248a8bc8d77a5ffff",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x1842610a553d1bea61335739c7008987b556ec9f",
+        "currentImplementationAddress": "0x8f0ca419bb1d54af4bf6a644f605cc247d6d3e19",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x8f0ca419bb1d54af4bf6a644f605cc247d6d3e19",
+            "effectiveFrom": {
+              "blockNumber": 4518674,
+              "transactionHash": "0xa661ce3dac62ecea1206dde8dbd24a072738ea591e9b0add5ff368ee24a63b63",
+              "logIndex": 0,
+              "blockHash": "0xb7880a4b4644ef7fc045a02dc6a4c304ab1a71166686a18737ca12f805e63ca3",
+              "blockTimestamp": "2025-05-13T18:12:26.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:13:17.402383Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "9db0671bdb261e84a544a7a82fc2643c4fd4a0aa4e36a61a02c43dcff17b88aa"
+        },
+        "activeContract": {
+          "name": "StabilityPool",
+          "filePath": "contracts/StabilityPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-04-22T19:14:58.324992Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 63,
+          "abiSemanticSha256": "73cdc3e4438ac2ffbbc0259bff00b0348abb2cd24ec21ea16a4609feb3ec4cab",
+          "deployedBytecodeSha256": "672150f1e57c59754004047ef08043ebb11fe3b1e5edab8248a8bc8d77a5ffff"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-trove-manager-mezo-mainnet",
+      "deploymentId": "musd.trove-manager@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:40.980Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x51818086ec66a914b8f221a3e5e21ce3886a2ed05ce7d11775f4cf8c07a45897",
+        "blockNumber": 178660,
+        "blockHash": "0x7ca80ca4e2729b461806344193947b67be4dc37899403a0b4da546a0b43c5918",
+        "blockTimestamp": "2025-05-12T16:20:46.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "7640c9211caaf5d71e5a9d3995fb56d75dabaefa156fa2680db514b16f6b0bc9",
+        "implementationCodeSha256": "49933293a9be2bce6f5627442b6ffd91c438d04304ca8a3fd01aff73ec24de80",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x57d6e2ed2d1afd54ffce1a3d7cd894ddf77cdd38",
+        "currentImplementationAddress": "0xdcfdab0dea52e5efc8400283d46fd0d122a519e9",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa57c03f2e0ff9f059802eee44ccff090a7dd4189",
+            "effectiveFrom": {
+              "blockNumber": 178660,
+              "transactionHash": "0x51818086ec66a914b8f221a3e5e21ce3886a2ed05ce7d11775f4cf8c07a45897",
+              "logIndex": 0,
+              "blockHash": "0x7ca80ca4e2729b461806344193947b67be4dc37899403a0b4da546a0b43c5918",
+              "blockTimestamp": "2025-05-12T16:20:46.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 410583,
+              "transactionHash": "0x9a5fa226dc417180f1ada86468ac93eb47e0285dc877bd781c38d94809761d93",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0xb4c35747c26e4ab5f1a7cdc7e875b5946efa6fa9",
+            "effectiveFrom": {
+              "blockNumber": 410583,
+              "transactionHash": "0x9a5fa226dc417180f1ada86468ac93eb47e0285dc877bd781c38d94809761d93",
+              "logIndex": 0,
+              "blockHash": "0x5afe3d05afffa64aa6e200f8092c2203098ce1fee6fb696f050894c4e89defdd",
+              "blockTimestamp": "2025-05-22T06:25:17.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 6
+            }
+          },
+          {
+            "implementationAddress": "0xdcfdab0dea52e5efc8400283d46fd0d122a519e9",
+            "effectiveFrom": {
+              "blockNumber": 5350374,
+              "transactionHash": "0xbcfdcf7973728c8b7fe9867ca7789160754993aa91ade813d231a0984382a853",
+              "logIndex": 6,
+              "blockHash": "0x1bf4be13018bb770b2412bde84c5bb1b83cf7fb076cea49604509e91b75327f5",
+              "blockTimestamp": "2025-12-15T12:22:49.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-12T16:22:32.337046Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "7640c9211caaf5d71e5a9d3995fb56d75dabaefa156fa2680db514b16f6b0bc9"
+        },
+        "activeContract": {
+          "name": "TroveManager",
+          "filePath": "contracts/TroveManager.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T14:31:41.496514Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 101,
+          "abiSemanticSha256": "7f2d2411af68d314ccf6b1e13a6bc5098ff31df58c129f1cbbaebb91afddc249",
+          "deployedBytecodeSha256": "49933293a9be2bce6f5627442b6ffd91c438d04304ca8a3fd01aff73ec24de80"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-musd-trove-manager-mezo-testnet",
+      "deploymentId": "musd.trove-manager@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:44.494Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "explorer getLogs",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x40ea6d038c058f873026005830929482b035e88e3643cc14828c59fed4e1298f",
+        "blockNumber": 4518659,
+        "blockHash": "0x7d9d64efc7aa55ee5956a19a715f4924c6a5d0ffd241f53e399bab6bb933411e",
+        "blockTimestamp": "2025-05-13T18:11:31.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "d882c3129d9573ae5a18d31954ede2c28e1da03a102d212c42d1e4c9b17cbe41",
+        "implementationCodeSha256": "49933293a9be2bce6f5627442b6ffd91c438d04304ca8a3fd01aff73ec24de80",
+        "artifactBytecodeComparison": null
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x934360dbe9595bcfc6b7e3d249d62902ac4b31cc",
+        "currentImplementationAddress": "0x9aab567966983e95536fc460c12266fb0cc10b07",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xb5ffd53f8327488b31ba8c47c97b9be1ed6b10b4",
+            "effectiveFrom": {
+              "blockNumber": 4518659,
+              "transactionHash": "0x40ea6d038c058f873026005830929482b035e88e3643cc14828c59fed4e1298f",
+              "logIndex": 0,
+              "blockHash": "0x7d9d64efc7aa55ee5956a19a715f4924c6a5d0ffd241f53e399bab6bb933411e",
+              "blockTimestamp": "2025-05-13T18:11:31.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 4661746,
+              "transactionHash": "0xa41e523c07ac2e994f0c2a70d91a381053a70acdbdde8deb0a8e73632a7b0d63",
+              "logIndex": 1
+            }
+          },
+          {
+            "implementationAddress": "0x110f0ccc400375d72734af82b168708593113a34",
+            "effectiveFrom": {
+              "blockNumber": 4661746,
+              "transactionHash": "0xa41e523c07ac2e994f0c2a70d91a381053a70acdbdde8deb0a8e73632a7b0d63",
+              "logIndex": 1,
+              "blockHash": "0xbd40bf7e29cdd2c80848f706ce7516d6f8b031c3076d5856bd9731e305423996",
+              "blockTimestamp": "2025-05-20T08:46:58.000Z",
+              "blockEvidenceMethod": "official-explorer-block-fallback"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9366741,
+              "transactionHash": "0x94812bae8d36d00c54a9492dede03d97e89028cf12020532f3fd3c0d8e401222",
+              "logIndex": 0
+            }
+          },
+          {
+            "implementationAddress": "0x9aab567966983e95536fc460c12266fb0cc10b07",
+            "effectiveFrom": {
+              "blockNumber": 9366741,
+              "transactionHash": "0x94812bae8d36d00c54a9492dede03d97e89028cf12020532f3fd3c0d8e401222",
+              "logIndex": 0,
+              "blockHash": "0x04db5af7fee1fa502e3fb6a8efebcdfaafb885fbdbf551e91c15099e69fa6950",
+              "blockTimestamp": "2025-12-11T12:01:46.000Z",
+              "blockEvidenceMethod": "eth_getBlockByNumber"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "TransparentUpgradeableProxy",
+          "filePath": "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T18:12:24.517734Z",
+          "compilerVersion": "v0.8.20+commit.a1b79de6",
+          "licenseType": "none",
+          "proxyType": "eip1967",
+          "abiEntries": 10,
+          "abiSemanticSha256": "3a2d79f3a3790393e1d01a0818b40b86b370b4ffbf6b1656c092617dad3465e7",
+          "deployedBytecodeSha256": "d882c3129d9573ae5a18d31954ede2c28e1da03a102d212c42d1e4c9b17cbe41"
+        },
+        "activeContract": {
+          "name": "TroveManager",
+          "filePath": "contracts/TroveManager.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-11T12:02:07.737217Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 101,
+          "abiSemanticSha256": "7f2d2411af68d314ccf6b1e13a6bc5098ff31df58c129f1cbbaebb91afddc249",
+          "deployedBytecodeSha256": "49933293a9be2bce6f5627442b6ffd91c438d04304ca8a3fd01aff73ec24de80"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-router-mezo-mainnet",
+      "deploymentId": "mezo-earn.router@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:45.724Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x262f46c86f9f00f67e4a9bf5818652c8ed31a7867cdb10fb56e58f00eef509d0",
+        "blockNumber": 535237,
+        "blockHash": "0x6a518807a4b7f017d41d7ce7b44fe47bf8394ecbf2df004b0acb7de662e973ed",
+        "blockTimestamp": "2025-05-27T10:39:54.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "ee6ee375e9bf6bbf9c28165a7c933fec7b8516d223f89e8406ed34cea2fd9112",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "0a8b250fc1df54ad6dc921afff53eee5a92656c95aca08cec3f093d22107fc86",
+          "rpcCodeSha256": "ee6ee375e9bf6bbf9c28165a7c933fec7b8516d223f89e8406ed34cea2fd9112",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "Router",
+          "filePath": "contracts/Router.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-27T10:40:54.027860Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 42,
+          "abiSemanticSha256": "dfd6536bbdfbfcad430a9a96007e595d11e7fa54b50232835b185dd255a10013",
+          "deployedBytecodeSha256": "ee6ee375e9bf6bbf9c28165a7c933fec7b8516d223f89e8406ed34cea2fd9112"
+        },
+        "activeContract": {
+          "name": "Router",
+          "filePath": "contracts/Router.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-27T10:40:54.027860Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 42,
+          "abiSemanticSha256": "dfd6536bbdfbfcad430a9a96007e595d11e7fa54b50232835b185dd255a10013",
+          "deployedBytecodeSha256": "ee6ee375e9bf6bbf9c28165a7c933fec7b8516d223f89e8406ed34cea2fd9112"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-router-mezo-testnet",
+      "deploymentId": "mezo-earn.router@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:47.272Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xdc916c579242fc9c5f981720dbf9b67be93ce468124bd2b122c3529dea9a5fba",
+        "blockNumber": 5533649,
+        "blockHash": "0x027ef746d461b9e97cb7f8b946dbfd530f7e684fea9ba2cf68d144a3ffc0fae8",
+        "blockTimestamp": "2025-07-02T08:42:46.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "official-explorer-block-fallback",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "e95805ef30fe90ef3a701571c5f2b3b0458b548686069c0b5d9b776c8fa24250",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "0a8b250fc1df54ad6dc921afff53eee5a92656c95aca08cec3f093d22107fc86",
+          "rpcCodeSha256": "e95805ef30fe90ef3a701571c5f2b3b0458b548686069c0b5d9b776c8fa24250",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "Router",
+          "filePath": "contracts/Router.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-07-02T08:43:13.024413Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 42,
+          "abiSemanticSha256": "dfd6536bbdfbfcad430a9a96007e595d11e7fa54b50232835b185dd255a10013",
+          "deployedBytecodeSha256": "e95805ef30fe90ef3a701571c5f2b3b0458b548686069c0b5d9b776c8fa24250"
+        },
+        "activeContract": {
+          "name": "Router",
+          "filePath": "contracts/Router.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-07-02T08:43:13.024413Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 42,
+          "abiSemanticSha256": "dfd6536bbdfbfcad430a9a96007e595d11e7fa54b50232835b185dd255a10013",
+          "deployedBytecodeSha256": "e95805ef30fe90ef3a701571c5f2b3b0458b548686069c0b5d9b776c8fa24250"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-pool-factory-mezo-mainnet",
+      "deploymentId": "mezo-earn.pool-factory@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:48.462Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xecccfbd75acd2c8953bd89152e015f2b1d575d3de49d1223db4d70f5308cfc18",
+        "blockNumber": 199767,
+        "blockHash": "0x7374dada2624b439c6e49a42e61de794c6d4af310957a3c0a118d3967ee2e7dd",
+        "blockTimestamp": "2025-05-13T13:10:01.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "5e6953102ad25e6223c13ab5bc24c42cfc0f18956b10b1272383022325eb165b",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "bd852615cb77ba42f2a7934f2835f1d222dbe99e1c638677672cbef486030a77",
+          "rpcCodeSha256": "5e6953102ad25e6223c13ab5bc24c42cfc0f18956b10b1272383022325eb165b",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "PoolFactory",
+          "filePath": "contracts/factories/PoolFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T13:11:21.923624Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": "basic_implementation",
+          "abiEntries": 41,
+          "abiSemanticSha256": "bb5603457331c7716a1f44af006fc68be2a495ab95cb07db2e87408af66dd7ae",
+          "deployedBytecodeSha256": "5e6953102ad25e6223c13ab5bc24c42cfc0f18956b10b1272383022325eb165b"
+        },
+        "activeContract": {
+          "name": "PoolFactory",
+          "filePath": "contracts/factories/PoolFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-05-13T13:11:21.923624Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": "basic_implementation",
+          "abiEntries": 41,
+          "abiSemanticSha256": "bb5603457331c7716a1f44af006fc68be2a495ab95cb07db2e87408af66dd7ae",
+          "deployedBytecodeSha256": "5e6953102ad25e6223c13ab5bc24c42cfc0f18956b10b1272383022325eb165b"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-pool-factory-mezo-testnet",
+      "deploymentId": "mezo-earn.pool-factory@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:49.821Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "explorer transaction metadata",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x384fe0108ae75a2221aee777bf9042f8fcbb5dbb3f2f4f3fccd595d6e449d836",
+        "blockNumber": 5533189,
+        "blockHash": "0x5918b49aa14e368b3edd43c3c68d7e1ff631a9ff89a2fe1f6d60cc1fe9cce330",
+        "blockTimestamp": "2025-07-02T08:10:30.000Z",
+        "evidenceMethod": "official-explorer-transaction-fallback",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "missing"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "35b6a29dd44c08ae52190dee777e1789260f9c6505af8abf333d743ec7132f1e",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "bd852615cb77ba42f2a7934f2835f1d222dbe99e1c638677672cbef486030a77",
+          "rpcCodeSha256": "35b6a29dd44c08ae52190dee777e1789260f9c6505af8abf333d743ec7132f1e",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "PoolFactory",
+          "filePath": "contracts/factories/PoolFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-07-02T08:11:13.719463Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": "basic_implementation",
+          "abiEntries": 41,
+          "abiSemanticSha256": "bb5603457331c7716a1f44af006fc68be2a495ab95cb07db2e87408af66dd7ae",
+          "deployedBytecodeSha256": "35b6a29dd44c08ae52190dee777e1789260f9c6505af8abf333d743ec7132f1e"
+        },
+        "activeContract": {
+          "name": "PoolFactory",
+          "filePath": "contracts/factories/PoolFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-07-02T08:11:13.719463Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": "basic_implementation",
+          "abiEntries": 41,
+          "abiSemanticSha256": "bb5603457331c7716a1f44af006fc68be2a495ab95cb07db2e87408af66dd7ae",
+          "deployedBytecodeSha256": "35b6a29dd44c08ae52190dee777e1789260f9c6505af8abf333d743ec7132f1e"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-voter-mezo-mainnet",
+      "deploymentId": "mezo-earn.ve-btc-voter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:51.049Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xbe1b780c5e74881f8fb050611b1f614bf6e8a61894258e6c00a3b3d5adf5944d",
+        "blockNumber": 2234599,
+        "blockHash": "0xfa0f0be3824d17a9ab1eb3d8b2ba1248266021471b808d2a13a5d7ce567f9146",
+        "blockTimestamp": "2025-08-06T07:46:58.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "46f3ddc0ad942b6958307e2a00f82b60b18752dc8502566424743b434b2a4687",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "02c557eb6b09ea45e947f3907d41d5d5546c8e0426cddc321f2818e873a5ebc9",
+          "rpcCodeSha256": "46f3ddc0ad942b6958307e2a00f82b60b18752dc8502566424743b434b2a4687",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "Voter",
+          "filePath": "contracts/Voter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:47:29.372047Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 88,
+          "abiSemanticSha256": "ae274950f7522ac7f7ee2db395a6e3cbf0ceeb8dd50c5f70aa9909acee83783d",
+          "deployedBytecodeSha256": "46f3ddc0ad942b6958307e2a00f82b60b18752dc8502566424743b434b2a4687"
+        },
+        "activeContract": {
+          "name": "Voter",
+          "filePath": "contracts/Voter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:47:29.372047Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 88,
+          "abiSemanticSha256": "ae274950f7522ac7f7ee2db395a6e3cbf0ceeb8dd50c5f70aa9909acee83783d",
+          "deployedBytecodeSha256": "46f3ddc0ad942b6958307e2a00f82b60b18752dc8502566424743b434b2a4687"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-voter-mezo-testnet",
+      "deploymentId": "mezo-earn.ve-btc-voter@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:52.363Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xd05cd19c493b0fc81be6613e2721e9bf9204484f2e3e082cb410104cd2ad97d6",
+        "blockNumber": 6312442,
+        "blockHash": "0x1a83853af22571fc58340648ef412b6c5235b9eeb71025b94aaaac80b342f2df",
+        "blockTimestamp": "2025-08-05T14:14:13.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "ca9c2f3cf671ad5a6f7cf69a1ed31f9aeef08b3648e7439f3075800999a009d7",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "02c557eb6b09ea45e947f3907d41d5d5546c8e0426cddc321f2818e873a5ebc9",
+          "rpcCodeSha256": "ca9c2f3cf671ad5a6f7cf69a1ed31f9aeef08b3648e7439f3075800999a009d7",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "Voter",
+          "filePath": "contracts/Voter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:14:43.584472Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 88,
+          "abiSemanticSha256": "ae274950f7522ac7f7ee2db395a6e3cbf0ceeb8dd50c5f70aa9909acee83783d",
+          "deployedBytecodeSha256": "ca9c2f3cf671ad5a6f7cf69a1ed31f9aeef08b3648e7439f3075800999a009d7"
+        },
+        "activeContract": {
+          "name": "Voter",
+          "filePath": "contracts/Voter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:14:43.584472Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 88,
+          "abiSemanticSha256": "ae274950f7522ac7f7ee2db395a6e3cbf0ceeb8dd50c5f70aa9909acee83783d",
+          "deployedBytecodeSha256": "ca9c2f3cf671ad5a6f7cf69a1ed31f9aeef08b3648e7439f3075800999a009d7"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-rewards-distributor-mezo-mainnet",
+      "deploymentId": "mezo-earn.ve-btc-rewards-distributor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:53.544Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x495843a293f68399e43f3b53736e74a5cf9e42a4671e04c05aa398ae9b5b46fd",
+        "blockNumber": 2234622,
+        "blockHash": "0x8d9c71905fda351b9d10ee074a848ea1e2629c43e23ff413f920adf001275c36",
+        "blockTimestamp": "2025-08-06T07:48:21.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "94d13d631a44fb2dec5d9b449da2d683f7a04de6263c31e2ad54473d4b5aef71",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "da4dd40b7f671c893cd71513748b31aabae5fd6ecc8089200ddd0d6d68101186",
+          "rpcCodeSha256": "94d13d631a44fb2dec5d9b449da2d683f7a04de6263c31e2ad54473d4b5aef71",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:48:49.611653Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "94d13d631a44fb2dec5d9b449da2d683f7a04de6263c31e2ad54473d4b5aef71"
+        },
+        "activeContract": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:48:49.611653Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "94d13d631a44fb2dec5d9b449da2d683f7a04de6263c31e2ad54473d4b5aef71"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-rewards-distributor-mezo-testnet",
+      "deploymentId": "mezo-earn.ve-btc-rewards-distributor@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:54.658Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x1ac8eeefc313d8f0a220c55f6846c4b49d4fef474cfdd4fcb70d7a7a4bb05a0c",
+        "blockNumber": 6312462,
+        "blockHash": "0x5b471540835e058e818bd816b336e6dabab1c3f73c61f4003ad668cd8d1db7c8",
+        "blockTimestamp": "2025-08-05T14:15:27.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "673c2f846fefc9bf197f04403ac53e809643877eeba75992056d60655de3b135",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "da4dd40b7f671c893cd71513748b31aabae5fd6ecc8089200ddd0d6d68101186",
+          "rpcCodeSha256": "673c2f846fefc9bf197f04403ac53e809643877eeba75992056d60655de3b135",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:16:00.133639Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "673c2f846fefc9bf197f04403ac53e809643877eeba75992056d60655de3b135"
+        },
+        "activeContract": {
+          "name": "RewardsDistributor",
+          "filePath": "contracts/RewardsDistributor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:16:00.133639Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913",
+          "deployedBytecodeSha256": "673c2f846fefc9bf197f04403ac53e809643877eeba75992056d60655de3b135"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-epoch-governor-mezo-mainnet",
+      "deploymentId": "mezo-earn.ve-btc-epoch-governor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:55.931Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x7a368266a42fa9174068ab82fe6e8e427146868d07b531041edf45964bddedac",
+        "blockNumber": 2234671,
+        "blockHash": "0x6e1ee949cb440447a4a3045f606300bcf5d6cd31fb4f6d28c723de8f81f5bb7b",
+        "blockTimestamp": "2025-08-06T07:51:17.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "2922e07f8bed15ef83754ea468502b7c03caf5e13c44e49bd8b5aee43672f6bb",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "54a448d014baab60b43856e1d3aa7e3ada2def8c1c9fb640dc50448dec1e63ed",
+          "rpcCodeSha256": "2922e07f8bed15ef83754ea468502b7c03caf5e13c44e49bd8b5aee43672f6bb",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:51:47.890421Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "2922e07f8bed15ef83754ea468502b7c03caf5e13c44e49bd8b5aee43672f6bb"
+        },
+        "activeContract": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:51:47.890421Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "2922e07f8bed15ef83754ea468502b7c03caf5e13c44e49bd8b5aee43672f6bb"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-ve-btc-epoch-governor-mezo-testnet",
+      "deploymentId": "mezo-earn.ve-btc-epoch-governor@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:57.095Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xa5ede0db15ebfc4209e124634f0c54f114f1b36d0005fbe46061d331f80d253a",
+        "blockNumber": 6312504,
+        "blockHash": "0x43d7865eadc82ac51ac800adf79e2cd1519074ca2c2703f805d036f9211ddf5a",
+        "blockTimestamp": "2025-08-05T14:18:00.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "befa2e0d9c8dc7c2b0cbfb06db8d8aab5a6c459d5a7dcda324bb570c53692bc6",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "54a448d014baab60b43856e1d3aa7e3ada2def8c1c9fb640dc50448dec1e63ed",
+          "rpcCodeSha256": "befa2e0d9c8dc7c2b0cbfb06db8d8aab5a6c459d5a7dcda324bb570c53692bc6",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:18:31.517608Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "befa2e0d9c8dc7c2b0cbfb06db8d8aab5a6c459d5a7dcda324bb570c53692bc6"
+        },
+        "activeContract": {
+          "name": "EpochGovernor",
+          "filePath": "contracts/EpochGovernor.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:18:31.517608Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 45,
+          "abiSemanticSha256": "b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d",
+          "deployedBytecodeSha256": "befa2e0d9c8dc7c2b0cbfb06db8d8aab5a6c459d5a7dcda324bb570c53692bc6"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-chain-fee-splitter-mezo-mainnet",
+      "deploymentId": "mezo-earn.chain-fee-splitter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-17T22:56:58.473Z",
+      "observationBlock": {
+        "number": 11201821,
+        "hash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+        "timestamp": "2026-08-17T22:55:14.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0x19ff554266f138789ae8f9e0fbda740d6403334e072e566922e6c4ec1e8e4be6",
+        "blockNumber": 2234655,
+        "blockHash": "0xbcdddabcc8d3eb760a79262452c4a651991be687714878c2f4bc5bad924006df",
+        "blockTimestamp": "2025-08-06T07:50:20.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "b994e468eb036bc89447857266e083c49fa8e356682428986082d252ced005db",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "3914e86d84c61f520904dd97292aa38ad7c14a011642a8fdcd8f7e6dddbc822a",
+          "rpcCodeSha256": "b994e468eb036bc89447857266e083c49fa8e356682428986082d252ced005db",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "ChainFeeSplitter",
+          "filePath": "contracts/ChainFeeSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:50:45.978678Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "848b64e16d89d8b0503e1907062470bca4472ad28d35c3613aecdb7e808fc4f9",
+          "deployedBytecodeSha256": "b994e468eb036bc89447857266e083c49fa8e356682428986082d252ced005db"
+        },
+        "activeContract": {
+          "name": "ChainFeeSplitter",
+          "filePath": "contracts/ChainFeeSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-06T07:50:45.978678Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "848b64e16d89d8b0503e1907062470bca4472ad28d35c3613aecdb7e808fc4f9",
+          "deployedBytecodeSha256": "b994e468eb036bc89447857266e083c49fa8e356682428986082d252ced005db"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-chain-fee-splitter-mezo-testnet",
+      "deploymentId": "mezo-earn.chain-fee-splitter@mezo-testnet",
+      "networkId": "mezo-testnet",
+      "observedAt": "2026-08-17T22:56:59.588Z",
+      "observationBlock": {
+        "number": 14952836,
+        "hash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+        "timestamp": "2026-08-17T22:55:17.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getTransactionReceipt",
+        "eth_getCode",
+        "explorer smart-contract metadata"
+      ],
+      "activation": {
+        "transactionHash": "0xe32e6e0cde7015597f9ef4f9019e5f3596275afacb920b4b4a5c6c94d3e4469a",
+        "blockNumber": 6312486,
+        "blockHash": "0xcc02c8d4de3066921f2ffa2003285aa29c0b4bfd8a8a1781119fad7bf9d63f30",
+        "blockTimestamp": "2025-08-05T14:16:55.000Z",
+        "evidenceMethod": "eth_getTransactionReceipt",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "receiptRpcOutcome": {
+          "outcome": "returned"
+        }
+      },
+      "runtime": {
+        "addressCodeSha256": "062da66479855eca42cef6c3af171523ba027133c1bf1ab838ffe5c2a3d3eb9f",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "artifactCodeSha256": "3914e86d84c61f520904dd97292aa38ad7c14a011642a8fdcd8f7e6dddbc822a",
+          "rpcCodeSha256": "062da66479855eca42cef6c3af171523ba027133c1bf1ab838ffe5c2a3d3eb9f",
+          "exactMatch": false,
+          "interpretation": "constructor-or-immutable-substitution; RPC bytecode still matches fully verified explorer source"
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "ChainFeeSplitter",
+          "filePath": "contracts/ChainFeeSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:17:21.622654Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "848b64e16d89d8b0503e1907062470bca4472ad28d35c3613aecdb7e808fc4f9",
+          "deployedBytecodeSha256": "062da66479855eca42cef6c3af171523ba027133c1bf1ab838ffe5c2a3d3eb9f"
+        },
+        "activeContract": {
+          "name": "ChainFeeSplitter",
+          "filePath": "contracts/ChainFeeSplitter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-08-05T14:17:21.622654Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 17,
+          "abiSemanticSha256": "848b64e16d89d8b0503e1907062470bca4472ad28d35c3613aecdb7e808fc4f9",
+          "deployedBytecodeSha256": "062da66479855eca42cef6c3af171523ba027133c1bf1ab838ffe5c2a3d3eb9f"
+        },
+        "officialArtifactAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "outcome": "passed"
+    }
+  ],
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T22:56:59.589Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet"
+    ],
+    "deploymentIds": [
+      "musd.active-pool@mezo-mainnet",
+      "musd.active-pool@mezo-testnet",
+      "musd.borrower-operations@mezo-mainnet",
+      "musd.borrower-operations@mezo-testnet",
+      "musd.borrower-operations-signatures@mezo-mainnet",
+      "musd.borrower-operations-signatures@mezo-testnet",
+      "musd.coll-surplus-pool@mezo-mainnet",
+      "musd.coll-surplus-pool@mezo-testnet",
+      "musd.default-pool@mezo-mainnet",
+      "musd.default-pool@mezo-testnet",
+      "musd.gas-pool@mezo-mainnet",
+      "musd.gas-pool@mezo-testnet",
+      "musd.governable-variables@mezo-mainnet",
+      "musd.governable-variables@mezo-testnet",
+      "musd.hint-helpers@mezo-mainnet",
+      "musd.hint-helpers@mezo-testnet",
+      "musd.interest-rate-manager@mezo-mainnet",
+      "musd.interest-rate-manager@mezo-testnet",
+      "musd.token@mezo-mainnet",
+      "musd.token@mezo-testnet",
+      "musd.pcv@mezo-mainnet",
+      "musd.pcv@mezo-testnet",
+      "musd.price-feed@mezo-mainnet",
+      "musd.price-feed@mezo-testnet",
+      "musd.sorted-troves@mezo-mainnet",
+      "musd.sorted-troves@mezo-testnet",
+      "musd.stability-pool@mezo-mainnet",
+      "musd.stability-pool@mezo-testnet",
+      "musd.trove-manager@mezo-mainnet",
+      "musd.trove-manager@mezo-testnet",
+      "mezo-earn.router@mezo-mainnet",
+      "mezo-earn.router@mezo-testnet",
+      "mezo-earn.pool-factory@mezo-mainnet",
+      "mezo-earn.pool-factory@mezo-testnet",
+      "mezo-earn.ve-btc-voter@mezo-mainnet",
+      "mezo-earn.ve-btc-voter@mezo-testnet",
+      "mezo-earn.ve-btc-rewards-distributor@mezo-mainnet",
+      "mezo-earn.ve-btc-rewards-distributor@mezo-testnet",
+      "mezo-earn.ve-btc-epoch-governor@mezo-mainnet",
+      "mezo-earn.ve-btc-epoch-governor@mezo-testnet",
+      "mezo-earn.chain-fee-splitter@mezo-mainnet",
+      "mezo-earn.chain-fee-splitter@mezo-testnet"
+    ]
+  },
+  "limitations": [
+    "Observations are bounded to the recorded blocks, explorer responses, methods, and timestamps.",
+    "Successful point-in-time checks do not establish future bytecode, proxy, provider, or explorer availability.",
+    "Evidence verification supports only the accepted records that cite these bounded observations; it does not establish future deployment or provider state."
+  ]
+}

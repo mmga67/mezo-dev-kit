@@ -1,0 +1,11 @@
+local/
+.mdk/
+legacy/
+node_modules/
+coverage/
+dist/
+
+# Individual development records are excluded from public source.
+tasks/
+plans/
+docs/reviews/

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Synthetic widget catalog v1",
+  "allOf": [
+    {
+      "$ref": "../../../../../knowledge/schema/v0.4/common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["records"],
+  "properties": {
+    "kind": {
+      "const": "synthetic-widget-catalog"
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "displayName", "color", "sourceRef", "evidenceRef"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[./@#-][a-z0-9]+)*$"
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "color": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceRef": {
+            "$ref": "../../../../../knowledge/schema/v0.4/logical-reference.schema.json"
+          },
+          "evidenceRef": {
+            "$ref": "../../../../../knowledge/schema/v0.4/logical-reference.schema.json"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

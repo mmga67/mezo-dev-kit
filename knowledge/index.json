@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "knowledge",
+  "moduleId": "knowledge",
+  "owner": "knowledge-governance",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59Z",
+  "reviewAfter": null,
+  "scope": {
+    "moduleIds": [
+      "knowledge",
+      "networks",
+      "contracts",
+      "protocols/musd",
+      "protocols/musd/borrowing",
+      "protocols/musd/redemptions",
+      "protocols/musd/institutional-debt",
+      "protocols/musd/savings",
+      "protocols/lending/musdc",
+      "protocols/vaults/usdc-lending",
+      "protocols/incentives",
+      "protocols/pools",
+      "prices",
+      "workflows/bridges",
+      "workflows/swaps",
+      "workflows/transactions",
+      "troubleshooting"
+    ]
+  },
+  "limitations": [
+    "The root catalog establishes module discovery and physical resolution only; each module owns its facts, lifecycle, evidence, support, and review state.",
+    "Catalog acceptance does not promote a candidate, unsupported, blocked, stale, or pending-review child resource."
+  ],
+  "resources": [
+    {
+      "id": "knowledge-module-catalog",
+      "role": "canonical-record",
+      "kind": "knowledge-module-catalog",
+      "path": "records/modules.json",
+      "recordIds": [
+        "knowledge",
+        "networks",
+        "contracts",
+        "protocols/musd",
+        "protocols/musd/borrowing",
+        "protocols/musd/redemptions",
+        "protocols/musd/institutional-debt",
+        "protocols/musd/savings",
+        "protocols/lending/musdc",
+        "protocols/vaults/usdc-lending",
+        "protocols/incentives",
+        "protocols/pools",
+        "prices",
+        "workflows/bridges",
+        "workflows/swaps",
+        "workflows/transactions",
+        "troubleshooting"
+      ],
+      "recordCollectionPointer": "/modules"
+    },
+    {
+      "id": "common-envelope-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v0.4/common-envelope.schema.json"
+    },
+    {
+      "id": "logical-reference-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v0.4/logical-reference.schema.json"
+    },
+    {
+      "id": "module-index-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v0.4/module-index.schema.json"
+    },
+    {
+      "id": "module-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v0.4/module-catalog.schema.json"
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module knowledge"
+    },
+    {
+      "id": "module-catalog",
+      "type": "semantic",
+      "command": "node scripts/validate-knowledge-catalog.ts"
+    },
+    {
+      "id": "all-modules-v0.4",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --require-all-v0.4"
+    },
+    {
+      "id": "maintained-markdown-links",
+      "type": "semantic",
+      "command": "node scripts/validate-markdown-links.ts"
+    }
+  ],
+  "extensions": {
+    "resolverContract": "Resolve moduleId through knowledge-module-catalog, then resolve resourceId and optional recordId/pointer through the selected module index.",
+    "catalogStatus": "complete-all-v0.4"
+  }
+}

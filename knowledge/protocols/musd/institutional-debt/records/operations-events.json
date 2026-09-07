@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-debt-operation-event-model",
+  "id": "institutional-debt-operations-events",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "operationStatus": "knowledge-only"
+  },
+  "limitations": [
+    "No operation record enables a public reader or writer.",
+    "An event proves historical execution at its coordinate, not current role, allowlist, parameter, position, or custody state."
+  ],
+  "operations": [
+    {
+      "id": "execute-enclave-call",
+      "requirements": [
+        "resolve exact Enclave generation and current proxy implementation",
+        "verify EXECUTOR_ROLE at the target block",
+        "verify exact current target-selector authorization",
+        "reject AssetsBridge/veBTC generic execution where the generation forbids it",
+        "simulate the exact sender/value/calldata and reconcile asset plus protocol post-state"
+      ]
+    },
+    {
+      "id": "execute-enclave-batch",
+      "requirements": [
+        "apply every single-call requirement to every ordered element",
+        "require equal array lengths",
+        "treat the batch as atomic and reconcile every expected delta"
+      ]
+    },
+    {
+      "id": "request-triparty-bridge",
+      "requirements": [
+        "use the generation-specific BTC_MANAGER_ROLE or BRIDGE_MANAGER_ROLE",
+        "verify the UTXO key is unused",
+        "apply the bridge module's current provider/asset/route boundary",
+        "do not treat bridge completion or asset movement as a debt-position mutation"
+      ]
+    },
+    {
+      "id": "open-or-mutate-position",
+      "requirements": [
+        "verify the calling Enclave has ENCLAVE_ROLE",
+        "verify the position is bound to that Enclave",
+        "read pause, mint cap, rates, thresholds, price, ownership, pledge mappings, and current totals at one block",
+        "verify the Enclave target-selector pair independently",
+        "simulate the exact call and reconcile debt-manager events, MUSD mint/burn, position, pledge, and total post-state"
+      ]
+    },
+    {
+      "id": "repay-position",
+      "requirements": [
+        "accrue and settle fees before principal",
+        "reject a payment below fees or a principal remainder above outstanding principal",
+        "for repayAll require the v2 implementation generation",
+        "reconcile fee recipients, burned MUSD, principal, pledge release, closure, and aggregates"
+      ]
+    }
+  ],
+  "eventRules": [
+    "PositionOpened, DebtIncreased, DebtRepaid, PositionClosed, InterestAccrued, and threshold/rate events must be interpreted with the implementation generation active at the event block.",
+    "TargetAdded and TargetRemoved form allowlist history; only a same-block current read establishes executable authorization.",
+    "CallExecuted is not sufficient proof of the intended protocol outcome; reconcile target state and asset deltas.",
+    "A successful receipt is transport evidence, not proof of institutional accounting or product-level success."
+  ],
+  "workflowReferences": [
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-state-machine"
+    }
+  ],
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-fixed-block-state",
+      "locator": "events"
+    },
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "events and authorization modifiers"
+    }
+  ]
+}

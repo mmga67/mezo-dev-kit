@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-source-catalog",
+  "id": "synthetic-widget-sources",
+  "owner": "documentation-fixtures",
+  "status": "unverified",
+  "supportStatus": "none",
+  "reviewStatus": "unreviewed",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "documentation-only synthetic example"
+  },
+  "limitations": ["The source and its authority classification are fictional."],
+  "sources": [
+    {
+      "id": "synthetic-widget-spec-v1",
+      "kind": "local-synthetic-artifact",
+      "revision": "synthetic-v1",
+      "sha256": "097108dcdcb3bc0f4f7aa42af0ba0969e0449d78b72c8ca2b5b6af8c082e7de5",
+      "artifactRef": {
+        "moduleId": "synthetic/widget-catalog",
+        "resourceId": "synthetic-specification"
+      }
+    }
+  ]
+}

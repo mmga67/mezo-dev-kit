@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-swap-route-model",
+  "id": "swap-routes",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": { "networkIds": ["mezo-mainnet"], "maxModeledHops": 3 },
+  "limitations": [
+    "The three-hop planner bound is a proposed safety/complexity bound, not a deployed-router limit.",
+    "Route ranking is deterministic policy over comparable fresh candidates; it is not a trading recommendation or price oracle.",
+    "A candidate remains unusable if any required pool read, provider response, deployment coordinate, user bound, or exact simulation is missing."
+  ],
+  "records": [
+    {
+      "id": "basic-route",
+      "disposition": "evidence-verified-not-supported",
+      "hopEncoding": "ABI array of (address from,address to,bool stable,address factory)",
+      "direct": true,
+      "multiHop": true,
+      "atomic": true,
+      "rules": [
+        "Require one through three contiguous hops; route[i].to must equal route[i+1].from.",
+        "Preserve stable and volatile pool identity per hop.",
+        "Treat factory zero only as the deployed router's defaultFactory sentinel; otherwise require current factoryRegistry approval.",
+        "Reject the entire route if any pool is absent/unrecognized or any required quote item fails; never accept a zero-filled partial amount array."
+      ]
+    },
+    {
+      "id": "concentrated-liquidity-route",
+      "disposition": "source-verified-not-supported",
+      "hopEncoding": "exact-input packed bytes: tokenIn(20) || int24 tickSpacing(3) || tokenOut(20), then repeat tickSpacing || tokenOut",
+      "direct": true,
+      "multiHop": true,
+      "atomic": true,
+      "rules": [
+        "Encode tick spacing as a three-byte signed two's-complement integer and preserve the exact-input token order.",
+        "Require an enabled tick spacing and a current recognized pool for every hop.",
+        "Use exactInputSingle only for one hop and exactInput for two or three hops.",
+        "Do not reverse the path; reversal is an exact-output convention and exact-output remains disabled."
+      ]
+    },
+    {
+      "id": "atomic-mixed-route",
+      "disposition": "unsupported-no-deployed-composer",
+      "direct": false,
+      "multiHop": false,
+      "atomic": false,
+      "rules": [
+        "The basic and CL routers are separate destinations with incompatible route encodings and payer/custody behavior.",
+        "Do not compile a basic+CL candidate as one transaction without an evidenced deployed composer and reviewed command semantics.",
+        "A sequential plan is multiple independently bounded transactions; re-quote and re-simulate after each confirmed/reconciled leg."
+      ]
+    },
+    {
+      "id": "universal-router-command-stream",
+      "disposition": "rejected-not-deployed",
+      "direct": false,
+      "multiHop": false,
+      "atomic": false,
+      "rules": [
+        "No official current Mezo Universal Router address or command-byte ABI was established.",
+        "Do not infer upstream command numbers, Permit2 semantics, balance flags, recipient sentinels, or protocol-family support.",
+        "Unknown provider, route family, command, or entrypoint fails closed."
+      ]
+    }
+  ],
+  "ranking": {
+    "preconditions": [
+      "same network",
+      "same input/output asset and units",
+      "same exact-input amount",
+      "fresh block/deployment coordinates",
+      "complete required reads",
+      "explicit user maximum age and slippage"
+    ],
+    "order": [
+      "eligible exact-call-simulatable candidates",
+      "greater bounded amountOutMinimum",
+      "fewer hops",
+      "stable provider ID as final deterministic tie-break"
+    ],
+    "partialFailure": "Keep optional provider errors as typed diagnostics, but fail the workflow if no eligible candidate remains or a selected candidate lacks any required observation.",
+    "noGuarantee": "Estimated or quoted amountOut is ranking data. Only the caller-authorized amountOutMinimum is an execution bound, and even it requires exact-call simulation and reconciliation."
+  }
+}

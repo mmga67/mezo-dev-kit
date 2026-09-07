@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "kind": "indexing-reconciliation-eval-set",
+  "id": "provider-neutral-indexing-reconciliation",
+  "status": "verified",
+  "reviewStatus": "accepted",
+  "scope": {
+    "facts": "synthetic",
+    "hostedIndexerRequired": false,
+    "databaseRequired": false
+  },
+  "canonicalReferences": [
+    { "moduleId": "workflows/transactions", "resourceId": "transaction-state-machine" },
+    { "moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements" },
+    { "moduleId": "workflows/bridges", "resourceId": "bridge-ntt-lifecycle" },
+    { "moduleId": "workflows/bridges", "resourceId": "bridge-native-lifecycle" },
+    { "moduleId": "troubleshooting", "resourceId": "issue-testnet-rpc-historical-data-gap" },
+    { "moduleId": "networks", "resourceId": "rpc-endpoints" },
+    { "moduleId": "contracts", "resourceId": "contract-deployments" }
+  ],
+  "cases": [
+    {
+      "id": "complete-contiguous-coverage",
+      "operation": "coverage",
+      "input": {
+        "requestedRange": { "from": 100, "to": 105 },
+        "coveredRanges": [
+          { "from": 100, "to": 102 },
+          { "from": 103, "to": 105 }
+        ],
+        "requiredFailures": 0,
+        "optionalFailures": 0,
+        "currentBlock": 110,
+        "observedAtBlock": 105,
+        "maxAgeBlocks": 10,
+        "parentObserved": true
+      },
+      "expected": {
+        "status": "complete",
+        "coveredRanges": [{ "from": 100, "to": 105 }],
+        "missingRanges": [],
+        "rowRetained": true,
+        "metadataComplete": true,
+        "retryable": false
+      }
+    },
+    {
+      "id": "gap-is-partial-not-empty",
+      "operation": "coverage",
+      "input": {
+        "requestedRange": { "from": 100, "to": 105 },
+        "coveredRanges": [
+          { "from": 100, "to": 102 },
+          { "from": 104, "to": 105 }
+        ],
+        "requiredFailures": 0,
+        "optionalFailures": 0,
+        "currentBlock": 105,
+        "observedAtBlock": 105,
+        "maxAgeBlocks": 10,
+        "parentObserved": true
+      },
+      "expected": {
+        "status": "partial",
+        "coveredRanges": [
+          { "from": 100, "to": 102 },
+          { "from": 104, "to": 105 }
+        ],
+        "missingRanges": [{ "from": 103, "to": 103 }],
+        "rowRetained": true,
+        "metadataComplete": true,
+        "retryable": true
+      }
+    },
+    {
+      "id": "archive-failure-is-unknown",
+      "operation": "coverage",
+      "input": {
+        "requestedRange": { "from": 100, "to": 105 },
+        "coveredRanges": [],
+        "requiredFailures": 1,
+        "optionalFailures": 0,
+        "currentBlock": 105,
+        "observedAtBlock": 105,
+        "maxAgeBlocks": 10,
+        "parentObserved": false
+      },
+      "expected": {
+        "status": "unknown",
+        "coveredRanges": [],
+        "missingRanges": [{ "from": 100, "to": 105 }],
+        "rowRetained": false,
+        "metadataComplete": true,
+        "retryable": true
+      }
+    },
+    {
+      "id": "optional-metadata-does-not-delete-parent",
+      "operation": "coverage",
+      "input": {
+        "requestedRange": { "from": 200, "to": 200 },
+        "coveredRanges": [{ "from": 200, "to": 200 }],
+        "requiredFailures": 0,
+        "optionalFailures": 1,
+        "currentBlock": 200,
+        "observedAtBlock": 200,
+        "maxAgeBlocks": 10,
+        "parentObserved": true
+      },
+      "expected": {
+        "status": "complete",
+        "coveredRanges": [{ "from": 200, "to": 200 }],
+        "missingRanges": [],
+        "rowRetained": true,
+        "metadataComplete": false,
+        "retryable": false
+      }
+    },
+    {
+      "id": "complete-observation-can-be-stale",
+      "operation": "coverage",
+      "input": {
+        "requestedRange": { "from": 300, "to": 305 },
+        "coveredRanges": [{ "from": 300, "to": 305 }],
+        "requiredFailures": 0,
+        "optionalFailures": 0,
+        "currentBlock": 321,
+        "observedAtBlock": 305,
+        "maxAgeBlocks": 15,
+        "parentObserved": true
+      },
+      "expected": {
+        "status": "stale",
+        "coveredRanges": [{ "from": 300, "to": 305 }],
+        "missingRanges": [],
+        "rowRetained": true,
+        "metadataComplete": true,
+        "retryable": true
+      }
+    },
+    {
+      "id": "checkpoint-advances-after-full-commit",
+      "operation": "checkpoint",
+      "input": {
+        "previous": { "blockNumber": 99, "blockHash": "block-99" },
+        "scannedRange": { "from": 100, "to": 105 },
+        "fullyCommitted": true,
+        "headHash": "block-105"
+      },
+      "expected": {
+        "advanced": true,
+        "checkpoint": { "blockNumber": 105, "blockHash": "block-105" }
+      }
+    },
+    {
+      "id": "checkpoint-does-not-advance-after-partial-page",
+      "operation": "checkpoint",
+      "input": {
+        "previous": { "blockNumber": 99, "blockHash": "block-99" },
+        "scannedRange": { "from": 100, "to": 105 },
+        "fullyCommitted": false,
+        "headHash": "block-105"
+      },
+      "expected": {
+        "advanced": false,
+        "checkpoint": { "blockNumber": 99, "blockHash": "block-99" }
+      }
+    },
+    {
+      "id": "overlap-is-idempotent-and-source-aware",
+      "operation": "overlap",
+      "input": {
+        "existing": [
+          {
+            "id": "event-a",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-a",
+            "logIndex": 0,
+            "blockNumber": 100,
+            "blockHash": "block-100"
+          },
+          {
+            "id": "event-b",
+            "networkId": "chain-a",
+            "deploymentId": "generation-2",
+            "transactionHash": "tx-a",
+            "logIndex": 0,
+            "blockNumber": 100,
+            "blockHash": "block-100"
+          }
+        ],
+        "observed": [
+          {
+            "id": "event-a",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-a",
+            "logIndex": 0,
+            "blockNumber": 100,
+            "blockHash": "block-100"
+          }
+        ],
+        "canonicalHashes": { "100": "block-100" }
+      },
+      "expected": {
+        "eventIds": ["event-a", "event-b"],
+        "invalidatedEventIds": [],
+        "rollbackFrom": null
+      }
+    },
+    {
+      "id": "reorg-invalidates-old-overlap-and-rescans",
+      "operation": "overlap",
+      "input": {
+        "existing": [
+          {
+            "id": "event-stable",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-stable",
+            "logIndex": 0,
+            "blockNumber": 100,
+            "blockHash": "block-100"
+          },
+          {
+            "id": "event-old",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-old",
+            "logIndex": 0,
+            "blockNumber": 101,
+            "blockHash": "block-101-old"
+          }
+        ],
+        "observed": [
+          {
+            "id": "event-new",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-new",
+            "logIndex": 0,
+            "blockNumber": 101,
+            "blockHash": "block-101-new"
+          },
+          {
+            "id": "event-next",
+            "networkId": "chain-a",
+            "deploymentId": "generation-1",
+            "transactionHash": "tx-next",
+            "logIndex": 0,
+            "blockNumber": 102,
+            "blockHash": "block-102"
+          }
+        ],
+        "canonicalHashes": { "100": "block-100", "101": "block-101-new", "102": "block-102" }
+      },
+      "expected": {
+        "eventIds": ["event-stable", "event-new", "event-next"],
+        "invalidatedEventIds": ["event-old"],
+        "rollbackFrom": 101
+      }
+    },
+    {
+      "id": "incomplete-negative-evidence-is-retryable",
+      "operation": "negative-evidence",
+      "input": {
+        "coverage": "unknown",
+        "authoritative": false,
+        "finalized": false,
+        "attempt": 1,
+        "cooldownSeconds": 30,
+        "observedAt": 1000
+      },
+      "expected": { "outcome": "unknown", "retryable": true, "attempt": 2, "nextAttemptAt": 1030 }
+    },
+    {
+      "id": "complete-final-authoritative-absence-is-terminal",
+      "operation": "negative-evidence",
+      "input": {
+        "coverage": "complete",
+        "authoritative": true,
+        "finalized": true,
+        "attempt": 0,
+        "cooldownSeconds": 30,
+        "observedAt": 1000
+      },
+      "expected": { "outcome": "absent", "retryable": false, "attempt": 1, "nextAttemptAt": null }
+    },
+    {
+      "id": "later-failed-candidate-cannot-overwrite-completion",
+      "operation": "destination-candidates",
+      "input": {
+        "candidates": [
+          {
+            "id": "candidate-complete",
+            "invalidated": false,
+            "canonicalEvent": true,
+            "postState": true,
+            "receipt": "success",
+            "progress": true,
+            "observedAt": 1000
+          },
+          {
+            "id": "candidate-failed-later",
+            "invalidated": false,
+            "canonicalEvent": false,
+            "postState": false,
+            "receipt": "failed",
+            "progress": false,
+            "observedAt": 1010
+          }
+        ]
+      },
+      "expected": {
+        "outcome": "completed",
+        "selectedCandidateId": "candidate-complete",
+        "preservedCandidateIds": ["candidate-complete", "candidate-failed-later"],
+        "invalidatedCandidateIds": []
+      }
+    },
+    {
+      "id": "reorged-completion-falls-back-to-progress",
+      "operation": "destination-candidates",
+      "input": {
+        "candidates": [
+          {
+            "id": "candidate-reorged",
+            "invalidated": true,
+            "canonicalEvent": true,
+            "postState": true,
+            "receipt": "success",
+            "progress": true,
+            "observedAt": 1000
+          },
+          {
+            "id": "candidate-progress",
+            "invalidated": false,
+            "canonicalEvent": true,
+            "postState": false,
+            "receipt": "success",
+            "progress": true,
+            "observedAt": 1010
+          }
+        ]
+      },
+      "expected": {
+        "outcome": "delayed",
+        "selectedCandidateId": "candidate-progress",
+        "preservedCandidateIds": ["candidate-reorged", "candidate-progress"],
+        "invalidatedCandidateIds": ["candidate-reorged"]
+      }
+    },
+    {
+      "id": "canonical-failure-is-distinct",
+      "operation": "destination-candidates",
+      "input": {
+        "candidates": [
+          {
+            "id": "candidate-failed",
+            "invalidated": false,
+            "canonicalEvent": true,
+            "postState": false,
+            "receipt": "failed",
+            "progress": false,
+            "observedAt": 1000
+          }
+        ]
+      },
+      "expected": {
+        "outcome": "failed",
+        "selectedCandidateId": "candidate-failed",
+        "preservedCandidateIds": ["candidate-failed"],
+        "invalidatedCandidateIds": []
+      }
+    },
+    {
+      "id": "receipt-without-post-state-is-incomplete",
+      "operation": "reconciliation",
+      "input": {
+        "requiredEvidence": {
+          "canonical-event": true,
+          "destination-post-state": false,
+          "recipient-delivery": true
+        }
+      },
+      "expected": { "outcome": "incomplete", "missingEvidence": ["destination-post-state"] }
+    },
+    {
+      "id": "all-protocol-evidence-proves-completion",
+      "operation": "reconciliation",
+      "input": {
+        "requiredEvidence": {
+          "canonical-event": true,
+          "destination-post-state": true,
+          "recipient-delivery": true
+        }
+      },
+      "expected": { "outcome": "completed", "missingEvidence": [] }
+    }
+  ]
+}

@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-datum-fixtures",
+  "id": "price-datum-fixtures",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T17:52:25.719Z",
+  "reviewAfter": "2026-08-26T16:00:00.000Z",
+  "scope": {
+    "arithmetic": "decimal-integer",
+    "freshnessBoundary": "inclusive"
+  },
+  "limitations": [
+    "Fixtures prove deterministic rules only and do not assert current market values, source availability, or public SDK behavior.",
+    "All integer values are encoded as strings to avoid JSON number precision loss."
+  ],
+  "records": [
+    {
+      "id": "scale-multiply",
+      "operation": "scale",
+      "input": {
+        "raw": "12345",
+        "expo": -2,
+        "targetDecimals": 18,
+        "rounding": "toward-zero",
+        "zeroAllowed": true
+      },
+      "expected": {
+        "status": "valid",
+        "value": "123450000000000000000",
+        "remainderDiscarded": false
+      }
+    },
+    {
+      "id": "scale-divide-exact",
+      "operation": "scale",
+      "input": {
+        "raw": "123450000",
+        "expo": -8,
+        "targetDecimals": 6,
+        "rounding": "toward-zero",
+        "zeroAllowed": true
+      },
+      "expected": {
+        "status": "valid",
+        "value": "1234500",
+        "remainderDiscarded": false
+      }
+    },
+    {
+      "id": "scale-divide-rounded",
+      "operation": "scale",
+      "input": {
+        "raw": "123456789",
+        "expo": -8,
+        "targetDecimals": 6,
+        "rounding": "toward-zero",
+        "zeroAllowed": true
+      },
+      "expected": {
+        "status": "valid",
+        "value": "1234567",
+        "remainderDiscarded": true
+      }
+    },
+    {
+      "id": "scale-exponent-overflow",
+      "operation": "scale",
+      "input": {
+        "raw": "1",
+        "expo": 60,
+        "targetDecimals": 18,
+        "rounding": "toward-zero",
+        "zeroAllowed": true
+      },
+      "expected": {
+        "status": "failed",
+        "cause": "exponent-overflow"
+      }
+    },
+    {
+      "id": "confidence-normalization",
+      "operation": "confidence",
+      "input": {
+        "raw": "1983500000",
+        "expo": -8,
+        "targetDecimals": 18
+      },
+      "expected": {
+        "status": "valid",
+        "value": "19835000000000000000"
+      }
+    },
+    {
+      "id": "confidence-unsupported",
+      "operation": "confidence",
+      "input": {
+        "raw": null,
+        "expo": null,
+        "targetDecimals": 18
+      },
+      "expected": {
+        "status": "unsupported",
+        "value": null
+      }
+    },
+    {
+      "id": "freshness-equality-boundary",
+      "operation": "freshness",
+      "input": {
+        "publishTime": "1000",
+        "asOf": "4600",
+        "maxAgeSeconds": "3600"
+      },
+      "expected": {
+        "status": "valid",
+        "ageSeconds": "3600"
+      }
+    },
+    {
+      "id": "freshness-stale",
+      "operation": "freshness",
+      "input": {
+        "publishTime": "999",
+        "asOf": "4600",
+        "maxAgeSeconds": "3600"
+      },
+      "expected": {
+        "status": "stale",
+        "ageSeconds": "3601"
+      }
+    },
+    {
+      "id": "freshness-future",
+      "operation": "freshness",
+      "input": {
+        "publishTime": "4601",
+        "asOf": "4600",
+        "maxAgeSeconds": "3600"
+      },
+      "expected": {
+        "status": "future-dated",
+        "ageSeconds": null
+      }
+    },
+    {
+      "id": "negative-price",
+      "operation": "validate",
+      "input": {
+        "raw": "-1",
+        "zeroAllowed": false
+      },
+      "expected": {
+        "status": "negative"
+      }
+    },
+    {
+      "id": "consumer-prohibited-zero",
+      "operation": "validate",
+      "input": {
+        "raw": "0",
+        "zeroAllowed": false
+      },
+      "expected": {
+        "status": "zero-invalid"
+      }
+    },
+    {
+      "id": "allowed-zero",
+      "operation": "validate",
+      "input": {
+        "raw": "0",
+        "zeroAllowed": true
+      },
+      "expected": {
+        "status": "valid"
+      }
+    },
+    {
+      "id": "missing-feed",
+      "operation": "validate",
+      "input": {
+        "raw": null,
+        "zeroAllowed": false
+      },
+      "expected": {
+        "status": "missing"
+      }
+    },
+    {
+      "id": "provider-disagreement",
+      "operation": "disagreement",
+      "input": {
+        "observations": [
+          {
+            "sourceId": "a",
+            "value": "100"
+          },
+          {
+            "sourceId": "b",
+            "value": "101"
+          }
+        ]
+      },
+      "expected": {
+        "status": "disagreement",
+        "selectedSourceId": null
+      }
+    },
+    {
+      "id": "fallback-source-class-change",
+      "operation": "fallback",
+      "input": {
+        "policyId": "display-policy",
+        "candidates": [
+          {
+            "sourceId": "protocol",
+            "sourceClass": "protocol-oracle-state",
+            "status": "stale"
+          },
+          {
+            "sourceId": "market",
+            "sourceClass": "offchain-market-reference",
+            "status": "valid"
+          }
+        ],
+        "forbiddenSelectedClasses": []
+      },
+      "expected": {
+        "status": "valid",
+        "selectedSourceId": "market",
+        "sourceClassChanged": true,
+        "attemptCount": 2
+      }
+    },
+    {
+      "id": "musd-fallback-forbidden",
+      "operation": "fallback",
+      "input": {
+        "policyId": "musd-protocol-price",
+        "candidates": [
+          {
+            "sourceId": "musd-adapter",
+            "sourceClass": "protocol-oracle-state",
+            "status": "failed"
+          },
+          {
+            "sourceId": "pyth",
+            "sourceClass": "pushed-feed-observation",
+            "status": "valid"
+          }
+        ],
+        "forbiddenSelectedClasses": [
+          "pushed-feed-observation",
+          "offchain-market-reference",
+          "dex-derived-observation",
+          "dex-execution-quote",
+          "stored-analytics-projection"
+        ]
+      },
+      "expected": {
+        "status": "failed",
+        "selectedSourceId": null,
+        "sourceClassChanged": false,
+        "attemptCount": 2
+      }
+    },
+    {
+      "id": "partial-read",
+      "operation": "aggregate",
+      "input": {
+        "statuses": [
+          "valid",
+          "failed"
+        ]
+      },
+      "expected": {
+        "status": "partial"
+      }
+    },
+    {
+      "id": "total-failure",
+      "operation": "aggregate",
+      "input": {
+        "statuses": [
+          "failed",
+          "stale",
+          "missing"
+        ]
+      },
+      "expected": {
+        "status": "failed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@mezo-dev-kit/core",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Private provider-neutral read client for the MDK GitHub source alpha.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/clean-package-dist.ts core && tsc --project tsconfig.build.json",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm build && pnpm test",
+    "format:check": "prettier --check src test vitest.config.ts package.json tsconfig.json tsconfig.build.json",
+    "lint": "eslint src test vitest.config.ts",
+    "test": "vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=23039",
+    "test:watch": "vitest",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/chains": "workspace:*",
+    "@mezo-dev-kit/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
+  }
+}

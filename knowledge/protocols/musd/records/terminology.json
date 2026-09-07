@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-terminology-catalog",
+  "id": "musd-terminology",
+  "owner": "protocols/musd",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:08:06Z",
+  "reviewAfter": null,
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Terminology is scoped to the verified classic MUSD generation and does not define adjacent savings, bridge, market, or analytics products."],
+  "records": [
+    {
+      "id": "musd",
+      "term": "MUSD",
+      "aliases": [
+        "Mezo USD"
+      ],
+      "definition": "The MUSD protocol's USD-denominated ERC-20 token. In the classic MUSD system, borrower issuance is associated with native BTC-collateralized trove debt; protocol-controlled minting also supports interest accrual and the PCV bootstrap mechanism.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-musd-token",
+          "locator": "constructor; mint/burn role lists"
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "updateSystemInterest"
+        },
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "initializeDebt"
+        }
+      ]
+    },
+    {
+      "id": "trove",
+      "term": "trove",
+      "aliases": [
+        "loan",
+        "collateralized debt position",
+        "CDP",
+        "borrow position"
+      ],
+      "definition": "The classic MUSD collateralized debt position keyed by its borrower address in TroveManager. Protocol records and future APIs should prefer “trove”; user documentation may say “loan” when the distinction remains clear.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove struct; Troves mapping"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Loan definition"
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Definitions: Trove"
+        }
+      ]
+    },
+    {
+      "id": "native-btc-collateral",
+      "term": "native BTC collateral",
+      "aliases": [
+        "BTC collateral",
+        "collateral"
+      ],
+      "definition": "The Mezo native currency supplied with payable MUSD operations and accounted by the protocol's collateral pools. It is not an ERC-20 token argument in the classic trove contracts.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "payable open/add/adjust operations"
+        },
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "receive; collateral tracker; sendCollateral"
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Custody"
+        }
+      ]
+    },
+    {
+      "id": "active-collateral",
+      "term": "active collateral",
+      "aliases": [],
+      "definition": "The collateral currently recorded in a trove's `coll` field, excluding unapplied collateral redistribution rewards.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove.coll; getEntireDebtAndColl"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Active collateral definition"
+        }
+      ]
+    },
+    {
+      "id": "principal",
+      "term": "principal",
+      "aliases": [
+        "active principal"
+      ],
+      "definition": "The MUSD principal recorded for a trove, distinct from stored, time-accrued, and redistributed interest.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove.principal; getTrovePrincipal"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Active principal definition"
+        }
+      ]
+    },
+    {
+      "id": "current-interest",
+      "term": "current interest",
+      "aliases": [
+        "active interest",
+        "interest owed"
+      ],
+      "definition": "For a trove read at a given timestamp, stored `interestOwed` plus simple interest accrued on its principal since `lastInterestUpdateTime`; unapplied redistributed interest is separate until included in an entire-debt view.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "Trove.interestOwed; _getTotalDebt; getEntireDebtAndColl"
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-math",
+          "locator": "calculateInterestOwed"
+        }
+      ]
+    },
+    {
+      "id": "active-debt",
+      "term": "active debt",
+      "aliases": [],
+      "definition": "A trove's principal plus its current interest, before adding unapplied redistributed principal and interest. Callers must state the read timestamp because current interest is time-dependent.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "_getTotalDebt; getEntireDebtAndColl"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Active debt definition"
+        }
+      ]
+    },
+    {
+      "id": "pending-redistribution",
+      "term": "pending redistribution",
+      "aliases": [
+        "pending rewards",
+        "pending collateral rewards",
+        "pending debt rewards"
+      ],
+      "definition": "Collateral, principal, and interest assigned to an active trove through liquidation redistribution but not yet applied to that trove's stored fields. The corresponding aggregate amounts reside in DefaultPool accounting until application.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "RewardSnapshot; getPendingCollateral; getPendingDebt"
+        },
+        {
+          "sourceArtifactId": "source-default-pool",
+          "locator": "contract comment; sendCollateralToActivePool"
+        }
+      ]
+    },
+    {
+      "id": "entire-collateral",
+      "term": "entire collateral",
+      "aliases": [
+        "current trove collateral"
+      ],
+      "definition": "Active collateral plus the trove's pending redistributed collateral at the read state.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "getEntireDebtAndColl; _getCurrentTroveAmounts"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Entire collateral definition"
+        }
+      ]
+    },
+    {
+      "id": "entire-debt",
+      "term": "entire debt",
+      "aliases": [
+        "current trove debt"
+      ],
+      "definition": "Active debt plus the trove's pending redistributed principal and interest at the read state.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "getEntireDebtAndColl; _getCurrentTroveAmounts"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Entire debt definition"
+        }
+      ]
+    },
+    {
+      "id": "icr",
+      "term": "individual collateralization ratio",
+      "aliases": [
+        "ICR"
+      ],
+      "definition": "The USD value of a trove's entire collateral at a specified protocol price divided by its entire debt. A meaningful ICR read therefore requires an explicit price and block/time context.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "getCurrentICR; _getCurrentTroveAmounts"
+        },
+        {
+          "sourceArtifactId": "source-liquity-math",
+          "locator": "_computeCR"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Individual collateralization ratio definition"
+        }
+      ]
+    },
+    {
+      "id": "nicr",
+      "term": "nominal individual collateralization ratio",
+      "aliases": [
+        "nominal ICR",
+        "NICR"
+      ],
+      "definition": "A price-independent collateral-to-principal ordering key computed from entire collateral and entire principal. It is not the risk ratio shown to a borrower.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "getNominalICR"
+        },
+        {
+          "sourceArtifactId": "source-sorted-troves",
+          "locator": "contract comment"
+        },
+        {
+          "sourceArtifactId": "source-liquity-math",
+          "locator": "NICR_PRECISION; _computeNominalCR"
+        }
+      ]
+    },
+    {
+      "id": "entire-system-collateral",
+      "term": "entire system collateral",
+      "aliases": [
+        "classic-trove system collateral"
+      ],
+      "definition": "The sum of tracked collateral in ActivePool and DefaultPool. It is a classic-trove aggregate, not a claim about every BTC balance or every MUSD issuance domain.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "getEntireSystemColl"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Entire system collateral definition"
+        }
+      ]
+    },
+    {
+      "id": "entire-system-debt",
+      "term": "entire system debt",
+      "aliases": [
+        "classic-trove system debt"
+      ],
+      "definition": "The sum of ActivePool debt and DefaultPool debt, including the ActivePool's currently accrued system interest. It does not include an external or separately implemented MUSD debt domain merely because that domain also issues MUSD.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "getEntireSystemDebt"
+        },
+        {
+          "sourceArtifactId": "source-active-pool",
+          "locator": "getDebt; getInterest"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Entire system debt definition"
+        }
+      ]
+    },
+    {
+      "id": "tcr",
+      "term": "total collateralization ratio",
+      "aliases": [
+        "TCR"
+      ],
+      "definition": "The USD value of entire classic-trove system collateral at a specified protocol price divided by entire classic-trove system debt.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "_getTCR"
+        },
+        {
+          "sourceArtifactId": "source-liquity-math",
+          "locator": "_computeCR"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Total collateralization ratio definition"
+        }
+      ]
+    },
+    {
+      "id": "recovery-mode",
+      "term": "Recovery Mode",
+      "aliases": [],
+      "definition": "A system condition reported when TCR is below the implementation's critical collateralization ratio. implementation review owns the exact threshold and the operations affected in the current deployment.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-liquity-base",
+          "locator": "CCR; _checkRecoveryMode"
+        },
+        {
+          "sourceArtifactId": "source-trove-manager",
+          "locator": "checkRecoveryMode"
+        },
+        {
+          "sourceArtifactId": "docs-developer-guide",
+          "locator": "Definitions: Recovery Mode; Key Changes from THUSD"
+        }
+      ]
+    },
+    {
+      "id": "stability-pool-deposit",
+      "term": "Stability Pool deposit",
+      "aliases": [
+        "stability deposit"
+      ],
+      "definition": "An accounted MUSD deposit whose value can be reduced to offset liquidated debt and whose depositor can accrue a proportional native BTC collateral gain.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-stability-pool",
+          "locator": "deposits; getCompoundedMUSDDeposit; offset; collateral-gain accounting"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Offset definition"
+        }
+      ]
+    },
+    {
+      "id": "collateral-surplus",
+      "term": "collateral surplus",
+      "aliases": [],
+      "definition": "Native BTC assigned by TroveManager for later claim by a trove owner through BorrowerOperations and CollSurplusPool.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-coll-surplus-pool",
+          "locator": "accountSurplus; claimColl"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Collateral Surplus definition"
+        }
+      ]
+    },
+    {
+      "id": "pcv",
+      "term": "protocol-controlled value",
+      "aliases": [
+        "PCV"
+      ],
+      "definition": "Protocol-accounted MUSD and native BTC managed by the PCV contract for bootstrap-loan repayment, StabilityPool participation/rebalancing, and governed fee distribution.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "contract notice; distribution and StabilityPool functions"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Protocol Controlled Value"
+        }
+      ]
+    },
+    {
+      "id": "bootstrap-loan",
+      "term": "protocol bootstrap loan",
+      "aliases": [
+        "bootstrap loan"
+      ],
+      "definition": "MUSD minted to PCV, recorded as `debtToPay`, and initially deposited as PCV's StabilityPool position; current protocol distributions can burn MUSD to reduce that recorded debt.",
+      "stability": "versioned-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "initializeDebt; debtToPay; _repayDebt; _depositToStabilityPool"
+        },
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "mintBootstrapLoanFromPCV; burnDebtFromPCV"
+        },
+        {
+          "sourceArtifactId": "docs-architecture-terminology",
+          "locator": "Protocol Bootstrap Loan"
+        }
+      ]
+    },
+    {
+      "id": "governed-parameter",
+      "term": "governed parameter",
+      "aliases": [
+        "governable parameter"
+      ],
+      "definition": "A value or role binding whose current setting is contract state controlled by an authorized governance path. Its initial source-code value is not a safe substitute for a current on-chain read.",
+      "stability": "stable-design",
+      "evidence": [
+        {
+          "sourceArtifactId": "source-borrower-operations",
+          "locator": "parameter proposal/approval functions"
+        },
+        {
+          "sourceArtifactId": "source-interest-rate-manager",
+          "locator": "proposeInterestRate; approveInterestRate"
+        },
+        {
+          "sourceArtifactId": "source-pcv",
+          "locator": "role and recipient setters"
+        }
+      ]
+    }
+  ]
+}

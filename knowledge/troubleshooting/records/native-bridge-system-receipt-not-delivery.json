@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "kind": "troubleshooting-issue",
+  "id": "native-bridge-system-receipt-not-delivery-2026-08-18",
+  "owner": "troubleshooting",
+  "category": "cross-chain-reconciliation",
+  "status": "verified",
+  "supportStatus": "none",
+  "issueStatus": "verified-version-scoped",
+  "severity": "high",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T09:56:38Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "symptom": "An Ethereum-to-Mezo Native Bridge tracker marks an ERC-20 transfer completed when the logless Mezo system bridge transaction succeeds or the accepted sequence advances, without proving the recipient received the mapped token.",
+  "scope": {
+    "provider": "mezo-native-bridge",
+    "direction": "ethereum-to-mezo-erc20",
+    "clientVersion": "Mezod/12.0.0",
+    "evidence": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-native-evidence"
+    }
+  },
+  "prerequisites": [
+    "The tracker observes a successful Mezo system transaction carrying bridge((uint256,address,uint256,address)[]) or a matching sequence tip.",
+    "The transferred source token should mint a mapped ERC-20 representation on Mezo."
+  ],
+  "diagnosticSteps": [
+    "Assert both networks, pin the Ethereum AssetsLocked receipt and matching Mezo system transaction, and compare the full sequence, recipient, source token, and raw amount tuple.",
+    "Read the deployed source-token mapping at the destination block and verify the expected mapped token and decimals.",
+    "Compare recipient mapped-token state immediately before and at the destination block, or obtain equivalent delivery proof; do not use the empty system receipt logs as mint evidence."
+  ],
+  "expected": "A successful destination system transaction or advanced sequence proves recipient ERC-20 delivery.",
+  "observed": "The deployed v12 keeper can skip a blocked recipient, missing mapping, or failed external ERC-20 mint while continuing the accepted sequence. The representative completed USDC trace required an exact 5,000,000,000-raw-unit recipient balance delta in addition to the system payload and sequence change.",
+  "control": "For the recorded sequence 34490, the source event, destination payload, deployed mapping, sequence transition, token decimals, and recipient balance delta all agree exactly.",
+  "verifiedCause": "Native Bridge inbound sequence acceptance and recipient ERC-20 delivery are distinct facts in the version-matched deployed keeper. The system bridge call is an observability projection of consensus processing, not a user-callable mint receipt with ERC-20 logs.",
+  "safeMitigation": "Model the successful system transaction as destination progress. For ERC-20 terminal success, require the mapped representation and recipient post-state or equivalent delivery proof. Keep missing delivery pending or ambiguous and escalate for recovery; never replay or resubmit value from receipt absence alone.",
+  "reproduction": {
+    "basis": "version-matched-active-client-source-plus-fixed-block-system-payload-sequence-mapping-and-recipient-post-state",
+    "deterministicEvidenceIsStrongerThanLiveWrites": true,
+    "evidenceNetworks": ["ethereum-mainnet", "mezo-mainnet"]
+  },
+  "canonicalLinks": [
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-native-evidence"
+    },
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-native-lifecycle"
+    },
+    {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-gaps"
+    }
+  ],
+  "limitations": [
+    "This diagnosis is scoped to the recorded active v12 source and must be rechecked after client/keeper upgrades.",
+    "The positive representative trace proves the stronger completion method; it does not assert that a skipped mint occurred in that transaction.",
+    "This record does not authorize a Native Bridge writer or define a recovery transaction."
+  ]
+}

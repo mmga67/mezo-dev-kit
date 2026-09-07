@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-source-reproduction-evidence",
+  "id": "mezo-incentives-source-reproduction-2026-08-18",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "evidenceStatus": "verified-executable-match",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T10:45:00Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253
+  },
+  "limitations": [
+    "Executable equality does not establish source authorship, repository history, audit coverage, proxy activation history, or future implementation identity."
+  ],
+  "method": {
+    "sourceAcquisition": "The public source bundle, compiler settings, libraries, and explorer bytecode were fetched from the official Mezo explorer smart-contract API.",
+    "reproduction": "Each bundle was compiled in a new isolated temporary directory with the exact explorer compiler version and settings.",
+    "comparison": "Creation and runtime bytecode were compared after removing each bytecode's Solidity CBOR metadata trailer. Full bytecode was also retained for explicit metadata-difference reporting.",
+    "scripts": [
+      "../../../../scripts/reproduce-explorer-contract.ts",
+      "../../../../scripts/compare-explorer-build.ts"
+    ]
+  },
+  "records": [
+    {
+      "id": "vebtc-current-implementation",
+      "role": "vebtc-current-implementation",
+      "address": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+      "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+      "explorerResponseSha256": "cc3f63d81a2dc0e4d745e8af8c52a304a7c34faf844e9d4032468f37ceb437c5",
+      "compilerVersion": "v0.8.33+commit.64118f21",
+      "compilerSettings": {"optimizerEnabled": true, "optimizerRuns": 100, "evmVersion": "london"},
+      "explorerVerification": {"fullyVerified": false, "partiallyVerified": true, "changedBytecode": false},
+      "creation": {
+        "fullExact": false,
+        "executableExact": true,
+        "executableSha256": "0043eae26f8ce5f1889be837290febed6214dde5fbb8e75684ea951078b74fce",
+        "metadataBytes": 53
+      },
+      "runtime": {
+        "fullExact": false,
+        "executableExact": true,
+        "executableSha256": "2c30b0960ce10cec8022632974abf0d9dbbd6ce3826fab1a3a92878f741f7cfb",
+        "explorerFullSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+        "fixedBlockRpcFullSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+        "metadataBytes": 53
+      },
+      "conclusion": "The supplied source reproduces the deployed executable behavior exactly. Only the compiler metadata trailer differs; the explorer's partial-verification label remains unchanged and explicit."
+    },
+    {
+      "id": "vemezo-current-implementation",
+      "role": "vemezo-current-implementation",
+      "address": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+      "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+      "explorerResponseSha256": "833b09a93d891701913c454f609bac7e3c58d20684ed301455df71b529cffdbd",
+      "compilerVersion": "v0.8.33+commit.64118f21",
+      "compilerSettings": {"optimizerEnabled": true, "optimizerRuns": 100, "evmVersion": "london"},
+      "explorerVerification": {"fullyVerified": false, "partiallyVerified": true, "changedBytecode": false},
+      "creation": {
+        "fullExact": false,
+        "executableExact": true,
+        "executableSha256": "c6a293e6da455b482a250d2ed44b94a453f70abcdc3a0f5146b25df673514a09",
+        "metadataBytes": 53
+      },
+      "runtime": {
+        "fullExact": false,
+        "executableExact": true,
+        "executableSha256": "06160bcb391ecedf7404d1e93061db8fcdb51f71216a2676d1e672a20e735bbf",
+        "explorerFullSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+        "fixedBlockRpcFullSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+        "metadataBytes": 53
+      },
+      "conclusion": "The supplied source reproduces the deployed executable behavior exactly. Only the compiler metadata trailer differs; the explorer's partial-verification label remains unchanged and explicit."
+    },
+    {
+      "id": "pools-voter-current-implementation",
+      "role": "pools-voter-current-implementation",
+      "address": "0xa62060d57e04d6c799b58188dc654b85addd1465",
+      "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa62060d57e04d6c799b58188dc654b85addd1465",
+      "explorerResponseSha256": "99fe359335cb2917d2297c8dbd41f2a6f5f6c51364dded5953615359001cca5c",
+      "compilerVersion": "v0.8.24+commit.e11b9ed9",
+      "explorerVerification": {"fullyVerified": true, "partiallyVerified": false, "changedBytecode": false},
+      "use": "Version-matched source evidence for PoolsVoter epoch, vote, gauge, allocation, distribution, fee, and claim semantics."
+    },
+    {
+      "id": "boost-voter-current-implementation",
+      "role": "boost-voter-current-implementation",
+      "address": "0xa696dc56522e41811d06bbda83c1a6d976637624",
+      "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa696dc56522e41811d06bbda83c1a6d976637624",
+      "explorerResponseSha256": "519e7df3e46baf56ed4b352821e95fe1bc17d455703545ec6df90ab07cc90b0a",
+      "compilerVersion": "v0.8.24+commit.e11b9ed9",
+      "explorerVerification": {"fullyVerified": true, "partiallyVerified": false, "changedBytecode": false},
+      "use": "Version-matched source evidence for the veMEZO-to-veBTC boost formula and boost-gauge lifecycle."
+    }
+  ],
+  "interpretationBoundary": [
+    "Executable equality establishes that the reproduced Solidity source has the same runtime behavior as the deployed implementation at the recorded block.",
+    "It does not establish source authorship, a repository history, audit coverage, proxy activation history, or that a future proxy implementation will remain unchanged.",
+    "The explorer's full/partial verification labels are recorded verbatim and are not upgraded by MDK."
+  ]
+}

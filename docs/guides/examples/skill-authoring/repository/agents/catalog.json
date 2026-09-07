@@ -1,0 +1,19 @@
+{
+  "$schema": "./schema/agent-skill-catalog.schema.json",
+  "formatVersion": 1,
+  "profile": "portable-agent-skills-v1",
+  "skills": [
+    {
+      "name": "mdk-synthetic-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-synthetic-application",
+      "domains": ["synthetic", "applications"]
+    },
+    {
+      "name": "mdk-synthetic-maintenance",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-synthetic-maintenance",
+      "domains": ["synthetic", "maintenance"]
+    }
+  ]
+}

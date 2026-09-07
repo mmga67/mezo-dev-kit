@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "memory-index",
+  "scope": "shared",
+  "entries": [
+    {
+      "id": "price-selection-evidence-routing",
+      "domain": "prices",
+      "status": "promoted",
+      "title": "Route price selection, DEX quotes, and current versus historical evidence",
+      "path": "price-selection-evidence-routing.json"
+    }
+  ]
+}

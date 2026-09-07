@@ -1,0 +1,38 @@
+{
+  "name": "mezo-dev-kit",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.0.8",
+  "engines": {
+    "node": ">=24",
+    "pnpm": "11.x"
+  },
+  "scripts": {
+    "boundaries": "node scripts/validate-package-boundaries.ts",
+    "build": "pnpm --recursive --if-present run build",
+    "check": "pnpm format:check && pnpm generate:check && pnpm typecheck && pnpm lint && pnpm boundaries && pnpm build && pnpm test:built && pnpm test:clean && pnpm test",
+    "format": "prettier --write package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts \"scripts/**/*.ts\" packages/chains packages/contracts packages/core examples/foundational-readonly packages/protocols/musd-savings examples/musd-savings-readonly packages/protocols/musdc-lending examples/musdc-lending-readonly packages/protocols/usdc-lending-vault examples/usdc-lending-vault-readonly",
+    "format:check": "prettier --check package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts \"scripts/**/*.ts\" packages/chains packages/contracts packages/core examples/foundational-readonly packages/protocols/musd-savings examples/musd-savings-readonly packages/protocols/musdc-lending examples/musdc-lending-readonly packages/protocols/usdc-lending-vault examples/usdc-lending-vault-readonly",
+    "generate:check": "node scripts/generate-core-transaction-model.ts --check && node scripts/generate-chains-package.ts --check && node scripts/generate-contracts-package.ts --check && node scripts/generate-savings-package.ts --check && node scripts/generate-lending-package.ts --check && node scripts/generate-vault-package.ts --check",
+    "lint": "eslint vitest.quality.config.ts \"scripts/*.ts\" \"scripts/lib/*.ts\" \"packages/**/*.{ts,tsx}\" \"examples/**/*.{ts,tsx}\"",
+    "test": "pnpm test:quality && pnpm --recursive --if-present run test",
+    "test:built": "node scripts/test-foundational-built-packages.ts && node scripts/test-savings-built-package.ts && node scripts/test-lending-built-package.ts && node scripts/test-vault-built-package.ts",
+    "test:clean": "node scripts/test-clean-workspace.ts",
+    "test:quality": "vitest run --config vitest.quality.config.ts",
+    "test:shuffle": "vitest run --config vitest.quality.config.ts --sequence.shuffle --sequence.seed=44012 && pnpm --recursive --if-present run test:shuffle",
+    "typecheck": "tsc --project tsconfig.quality.json && pnpm --recursive --if-present run typecheck",
+    "check:evidence:mainnet": "node scripts/check-mainnet-reader-evidence.ts",
+    "check:readers:mainnet": "pnpm check && pnpm check:evidence:mainnet"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.13.3",
+    "eslint": "10.8.1",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.67.0",
+    "vitest": "4.1.11"
+  }
+}

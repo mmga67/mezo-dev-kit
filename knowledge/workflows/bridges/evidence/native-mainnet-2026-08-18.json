@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-native-bridge-evidence",
+  "id": "mezo-native-bridge-mainnet-2026-08-18",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "evidenceStatus": "verified-evidence-not-support",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T13:39:35.987Z",
+  "observedFrom": "2026-05-14T15:16:11Z",
+  "observedThrough": "2026-08-18T11:19:47Z",
+  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet"],
+    "evidenceLocalNetworkLabels": [],
+    "routeCount": 2
+  },
+  "methodology": [
+    "Pinned the official mezo-org/mezod v12.0.0 tag and recorded the commit and hashes of the bridge interface, keeper, bridge-out, precompile-address, and generated Ethereum ABI sources.",
+    "Matched the live Mezo web3_clientVersion response to Mezod/12.0.0 and read the Assets Bridge precompile code and getters at one fixed block.",
+    "Read the full source-token to Mezo-token mapping set plus BTC/USDC outflow and minimum values at that same fixed block.",
+    "Used the official Ethereum explorer's complete five-generation deployed proxy history and exact-match current implementation source; preserved explorer labels separately from exact executable reproduction added to the canonical Contract record.",
+    "Resolved the EIP-1967 implementation slot, hashed proxy and implementation runtime code, and read current Ethereum-side sequence, token, fee, minimum, validator, threshold, owner, and capacity configuration at one fixed post-upgrade block.",
+    "Joined a successful Ethereum AssetsLocked event to the exact validator-injected Mezo bridge payload by sequence, recipient, source token, and raw amount.",
+    "Proved the inbound USDC representation balance increased by the exact raw amount and the bridge sequence advanced by exactly one at the destination block.",
+    "Joined a Mezo AssetsUnlocked event to Ethereum AssetsUnlockAttested and AssetsUnlockConfirmed by sequence, recipient hash, target token, amount, and target chain.",
+    "Confirmed the outbound Ethereum receipt transferred the gross tBTC amount into fee and recipient components that sum exactly to the source amount.",
+    "Kept current support, untested directions, proxy activation ownership, quote construction, and writer readiness outside the evidence claim.",
+    "Re-reviewed the historical lifecycle evidence against Contracts resource contract-bridge-v13-probes-2026-08-24; wrapper-v6 bytecode remained exact and generation-6-only selector behavior changed precisely at v13 block 11358000."
+  ],
+  "officialSource": {
+    "repository": "https://github.com/mezo-org/mezod",
+    "tag": "v12.0.0",
+    "commit": "95a5e0eddbbb92bb0b305185e2349af4c41ac63d",
+    "commitDate": "2026-08-04T13:26:16+02:00",
+    "liveClientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+    "artifacts": [
+      {
+        "path": "precompile/assetsbridge/IAssetsBridge.sol",
+        "sha256": "01daf5cb82050bb418eb3f620c0cbbb7f8023ad5b13d1374f497e3f37a2eb82e"
+      },
+      {
+        "path": "precompile/assetsbridge/bridge_out.go",
+        "sha256": "dbcd8d483af75fb74c2287de06b30becb0fa5356f31d0e8fac21b35bc80ee342"
+      },
+      {
+        "path": "x/bridge/keeper/assets_locked.go",
+        "sha256": "a88abdfdd016b7c4e341686b7566513ddb307d59cc40eda7e5efe73fb08d6c8b"
+      },
+      {
+        "path": "ethereum/bindings/portal/ethereum/gen/abi/MezoBridge.go",
+        "sha256": "93c25c74305ef28b78aff0478e92de172d3cc05407fb9d2a0564685759b21758"
+      },
+      {
+        "path": "x/evm/types/precompile.go",
+        "sha256": "30c6cec16c6331e29a9327b7fe67703b603267e72bcb8d9b1b9d7ac121936322"
+      }
+    ]
+  },
+  "networkSnapshots": [
+    {
+      "id": "native-mezo-mainnet-snapshot",
+      "network": "mezo-mainnet",
+      "chainId": 31612,
+      "blockNumber": 11212253,
+      "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+      "timestamp": "2026-08-18T09:56:38.000Z"
+    },
+    {
+      "id": "native-ethereum-mainnet-snapshot",
+      "network": "ethereum-mainnet",
+      "chainId": 1,
+      "blockNumber": 25781632,
+      "blockHash": "0xa5db603c1c4a7cdb4540e4df6fff5aa856e70e5902d53cb063b0a427bc65cdbd",
+      "timestamp": "2026-08-18T11:19:47.000Z"
+    }
+  ],
+  "deploymentObservations": [
+    {
+      "id": "native-mezo-assets-bridge-v12",
+      "network": "mezo-mainnet",
+      "address": "0x7b7c000000000000000000000000000000000012",
+      "kind": "protocol-precompile",
+      "sourceLatestVersion": 5,
+      "runtimeByteLength": 5489,
+      "runtimeSha256": "449e7ecd473b8f73842104061d2e9fb9766da719bc2accda8f013940ef8ece92",
+      "blockObservation": "native-mezo-mainnet-snapshot",
+      "currentSourceSequenceTip": 35317,
+      "sourceBTCToken": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+      "maxERC20Mappings": 20,
+      "pauser": "0x40c7b9612b394212394ea860cacd0e176ca4ae5b",
+      "historicalCodeBoundary": {
+        "lastMatchingBlock": 11260863,
+        "currentWrapperFromBlock": 11260864,
+        "currentDeploymentReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-deployments",
+          "recordId": "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v5-execution"
+        },
+        "note": "This dated observation remains valid for its fixed block. A successful maintenance-precompile call installed wrapper-v6 bytecode later; execution generation 5 remains active until the scheduled v13 boundary."
+      }
+    },
+    {
+      "id": "native-ethereum-mezo-bridge-proxy-history",
+      "network": "ethereum-mainnet",
+      "address": "0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c",
+      "kind": "transparent-upgradeable-proxy",
+      "explorer": "https://etherscan.io/address/0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c#code",
+      "currentFixedBlock": {
+        "blockObservation": "native-ethereum-mainnet-snapshot",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "implementation": "0x1f8ed8193b902185c2bd495fe9b1963dc343ba87",
+        "proxyRuntimeByteLength": 1159,
+        "proxyRuntimeSha256": "7e57c6c02edf8597091012caeae51452f8074be0207bbb32ba127d6945ca3b9d",
+        "implementationRuntimeByteLength": 22024,
+        "implementationRuntimeSha256": "784d76e6021efc1ed8a5ea2555f2e860585e81a22958c6b7d7435bacfbdd7440",
+        "sequence": 35318,
+        "withdrawalFeeRaw": "0",
+        "minTBTCAmountRaw": "100000000000000",
+        "attestationThreshold": 7,
+        "tbtcToken": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+        "erc20TokensCount": 10,
+        "bridgeValidatorsCount": 10,
+        "owner": "0x98d8899c3030741925be630c710a98b57f397c7a",
+        "maxERC20Tokens": 20,
+        "sampleERC20Minimum": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "decimals": 6,
+          "minERC20AmountRaw": "10000000"
+        }
+      },
+      "implementations": [
+        {
+          "address": "0x3d282cc0d69e27fbd4aa59dfd08d6a72b45ce889",
+          "fromBlock": 22376538,
+          "toBlockInclusive": 22989589,
+          "activationTransaction": "0x0accb979b9191a61553e383d8c513ba9c1611bc4305498f4264c9a03c29b9ddb"
+        },
+        {
+          "address": "0x2ca0a2c31260cab77e84fbead81082861ef66c4c",
+          "fromBlock": 22989590,
+          "toBlockInclusive": 23331651,
+          "activationTransaction": "0xd5a9f659e43b170c9882a20a40812d75258e63f38d557757faa39de54a88adda"
+        },
+        {
+          "address": "0xd23d709a6858c5e44a9833bbeccf92729fc2c8c8",
+          "fromBlock": 23331652,
+          "toBlockInclusive": 23589329,
+          "activationTransaction": "0x4a659748aa9ec87e2782dfd0e8101d2e0676e1e465e1b57770dedc1a83f06e98"
+        },
+        {
+          "address": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+          "fromBlock": 23589330,
+          "toBlockInclusive": 25435729,
+          "activationTransaction": "0x81fc9f0dfea4c6d3b85f38164f481ffbbc199772a0623baed8e77f00f6da005f",
+          "explorerSourceLabel": "Exact Match",
+          "contractName": "MezoBridge",
+          "compiler": "v0.8.24+commit.e11b9ed9",
+          "optimizerRuns": 10000,
+          "evmVersion": "paris"
+        },
+        {
+          "address": "0x1f8ed8193b902185c2bd495fe9b1963dc343ba87",
+          "fromBlock": 25435730,
+          "toBlockInclusive": null,
+          "activationTransaction": "0xb2b367b706d88e052af124594a0045b80231a9bf2b0077fc812eb367f26d9961",
+          "explorerSourceLabel": "Exact Match",
+          "contractName": "MezoBridge",
+          "compiler": "v0.8.24+commit.e11b9ed9",
+          "optimizerRuns": 10000,
+          "evmVersion": "paris"
+        }
+      ]
+    }
+  ],
+  "erc20Mappings": [
+    {
+      "sourceToken": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+      "mezoToken": "0xdf6542260a9f768f07030e4895083f804241f4c4"
+    },
+    {
+      "sourceToken": "0x6b175474e89094c44da98b954eedeac495271d0f",
+      "mezoToken": "0x1531b6e3d51bf80f634957df81a990b92da4b154"
+    },
+    {
+      "sourceToken": "0x7a56e1c57c7475ccf742a1832b028f0456652f97",
+      "mezoToken": "0xa10ad2570ea7b93d19fdae6bd7189ff4929bc747"
+    },
+    {
+      "sourceToken": "0x8db2350d78abc13f5673a411d4700bcf87864dde",
+      "mezoToken": "0x29fa8f46cbb9562b87773c8f50a7f9f27178261c"
+    },
+    {
+      "sourceToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "mezoToken": "0x04671c72aab5ac02a03c1098314b1bb6b560c197"
+    },
+    {
+      "sourceToken": "0xc96de26018a54d51c097160568752c4e3bd6c364",
+      "mezoToken": "0x812fcc0bb8c207fd8d6165a7a1173037f43b2db8"
+    },
+    {
+      "sourceToken": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+      "mezoToken": "0x6a7cd8e1384d49f502b4a4ce9ac9eb320835c5d7"
+    },
+    {
+      "sourceToken": "0xcdf7028ceab81fa0c6971208e83fa7872994bee5",
+      "mezoToken": "0xaac423edc4e3ee9ef81517e8093d52737165b71f"
+    },
+    {
+      "sourceToken": "0xd9d920aa40f578ab794426f5c90f6c731d159def",
+      "mezoToken": "0xdf708431162ba247ddae362d2c919e0fbafcf9de"
+    },
+    {
+      "sourceToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "mezoToken": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e"
+    }
+  ],
+  "volatileConfiguration": [
+    {
+      "id": "native-mezo-btc-outflow-snapshot",
+      "representation": "btc-on-mezo-mainnet",
+      "token": "0x7b7c000000000000000000000000000000000000",
+      "decimals": 18,
+      "outflowLimitRaw": "90000000000000000000",
+      "outflowCapacityRaw": "88305601167811395007",
+      "capacityResetHeight": 11219000,
+      "minimumToEthereumRaw": "200000000000000",
+      "minimumToBitcoinRaw": "10000000000000000",
+      "blockObservation": "native-mezo-mainnet-snapshot"
+    },
+    {
+      "id": "native-mezo-musdc-outflow-snapshot",
+      "representation": "musdc-on-mezo-mainnet",
+      "token": "0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+      "decimals": 6,
+      "outflowLimitRaw": "10000000000000",
+      "outflowCapacityRaw": "10000000000000",
+      "capacityResetHeight": 11219000,
+      "minimumToEthereumRaw": "20000000",
+      "blockObservation": "native-mezo-mainnet-snapshot"
+    }
+  ],
+  "completedTransfers": [
+    {
+      "id": "native-usdc-ethereum-to-mezo-completed",
+      "providerId": "mezo-native-bridge",
+      "sourceNetwork": "ethereum-mainnet",
+      "destinationNetwork": "mezo-mainnet",
+      "sequence": 34490,
+      "recipient": "0x0d04fbb913202cefe642acbcd89c1bd824dae40b",
+      "sourceToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "destinationToken": "0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+      "amountRaw": "5000000000",
+      "decimals": 6,
+      "source": {
+        "transactionHash": "0x1e48b4a0fd02cc52166cba14baa87464bd8f09e5aa9676bb56ca8053b851804c",
+        "blockNumber": 25094211,
+        "blockHash": "0x18f79894dd390946a3621244a9a45f3de700ce6975703ce49e478dbe044ef3da",
+        "timestamp": "2026-05-14T15:16:11.000Z",
+        "receiptStatus": "success",
+        "proxy": "0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c",
+        "implementation": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+        "event": "AssetsLocked(uint256,address,address,uint256)",
+        "eventTopic": "0x75aa5616721471b8ab0c49ce59500cbad2b7ef1ad10e5eb9449c693c0a5c8fd1",
+        "explorer": "https://etherscan.io/tx/0x1e48b4a0fd02cc52166cba14baa87464bd8f09e5aa9676bb56ca8053b851804c"
+      },
+      "destination": {
+        "transactionHash": "0xd35f477060931d80f578d3d41731d6c431be6f6e1326decc0501937aa4225bda",
+        "blockNumber": 8944561,
+        "blockHash": "0x10e06819efc5f861e3759120f1c67029ea6483a7171ea293fd0308f7c6eb85b0",
+        "timestamp": "2026-05-14T15:31:41.000Z",
+        "receiptStatus": "success",
+        "systemTransaction": true,
+        "logs": 0,
+        "call": "bridge((uint256,address,uint256,address)[])",
+        "preSequenceTip": 34489,
+        "postSequenceTip": 34490,
+        "mappingAtBlock": true,
+        "recipientBalanceBeforeRaw": "3545",
+        "recipientBalanceAfterRaw": "5000003545",
+        "recipientBalanceDeltaRaw": "5000000000"
+      },
+      "completionProof": "The destination system payload exactly matches the source AssetsLocked tuple, the sequence advances by one, the source-token mapping exists at the block, and the recipient's six-decimal Mezo token balance increases by exactly 5,000,000,000 raw units."
+    },
+    {
+      "id": "native-btc-mezo-to-ethereum-completed",
+      "providerId": "mezo-native-bridge",
+      "sourceNetwork": "mezo-mainnet",
+      "destinationNetwork": "ethereum-mainnet",
+      "sequence": 8136,
+      "recipient": "0xc6f0f6e69b07db21ae188f10ba4d71de234c14cc",
+      "recipientHash": "0x5a61e1021b19e4aad8d4d8cc3f768b05050b63ec58a75f0c1474b7f2c1600378",
+      "sourceToken": "0x7b7c000000000000000000000000000000000000",
+      "destinationToken": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+      "grossAmountRaw": "200000000000000",
+      "decimals": 18,
+      "targetChain": 0,
+      "source": {
+        "transactionHash": "0xf56fc22acc4e75431d7263a6a95cf1373d1a9663718eaea6413bc801d0748eec",
+        "blockNumber": 8951377,
+        "blockHash": "0x067123e67543ccf040f4b4d3f05fc24066fe3934a6d7f88f7de74efa382505eb",
+        "timestamp": "2026-05-14T22:19:35.000Z",
+        "receiptStatus": "success",
+        "call": "bridgeOut(address,uint256,uint8,bytes)",
+        "event": "AssetsUnlocked(uint256,bytes,address,address,uint256,uint8)",
+        "eventTopic": "0x018e20d97c5c8ad507a796cdc5eadfee3d30de1fa9b13231094211f18134e7c8"
+      },
+      "destination": {
+        "transactionHash": "0x8cd2139dfa41dba225ac8450f5ea05c1091f3ab177a541aaef4126f9f8f43c27",
+        "blockNumber": 25096347,
+        "blockHash": "0x422b7c86ff549188497b0d3b4ad97933d3ac0976bd11df0301c91a0cce754394",
+        "timestamp": "2026-05-14T22:25:11.000Z",
+        "receiptStatus": "success",
+        "proxy": "0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c",
+        "implementation": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+        "events": [
+          "AssetsUnlockAttested(address,uint256,bytes,address,uint256,uint8)",
+          "AssetsUnlockConfirmed(uint256,bytes,address,uint256,uint8)"
+        ],
+        "confirmedEventTopic": "0xf3c1d15f8136332d14fce7c55a0179e59c44cb75d928d363b05cb22a1c36e9fd",
+        "withdrawalFeeRaw": "27000000000000",
+        "recipientAmountRaw": "173000000000000",
+        "transferSumRaw": "200000000000000",
+        "explorer": "https://etherscan.io/tx/0x8cd2139dfa41dba225ac8450f5ea05c1091f3ab177a541aaef4126f9f8f43c27"
+      },
+      "completionProof": "The Ethereum receipt confirms the same sequence, recipient hash, target tBTC token, gross amount, and target chain; its fee and recipient tBTC transfers sum exactly to the source gross amount."
+    }
+  ],
+  "limitations": [
+    "The Mezo runtime in this evidence remains historical. Current execution identity resolves through accepted Contracts resource contract-bridge-v13-probes-2026-08-24, which proves wrapper-v6/execution-generation-6 behavior after block 11358000.",
+    "web3_clientVersion identifies the queried RPC node's software and is not block-pinned consensus evidence for every validator. The fixed-block precompile code/state and source-defined interface are recorded separately.",
+    "The ten deployed ERC-20 mappings are point-in-time discovery evidence, not ten supported MDK routes; only the two representative directions above received end-to-end completion proof.",
+    "The sampled Ethereum transfers used implementation 0x7e99...6cd9. The post-upgrade implementation and configuration are separately pinned at block 25781632; historical calldata success is not evidence that a current write will succeed.",
+    "The official explorer's proxy history supplies all five activations. Exact Match and independently reproduced bytecode apply to the current implementation through the canonical Contract record; no source-verification label is inferred for the first three historical implementations.",
+    "A successful, logless Mezo bridge system transaction and an advanced sequence do not alone prove ERC-20 delivery because version-matched keeper source can skip a blocked recipient, missing mapping, or failed ERC-20 mint. Post-state or equivalent recipient delivery evidence is required.",
+    "Outflow limits, capacities, reset height, pause authority, minimum amounts, fees, bridge sequence, owner, and validator state are volatile snapshots and must be read again before any future writer.",
+    "No timing SLA is inferred from the 930-second and 336-second sample delivery intervals."
+  ]
+}

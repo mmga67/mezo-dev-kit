@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-operation-requirements",
+  "id": "musdc-lending-operations",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"operationStatus": "requirements-only", "marketCount": 1},
+  "limitations": ["No public borrower, supplier, authorization, or liquidator writer is supported."],
+  "transactionReference": {"moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements"},
+  "requirements": [
+    {"id": "supply-collateral", "rules": ["verify exact market tuple and authorization", "refresh price but do not treat it as needed for supply", "simulate callback and token transfer", "reconcile collateral only"]},
+    {"id": "borrow", "rules": ["accrue interest at simulation timestamp", "read fresh oracle datum and confidence/freshness status", "convert debt shares upward", "require post-borrow health and available mUSDC liquidity", "reconcile debt shares and receiver assets"]},
+    {"id": "repay", "rules": ["prefer full repay by shares", "assets input converts to shares down; shares input converts assets up", "protect against front-run underflow", "reconcile debt after interest"]},
+    {"id": "withdraw-collateral", "rules": ["accrue/price/re-evaluate post-withdraw health", "simulate exact receiver and authorization"]},
+    {"id": "liquidate", "rules": ["prove unhealthy at the same timestamp", "apply exact incentive and rounding path", "bound shares/collateral", "reconcile seized collateral, repaid assets, and any bad-debt write-down separately"]}
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-math-fixtures",
+  "id": "pools-math-fixtures",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:04:02.737Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "sourceGeneration": "documented-mainnet-cl-roots-2026-08-23"
+  },
+  "limitations": [
+    "Fixtures prove deterministic integer semantics only; they do not quote live execution."
+  ],
+  "records": [
+    {
+      "id": "tick-min",
+      "operation": "sqrt-ratio-at-tick",
+      "input": {
+        "tick": -887272
+      },
+      "expected": {
+        "sqrtPriceX96": "4295128739"
+      }
+    },
+    {
+      "id": "tick-zero",
+      "operation": "sqrt-ratio-at-tick",
+      "input": {
+        "tick": 0
+      },
+      "expected": {
+        "sqrtPriceX96": "79228162514264337593543950336"
+      }
+    },
+    {
+      "id": "tick-max",
+      "operation": "sqrt-ratio-at-tick",
+      "input": {
+        "tick": 887272
+      },
+      "expected": {
+        "sqrtPriceX96": "1461446703485210103287273052203988822378723970342"
+      }
+    },
+    {
+      "id": "tick-minus-60",
+      "operation": "sqrt-ratio-at-tick",
+      "input": {
+        "tick": -60
+      },
+      "expected": {
+        "sqrtPriceX96": "78990846045029531151608375686"
+      }
+    },
+    {
+      "id": "tick-plus-60",
+      "operation": "sqrt-ratio-at-tick",
+      "input": {
+        "tick": 60
+      },
+      "expected": {
+        "sqrtPriceX96": "79466191966197645195421774833"
+      }
+    },
+    {
+      "id": "spacing-200-full-range",
+      "operation": "usable-tick-bounds",
+      "input": {
+        "tickSpacing": 200
+      },
+      "expected": {
+        "minUsableTick": -887200,
+        "maxUsableTick": 887200
+      }
+    },
+    {
+      "id": "readable-but-not-position-aligned",
+      "operation": "tick-boundary-classification",
+      "input": {
+        "tick": -887272,
+        "tickSpacing": 200
+      },
+      "expected": {
+        "representableRead": true,
+        "validPositionBoundary": false
+      }
+    },
+    {
+      "id": "one-to-one-price",
+      "operation": "raw-price-rational",
+      "input": {
+        "sqrtPriceX96": "79228162514264337593543950336"
+      },
+      "expected": {
+        "numerator": "6277101735386680763835789423207666416102355444464034512896",
+        "denominator": "6277101735386680763835789423207666416102355444464034512896"
+      }
+    },
+    {
+      "id": "inside-range-principal",
+      "operation": "amounts-for-liquidity",
+      "input": {
+        "sqrtCurrentX96": "79228162514264337593543950336",
+        "sqrtLowerX96": "78990846045029531151608375686",
+        "sqrtUpperX96": "79466191966197645195421774833",
+        "liquidity": "1000000000000000000"
+      },
+      "expected": {
+        "amount0": "2995354955910780",
+        "amount1": "2995354955910780",
+        "rounding": "floor"
+      }
+    },
+    {
+      "id": "inside-range-liquidity",
+      "operation": "liquidity-for-amounts",
+      "input": {
+        "sqrtCurrentX96": "79228162514264337593543950336",
+        "sqrtLowerX96": "78990846045029531151608375686",
+        "sqrtUpperX96": "79466191966197645195421774833",
+        "amount0": "1000000000000000000",
+        "amount1": "1000000000000000000"
+      },
+      "expected": {
+        "liquidity0": "333850249709699449134",
+        "liquidity1": "333850249709699449134",
+        "liquidity": "333850249709699449134",
+        "rounding": "floor"
+      }
+    },
+    {
+      "id": "zero-liquidity",
+      "operation": "amounts-for-liquidity",
+      "input": {
+        "sqrtCurrentX96": "79228162514264337593543950336",
+        "sqrtLowerX96": "78990846045029531151608375686",
+        "sqrtUpperX96": "79466191966197645195421774833",
+        "liquidity": "0"
+      },
+      "expected": {
+        "amount0": "0",
+        "amount1": "0"
+      }
+    },
+    {
+      "id": "partial-dynamic-read",
+      "operation": "dynamic-row-classification",
+      "input": {
+        "networkMatches": true,
+        "blockMatches": true,
+        "factoryMappingValidated": true,
+        "bytecodePresent": true,
+        "identityFieldsComplete": false
+      },
+      "expected": {
+        "usableForExecution": false,
+        "preserveAsPartialObservation": true
+      }
+    },
+    {
+      "id": "stale-analytics-row",
+      "operation": "dynamic-row-classification",
+      "input": {
+        "networkMatches": true,
+        "blockMatches": false,
+        "factoryMappingValidated": false,
+        "bytecodePresent": true,
+        "identityFieldsComplete": true
+      },
+      "expected": {
+        "usableForExecution": false,
+        "preserveAsPartialObservation": true
+      }
+    },
+    {
+      "id": "volatile-invariant",
+      "operation": "basic-volatile-invariant",
+      "input": {
+        "reserve0": "1000",
+        "reserve1": "1000"
+      },
+      "expected": {
+        "k": "1000000"
+      }
+    },
+    {
+      "id": "stable-normalized-invariant",
+      "operation": "basic-stable-invariant",
+      "input": {
+        "reserve0": "1000000000000000000",
+        "reserve1": "1000000000000000000",
+        "decimals0": 18,
+        "decimals1": 18
+      },
+      "expected": {
+        "k": "2000000000000000000"
+      }
+    }
+  ]
+}

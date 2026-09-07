@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK price record or source catalog v1",
+  "allOf": [{"$ref": "../../../schema/v0.4/common-envelope.schema.json"}],
+  "type": "object",
+  "properties": {"owner": {"const": "prices"}}
+}

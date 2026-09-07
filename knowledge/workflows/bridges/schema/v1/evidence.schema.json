@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bridge evidence v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": [
+    "evidenceStatus",
+    "networkSnapshots",
+    "deploymentObservations",
+    "completedTransfers"
+  ],
+  "properties": {
+    "owner": { "const": "workflows/bridges" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "const": "accepted" },
+    "evidenceStatus": { "const": "verified-evidence-not-support" },
+    "kind": {
+      "enum": ["bridge-deployment-and-transfer-observation-set", "mezo-native-bridge-evidence"]
+    },
+    "networkSnapshots": { "type": "array", "minItems": 2 },
+    "deploymentObservations": { "type": "array", "minItems": 2 },
+    "completedTransfers": { "type": "array", "minItems": 2 }
+  }
+}

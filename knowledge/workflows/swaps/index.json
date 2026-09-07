@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "workflows/swaps",
+  "moduleId": "workflows/swaps",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11376104,
+    "evidenceBlockHash": "0x358c55c8879f9a6711408df6e4dbc75e4b82d3e7f2f0cbab47fd73bfeaf32bc3"
+  },
+  "limitations": [
+    "This is a qualified-review-accepted knowledge model; it exposes no public reader or writer.",
+    "No current official Quoter or Universal Router deployment was established.",
+    "The current routers are separate transaction destinations, so atomic mixed basic/CL routing is unsupported.",
+    "Historical exact-call replay proves only the recorded sender, calldata, value, destination, and pre-state block; current submission requires a fresh exact-call simulation."
+  ],
+  "resources": [
+    {
+      "id": "swap-providers",
+      "role": "canonical-record",
+      "kind": "mezo-swap-provider-catalog",
+      "path": "records/providers.json",
+      "recordIds": ["basic-router", "concentrated-liquidity-router"],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "swap-routes",
+      "role": "canonical-record",
+      "kind": "mezo-swap-route-model",
+      "path": "records/routes.json",
+      "recordIds": [
+        "basic-route",
+        "concentrated-liquidity-route",
+        "atomic-mixed-route",
+        "universal-router-command-stream"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "swap-execution-requirements",
+      "role": "canonical-record",
+      "kind": "mezo-swap-execution-requirements",
+      "path": "records/execution.json"
+    },
+    {
+      "id": "swap-route-fixtures",
+      "role": "fixture",
+      "kind": "mezo-swap-route-fixtures",
+      "path": "fixtures/routes.json",
+      "recordIds": [
+        "basic-direct",
+        "basic-multihop",
+        "cl-direct-packed-path",
+        "cl-multihop-packed-path",
+        "minimum-output-floor",
+        "mixed-route-rejected",
+        "unsupported-family-rejected",
+        "zero-liquidity-rejected",
+        "stale-quote-rejected",
+        "zero-minimum-rejected",
+        "exact-approval",
+        "unlimited-approval-requires-opt-in",
+        "partial-provider-required-failure",
+        "simulation-revert",
+        "reconciliation-mismatch"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "swap-sources",
+      "role": "source-catalog",
+      "kind": "mezo-swap-source-catalog",
+      "path": "sources/catalog.json"
+    },
+    {
+      "id": "swap-mainnet-routing-evidence",
+      "role": "evidence",
+      "kind": "mezo-swap-routing-observation",
+      "path": "evidence/mainnet-routing-2026-08-25.json"
+    },
+    {
+      "id": "swap-catalog-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/catalog.schema.json"
+    },
+    {
+      "id": "swap-fixture-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/fixture.schema.json"
+    },
+    {
+      "id": "swap-evidence-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v1/evidence.schema.json"
+    },
+    {
+      "id": "swap-candidates",
+      "role": "review",
+      "kind": "candidate-inventory",
+      "path": "review/candidates.md"
+    },
+    {
+      "id": "swap-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
+    {
+      "id": "swap-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        { "moduleId": "workflows/swaps", "resourceId": "swap-providers" },
+        { "moduleId": "workflows/swaps", "resourceId": "swap-routes" },
+        { "moduleId": "workflows/swaps", "resourceId": "swap-execution-requirements" },
+        { "moduleId": "workflows/swaps", "resourceId": "swap-route-fixtures" },
+        { "moduleId": "workflows/swaps", "resourceId": "swap-mainnet-routing-evidence" }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/validate-knowledge-structure.ts --module workflows/swaps"
+    },
+    {
+      "id": "swap-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-swap-knowledge.ts"
+    },
+    {
+      "id": "swap-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate-swap-reference.ts --check"
+    }
+  ],
+  "extensions": {
+    "workflowStatus": "verified-model-accepted-not-supported",
+    "poolBoundary": "Pool identities, discovery, state, and math remain owned by protocols/pools; this module owns cross-pool route and execution workflow semantics.",
+    "networkReference": { "moduleId": "networks", "resourceId": "mezo-mainnet" },
+    "rpcReference": {
+      "moduleId": "networks",
+      "resourceId": "rpc-endpoints",
+      "recordId": "mezo-mainnet-validation-cloud-https"
+    },
+    "transactionReference": {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    "blockers": [
+      "separate package task and fresh exact-call verification before any public reader or writer",
+      "official deployment evidence before adding a Quoter, Universal Router, or atomic mixed route"
+    ]
+  }
+}

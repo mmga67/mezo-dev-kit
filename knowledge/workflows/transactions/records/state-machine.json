@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "kind": "transaction-state-machine",
+  "id": "evm-action-lifecycle-v1",
+  "owner": "core-transactions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "architectureDecisionIds": ["ADR-0003"],
+    "runtimeFamily": "EVM"
+  },
+  "limitations": [
+    "This is an accepted architecture model, not an accepted public API or implemented client contract.",
+    "Protocol workflows must supply their own preconditions, confirmation policy, partial outcomes, and reconciliation evidence."
+  ],
+  "proposalStatus": "accepted",
+  "preflightStages": [
+    "validate",
+    "resolve-deployment",
+    "read-or-quote-at-recorded-block",
+    "build-typed-request"
+  ],
+  "states": [
+    { "id": "constructed", "terminal": false, "actionHashRequired": false, "successLevel": "none" },
+    { "id": "simulated", "terminal": false, "actionHashRequired": false, "successLevel": "none" },
+    { "id": "approval-submitted", "terminal": false, "actionHashRequired": false, "approvalHashRequired": true, "successLevel": "none" },
+    { "id": "approval-included", "terminal": false, "actionHashRequired": false, "approvalHashRequired": true, "successLevel": "none" },
+    { "id": "approval-confirmed", "terminal": false, "actionHashRequired": false, "approvalHashRequired": true, "successLevel": "none" },
+    { "id": "submitted", "terminal": false, "actionHashRequired": true, "successLevel": "none" },
+    { "id": "timed-out", "terminal": false, "actionHashRequired": true, "successLevel": "none" },
+    { "id": "included", "terminal": false, "actionHashRequired": true, "successLevel": "included" },
+    { "id": "confirmed", "terminal": false, "actionHashRequired": true, "successLevel": "confirmed" },
+    { "id": "reconciled", "terminal": true, "actionHashRequired": true, "successLevel": "protocol-success" },
+    { "id": "validation-failed", "terminal": true, "actionHashRequired": false, "successLevel": "failure" },
+    { "id": "simulation-failed", "terminal": true, "actionHashRequired": false, "successLevel": "failure" },
+    { "id": "approval-failed", "terminal": true, "actionHashRequired": false, "successLevel": "failure" },
+    { "id": "transaction-failed", "terminal": true, "actionHashRequired": true, "successLevel": "failure" },
+    { "id": "replaced", "terminal": true, "actionHashRequired": true, "successLevel": "superseded" },
+    { "id": "cancelled", "terminal": true, "actionHashRequired": true, "successLevel": "cancelled" },
+    { "id": "reorged", "terminal": false, "actionHashRequired": true, "successLevel": "none" },
+    { "id": "reconciliation-failed", "terminal": true, "actionHashRequired": true, "successLevel": "failure" }
+  ],
+  "transitions": [
+    { "from": "constructed", "event": "validation-or-build-invalid", "to": "validation-failed" },
+    { "from": "constructed", "event": "simulation-succeeded", "to": "simulated" },
+    { "from": "constructed", "event": "simulation-reverted", "to": "simulation-failed" },
+    { "from": "simulated", "event": "approval-required-and-submitted", "to": "approval-submitted" },
+    { "from": "simulated", "event": "action-submitted", "to": "submitted" },
+    { "from": "approval-submitted", "event": "approval-receipt-succeeded", "to": "approval-included" },
+    { "from": "approval-submitted", "event": "approval-receipt-failed", "to": "approval-failed" },
+    { "from": "approval-included", "event": "approval-confirmation-threshold-met", "to": "approval-confirmed" },
+    { "from": "approval-included", "event": "approval-reorg-detected", "to": "approval-failed" },
+    { "from": "approval-confirmed", "event": "volatile-inputs-revalidated-and-simulation-succeeded", "to": "simulated" },
+    { "from": "approval-confirmed", "event": "revalidation-or-resimulation-failed", "to": "simulation-failed" },
+    { "from": "submitted", "event": "wait-timeout", "to": "timed-out" },
+    { "from": "submitted", "event": "successful-receipt-observed", "to": "included" },
+    { "from": "submitted", "event": "failed-receipt-observed", "to": "transaction-failed" },
+    { "from": "submitted", "event": "replacement-observed", "to": "replaced" },
+    { "from": "submitted", "event": "cancellation-observed", "to": "cancelled" },
+    { "from": "timed-out", "event": "successful-receipt-observed", "to": "included" },
+    { "from": "timed-out", "event": "failed-receipt-observed", "to": "transaction-failed" },
+    { "from": "timed-out", "event": "replacement-observed", "to": "replaced" },
+    { "from": "timed-out", "event": "cancellation-observed", "to": "cancelled" },
+    { "from": "included", "event": "confirmation-threshold-met", "to": "confirmed" },
+    { "from": "included", "event": "reorg-detected", "to": "reorged" },
+    { "from": "confirmed", "event": "protocol-reconciliation-succeeded", "to": "reconciled" },
+    { "from": "confirmed", "event": "protocol-reconciliation-failed", "to": "reconciliation-failed" },
+    { "from": "confirmed", "event": "reorg-detected", "to": "reorged" },
+    { "from": "reorged", "event": "tracking-resumed", "to": "submitted" }
+  ],
+  "invariants": [
+    "An approval transaction hash is never used as the action transaction hash.",
+    "Only reconciled is protocol success.",
+    "A timeout preserves the action identity and does not prove failure.",
+    "A replaced action links to a separately tracked successor; it is not rewritten in place.",
+    "Reconciliation uses receipt events and/or block-pinned post-state defined by the protocol workflow."
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "kind": "dynamic-contract-read-interface-catalog",
+  "id": "vault-dynamic-read-interfaces",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-06T10:44:41.759Z",
+  "reviewAfter": "2026-10-06T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "task": "vault reader review",
+    "discoveryReference": {
+      "moduleId": "protocols/vaults/usdc-lending",
+      "resourceId": "usdc-lending-vault-architecture"
+    }
+  },
+  "limitations": [
+    "Full official explorer source and ABI snapshots match accepted executable runtime digests, including immutable values.",
+    "VaultV2 and VaultGauge remain runtime roles; creation input is unavailable. No new static identity, audit, or writer claim.",
+    "Wrapper and adapter snapshots supplement existing Contracts identities; reader/interface acceptance was granted on 2026-09-07; writer support remains excluded."
+  ],
+  "records": [
+    {
+      "id": "vault-v2",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "vault-vault-v2-explorer-source"
+      },
+      "sourceSha256": "728a2321e2a9f2a1dce0d7923e6d937195cbc526164a2b88e2c0acf02c372292",
+      "runtimeSha256": "957101f0fce80c53f5f2922a381fed78c19d107e8f39c69348da4f3e0c7ddaa8",
+      "runtimeExecutableSha256": "4ec7428ce3354b249f57df9de19e79a3ccdfe253bc7fb2a83b7820fc2cc5db1e",
+      "abiEntryCount": 175,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x06291b67e3d7660240ab44Afc9a708d82b976a8B",
+      "retrievedAt": "2026-09-06T10:44:39.605Z",
+      "creationExecutableExact": null,
+      "contractName": "VaultV2"
+    },
+    {
+      "id": "morpho-market-adapter",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "vault-morpho-market-adapter-explorer-source"
+      },
+      "sourceSha256": "f0f11fd228e1f42e669feb799309cdb99f5cb586b8971532f468f3b55a44ed00",
+      "runtimeSha256": "47cd22243a5e4f0986482b3fa1051e89e48cf67db4f14c572d7e818ee18863a0",
+      "runtimeExecutableSha256": "41ece35d20616a51fa51618e905ce8ef6fdd08aa1da76b91239cc68425c35db0",
+      "abiEntryCount": 55,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xb0EE3a01d9134733155B28289c09f084Acca4F61",
+      "retrievedAt": "2026-09-06T10:44:40.601Z",
+      "creationExecutableExact": true,
+      "contractName": "MorphoMarketV1AdapterV2"
+    },
+    {
+      "id": "receipt-wrapper",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "vault-receipt-wrapper-explorer-source"
+      },
+      "sourceSha256": "c7d0747f7b64971a40e070e9bbb441333657285584bc996e70016ac2fc8ac0dc",
+      "runtimeSha256": "c646ab923e842caadf4cf55640455a84e64a6ac87589160a73371fc2e9bd23c8",
+      "runtimeExecutableSha256": "45533af72b382be3a28e8fd683613f0672aed1d734ee113f77d36b8c572831dd",
+      "abiEntryCount": 46,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x80EC90E54E577dac8Efca30F96bF21fE4efA885D",
+      "retrievedAt": "2026-09-06T10:44:41.199Z",
+      "creationExecutableExact": true,
+      "contractName": "ERC4626VaultAdapter"
+    },
+    {
+      "id": "vault-gauge",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "vault-vault-gauge-explorer-source"
+      },
+      "sourceSha256": "701138d2ec66a2dfd76a5b17256a21002c0bce425cda88975396c93bb8c61a1c",
+      "runtimeSha256": "41afee3cfd00f3d6dd60ebe842b2dc5804c5d9ea924228446eff0d45f78e3307",
+      "runtimeExecutableSha256": "cf49a8c2ffd17761c4949b5dbfdc2d665fedd7ad95f627335b6b03064ef42139",
+      "abiEntryCount": 41,
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x11E98DEc5B1965E4eB872552E64Ef8580bBBbae7",
+      "retrievedAt": "2026-09-06T10:44:41.759Z",
+      "creationExecutableExact": null,
+      "contractName": "VaultGauge"
+    }
+  ]
+}

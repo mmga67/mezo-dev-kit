@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "price-freshness-fallback-rules",
+  "id": "price-freshness-fallback-rules",
+  "owner": "prices",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T17:52:25.719Z",
+  "reviewAfter": "2026-08-26T16:00:00.000Z",
+  "scope": {
+    "freshnessCoordinate": "unix-seconds",
+    "fallback": "policy-owned-ordered-selection"
+  },
+  "limitations": [
+    "No universal max age or fallback order is defined; the caller or consuming protocol must own those policy values.",
+    "The MUSD non-substitution rule is a semantic safety boundary, not evidence that its configured adapter is always available."
+  ],
+  "freshness": {
+    "inputs": [
+      "publishTime",
+      "asOf",
+      "maxAgeSeconds",
+      "boundaryRule"
+    ],
+    "valid": "publishTime <= asOf and asOf - publishTime <= maxAgeSeconds",
+    "boundaryRule": "inclusive: equality at maxAgeSeconds is valid",
+    "futureDated": "publishTime > asOf",
+    "stale": "asOf - publishTime > maxAgeSeconds",
+    "missingTime": "missing is distinct from stale and failed"
+  },
+  "fallback": {
+    "inputs": [
+      "consumerPolicyId",
+      "orderedCandidates",
+      "asOf",
+      "consumerConstraints"
+    ],
+    "result": [
+      "attempts",
+      "selectedSourceId",
+      "selectedSourceClass",
+      "sourceClassChanged",
+      "finalStatus"
+    ],
+    "selection": "Select only the first candidate whose typed validation result is valid under the named policy.",
+    "forbiddenImplicitChanges": [
+      "base or quote",
+      "scale",
+      "network",
+      "block or time coordinate",
+      "source class"
+    ],
+    "forbiddenDerivations": [
+      "average",
+      "interpolate",
+      "persist as freshness",
+      "synthesize missing value"
+    ],
+    "disagreement": "Preserve each observation and return a typed disagreement or separately named policy decision; order alone does not resolve it."
+  },
+  "musdNonSubstitution": "When the deployed MUSD PriceFeed is unavailable or invalid, a market, DEX, analytics, Skip-direct, or Pyth-direct fallback must not be labeled or returned as the MUSD protocol price."
+}

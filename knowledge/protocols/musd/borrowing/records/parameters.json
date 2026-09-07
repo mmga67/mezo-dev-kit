@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-borrowing-parameter-catalog",
+  "id": "borrowing-parameters",
+  "owner": "protocols/musd/borrowing",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-17T23:24:18Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Observed values are fixed-block evidence, not timeless constants; re-read mutable values before use."],
+  "observationArtifactId": "borrowing-parameter-observations",
+  "records": [
+    {
+      "id": "minimum-net-debt",
+      "ownerContractId": "musd.borrower-operations",
+      "getter": "minNetDebt()",
+      "stability": "governed-state",
+      "changeMechanism": "delayed governance proposal and approval",
+      "unit": "musd-token-amount",
+      "observedValues": {"mezo-mainnet": "1800000000000000000000", "mezo-testnet": "1800000000000000000000"},
+      "interpretation": "The contract checks requested debt plus any opening borrowing fee against this value. Published user guidance should still be treated as the product floor for requested debt.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "minNetDebt, proposeMinNetDebt, approveMinNetDebt, and _requireAtLeastMinNetDebt"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "minNetDebt() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "borrowing-rate",
+      "ownerContractId": "musd.borrower-operations",
+      "getter": "borrowingRate()",
+      "stability": "governed-state",
+      "changeMechanism": "delayed governance proposal and approval",
+      "unit": "decimal-fixed-point",
+      "observedValues": {"mezo-mainnet": "1000000000000000", "mezo-testnet": "1000000000000000"},
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "borrowingRate governance and getBorrowingFee"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "borrowingRate() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "refinancing-fee-percentage",
+      "ownerContractId": "musd.borrower-operations",
+      "getter": "refinancingFeePercentage()",
+      "stability": "governed-state",
+      "changeMechanism": "direct governance setter",
+      "unit": "integer-percent-of-refinance-fee-base",
+      "observedValues": {"mezo-mainnet": "20", "mezo-testnet": "20"},
+      "support": "proposed",
+      "deployedInterpretation": "The pinned source first takes this integer percentage of net debt as the fee base, then applies borrowingRate. Combined with the observed values, the effective fee is 0.02% of net debt before floor rounding.",
+      "documentationDiscrepancy": "The official fee page's 0.1% refinance statement is stale for the recorded deployments and does not override deployed behavior.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "setRefinancingFeePercentage and _refinance"},
+        {"sourceArtifactId": "docs-borrow-fees", "locator": "Refinance fee"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "refinancingFeePercentage() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "offered-annual-interest-rate",
+      "ownerContractId": "musd.interest-rate-manager",
+      "getter": "interestRate()",
+      "stability": "governed-state",
+      "changeMechanism": "governance updates the global offered rate; active troves retain their assigned rate until refinance",
+      "unit": "annual-interest-rate",
+      "observedValues": {"mezo-mainnet": "100", "mezo-testnet": "100"},
+      "evidence": [
+        {"sourceArtifactId": "source-interest-rate-manager", "locator": "interestRate and trove-rate accounting"},
+        {"sourceArtifactId": "test-interest-rate-manager", "locator": "interest-rate update coverage"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "interestRate() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "minimum-collateral-ratio",
+      "ownerContractId": "musd.trove-manager",
+      "getter": "MCR()",
+      "stability": "versioned-design",
+      "changeMechanism": "compile-time constant for the pinned implementation",
+      "unit": "decimal-fixed-point",
+      "observedValues": {"mezo-mainnet": "1100000000000000000", "mezo-testnet": "1100000000000000000"},
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "MCR"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "MCR() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "critical-collateral-ratio",
+      "ownerContractId": "musd.trove-manager",
+      "getter": "CCR()",
+      "stability": "versioned-design",
+      "changeMechanism": "compile-time constant for the pinned implementation",
+      "unit": "decimal-fixed-point",
+      "observedValues": {"mezo-mainnet": "1500000000000000000", "mezo-testnet": "1500000000000000000"},
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "CCR and _checkRecoveryMode"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "CCR() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "musd-gas-compensation",
+      "ownerContractId": "musd.trove-manager",
+      "getter": "MUSD_GAS_COMPENSATION()",
+      "stability": "versioned-design",
+      "changeMechanism": "compile-time constant for the pinned implementation",
+      "unit": "musd-token-amount",
+      "observedValues": {"mezo-mainnet": "200000000000000000000", "mezo-testnet": "200000000000000000000"},
+      "evidence": [
+        {"sourceArtifactId": "source-liquity-base", "locator": "MUSD_GAS_COMPENSATION"},
+        {"sourceArtifactId": "docs-borrow-fees", "locator": "Liquidation reserve"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "MUSD_GAS_COMPENSATION() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "price-target-digits",
+      "ownerContractId": "musd.price-feed",
+      "getter": "TARGET_DIGITS()",
+      "stability": "versioned-design",
+      "changeMechanism": "implementation constant",
+      "unit": "decimal-digits",
+      "observedValues": {"mezo-mainnet": "18", "mezo-testnet": "18"},
+      "evidence": [
+        {"sourceArtifactId": "source-price-feed", "locator": "TARGET_DIGITS and price scaling"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "TARGET_DIGITS() fixed-block reads"}
+      ]
+    },
+    {
+      "id": "borrower-operations-mint-role",
+      "ownerContractId": "musd.token",
+      "getter": "mintList(address)",
+      "stability": "deployment-state",
+      "changeMechanism": "token owner role assignment",
+      "unit": "boolean",
+      "observedValues": {"mezo-mainnet": true, "mezo-testnet": true},
+      "interpretation": "The supported close path is the can-mint branch: close is blocked in Recovery Mode and must preserve TCR at or above CCR.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "_closeTrove canMint branch"},
+        {"sourceArtifactId": "source-musd-token", "locator": "mintList"},
+        {"sourceArtifactId": "borrowing-parameter-observations", "locator": "mintList(BorrowerOperations) fixed-block reads"}
+      ]
+    }
+  ]
+}

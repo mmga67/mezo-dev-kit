@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-formula-fixtures",
+  "id": "incentives-formula-fixtures",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T18:18:30Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "protocolEvidenceBlockNumber": 11291582
+  },
+  "limitations": [
+    "Fixtures verify deterministic integer behavior and do not establish current writer readiness."
+  ],
+  "records": [
+    {"id": "unlock-rounds-down", "formulaId": "rounded-unlock-time", "inputs": {"timestamp": "604801", "requestedDuration": "604800"}, "expected": "1209600"},
+    {"id": "unlock-too-short-after-rounding", "formulaId": "rounded-unlock-time", "inputs": {"timestamp": "604801", "requestedDuration": "1"}, "expected": "604800", "expectedValidity": false},
+    {"id": "vebtc-one-token-max-lock", "formulaId": "unboosted-timed-voting-power", "inputs": {"amount": "1000000000000000000", "maxLockSeconds": "2419200", "lockEnd": "2419200", "at": "0"}, "expectedSlope": "413359788359", "expected": "999999999998092800"},
+    {"id": "vemezo-one-token-max-lock", "formulaId": "unboosted-timed-voting-power", "inputs": {"amount": "1000000000000000000", "maxLockSeconds": "125798400", "lockEnd": "125798400", "at": "0"}, "expectedSlope": "7949226699", "expected": "999999999971481600"},
+    {"id": "timed-power-expired", "formulaId": "unboosted-timed-voting-power", "inputs": {"amount": "1000000000000000000", "maxLockSeconds": "2419200", "lockEnd": "2419200", "at": "2419200"}, "expected": "0"},
+    {"id": "zero-encoded-boost-means-one-x", "formulaId": "boosted-timed-voting-power", "inputs": {"amount": "1000000000000000000", "boost": "0", "maxLockSeconds": "2419200", "lockEnd": "2419200", "at": "0"}, "expected": "999999999998092800"},
+    {"id": "boost-default-no-gauge-weight", "formulaId": "vebtc-boost-factor", "inputs": {"gaugeWeight": "0", "votingVeTotalWeight": "100", "boostableVeTotalWeight": "100", "boostableVeWeight": "10"}, "expected": "1000000000000000000"},
+    {"id": "boost-cap", "formulaId": "vebtc-boost-factor", "inputs": {"gaugeWeight": "10", "votingVeTotalWeight": "100", "boostableVeTotalWeight": "100", "boostableVeWeight": "10"}, "expected": "5000000000000000000"},
+    {"id": "boost-zero-voting-total", "formulaId": "vebtc-boost-factor", "inputs": {"gaugeWeight": "10", "votingVeTotalWeight": "0", "boostableVeTotalWeight": "100", "boostableVeWeight": "10"}, "expected": "1000000000000000000"},
+    {"id": "boost-zero-target-power", "formulaId": "vebtc-boost-factor", "inputs": {"gaugeWeight": "10", "votingVeTotalWeight": "100", "boostableVeTotalWeight": "100", "boostableVeWeight": "0"}, "expected": "1000000000000000000"},
+    {"id": "epoch-zero", "formulaId": "epoch-boundaries", "inputs": {"timestamp": "0"}, "expected": {"start": "0", "voteStart": "3600", "voteEnd": "601200", "next": "604800"}},
+    {"id": "epoch-last-second", "formulaId": "epoch-boundaries", "inputs": {"timestamp": "604799"}, "expected": {"start": "0", "voteStart": "3600", "voteEnd": "601200", "next": "604800"}},
+    {"id": "vote-allocation-floor-dust", "formulaId": "proportional-vote-allocation", "inputs": {"votingPower": "100", "relativeWeights": ["1", "2"]}, "expected": {"allocations": ["33", "66"], "usedWeight": "99", "unallocatedFloorDust": "1"}},
+    {"id": "emission-index-zero-total", "formulaId": "emission-global-index-increment", "inputs": {"amount": "100", "totalWeight": "0"}, "expected": "100000000000000000000"},
+    {"id": "emission-share-floor", "formulaId": "gauge-emission-share", "inputs": {"poolWeight": "3", "indexDelta": "333333333333333333"}, "expected": "0"},
+    {"id": "mezo-emission-zero-supply", "formulaId": "mezo-epoch-emission", "inputs": {"epochIndex": "0", "preEmissionTotalSupplyRaw": "0"}, "expected": "0"},
+    {"id": "mezo-emission-epoch-zero", "formulaId": "mezo-epoch-emission", "inputs": {"epochIndex": "0", "preEmissionTotalSupplyRaw": "1000000000000000000000000000"}, "expected": "4807692307692307692300000"},
+    {"id": "mezo-emission-before-first-halving", "formulaId": "mezo-epoch-emission", "inputs": {"epochIndex": "103", "preEmissionTotalSupplyRaw": "1000000000000000000000000000"}, "expected": "2426960059171597634600000"},
+    {"id": "mezo-emission-at-first-halving", "formulaId": "mezo-epoch-emission", "inputs": {"epochIndex": "104", "preEmissionTotalSupplyRaw": "1000000000000000000000000000"}, "expected": "2403846153846153846100000"},
+    {"id": "mezo-emission-tail-floor", "formulaId": "mezo-epoch-emission", "inputs": {"epochIndex": "416", "preEmissionTotalSupplyRaw": "1000000000000000000000000000"}, "expected": "384615384615384615300000"},
+    {"id": "mezo-rebase-zero-emission", "formulaId": "mezo-epoch-rebase", "inputs": {"emissionRaw": "0", "preEmissionTotalSupplyRaw": "1000", "period": "1", "priorBoundaryUnboostedVotingPowerRaw": "0", "emissionsEnabled": true}, "expected": "0"},
+    {"id": "mezo-rebase-zero-period", "formulaId": "mezo-epoch-rebase", "inputs": {"emissionRaw": "101", "preEmissionTotalSupplyRaw": "1000", "period": "0", "priorBoundaryUnboostedVotingPowerRaw": "0", "emissionsEnabled": true}, "expected": "0"},
+    {"id": "mezo-rebase-no-voting-power", "formulaId": "mezo-epoch-rebase", "inputs": {"emissionRaw": "101", "preEmissionTotalSupplyRaw": "1000", "period": "1", "priorBoundaryUnboostedVotingPowerRaw": "0", "emissionsEnabled": true}, "expected": "50"},
+    {"id": "mezo-rebase-voting-power-at-supply", "formulaId": "mezo-epoch-rebase", "inputs": {"emissionRaw": "101", "preEmissionTotalSupplyRaw": "1000", "period": "1", "priorBoundaryUnboostedVotingPowerRaw": "1000", "emissionsEnabled": true}, "expected": "0"},
+    {"id": "mezo-rebase-pinned-epoch", "formulaId": "mezo-epoch-rebase", "inputs": {"emissionRaw": "4766533366334551196099330", "preEmissionTotalSupplyRaw": "1091107405085174724429208095", "period": "1787184000", "priorBoundaryUnboostedVotingPowerRaw": "96666131639565545031862065", "emissionsEnabled": true}, "expected": "1979684202064968095632901"},
+    {"id": "mezo-reward-remainder-pinned-epoch", "formulaId": "mezo-epoch-reward-remainder", "inputs": {"emissionRaw": "4766533366334551196099330", "rebaseRaw": "1979684202064968095632901"}, "expected": "2786849164269583100466429"},
+    {"id": "mezo-splitter-floor-dust", "formulaId": "mezo-splitter-allocation", "inputs": {"currentBalanceRaw": "101", "needle": "80"}, "expected": {"firstRecipientAmountRaw": "80", "secondRecipientAmountRaw": "21"}},
+    {"id": "mezo-splitter-small-balance", "formulaId": "mezo-splitter-allocation", "inputs": {"currentBalanceRaw": "1", "needle": "1"}, "expected": {"firstRecipientAmountRaw": "0", "secondRecipientAmountRaw": "1"}},
+    {"id": "mezo-catch-up-cap", "formulaId": "mezo-epoch-catch-up-count", "inputs": {"activePeriod": "0", "currentPeriod": "15120000", "week": "604800", "maximumPerUpdate": "20"}, "expected": {"elapsed": "25", "processed": "20", "remaining": "5"}}
+  ]
+}

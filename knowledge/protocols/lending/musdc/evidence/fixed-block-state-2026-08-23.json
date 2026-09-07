@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-fixed-block-observation",
+  "id": "musdc-lending-fixed-block-state",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"networkId": "mezo-mainnet", "blockNumber": 11341710, "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0", "blockTimestamp": "2026-08-23T20:17:37Z"},
+  "limitations": ["Raw market storage excludes interest after lastUpdate until accrued; consumers must evaluate at one timestamp."],
+  "contracts": {"morpho": "0x565834cE7E40b8987BC20EbF83E2159467bDA311", "adaptiveCurveIrm": "0x3760Ebc636F912a4dB9540fdA4Dec09C25C6C1e7", "oracleProxy": "0xea0597d3d44ff2ea1e4c35501e153f4c025e48d1", "oracleImplementation": "0x799C63c61b885EF546C1469c182eaA54A36554d4"},
+  "market": {
+    "id": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+    "loanToken": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197",
+    "collateralToken": "0x7b7C000000000000000000000000000000000000",
+    "oracle": "0xea0597d3d44ff2ea1e4c35501e153f4c025e48d1",
+    "irm": "0x3760Ebc636F912a4dB9540fdA4Dec09C25C6C1e7",
+    "lltv": "860000000000000000",
+    "totalSupplyAssets": "214046001638",
+    "totalSupplyShares": "213416130394564144",
+    "totalBorrowAssets": "135552034713",
+    "totalBorrowShares": "135100133166644254",
+    "lastUpdate": "1787509363",
+    "fee": "0",
+    "tokenLiquidity": "78493966925"
+  },
+  "oracle": {"priceFeed": "0x7b7c000000000000000000000000000000000015", "loanDecimals": 6, "collateralDecimals": 18, "scaleFactor": "1000000", "price": "77292270770000000000000000000"},
+  "marketCreation": {"blockNumber": 9274335, "blockHash": "0x6227ca77fc25a3c1e2f90083b5fe08356259f91ca4dd94bd9c28e8daca287428", "transactionHash": "0xf4ff8ce3a7401487af7eb6fdaca35e79998a7cecd338117bb7e081fb68f039dd"}
+}

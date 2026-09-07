@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "kind": "memory-index",
+  "scope": "shared",
+  "entries": [
+    {
+      "id": "example-sdk-tooling-owner-pointer",
+      "domain": "development/tooling",
+      "status": "verified",
+      "title": "SDK tooling requirements have canonical owners",
+      "path": "example-verified-shared.json"
+    },
+    {
+      "id": "example-source-alpha-governance-pointer",
+      "domain": "governance/alpha",
+      "status": "promoted",
+      "title": "Source-alpha governance moved to ADR-0013",
+      "path": "example-promoted-pointer.json"
+    },
+    {
+      "id": "example-first-alpha-package-publication",
+      "domain": "governance/alpha",
+      "status": "deprecated",
+      "title": "First-alpha package publication assumption is obsolete",
+      "path": "example-deprecated-context.json"
+    }
+  ]
+}

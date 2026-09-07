@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "kind": "network",
+  "id": "base-mainnet",
+  "owner": "chains-registry",
+  "environment": "mainnet",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-21T00:00:00Z",
+  "reviewAfter": "2026-09-21T00:00:00Z",
+  "scope": {
+    "networkId": "base-mainnet",
+    "environment": "mainnet"
+  },
+  "values": {
+    "profile": "evm",
+    "displayName": "Base Mainnet",
+    "evmChainId": 8453,
+    "nativeCurrency": {
+      "name": "Ether",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "explorer": {
+      "name": "BaseScan",
+      "url": "https://basescan.org"
+    },
+    "capabilities": {
+      "evm": true,
+      "evmJsonRpc": true,
+      "gasCurrency": "native"
+    }
+  },
+  "claims": [
+    {
+      "id": "base-mainnet-identity",
+      "path": "values.displayName",
+      "statement": "Base Mainnet is the production Base EVM-compatible Layer 2 network.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-base-connecting-to-base",
+          "locator": "Introduction and Network details / Mainnet",
+          "note": "The official Base documentation names Base Mainnet and describes Base as an EVM-compatible Layer 2."
+        }
+      ]
+    },
+    {
+      "id": "base-mainnet-chain-id",
+      "path": "values.evmChainId",
+      "statement": "Base Mainnet uses EVM chain ID 8453.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-base-connecting-to-base",
+          "locator": "Network details / Mainnet / Chain ID",
+          "note": "The official Base connection table publishes chain ID 8453."
+        },
+        {
+          "sourceId": "bridge-musd-ntt-network-snapshots",
+          "locator": "/networkSnapshots/2",
+          "note": "The fixed-block Base observation independently recorded eth_chainId 8453."
+        }
+      ]
+    },
+    {
+      "id": "base-mainnet-native-currency",
+      "path": "values.nativeCurrency",
+      "statement": "Base Mainnet uses Ether (ETH) as its native gas currency with 18 decimal places.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-base-connecting-to-base",
+          "locator": "Network details / Mainnet / Currency Symbol",
+          "note": "The official Base connection table publishes ETH as the currency symbol."
+        },
+        {
+          "sourceId": "official-base-chain-metadata",
+          "locator": "/nativeCurrency",
+          "note": "The Base-owned pinned chain metadata names Ether/ETH with 18 decimals."
+        }
+      ]
+    },
+    {
+      "id": "base-mainnet-explorer",
+      "path": "values.explorer",
+      "statement": "The official Base Mainnet explorer is BaseScan at https://basescan.org.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-base-connecting-to-base",
+          "locator": "Network details / Mainnet / Block Explorer",
+          "note": "The official Base connection table publishes the BaseScan URL."
+        }
+      ]
+    },
+    {
+      "id": "base-mainnet-capability-profile",
+      "path": "values.capabilities",
+      "statement": "This record exposes only the EVM and Ethereum JSON-RPC capabilities needed by MDK cross-chain workflows.",
+      "classification": "external-fact",
+      "disposition": "promote",
+      "evidence": [
+        {
+          "sourceId": "official-base-connecting-to-base",
+          "locator": "Introduction and Network details",
+          "note": "The official Base documentation describes EVM compatibility and publishes an application RPC endpoint."
+        },
+        {
+          "sourceId": "bridge-musd-ntt-network-snapshots",
+          "locator": "/networkSnapshots/2",
+          "note": "The bounded RPC observation establishes the eth_chainId capability used by the current workflow."
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Qualified registry provenance review acceptance covers this chain identity and capability profile only; it does not create provider, bridge-route, protocol, or writer support.",
+    "No Base RPC endpoint is selected or supported by this record; the public endpoint documented by Base is explicitly rate-limited.",
+    "The EVM profile does not claim every optional JSON-RPC method, archive access, subscription, batching, or provider capability."
+  ]
+}

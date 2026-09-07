@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "outDir": "./dist",
+    "paths": {
+      "@mezo-dev-kit/chains": ["../../chains/dist/index.d.ts"],
+      "@mezo-dev-kit/contracts": ["../../contracts/dist/index.d.ts"],
+      "@mezo-dev-kit/core": ["../../core/dist/index.d.ts"],
+      "@mezo-dev-kit/musdc-lending": ["../musdc-lending/dist/index.d.ts"]
+    },
+    "rootDir": "./src",
+    "rewriteRelativeImportExtensions": true,
+    "sourceMap": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["test/**/*.ts", "vitest.config.ts"]
+}

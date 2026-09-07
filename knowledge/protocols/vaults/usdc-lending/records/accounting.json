@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "kind": "usdc-lending-vault-accounting",
+  "id": "usdc-lending-vault-accounting",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"deployedGenerations": ["VaultV2 0.8.28", "ERC4626VaultAdapter 0.8.33"]},
+  "limitations": ["Preview values depend on current total assets, fees, elapsed time, gate state, adapter liquidity, and share supply."],
+  "vault": {
+    "virtualSharesRule": "10^(18-assetDecimals); current 6-decimal mUSDC generation uses 1e12",
+    "previewDeposit": "floor(assets*(newTotalSupply+virtualShares)/(newTotalAssets+1))",
+    "previewMint": "ceil(shares*(newTotalAssets+1)/(newTotalSupply+virtualShares))",
+    "previewWithdraw": "ceil(assets*(newTotalSupply+virtualShares)/(newTotalAssets+1))",
+    "previewRedeem": "floor(shares*(newTotalAssets+1)/(newTotalSupply+virtualShares))",
+    "newTotalSupply": "totalSupply+performanceFeeShares+managementFeeShares",
+    "newTotalAssets": "min(realAssets,_totalAssets+floor(_totalAssets*elapsed*maxRate/WAD)) when firstTotalAssets is zero"
+  },
+  "wrapper": {
+    "virtualShares": "1000000",
+    "virtualAssets": "1000000",
+    "depositReceipts": "floor(vaultShares*(receiptSupply+1e6)/(userVaultShares+1e6))",
+    "withdrawVaultShares": "floor(receipts*(userVaultShares+1e6)/(receiptSupply+1e6))",
+    "userVaultShares": "wrapper VaultV2 balance-accumulatedYield",
+    "harvest": "if currentRatio>lastShareRatio and gauge exists, yieldShares=floor(userVaultShares*(currentRatio-lastShareRatio)/currentRatio); high-water mark never decreases",
+    "stake": "depositAndStake mints receipts transiently to the wrapper and has the gauge pull the exact amount for the beneficiary"
+  }
+}

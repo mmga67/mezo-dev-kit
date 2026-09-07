@@ -1,0 +1,139 @@
+{
+  "$schema": "./schema/agent-skill-catalog.schema.json",
+  "formatVersion": 1,
+  "profile": "portable-agent-skills-v1",
+  "skills": [
+    {
+      "name": "mdk-bridge-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-bridge-knowledge",
+      "domains": ["knowledge", "bridges", "transactions"]
+    },
+    {
+      "name": "mdk-contract-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-contract-knowledge",
+      "domains": ["knowledge", "contracts"]
+    },
+    {
+      "name": "mdk-incentives-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-incentives-knowledge",
+      "domains": ["knowledge", "protocols", "incentives"]
+    },
+    {
+      "name": "mdk-institutional-musd-debt",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-institutional-musd-debt",
+      "domains": ["knowledge", "protocols", "musd", "institutional-debt"]
+    },
+    {
+      "name": "mdk-indexing-reconciliation",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-indexing-reconciliation",
+      "domains": ["indexing", "reconciliation", "transactions", "bridges", "tooling"]
+    },
+    {
+      "name": "mdk-pool-liquidity-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-pool-liquidity-knowledge",
+      "domains": ["knowledge", "protocols", "pools", "liquidity"]
+    },
+    {
+      "name": "mdk-price-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-price-knowledge",
+      "domains": ["knowledge", "prices", "oracles"]
+    },
+    {
+      "name": "mdk-knowledge-maintenance",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-knowledge-maintenance",
+      "domains": ["knowledge"]
+    },
+    {
+      "name": "mdk-memory",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-memory",
+      "domains": ["memory"]
+    },
+    {
+      "name": "mdk-musd-borrowing",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-musd-borrowing",
+      "domains": ["knowledge", "protocols", "musd", "borrowing"]
+    },
+    {
+      "name": "mdk-musd-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-musd-knowledge",
+      "domains": ["knowledge", "protocols", "musd"]
+    },
+    {
+      "name": "mdk-musd-savings",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-musd-savings",
+      "domains": ["knowledge", "protocols", "musd", "savings"]
+    },
+    {
+      "name": "mdk-musdc-lending",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-musdc-lending",
+      "domains": ["knowledge", "protocols", "lending", "musdc"]
+    },
+    {
+      "name": "mdk-musd-redemptions",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-musd-redemptions",
+      "domains": ["knowledge", "protocols", "musd", "redemptions"]
+    },
+    {
+      "name": "mdk-network-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-network-knowledge",
+      "domains": ["knowledge", "networks"]
+    },
+    {
+      "name": "mdk-swap-routing-knowledge",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-swap-routing-knowledge",
+      "domains": ["knowledge", "workflows", "swaps", "pools", "transactions"]
+    },
+    {
+      "name": "mdk-transaction-execution",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-transaction-execution",
+      "domains": ["transactions", "core"]
+    },
+    {
+      "name": "mdk-usdc-lending-vault",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-usdc-lending-vault",
+      "domains": ["knowledge", "protocols", "vaults", "musdc", "incentives"]
+    },
+    {
+      "name": "mdk-testing",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-testing",
+      "domains": ["testing", "development"]
+    },
+    {
+      "name": "mdk-troubleshooting",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-troubleshooting",
+      "domains": ["knowledge", "troubleshooting"]
+    },
+    {
+      "name": "mdk-typescript-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-typescript-application",
+      "domains": ["typescript", "applications"]
+    },
+    {
+      "name": "mdk-typescript-development",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-typescript-development",
+      "domains": ["typescript", "development"]
+    }
+  ]
+}

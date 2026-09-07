@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bridge catalog and lifecycle v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": ["workflowStatus"],
+  "properties": {
+    "owner": { "const": "workflows/bridges" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "const": "accepted" },
+    "workflowStatus": {
+      "enum": ["evidence-verified-promotion-blocked", "verified-source-model-not-supported"]
+    },
+    "kind": {
+      "enum": [
+        "bridge-provider-catalog",
+        "bridge-asset-catalog",
+        "bridge-route-catalog",
+        "wormhole-ntt-lifecycle",
+        "mezo-native-bridge-lifecycle",
+        "bridge-source-catalog",
+        "bridge-contract-role-map"
+      ]
+    }
+  }
+}

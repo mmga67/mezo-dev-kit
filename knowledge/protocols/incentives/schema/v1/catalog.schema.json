@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Incentives canonical catalog v1",
+  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "type": "object",
+  "required": ["protocolStatus"],
+  "properties": {
+    "owner": { "const": "protocols/incentives" },
+    "status": { "const": "verified" },
+    "supportStatus": { "const": "none" },
+    "reviewStatus": { "enum": ["pending-qualified-review", "accepted"] },
+    "protocolStatus": { "const": "verified-versioned" },
+    "kind": {
+      "enum": [
+        "mezo-ve-lock-model",
+        "mezo-vebtc-boost-model",
+        "mezo-incentives-voting-model",
+        "mezo-incentives-gauge-reward-model",
+        "mezo-incentives-emission-model",
+        "mezo-validator-voting-reward-model",
+        "mezo-incentives-operation-catalog",
+        "mezo-incentives-source-catalog",
+        "mezo-incentives-contract-role-map"
+      ]
+    }
+  }
+}

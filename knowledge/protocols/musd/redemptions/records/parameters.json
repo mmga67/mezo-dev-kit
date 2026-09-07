@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-redemption-parameter-catalog",
+  "id": "redemption-parameters",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Observed redemption rate values are fixed-block evidence and must be re-read before use."],
+  "records": [
+    {
+      "id": "redemption-rate",
+      "ownerContractId": "musd.borrower-operations",
+      "getter": "redemptionRate()",
+      "stability": "governed-state",
+      "changeMechanism": "delayed governance proposal and approval",
+      "unit": "decimal-fixed-point",
+      "observedValues": {"mezo-mainnet": "7500000000000000", "mezo-testnet": "7500000000000000"},
+      "application": "Applied to actual aggregate collateral drawn, without borrower-status or fee-exemption branching.",
+      "documentationDiscrepancy": "The published borrower fee waiver is stale for the recorded deployments.",
+      "evidence": [
+        {"sourceArtifactId": "source-borrower-operations", "locator": "redemptionRate governance and getRedemptionRate"},
+        {"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral fee call"},
+        {"sourceArtifactId": "redemption-parameter-observations", "locator": "redemptionRate() fixed-block reads"},
+        {"sourceArtifactId": "docs-borrow-fees", "locator": "stale borrower-waiver prose"}
+      ]
+    }
+  ]
+}

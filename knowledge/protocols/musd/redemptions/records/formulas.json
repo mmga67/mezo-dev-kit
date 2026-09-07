@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-redemption-formula-catalog",
+  "id": "redemption-formulas",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Formula support assumes exact integer units, floor semantics, and current deployment inputs."],
+  "constants": {"decimalPrecision": "1000000000000000000"},
+  "sharedFormulaReferences": [
+    {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas", "recordId": "debt-payment-split"},
+    {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas", "recordId": "nominal-collateral-ratio"},
+    {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas", "recordId": "simple-interest"}
+  ],
+  "records": [
+    {
+      "id": "redeemable-lot",
+      "expression": "min(remainingRequested, entireDebt - gasCompensation)",
+      "inputs": {"remainingRequested": "musd-token-amount", "entireDebt": "musd-token-amount", "gasCompensation": "musd-token-amount"},
+      "output": "musd-token-amount",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_redeemCollateralFromTrove mUSDLot"}]
+    },
+    {
+      "id": "collateral-lot",
+      "expression": "floor(musdLot * decimalPrecision / price)",
+      "inputs": {"musdLot": "musd-token-amount", "price": "btc-usd-price"},
+      "output": "native-btc-amount",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "_redeemCollateralFromTrove collateralLot"}]
+    },
+    {
+      "id": "collateral-fee",
+      "expression": "floor(collateralDrawn * redemptionRate / decimalPrecision)",
+      "inputs": {"collateralDrawn": "native-btc-amount", "redemptionRate": "decimal-fixed-point"},
+      "output": "native-btc-amount",
+      "evidence": [{"sourceArtifactId": "source-borrower-operations", "locator": "getRedemptionRate"}]
+    },
+    {
+      "id": "collateral-to-redeemer",
+      "expression": "collateralDrawn - collateralFee",
+      "inputs": {"collateralDrawn": "native-btc-amount", "collateralFee": "native-btc-amount"},
+      "output": "native-btc-amount",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral collateralToSendToRedeemer"}]
+    },
+    {
+      "id": "hint-truncated-partial-lot",
+      "expression": "netDebt <= minNetDebt ? 0 : min(remainingRequested, netDebt - minNetDebt)",
+      "inputs": {"remainingRequested": "musd-token-amount", "netDebt": "musd-token-amount", "minNetDebt": "musd-token-amount"},
+      "output": "musd-token-amount",
+      "evidence": [{"sourceArtifactId": "source-hint-helpers", "locator": "getRedemptionHints maxRedeemableMUSD"}]
+    },
+    {
+      "id": "actual-redeemed-amount",
+      "expression": "attemptedAmount - unfilledAmount",
+      "inputs": {"attemptedAmount": "musd-token-amount", "unfilledAmount": "musd-token-amount"},
+      "output": "musd-token-amount",
+      "evidence": [{"sourceArtifactId": "source-trove-manager", "locator": "redeemCollateral remainingMUSD and Redemption event"}]
+    }
+  ]
+}

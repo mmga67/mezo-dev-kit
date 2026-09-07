@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK knowledge v0.4 logical reference",
+  "type": "object",
+  "required": ["moduleId", "resourceId"],
+  "properties": {
+    "moduleId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[./-][a-z0-9]+)*$"
+    },
+    "resourceId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "recordId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[./@#-][a-z0-9]+)*$"
+    },
+    "pointer": {
+      "type": "string",
+      "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+    }
+  },
+  "additionalProperties": false
+}

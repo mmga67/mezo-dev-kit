@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-redemption-formula-fixtures",
+  "id": "redemption-formula-fixtures",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {"formulaResourceId": "redemption-formulas", "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+  "limitations": ["Fixtures prove only the declared deterministic cases, boundaries, and transition scenarios."],
+  "records": [
+    {"id": "lot-capped-by-position", "formulaId": "redeemable-lot", "inputs": {"remainingRequested": "5000000000000000000000", "entireDebt": "2200000000000000000000", "gasCompensation": "200000000000000000000"}, "expected": "2000000000000000000000"},
+    {"id": "lot-capped-by-request", "formulaId": "redeemable-lot", "inputs": {"remainingRequested": "100000000000000000000", "entireDebt": "2200000000000000000000", "gasCompensation": "200000000000000000000"}, "expected": "100000000000000000000"},
+    {"id": "collateral-lot-one-hundred", "formulaId": "collateral-lot", "inputs": {"musdLot": "100000000000000000000", "price": "100000000000000000000000"}, "expected": "1000000000000000"},
+    {"id": "collateral-lot-floor", "formulaId": "collateral-lot", "inputs": {"musdLot": "1", "price": "100000000000000000000000"}, "expected": "0"},
+    {"id": "fee-current-rate", "formulaId": "collateral-fee", "inputs": {"collateralDrawn": "1000000000000000", "redemptionRate": "7500000000000000"}, "expected": "7500000000000"},
+    {"id": "fee-floor-zero", "formulaId": "collateral-fee", "inputs": {"collateralDrawn": "1", "redemptionRate": "7500000000000000"}, "expected": "0"},
+    {"id": "net-collateral-current-rate", "formulaId": "collateral-to-redeemer", "inputs": {"collateralDrawn": "1000000000000000", "collateralFee": "7500000000000"}, "expected": "992500000000000"},
+    {"id": "partial-truncated-at-minimum", "formulaId": "hint-truncated-partial-lot", "inputs": {"remainingRequested": "500000000000000000000", "netDebt": "2100000000000000000000", "minNetDebt": "1800000000000000000000"}, "expected": "300000000000000000000"},
+    {"id": "partial-unavailable-at-minimum", "formulaId": "hint-truncated-partial-lot", "inputs": {"remainingRequested": "1", "netDebt": "1800000000000000000000", "minNetDebt": "1800000000000000000000"}, "expected": "0"},
+    {"id": "actual-partial-fill", "formulaId": "actual-redeemed-amount", "inputs": {"attemptedAmount": "6330000000000000000000", "unfilledAmount": "300000000000000000000"}, "expected": "6030000000000000000000"}
+  ],
+  "eligibilityBoundaries": [
+    {"id": "system-at-mcr", "kind": "system", "ratio": "1100000000000000000", "threshold": "1100000000000000000", "expectedEligible": true},
+    {"id": "system-below-mcr", "kind": "system", "ratio": "1099999999999999999", "threshold": "1100000000000000000", "expectedEligible": false},
+    {"id": "trove-at-mcr", "kind": "trove", "ratio": "1100000000000000000", "threshold": "1100000000000000000", "expectedEligible": true},
+    {"id": "trove-below-mcr", "kind": "trove", "ratio": "1099999999999999999", "threshold": "1100000000000000000", "expectedEligible": false}
+  ],
+  "scenarios": [
+    {"id": "single-full", "attemptedAmount": "2000000000000000000000", "minNetDebt": "1800000000000000000000", "maxIterations": "0", "positions": [{"id": "a", "eligible": true, "netDebt": "2000000000000000000000"}], "expected": {"actualAmount": "2000000000000000000000", "unfilledAmount": "0", "visited": 1, "outcomes": ["a:full"]}},
+    {"id": "multi-full-and-partial", "attemptedAmount": "6100000000000000000000", "minNetDebt": "1800000000000000000000", "maxIterations": "0", "positions": [{"id": "a", "eligible": true, "netDebt": "2000000000000000000000"}, {"id": "b", "eligible": true, "netDebt": "4000000000000000000000"}, {"id": "c", "eligible": true, "netDebt": "2000000000000000000000"}], "expected": {"actualAmount": "6100000000000000000000", "unfilledAmount": "0", "visited": 3, "outcomes": ["a:full", "b:full", "c:partial"]}},
+    {"id": "partial-cancelled-by-minimum", "attemptedAmount": "6300000000000000000000", "minNetDebt": "1800000000000000000000", "maxIterations": "0", "positions": [{"id": "a", "eligible": true, "netDebt": "2000000000000000000000"}, {"id": "b", "eligible": true, "netDebt": "4000000000000000000000"}, {"id": "c", "eligible": true, "netDebt": "2000000000000000000000"}], "expected": {"actualAmount": "6000000000000000000000", "unfilledAmount": "300000000000000000000", "visited": 3, "outcomes": ["a:full", "b:full", "c:cancelled-partial"]}},
+    {"id": "iteration-cap", "attemptedAmount": "6000000000000000000000", "minNetDebt": "1800000000000000000000", "maxIterations": "1", "positions": [{"id": "a", "eligible": true, "netDebt": "2000000000000000000000"}, {"id": "b", "eligible": true, "netDebt": "4000000000000000000000"}], "expected": {"actualAmount": "2000000000000000000000", "unfilledAmount": "4000000000000000000000", "visited": 1, "outcomes": ["a:full"]}},
+    {"id": "ineligible-visit-consumes-cap", "attemptedAmount": "100000000000000000000", "minNetDebt": "1800000000000000000000", "maxIterations": "2", "positions": [{"id": "a", "eligible": false, "netDebt": "2000000000000000000000"}, {"id": "b", "eligible": true, "netDebt": "2000000000000000000000"}, {"id": "c", "eligible": true, "netDebt": "2000000000000000000000"}], "expected": {"actualAmount": "100000000000000000000", "unfilledAmount": "0", "visited": 2, "outcomes": ["a:skipped", "b:partial"]}}
+  ]
+}

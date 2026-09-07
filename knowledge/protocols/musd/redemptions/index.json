@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "knowledge-module-index",
+  "id": "protocols/musd/redemptions",
+  "moduleId": "protocols/musd/redemptions",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "supportStatus": "supported",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
+    "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"
+  },
+  "limitations": [
+    "The deployed entrypoint has no minimum-received argument; a future writer requires quote, simulation, freshness, and explicit user output policy.",
+    "SortedTroves is nominal-ratio ordered and does not continuously re-sort by current ICR after interest accrual.",
+    "Accepted redemption knowledge does not imply an implemented public transaction writer."
+  ],
+  "resources": [
+    {"id": "redemption-model", "role": "canonical-record", "kind": "musd-redemption-model", "path": "records/model.json", "recordIds": ["system-and-redeemer-eligibility", "selection-and-order", "iteration-semantics", "per-position-redemption", "full-redemption-outcome", "partial-redemption-outcome", "cancelled-partial-outcome", "first-hint-semantics", "partial-hint-semantics", "fee-and-settlement", "event-and-reconciliation"], "recordCollectionPointer": "/records"},
+    {"id": "redemption-formulas", "role": "canonical-record", "kind": "musd-redemption-formula-catalog", "path": "records/formulas.json", "recordIds": ["redeemable-lot", "collateral-lot", "collateral-fee", "collateral-to-redeemer", "hint-truncated-partial-lot", "actual-redeemed-amount"], "recordCollectionPointer": "/records"},
+    {"id": "redemption-parameters", "role": "canonical-record", "kind": "musd-redemption-parameter-catalog", "path": "records/parameters.json", "recordIds": ["redemption-rate"], "recordCollectionPointer": "/records"},
+    {"id": "redemption-formula-fixtures", "role": "fixture", "kind": "musd-redemption-formula-fixtures", "path": "fixtures/formulas.json", "recordIds": ["lot-capped-by-position", "lot-capped-by-request", "collateral-lot-one-hundred", "collateral-lot-floor", "fee-current-rate", "fee-floor-zero", "net-collateral-current-rate", "partial-truncated-at-minimum", "partial-unavailable-at-minimum", "actual-partial-fill"], "recordCollectionPointer": "/records"},
+    {"id": "redemption-parameter-observations", "role": "evidence", "kind": "musd-redemption-parameter-observations", "path": "evidence/parameter-reads-2026-08-18.json", "recordIds": ["redemption-rate-mezo-mainnet", "redemption-rate-mezo-testnet"], "recordCollectionPointer": "/observations"},
+    {"id": "redemption-catalog-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/catalog.schema.json"},
+    {"id": "redemption-observation-schema", "role": "schema", "kind": "json-schema", "path": "schema/v1/observation-set.schema.json"},
+    {"id": "redemption-candidates", "role": "review", "kind": "candidate-inventory", "path": "review/candidates.md"},
+    {"id": "redemption-legacy-schema", "role": "review", "kind": "superseded-schema-notes", "path": "review/legacy-schema-v1.md"},
+    {
+      "id": "redemption-reference",
+      "role": "generated",
+      "kind": "human-reference",
+      "path": "generated/reference.md",
+      "generatedFrom": [
+        {"moduleId": "protocols/musd/redemptions", "resourceId": "redemption-model"},
+        {"moduleId": "protocols/musd/redemptions", "resourceId": "redemption-formulas"},
+        {"moduleId": "protocols/musd/redemptions", "resourceId": "redemption-parameters"},
+        {"moduleId": "protocols/musd/redemptions", "resourceId": "redemption-formula-fixtures"}
+      ]
+    }
+  ],
+  "checks": [
+    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/redemptions"},
+    {"id": "redemption-semantics", "type": "semantic", "command": "node scripts/validate-redemption-knowledge.ts"},
+    {"id": "musd-reference-drift", "type": "drift", "command": "node scripts/generate-musd-reference.ts --check"}
+  ],
+  "extensions": {
+    "protocolStatus": "verified-versioned",
+    "protocolSource": {"sourceId": "official-source-musd", "commit": "43ef44123753fa3e28425beffde42c86693fd03c"},
+    "deploymentScope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "contractModuleId": "contracts", "networkModuleId": "networks", "registryReviewStatus": "accepted"},
+    "sourceReference": {"moduleId": "protocols/musd", "resourceId": "musd-sources"},
+    "dependencies": {
+      "sharedMusd": {"moduleId": "protocols/musd", "resourceId": "musd-system-model"},
+      "borrowing": {"moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-position"}
+    },
+    "resolvedDiscrepancies": [
+      {
+        "id": "borrower-redemption-fee-waiver",
+        "claimScope": "redemption fee behavior on the recorded deployments",
+        "canonicalBehavior": "The governed redemption rate is applied to actual collateral drawn for every redeemer; the call path performs no active-trove or fee-exemption check.",
+        "resolution": "deployment-evidence-prevails",
+        "staleEvidenceArtifactId": "docs-borrow-fees",
+        "authoritativeEvidenceArtifactIds": ["source-borrower-operations", "source-trove-manager", "redemption-parameter-observations"],
+        "candidateId": "REDEEM-C007"
+      }
+    ]
+  }
+}

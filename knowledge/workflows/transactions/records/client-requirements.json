@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "kind": "core-client-requirements",
+  "id": "core-client-proposal-v1",
+  "owner": "core-transactions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "architectureDecisionIds": ["ADR-0002", "ADR-0003"],
+    "runtimeFamily": "EVM"
+  },
+  "limitations": [
+    "These requirements are accepted architecture semantics but do not define an accepted MDK public interface.",
+    "No external client dependency or package implementation is selected by this record."
+  ],
+  "proposalStatus": "accepted",
+  "requirements": [
+    {
+      "id": "client-explicit-dependencies",
+      "scope": "client-construction",
+      "statement": "The core client receives chain, transport, registry, and confirmation policy explicitly and does not read wallet, React, or process-global state.",
+      "classification": "architecture-candidate",
+      "rationale": "Keeps pure domain and execution layers portable and testable."
+    },
+    {
+      "id": "client-chain-assertion",
+      "scope": "preflight",
+      "statement": "Before any deployment read or write, compare the transport and signer chain IDs with the requested network and fail on mismatch.",
+      "classification": "architecture-candidate",
+      "rationale": "Prevents resolving or submitting against the wrong network."
+    },
+    {
+      "id": "client-deployment-resolution",
+      "scope": "preflight",
+      "statement": "Resolve contracts by stable registry ID, network, and validity coordinate; reject missing, ambiguous, inactive, or unreviewed deployments according to the caller's support policy.",
+      "classification": "architecture-candidate",
+      "rationale": "Prevents copied addresses and version ambiguity."
+    },
+    {
+      "id": "read-block-coherence",
+      "scope": "reads",
+      "statement": "A logical multi-read establishes one block coordinate and returns it with the result; every call uses that coordinate unless the result explicitly marks a weaker consistency mode.",
+      "classification": "architecture-candidate",
+      "rationale": "Avoids combining state from different blocks in quotes and invariants."
+    },
+    {
+      "id": "read-partial-results",
+      "scope": "reads",
+      "statement": "Every batch item is declared required or optional before execution. A failed required item fails the logical read; optional failures remain typed per-item errors and are never coerced to zero, false, or empty values.",
+      "classification": "architecture-candidate",
+      "rationale": "Preserves error meaning across multicall and provider batches."
+    },
+    {
+      "id": "read-batch-adaptation",
+      "scope": "reads",
+      "statement": "Batch size and multicall use are provider capabilities discovered or configured at runtime; clients must split or fall back without changing logical ordering or consistency guarantees.",
+      "classification": "architecture-candidate",
+      "rationale": "Provider batch limits vary and a successful small probe does not establish an unlimited batch size."
+    },
+    {
+      "id": "provider-failover-safety",
+      "scope": "transport",
+      "statement": "Read failover may use another eligible provider only after chain assertion and must preserve the requested block coordinate. Write failover may rebroadcast the exact signed transaction but must not create or sign a second transaction implicitly.",
+      "classification": "architecture-candidate",
+      "rationale": "Avoids cross-chain reads and duplicate non-idempotent writes."
+    },
+    {
+      "id": "retry-classification",
+      "scope": "transport",
+      "statement": "Retries are operation-aware: idempotent reads may retry within deadline; simulations may retry only with the same block/input set; unsigned construction may restart; submitted writes are tracked or the exact signed bytes rebroadcast, never rebuilt and resubmitted blindly.",
+      "classification": "architecture-candidate",
+      "rationale": "Transport failure does not prove a state-changing request was not accepted."
+    },
+    {
+      "id": "typed-units",
+      "scope": "data-boundary",
+      "statement": "Public requests distinguish display strings from integer base units, reject unsafe floating-point amounts, validate address/network form, and retain token/asset identity with decimals provenance.",
+      "classification": "architecture-candidate",
+      "rationale": "Prevents unit loss and representation confusion."
+    },
+    {
+      "id": "quote-context",
+      "scope": "quote",
+      "statement": "A quote records network, deployment IDs, block number/hash when available, assumptions, deadline or freshness policy, and user bounds; submission revalidates all volatile inputs.",
+      "classification": "architecture-candidate",
+      "rationale": "A numeric output without its evidence coordinate cannot safely authorize a write."
+    },
+    {
+      "id": "exact-entrypoint-simulation",
+      "scope": "simulation",
+      "statement": "Simulate the exact destination, calldata, value, sender, chain, and deployment intended for submission; decode and preserve revert data.",
+      "classification": "architecture-candidate",
+      "rationale": "A related read or different primitive call is not proof that the intended write succeeds."
+    },
+    {
+      "id": "approval-boundary",
+      "scope": "approval",
+      "statement": "Resolve the exact spender, prefer the required amount, expose unlimited approval as an explicit policy choice, track approval separately, then reread and resimulate the action after approval confirmation.",
+      "classification": "architecture-candidate",
+      "rationale": "Approval changes state and creates its own replacement, failure, and security surface."
+    },
+    {
+      "id": "receipt-is-not-success",
+      "scope": "tracking",
+      "statement": "A hash is submitted identity; a successful receipt establishes inclusion; confirmation establishes configured finality confidence; only workflow reconciliation establishes protocol success.",
+      "classification": "architecture-candidate",
+      "rationale": "Receipt status alone may not prove the requested economic outcome."
+    },
+    {
+      "id": "reconciliation-evidence",
+      "scope": "reconciliation",
+      "statement": "Each writer defines expected events, allowed partial outcomes, post-state reads, reconciliation block coordinate, and mismatch behavior before release.",
+      "classification": "architecture-candidate",
+      "rationale": "Protocol workflows have materially different completion conditions."
+    },
+    {
+      "id": "debug-evidence",
+      "scope": "observability",
+      "statement": "Return structured debug context for chain, provider ID, block coordinate, deployment/ABI IDs, decoded intent, calldata hash or redacted calldata, simulation result, transaction identities, receipt, replacement links, and reconciliation outcome without secrets.",
+      "classification": "architecture-candidate",
+      "rationale": "Failures must be diagnosable without promoting raw logs or sensitive data to knowledge."
+    }
+  ]
+}

@@ -1,0 +1,658 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-bridge-probes-2026-08-24",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T10:31:19.531Z",
+  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
+    "deploymentIds": [
+      "bridge.musd-ntt-manager@mezo-mainnet",
+      "bridge.musd-ntt-manager@ethereum-mainnet",
+      "bridge.musd-ntt-manager@base-mainnet",
+      "bridge.musd-wormhole-transceiver@mezo-mainnet",
+      "bridge.musd-wormhole-transceiver@ethereum-mainnet",
+      "bridge.musd-wormhole-transceiver@base-mainnet",
+      "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v5-execution",
+      "bridge.native-mezo-bridge@ethereum-mainnet"
+    ]
+  },
+  "limitations": [
+    "The bounded bridge identities retain registry provenance review qualified registry acceptance; no route, relayer, quote, or writer support is created.",
+    "Base activation blocks retain prior eth_getBlockByNumber observations plus official broadcast receipts because the selected public provider prunes those historical blocks.",
+    "This observation is the accepted pre-v13 boundary. Post-v13 execution is recorded separately by Contracts resource contract-bridge-v13-probes-2026-08-24.",
+    "The historical boundary is retained for activation provenance; current behavior must resolve through the post-v13 evidence resource."
+  ],
+  "observedFrom": "2026-08-24T10:31:19.531Z",
+  "observedThrough": "2026-08-24T10:31:19.531Z",
+  "methodology": [
+    "Pinned the official current and initial MUSD NTT deployment repositories, deployment.json, TypeChain ABI factories, and six successful proxy broadcast receipts by exact commit/path digest.",
+    "Captured current chain identity, block identity, proxy code, implementation slots, zero admin slots, and implementation code at one fixed block per network.",
+    "Classified NTT proxies as ERC-1967/UUPS from official deployment source and live zero-admin-slot observations instead of mislabeling them transparent proxies.",
+    "Reconstructed the Native Ethereum proxy's complete five-generation Etherscan history and checked every successful activation receipt, current slots, proxy code, and implementation code.",
+    "Extracted the current Native implementation's Etherscan Standard JSON settings, compiled with exact solc 0.8.24, and matched full creation/runtime bytecode plus ABI semantics.",
+    "Binary-searched the post-snapshot Assets Bridge code change, traced the successful maintenance-precompile call at block 11260864, and matched current code/ABI/interface to official commit 42ddabe.",
+    "Recaptured chain identity, latest block identity, proxy/precompile code, implementation slots, admin slots, and implementation code on all three networks at 2026-08-23T17:35:51.728Z.",
+    "Confirmed exact runtime/implementation hash continuity for all eight accepted bridge identities and confirmed that Mezo remained Mezod/12.0.0/amd64/go1.24.0 before scheduled v13 block 11358000.",
+    "Recaptured chain identity, latest block identity, proxy/precompile code, implementation slots, admin slots, and implementation code on all three networks at 2026-08-23T17:35:51.728Z.",
+    "Confirmed exact runtime/implementation hash continuity for all eight accepted bridge identities and confirmed that Mezo remained Mezod/12.0.0/amd64/go1.24.0 before scheduled v13 block 11358000.",
+    "Recaptured chain identity, latest block identity, proxy/precompile code, implementation slots, admin slots, and implementation code on all three networks at 2026-08-24T10:31:19.531Z.",
+    "Confirmed exact runtime/implementation hash continuity for all eight accepted bridge identities and confirmed that Mezo remained Mezod/12.0.0/amd64/go1.24.0 before scheduled v13 block 11358000."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11355873,
+      "blockHash": "0x0539ab2e5657f0cc77cc24a1eaad2c6d7b1df357e99798d44f64e99e7b3c9ba0",
+      "blockTimestamp": "2026-08-24T10:31:22.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    },
+    {
+      "networkId": "ethereum-mainnet",
+      "evmChainId": 1,
+      "blockNumber": 25824452,
+      "blockHash": "0x86be6eea4103867dccac11e99db8e6931752d8b3782181c5ec37b701e4b06eac",
+      "blockTimestamp": "2026-08-24T10:31:11.000Z",
+      "rpcUrl": "https://ethereum-rpc.publicnode.com",
+      "explorerApiUrl": "https://etherscan.io"
+    },
+    {
+      "networkId": "base-mainnet",
+      "evmChainId": 8453,
+      "blockNumber": 50389068,
+      "blockHash": "0xf37f6660a4ba153ffe704accc6e271cb0a800380feed176ab6f365342468206c",
+      "blockTimestamp": "2026-08-24T10:31:23.000Z",
+      "rpcUrl": "https://base-rpc.publicnode.com",
+      "explorerApiUrl": "https://basescan.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-bridge-musd-ntt-manager-mezo-mainnet",
+      "deploymentId": "bridge.musd-ntt-manager@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 11355873,
+        "hash": "0x0539ab2e5657f0cc77cc24a1eaad2c6d7b1df357e99798d44f64e99e7b3c9ba0",
+        "timestamp": "2026-08-24T10:31:22.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 1579320,
+        "transactionHash": "0x417756f53017044576f7d102630be4123bfcf67e363b14873144ae83b2b24269",
+        "logIndex": 0,
+        "blockHash": "0xe1c76c09bda9600a98644450be1e04c454d143585a5c16e278564dc5f19082d5",
+        "blockTimestamp": "2025-07-09T22:30:48.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "cc09c1636ebe402e7975b83627936a22f086f7a22e6639f87491646a700313c9",
+        "implementationSlotValue": "0x000000000000000000000000d0cbe9be1ab548eb93e5557649b236305874d4d0",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0xd0cbe9be1ab548eb93e5557649b236305874d4d0",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xd0cbe9be1ab548eb93e5557649b236305874d4d0",
+            "effectiveFrom": {
+              "blockNumber": 1579320,
+              "transactionHash": "0x417756f53017044576f7d102630be4123bfcf67e363b14873144ae83b2b24269",
+              "logIndex": 0,
+              "blockHash": "0xe1c76c09bda9600a98644450be1e04c454d143585a5c16e278564dc5f19082d5",
+              "blockTimestamp": "2025-07-09T22:30:48.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-musd-ntt-manager-ethereum-mainnet",
+      "deploymentId": "bridge.musd-ntt-manager@ethereum-mainnet",
+      "networkId": "ethereum-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 25824452,
+        "hash": "0x86be6eea4103867dccac11e99db8e6931752d8b3782181c5ec37b701e4b06eac",
+        "timestamp": "2026-08-24T10:31:11.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 22884633,
+        "transactionHash": "0xf863849c0eb9c26bd1ae924aa80c0617db77dd1d1d2f99bca8de6f206546cd77",
+        "logIndex": 512,
+        "blockHash": "0xe410ab84213a01ee8e6595b6c4e29af0cef8701341da0e3d7d99d7b38dcc9096",
+        "blockTimestamp": "2025-07-09T22:35:11.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "744b0682ca2827dea5983aae8ec85a0a9aa585a743ffc8b4d08f09ff1f127fa4",
+        "implementationSlotValue": "0x000000000000000000000000075108f275ed81c9cfc01065e6e50ceea81d6363",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+            "effectiveFrom": {
+              "blockNumber": 22884633,
+              "transactionHash": "0xf863849c0eb9c26bd1ae924aa80c0617db77dd1d1d2f99bca8de6f206546cd77",
+              "logIndex": 512,
+              "blockHash": "0xe410ab84213a01ee8e6595b6c4e29af0cef8701341da0e3d7d99d7b38dcc9096",
+              "blockTimestamp": "2025-07-09T22:35:11.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-musd-ntt-manager-base-mainnet",
+      "deploymentId": "bridge.musd-ntt-manager@base-mainnet",
+      "networkId": "base-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 50389068,
+        "hash": "0xf37f6660a4ba153ffe704accc6e271cb0a800380feed176ab6f365342468206c",
+        "timestamp": "2026-08-24T10:31:23.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 42181281,
+        "transactionHash": "0xff365759a87db9fd9986403436d42cab91a4d39cd838ee080eeab261ceb60212",
+        "logIndex": 642,
+        "blockHash": "0xce89a15bd401ebeffb06d6c71bd44c3f3ba945256920f0419a31ff655630e04c",
+        "blockTimestamp": "2026-02-15T10:38:29.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "27b489f5fe9a675e69834d279c28e1097c5f1362efc24bfc55e91440d8a55428",
+        "implementationSlotValue": "0x0000000000000000000000007d61512edc44dba19ea9758e9f383547cec38366",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0x7d61512edc44dba19ea9758e9f383547cec38366",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x7d61512edc44dba19ea9758e9f383547cec38366",
+            "effectiveFrom": {
+              "blockNumber": 42181281,
+              "transactionHash": "0xff365759a87db9fd9986403436d42cab91a4d39cd838ee080eeab261ceb60212",
+              "logIndex": 642,
+              "blockHash": "0xce89a15bd401ebeffb06d6c71bd44c3f3ba945256920f0419a31ff655630e04c",
+              "blockTimestamp": "2026-02-15T10:38:29.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-musd-wormhole-transceiver-mezo-mainnet",
+      "deploymentId": "bridge.musd-wormhole-transceiver@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 11355873,
+        "hash": "0x0539ab2e5657f0cc77cc24a1eaad2c6d7b1df357e99798d44f64e99e7b3c9ba0",
+        "timestamp": "2026-08-24T10:31:22.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 7252117,
+        "transactionHash": "0x3e267901cbd981ba81a3ef53fe66d70689ce5a0991e3a5aab0ef310a8b49fb71",
+        "logIndex": 0,
+        "blockHash": "0x671a66ca7fabc153c46dafa328b8d651cde56cbae9773a0bf931e6b78ebc40cb",
+        "blockTimestamp": "2026-03-04T12:40:35.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "d2f3c36e901f7a657a42a1ec26e2ad0283ba7e54a5e5476753499675b362589a",
+        "implementationSlotValue": "0x000000000000000000000000867cd4fd99ba3330afa65822c552c0d1247f6115",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0x867cd4fd99ba3330afa65822c552c0d1247f6115",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x867cd4fd99ba3330afa65822c552c0d1247f6115",
+            "effectiveFrom": {
+              "blockNumber": 7252117,
+              "transactionHash": "0x3e267901cbd981ba81a3ef53fe66d70689ce5a0991e3a5aab0ef310a8b49fb71",
+              "logIndex": 0,
+              "blockHash": "0x671a66ca7fabc153c46dafa328b8d651cde56cbae9773a0bf931e6b78ebc40cb",
+              "blockTimestamp": "2026-03-04T12:40:35.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-musd-wormhole-transceiver-ethereum-mainnet",
+      "deploymentId": "bridge.musd-wormhole-transceiver@ethereum-mainnet",
+      "networkId": "ethereum-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 25824452,
+        "hash": "0x86be6eea4103867dccac11e99db8e6931752d8b3782181c5ec37b701e4b06eac",
+        "timestamp": "2026-08-24T10:31:11.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 24584317,
+        "transactionHash": "0x183d15d9b6b1f9426e98a31678e887f736438b50b3b834ca09e111323f71e203",
+        "logIndex": 519,
+        "blockHash": "0x12476f902d514b25f804cd49999d2232a830530ebd218d77a0594c5c682e05cc",
+        "blockTimestamp": "2026-03-04T13:12:59.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "c2b8734a985595d9e3db2752216c763086f7ad8738449d324514717573290b03",
+        "implementationSlotValue": "0x00000000000000000000000005bd601c3c381fd3d099dbb574cc39ea5d8b4a69",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0x05bd601c3c381fd3d099dbb574cc39ea5d8b4a69",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x05bd601c3c381fd3d099dbb574cc39ea5d8b4a69",
+            "effectiveFrom": {
+              "blockNumber": 24584317,
+              "transactionHash": "0x183d15d9b6b1f9426e98a31678e887f736438b50b3b834ca09e111323f71e203",
+              "logIndex": 519,
+              "blockHash": "0x12476f902d514b25f804cd49999d2232a830530ebd218d77a0594c5c682e05cc",
+              "blockTimestamp": "2026-03-04T13:12:59.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-musd-wormhole-transceiver-base-mainnet",
+      "deploymentId": "bridge.musd-wormhole-transceiver@base-mainnet",
+      "networkId": "base-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 50389068,
+        "hash": "0xf37f6660a4ba153ffe704accc6e271cb0a800380feed176ab6f365342468206c",
+        "timestamp": "2026-08-24T10:31:23.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "official deployment repository broadcast receipt",
+        "fixed-block bridge live-configuration reads",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 42920697,
+        "transactionHash": "0x88c949eb49084cb2522de0230a059213d4d271dc2c9977a3696514004d4cabeb",
+        "logIndex": 904,
+        "blockHash": "0x2961993db9ce1268b8d87dab14f8f07c18bcb5203d48c3fb776ab7848cead8f7",
+        "blockTimestamp": "2026-03-04T13:25:41.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "a0bf534c41a0f5ad4843cad431a61e86f62ab7bac5ec4529b5f8e7f2ce7506bc",
+        "implementationCodeSha256": "e5065425ec9581e35b2553bfd93f903a1f63401bc24847a9529be091f8b4f3f2",
+        "implementationSlotValue": "0x000000000000000000000000ae52c85f4483e4fb14f7d1dd8ad2aeb12d890cc0",
+        "adminSlotValue": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "proxy": {
+        "standard": "eip-1967-uups",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": null,
+        "adminAddress": null,
+        "currentImplementationAddress": "0xae52c85f4483e4fb14f7d1dd8ad2aeb12d890cc0",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xae52c85f4483e4fb14f7d1dd8ad2aeb12d890cc0",
+            "effectiveFrom": {
+              "blockNumber": 42920697,
+              "transactionHash": "0x88c949eb49084cb2522de0230a059213d4d271dc2c9977a3696514004d4cabeb",
+              "logIndex": 904,
+              "blockHash": "0x2961993db9ce1268b8d87dab14f8f07c18bcb5203d48c3fb776ab7848cead8f7",
+              "blockTimestamp": "2026-03-04T13:25:41.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "primaryEvidence": false,
+        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-native-assets-precompile-mezo-mainnet-v6-wrapper",
+      "deploymentId": "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v5-execution",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 11355873,
+        "hash": "0x0539ab2e5657f0cc77cc24a1eaad2c6d7b1df357e99798d44f64e99e7b3c9ba0",
+        "timestamp": "2026-08-24T10:31:22.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "web3_clientVersion",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getTransactionReceipt",
+        "debug_traceTransaction callTracer",
+        "official client source and bytecode digest comparison",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 11260864,
+        "transactionHash": "0xe572e8711d95b19b0814272d779cb75150b2d48b9fde1ff90d13fd353792fb49",
+        "blockHash": "0x11ecd807220ec8333c5da6ff686293fb2b97cf29586b1fe1c7f16e1607469ee0",
+        "blockTimestamp": "2026-08-20T11:13:49.000Z",
+        "activationKind": "maintenance-precompile-call",
+        "method": "setPrecompileByteCode(address,bytes)"
+      },
+      "runtime": {
+        "addressCodeSha256": "bb00751f518e5703ad260e4a94084b621ab426e5a1633da0deb92027029436c5",
+        "implementationCodeSha256": null,
+        "sourceBytecodeSha256": "bb00751f518e5703ad260e4a94084b621ab426e5a1633da0deb92027029436c5",
+        "liveClientVersion": "Mezod/12.0.0/amd64/go1.24.0",
+        "activeExecutionVersion": 5,
+        "wrapperInterfaceGeneration": 6,
+        "lastPriorCodeBlock": {
+          "number": 11260863,
+          "hash": "0x879abd0c62eb17a208a1f95428d970e00fa184a91e6b90406f6dbeb9c1386e78",
+          "timestamp": "2026-08-20T11:13:46.000Z"
+        },
+        "scheduledExecutionVersion6Block": 11358000,
+        "preV13ObservationBlock": 11355873
+      },
+      "proxy": null,
+      "explorer": {
+        "notApplicable": true,
+        "note": "A protocol precompile is established through official client source, live client generation, fixed-block code, and its successful maintenance-precompile activation call, not explorer source verification."
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-bridge-native-mezo-bridge-ethereum-mainnet",
+      "deploymentId": "bridge.native-mezo-bridge@ethereum-mainnet",
+      "networkId": "ethereum-mainnet",
+      "observedAt": "2026-08-24T10:31:19.531Z",
+      "observationBlock": {
+        "number": 25824452,
+        "hash": "0x86be6eea4103867dccac11e99db8e6931752d8b3782181c5ec37b701e4b06eac",
+        "timestamp": "2026-08-24T10:31:11.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt",
+        "eth_getTransactionReceipt",
+        "Etherscan Exact Match source and proxy history",
+        "exact solc Standard JSON executable reproduction",
+        "fresh pre-v13 client/block boundary check"
+      ],
+      "activation": {
+        "blockNumber": 22376538,
+        "transactionHash": "0x0accb979b9191a61553e383d8c513ba9c1611bc4305498f4264c9a03c29b9ddb",
+        "logIndex": 157,
+        "blockHash": "0x395cecab694d6eaa668ba8d8fc190e21904d5553bde67953c8d85ec26be81c72",
+        "blockTimestamp": "2025-04-29T18:35:35.000Z"
+      },
+      "runtime": {
+        "addressCodeSha256": "7e57c6c02edf8597091012caeae51452f8074be0207bbb32ba127d6945ca3b9d",
+        "implementationCodeSha256": "784d76e6021efc1ed8a5ea2555f2e860585e81a22958c6b7d7435bacfbdd7440",
+        "artifactBytecodeComparison": {
+          "creationFullExact": true,
+          "creationExecutableExact": true,
+          "runtimeFullExact": true,
+          "runtimeExecutableExact": true,
+          "immutableSubstitutions": 0,
+          "creationFullSha256": "f9323db1852f12bb8729c7509a127c699b357be6ed2f51d9830648b0e30b73cf",
+          "creationExecutableSha256": "4e93698dd4c429535afd18f6be260b5fe2327af932ff10b4883c6a24d00edfad",
+          "runtimeFullSha256": "784d76e6021efc1ed8a5ea2555f2e860585e81a22958c6b7d7435bacfbdd7440",
+          "runtimeExecutableSha256": "267fd56d2062d42ebbc6f7b97a587c7f48a5cffe00ab29e7bfe2f4c29d6ca161"
+        },
+        "implementationSlotValue": "0x0000000000000000000000001f8ed8193b902185c2bd495fe9b1963dc343ba87",
+        "adminSlotValue": "0x000000000000000000000000ef619b73f424506b8ada0e05c2935ab36ec096a2"
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0xef619b73f424506b8ada0e05c2935ab36ec096a2",
+        "currentImplementationAddress": "0x1f8ed8193b902185c2bd495fe9b1963dc343ba87",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x3d282cc0d69e27fbd4aa59dfd08d6a72b45ce889",
+            "effectiveFrom": {
+              "blockNumber": 22376538,
+              "transactionHash": "0x0accb979b9191a61553e383d8c513ba9c1611bc4305498f4264c9a03c29b9ddb",
+              "logIndex": 157,
+              "blockHash": "0x395cecab694d6eaa668ba8d8fc190e21904d5553bde67953c8d85ec26be81c72",
+              "blockTimestamp": "2025-04-29T18:35:35.000Z"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 22989590,
+              "transactionHash": "0xd5a9f659e43b170c9882a20a40812d75258e63f38d557757faa39de54a88adda",
+              "logIndex": 317,
+              "blockHash": "0xc899543782cc3a6bb42e7442c3f817808925d0bb652aa3ad6524b2c12a5f006e",
+              "blockTimestamp": "2025-07-24T14:24:23.000Z"
+            }
+          },
+          {
+            "implementationAddress": "0x2ca0a2c31260cab77e84fbead81082861ef66c4c",
+            "effectiveFrom": {
+              "blockNumber": 22989590,
+              "transactionHash": "0xd5a9f659e43b170c9882a20a40812d75258e63f38d557757faa39de54a88adda",
+              "logIndex": 317,
+              "blockHash": "0xc899543782cc3a6bb42e7442c3f817808925d0bb652aa3ad6524b2c12a5f006e",
+              "blockTimestamp": "2025-07-24T14:24:23.000Z"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 23331652,
+              "transactionHash": "0x4a659748aa9ec87e2782dfd0e8101d2e0676e1e465e1b57770dedc1a83f06e98",
+              "logIndex": 605,
+              "blockHash": "0x7546ec61c5140281159071bcc2a647634304d87484777e96e38ddc8a24f90058",
+              "blockTimestamp": "2025-09-10T08:59:35.000Z"
+            }
+          },
+          {
+            "implementationAddress": "0xd23d709a6858c5e44a9833bbeccf92729fc2c8c8",
+            "effectiveFrom": {
+              "blockNumber": 23331652,
+              "transactionHash": "0x4a659748aa9ec87e2782dfd0e8101d2e0676e1e465e1b57770dedc1a83f06e98",
+              "logIndex": 605,
+              "blockHash": "0x7546ec61c5140281159071bcc2a647634304d87484777e96e38ddc8a24f90058",
+              "blockTimestamp": "2025-09-10T08:59:35.000Z"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 23589330,
+              "transactionHash": "0x81fc9f0dfea4c6d3b85f38164f481ffbbc199772a0623baed8e77f00f6da005f",
+              "logIndex": 467,
+              "blockHash": "0xf06da4bdaef43561ed36eaefb850e9aca0e4752411f218b055320a186ab452ca",
+              "blockTimestamp": "2025-10-16T09:27:35.000Z"
+            }
+          },
+          {
+            "implementationAddress": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+            "effectiveFrom": {
+              "blockNumber": 23589330,
+              "transactionHash": "0x81fc9f0dfea4c6d3b85f38164f481ffbbc199772a0623baed8e77f00f6da005f",
+              "logIndex": 467,
+              "blockHash": "0xf06da4bdaef43561ed36eaefb850e9aca0e4752411f218b055320a186ab452ca",
+              "blockTimestamp": "2025-10-16T09:27:35.000Z"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 25435730,
+              "transactionHash": "0xb2b367b706d88e052af124594a0045b80231a9bf2b0077fc812eb367f26d9961",
+              "logIndex": 97,
+              "blockHash": "0x894a1904a49d46dc3aa976048a56dbef4412b2caa0993662a444cd6ac91032f0",
+              "blockTimestamp": "2026-07-01T05:59:35.000Z"
+            }
+          },
+          {
+            "implementationAddress": "0x1f8ed8193b902185c2bd495fe9b1963dc343ba87",
+            "effectiveFrom": {
+              "blockNumber": 25435730,
+              "transactionHash": "0xb2b367b706d88e052af124594a0045b80231a9bf2b0077fc812eb367f26d9961",
+              "logIndex": 97,
+              "blockHash": "0x894a1904a49d46dc3aa976048a56dbef4412b2caa0993662a444cd6ac91032f0",
+              "blockTimestamp": "2026-07-01T05:59:35.000Z"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ]
+      },
+      "explorer": {
+        "proxyOrDirect": {
+          "address": "0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c",
+          "sourceLabel": "Exact Match",
+          "implementationHistoryEntries": 5,
+          "pageSha256": "38527bdd4912bfd2bb74e367dd354aeaa615a2ad688fcc6eaa9f6dee38cd3488"
+        },
+        "activeContract": {
+          "address": "0x1f8ed8193b902185c2bd495fe9b1963dc343ba87",
+          "name": "MezoBridge",
+          "sourceLabel": "Exact Match",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "optimizerRuns": 10000,
+          "evmVersion": "paris",
+          "abiSemanticSha256": "2fb0503c0ed4ac5b2c1b872b8d8cdabd8c0992674d835ad742621b88a0921b66",
+          "deployedBytecodeSha256": "784d76e6021efc1ed8a5ea2555f2e860585e81a22958c6b7d7435bacfbdd7440",
+          "pageSha256": "c4ea3b70c21df548549b18f14c915f67eb4972340e07546ecef85fd912caac45"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "1dd43a99cea556361fb7bfc6e9774103b7da6458e81af3e362b15fb00d5085f8",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "659298a6d66cd818d16dd5a5c7b1ec0f311bda7c0d702b1e44042d3a3c85193f",
+        "librariesSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "buildProcedure": "Download the Etherscan Exact Match multi-file source page, extract its synthetic settings.json with scripts/extract-etherscan-standard-json.ts, compile with solc v0.8.24+commit.e11b9ed9 --standard-json, and compare the creation transaction/runtime with scripts/compare-standard-json-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "No difference: creation and runtime bytecode, including Solidity metadata, match the exact Etherscan Standard JSON build; the contract has no constructor arguments or immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-bridge-probes-2026-08-24",
+          "recordId": "observe-bridge-native-mezo-bridge-ethereum-mainnet"
+        }
+      },
+      "outcome": "passed"
+    }
+  ]
+}

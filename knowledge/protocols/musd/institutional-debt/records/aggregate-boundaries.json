@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "kind": "institutional-musd-aggregate-boundary-model",
+  "id": "institutional-debt-aggregate-boundaries",
+  "owner": "protocols/musd/institutional-debt",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T13:00:11.077Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "modelBoundary": "classic-versus-institutional"
+  },
+  "limitations": [
+    "No aggregate product backing, solvency, collateralization, exposure, or risk ratio is defined here.",
+    "Post-borrow asset allocation is portfolio state, not a position mutation unless the debt manager records a corresponding change."
+  ],
+  "boundaries": [
+    {
+      "id": "classic-musd",
+      "ownerReference": {
+        "moduleId": "protocols/musd",
+        "resourceId": "musd-system-model"
+      },
+      "includes": [
+        "classic troves",
+        "ActivePool and DefaultPool collateral/debt",
+        "ICR and TCR",
+        "Recovery Mode",
+        "Stability Pool",
+        "classic liquidation and redemption"
+      ],
+      "excludes": [
+        "Enclave balances",
+        "institutional pledged veBTC",
+        "EnclaveDebtManager principal and fees"
+      ]
+    },
+    {
+      "id": "institutional-musd",
+      "includes": [
+        "EnclaveDebtManager principal",
+        "institutional interest and originator fees",
+        "explicitly pledged veBTC",
+        "institutional mint/burn/fee-settlement totals"
+      ],
+      "excludes": [
+        "classic trove collateral/debt",
+        "unpledged Enclave assets",
+        "Savings deposits",
+        "bridge in-flight state",
+        "pool liquidity",
+        "strategy allocation"
+      ]
+    }
+  ],
+  "supplyBoundary": "Both systems can affect the same MUSD token supply through separately authorized mint/burn paths, but token supply does not erase the systems' distinct debt ledgers, collateral definitions, recipients, or lifecycle events.",
+  "ratioRule": "Keep classic TCR and institutional collateral ratios separate. A combined or product-wide ratio requires an accepted owner, exact numerator/denominator, valuation coordinate, inclusion policy, and evidence; none is accepted by this module.",
+  "evidence": [
+    {
+      "sourceArtifactId": "institutional-debt-source-reproduction",
+      "locator": "EnclaveDebtManager dependencies and totals"
+    },
+    {
+      "sourceArtifactId": "musd-system-model",
+      "locator": "classic system aggregates"
+    }
+  ]
+}

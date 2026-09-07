@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-pool-probes-2026-08-23",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T12:20:55.991Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "deploymentIds": [
+      "mezo-earn.cl-factory@mezo-mainnet",
+      "mezo-earn.cl-pool-implementation@mezo-mainnet",
+      "mezo-earn.cl-swap-router@mezo-mainnet",
+      "mezo-earn.cl-position-manager@mezo-mainnet",
+      "mezo-earn.cl-position-descriptor@mezo-mainnet",
+      "incentives.cl-gauge-factory@mezo-mainnet",
+      "incentives.cl-gauge-implementation@mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the recorded block, official explorer source responses, creation metadata, and exact reproduced executable generations.",
+    "Executable equality does not establish source authorship, audit coverage, writer safety, or future deployment identity."
+  ],
+  "registryStatus": null,
+  "observedFrom": "2026-08-23T12:20:55.991Z",
+  "observedThrough": "2026-08-23T12:20:55.991Z",
+  "methodology": [
+    "Resolve documented roots from current official Mezo pool documentation.",
+    "Capture official explorer creation metadata and full source/ABI responses.",
+    "Compile every source bundle independently with the exact recorded Solidity compiler and settings.",
+    "Compare creation and runtime executable bytes, substituting only compiler-recorded immutables.",
+    "Pin RPC code and root relationships at one Mezo Mainnet block."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11333787,
+      "blockHash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+      "blockTimestamp": "2026-08-23T12:20:49.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-mezo-earn-cl-factory-mezo-mainnet",
+      "deploymentId": "mezo-earn.cl-factory@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025392,
+        "blockHash": "0x05c4235058d67c8b98203cd879e81a37a35835a3e264cca5919b0ba4c7ee5683",
+        "blockTimestamp": "2026-01-12T10:01:13.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0x0dbae088fd891095a34ace593b9e335c9838a9ffd7af3b6297f6b9c19d519b28"
+      },
+      "runtime": {
+        "addressCodeSha256": "cf0f53a25054d24f328973f1a77e45a2ca324ceae49e3dc49efe53fce1609a67",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 7,
+          "creationExecutableSha256": "ec0520bbfc32825c8f28741c807d2efbaac35bbbee9db62ea5693edca87f2cd7",
+          "runtimeExecutableSha256": "148ef74b3762fa7befce00d909647a2d7f2e8e088006fddb047b2f3361ad9472",
+          "explorerFullRuntimeSha256": "cf0f53a25054d24f328973f1a77e45a2ca324ceae49e3dc49efe53fce1609a67",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "CLFactory",
+          "filePath": "contracts/slipstream/core/CLFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 34,
+          "abiSemanticSha256": "10a3379c1390ece3f511241b18e3d96130033509de3ae10438ebe3d2d95dc95d",
+          "deployedBytecodeSha256": "cf0f53a25054d24f328973f1a77e45a2ca324ceae49e3dc49efe53fce1609a67"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "4467c0be8c995ea0af99b3bc1f7d14f894315b8218e6f062de4c66c2568ef8f2",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-mezo-earn-cl-factory-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-cl-pool-implementation-mezo-mainnet",
+      "deploymentId": "mezo-earn.cl-pool-implementation@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025379,
+        "blockHash": "0x668450e3ae9136965918668ca568b7e37d7d381e4510e64f9d747948dfea284f",
+        "blockTimestamp": "2026-01-12T10:00:27.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0xc8a617cc19e8fc6330bc4b202372f94421906f1751ab9e1e356876763adabe59"
+      },
+      "runtime": {
+        "addressCodeSha256": "478c0e2b6aeb38735a30d050d9772b7382248901473a1293e7e9f8ac7e4e8910",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "7d60c56ed16cf95b57638f0d3ac600c3205e388b24db8474f0a626b2d4636241",
+          "runtimeExecutableSha256": "d4c7b9b6873408b1f311f82efea2a3c46e199132c468d089b0bce946fc006f09",
+          "explorerFullRuntimeSha256": "478c0e2b6aeb38735a30d050d9772b7382248901473a1293e7e9f8ac7e4e8910",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "CLPool",
+          "filePath": "contracts/slipstream/core/CLPool.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 52,
+          "abiSemanticSha256": "2c2250efdc7e72ea56a67c55590da9857a31e052c8e3d5c4744b942bf4d9bb01",
+          "deployedBytecodeSha256": "478c0e2b6aeb38735a30d050d9772b7382248901473a1293e7e9f8ac7e4e8910"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "234e487f971ccd2588d282cccffd6306f667643c842891378fcf9a867954f072",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-mezo-earn-cl-pool-implementation-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-cl-swap-router-mezo-mainnet",
+      "deploymentId": "mezo-earn.cl-swap-router@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025829,
+        "blockHash": "0x7b5705a9f2ec69e99e45ef15654af9ba04fbcef541c8220a3c8297ea223f94e4",
+        "blockTimestamp": "2026-01-12T10:27:08.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0xe8e0eedbb7fe51de09a8ad78b37d4bed2cfef96718bc3d96f757233799b5f977"
+      },
+      "runtime": {
+        "addressCodeSha256": "3cb4fa6e48fe0e6ac4e448e3991e5a66bb33cd1e93d3f2054bffef0de180598e",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 3,
+          "creationExecutableSha256": "8f1c8d7eaa162e752e2231f18df1dae5fc5a803913b82e8c7e9dd95e46586515",
+          "runtimeExecutableSha256": "212959c5a8150fb3bf963e4e56478b64fda981a8d132bf78ea19d6f6b7e9c1ed",
+          "explorerFullRuntimeSha256": "3cb4fa6e48fe0e6ac4e448e3991e5a66bb33cd1e93d3f2054bffef0de180598e",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "CLSwapRouter",
+          "filePath": "contracts/slipstream/periphery/CLSwapRouter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 16,
+          "abiSemanticSha256": "19cbd929f80fec57f748d49b72545f61aaf583376a3658413c6e6fd0f75b2401",
+          "deployedBytecodeSha256": "3cb4fa6e48fe0e6ac4e448e3991e5a66bb33cd1e93d3f2054bffef0de180598e"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "21acd51e466a21b7e5ab31bd6262b847f71bc1e6e3f7b311f336e7357a3b283f",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-mezo-earn-cl-swap-router-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-cl-position-manager-mezo-mainnet",
+      "deploymentId": "mezo-earn.cl-position-manager@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025761,
+        "blockHash": "0xc57378d905cd80b1585edebba000b9e51ca190f5a252a9a852ebc821879576de",
+        "blockTimestamp": "2026-01-12T10:23:06.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0xf54060f1b21c5a3bc6fbb7b577dffe29e45bb40aa04b282e9f466db563b77377"
+      },
+      "runtime": {
+        "addressCodeSha256": "991cebd92cba6078f16b3e250140978e3ad8269dfee8ee15b4fe5213472344b5",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 9,
+          "creationExecutableSha256": "1cc66ee8ded80a68aba4fca3cd26e555b0c19c44d49342079952463fdd2715f3",
+          "runtimeExecutableSha256": "6cb215e69ac16148bed356fbb1ccdd3b4ee7802364af1798761aee4e3f82d372",
+          "explorerFullRuntimeSha256": "991cebd92cba6078f16b3e250140978e3ad8269dfee8ee15b4fe5213472344b5",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "NonfungiblePositionManager",
+          "filePath": "contracts/slipstream/periphery/NonfungiblePositionManager.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 51,
+          "abiSemanticSha256": "00507cdca8c959bb463037e301dd7ea819b4e15510c4ea6bae872d2906ec8018",
+          "deployedBytecodeSha256": "991cebd92cba6078f16b3e250140978e3ad8269dfee8ee15b4fe5213472344b5"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "caf37d210361f0141f7e19b78581e634bbc186763ecadd8be9f378d95892386a",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-mezo-earn-cl-position-manager-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-mezo-earn-cl-position-descriptor-mezo-mainnet",
+      "deploymentId": "mezo-earn.cl-position-descriptor@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025748,
+        "blockHash": "0x0d6aa0619ef7ed8517d7eb4a39d0b6fb821a8b80c26dcd461c3a9789a11a8717",
+        "blockTimestamp": "2026-01-12T10:22:20.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0x10e8e6386feab9a5159b138b0fae44a87d7929fa32815fa0bf84a4e3a0d67be3"
+      },
+      "runtime": {
+        "addressCodeSha256": "b1301ba9ffa0564cb0906e1a88bf677f9849e054c1890f676486fb292e167e08",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "956696b2008a9c4bf37ec568a4ca637c3e25fa93286b8bac8a6faa5f552ccad9",
+          "runtimeExecutableSha256": "d9ca57a03798bab0432b7761122fdcb29a6240548ae8167651e056ae5db539c5",
+          "explorerFullRuntimeSha256": "b1301ba9ffa0564cb0906e1a88bf677f9849e054c1890f676486fb292e167e08",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "NonfungibleTokenPositionDescriptor",
+          "filePath": "contracts/slipstream/periphery/NonfungibleTokenPositionDescriptor.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 3,
+          "abiSemanticSha256": "26d3c54bd25446f3dbba3a9acddd41eb3a24f0da4f600c067a4b3c21676b7259",
+          "deployedBytecodeSha256": "b1301ba9ffa0564cb0906e1a88bf677f9849e054c1890f676486fb292e167e08"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "9304ff4511566eac562b9318a0b2c403deb6560ba87f8ee6c428abbd02fe1ce7",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "1ef606b9e02167580d8eabd3cb6bab415ec4f2b7377cea2c11ba12107a44d7dc",
+        "librariesSha256": "813fde6d29a4c61729a63093ce9b3d2cb1dea1aea881e1529e8f55207026be13",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-mezo-earn-cl-position-descriptor-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-cl-gauge-factory-mezo-mainnet",
+      "deploymentId": "incentives.cl-gauge-factory@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025417,
+        "blockHash": "0x7442b0937cf3929b11a830c8c6f1c9d832ef7445cf68c5267b8be6da8020ea7e",
+        "blockTimestamp": "2026-01-12T10:02:42.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0x303d709fa2afe6c4cc249fcf13149711a6da84657c565924ca86fc6cbfc7f2a9"
+      },
+      "runtime": {
+        "addressCodeSha256": "009ae39e03d178b8531d41ea2db90479ec31406ff00173e38aaf72a3dd01784d",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 7,
+          "creationExecutableSha256": "d652a3f5e8bcbc4c98b06813eb21d5fdd6fa7c95b9ded23dd0c0d29e13d3fe58",
+          "runtimeExecutableSha256": "df28cb373ae9b9e1bee679bc2ef481ccc999b652e36747b0c480a21668b7e48a",
+          "explorerFullRuntimeSha256": "009ae39e03d178b8531d41ea2db90479ec31406ff00173e38aaf72a3dd01784d",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "CLGaugeFactory",
+          "filePath": "contracts/slipstream/gauge/CLGaugeFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": "basic_implementation",
+          "abiEntries": 21,
+          "abiSemanticSha256": "09617402f188a5376a421a0a83586f87f5ff4f8867af3bb4500c53cddb44997f",
+          "deployedBytecodeSha256": "009ae39e03d178b8531d41ea2db90479ec31406ff00173e38aaf72a3dd01784d"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "66c5f18d7cc75d5ed8ce3ac727a90443995e4048d19891ed79be4fcfff78021c",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-incentives-cl-gauge-factory-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-cl-gauge-implementation-mezo-mainnet",
+      "deploymentId": "incentives.cl-gauge-implementation@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-23T12:20:55.991Z",
+      "observationBlock": {
+        "number": 11333787,
+        "hash": "0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1",
+        "timestamp": "2026-08-23T12:20:49.000Z"
+      },
+      "methods": [
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 6025404,
+        "blockHash": "0x45b376ba5a8adea49392ab2164775f70790726525a4784de4b6cf9db9c0b4255",
+        "blockTimestamp": "2026-01-12T10:01:56.000Z",
+        "blockEvidenceMethod": "official explorer transaction metadata and eth_getBlockByNumber",
+        "transactionHash": "0xe746b448fe05b895eb3a287cff4487e844fb52de61906fd06b440dd36f62730d"
+      },
+      "runtime": {
+        "addressCodeSha256": "cdb5ad0aacf88c16fffc308718048e193d18cf8944a67025b9ab94668d31620c",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "5f46891c0e81715ad887483d496f34788d0f74a8a1c7563a9ef6885652561437",
+          "runtimeExecutableSha256": "7674d9b1a61bbfdcd575fbc508f19c8222206e04b0f251806b9aa459d7c14084",
+          "explorerFullRuntimeSha256": "cdb5ad0aacf88c16fffc308718048e193d18cf8944a67025b9ab94668d31620c",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "CLGauge",
+          "filePath": "contracts/slipstream/gauge/CLGauge.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.7.6+commit.7338295f",
+          "proxyType": null,
+          "abiEntries": 38,
+          "abiSemanticSha256": "ed388f335eebbc2c9dc5ce930defc6ba5e3c41398b6fc95f76b8a9aac55dc2a6",
+          "deployedBytecodeSha256": "cdb5ad0aacf88c16fffc308718048e193d18cf8944a67025b9ab94668d31620c"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "isChangedBytecode": false
+        },
+        "sourceBundleSha256": "ecddc423e4ca5eb812f3a02dfe05df08fba69c66baf1f8462fc670873ac78752",
+        "compilerVersion": "v0.7.6+commit.7338295f",
+        "compilerSettingsSha256": "4393fbc7d3930b13edd9013cdc1741260ae919abef93af652eacb3fc02b04c96",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, and compare with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match; full bytes differ only in Solidity metadata and, where recorded, deployed immutable substitutions.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-pool-probes-2026-08-23",
+          "recordId": "observe-incentives-cl-gauge-implementation-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    }
+  ]
+}

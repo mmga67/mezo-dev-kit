@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": false,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "paths": {
+      "@mezo-dev-kit/chains": ["../../packages/chains/dist/index.d.ts"],
+      "@mezo-dev-kit/contracts": ["../../packages/contracts/dist/index.d.ts"],
+      "@mezo-dev-kit/core": ["../../packages/core/dist/index.d.ts"]
+    },
+    "rootDir": "./src",
+    "sourceMap": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"]
+}

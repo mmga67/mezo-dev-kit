@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MDK knowledge module index v0.4",
+  "allOf": [
+    {
+      "$ref": "./common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["knowledgeVersion", "moduleId", "resources", "checks"],
+  "properties": {
+    "knowledgeVersion": {
+      "const": "0.4"
+    },
+    "kind": {
+      "const": "knowledge-module-index"
+    },
+    "moduleId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[./-][a-z0-9]+)*$"
+    },
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "kind", "path"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "role": {
+            "enum": [
+              "canonical-record",
+              "source-catalog",
+              "evidence",
+              "fixture",
+              "schema",
+              "review",
+              "artifact",
+              "generated"
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recordIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:[./@#-][a-z0-9]+)*$"
+            },
+            "uniqueItems": true
+          },
+          "recordCollectionPointer": {
+            "type": "string",
+            "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+          },
+          "generatedFrom": {
+            "type": "array",
+            "items": {
+              "$ref": "./logical-reference.schema.json"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "command"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "type": {
+            "enum": ["structural", "semantic", "generation", "drift"]
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "unevaluatedProperties": false
+}

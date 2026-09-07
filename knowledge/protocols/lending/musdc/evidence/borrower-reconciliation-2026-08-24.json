@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-borrower-reconciliation-evidence",
+  "id": "musdc-lending-borrower-reconciliation",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T14:34:51Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkId": "mezo-mainnet",
+    "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+    "fromBlock": 9282199,
+    "throughBlock": 9282201
+  },
+  "limitations": [
+    "This packet reconciles one representative collateral-supply and borrow sequence; it is not a complete borrower history or market event index.",
+    "The bounded event scan covered only blocks 9274335 through 9284334 and does not establish the absence or outcome of events outside that range.",
+    "Successful historical execution does not establish current operation safety, writer support, audit coverage, or a reusable borrower identity."
+  ],
+  "marketReference": {
+    "moduleId": "protocols/lending/musdc",
+    "resourceId": "musdc-lending-market"
+  },
+  "morphoDeploymentReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-deployments",
+    "recordId": "lending.morpho@mezo-mainnet"
+  },
+  "eventDefinitionSourceReference": {
+    "moduleId": "protocols/lending/musdc",
+    "resourceId": "musdc-lending-sources",
+    "recordId": "morpho-upstream"
+  },
+  "capture": {
+    "queriedAt": "2026-08-24T14:34:51Z",
+    "methods": [
+      "eth_getBlockByNumber",
+      "eth_getLogs",
+      "eth_getTransactionByHash",
+      "eth_getTransactionReceipt",
+      "eth_call"
+    ],
+    "endpointReferences": [
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-boar-https"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-drpc-https"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "rpc-endpoints",
+        "recordId": "mezo-mainnet-validation-cloud-https"
+      }
+    ],
+    "eventRange": {
+      "fromBlock": 9274335,
+      "toBlock": 9284334,
+      "supplyCollateralMatches": 2,
+      "borrowMatches": 2,
+      "selectionRule": "Use the first same-borrower SupplyCollateral and immediately following Borrow pair for deterministic pre/post-state reconciliation."
+    }
+  },
+  "subject": {
+    "morpho": "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+    "borrower": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+    "marketParams": {
+      "loanToken": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197",
+      "collateralToken": "0x7b7C000000000000000000000000000000000000",
+      "oracle": "0xea0597d3d44FF2ea1E4c35501e153f4C025e48d1",
+      "irm": "0x3760Ebc636F912a4dB9540fdA4Dec09C25C6C1e7",
+      "lltv": "860000000000000000"
+    }
+  },
+  "states": [
+    {
+      "id": "before-collateral",
+      "blockNumber": 9282199,
+      "blockHash": "0x266b5658ec01ce55a9de3e6c47b35db007e98252a5c72743905de43efd7b5817",
+      "blockTimestamp": "2026-05-28T19:23:15Z",
+      "position": {
+        "supplyShares": "0",
+        "borrowShares": "0",
+        "collateral": "0"
+      }
+    },
+    {
+      "id": "after-collateral",
+      "blockNumber": 9282200,
+      "blockHash": "0xc9ef05b0bb3ebc7a5efc7a51bf0e8bf13f70883e0e58675353ecaff89538d69f",
+      "blockTimestamp": "2026-05-28T19:23:19Z",
+      "position": {
+        "supplyShares": "0",
+        "borrowShares": "0",
+        "collateral": "50000000000000"
+      }
+    },
+    {
+      "id": "after-borrow",
+      "blockNumber": 9282201,
+      "blockHash": "0xedf699b1ae5166865690fb4b410a1944ac0f4e656d321c1a85fc5f4e95bed6db",
+      "blockTimestamp": "2026-05-28T19:23:23Z",
+      "position": {
+        "supplyShares": "0",
+        "borrowShares": "100000000000",
+        "collateral": "50000000000000"
+      }
+    }
+  ],
+  "operations": [
+    {
+      "id": "supply-collateral",
+      "functionSelector": "0x238d6579",
+      "transactionHash": "0x674f974843d31c64061a9efb8baca511a8254d4c79152ae066043b715f1c3769",
+      "blockNumber": 9282200,
+      "blockHash": "0xc9ef05b0bb3ebc7a5efc7a51bf0e8bf13f70883e0e58675353ecaff89538d69f",
+      "blockTimestamp": "2026-05-28T19:23:19Z",
+      "receiptStatus": "0x1",
+      "from": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+      "to": "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+      "value": "0",
+      "decodedCall": {
+        "signature": "supplyCollateral((address,address,address,address,uint256),uint256,address,bytes)",
+        "assets": "50000000000000",
+        "onBehalf": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "callbackData": "0x"
+      },
+      "event": {
+        "signature": "SupplyCollateral(bytes32,address,address,uint256)",
+        "topic0": "0xa3b9472a1399e17e123f3c2e6586c23e504184d504de59cdaa2b375e880c6184",
+        "logIndex": 0,
+        "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+        "caller": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "onBehalf": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "assets": "50000000000000"
+      },
+      "tokenTransfer": {
+        "token": "0x7b7C000000000000000000000000000000000000",
+        "from": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "to": "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+        "amount": "50000000000000",
+        "logIndex": 1
+      },
+      "stateTransition": {
+        "fromStateId": "before-collateral",
+        "toStateId": "after-collateral"
+      }
+    },
+    {
+      "id": "borrow",
+      "functionSelector": "0x50d8cd4b",
+      "transactionHash": "0x440f374f7c7aa3bb738b05d235ad03bf88f5a780fb068c648d49b367e969f223",
+      "blockNumber": 9282201,
+      "blockHash": "0xedf699b1ae5166865690fb4b410a1944ac0f4e656d321c1a85fc5f4e95bed6db",
+      "blockTimestamp": "2026-05-28T19:23:23Z",
+      "receiptStatus": "0x1",
+      "from": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+      "to": "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+      "value": "0",
+      "decodedCall": {
+        "signature": "borrow((address,address,address,address,uint256),uint256,uint256,address,address)",
+        "assets": "100000",
+        "shares": "0",
+        "onBehalf": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "receiver": "0x6e80164ea60673D64d5d6228beb684a1274Bb017"
+      },
+      "event": {
+        "signature": "Borrow(bytes32,address,address,address,uint256,uint256)",
+        "topic0": "0x570954540bed6b1304a87dfe815a5eda4a648f7097a16240dcd85c9b5fd42a43",
+        "logIndex": 2,
+        "marketId": "0x6f88e79e8acb3a3ac2f990dcfb83b42ddae96ef406cd735f1721b2a2e1b733db",
+        "caller": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "onBehalf": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "receiver": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "assets": "100000",
+        "shares": "100000000000"
+      },
+      "tokenTransfer": {
+        "token": "0x04671C72Aab5AC02A03c1098314b1BB6B560c197",
+        "from": "0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+        "to": "0x6e80164ea60673D64d5d6228beb684a1274Bb017",
+        "amount": "100000",
+        "logIndex": 3
+      },
+      "stateTransition": {
+        "fromStateId": "after-collateral",
+        "toStateId": "after-borrow"
+      }
+    }
+  ]
+}

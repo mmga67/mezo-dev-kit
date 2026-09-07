@@ -1,0 +1,868 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-economic-system-probes-2026-08-23",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T15:30:07Z",
+  "reviewAfter": "2026-09-24T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "deploymentIds": [
+      "musd.savings-rate@mezo-mainnet",
+      "lending.morpho@mezo-mainnet",
+      "lending.adaptive-curve-irm@mezo-mainnet",
+      "lending.musdc-btc-oracle@mezo-mainnet",
+      "vaults.usdc-lending-market-adapter@mezo-mainnet",
+      "vaults.usdc-lending-wrapper@mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the pinned block, official explorer activation/source/ABI responses, complete Upgraded-log histories, historical ERC-1967 slot boundaries, and isolated exact executable reproductions of current generations.",
+    "Historical proxy generations retain official explorer source metadata and exact closed ranges but do not gain canonical historical ABIs, executable reproduction, operation support, or an audit claim from this packet.",
+    "VaultV2 and VaultGauge remain candidates because their official explorer records omit creation input; they are not silently entered through this packet."
+  ],
+  "registryStatus": null,
+  "observedFrom": "2026-08-24T15:30:07Z",
+  "observedThrough": "2026-08-24T15:30:07Z",
+  "methodology": [
+    "Resolve current product topology and stable roots from official docs and on-chain reverse links.",
+    "Enumerate every official explorer Upgraded log for each proxy and fail rather than truncate a paginated history.",
+    "Pin every upgrade transaction, block/hash/timestamp, and before/after ERC-1967 implementation-slot boundary.",
+    "Pin current runtime code and EIP-1967 slots at one fixed block.",
+    "Fetch generation-specific official explorer source metadata and the exact source/compiler/ABI bundle for each current implementation.",
+    "Compile current generations in isolation with exact compiler settings and compare executable bytes plus ABI semantics."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11341710,
+      "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+      "blockTimestamp": "2026-08-23T20:17:37Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-musd-savings-rate-mezo-mainnet",
+      "deploymentId": "musd.savings-rate@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt EIP-1967 slots",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5045441,
+        "blockHash": "0x8f9f930cce0711a9a6f5304bb5d7c785bf01b77860d05baccbfddb665e384404",
+        "blockTimestamp": "2025-12-02T18:20:46.000Z",
+        "transactionHash": "0xd8622652aa1275d5e7a7b2817f9c151e0868e11e0e3b4b69406ad29ee5754600",
+        "logIndex": 0,
+        "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "3a9bec4cf58ef60c3a34360c2443afcd835cc296e40ec941d7a6d8c211a51111",
+        "implementationCodeSha256": "8739fb3a70a6679d5b5355085505328922150dd91f2db20ee19a2e4cd6bf4565",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 1,
+          "creationExecutableSha256": "1d36b9a9e3527cb74ded02a45b368b8e132309fc26a33f51454a2e1c300094d6",
+          "runtimeExecutableSha256": "f56a17a5a31b2eb5faf266de4bf593dc30631018ccfad6c23b42aefa73be6b9b",
+          "explorerFullRuntimeSha256": "8739fb3a70a6679d5b5355085505328922150dd91f2db20ee19a2e4cd6bf4565",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x973c1a54b1b8d4ad04ea1d8469cda159672b95d0",
+        "currentImplementationAddress": "0xb33c3f97bf3b7df59417d114c694353e42929e87",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c",
+            "effectiveFrom": {
+              "blockNumber": 5045441,
+              "blockHash": "0x8f9f930cce0711a9a6f5304bb5d7c785bf01b77860d05baccbfddb665e384404",
+              "blockTimestamp": "2025-12-02T18:20:46.000Z",
+              "transactionHash": "0xd8622652aa1275d5e7a7b2817f9c151e0868e11e0e3b4b69406ad29ee5754600",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 5,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            }
+          },
+          {
+            "implementationAddress": "0x885c04131666f49ede55f84e00b05886314e7514",
+            "effectiveFrom": {
+              "blockNumber": 6265915,
+              "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
+              "blockTimestamp": "2026-01-22T09:43:48.000Z",
+              "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
+              "logIndex": 5,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 7574938,
+              "blockHash": "0x6f2758b906cf5683145f58a261257e0550929d1521b1ce7bd6664ea08e9ce44e",
+              "blockTimestamp": "2026-03-18T15:21:32.000Z",
+              "transactionHash": "0xe0cd5e434758db36ae0651fc83b59ea069e0c2dd3fbfbee77a8ae034fab907a9",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            }
+          },
+          {
+            "implementationAddress": "0xc8f2626afdedc89b024ef7541faff280889d94a1",
+            "effectiveFrom": {
+              "blockNumber": 7574938,
+              "blockHash": "0x6f2758b906cf5683145f58a261257e0550929d1521b1ce7bd6664ea08e9ce44e",
+              "blockTimestamp": "2026-03-18T15:21:32.000Z",
+              "transactionHash": "0xe0cd5e434758db36ae0651fc83b59ea069e0c2dd3fbfbee77a8ae034fab907a9",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 8422461,
+              "blockHash": "0x3384b2380d049ce43d6e8f66dcfcdb2735fc56ccc57789584cc06073db64532a",
+              "blockTimestamp": "2026-04-22T22:34:50.000Z",
+              "transactionHash": "0x2849cd6d488a8b5278da35c8cd6cabba3c26dd0e76224d18f6eaee590468d43c",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            }
+          },
+          {
+            "implementationAddress": "0x874e281725b75bc9ac138e17768a7471199d7f2c",
+            "effectiveFrom": {
+              "blockNumber": 8422461,
+              "blockHash": "0x3384b2380d049ce43d6e8f66dcfcdb2735fc56ccc57789584cc06073db64532a",
+              "blockTimestamp": "2026-04-22T22:34:50.000Z",
+              "transactionHash": "0x2849cd6d488a8b5278da35c8cd6cabba3c26dd0e76224d18f6eaee590468d43c",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 9088927,
+              "blockHash": "0x3aadb4fe254abfd76e5a64662a0a6b7beba71edaf2ce61d64a62508cf152e14b",
+              "blockTimestamp": "2026-05-20T15:56:34.000Z",
+              "transactionHash": "0x337234d3a02af7d0e2828eefd8e3a1a55b9085c935de7be2a2333aa3033c0e38",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            }
+          },
+          {
+            "implementationAddress": "0xb33c3f97bf3b7df59417d114c694353e42929e87",
+            "effectiveFrom": {
+              "blockNumber": 9088927,
+              "blockHash": "0x3aadb4fe254abfd76e5a64662a0a6b7beba71edaf2ce61d64a62508cf152e14b",
+              "blockTimestamp": "2026-05-20T15:56:34.000Z",
+              "transactionHash": "0x337234d3a02af7d0e2828eefd8e3a1a55b9085c935de7be2a2333aa3033c0e38",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ],
+        "historyEvidence": {
+          "eventTopic": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+          "eventSourceArtifact": {
+            "path": "api/v2/addresses/0xb4d498029af77680cd1ef828b967f010d06c51cc/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+            "sha256": "77f95424b7d4144dd3735080aa7ff0ddff5ee748d6759b0c7bff1bef856a4812"
+          },
+          "observedEventCount": 5,
+          "slotBoundaries": [
+            {
+              "blockNumber": 5045441,
+              "previousBlockNumber": 5045440,
+              "implementationBefore": "0x0000000000000000000000000000000000000000",
+              "implementationAt": "0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c"
+            },
+            {
+              "blockNumber": 6265915,
+              "previousBlockNumber": 6265914,
+              "implementationBefore": "0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c",
+              "implementationAt": "0x885c04131666f49ede55f84e00b05886314e7514"
+            },
+            {
+              "blockNumber": 7574938,
+              "previousBlockNumber": 7574937,
+              "implementationBefore": "0x885c04131666f49ede55f84e00b05886314e7514",
+              "implementationAt": "0xc8f2626afdedc89b024ef7541faff280889d94a1"
+            },
+            {
+              "blockNumber": 8422461,
+              "previousBlockNumber": 8422460,
+              "implementationBefore": "0xc8f2626afdedc89b024ef7541faff280889d94a1",
+              "implementationAt": "0x874e281725b75bc9ac138e17768a7471199d7f2c"
+            },
+            {
+              "blockNumber": 9088927,
+              "previousBlockNumber": 9088926,
+              "implementationBefore": "0x874e281725b75bc9ac138e17768a7471199d7f2c",
+              "implementationAt": "0xb33c3f97bf3b7df59417d114c694353e42929e87"
+            }
+          ],
+          "generationSources": [
+            {
+              "implementationAddress": "0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c",
+              "name": "MUSDSavingsRate",
+              "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+              "compilerVersion": "v0.8.24+commit.e11b9ed9",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 45,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0xa45b248e1e44a45c995d5d6fff4f11ae5b433c4c",
+                "sha256": "cfb6727d4820101e05554204251f25a408da6de931b54aa79d3c590de382af49"
+              },
+              "executableReproduction": "not-reproduced-historical-generation"
+            },
+            {
+              "implementationAddress": "0x885c04131666f49ede55f84e00b05886314e7514",
+              "name": "MUSDSavingsRate",
+              "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+              "compilerVersion": "v0.8.24+commit.e11b9ed9",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 46,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0x885c04131666f49ede55f84e00b05886314e7514",
+                "sha256": "0e8a11aad50770bfc0bc933a3ddbc6215897081abc8c922c037d6af7b43fb976"
+              },
+              "executableReproduction": "not-reproduced-historical-generation"
+            },
+            {
+              "implementationAddress": "0xc8f2626afdedc89b024ef7541faff280889d94a1",
+              "name": "MUSDSavingsRate",
+              "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+              "compilerVersion": "v0.8.33+commit.64118f21",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 50,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0xc8f2626afdedc89b024ef7541faff280889d94a1",
+                "sha256": "29a08d3459fcebed0e36d1260b0683bf73d0cc32fa84926ea8e22e6de15fd767"
+              },
+              "executableReproduction": "not-reproduced-historical-generation"
+            },
+            {
+              "implementationAddress": "0x874e281725b75bc9ac138e17768a7471199d7f2c",
+              "name": "MUSDSavingsRate",
+              "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+              "compilerVersion": "v0.8.33+commit.64118f21",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 56,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0x874e281725b75bc9ac138e17768a7471199d7f2c",
+                "sha256": "e69425a40d3855c93993c7c2c70f8c1cd38e774e62586240d6f95a82df294674"
+              },
+              "executableReproduction": "not-reproduced-historical-generation"
+            },
+            {
+              "implementationAddress": "0xb33c3f97bf3b7df59417d114c694353e42929e87",
+              "name": "MUSDSavingsRate",
+              "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+              "compilerVersion": "v0.8.33+commit.64118f21",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 55,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0xb33c3f97bf3b7df59417d114c694353e42929e87",
+                "sha256": "8e4cdc0fc5467450bf4897c8dd510519375353b8e4defd95fdc8151cee3db73e"
+              },
+              "executableReproduction": "exact-current-generation"
+            }
+          ],
+          "historicalGenerationPolicy": "Resolve the implementation by the requested coordinate; use the latest verified generation for present operations, while retaining closed historical ranges for replay and audit."
+        }
+      },
+      "explorer": {
+        "activeContract": {
+          "name": "MUSDSavingsRate",
+          "filePath": "contracts/vaults/MUSDSavingsRate.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "proxyType": null,
+          "abiEntries": 55,
+          "abiSemanticSha256": "f38991522ea4e7c907b1623382bdc880e10f96159d84a6f5cabf513ad5fdfd67",
+          "deployedBytecodeSha256": "8739fb3a70a6679d5b5355085505328922150dd91f2db20ee19a2e4cd6bf4565"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "541438f3cfac9a7030e3f8e8d92079041fd9a310ed337578cdfa207e0e8abffd",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match after immutable substitution where applicable; full runtime bytes may differ only in Solidity metadata.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-musd-savings-rate-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-lending-morpho-mezo-mainnet",
+      "deploymentId": "lending.morpho@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 9206917,
+        "blockHash": "0xb5dca27661f41a2975ca1e4645e6d178fcf6ca177e8f0a69e09cedeb6cc3eb7a",
+        "blockTimestamp": "2026-05-25T15:04:32Z",
+        "transactionHash": "0x1459043d5cc8f8882ed154334a8ebd82df1129028b1e613a81a52109d49db48f",
+        "blockEvidenceMethod": "official explorer creation transaction and eth_getBlockByNumber"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "503b1a0be404a21efd01e9491e6b1a132fd506352936c84db3e3aa38aa69e746",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 2,
+          "creationExecutableSha256": "eedc07021adfd8f032f932cba6f63a8a418857ef9c8096b0a7e93a8541662088",
+          "runtimeExecutableSha256": "613e1df79c1eb308ca305d1d9f91bf38478603e94a70a151eff1d5e10d7ef9f0",
+          "explorerFullRuntimeSha256": "503b1a0be404a21efd01e9491e6b1a132fd506352936c84db3e3aa38aa69e746",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "Morpho",
+          "filePath": "src/Morpho.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.8.19+commit.7dd6d404",
+          "proxyType": null,
+          "abiEntries": 29,
+          "abiSemanticSha256": "b5c2a462923153ed81bda649cfd487fc8923e3bfcc0b9e9f7a625e9e97910ad8",
+          "deployedBytecodeSha256": "503b1a0be404a21efd01e9491e6b1a132fd506352936c84db3e3aa38aa69e746"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "30f10653e07dd40e708e02b17877584b151f9366e3bd5130db81069123ce2ce0",
+        "compilerVersion": "v0.8.19+commit.7dd6d404",
+        "compilerSettingsSha256": "e843715b8c5b6e6c33aef71395677f49f48dc930c9b71c405ff408221fbae975",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match after immutable substitution where applicable; full runtime bytes may differ only in Solidity metadata.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-lending-morpho-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-lending-adaptive-curve-irm-mezo-mainnet",
+      "deploymentId": "lending.adaptive-curve-irm@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 9222603,
+        "blockHash": "0xfc06d34f65cdf4aa542d6ec66e81357482a33f105b297cea1a506c5f972ff4f9",
+        "blockTimestamp": "2026-05-26T06:51:58Z",
+        "transactionHash": "0x1aa04270b516a08f09c49a731c2afe1182dc5e654b33561cd2664deedca1c68a",
+        "blockEvidenceMethod": "official explorer creation transaction and eth_getBlockByNumber"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "8e56a873ea5e23559aeb47f87ff3e745fb24e9f6909387e0febd62e86b75076c",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 2,
+          "creationExecutableSha256": "8d0bb13b00cd09b0e98dd86828b830fef4127891006ea1f0fa0a484faff78380",
+          "runtimeExecutableSha256": "52c08d3ea42ab6ae28c6783069aaf0921bb2d04efbb7b0b15f76c09d7c485ada",
+          "explorerFullRuntimeSha256": "8e56a873ea5e23559aeb47f87ff3e745fb24e9f6909387e0febd62e86b75076c",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "AdaptiveCurveIrm",
+          "filePath": "lib/morpho-blue-irm/src/adaptive-curve-irm/AdaptiveCurveIrm.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.8.19+commit.7dd6d404",
+          "proxyType": null,
+          "abiEntries": 6,
+          "abiSemanticSha256": "4c88954cd1fe2f499229b676b4bee0b11350cc7a3b7d086096a040d4adb8f16a",
+          "deployedBytecodeSha256": "8e56a873ea5e23559aeb47f87ff3e745fb24e9f6909387e0febd62e86b75076c"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "7e9691230923e4b827a81b42942e6210f04216cd02a7fb813bb1fd4169d51796",
+        "compilerVersion": "v0.8.19+commit.7dd6d404",
+        "compilerSettingsSha256": "74ac320a75b9b20bbbdddef0ab378f26700652000bc35a4a8465c9762a7945b9",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match after immutable substitution where applicable; full runtime bytes may differ only in Solidity metadata.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-lending-adaptive-curve-irm-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-lending-musdc-btc-oracle-mezo-mainnet",
+      "deploymentId": "lending.musdc-btc-oracle@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt EIP-1967 slots",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 9226009,
+        "blockHash": "0x68a4d1259bd20e1ee0813eb04c5ffaf1819a6d134c089780c6a5cbd2d80a2dd4",
+        "blockTimestamp": "2026-05-26T10:17:54.000Z",
+        "transactionHash": "0x868823ace4e5cad30f8f2b75e178d30a1d1f9d4c88da6ed74b96acf8e8748682",
+        "logIndex": 0,
+        "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "4fd4e53e1f1ba95dc73aa7ddb779546561ecfb66e5e8854b8c1354b0683d9651",
+        "implementationCodeSha256": "21e60b2c114a8e5cf0e55cd0c2b9304bfe07959df96a5181391abaa88c9b9acd",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "cbb3c43a785406d34e186dd184f83b0b3c62d38c153b1642e38e722a1e7f34c9",
+          "runtimeExecutableSha256": "629ed18258333b121018c9cc8bce5043eecc57bd54633dc393846f5a5233cc1f",
+          "explorerFullRuntimeSha256": "21e60b2c114a8e5cf0e55cd0c2b9304bfe07959df96a5181391abaa88c9b9acd",
+          "fullExact": true
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x7745bab2fe49d39d3cc4d0a841117579a8718291",
+        "currentImplementationAddress": "0x799c63c61b885ef546c1469c182eaa54a36554d4",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x799c63c61b885ef546c1469c182eaa54a36554d4",
+            "effectiveFrom": {
+              "blockNumber": 9226009,
+              "blockHash": "0x68a4d1259bd20e1ee0813eb04c5ffaf1819a6d134c089780c6a5cbd2d80a2dd4",
+              "blockTimestamp": "2026-05-26T10:17:54.000Z",
+              "transactionHash": "0x868823ace4e5cad30f8f2b75e178d30a1d1f9d4c88da6ed74b96acf8e8748682",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ],
+        "historyEvidence": {
+          "eventTopic": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+          "eventSourceArtifact": {
+            "path": "api/v2/addresses/0xea0597d3d44ff2ea1e4c35501e153f4c025e48d1/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+            "sha256": "16c18e9d329fb5bd8f3aaa2c8633afdd3cb36684377ff760478dc623cb3e482e"
+          },
+          "observedEventCount": 1,
+          "slotBoundaries": [
+            {
+              "blockNumber": 9226009,
+              "previousBlockNumber": 9226008,
+              "implementationBefore": "0x0000000000000000000000000000000000000000",
+              "implementationAt": "0x799c63c61b885ef546c1469c182eaa54a36554d4"
+            }
+          ],
+          "generationSources": [
+            {
+              "implementationAddress": "0x799c63c61b885ef546c1469c182eaa54a36554d4",
+              "name": "MorphoPriceOracle",
+              "filePath": "contracts/oracles/MorphoPriceOracle.sol",
+              "compilerVersion": "v0.8.33+commit.64118f21",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 20,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0x799c63c61b885ef546c1469c182eaa54a36554d4",
+                "sha256": "445c7996c581a027c0fa271f8e51438f12597c02d40496f3e54fb26005c7ecaf"
+              },
+              "executableReproduction": "exact-current-generation"
+            }
+          ],
+          "historicalGenerationPolicy": "Resolve the implementation by the requested coordinate; use the latest verified generation for present operations, while retaining closed historical ranges for replay and audit."
+        }
+      },
+      "explorer": {
+        "activeContract": {
+          "name": "MorphoPriceOracle",
+          "filePath": "contracts/oracles/MorphoPriceOracle.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "proxyType": null,
+          "abiEntries": 20,
+          "abiSemanticSha256": "4ce6e669bcdfa935533dd5842c2ba21e5378052abce2f6644e9925451bce24db",
+          "deployedBytecodeSha256": "21e60b2c114a8e5cf0e55cd0c2b9304bfe07959df96a5181391abaa88c9b9acd"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "d6d17972539466988ea6f8bcdc4f1f96fcc1bf7737a315339ba2a712dabf77ff",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Full implementation bytecode matches.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-lending-musdc-btc-oracle-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-vaults-usdc-lending-market-adapter-mezo-mainnet",
+      "deploymentId": "vaults.usdc-lending-market-adapter@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 9274357,
+        "blockHash": "0x10ceb234db356022fe55a1621ccd50b05d7560af504b17c182578d9837e3b4ad",
+        "blockTimestamp": "2026-05-28T11:10:11Z",
+        "transactionHash": "0xbe16512b5cb529f76812975c2ead40b11653df889a9c19bf45fc3e3fdc3063bc",
+        "blockEvidenceMethod": "official explorer creation transaction and eth_getBlockByNumber"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "47cd22243a5e4f0986482b3fa1051e89e48cf67db4f14c572d7e818ee18863a0",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 20,
+          "creationExecutableSha256": "7d019230b0c4fd59b4f5490e80970cb0d227402f427e47a5aec0a600be86c756",
+          "runtimeExecutableSha256": "41ece35d20616a51fa51618e905ce8ef6fdd08aa1da76b91239cc68425c35db0",
+          "explorerFullRuntimeSha256": "47cd22243a5e4f0986482b3fa1051e89e48cf67db4f14c572d7e818ee18863a0",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "activeContract": {
+          "name": "MorphoMarketV1AdapterV2",
+          "filePath": "src/adapters/MorphoMarketV1AdapterV2.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "compilerVersion": "v0.8.28+commit.7893614a",
+          "proxyType": null,
+          "abiEntries": 55,
+          "abiSemanticSha256": "75dd56e616cae1d5c296c71710cab0b16967a2a4b07da37e35e3d57ca6268ab5",
+          "deployedBytecodeSha256": "47cd22243a5e4f0986482b3fa1051e89e48cf67db4f14c572d7e818ee18863a0"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "75e6bf583f2eecc245761781811c67197db49e86c7fe5b224c6ed53690111e15",
+        "compilerVersion": "v0.8.28+commit.7893614a",
+        "compilerSettingsSha256": "6b7964bc61ea2882f4fc35ee603adb40c196b73f66d21c2bde7c4fdec3eb48c1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match after immutable substitution where applicable; full runtime bytes may differ only in Solidity metadata.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-vaults-usdc-lending-market-adapter-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-vaults-usdc-lending-wrapper-mezo-mainnet",
+      "deploymentId": "vaults.usdc-lending-wrapper@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T15:30:07Z",
+      "observationBlock": {
+        "number": 11341710,
+        "hash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "timestamp": "2026-08-23T20:17:37Z"
+      },
+      "methods": [
+        "official explorer creation transaction",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "eth_getStorageAt EIP-1967 slots",
+        "official explorer source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 9274615,
+        "blockHash": "0x87f7f19c58155df0e4a7a5734f1eab24b405a0d2ae5dae224a4950ec6fe1825d",
+        "blockTimestamp": "2026-05-28T11:25:54.000Z",
+        "transactionHash": "0x57a7eb3e3c6ba7a8f2a64d89b3c5c29a16d04ac19fbc68b2c259ece64c320b97",
+        "logIndex": 0,
+        "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T15:30:07Z",
+        "blockNumber": 11341710,
+        "blockHash": "0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0",
+        "addressCodeSha256": "9660bebfd07bceee60f78aff8edb6a3ce227e75756d7cf24bcf2f0d6bd7f5f16",
+        "implementationCodeSha256": "c646ab923e842caadf4cf55640455a84e64a6ac87589160a73371fc2e9bd23c8",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 1,
+          "creationExecutableSha256": "668edf2e28798bccb7d519b148e6ede5fda0743a956bb0bd5a4c74169db3c192",
+          "runtimeExecutableSha256": "45533af72b382be3a28e8fd683613f0672aed1d734ee113f77d36b8c572831dd",
+          "explorerFullRuntimeSha256": "c646ab923e842caadf4cf55640455a84e64a6ac87589160a73371fc2e9bd23c8",
+          "fullExact": false
+        }
+      },
+      "proxy": {
+        "standard": "eip-1967-transparent",
+        "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+        "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+        "adminAddress": "0x2214926add617fbd6b7634ecb128f0293e0910dd",
+        "currentImplementationAddress": "0x80ec90e54e577dac8efca30f96bf21fe4efa885d",
+        "implementationHistory": [
+          {
+            "implementationAddress": "0x80ec90e54e577dac8efca30f96bf21fe4efa885d",
+            "effectiveFrom": {
+              "blockNumber": 9274615,
+              "blockHash": "0x87f7f19c58155df0e4a7a5734f1eab24b405a0d2ae5dae224a4950ec6fe1825d",
+              "blockTimestamp": "2026-05-28T11:25:54.000Z",
+              "transactionHash": "0x57a7eb3e3c6ba7a8f2a64d89b3c5c29a16d04ac19fbc68b2c259ece64c320b97",
+              "logIndex": 0,
+              "blockEvidenceMethod": "official explorer Upgraded log, eth_getBlockByNumber, and before/after eth_getStorageAt"
+            },
+            "effectiveUntilExclusive": null
+          }
+        ],
+        "historyEvidence": {
+          "eventTopic": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+          "eventSourceArtifact": {
+            "path": "api/v2/addresses/0xd3f6f147662bf2943ca09ee16bedaea28ae28788/logs?topic=0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+            "sha256": "2f0a57918cf8472d81c7f6961e52e5fad34d351990940b1b74be106ff704fc8d"
+          },
+          "observedEventCount": 1,
+          "slotBoundaries": [
+            {
+              "blockNumber": 9274615,
+              "previousBlockNumber": 9274614,
+              "implementationBefore": "0x0000000000000000000000000000000000000000",
+              "implementationAt": "0x80ec90e54e577dac8efca30f96bf21fe4efa885d"
+            }
+          ],
+          "generationSources": [
+            {
+              "implementationAddress": "0x80ec90e54e577dac8efca30f96bf21fe4efa885d",
+              "name": "ERC4626VaultAdapter",
+              "filePath": "contracts/vaults/ERC4626VaultAdapter.sol",
+              "compilerVersion": "v0.8.33+commit.64118f21",
+              "isVerified": true,
+              "isFullyVerified": true,
+              "isPartiallyVerified": false,
+              "isChangedBytecode": false,
+              "abiEntries": 46,
+              "sourceArtifact": {
+                "path": "api/v2/smart-contracts/0x80ec90e54e577dac8efca30f96bf21fe4efa885d",
+                "sha256": "2762fcd82101c844e7ab50e80dc29d22cbc872fd026553f893de969c900b4f95"
+              },
+              "executableReproduction": "exact-current-generation"
+            }
+          ],
+          "historicalGenerationPolicy": "Resolve the implementation by the requested coordinate; use the latest verified generation for present operations, while retaining closed historical ranges for replay and audit."
+        }
+      },
+      "explorer": {
+        "activeContract": {
+          "name": "ERC4626VaultAdapter",
+          "filePath": "contracts/vaults/ERC4626VaultAdapter.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "compilerVersion": "v0.8.33+commit.64118f21",
+          "proxyType": null,
+          "abiEntries": 46,
+          "abiSemanticSha256": "c1220ba62f9eeecf1b577c274f96c27b093aa4a4d1a646f574f4a2e4b062ee5a",
+          "deployedBytecodeSha256": "c646ab923e842caadf4cf55640455a84e64a6ac87589160a73371fc2e9bd23c8"
+        },
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "66d7cbd0bc85f8e51d8bcecf0e4223279c8c2a37ea2d3ac8f321774948c43f3c",
+        "compilerVersion": "v0.8.33+commit.64118f21",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the official explorer bundle, create an isolated Foundry project with scripts/reproduce-explorer-contract.ts, compile with the exact explorer compiler/settings, compare executable bytes with scripts/compare-explorer-build.ts, and compare the ABI semantically.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Executable bytes match after immutable substitution where applicable; full runtime bytes may differ only in Solidity metadata.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-economic-system-probes-2026-08-23",
+          "recordId": "observe-vaults-usdc-lending-wrapper-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    }
+  ]
+}

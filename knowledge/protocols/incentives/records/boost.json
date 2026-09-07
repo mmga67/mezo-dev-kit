@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-vebtc-boost-model",
+  "id": "incentives-boost",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "protocolStatus": "verified-versioned",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T11:33:29Z",
+  "reviewAfter": "2026-09-18T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11212253,
+    "description": "Current mainnet BoostVoter and veBTC/veMEZO graph at the index block."
+  },
+  "limitations": [
+    "Contract mappings resolve to registry provenance review-accepted registry identities and activation histories; incentives evidence review accepted the bounded protocol model, but public reader and writer support remain absent.",
+    "Boost values depend on volatile deployed state and are not writer defaults."
+  ],
+  "constants": {"precision": "1000000000000000000", "minimumBoost": "1000000000000000000", "maximumBoost": "5000000000000000000"},
+  "roles": {
+    "votingAsset": "veMEZO votes in BoostVoter",
+    "boostableAsset": "veBTC receives the resulting voting-power multiplier",
+    "target": "One boost gauge may be associated with an eligible normal or managed veBTC NFT."
+  },
+  "formula": {
+    "id": "vebtc-boost-factor",
+    "inputs": {
+      "gaugeWeight": "current boosted veMEZO voting weight allocated to the veBTC NFT's boost gauge",
+      "votingVeTotalWeight": "current totalVotingPower of veMEZO, including any boost applicable to that voting escrow",
+      "boostableVeTotalWeight": "current unboostedTotalVotingPower of veBTC",
+      "boostableVeWeight": "current unboostedVotingPowerOfNFT for the target veBTC NFT"
+    },
+    "expression": [
+      "votingRatio = votingVeTotalWeight == 0 ? 0 : floor(gaugeWeight * precision / votingVeTotalWeight)",
+      "boostableRatio = boostableVeWeight == 0 ? 0 : floor(boostableVeTotalWeight * precision / boostableVeWeight)",
+      "boostFraction = floor(4 * boostableRatio * votingRatio / precision)",
+      "boost = min(maximumBoost, minimumBoost + boostFraction)"
+    ],
+    "zeroCases": "A missing gauge, zero total veMEZO power, or zero target unboosted veBTC power yields the default 1x factor.",
+    "rounding": "Each ratio floors before multiplication. Preserve the order and checked uint256 arithmetic used by the contract.",
+    "cap": "5e18 (5x)",
+    "evidence": [{"sourceArtifactId": "source-current-boost-voter", "locator": "BoostVoter._getBoost"}]
+  },
+  "application": {
+    "claim": "pokeBoost or a boost-aware veBTC state transition asks BoostVoter for the current factor and checkpoints veBTC with that factor. The multiplier affects virtual/boosted voting power; it does not increase underlying locked BTC.",
+    "staleness": "The stored veBTC boost changes only when updateBoost is invoked through a poke or a boost-aware escrow transition. A read-time formula result and stored checkpoint can therefore differ until an update.",
+    "evidence": [
+      {"sourceArtifactId": "source-current-boost-voter", "locator": "BoostVoter._pokeBoost"},
+      {"sourceArtifactId": "source-current-vebtc", "locator": "ve/Escrow._updateBoost and _updateBoostIfBoostable"}
+    ]
+  },
+  "independenceBoundaries": [
+    "veMEZO ownership does not transfer ownership of the boosted veBTC NFT.",
+    "The boost is a voting-power multiplier, not a BTC reward or APY guarantee.",
+    "The formula uses global and target voting-power state, so boost is not a fixed conversion rate between veMEZO and veBTC."
+  ]
+}

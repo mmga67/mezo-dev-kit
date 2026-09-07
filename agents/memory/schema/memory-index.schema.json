@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mezo.org/schemas/mdk-memory-index.schema.json",
+  "title": "MDK plain-text memory index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "scope",
+    "entries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "memory-index"
+    },
+    "scope": {
+      "enum": [
+        "shared",
+        "local"
+      ]
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "domain",
+          "status",
+          "title",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "domain": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[/-][a-z0-9]+)*$",
+            "maxLength": 120
+          },
+          "status": {
+            "enum": [
+              "discovered",
+              "verified",
+              "promoted",
+              "deprecated"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*\\.json$"
+          }
+        }
+      }
+    }
+  }
+}

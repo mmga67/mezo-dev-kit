@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "kind": "musdc-lending-formula-catalog",
+  "id": "musdc-lending-formulas",
+  "owner": "protocols/lending/musdc",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-23T20:17:37Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {"deployedGeneration": "Morpho Blue 0.8.19 executable at the fixed block"},
+  "limitations": ["Formula order is exact for the reproduced generation only; IRM output and oracle price are block-scoped inputs."],
+  "constants": {"WAD": "1000000000000000000", "ORACLE_PRICE_SCALE": "1000000000000000000000000000000000000", "VIRTUAL_SHARES": "1000000", "VIRTUAL_ASSETS": "1", "LIQUIDATION_CURSOR": "300000000000000000", "MAX_LIQUIDATION_INCENTIVE_FACTOR": "1150000000000000000"},
+  "records": [
+    {"id": "to-shares-down", "formula": "floor(assets*(totalShares+1e6)/(totalAssets+1))"},
+    {"id": "to-shares-up", "formula": "ceil(assets*(totalShares+1e6)/(totalAssets+1))"},
+    {"id": "to-assets-down", "formula": "floor(shares*(totalAssets+1)/(totalShares+1e6))"},
+    {"id": "to-assets-up", "formula": "ceil(shares*(totalAssets+1)/(totalShares+1e6))"},
+    {"id": "interest", "formula": "compound=x*n+floor((x*n)^2/(2*WAD))+floor(floor((x*n)^2/(2*WAD))*(x*n)/(3*WAD)); interest=floor(totalBorrowAssets*compound/WAD)"},
+    {"id": "fee-shares", "formula": "feeAmount=floor(interest*fee/WAD); feeShares=toSharesDown(feeAmount,totalSupplyAssetsAfterInterest-feeAmount,totalSupplyShares)"},
+    {"id": "health", "formula": "borrowed=toAssetsUp(borrowShares,totalBorrowAssets,totalBorrowShares); maxBorrow=floor(floor(collateral*price/1e36)*lltv/WAD); healthy=maxBorrow>=borrowed"},
+    {"id": "liquidation-factor", "formula": "min(1.15e18,floor(WAD*WAD/(WAD-floor(cursor*(WAD-lltv)/WAD))))"},
+    {"id": "bad-debt", "formula": "when collateral becomes zero, remaining borrow shares convert to assets rounding up, capped by totalBorrowAssets; subtract that amount from both totalBorrowAssets and totalSupplyAssets"}
+  ]
+}

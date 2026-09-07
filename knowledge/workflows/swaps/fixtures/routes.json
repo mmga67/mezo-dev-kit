@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-swap-route-fixtures",
+  "id": "swap-route-fixtures",
+  "owner": "workflows/swaps",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-25T07:27:59.000Z",
+  "reviewAfter": "2026-09-25T00:00:00Z",
+  "scope": { "networkIds": ["mezo-mainnet"], "fixtureCount": 15 },
+  "limitations": [
+    "Fixtures test deterministic workflow rules and encodings; they are not current quotes or transaction authorizations.",
+    "Addresses and amounts used by historical fixtures remain tied to their recorded evidence coordinates."
+  ],
+  "records": [
+    {
+      "id": "basic-direct",
+      "case": "route-encoding",
+      "input": {
+        "family": "basic",
+        "hops": [
+          {
+            "from": "0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+            "to": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "stable": true,
+            "factory": "0x0000000000000000000000000000000000000000"
+          }
+        ]
+      },
+      "expected": {
+        "eligible": true,
+        "entrypoint": "swapExactTokensForTokens",
+        "encoding": "abi-route-tuple-array",
+        "hopCount": 1
+      }
+    },
+    {
+      "id": "basic-multihop",
+      "case": "route-encoding",
+      "input": {
+        "family": "basic",
+        "hops": [
+          {
+            "from": "0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+            "to": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "stable": true,
+            "factory": "0x0000000000000000000000000000000000000000"
+          },
+          {
+            "from": "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+            "to": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+            "stable": true,
+            "factory": "0x0000000000000000000000000000000000000000"
+          }
+        ]
+      },
+      "expected": {
+        "eligible": true,
+        "entrypoint": "swapExactTokensForTokens",
+        "encoding": "abi-route-tuple-array",
+        "hopCount": 2,
+        "contiguous": true
+      }
+    },
+    {
+      "id": "cl-direct-packed-path",
+      "case": "route-encoding",
+      "input": {
+        "family": "concentrated-liquidity",
+        "tokens": [
+          "0x7b7c000000000000000000000000000000000001",
+          "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186"
+        ],
+        "tickSpacings": [200]
+      },
+      "expected": {
+        "eligible": true,
+        "entrypoint": "exactInputSingle",
+        "path": "0x7b7c0000000000000000000000000000000000010000c8dd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+        "byteLength": 43
+      }
+    },
+    {
+      "id": "cl-multihop-packed-path",
+      "case": "route-encoding",
+      "input": {
+        "family": "concentrated-liquidity",
+        "tokens": [
+          "0x7b7c000000000000000000000000000000000001",
+          "0xdd468a1ddc392dcdbef6db6e34e89aa338f9f186",
+          "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e"
+        ],
+        "tickSpacings": [200, 200]
+      },
+      "expected": {
+        "eligible": true,
+        "entrypoint": "exactInput",
+        "path": "0x7b7c0000000000000000000000000000000000010000c8dd468a1ddc392dcdbef6db6e34e89aa338f9f1860000c8eb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+        "byteLength": 66
+      }
+    },
+    {
+      "id": "minimum-output-floor",
+      "case": "amount-boundary",
+      "input": {
+        "quotedAmountOut": "20045013",
+        "slippageBps": 50,
+        "formula": "floor(quotedAmountOut * (10000 - slippageBps) / 10000)"
+      },
+      "expected": { "amountOutMinimum": "19944787", "rounding": "floor", "nonzero": true }
+    },
+    {
+      "id": "mixed-route-rejected",
+      "case": "unsupported-family",
+      "input": { "families": ["basic", "concentrated-liquidity"], "atomic": true },
+      "expected": {
+        "eligible": false,
+        "error": "unsupported-atomic-mixed-route",
+        "fallback": "separate-transactions-with-requote"
+      }
+    },
+    {
+      "id": "unsupported-family-rejected",
+      "case": "unsupported-family",
+      "input": { "family": "universal-router", "command": "0x08" },
+      "expected": { "eligible": false, "error": "unsupported-route-family", "failClosed": true }
+    },
+    {
+      "id": "zero-liquidity-rejected",
+      "case": "pool-state",
+      "input": { "family": "concentrated-liquidity", "activeLiquidity": "0", "required": true },
+      "expected": { "eligible": false, "error": "zero-liquidity" }
+    },
+    {
+      "id": "stale-quote-rejected",
+      "case": "freshness",
+      "input": { "observedAtUnixSeconds": 1000, "nowUnixSeconds": 1061, "maxAgeSeconds": 60 },
+      "expected": { "eligible": false, "error": "stale-quote", "ageSeconds": 61 }
+    },
+    {
+      "id": "zero-minimum-rejected",
+      "case": "slippage",
+      "input": { "quotedAmountOut": "88989257213168075305", "amountOutMinimum": "0" },
+      "expected": { "eligible": false, "error": "unsafe-zero-minimum" }
+    },
+    {
+      "id": "exact-approval",
+      "case": "approval",
+      "input": { "amountIn": "20003366", "allowance": "0", "policy": "exact-operation" },
+      "expected": { "approvalAmount": "20003366", "requiresApprovalTransaction": true }
+    },
+    {
+      "id": "unlimited-approval-requires-opt-in",
+      "case": "approval",
+      "input": { "policy": "unlimited", "explicitCallerOptIn": false },
+      "expected": { "eligible": false, "error": "unlimited-approval-not-authorized" }
+    },
+    {
+      "id": "partial-provider-required-failure",
+      "case": "partial-provider",
+      "input": {
+        "required": ["pool-mapping", "quote"],
+        "results": { "pool-mapping": "ok", "quote": "rpc-error" }
+      },
+      "expected": {
+        "eligible": false,
+        "error": "required-provider-result-missing",
+        "preserveItemError": true
+      }
+    },
+    {
+      "id": "simulation-revert",
+      "case": "simulation",
+      "input": { "exactCall": true, "result": "revert", "revertData": "0x08c379a0" },
+      "expected": { "eligible": false, "error": "exact-call-reverted", "preserveRevertData": true }
+    },
+    {
+      "id": "reconciliation-mismatch",
+      "case": "reconciliation",
+      "input": {
+        "receiptStatus": "success",
+        "amountOutMinimum": "19944787",
+        "actualRecipientOutput": "19944786"
+      },
+      "expected": {
+        "succeeded": false,
+        "error": "output-below-minimum",
+        "receiptAloneInsufficient": true
+      }
+    }
+  ]
+}

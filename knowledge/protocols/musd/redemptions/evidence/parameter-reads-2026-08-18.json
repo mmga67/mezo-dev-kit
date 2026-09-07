@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "kind": "musd-redemption-parameter-observations",
+  "id": "redemption-parameter-observations",
+  "owner": "protocols/musd/redemptions",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-18T00:37:00Z",
+  "scope": {"networkIds": ["mezo-mainnet", "mezo-testnet"], "method": "eth_call"},
+  "observedAt": "2026-08-18T00:37:00Z",
+  "reviewAfter": "2026-09-17T00:00:00Z",
+  "method": "eth_call at the fixed contract registry review verification block",
+  "observations": [
+    {
+      "id": "redemption-rate-mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "endpointId": "mezo-mainnet-boar-https",
+      "blockNumber": 11201821,
+      "blockHash": "0x85e20edc9d953de95271167b126859baa58b8a42d55fd09c1e77b18632c4d29c",
+      "deploymentId": "musd.borrower-operations@mezo-mainnet",
+      "function": "redemptionRate()",
+      "callData": "0x540385a3",
+      "rawResult": "0x000000000000000000000000000000000000000000000000001aa535d3d0c000",
+      "decoded": "7500000000000000",
+      "unitId": "decimal-fixed-point",
+      "status": "verified"
+    },
+    {
+      "id": "redemption-rate-mezo-testnet",
+      "networkId": "mezo-testnet",
+      "endpointId": "mezo-testnet-official-https",
+      "blockNumber": 14952836,
+      "blockHash": "0x2742de1b1e8404870fdfbfedebc2d61d0b21f9c1c99d4202dea5077966b6c2fa",
+      "deploymentId": "musd.borrower-operations@mezo-testnet",
+      "function": "redemptionRate()",
+      "callData": "0x540385a3",
+      "rawResult": "0x000000000000000000000000000000000000000000000000001aa535d3d0c000",
+      "decoded": "7500000000000000",
+      "unitId": "decimal-fixed-point",
+      "status": "verified"
+    }
+  ],
+  "limitations": [
+    "The rate is current only at each recorded block and must be re-read before a quote or write-path release.",
+    "Addresses are resolved from knowledge/contracts and deliberately not duplicated here.",
+    "The deployed redemption path applies this rate without checking whether the redeemer has an active trove."
+  ]
+}

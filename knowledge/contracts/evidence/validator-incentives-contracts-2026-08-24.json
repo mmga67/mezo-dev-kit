@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-observation-set",
+  "id": "contract-validator-incentives-probes-2026-08-24",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-08-24T22:04:33.950Z",
+  "reviewAfter": "2026-09-22T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "deploymentIds": [
+      "incentives.non-staking-gauge-factory@mezo-mainnet",
+      "incentives.voting-rewards-factory@mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Evidence is bounded to the recorded block, activation transaction, explorer responses, compiler builds, and direct deployments.",
+    "Dynamic children created by these factories are excluded from static deployment identity and require point-in-time discovery.",
+    "Executable equality does not establish source authorship, audit coverage, writer safety, or future identity."
+  ],
+  "observedFrom": "2026-08-24T22:04:33.950Z",
+  "observedThrough": "2026-08-24T22:04:33.950Z",
+  "methodology": [
+    "Resolved the approved validator gauge factory and its paired voting-rewards factory from accepted FactoryRegistry state at the fixed block.",
+    "Pinned direct-deployment activation from successful official-explorer creation transactions and fixed-block runtime code.",
+    "Built both explorer source bundles with exact compiler/settings and matched creation/runtime executables while preserving full/partial explorer labels.",
+    "Compared each generated full ABI semantically with its exact explorer response and recorded artifact/source digests.",
+    "Accepted only the two reusable factory roots; individual validator gauges and reward contracts remain dynamic evidence-scoped instances."
+  ],
+  "networkSnapshots": [
+    {
+      "networkId": "mezo-mainnet",
+      "evmChainId": 31612,
+      "blockNumber": 11366264,
+      "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5",
+      "blockTimestamp": "2026-08-24T21:34:23.000Z",
+      "rpcUrl": "https://mezo-mainnet.boar.network",
+      "explorerApiUrl": "https://api.explorer.mezo.org"
+    }
+  ],
+  "observations": [
+    {
+      "id": "observe-incentives-non-staking-gauge-factory-mezo-mainnet",
+      "deploymentId": "incentives.non-staking-gauge-factory@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T22:04:33.950Z",
+      "observationBlock": {
+        "number": 11366264,
+        "hash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5",
+        "timestamp": "2026-08-24T21:34:23.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and creation-transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5042971,
+        "blockHash": "0x8ca7f988be559e46668cee38260a731772261cbb0ac152d832570b5d970138f7",
+        "blockTimestamp": "2025-12-02T15:52:03.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x48a5f70cffbdd6ba470040fc0196e6e70fd16ac1b2e5486e68c98d697d4106ab"
+      },
+      "runtime": {
+        "addressCodeSha256": "45b4b915fca6ef1c68ad3b0b8491dc7b5367e59d18c802c55b7a396be59b5010",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "df1eb4c14a38c913d15b1fbefed859981787e2b7652bed4c8a3fbce78a55623c",
+          "runtimeExecutableSha256": "07c67dbfb2a1407ca71a828b4b9bc5a24fc9651504de17bcee596fb6ac17800a",
+          "explorerFullRuntimeSha256": "45b4b915fca6ef1c68ad3b0b8491dc7b5367e59d18c802c55b7a396be59b5010",
+          "fullExact": false
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "GaugeFactory",
+          "filePath": "contracts/factories/GaugeFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "verifiedAt": "2025-12-02T15:53:47.451813Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 3,
+          "abiSemanticSha256": "a4df84fcc7ecfebc8c952f0249e3f34f1ca790c9c0c02db09ee35d4c629d31b7",
+          "deployedBytecodeSha256": "45b4b915fca6ef1c68ad3b0b8491dc7b5367e59d18c802c55b7a396be59b5010"
+        },
+        "activeContract": {
+          "name": "GaugeFactory",
+          "filePath": "contracts/factories/GaugeFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true,
+          "verifiedAt": "2025-12-02T15:53:47.451813Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 3,
+          "abiSemanticSha256": "a4df84fcc7ecfebc8c952f0249e3f34f1ca790c9c0c02db09ee35d4c629d31b7",
+          "deployedBytecodeSha256": "45b4b915fca6ef1c68ad3b0b8491dc7b5367e59d18c802c55b7a396be59b5010"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": false,
+          "isPartiallyVerified": true
+        },
+        "sourceBundleSha256": "af36c7122d100af913de9de9b5a58c683526455ae26c1e5311786228f221bb21",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "bf3c9b50b72ff1f64c652a6bb60c24fd31abf71faf2e288ebb4f79dd2f861b71",
+        "librariesSha256": "e8b04476881e7ea3d3fd2c4121ec9aff8571f181c16264d8af9d6b412f5e6e76",
+        "buildProcedure": "Fetch the recorded explorer source bundle, materialize it with scripts/reproduce-explorer-contract.ts, build with the exact Foundry compiler/settings, and compare creation/runtime executables with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation/runtime executables match exactly; full bytes differ only in the 53-byte Solidity metadata trailers.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-validator-incentives-probes-2026-08-24",
+          "recordId": "observe-incentives-non-staking-gauge-factory-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "observe-incentives-voting-rewards-factory-mezo-mainnet",
+      "deploymentId": "incentives.voting-rewards-factory@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "observedAt": "2026-08-24T22:04:33.950Z",
+      "observationBlock": {
+        "number": 11366264,
+        "hash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5",
+        "timestamp": "2026-08-24T21:34:23.000Z"
+      },
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber",
+        "eth_getCode",
+        "official explorer address and creation-transaction metadata",
+        "official explorer smart-contract source/ABI",
+        "isolated exact-compiler Foundry reproduction"
+      ],
+      "activation": {
+        "blockNumber": 5043030,
+        "blockHash": "0x2f51ddbaedfffff53d96e6e905103d95b485ffc59e726a03813a846e4570a11a",
+        "blockTimestamp": "2025-12-02T15:55:39.000Z",
+        "blockEvidenceMethod": "eth_getBlockByNumber",
+        "transactionHash": "0x0f679dc7f6cfdb3d0ae6596e9930685d4eb3e3f45cab417278e3187180cb93f4"
+      },
+      "runtime": {
+        "addressCodeSha256": "b143c5256e32e827f46b69493b404e7f670bc967ad548e01ca11b4d8e60cde4f",
+        "implementationCodeSha256": null,
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "c58bf9a56cc8c8cebd9756a3ee3b59a459d18c3b9e168b630225c93603447760",
+          "runtimeExecutableSha256": "2e490106a85f958c15e4a538fc24cd8b14f47e4ceb721e5d1660eb09e2cad983",
+          "explorerFullRuntimeSha256": "b143c5256e32e827f46b69493b404e7f670bc967ad548e01ca11b4d8e60cde4f",
+          "fullExact": true
+        }
+      },
+      "proxy": null,
+      "explorer": {
+        "proxyOrDirect": {
+          "name": "VotingRewardsFactory",
+          "filePath": "contracts/factories/VotingRewardsFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T15:56:16.176875Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 2,
+          "abiSemanticSha256": "f5601ad640f99233e98d93e6338214954a45c7556489d84b13dd03105057b804",
+          "deployedBytecodeSha256": "b143c5256e32e827f46b69493b404e7f670bc967ad548e01ca11b4d8e60cde4f"
+        },
+        "activeContract": {
+          "name": "VotingRewardsFactory",
+          "filePath": "contracts/factories/VotingRewardsFactory.sol",
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false,
+          "verifiedAt": "2025-12-02T15:56:16.176875Z",
+          "compilerVersion": "v0.8.24+commit.e11b9ed9",
+          "licenseType": "none",
+          "proxyType": null,
+          "abiEntries": 2,
+          "abiSemanticSha256": "f5601ad640f99233e98d93e6338214954a45c7556489d84b13dd03105057b804",
+          "deployedBytecodeSha256": "b143c5256e32e827f46b69493b404e7f670bc967ad548e01ca11b4d8e60cde4f"
+        },
+        "officialArtifactAbiMatch": false,
+        "reproducedAbiMatch": true,
+        "rpcBytecodeMatch": true
+      },
+      "reproduction": {
+        "explorerVerification": {
+          "isVerified": true,
+          "isFullyVerified": true,
+          "isPartiallyVerified": false
+        },
+        "sourceBundleSha256": "0e6c0a6e6b0d5811179ee6590c4972f56b6adc64b87111fb975edcf6faa45450",
+        "compilerVersion": "v0.8.24+commit.e11b9ed9",
+        "compilerSettingsSha256": "e2e0434e82b04abda45b9a966932157590a70d220327ea2d761061b8ff920ac1",
+        "librariesSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "buildProcedure": "Fetch the recorded explorer source bundle, materialize it with scripts/reproduce-explorer-contract.ts, build with the exact Foundry compiler/settings, and compare creation/runtime executables with scripts/compare-explorer-build.ts.",
+        "creationExecutableMatch": true,
+        "runtimeExecutableMatch": true,
+        "fullBytecodeDifference": "Creation and runtime bytecode, including metadata, match the exact isolated build.",
+        "abiDerivedFromExactBuild": true,
+        "activationHistoryReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-validator-incentives-probes-2026-08-24",
+          "recordId": "observe-incentives-voting-rewards-factory-mezo-mainnet"
+        }
+      },
+      "outcome": "passed"
+    }
+  ]
+}
