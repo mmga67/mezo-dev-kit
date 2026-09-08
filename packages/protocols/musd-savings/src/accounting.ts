@@ -1,3 +1,4 @@
+import { isUint } from "@mezo-dev-kit/evm";
 import { SavingsReadError } from "./errors.ts";
 import { SAVINGS_SCALE } from "./model.generated.ts";
 
@@ -7,8 +8,7 @@ export interface SavingsAmount<Unit extends string> {
   readonly baseUnits: bigint;
 }
 export function uint256(value: unknown, field: string): bigint {
-  if (typeof value !== "bigint" || value < 0n || value > UINT256_MAX)
-    throw new SavingsReadError("InvalidReadValue", field);
+  if (!isUint(value)) throw new SavingsReadError("InvalidReadValue", field);
   return value;
 }
 function checked(value: bigint, field: string): bigint {

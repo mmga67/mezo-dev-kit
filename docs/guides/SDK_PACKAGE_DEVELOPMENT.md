@@ -50,6 +50,8 @@ architecture accidentally.
 The accepted high-level direction is:
 
 ```text
+evm value primitives
+  ↓
 chains
   ↓
 contracts
@@ -72,10 +74,10 @@ contract.
 
 `src/` is an implementation location, not an automatically supported API. The
 supported surface is the package export map plus its maintained documentation.
-The private Chains, Contracts, and Core modules map their only supported
-entrypoint to built JavaScript and declarations. Contracts uses the Chains
-entrypoint for stable network identity, and Core uses both upstream entrypoints
-for read coordination. Their package source, generated implementation files,
+The private EVM, Chains, Contracts, and Core modules map their only supported
+entrypoint to built JavaScript and declarations. EVM owns shared value handling;
+Contracts uses Chains for stable network identity, and Core uses these upstream
+entrypoints for read coordination. Their package source, generated implementation files,
 and Core's retained transaction proof are not declared subpaths. A runnable
 built boundary must be tested without source fallbacks; this still does not
 create a registry-release contract.

@@ -1,6 +1,6 @@
 ---
 name: mdk-typescript-development
-description: Implement or review MDK packages, tooling, tests, templates, examples, and generated application code under the repository's TypeScript-first architecture. Use whenever authored product code is added or changed.
+description: Implement or review MDK TypeScript packages, tooling, examples, templates and generated code. Use for authored contributor code; external apps use consumer guidance.
 ---
 
 # TypeScript development
@@ -13,13 +13,15 @@ dependency-approval rules.
 
 ## Required context
 
-1. Read the root and nearest nested `AGENTS.md`, active task, and owning package
-   documentation.
-2. Read `ARCHITECTURE.md` and ADR-0007 for the language boundary.
-3. Read `docs/standards/coding.md`; it is the normative owner for modular
+1. Reuse the active task and current root/nearest instructions already loaded.
+   Inspect the owning package's documentation and affected source.
+2. Consult the applicable `ARCHITECTURE.md` boundary when imports, exports,
+   ownership, or package structure are involved. Read ADR-0007 only for a
+   language-boundary decision, and ADR-0012 for toolchain changes.
+3. Read the applicable sections of `docs/standards/coding.md`; it owns modular
    design, TypeScript, public APIs, errors, async work, formatting,
-   suppressions, exceptions, and quality gates. Read ADR-0012 when changing
-   that toolchain or boundary.
+   suppressions, exceptions, and quality gates. The standard applies to all
+   authored code; retrieval is scoped to the change, not a waiver of its rules.
 4. Load the applicable domain skill and only the canonical knowledge needed by
    that domain.
    For package usage or capability changes, apply the root-routed
@@ -28,6 +30,9 @@ dependency-approval rules.
    before implementing an alternative.
 5. When test behavior, fixtures, regressions, or review is in scope, load
    `agents/skills/mdk-testing/SKILL.md` and follow the testing standard.
+
+Read each procedure/source once per relevant revision. A cross-reference does
+not restart capability assessment or require rereading unchanged instructions.
 
 ## Procedure
 
@@ -44,6 +49,8 @@ dependency-approval rules.
    demonstrated responsibility or consumer.
 5. Validate all untrusted runtime inputs. TypeScript types do not prove RPC,
    wallet, registry, generated, user, or protocol data.
+   Reuse `@mezo-dev-kit/evm` for supported EVM values and exact conversions;
+   read its package contract for checksum/precision policy and domain errors.
 6. Keep deterministic calculations pure and use integer base units. Separate
    them from transport, wallet, framework, storage, and global state.
 7. Generate TypeScript when generated source is consumed by TypeScript

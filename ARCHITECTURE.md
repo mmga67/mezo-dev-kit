@@ -22,6 +22,10 @@ maintainer accepted foundational SDK review on 2026-09-06 for the source alpha. 
 packages provide the foundation for protocol readers and remain outside
 registry distribution and writer support.
 
+`packages/evm/` provides the shared typed value and exact-conversion layer
+beneath these packages. Its public workspace API and pinned Ox implementation
+follow ADR-0014; callers retain network, protocol, and domain error ownership.
+
 `packages/protocols/musd-savings/` contains the read-only Savings reader
 above that foundation. It owns Savings accounting and staged same-block role
 reconciliation, consumes public Chains/Contracts/Core entrypoints, and accepts
@@ -40,8 +44,10 @@ is required for nonzero-debt health; transport and codec ports remain explicit.
 consumes the public lending reader for the adapter position and owns VaultV2
 fee-aware previews, wrapper high-water yield, receipt ownership, and gauge
 reconciliation. VaultV2/VaultGauge are discovered exact-runtime roles, while
-the adapter/wrapper resolve through Contracts. The maintainer accepted both private reader packages on 2026-09-07. No protocol writer, external runtime dependency, static
-identity for a discovered role, or package-registry release is introduced.
+the adapter/wrapper resolve through Contracts. The maintainer accepted both
+private reader packages on 2026-09-07. Shared primitive validation now uses
+EVM; protocol writers, new static identities for discovered roles, and
+package-registry release remain outside these reader slices.
 
 The versioned strategic design input is [`docs/manifest`](./docs/manifest), and
 its dated improvements are recorded in
@@ -130,7 +136,7 @@ The language boundary is intentional:
 [ADR-0007](./docs/decisions/0007-typescript-first.md) owns the language
 decision. [ADR-0010](./docs/decisions/0010-vitest-default-testing.md)
 separately selects Vitest as the default TypeScript package test framework.
-The proposed [ADR-0012](./docs/decisions/0012-coding-standard-and-quality-gates.md)
+The accepted [ADR-0012](./docs/decisions/0012-coding-standard-and-quality-gates.md)
 selects Node 24 as the development baseline plus the exact compiler, typed
 linter, formatter, declaration, and local quality-gate model. The normative
 authored-code rules live in
@@ -172,6 +178,7 @@ or code.
 
 | Area                                     | Owns                                                                                                                                                                  | Must not own                                                                                            |
 | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `packages/evm/`                          | Shared EVM value validation, checksum policy, typed representations, and exact conversions; see ADR-0014                                                              | Network/deployment facts, protocol policy, provider clients, signers, and localized presentation        |
 | `packages/chains/`                       | Typed accepted network identity and capability profiles generated from canonical inputs                                                                               | RPC endpoints, provider selection, protocol behavior, or application policy                             |
 | `packages/contracts/`                    | Stable contract IDs, accepted deployment-generation resolution, read-safe ABI projections, digests, provenance, and freshness; depends on Chains identity             | Protocol workflows, provider behavior, copied application addresses, or writer ABIs                     |
 | `packages/core/`                         | Framework-independent read coordination: chain checks, accepted contract resolution, injected transport, block/hash consistency, and typed required/optional failures | Protocol-specific rules, provider adapters, signers, simulation/submission, React, or application state |
@@ -195,6 +202,8 @@ not public architecture commitments.
 Runtime dependencies flow toward consumers:
 
 ```text
+evm value primitives (available to all higher layers)
+  ↓
 chains
   ↓
 contracts
@@ -215,6 +224,9 @@ The following rules apply:
 - Contracts consumes the public Chains identity boundary so it cannot invent
   or duplicate network IDs; neither package selects an RPC provider;
 - lower layers never import framework, template, example, or application code;
+- EVM primitive consumers use the public `@mezo-dev-kit/evm` entrypoint and
+  declare that dependency; the foundation imports no other MDK package.
+  [ADR-0014](./docs/decisions/0014-evm-value-foundation.md) owns this addition.
 - core and protocol logic remain framework-independent;
 - adapters consume public lower-layer APIs instead of reimplementing behavior;
 - the CLI may orchestrate public package APIs but does not become their owner;
@@ -336,6 +348,12 @@ guidance must not become independent address or ABI stores.
 
 Root and nested `AGENTS.md` files route work and define operating constraints.
 Skills define reusable procedures. Neither owns protocol data.
+
+Keep persistent instructions compact and retrieve task-specific detail through
+existing canonical owners. Reuse current context and revisit only changed
+inputs; skill cross-references do not restart assessment or load every domain.
+Measure source footprint separately from runtime token/cache usage and retain
+the behavioral quality gates in the contributor evaluation guide.
 
 Maintained agent guidance is authored under [`agents/`](./agents/). Contributor
 and consumer skills are separate audiences, while agent discovery directories

@@ -1,6 +1,6 @@
 ---
 name: mdk-testing
-description: Design, implement, review, or diagnose meaningful MDK tests using the repository testing standard and Vitest default. Use for test strategy, test-code changes, regression coverage, edge-case analysis, fixtures, mocks, or flaky tests; pair with the owning domain skill for protocol-sensitive behavior.
+description: Design or review meaningful MDK tests, fixtures, regressions and flakiness using Vitest. Pair with the domain skill for protocol-sensitive behavior.
 ---
 
 # MDK testing
@@ -12,8 +12,9 @@ exercise lines, duplicate implementation details, or satisfy a count.
 
 ## Required context
 
-1. Read the root and nearest nested `AGENTS.md`, active task, owning package
-   documentation, and [`docs/standards/testing.md`](../../../docs/standards/testing.md).
+1. Reuse current root/nearest instructions and the active task. Read the owning
+   package commands and applicable sections of
+   [`docs/standards/testing.md`](../../../docs/standards/testing.md) once.
 2. Inspect the changed behavior, public/owned boundary, existing tests, and
    exact package commands before editing.
 3. Load the owning domain skill for protocol, transaction, financial,

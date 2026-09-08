@@ -1,6 +1,6 @@
 ---
 name: mdk-swap-routing-knowledge
-description: Resolve, verify, or maintain evidence-scoped Mezo basic and concentrated-liquidity swap discovery, quoting, route encoding/ranking, approvals, exact-call simulation, and reconciliation through the v0.4 swaps workflow. Use for read and workflow requirements; all public readers and writers remain unsupported.
+description: Verify Mezo swap discovery, quotes, route encoding, approvals and simulation requirements. No public swap reader or writer.
 ---
 
 # Mezo swap and routing knowledge

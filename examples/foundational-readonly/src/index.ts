@@ -4,9 +4,10 @@ import { getNetwork } from "@mezo-dev-kit/chains";
 import { createContractRegistry } from "@mezo-dev-kit/contracts";
 import { createCoreReadClient } from "@mezo-dev-kit/core";
 import type { CoreReadTransport } from "@mezo-dev-kit/core";
+import { parseHash32 } from "@mezo-dev-kit/evm";
 
 const blockNumber = 12_000_000n;
-const blockHash = `0x${"42".repeat(32)}`;
+const blockHash = parseHash32(`0x${"42".repeat(32)}`);
 const transport: CoreReadTransport = {
   id: "example-injected-transport",
   getChainId: () => 31_612n,

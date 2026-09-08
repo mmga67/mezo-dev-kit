@@ -1,6 +1,6 @@
 ---
 name: mdk-musdc-lending
-description: Resolve, calculate, verify, or maintain the Mezo BTC/mUSDC Morpho market, supply/borrow shares, interest, health, liquidation, bad debt, oracle/rate dependencies, and reconciliation through the v0.4 mUSDC lending module. Use for evidence-backed reads and deterministic rules; all writers remain unsupported.
+description: Resolve the BTC/mUSDC Morpho market, shares, interest, health, liquidation and oracle dependencies. Evidence and calculations; no writers.
 ---
 
 # mUSDC lending knowledge
@@ -16,8 +16,9 @@ vault's depositor shares, generic Morpho markets, APR forecasts, or a writer.
 
 ## Required context
 
-Read the active task, applicable `AGENTS.md`, knowledge-maintenance skill, and
-module README/index. Load bridge knowledge for mUSDC representation identity,
+Reuse current task/instructions. Read owning package docs for code work and
+module README/index for protocol evidence. Load knowledge-maintenance only
+when changing knowledge or generated projections. Load bridge knowledge for mUSDC representation identity,
 price knowledge for the oracle datum, contract knowledge for deployed
 generations, transaction execution for future gates, and TypeScript/testing
 skills when changing scripts or tests.

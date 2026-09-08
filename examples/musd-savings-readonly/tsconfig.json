@@ -7,7 +7,8 @@
       "@mezo-dev-kit/musd-savings": ["../../packages/protocols/musd-savings/src/index.ts"],
       "@mezo-dev-kit/chains": ["../../packages/chains/src/index.ts"],
       "@mezo-dev-kit/contracts": ["../../packages/contracts/src/index.ts"],
-      "@mezo-dev-kit/core": ["../../packages/core/src/index.ts"]
+      "@mezo-dev-kit/core": ["../../packages/core/src/index.ts"],
+      "@mezo-dev-kit/evm": ["../../packages/evm/src/index.ts"]
     },
     "types": ["node"]
   },

@@ -1,6 +1,6 @@
 ---
 name: mdk-indexing-reconciliation
-description: Design, review, or diagnose provider-neutral bounded event scans, checkpoints, backfills, completeness, reorg handling, negative evidence, and protocol reconciliation. Use for indexing procedures and projections; do not use it to select a hosted indexer or infer protocol completion from stored status.
+description: Design or diagnose bounded event scans, checkpoints, backfills, reorgs and reconciliation. Does not select hosted indexers or infer completion from stored status.
 ---
 
 # Provider-neutral indexing and reconciliation

@@ -1,4 +1,11 @@
 import type { CoreReadTransport, HexData } from "@mezo-dev-kit/core";
+import {
+  isHexData,
+  isRpcQuantity,
+  parseHexData,
+  parseRpcQuantity,
+  toRpcQuantity,
+} from "@mezo-dev-kit/evm";
 
 export class RpcReadError extends Error {
   readonly code: "InvalidEndpoint" | "TransportFailure" | "InvalidResponse" | "RpcFailure";
@@ -19,17 +26,17 @@ function record(value: unknown): value is Record<string, unknown> {
 }
 
 function quantity(value: unknown, method: string): bigint {
-  if (typeof value !== "string" || !/^0x(?:0|[1-9a-fA-F][0-9a-fA-F]*)$/.test(value)) {
+  if (!isRpcQuantity(value)) {
     throw new RpcReadError("InvalidResponse", method);
   }
-  return BigInt(value);
+  return parseRpcQuantity(value);
 }
 
 export function hexData(value: unknown): HexData {
-  if (typeof value !== "string" || !/^0x(?:[0-9a-fA-F]{2})*$/.test(value)) {
+  if (!isHexData(value)) {
     throw new RpcReadError("InvalidResponse", "hex-data");
   }
-  return value.toLowerCase() as HexData;
+  return parseHexData(value);
 }
 
 /** Example-owned adapter. The caller selects the endpoint; Core owns chain checks. */
@@ -118,7 +125,7 @@ export function createHttpReadTransport(options: {
     getChainId: async () => quantity(await rpc("eth_chainId", []), "eth_chainId"),
     getBlockNumber: async () => quantity(await rpc("eth_blockNumber", []), "eth_blockNumber"),
     getBlock: async (blockNumber) => {
-      const value = await rpc("eth_getBlockByNumber", [`0x${blockNumber.toString(16)}`, false]);
+      const value = await rpc("eth_getBlockByNumber", [toRpcQuantity(blockNumber), false]);
       if (value === null) return null;
       if (!record(value)) throw new RpcReadError("InvalidResponse", "eth_getBlockByNumber");
       const hash = hexData(value.hash);

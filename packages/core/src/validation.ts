@@ -1,3 +1,14 @@
+import {
+  EvmValueError,
+  isAddress,
+  isHash32,
+  isHexData,
+  parseAddress,
+  parseHash32,
+  parseHexData,
+  parseUnitsExact,
+  parseUnsignedInteger,
+} from "@mezo-dev-kit/evm";
 import { CoreError, createCoreError } from "./errors.ts";
 
 export type Address = `0x${string}`;
@@ -38,32 +49,29 @@ export interface CallDescription {
   readonly calldataBytes: number;
 }
 
-const addressPattern = /^0x[a-fA-F0-9]{40}$/;
-const dataPattern = /^0x(?:[a-fA-F0-9]{2})*$/;
-
 export function normalizeAddress(value: unknown, field = "address"): Address {
-  if (typeof value !== "string" || !addressPattern.test(value)) {
+  if (!isAddress(value)) {
     throw createCoreError(
       "InvalidUnits",
       { field, input: printable(value), expectedDecimals: null },
       { message: `${field} must be a 20-byte EVM address` },
     );
   }
-  return value.toLowerCase() as Address;
+  return parseAddress(value);
 }
 
 export function normalizeCall(call: unknown): Readonly<Call> {
   if (!isRecord(call)) throw new TypeError("call must be an object");
   const to = normalizeAddress(call.to, "call.to");
   const from = call.from === undefined ? undefined : normalizeAddress(call.from, "call.from");
-  if (typeof call.data !== "string" || !dataPattern.test(call.data)) {
+  if (!isHexData(call.data)) {
     throw new TypeError("call.data must be even-length 0x-prefixed bytes");
   }
   const value = normalizeUnsignedInteger(call.value ?? 0n, "call.value");
   return Object.freeze({
     to,
     ...(from === undefined ? {} : { from }),
-    data: call.data.toLowerCase() as Hex,
+    data: parseHexData(call.data),
     value,
   });
 }
@@ -82,16 +90,18 @@ export function parseDisplayUnits(
       { message: `${field} must be a decimal string; JavaScript numbers are not accepted` },
     );
   }
-  const match = /^(0|[1-9][0-9]*)(?:\.([0-9]+))?$/.exec(input);
-  if (!match || (match[2]?.length ?? 0) > decimals) {
+  let amount: bigint;
+  try {
+    amount = parseUnitsExact(input, decimals, field);
+  } catch (error) {
+    if (!(error instanceof EvmValueError)) throw error;
     throw createCoreError(
       "InvalidUnits",
       { field, input, expectedDecimals: decimals },
       { message: `${field} has invalid decimal precision` },
     );
   }
-  const fractional = (match[2] ?? "").padEnd(decimals, "0");
-  return Object.freeze({ assetId, decimals, amount: BigInt(`${match[1]}${fractional}`) });
+  return Object.freeze({ assetId, decimals, amount });
 }
 
 export function assertBaseUnits(
@@ -135,10 +145,10 @@ export function normalizeTransactionHash(
   value: unknown,
   field = "transactionHash",
 ): TransactionHash {
-  if (typeof value !== "string" || !/^0x[a-fA-F0-9]{64}$/.test(value)) {
+  if (!isHash32(value)) {
     throw new TypeError(`${field} must be a 32-byte hash`);
   }
-  return value.toLowerCase() as TransactionHash;
+  return parseHash32(value);
 }
 
 export function describeCall(call: unknown): Readonly<CallDescription> {
@@ -166,25 +176,21 @@ function normalizeUnsignedInteger(value: unknown, field: string): bigint {
       { message: `${field} cannot be a JavaScript number` },
     );
   }
-  if (
-    typeof value !== "bigint" &&
-    (typeof value !== "string" || !/^(0|[1-9][0-9]*)$/.test(value))
-  ) {
+  try {
+    return parseUnsignedInteger(value, field);
+  } catch (error) {
+    if (!(error instanceof EvmValueError)) throw error;
     throw createCoreError(
       "InvalidUnits",
       { field, input: printable(value), expectedDecimals: 0 },
-      { message: `${field} must be a non-negative bigint or integer string` },
+      {
+        message:
+          typeof value === "bigint" && value < 0n
+            ? `${field} must not be negative`
+            : `${field} must be a non-negative bigint or integer string`,
+      },
     );
   }
-  const normalized = BigInt(value);
-  if (normalized < 0n) {
-    throw createCoreError(
-      "InvalidUnits",
-      { field, input: printable(value), expectedDecimals: 0 },
-      { message: `${field} must not be negative` },
-    );
-  }
-  return normalized;
 }
 
 function assertDecimals(decimals: number): void {

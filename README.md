@@ -180,6 +180,7 @@ and canonical evidence. Reassess those owners as the alpha evolves; unchanged
 private package versions do not mean unchanged capabilities.
 
 The private foundational API and its built-entrypoint fixture are documented in
+[`packages/evm/README.md`](./packages/evm/README.md),
 [`packages/chains/README.md`](./packages/chains/README.md),
 [`packages/contracts/README.md`](./packages/contracts/README.md),
 [`packages/core/README.md`](./packages/core/README.md), and
@@ -188,7 +189,7 @@ The private foundational API and its built-entrypoint fixture are documented in
 For repository development:
 
 1. Read [`AGENTS.md`](./AGENTS.md).
-2. Read [`ARCHITECTURE.md`](./ARCHITECTURE.md).
+2. Read the applicable sections of [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 3. For implementation work, load
    [`agents/skills/mdk-typescript-development/SKILL.md`](./agents/skills/mdk-typescript-development/SKILL.md)
    and the relevant domain skill.

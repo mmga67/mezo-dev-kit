@@ -1,3 +1,4 @@
+import { isUint } from "@mezo-dev-kit/evm";
 import { LENDING_MODEL } from "./model.generated.ts";
 import { LendingReadError } from "./errors.ts";
 
@@ -8,8 +9,7 @@ export interface LendingAmount<Unit extends string> {
   readonly baseUnits: bigint;
 }
 export function uint(value: unknown, field = "amount", bits = 256): bigint {
-  if (typeof value !== "bigint" || value < 0n || value > (1n << BigInt(bits)) - 1n)
-    throw new LendingReadError("InvalidValue", field);
+  if (!isUint(value, bits)) throw new LendingReadError("InvalidValue", field);
   return value;
 }
 export function amount<U extends string>(unit: U, value: bigint): LendingAmount<U> {

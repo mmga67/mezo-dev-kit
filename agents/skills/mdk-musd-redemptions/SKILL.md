@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-redemptions
-description: Resolve, calculate, verify, or maintain supported MUSD redemption eligibility, ordering, formulas, hints, fees, settlement, and reconciliation through the v0.4 redemptions module. Use for reads and deterministic rules; the public writer remains separately gated.
+description: Resolve MUSD redemption ordering, eligibility, hints, fees and settlement. Reads and calculations; the writer remains separately gated.
 ---
 
 # MUSD redemptions knowledge

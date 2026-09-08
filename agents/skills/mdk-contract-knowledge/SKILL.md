@@ -1,6 +1,6 @@
 ---
 name: mdk-contract-knowledge
-description: Resolve, verify, or maintain Mezo contract IDs, deployment ranges, proxy histories, full ABIs, source provenance, and bounded evidence through the v0.4 Contracts module. Use for address, ABI, implementation, or registry work.
+description: Resolve or maintain contract IDs, deployments, proxy history, ABIs and source provenance. Use for registry or deployment evidence.
 ---
 
 # Contract knowledge
@@ -38,7 +38,7 @@ description: Resolve, verify, or maintain Mezo contract IDs, deployment ranges, 
 9. Run the module's structural, semantic, negative-provenance, and drift checks plus affected
    protocol/workflow validators.
 10. Require qualified Level 3 review before releasing address, ABI,
-   implementation, validity, or support changes.
+    implementation, validity, or support changes.
 
 ## Invariants
 

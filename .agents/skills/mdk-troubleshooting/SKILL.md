@@ -1,6 +1,6 @@
 ---
 name: mdk-troubleshooting
-description: Diagnose, review, or maintain reproduced Mezo and MDK RPC, protocol, documentation-drift, and cross-chain symptoms through the v0.4 troubleshooting module while preserving canonical ownership and safe mitigations. Use for known integration failures; never publish security findings through this skill.
+description: Diagnose reproduced Mezo RPC, protocol, documentation-drift or cross-chain symptoms. Use canonical evidence; never publish security findings.
 ---
 
 # Mezo troubleshooting

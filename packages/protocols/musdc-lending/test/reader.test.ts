@@ -3,6 +3,17 @@ import { createLendingReader } from "../src/index.ts";
 import { ACCOUNT, BLOCK, HASH, TIME, fixture } from "./fixture.ts";
 const input = { account: ACCOUNT, maxPriceAgeSeconds: 60n };
 describe("lending bounded reads", () => {
+  test.for([
+    { label: "zero account", account: `0x${"0".repeat(40)}` },
+    { label: "account with newline", account: `${ACCOUNT}\n` },
+  ] as const)("rejects $label with the domain error before contract reads", async ({ account }) => {
+    const f = await fixture();
+    await expect(createLendingReader(f.config).read({ ...input, account })).rejects.toMatchObject({
+      code: "InvalidValue",
+    });
+    expect(f.reads).toHaveLength(0);
+  });
+
   test("one coordinate combines accrued debt, separate share units, and distinct liquidity observations", async () => {
     const f = await fixture();
     const result = await createLendingReader(f.config).read(input);
@@ -111,6 +122,28 @@ describe("lending bounded reads", () => {
     const r = await createLendingReader(f.config).read(input);
     expect(r.supplyAssets).toMatchObject({ status: "available", value: { baseUnits: 200684n } });
   });
+  test.for([
+    { label: "zero", recipient: `0x${"0".repeat(40)}`, status: "available" },
+    { label: "newline", recipient: `${ACCOUNT}\n`, status: "unavailable" },
+  ] as const)("preserves fee recipient policy for $label", async ({ recipient, status }) => {
+    const f = await fixture();
+    f.values.set("market", [
+      2_000_000n,
+      2_000_000_000_000n,
+      1_000_000n,
+      1_000_000_000_000n,
+      TIME - 3600n,
+      10n ** 17n,
+    ]);
+    f.values.set("feeRecipient", recipient);
+    const result = await createLendingReader(f.config).read(input);
+    expect(result.accruedMarket).toMatchObject({ status: "available" });
+    expect(result.supplyAssets.status).toBe(status);
+    if (status === "unavailable") {
+      expect(result.supplyAssets).toMatchObject({ error: { code: "InvalidValue" } });
+    }
+  });
+
   test.for(["priceFeed", "MORPHO"])(
     "wrong %s back-reference rejects the snapshot",
     async (name) => {

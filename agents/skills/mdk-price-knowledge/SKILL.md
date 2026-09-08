@@ -1,6 +1,6 @@
 ---
 name: mdk-price-knowledge
-description: Resolve, normalize, verify, or maintain provider-neutral MDK price-source taxonomy, feed identities, typed datums, exact scaling, confidence, freshness, disagreement, fallback results, and bounded Mezo Skip/Pyth observations through the v0.4 Prices module. Use for evidence-backed price reads and deterministic rules; public readers, updaters, routes, credentials, and writers remain unsupported.
+description: Verify price-source identity, typed scaling, freshness, confidence and fallback evidence. No public price reader, updater or writer.
 ---
 
 # MDK price knowledge

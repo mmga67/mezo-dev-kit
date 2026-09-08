@@ -1,3 +1,4 @@
+import { isUint } from "@mezo-dev-kit/evm";
 import { VaultReadError } from "./errors.ts";
 import { VAULT_MODEL } from "./model.generated.ts";
 export interface VaultAmount<U extends string> {
@@ -5,8 +6,7 @@ export interface VaultAmount<U extends string> {
   readonly baseUnits: bigint;
 }
 export function uint(value: unknown, field = "amount"): bigint {
-  if (typeof value !== "bigint" || value < 0n || value >= 1n << 256n)
-    throw new VaultReadError("InvalidValue", field);
+  if (!isUint(value)) throw new VaultReadError("InvalidValue", field);
   return value;
 }
 export function amount<U extends string>(unit: U, value: bigint): Readonly<VaultAmount<U>> {

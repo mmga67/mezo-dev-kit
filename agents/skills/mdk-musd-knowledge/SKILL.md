@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-knowledge
-description: Resolve, explain, or maintain the supported MUSD system model, terminology, components, units, and parameter ownership through the v0.4 MUSD module. Use for shared MUSD protocol concepts; route borrowing and redemptions to their domain skills.
+description: Explain or maintain shared MUSD concepts, components, units and parameter ownership. Route borrowing, savings and redemptions to their domain skills.
 ---
 
 # MUSD knowledge

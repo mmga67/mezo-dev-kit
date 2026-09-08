@@ -1,6 +1,6 @@
 ---
 name: mdk-institutional-musd-debt
-description: Resolve, calculate, verify, or maintain deployment-scoped Mezo institutional MUSD Enclave custody, execution allowlists, positions, veBTC pledges, interest, fees, repayment, health, totals, and aggregate boundaries through the v0.4 institutional-debt module. Use for evidence-backed reads and deterministic rules; all writers remain unsupported.
+description: Resolve institutional MUSD Enclave custody, positions, pledges, repayment, health and fees. Evidence and calculations; no writers.
 ---
 
 # Institutional MUSD debt knowledge

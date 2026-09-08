@@ -1,3 +1,11 @@
+import {
+  EvmValueError,
+  isHash32,
+  isHexData,
+  parseHash32,
+  parseHexData,
+  parseUnsignedInteger,
+} from "@mezo-dev-kit/evm";
 import { CoreReadError } from "./read-errors.ts";
 
 export type HexData = `0x${string}`;
@@ -20,8 +28,12 @@ export function validateBlockNumber(
 }
 
 export function validateChainId(value: unknown, field: string): bigint {
-  if (typeof value === "bigint" && value > 0n) return value;
-  if (typeof value === "string" && /^[1-9][0-9]*$/.test(value)) return BigInt(value);
+  try {
+    const chainId = parseUnsignedInteger(value, field);
+    if (chainId > 0n) return chainId;
+  } catch (error) {
+    if (!(error instanceof EvmValueError)) throw error;
+  }
   throw new CoreReadError(
     "InvalidTransportResult",
     `${field} must be a positive bigint or canonical decimal string`,
@@ -31,7 +43,7 @@ export function validateChainId(value: unknown, field: string): bigint {
 }
 
 export function validateHexData(value: unknown, field = "data"): HexData {
-  if (typeof value !== "string" || !/^0x(?:[a-fA-F0-9]{2})*$/.test(value)) {
+  if (!isHexData(value)) {
     throw new CoreReadError(
       "InvalidReadInput",
       `${field} must be even-length hexadecimal data`,
@@ -39,11 +51,11 @@ export function validateHexData(value: unknown, field = "data"): HexData {
       { stage: "validation" },
     );
   }
-  return value.toLowerCase() as HexData;
+  return parseHexData(value);
 }
 
 export function validateBlockHash(value: unknown): BlockHash {
-  if (typeof value !== "string" || !/^0x[a-fA-F0-9]{64}$/.test(value)) {
+  if (!isHash32(value)) {
     throw new CoreReadError(
       "InvalidTransportResult",
       "block hash must be a 32-byte hexadecimal value",
@@ -51,7 +63,7 @@ export function validateBlockHash(value: unknown): BlockHash {
       { stage: "coordinate" },
     );
   }
-  return value.toLowerCase() as BlockHash;
+  return parseHash32(value);
 }
 
 export function validateIdentifier(value: unknown, field: string): string {

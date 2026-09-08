@@ -3,6 +3,7 @@ import { ContractRegistryError } from "@mezo-dev-kit/contracts";
 import type { ResolvedContract } from "@mezo-dev-kit/contracts";
 import { CoreReadError, createCoreReadClient } from "@mezo-dev-kit/core";
 import type { CoreReadCall, CoherentReadResult } from "@mezo-dev-kit/core";
+import { isAddress, parseAddress } from "@mezo-dev-kit/evm";
 import {
   accrueLendingMarket,
   amount,
@@ -236,9 +237,8 @@ export function createLendingReader(config: LendingReaderConfig): Readonly<Lendi
       if (accruedMarket.value.feeShares !== 0n) {
         const recipient = value(initial, "feeRecipient");
         // A zero fee recipient is valid on Morpho; it still receives the fee shares.
-        if (typeof recipient !== "string" || !/^0x[0-9a-fA-F]{40}$/.test(recipient))
-          throw new LendingReadError("InvalidValue", "feeRecipient");
-        if (recipient.toLowerCase() === account)
+        if (!isAddress(recipient)) throw new LendingReadError("InvalidValue", "feeRecipient");
+        if (parseAddress(recipient) === account)
           shares = uint(shares + accruedMarket.value.feeShares, "fee recipient shares");
       }
       return amount(

@@ -1,6 +1,6 @@
 ---
 name: mdk-pool-liquidity-knowledge
-description: Resolve, calculate, verify, or maintain Mezo basic-AMM and concentrated-liquidity pool discovery, math, positions, ownership, gauge boundaries, and future operation requirements through the v0.4 pools module. Use for evidence-backed reads and deterministic rules; all pool writers remain unsupported.
+description: Resolve basic-AMM and concentrated-liquidity pools, math, positions and gauge ownership. Evidence and calculations; no pool writers.
 ---
 
 # Mezo pool and liquidity knowledge

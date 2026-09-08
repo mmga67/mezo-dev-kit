@@ -1,6 +1,6 @@
 ---
 name: mdk-bridge-knowledge
-description: Resolve, verify, reconcile, or maintain evidence-scoped MUSD Wormhole NTT and Mezo Native Bridge provider, asset, route, lifecycle, and transfer knowledge through the v0.4 bridge module. Use for cross-chain evidence; all routes and writers remain unsupported.
+description: Verify MUSD NTT and Mezo Native Bridge assets, routes and transfer evidence. Knowledge only; bridge writers and routes remain unsupported.
 ---
 
 # Mezo bridge knowledge

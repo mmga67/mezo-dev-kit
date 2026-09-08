@@ -1,5 +1,6 @@
 import { getNetwork } from "@mezo-dev-kit/chains";
 import type { NetworkId } from "@mezo-dev-kit/chains";
+import { EvmValueError, isAddress, parseAddress, parseUnsignedInteger } from "@mezo-dev-kit/evm";
 
 import { GENERATED_CONTRACT_IDS, GENERATED_CONTRACTS_DATA } from "./data.generated.ts";
 import { ContractRegistryError } from "./errors.ts";
@@ -374,8 +375,12 @@ function toRuntimeAbi(value: GeneratedAbiData): Readonly<RuntimeAbi> {
 }
 
 function generatedBlock(value: string, ownerId: string): bigint {
-  if (!/^(0|[1-9][0-9]*)$/.test(value)) throw malformed(ownerId, "block is invalid");
-  return BigInt(value);
+  try {
+    return parseUnsignedInteger(value, "block");
+  } catch (error) {
+    if (!(error instanceof EvmValueError)) throw error;
+    throw malformed(ownerId, "block is invalid");
+  }
 }
 
 function generatedOptionalBlock(value: string | null, ownerId: string): bigint | null {
@@ -383,8 +388,9 @@ function generatedOptionalBlock(value: string | null, ownerId: string): bigint |
 }
 
 function generatedAddress(value: string, ownerId: string): ContractAddress {
-  if (!/^0x[a-f0-9]{40}$/.test(value)) throw malformed(ownerId, "address is invalid");
-  return value as ContractAddress;
+  if (!isAddress(value) || value !== value.toLowerCase())
+    throw malformed(ownerId, "address is invalid");
+  return parseAddress(value);
 }
 
 function isSupportedDeployment(value: RuntimeDeployment): boolean {

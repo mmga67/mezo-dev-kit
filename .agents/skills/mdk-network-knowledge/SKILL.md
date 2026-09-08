@@ -1,6 +1,6 @@
 ---
 name: mdk-network-knowledge
-description: Use, verify, or maintain MDK capability-profile network identity, Mezo RPC endpoint metadata, capability evidence, and generated network projections through the v0.4 Networks module. Use for chain configuration, provider capability, or Networks knowledge changes.
+description: Resolve network identity, Mezo RPC metadata, capability evidence and generated network projections. Use for chain or provider configuration.
 ---
 
 # Network knowledge

@@ -1,6 +1,6 @@
 ---
 name: mdk-incentives-knowledge
-description: Resolve, calculate, verify, or maintain deployment-scoped Mezo veBTC, veMEZO, boost, voting, epoch, gauge, emission, reward, and operation knowledge through the v0.4 incentives module. Use for evidence-backed reads and deterministic rules; all writer capabilities remain unsupported.
+description: Resolve veBTC/veMEZO, boosts, voting, epochs, gauges and reward evidence or calculations. No incentive writers.
 ---
 
 # Mezo incentives knowledge

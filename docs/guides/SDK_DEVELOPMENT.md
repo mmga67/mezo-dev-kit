@@ -101,6 +101,7 @@ Discover the package's own scripts before running them:
 
 ```sh
 pnpm --filter @mezo-dev-kit/chains run
+pnpm --filter @mezo-dev-kit/evm run
 pnpm --filter @mezo-dev-kit/contracts run
 pnpm --filter @mezo-dev-kit/core run
 ```
@@ -119,7 +120,7 @@ pnpm --filter @mezo-dev-kit/core test:shuffle
 pnpm --filter @mezo-dev-kit/core check
 ```
 
-The root build emits JavaScript and declarations for Chains, Contracts, Core,
+The root build emits JavaScript and declarations for EVM, Chains, Contracts, Core,
 and their focused example in dependency order. Verify the declared runtime
 entrypoints, unavailable deep paths, missing-artifact behavior, and the absence
 of the internal Core transaction proof with:

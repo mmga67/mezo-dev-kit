@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-savings
-description: Resolve, calculate, verify, or maintain Mezo MUSD Savings principal receipts, indexed MUSD yield, PCV/converter flow, strategy, gauge custody, reward boundaries, and reconciliation through the v0.4 Savings module. Use for evidence-backed reads and deterministic rules; all writers remain unsupported.
+description: Resolve MUSD Savings principal, indexed yield, PCV/converter flow and gauge custody. Evidence and calculations; no writers.
 ---
 
 # MUSD Savings knowledge
@@ -16,8 +16,9 @@ math, mUSDC lending, portfolio yield projections, or a writer.
 
 ## Required context
 
-1. Read the active task, applicable `AGENTS.md`, the knowledge-maintenance
-   skill, and `knowledge/protocols/musd/savings/README.md`.
+1. Reuse current task/instructions. Read owning package docs for code work;
+   read the module README/index for protocol evidence. Load knowledge-maintenance
+   only when changing knowledge or generated projections.
 2. Resolve the module through its `index.json`; load only the required model,
    roles, reconciliation, fixture, evidence, or review resource.
 3. Load `mdk-musd-knowledge` for classic boundaries,

@@ -1,6 +1,6 @@
 ---
 name: mdk-knowledge-maintenance
-description: Maintain, migrate, validate, or generate MDK knowledge modules and records while preserving evidence, stable identities, lifecycle status, and domain ownership. Use for changes under knowledge/ or to derived outputs sourced from knowledge.
+description: Maintain, migrate, validate or generate knowledge modules and derived outputs while preserving evidence, stable identities and domain ownership.
 ---
 
 # Knowledge maintenance
