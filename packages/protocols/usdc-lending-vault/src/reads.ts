@@ -1,14 +1,15 @@
 import { createHash } from "node:crypto";
 import type { ContractAbiEntry, ContractAddress } from "@mezo-dev-kit/contracts";
 import type { ReadCoordinate } from "@mezo-dev-kit/core";
+import { isAddress, isHexData, parseAddress } from "@mezo-dev-kit/evm";
 import type { LendingAbiValue } from "@mezo-dev-kit/musdc-lending";
 import { VaultReadError } from "./errors.ts";
 import { VAULT_MODEL } from "./model.generated.ts";
 import type { VaultReaderConfig, VaultReadValue } from "./types.ts";
 export function address(value: unknown, field: string): ContractAddress {
-  if (typeof value !== "string" || !/^0x[0-9a-fA-F]{40}$/.test(value) || /^0x0{40}$/.test(value))
+  if (!isAddress(value) || value === `0x${"0".repeat(40)}`)
     throw new VaultReadError("InvalidValue", field);
-  return value.toLowerCase() as ContractAddress;
+  return parseAddress(value);
 }
 export function same(actual: unknown, expected: ContractAddress, field: string): void {
   if (address(actual, field) !== expected.toLowerCase())
@@ -68,7 +69,7 @@ export async function readValue(
   if (entries.length !== 1) throw new VaultReadError("UnsupportedRuntime", functionName);
   const call = { abi: entries, functionName, args };
   const data = config.codec.encodeRead(call);
-  if (typeof data !== "string" || !/^0x(?:[0-9a-fA-F]{2}){4,}$/.test(data))
+  if (!isHexData(data) || data.length < 10)
     throw new VaultReadError("InvalidValue", "codec.encodeRead");
   const raw = await config.transport.read({ ...coordinate, address: target, data });
   try {
@@ -84,8 +85,7 @@ export async function verifyRole(
   role: keyof typeof VAULT_MODEL.profiles,
 ): Promise<void> {
   const raw = await config.transport.getCode({ ...coordinate, address: target });
-  if (typeof raw !== "string" || !/^0x(?:[0-9a-fA-F]{2})+$/.test(raw))
-    throw new VaultReadError("InvalidValue", "runtimeCode");
+  if (!isHexData(raw) || raw.length === 2) throw new VaultReadError("InvalidValue", "runtimeCode");
   if (
     createHash("sha256")
       .update(Buffer.from(raw.slice(2), "hex"))

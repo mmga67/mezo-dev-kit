@@ -15,8 +15,8 @@ is licensed under the root [`MIT License`](./LICENSE).
 Before non-trivial work, read:
 
 1. [`AGENTS.md`](./AGENTS.md) for repository-wide operating rules;
-2. [`ARCHITECTURE.md`](./ARCHITECTURE.md) for boundaries and dependency
-   direction;
+2. applicable sections of [`ARCHITECTURE.md`](./ARCHITECTURE.md) for affected
+   boundaries and dependency direction;
 3. the nearest nested `AGENTS.md`, package docs, and relevant skill;
 4. only the knowledge, task, ADR, code, and tests relevant to the change.
 

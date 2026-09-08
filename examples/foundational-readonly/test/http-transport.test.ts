@@ -96,6 +96,7 @@ describe("the example HTTP read boundary", () => {
     { label: "wrong response id", response: { jsonrpc: "2.0", id: 90, result: "0x1" } },
     { label: "missing result", response: { jsonrpc: "2.0", id: 1 } },
     { label: "noncanonical quantity", response: { jsonrpc: "2.0", id: 1, result: "0x00" } },
+    { label: "quantity with newline", response: { jsonrpc: "2.0", id: 1, result: "0x1\n" } },
     {
       label: "both result and error",
       response: { jsonrpc: "2.0", id: 1, result: "0x1", error: { code: -1, message: "failed" } },

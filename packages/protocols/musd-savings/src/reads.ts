@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 
 import type { ContractAbiEntry, ContractAddress } from "@mezo-dev-kit/contracts";
 import type { HexData, ReadCoordinate } from "@mezo-dev-kit/core";
+import { isAddress, isHexData, parseAddress } from "@mezo-dev-kit/evm";
 
 import { uint256 } from "./accounting.ts";
 import { SavingsReadError } from "./errors.ts";
@@ -9,9 +10,9 @@ import { IMPLEMENTATION_SLOT, SAVINGS_ROLE_TEMPLATES } from "./model.generated.t
 import type { SavingsCall, SavingsReadValue, SavingsReaderConfig } from "./types.ts";
 
 export function address(value: unknown, field: string): ContractAddress {
-  if (typeof value !== "string" || !/^0x[0-9a-fA-F]{40}$/.test(value) || /^0x0{40}$/i.test(value))
+  if (!isAddress(value) || value === `0x${"0".repeat(40)}`)
     throw new SavingsReadError("InvalidReadValue", field);
-  return value.toLowerCase() as ContractAddress;
+  return parseAddress(value);
 }
 export function sameAddress(actual: unknown, expected: ContractAddress, field: string): void {
   if (address(actual, field) !== expected.toLowerCase())
@@ -37,7 +38,7 @@ export function readCall(
 }
 export function encode(config: SavingsReaderConfig, call: SavingsCall): HexData {
   const data = config.codec.encodeRead(call);
-  if (typeof data !== "string" || !/^0x(?:[0-9a-fA-F]{2}){4,}$/.test(data))
+  if (!isHexData(data) || data.length < 10)
     throw new SavingsReadError("InvalidInput", "codec.encodeRead");
   return data;
 }
@@ -70,7 +71,7 @@ export function scalar(value: unknown, field: string): bigint {
   return uint256(value, field);
 }
 export function codeHash(value: unknown): string {
-  if (typeof value !== "string" || !/^0x(?:[0-9a-fA-F]{2})+$/.test(value))
+  if (!isHexData(value) || value.length === 2)
     throw new SavingsReadError("InvalidReadValue", "runtimeCode");
   return createHash("sha256")
     .update(Buffer.from(value.slice(2), "hex"))

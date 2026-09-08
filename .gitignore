@@ -1,7 +1,7 @@
 local/
 .mdk/
 # Contributor skill discovery is generated locally from agents/skills/.
-/.agents/
+.agents/
 legacy/
 node_modules/
 coverage/

@@ -5,7 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const packageNames = ["chains", "contracts", "core"] as const;
+const packageNames = ["evm", "chains", "contracts", "core"] as const;
 
 for (const packageName of packageNames) {
   const packageRoot = resolve(repositoryRoot, "packages", packageName);
@@ -68,6 +68,7 @@ runNode(
 );
 
 for (const deepImport of [
+  "@mezo-dev-kit/evm/address",
   "@mezo-dev-kit/chains/registry",
   "@mezo-dev-kit/contracts/data.generated",
   "@mezo-dev-kit/core/client",
@@ -80,6 +81,23 @@ for (const deepImport of [
     "ERR_PACKAGE_PATH_NOT_EXPORTED",
   );
 }
+
+runNode(
+  resolve(repositoryRoot, "examples/foundational-readonly"),
+  [
+    "import assert from 'node:assert/strict';",
+    "import { EvmValueError, parseRpcQuantity, toRpcQuantity, parseUnitsExact, formatUnitsExact, parseAddress, parseUserAddress, parseHash32 } from '@mezo-dev-kit/evm';",
+    "assert.equal(parseRpcQuantity(toRpcQuantity(2n ** 256n)), 2n ** 256n);",
+    "assert.equal(parseUnitsExact(formatUnitsExact(1234567n, 6), 6), 1234567n);",
+    "assert.throws(() => parseRpcQuantity('0x00'), EvmValueError);",
+    "assert.throws(() => parseUnitsExact('1.001', 2), { code: 'ExcessPrecision' });",
+    "assert.equal(parseAddress('0x' + 'AB'.repeat(20)), '0x' + 'ab'.repeat(20));",
+    "assert.equal(parseHash32('0x' + 'AB'.repeat(32)), '0x' + 'ab'.repeat(32));",
+    "assert.throws(() => parseUserAddress('0x5aaeb6053F3E94C9b9A09f33669435E7Ef1BeAed'), { code: 'InvalidChecksum' });",
+  ].join("\n"),
+  0,
+  "built EVM value contracts",
+);
 
 const temporaryRoot = await mkdtemp(join(tmpdir(), "mdk-missing-artifact-"));
 try {

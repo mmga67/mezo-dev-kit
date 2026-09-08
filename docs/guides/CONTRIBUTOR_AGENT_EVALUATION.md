@@ -85,6 +85,50 @@ can establish current capability but cannot claim a measured improvement.
 
 ## Review results
 
+### Context and execution cost
+
+Compare quality and cost together. Keep source/input snapshots, prompt,
+model/runtime configuration, permissions, and build state fixed when measuring
+an instruction-only change. Compare API improvements separately when package
+availability also changes. Run each variant in a fresh session; do not reuse a
+successful run's conversation, output, or evaluator answers.
+
+Record these fields alongside the existing pass/fail evidence:
+
+| Measurement                       | Recording rule                                                                                                                                                       |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Instruction/discovery source size | UTF-8 bytes and characters of root/nested instructions, discovery metadata, and selected skill bodies. Distinguish available metadata from actually retrieved files. |
+| Input and output tokens           | Use runtime usage telemetry with its field names and aggregation definition. Mark unavailable instead of estimating billing from file sizes.                         |
+| Cached input tokens               | Record separately when exposed. Cached input remains context; do not add it again if total input already includes it.                                                |
+| Retrieved context                 | Record selected paths, bytes returned, and duplicate reads of unchanged sources. Tool truncation and summaries are not full-file reads.                              |
+| Tool calls and failures           | Count completed calls and unsuccessful calls separately; a rerun is not a new successful case.                                                                       |
+| Elapsed time and retries          | Measure start/end and record all attempts, including aborts, unavailable tools, and corrective follow-ups.                                                           |
+| Correctness and completeness      | Apply the behavioral criteria below and retain verification/artifact evidence. A lower cost cannot excuse a critical failure.                                        |
+
+The host may inject global instructions, tool definitions, or other context
+that MDK does not own. Record that environment without copying private
+configuration or transcripts into public source. Byte counts are reproducible
+source measurements, not tokenizer counts or promised cost reductions.
+
+Use `node scripts/measure-agent-context.ts [repository-root]` for a compact
+source inventory. The command reads canonical skills and emits no skill bodies;
+its discovery figures exclude host-specific path rendering. Runtime usage and
+actual selected-file/tool activity must be measured independently.
+
+For the primitive foundation, also test a task asking for strict address/hash,
+RPC quantity, and exact amount handling. Inspect actual public imports and
+negative cases: agents should reuse the supported EVM package, distinguish
+bytes from quantities, preserve checksum/precision policy, and keep domain
+errors. A regex-free file alone does not prove correct behavior.
+
+Reject a proposed reduction if it changes authority, loses a required evidence
+or error boundary, invents an API, or fails required verification. Preserve
+all attempts; a passing baseline is evidence that no behavioral gain was
+demonstrated. Report source-size reduction separately from measured token or
+elapsed-time changes, especially with small samples or different cache hits.
+
+### Behavioral dimensions
+
 For each case record `pass`, `fail`, or `unavailable`, with evidence pointers
 and the observed reason. An unavailable required case remains outstanding.
 Judge these dimensions:

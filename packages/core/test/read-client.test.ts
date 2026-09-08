@@ -113,6 +113,10 @@ describe("Core read client", () => {
       ],
     },
     { label: "odd calldata", calls: [{ id: "bad", contractId: "musd.token", data: "0x1" }] },
+    {
+      label: "calldata with newline",
+      calls: [{ id: "bad", contractId: "musd.token", data: "0x12\n" }],
+    },
   ])("rejects $label before transport reads", async ({ calls }) => {
     let readCount = 0;
     const client = createCoreReadClient({
@@ -132,18 +136,36 @@ describe("Core read client", () => {
     expect(readCount).toBe(0);
   });
 
-  test("rejects malformed block identity from the transport", async () => {
-    const client = createCoreReadClient({
-      network: getNetwork("mezo-mainnet"),
-      registry: createContractRegistry(),
-      transport: transport({ blockHash: "not-a-hash" }),
-    });
+  test.for(["not-a-hash", `${BLOCK_HASH}\n`])(
+    "rejects malformed block identity %s from the transport",
+    async (blockHash) => {
+      const client = createCoreReadClient({
+        network: getNetwork("mezo-mainnet"),
+        registry: createContractRegistry(),
+        transport: transport({ blockHash }),
+      });
 
-    await expect(client.resolveContract({ contractId: "musd.token" })).rejects.toMatchObject({
-      code: "InvalidTransportResult",
-      stage: "coordinate",
-    });
-  });
+      await expect(client.resolveContract({ contractId: "musd.token" })).rejects.toMatchObject({
+        code: "InvalidTransportResult",
+        stage: "coordinate",
+      });
+    },
+  );
+
+  test.for([0n, "0", "031612", "31612\n", 31612])(
+    "preserves the chain-assertion error for malformed chain ID %s",
+    async (chainId) => {
+      const client = createCoreReadClient({
+        network: getNetwork("mezo-mainnet"),
+        registry: createContractRegistry(),
+        transport: transport({ chainId }),
+      });
+      await expect(client.resolveContract({ contractId: "musd.token" })).rejects.toMatchObject({
+        code: "InvalidTransportResult",
+        stage: "chain-assertion",
+      });
+    },
+  );
 
   test("rejects an unknown contract ID before calling the transport", async () => {
     let chainCalls = 0;

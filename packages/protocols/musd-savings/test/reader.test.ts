@@ -4,6 +4,17 @@ import { createSavingsReader } from "../src/index.ts";
 import { ACCOUNT, BLOCK, CONVERTER, GAUGE, HASH, REWARD, STRATEGY, fixture } from "./fixture.ts";
 
 describe("Savings reader", () => {
+  test.for([
+    { label: "zero account", account: `0x${"0".repeat(40)}` },
+    { label: "account with newline", account: `${ACCOUNT}\n` },
+  ] as const)("rejects $label with the domain error before contract reads", async ({ account }) => {
+    const f = await fixture();
+    await expect(createSavingsReader(f.config).read({ account })).rejects.toMatchObject({
+      code: "InvalidReadValue",
+    });
+    expect(f.reads).toHaveLength(0);
+  });
+
   test("reconciles wallet, gauge beneficial ownership, separate yield, and reward units at one coordinate", async () => {
     const f = await fixture();
     const result = await createSavingsReader(f.config).read({ account: ACCOUNT });

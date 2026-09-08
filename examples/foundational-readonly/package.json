@@ -24,6 +24,7 @@
     "vitest": "4.1.11"
   },
   "dependencies": {
+    "@mezo-dev-kit/evm": "workspace:*",
     "@mezo-dev-kit/chains": "workspace:*",
     "@mezo-dev-kit/contracts": "workspace:*",
     "@mezo-dev-kit/core": "workspace:*"

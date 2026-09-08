@@ -1,0 +1,30 @@
+{
+  "name": "@mezo-dev-kit/evm",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Typed EVM value validation and exact conversions for the MDK source alpha.",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/clean-package-dist.ts evm && tsc --project tsconfig.build.json",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm build && pnpm test",
+    "format:check": "prettier --check src test README.md vitest.config.ts package.json tsconfig.json tsconfig.build.json",
+    "typecheck": "tsc --project tsconfig.json",
+    "lint": "eslint src test vitest.config.ts",
+    "test": "vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=147455"
+  },
+  "dependencies": {
+    "ox": "1.7.4"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
+  }
+}

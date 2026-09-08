@@ -6,7 +6,8 @@
     "paths": {
       "@mezo-dev-kit/chains": ["../../chains/src/index.ts"],
       "@mezo-dev-kit/contracts": ["../../contracts/src/index.ts"],
-      "@mezo-dev-kit/core": ["../../core/src/index.ts"]
+      "@mezo-dev-kit/core": ["../../core/src/index.ts"],
+      "@mezo-dev-kit/evm": ["../../evm/src/index.ts"]
     },
     "types": ["node", "vitest"]
   },

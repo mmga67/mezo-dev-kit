@@ -1,3 +1,4 @@
+import { isHash32, parseHash32 } from "@mezo-dev-kit/evm";
 import { createCoreError, serializeError } from "./errors.ts";
 import {
   callsEqual,
@@ -844,10 +845,10 @@ function normalizeReceiptStatus(status: unknown, providerId: string): "success" 
 }
 
 function normalizeBlockHash(value: unknown, field: string): string {
-  if (typeof value !== "string" || !/^0x[a-fA-F0-9]{64}$/.test(value)) {
+  if (!isHash32(value)) {
     throw new TypeError(`${field} must be a 32-byte block hash`);
   }
-  return value.toLowerCase();
+  return parseHash32(value);
 }
 
 function normalizeDeadline(value: unknown): number {

@@ -4,6 +4,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "resolveJsonModule": true,
+    "paths": { "@mezo-dev-kit/evm": ["./packages/evm/src/index.ts"] },
     "types": ["node"]
   },
   "include": ["scripts/**/*.ts", "vitest.quality.config.ts"],

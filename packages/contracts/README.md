@@ -46,8 +46,9 @@ failure is converted into a fallback address or ABI.
 
 ## Dependency and injection boundary
 
-Contracts depends on the public Chains entrypoint so network identity is not
-duplicated. It selects no RPC and performs no network call. `createContractRegistry`
+Contracts uses the public Chains entrypoint for network identity and the public
+EVM entrypoint for address validation. Registry addresses remain canonical
+lowercase values. It selects no RPC and performs no network call. `createContractRegistry`
 returns an immutable registry implementing the exported `ContractRegistry`
 interface; Core and protocol modules accept that interface as an injected port
 and can supply deterministic fakes in tests.

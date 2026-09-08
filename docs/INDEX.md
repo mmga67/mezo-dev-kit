@@ -48,12 +48,14 @@ domains.
   verification.
 - `../packages/chains/README.md` — private accepted network identity/capability
   API, canonical generation, provider exclusions, and limitations.
+- `../packages/evm/README.md` — typed address/hash/data/quantity validation,
+  checksum policy, exact unit conversions, and domain error boundaries.
 - `../packages/contracts/README.md` — stable deployment resolution, read-safe
   ABI projection, lifecycle/provenance/freshness, and generation boundary.
 - `../packages/core/README.md` — injected block-consistent read API, typed
   partial failures, built export, and retained internal transaction proof.
 - `../examples/foundational-readonly/README.md` — deterministic consumer of all
-  three declared built entrypoints without a default RPC.
+  four declared built entrypoints without a default RPC.
 - `guides/MEMORY_MANAGEMENT.md` — provider-neutral retrieval, local/shared
   capture, lifecycle, promotion/deprecation, manual schema validation, privacy,
   and optional-provider boundaries.
@@ -94,6 +96,8 @@ domains.
 - `decisions/0013-github-source-alpha-governance.md` — accepted MIT-licensed,
   manually reviewed GitHub source-alpha boundary, `dev`-to-`main` promotion,
   and explicit package/release deferrals.
+- `decisions/0014-evm-value-foundation.md` — shared EVM value ownership,
+  pinned Ox implementation, and compatibility-preserving consumer migration.
 - `decisions/0009-oracle-price-source-ownership.md` — accepted
   provider-neutral price-source taxonomy, typed datum/failure contract,
   ownership, dependency, freshness, scale, and fallback boundaries.

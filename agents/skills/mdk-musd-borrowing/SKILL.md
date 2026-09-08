@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-borrowing
-description: Resolve, calculate, verify, or maintain supported MUSD borrowing, collateral, interest, refinance, position, and liquidation knowledge through the v0.4 borrowing module. Use for reads and deterministic rules; writer capabilities remain separately gated.
+description: Resolve MUSD collateral, borrowing, interest, refinance, positions and liquidation rules. Reads and calculations; writers separately gated.
 ---
 
 # MUSD borrowing knowledge
@@ -74,7 +74,7 @@ Liquity behavior into MDK code.
 9. Keep pure calculations independent from RPC, wallet, transaction, UI, and
    cache state. Transaction lifecycle belongs to the shared core boundary.
 10. On changes, update candidate disposition, pinned evidence, canonical record,
-   fixture, derived reference, and validator together.
+    fixture, derived reference, and validator together.
 11. Run the borrowing validator plus its MUSD, contract, and network
     dependencies. Require qualified review for changed facts or capabilities.
 

@@ -1,36 +1,50 @@
-# AGENTS.md
+# MDK contributor instructions
 
-# v.1
+These instructions govern Mezo Developer Kit itself. External applications use
+application-owned instructions from `agents/consumer/APP_AGENTS.template.md`
+and selected consumer skills.
 
-## 1. Purpose
+## Authority and ownership
 
-This repository is **Mezo Developer Kit (MDK)**: a trustworthy, composable, agent-friendly development environment for building on Mezo.
+The current human task owns outcome and scope. Root/nested `AGENTS.md` govern
+work; `ARCHITECTURE.md` and accepted ADRs own package boundaries and dependency
+direction. Registry and indexed `knowledge/` own Mezo facts; package docs and
+exports own supported APIs; code/tests show implementation reality. Memory is
+supporting context, never proof or authority. Resolve conflicts explicitly.
 
-MDK combines reusable code, verified Mezo knowledge, tooling, examples, and agent guidance. Early versions should prioritize **EVM development and a small number of high-value Mezo workflows**.
+Keep one canonical owner for each fact/rule, including addresses, ABIs,
+deployments, formulas, and generated data. Inspect existing code, preserve
+unrelated human changes, and make the smallest complete change.
 
-MDK is **TypeScript-first**. Build SDK/runtime packages, protocol modules,
-framework adapters, CLI code, tests, templates, examples, and bootstrapped
-applications in TypeScript by default. Use TSX for React source that contains
-JSX. Solidity remains appropriate for EVM contracts; JSON, schemas, Markdown,
-and evidence remain in their native formats. A tool-constrained exception must
-be narrow and documented; plain JavaScript is not an alternative product-code
-default. ADR-0007 and `ARCHITECTURE.md` own the detailed boundary.
-`docs/standards/coding.md` owns the repository-wide authored-code standard.
+## Route the task once
 
-This root `AGENTS.md` governs **development of MDK itself**. External applications use a separate consumer instruction layer defined under `agents/consumer/`: an application-owned `AGENTS.md` bootstrapped from `APP_AGENTS.template.md`, plus MDK-owned consumer skills that are copied/synchronized into the application.
+1. Identify the outcome, affected owners, risk, and nearest nested `AGENTS.md`.
+2. Reuse instructions and sources already in context; reread only missing,
+   stale, or changed inputs. Search relevant sections rather than loading
+   whole manuals, catalogs, logs, knowledge modules, or all skills.
+3. For non-trivial contributor capability work, including trying workspace
+   packages, use `agents/skills/mdk-capability-assessment/SKILL.md`. Inspect
+   current public APIs and injected inputs; reassess after checkout changes.
+   Alpha status and old conclusions do not prove an API unavailable. Skip
+   capability assessment for unrelated edits.
+4. For authored code, use `agents/skills/mdk-typescript-development/SKILL.md`
+   and applicable sections of `docs/standards/coding.md`. For test strategy,
+   fixtures, regressions, or test code, also use `mdk-testing` and
+   `docs/standards/testing.md`. Add only the domain procedure needed by the task.
+5. For knowledge changes, follow `knowledge/AGENTS.md`,
+   `mdk-knowledge-maintenance`, the domain skill, and owning module index.
+   `docs/standards/knowledge-management.md` owns v0.4 knowledge policy.
+6. Retrieve only relevant memory and verify it against current owners.
 
-## 2. Core Rules
+Skills: `agents/skills/` owns contributor procedures; `agents/consumer/skills/`
+owns consumer procedures; `agents/catalog.json` inventories both. Names match
+directory basenames. Never edit discovery copies such as `.agents/skills/`
+independently or ship contributor skills to apps. Use the skill-authoring guide
+for unchanged materialization and maintenance.
 
-- Correctness over convenience.
-- Evidence over assumption for Mezo-specific behavior.
-- Load only context relevant to the current task.
-- Give every durable fact or rule one canonical owner.
-- Respect domain ownership and dependency direction.
-- Prefer small, explicit, composable interfaces.
-- Inspect current code before changing it.
-- Do not duplicate protocol facts, ABIs, addresses, or generated data.
-- Keep agent and memory-provider integrations replaceable where practical.
+## Implementation invariants
 
+<<<<<<< HEAD
 ## 3. Repository Model
 
 MDK has three coordinated systems:
@@ -247,178 +261,65 @@ Provider-specific APIs and retrieval procedures belong in the **memory skill**.
 - Generated outputs derive from canonical inputs and are not manually maintained.
 - Contract addresses, ABIs, deployment metadata, and protocol facts require canonical ownership.
 - Public APIs are typed, intentional, and changed deliberately.
+=======
+- Use TypeScript for packages, automation, tests, examples, templates, and
+  generated applications; TSX for JSX. Solidity, JSON, schemas, Markdown, and
+  evidence retain their formats. Tool-required language exceptions must be
+  narrow and documented under ADR-0007 and the coding standard.
+- Use the root-pinned pnpm version and one root `pnpm-lock.yaml`. Do not add
+  npm, Yarn, or package-local lockfiles. Vitest is the default test runner;
+  retain documented owning-tool/established-application exceptions.
+- Preserve typed public boundaries, declared exports/dependencies, an acyclic
+  graph, and framework-independent core/protocol logic. Do not deep-import
+  packages. Create a package only for demonstrated responsibility and reuse.
+- Keep deterministic calculations separate from RPC, wallets, UI, storage,
+  clocks, and global state. Inject dependencies. Validate untrusted runtime
+  data; types and casts are not validation. Keep financial values in integer
+  base units with explicit precision, rounding, and bounds.
+- Use `@mezo-dev-kit/evm` for supported EVM value validation/conversion; its
+  package README owns the contract. Domain facts and errors keep their owners.
+- Generate derived outputs from canonical inputs; never hand-maintain them.
+  Do not hide failures, bypass validation, weaken checks, or add broad ignores.
+>>>>>>> feat/next
 - Every `docs/manifest` change bumps its semantic version, adds a dated entry
-  to `docs/manifest-changelog.md`, and passes
-  `node scripts/validate-manifest-version.ts`.
-- Search for an existing pattern before adding an abstraction.
-- Avoid unrelated refactors.
-- Never silently swallow errors or bypass validation to make a task pass.
+  to `docs/manifest-changelog.md`, and passes `node scripts/validate-manifest-version.ts`.
 
-Detailed rules belong in architecture docs, domain docs, nested `AGENTS.md`, or skills.
+## Authorization and security
 
-## 9. Dependencies and Security
+Existing user authorization persists. Continue independent supported work;
+ask only for missing decisions required by the task. Stop the dependent work
+for unverifiable protocol assumptions, conflicting authority without a safe
+resolution, material scope expansion, unexpected public API/architecture
+changes, new dependencies, destructive actions, or CI/CD/security-boundary
+changes outside approved scope. Never bypass an invariant to proceed.
 
-Before adding an external dependency:
+New dependencies require explicit approval and the review in
+`CONTRIBUTING.md#dependencies`: necessity, compatibility, maintenance,
+advisories, license, install scripts, transitives, provenance, and lockfile.
+Follow `SECURITY.md`; never commit secrets or publish security findings through
+issues, tasks, memory, or ordinary troubleshooting. Knowledge or a skill does
+not authorize a transaction or establish a supported writer.
 
-1. Check whether existing dependencies/platform capabilities are sufficient.
-2. Review maintenance status and relevant known security issues.
-3. Obtain explicit human approval before adoption.
+## Verification and completion
 
-Never commit secrets, trust unverified executable/generated artifacts, weaken validation/security merely to unblock work, or change CI/CD/publishing/signing security outside explicit scope.
+`CONTRIBUTING.md` owns task lifecycle and review. Architecture, migrations,
+multi-package features, and protocol-sensitive work need an agreed task/issue
+or PR. Planning records stay outside public source; humans own priorities and
+material scope. Record unrelated discoveries as follow-ups.
 
-Detailed security policy belongs in `SECURITY.md`.
+Run checks that prove the changed behavior and crossed boundaries. Level 1
+needs scoped docs/format checks; Level 2 needs targeted tests, type/lint/build,
+and applicable integration checks; Level 3 additionally needs authoritative
+evidence, failure/compatibility review, and qualified human review before
+release. Shared configuration or multi-package changes require `pnpm check`.
+Passing local checks does not publish a package or refresh live evidence.
 
-## 10. Task Lifecycle and Verification
+Update affected canonical docs, examples, skills, and consumer guidance in the
+same change. Report changed behavior, actual checks, docs/knowledge and memory
+decisions, and unresolved risks. Do not mark work complete with required checks
+outstanding. Missing guidance is a gap: create it only from verified task
+information; otherwise continue only where correctness is unaffected.
 
-Use:
-
-```text
-understand
-→ classify
-→ retrieve relevant context
-→ inspect
-→ task/plan when required
-→ implement
-→ verify
-→ review
-→ update knowledge
-```
-
-Record significant work in the maintainer-approved issue or pull request. Keep individual planning notes outside the public source snapshot.
-
-Create/use a task for architectural changes, migrations, large or multi-package features, protocol-sensitive workflows, or other significant multi-step work. Routine isolated changes do not require one.
-
-Rules:
-
-- humans control task goals, priority, and material scope changes;
-- agents may decompose work into child tasks only within approved scope;
-- discovered out-of-scope work becomes a backlog task rather than a silent expansion;
-- issues and pull requests track execution and progress, not canonical project knowledge;
-- keep the agreed scope and verification results current in the review;
-- do not mark work done until acceptance criteria and required verification are satisfied.
-
-Keep unrelated human changes intact.
-
-### Risk levels
-
-**Level 1 — Low Risk:** docs, examples, minor DX, non-behavioral cleanup.
-Verify changed scope plus relevant formatting/lint/docs checks.
-
-**Level 2 — Functional:** SDK behavior, CLI/tooling, framework adapters, templates, runtime behavior.
-Require targeted tests, applicable type/lint/build checks, and integration-style verification where boundaries are crossed.
-
-**Level 3 — Protocol-Sensitive:** addresses, deployments, ABIs, financial calculations, transaction construction, write paths, approvals, registry changes, security guidance.
-Require authoritative evidence, targeted tests, integration verification where practical, explicit failure/compatibility review, and qualified human review before release.
-
-Use the narrowest verification that meaningfully proves the change. Exact commands belong in package docs or the relevant skill.
-
-## 11. Knowledge Maintenance
-
-After meaningful work, decide whether to update:
-
-```text
-canonical knowledge
-ARCHITECTURE.md / ADRs
-package docs
-skills
-examples/templates
-memory
-consumer agent guidance
-```
-
-Rules:
-
-- one durable fact → one canonical owner;
-- reference canonical data instead of copying it when practical;
-- skills describe procedures, not protocol databases;
-- memory does not replace maintained documentation;
-- important architectural knowledge must not exist only in chat history.
-
-## 12. Stop / Approval Conditions
-
-Stop and request human direction when:
-
-- required authoritative evidence is missing or conflicting;
-- a protocol-sensitive assumption cannot be verified;
-- scope materially expands;
-- an unexpected public API or architecture change is required;
-- a new external dependency is required;
-- a destructive or irreversible operation is required;
-- CI/CD or a security boundary must change;
-- the only path forward bypasses an invariant;
-- authoritative sources disagree and no safe resolution is clear.
-
-When blocked:
-
-```text
-Found:
-Options:
-Recommended:
-Reason:
-```
-
-## 13. Bootstrap Rule
-
-Some referenced sources may not exist yet.
-
-When required guidance is missing:
-
-- do not invent project policy or Mezo facts;
-- create the missing doc/skill when the task provides enough verified information;
-- otherwise record the gap and continue only where correctness is unaffected;
-- stop if the missing source is required for a protocol-sensitive, security-sensitive, architectural, or public-interface decision.
-
-Expected companion sources:
-
-```text
-README.md
-ARCHITECTURE.md
-CONTRIBUTING.md
-SECURITY.md
-docs/INDEX.md
-docs/decisions/
-knowledge/
-agents/skills/
-agents/consumer/
-docs/guides/external-applications.md
-```
-
-Missing guidance is a bootstrap task, not permission to guess.
-
-## 14. Definition of Done
-
-A task is complete when the relevant subset is true:
-
-- requested behavior is implemented;
-- domain/package boundaries remain valid;
-- meaningful verification passes;
-- protocol-sensitive claims have evidence;
-- public behavior and canonical knowledge are synchronized;
-- relevant docs/examples/skills/consumer guidance remain accurate;
-- a memory update decision has been made;
-- unresolved risks are reported.
-
-Implementation alone is not sufficient when supported behavior, protocol knowledge, architecture, or developer workflow changes.
-
-## 15. Completion Report
-
-For non-trivial completed work:
-
-```text
-Changed:
-- ...
-
-Verified:
-- ...
-
-Knowledge / docs:
-- ...
-
-Memory:
-- ...
-
-Risks / follow-ups:
-- ...
-```
-
-Do not report work that was not actually performed.
+Memory is provider-neutral and optional: retain only useful, verified pointers,
+never secrets, raw logs, speculation, routine history, or maintained-doc copies.
+`mdk-memory` owns procedures; `CONTRIBUTING.md#memory-decision` owns completion.

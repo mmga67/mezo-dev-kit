@@ -24,6 +24,7 @@
     "typecheck": "tsc --project tsconfig.json"
   },
   "dependencies": {
+    "@mezo-dev-kit/evm": "workspace:*",
     "@mezo-dev-kit/chains": "workspace:*"
   },
   "devDependencies": {

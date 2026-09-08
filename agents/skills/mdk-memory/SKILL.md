@@ -1,6 +1,6 @@
 ---
 name: mdk-memory
-description: Retrieve, capture, curate, promote, and deprecate MDK's provider-neutral agent memory. Use for durable task observations, shared memory seeds, local `.mdk/memory` notes, or optional provider synchronization; never use memory as protocol authority or canonical project knowledge.
+description: Retrieve or curate provider-neutral MDK memory and promote verified discoveries. Memory is supporting context, not protocol authority.
 ---
 
 # Memory

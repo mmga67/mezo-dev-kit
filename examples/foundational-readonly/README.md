@@ -1,7 +1,7 @@
 # Foundational read-only built-entrypoint example
 
 This private example proves that a workspace consumer can import only the
-declared built entrypoints of `@mezo-dev-kit/chains`,
+declared built entrypoints of `@mezo-dev-kit/evm`, `@mezo-dev-kit/chains`,
 `@mezo-dev-kit/contracts`, and `@mezo-dev-kit/core`. It injects a deterministic
 transport, resolves the accepted MUSD Savings Rate deployment, and performs a
 single block-pinned read without selecting a real RPC endpoint.
@@ -54,7 +54,8 @@ dependency. The command accepts equivalent encoded calldata from an existing
 codec. Verify the function and output against the resolved ABI; do not copy an
 address, ABI, or expected Mezo value into the example.
 
-The adapter validates JSON-RPC IDs/envelopes, quantities and return bytes,
+The adapter validates JSON-RPC IDs/envelopes and uses the public EVM package
+for canonical quantities and return bytes. It
 bounds each request to ten seconds and each response to one MiB, and performs
 no retries. Core checks chain identity before reading; the command checks the
 chain and block again afterwards. Errors expose method/codes without copying

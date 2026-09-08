@@ -8,6 +8,17 @@ const input = {
   maxPriceAgeSeconds: 60n,
 };
 describe("vault reader composition", () => {
+  test.for([
+    { label: "zero account", account: `0x${"0".repeat(40)}` },
+    { label: "account with newline", account: `${ACCOUNT}\n` },
+  ] as const)("rejects $label with the domain error before contract reads", async ({ account }) => {
+    const f = await fixture();
+    await expect(createVaultReader(f.config).read({ ...input, account })).rejects.toMatchObject({
+      code: "InvalidValue",
+    });
+    expect(f.reads).toHaveLength(0);
+  });
+
   test("reconciles one adapter allocation and counts beneficial receipts exactly once", async () => {
     const f = await fixture();
     const r = await createVaultReader(f.config).read(input);

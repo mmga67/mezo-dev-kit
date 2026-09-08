@@ -160,6 +160,13 @@ is genuinely stable and substitutable, not merely to share implementation.
 TypeScript proves the use of values inside a checked program; it does not prove
 RPC, wallet, user, file, environment, registry, generated, or JSON data.
 
+For EVM addresses, hashes, byte data, RPC quantities, unsigned integers, and
+exact base-unit conversions, reuse the public `@mezo-dev-kit/evm` entrypoint.
+Its [primitive contract](../../packages/evm/README.md) owns representation and
+normalization policy. Domain errors, asset identity/decimals, allowed addresses,
+and protocol rounding remain with their owning packages. Do not add another
+runtime regex or conversion helper for an already-supported primitive.
+
 - External values MUST enter as `unknown` or an equivalently untrusted shape.
 - Validation MUST occur at the trust boundary and return an owned type or a
   typed failure.

@@ -146,6 +146,18 @@
         "Do not load all domain skills or introduce a capability/approval ceremony"
       ],
       "minimumFreshRuns": 1
+    },
+    {
+      "id": "evm-value-reuse",
+      "setup": "Current private workspace with the EVM package built; offline synthetic values only.",
+      "prompt": "Implement a small TypeScript parser for a user-entered EVM address, a transaction hash, a JSON-RPC quantity, and an exact decimal amount. Reuse this checkout and verify malformed inputs and precision handling. Do not add dependencies or make network calls.",
+      "expected": [
+        "Inspect and import the supported EVM entrypoint",
+        "Distinguish user checksum validation from address shape normalization",
+        "Reject malformed hashes, noncanonical quantities, and excess fractional precision",
+        "Keep integer amounts exact and avoid deployment or RPC assumptions"
+      ],
+      "minimumFreshRuns": 1
     }
   ],
   "criticalFailures": [

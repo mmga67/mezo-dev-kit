@@ -56,7 +56,8 @@ implement an adapter or consume a coherent result.
 
 ## Injection and network requirements
 
-Core depends only on the public Chains and Contracts entrypoints. It does not
+Core depends on the public EVM, Chains, and Contracts entrypoints. EVM owns
+shared byte/hash validation; Core retains its read stages and error codes. It does not
 choose an RPC URL, import a provider library, access a wallet, or keep a hidden
 global client. A consumer supplies `CoreReadTransport`, whose four methods are
 `getChainId`, `getBlockNumber`, `getBlock`, and `read`.
@@ -70,7 +71,7 @@ pnpm --filter @mezo-dev-kit/core test
 pnpm --filter @mezo-dev-kit/core test:shuffle
 ```
 
-The repository's built-boundary gate imports all three foundational packages
+The repository's built-boundary gate imports all four foundational packages
 through their export maps, typechecks and runs the focused example, rejects a
 Core deep import, checks a missing-artifact failure, and verifies that writer
 proof files do not leak into `packages/core/dist`.

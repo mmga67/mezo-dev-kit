@@ -1,6 +1,6 @@
 ---
 name: mdk-transaction-execution
-description: Design, review, diagnose, or maintain safe MDK EVM reads, simulations, approvals, submissions, tracking, confirmation, and protocol reconciliation using the accepted core-client and lifecycle boundaries plus the v0.4 transaction knowledge module. Public packages and writers still require implementation and release review.
+description: Design or review EVM reads, simulations, approvals, submission and reconciliation boundaries. Inspect current public APIs; writers remain gated.
 ---
 
 # Transaction execution

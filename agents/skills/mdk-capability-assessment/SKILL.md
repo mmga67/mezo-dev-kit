@@ -1,6 +1,6 @@
 ---
 name: mdk-capability-assessment
-description: Map a contributor task to current MDK knowledge, domain skills, and usable workspace APIs. Use when explaining, trying, testing, or extending MDK capabilities, or reassessing them after a checkout update; skip unrelated edits and external consumer setup.
+description: Assess current MDK workspace APIs and integration gaps for contributor usage or changes. Reassess after checkout updates; skip unrelated edits and external apps.
 ---
 
 # Contributor capability assessment
@@ -12,8 +12,9 @@ choosing an implementation or declaring a capability absent. Trying packages
 inside an MDK example is contributor work. Alpha distribution does not make
 documented workspace entrypoints unusable.
 
-Read root/nearest `AGENTS.md`, the task, and only relevant parts of
-`ARCHITECTURE.md`. Use `agents/catalog.json` to discover contributor procedures.
+Reuse current root/nearest instructions and task context. Consult only relevant
+`ARCHITECTURE.md` boundaries. Use skill discovery metadata to select procedures;
+read `agents/catalog.json` only when routing is missing or needs verification.
 Do not load every skill, package, or knowledge module.
 
 ## Assess the task
@@ -21,6 +22,10 @@ Do not load every skill, package, or knowledge module.
 1. Separate the requested operations: identity/configuration, deterministic
    calculation, contract read, history, simulation, signing, submission, or
    knowledge maintenance. One request may cross several owners.
+   EVM value parsing, validation, and exact conversion use the public
+   `@mezo-dev-kit/evm` contract in `packages/evm/README.md`. Pure representation
+   work needs no deployment, RPC, or protocol knowledge unless the task adds
+   those semantics. It does not require a new skill.
 2. Inspect the relevant package README, `package.json` export map, exported
    types, implementation, and existing examples. Reuse the documented public
    entrypoint where it serves the operation. Contributor access to internal

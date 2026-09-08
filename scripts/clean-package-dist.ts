@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageDirectories = new Map([
+  ["evm", resolve(repositoryRoot, "packages/evm")],
   ["usdc-lending-vault", resolve(repositoryRoot, "packages/protocols/usdc-lending-vault")],
   ["usdc-lending-vault-example", resolve(repositoryRoot, "examples/usdc-lending-vault-readonly")],
   ["musdc-lending", resolve(repositoryRoot, "packages/protocols/musdc-lending")],

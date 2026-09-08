@@ -1,6 +1,6 @@
 ---
 name: mdk-usdc-lending-vault
-description: Resolve, calculate, verify, or maintain the Mezo USDC Lending Vault, Morpho allocation, VaultV2 and wrapper share math, high-water yield, liquidity, gauge custody, and reconciliation through the v0.4 vault module. Use for evidence-backed reads and deterministic rules; all writers remain unsupported.
+description: Resolve USDC Lending Vault allocation, shares, wrapper yield, liquidity and gauge custody. Evidence and calculations; no writers.
 ---
 
 # USDC Lending Vault knowledge
@@ -16,8 +16,9 @@ Vaults, generic vault strategy advice, APY forecasts, or a writer.
 
 ## Required context
 
-Read the active task, applicable `AGENTS.md`, knowledge-maintenance skill, and
-module README/index. Load `mdk-musdc-lending` for the underlying market,
+Reuse current task/instructions. Read owning package docs for code work and
+module README/index for protocol evidence. Load knowledge-maintenance only
+when changing knowledge or generated projections. Load `mdk-musdc-lending` for the underlying market,
 bridge knowledge for mUSDC identity, incentives knowledge for gauge rewards,
 contract knowledge for generations, and transaction execution for future
 operation gates. Load TypeScript/testing skills when changing code.

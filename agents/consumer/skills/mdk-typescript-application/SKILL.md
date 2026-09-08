@@ -45,6 +45,9 @@ installed release does not support.
    and global state.
 6. Reuse released MDK network, deployment, ABI, and protocol owners. Do not
    create an application-owned duplicate merely for convenience.
+   When the installed release exposes `@mezo-dev-kit/evm`, reuse its value
+   parsers/conversions and check its checksum/precision contract. A workspace
+   implementation does not establish that an external release includes it.
 7. Model failures explicitly. Do not hide unsupported networks, rejected
    simulations, reverted transactions, stale quotes, or reconciliation errors.
 8. Keep framework adapters thin over public core or protocol APIs.
