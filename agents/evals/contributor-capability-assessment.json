@@ -6,6 +6,17 @@
   "evaluation": "Independent agent execution and artifact review; static validation is not a behavioral result.",
   "cases": [
     {
+      "id": "contributor-skill-bootstrap",
+      "setup": "Fresh Git checkout with canonical agents/ sources, no .agents directory, and the supported Node runtime; no package installation required.",
+      "prompt": "I just cloned MDK to try its workspace packages with a coding agent. Set up the contributor skills in this checkout and show me how to verify their discovery and refresh them after updates. Do not install new dependencies.",
+      "expected": [
+        "Find the documented setup and use the existing contributor materializer",
+        "Verify canonical copies and ignored local output without installing consumer or global skills",
+        "Explain safe refresh and separate file installation from actual runtime discovery"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
       "id": "history-and-native-send-reconstruction",
       "provenance": "Reconstruction from a reported dry run; original prompt and artifacts were unavailable.",
       "setup": "Fresh MDK source checkout. No signer/account-history integration supplied. No live writes or new external dependencies authorized.",

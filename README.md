@@ -148,7 +148,7 @@ declared in the root `package.json`.
 ```sh
 git clone https://github.com/mmga67/mezo-dev-kit.git
 cd mezo-dev-kit
-pnpm install
+pnpm install --frozen-lockfile
 pnpm check
 pnpm test:shuffle
 ```
@@ -156,10 +156,24 @@ pnpm test:shuffle
 For an existing checkout, bootstrap and verify from the repository root:
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 pnpm check
 pnpm test:shuffle
 ```
+
+**Using a coding agent?** A fresh clone contains canonical skills under
+`agents/skills/`; `.agents/` is generated locally and ignored by Git. Before
+starting agent work, run from the repository root:
+
+```sh
+node scripts/validate-agent-skills.ts
+node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
+```
+
+Use the [contributor agent setup guide](./docs/guides/CONTRIBUTOR_AGENT_SETUP.md)
+for discovery checks, existing non-empty folders, updates after pulling, and
+other agent runtimes. Installing the skills requires only the supported Node
+version; package development also uses the pnpm workflow above.
 
 Active alpha development is integrated on the `dev` branch. Pull requests
 should target `dev`; after the complete alpha is polished and accepted,

@@ -32,6 +32,9 @@ const excludedDirectoryNames = new Set([
 
 try {
   await copyRepositoryDirectory("");
+  if ((await readdir(temporaryRoot)).includes(".agents")) {
+    throw new Error("clean source must not contain local agent discovery");
+  }
 
   runPnpm(temporaryRoot, ["install", "--offline", "--frozen-lockfile"]);
   runPnpm(temporaryRoot, ["typecheck"]);
@@ -42,13 +45,14 @@ try {
   runPnpm(temporaryRoot, ["--filter", "@mezo-dev-kit/example-musd-savings-readonly", "test"]);
   runPnpm(temporaryRoot, ["--filter", "@mezo-dev-kit/example-musdc-lending-readonly", "test"]);
   runPnpm(temporaryRoot, ["--filter", "@mezo-dev-kit/example-usdc-lending-vault-readonly", "test"]);
+  await verifySkillMaterialization("contributor", ".agents/skills");
   await verifyConsumerMaterialization();
 } finally {
   await rm(temporaryRoot, { recursive: true, force: true });
 }
 
 process.stdout.write(
-  "Clean workspace install, typecheck, build, import, and consumer-skill smoke passed.\n",
+  "Clean workspace install, typecheck, build, import, and contributor/consumer skill setup passed.\n",
 );
 
 function runPnpm(workingDirectory: string, arguments_: readonly string[]): void {
@@ -57,7 +61,7 @@ function runPnpm(workingDirectory: string, arguments_: readonly string[]): void 
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   });
-  if (result.status !== 0) {
+  if (result.error !== undefined || result.status !== 0) {
     throw new Error(
       `pnpm ${arguments_.join(" ")} failed in clean workspace: ${String(result.error)}\n${result.stdout}\n${result.stderr}`,
     );
@@ -83,6 +87,8 @@ async function copyRepositoryDirectory(relativeDirectory: string): Promise<void>
   const sourceDirectory = resolve(repositoryRoot, relativeDirectory);
   const entries = await readdir(sourceDirectory, { withFileTypes: true });
   for (const entry of entries) {
+    // A local installation (including a symlink) is not part of a fresh source checkout.
+    if (relativeDirectory === "" && entry.name === ".agents") continue;
     if (entry.isDirectory() && excludedDirectoryNames.has(entry.name)) continue;
     if (entry.isFile() && isLocalSecretOrLog(entry.name)) continue;
     const relativePath = join(relativeDirectory, entry.name);
@@ -118,29 +124,37 @@ async function verifyConsumerMaterialization(): Promise<void> {
   await mkdir(application, { recursive: true });
   const instructions = "# Application-owned instructions\nPreserve this file.\n";
   await writeFile(resolve(application, "AGENTS.md"), instructions);
+  await verifySkillMaterialization("consumer", output);
+  if ((await readFile(resolve(application, "AGENTS.md"), "utf8")) !== instructions)
+    throw new Error("application-owned instructions were overwritten");
+}
+
+async function verifySkillMaterialization(
+  audience: "contributor" | "consumer",
+  output: string,
+): Promise<void> {
   const result = spawnSync(
     process.execPath,
     [
       resolve(temporaryRoot, "scripts/materialize-agent-skills.ts"),
       "--audience",
-      "consumer",
+      audience,
       "--output",
       output,
     ],
     { cwd: temporaryRoot, encoding: "utf8" },
   );
-  if (result.status !== 0)
-    throw new Error(`consumer skill CLI failed: ${String(result.error)} ${result.stderr}`);
+  if (result.error !== undefined || result.status !== 0)
+    throw new Error(`${audience} skill CLI failed: ${String(result.error)} ${result.stderr}`);
   const validated = await validateAgentSkills(temporaryRoot);
-  const expected = validated.catalog.skills.filter((entry) => entry.audience === "consumer");
-  const actual = (await readdir(output)).sort();
+  const expected = validated.catalog.skills.filter((entry) => entry.audience === audience);
+  const outputRoot = resolve(temporaryRoot, output);
+  const actual = (await readdir(outputRoot)).sort();
   if (JSON.stringify(actual) !== JSON.stringify(expected.map((entry) => entry.name).sort()))
-    throw new Error("consumer discovery differs from the consumer catalog");
+    throw new Error(`${audience} discovery differs from the ${audience} catalog`);
   for (const entry of expected) {
     const canonical = await readFile(resolve(temporaryRoot, entry.path, "SKILL.md"), "utf8");
-    if ((await readFile(resolve(output, entry.name, "SKILL.md"), "utf8")) !== canonical)
-      throw new Error(`materialized consumer skill changed: ${entry.name}`);
+    if ((await readFile(resolve(outputRoot, entry.name, "SKILL.md"), "utf8")) !== canonical)
+      throw new Error(`materialized ${audience} skill changed: ${entry.name}`);
   }
-  if ((await readFile(resolve(application, "AGENTS.md"), "utf8")) !== instructions)
-    throw new Error("application-owned instructions were overwritten");
 }

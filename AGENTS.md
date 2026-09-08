@@ -137,6 +137,15 @@ Canonical contributor skills live under:
 agents/skills/
 ```
 
+Fresh checkouts contain canonical skills only. The repository-root `.agents/`
+directory is ignored local setup output. Follow
+[`docs/guides/CONTRIBUTOR_AGENT_SETUP.md`](docs/guides/CONTRIBUTOR_AGENT_SETUP.md)
+to install or refresh contributor discovery before using an agent. If discovery
+is unavailable during bootstrap, read the relevant canonical `SKILL.md` paths
+directly; their absence from the runtime's skill list does not mean MDK lacks
+the procedure. Author changes under `agents/skills/`, then regenerate local
+copies. Do not commit `.agents/`.
+
 Distributable consumer skills live under `agents/consumer/skills/`. All
 maintained skills are indexed by `agents/catalog.json`; their directory
 basename must match the frontmatter `name`.

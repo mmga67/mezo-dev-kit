@@ -340,6 +340,9 @@ Skills define reusable procedures. Neither owns protocol data.
 Maintained agent guidance is authored under [`agents/`](./agents/). Contributor
 and consumer skills are separate audiences, while agent discovery directories
 are materialized installation views rather than canonical sources. The
+repository-root `.agents/` tree is ignored local output and is absent from
+fresh source checkouts; contributors install it explicitly using the
+[agent setup guide](./docs/guides/CONTRIBUTOR_AGENT_SETUP.md). The
 portable skill profile and optional MCP boundary are defined under
 [ADR-0008](./docs/decisions/0008-portable-agent-skill-distribution.md); the ADR
 is accepted as the repository's distribution model but does not by itself

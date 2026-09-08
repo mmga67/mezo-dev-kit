@@ -28,33 +28,45 @@ does not provide a bootstrap installer.
 
 ## Checkout and branch policy
 
-Active alpha work integrates on `dev`. In an existing development checkout,
-confirm that branch before continuing:
+Fresh public clones use `main` and can remain there while trying the source
+alpha, installing local skills, and running examples. In an existing checkout,
+inspect the current branch and worktree:
 
 ```sh
 git branch --show-current
 git status --short --branch
 ```
 
-If the first command does not print `dev`, stop and ask the maintainer for the
-current integration branch. Do not create a new `dev` branch from `main` or
-switch a dirty worktree based on an assumption.
+For contribution work, use the branch selected by the maintainer for the task.
+The normal integration policy targets `dev`, with manual maintainer promotion
+to `main`, as recorded in [ADR-0013](../decisions/0013-github-source-alpha-governance.md).
+An explicit maintainer task on another branch supplies that direction. If the
+target is unclear, resolve it before branch/push operations; trying packages
+and setting up skills do not require a branch change.
 
-Pull requests target `dev`. After all alpha tasks and checks are accepted,
-`@mmga67` manually promotes the exact reviewed source to `main`. Do not push or
-merge to `main` as part of an ordinary contribution.
-
-The final public clone path will be:
+Clone the published source with:
 
 ```sh
 git clone https://github.com/mmga67/mezo-dev-kit.git
 cd mezo-dev-kit
 ```
 
-source-alpha verification must execute and confirm that GitHub clone after the polished alpha is
-promoted. At the time this guide was authored, the local `dev` branch existed
-but the configured remote advertised only `origin/main`; therefore a fresh
-remote `dev` checkout or branch-switch command is not claimed as verified here.
+Do not assume that a remote `dev` branch exists or create one just to run this
+guide. Keep the maintainer's public-source promotion boundary intact.
+
+## Set up the contributor agent
+
+Fresh clones do not include `.agents/`. Before agent-assisted work, follow
+[contributor agent setup](./CONTRIBUTOR_AGENT_SETUP.md) to validate canonical
+skills and materialize an ignored local discovery tree:
+
+```sh
+node scripts/validate-agent-skills.ts
+node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
+```
+
+This step needs only the supported Node version. Use the setup guide for
+non-empty targets, refresh after checkout changes, and runtime discovery checks.
 
 ## Install and verify the workspace
 
@@ -167,7 +179,7 @@ The skill locations have different roles:
 | ---------------------------- | ------------------------------------------------------------------------- |
 | `agents/skills/`             | Canonical contributor skill sources                                       |
 | `agents/consumer/skills/`    | Canonical external-application skill sources                              |
-| `.agents/skills/`            | Materialized contributor discovery view in this repository                |
+| `.agents/skills/`            | Ignored local contributor discovery view, created explicitly after cloning |
 | Application `.agents/skills` | Materialized consumer view; never the canonical source                    |
 | Application `AGENTS.md`      | Application-owned instructions; MDK synchronization must not overwrite it |
 
@@ -213,9 +225,9 @@ Validate every canonical skill and the catalog:
 node scripts/validate-agent-skills.ts
 ```
 
-The materializer accepts only a new or empty target. Use a temporary directory
-to prove contributor materialization without overwriting the tracked discovery
-view:
+The materializer accepts only a new or empty target. For normal installation,
+use the [contributor setup guide](./CONTRIBUTOR_AGENT_SETUP.md). For a disposable
+materialization check that leaves an existing local installation untouched:
 
 ```sh
 mdk_contributor_skills="$(mktemp -d)"
@@ -358,7 +370,9 @@ it directly.
 Run `node scripts/validate-agent-skills.ts`. Confirm the catalog entry,
 audience, canonical directory name, and frontmatter `name` agree. Materialize
 into a new empty temporary target to distinguish a source/catalog defect from
-a runtime discovery-path issue.
+a runtime discovery-path issue. Follow the
+[setup and refresh guide](./CONTRIBUTOR_AGENT_SETUP.md) to install the local
+view; Git does not synchronize ignored discovery copies.
 
 ### Workspace or deep-import leak
 

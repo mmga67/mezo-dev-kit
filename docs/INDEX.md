@@ -38,6 +38,8 @@ domains.
 - `guides/SDK_DEVELOPMENT.md` — GitHub source checkout, workspace setup,
   package-filter checks, contributor-skill materialization, first-change
   workflow, and troubleshooting.
+- `guides/CONTRIBUTOR_AGENT_SETUP.md` — explicit local skill installation in a
+  fresh clone, runtime discovery checks, refresh, and troubleshooting.
 - `guides/oracle-evidence-refresh.md` — source checkout/pinning, evidence
   capture/import, generation, mainnet checks, and troubleshooting.
 - `guides/SDK_PACKAGE_DEVELOPMENT.md` — module-or-existing-owner decisions,

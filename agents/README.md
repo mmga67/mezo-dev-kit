@@ -3,6 +3,11 @@
 This directory owns maintained agent guidance. It separates authored sources
 from the discovery directories used by particular agent runtimes.
 
+For first-time contributor installation and later refreshes, follow the
+[contributor agent setup guide](../docs/guides/CONTRIBUTOR_AGENT_SETUP.md).
+Fresh clones contain this canonical source tree; the repository-root
+`.agents/` discovery tree is generated locally and ignored by Git.
+
 ## Audiences
 
 - `skills/` contains contributor procedures for maintaining MDK itself.
@@ -44,17 +49,20 @@ same selected directories can be copied unchanged to a generic
 `.agents/skills/` root or a compatibility root such as `.claude/skills/`.
 This is synchronization, not per-agent prompt compilation.
 
-The proposed architecture and its acceptance boundary are recorded in
+The accepted architecture and its boundary are recorded in
 [`ADR-0008`](../docs/decisions/0008-portable-agent-skill-distribution.md).
 
 ## Commands
 
 ```sh
 node scripts/validate-agent-skills.ts
-node scripts/materialize-agent-skills.ts --audience consumer --output <directory>
+node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
 ```
 
-Materialize only into a new or empty directory. A future public CLI may wrap
+Materialize only into a new or empty directory. External application setup
+selects `--audience consumer` and an application-owned output path instead;
+see the [consumer guide](../docs/guides/EXTERNAL_APPLICATIONS.md).
+A future public CLI may wrap
 this internal contract after its interface and release behavior are approved.
 
 MCP is optional. It is appropriate for live, remote, authenticated, or

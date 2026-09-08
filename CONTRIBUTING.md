@@ -36,6 +36,10 @@ follow the [`testing standard`](./docs/standards/testing.md) and load the
 For a clean setup, contributor-skill materialization, package-filter commands,
 and a first-change walkthrough, use the
 [`SDK development quickstart`](./docs/guides/SDK_DEVELOPMENT.md).
+Before agent-assisted work in a fresh clone, follow the
+[`contributor agent setup guide`](./docs/guides/CONTRIBUTOR_AGENT_SETUP.md).
+The root `.agents/` directory is ignored local output; maintain skill sources
+under `agents/skills/` and regenerate your discovery copies after updates.
 For the owner decision, private manifest/export boundary, generated inputs,
 manual and coding-agent workflows, and clean built-consumer proof, use the
 [`workspace-module authoring guide`](./docs/guides/SDK_PACKAGE_DEVELOPMENT.md).

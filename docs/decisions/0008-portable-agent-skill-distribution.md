@@ -51,6 +51,14 @@ or synchronization step, not prompt compilation. Agents may progressively
 load the frontmatter and body according to their own runtime behavior, while
 MDK keeps one authored source.
 
+On 2026-09-08 the maintainer selected local installation for contributor
+discovery: the repository-root `.agents/` tree is excluded from version
+control and fresh source checkouts. Canonical `agents/skills/` directories,
+the catalog, and the materializer remain tracked. Contributors explicitly
+install and refresh their local discovery view using the
+[setup guide](../guides/CONTRIBUTOR_AGENT_SETUP.md). This changes the default
+source snapshot, not the portable format or consumer distribution contract.
+
 Knowledge-derived consumer reference assets may be generated once per MDK
 release from canonical `knowledge/` inputs. They are not regenerated for each
 agent. Agent-specific wrappers are allowed only when a supported runtime

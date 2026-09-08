@@ -21,8 +21,12 @@ parsing it or checking its references does not execute an agent.
    record that diff. Exclude real credentials, private memory, local logs,
    dependencies, and previous outputs from the input snapshot. Install/build
    with the root-pinned toolchain when a task requires it.
-3. Make the checkout's contributor discovery view available unchanged from its
-   canonical catalog. For the deliberate stale-discovery case, prepare the
+3. Follow the [contributor setup guide](./CONTRIBUTOR_AGENT_SETUP.md) to
+   materialize the checkout's contributor discovery view unchanged from its
+   canonical catalog. Fresh clones have no `.agents/` tree; never copy the
+   evaluator's local discovery directory into the source snapshot. For a
+   bootstrap evaluation, let the agent perform documented setup in the fresh
+   checkout. For the deliberate stale-discovery case, prepare the
    stale view only in the disposable checkout and retain current canonical
    sources. Never alter real memory or canonical protocol state for a fixture.
 4. Give an independent agent only the selected `prompt`, input checkout, and

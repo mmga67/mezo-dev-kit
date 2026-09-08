@@ -9,7 +9,9 @@ agent runtime, public CLI, vendor metadata format, or protocol authority.
 
 Canonical skill sources live under `agents/`. Discovery roots such as
 `.agents/skills/` are materialized copies, not independently maintained
-instructions.
+instructions. The repository-root `.agents/` tree is ignored local output.
+Use the [contributor setup guide](./CONTRIBUTOR_AGENT_SETUP.md) to install and
+refresh it; publish changes to canonical sources rather than discovery copies.
 
 ## Decide whether the procedure deserves a skill
 
@@ -416,7 +418,7 @@ For deprecation:
    available during a transition;
 5. remove the directory and catalog entry together only at an explicitly
    reviewed compatibility/release boundary; and
-6. update docs, templates, evals, and tracked discovery views in the same
+6. update docs, templates, and evals, then refresh local discovery views in the same
    removal change.
 
 A rename is a new discovery identity plus deprecation of the old identity, not
