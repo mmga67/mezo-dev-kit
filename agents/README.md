@@ -16,6 +16,13 @@ from the discovery directories used by particular agent runtimes.
 Contributor skills must not be shipped to consumer applications. Consumer
 skills must not depend on repository-internal maintenance workflows.
 
+Contributors trying package usage follow
+[`mdk-capability-assessment`](./skills/mdk-capability-assessment/SKILL.md):
+connect the task to current public workspace APIs, relevant skills, and indexed
+knowledge before implementing or declaring a gap. Reassess those owners as the
+checkout evolves. The [behavioral evaluation guide](../docs/guides/CONTRIBUTOR_AGENT_EVALUATION.md)
+explains how to test actual decisions separately from structural validation.
+
 ## Portable Skill Contract
 
 Each maintained skill is a directory named exactly like its frontmatter

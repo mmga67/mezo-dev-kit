@@ -71,3 +71,13 @@ and hash-verified runtime bytes, not a certified production provider/ABI codec.
 Node crypto is required; browser bundling and package-registry distribution are
 not certified. No signer, allocator, approval, staking, claim, transaction, or
 writer API is exported.
+
+## Inspect this checkout
+
+Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
+alongside this package's scope and injected-input contract. Build before
+interpreting a missing artifact as an absent API. The [usage example](../../../examples/usdc-lending-vault-readonly/README.md)
+exercises the workspace boundary. Reassess these owners after checkout changes;
+private versions alone do not identify capability changes. Follow the
+[capability guidance maintenance rule](../../../CONTRIBUTING.md#keep-capability-guidance-current)
+when the public boundary, required inputs, or evidence dependencies change.

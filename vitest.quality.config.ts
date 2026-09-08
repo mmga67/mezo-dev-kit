@@ -12,6 +12,7 @@ export default defineConfig({
       "scripts/test-lending-generation.test.ts",
       "scripts/test-vault-generation.test.ts",
       "scripts/test-knowledge-authoring-example.test.ts",
+      "scripts/test-capability-fixtures.test.ts",
     ],
     environment: "node",
     globals: false,

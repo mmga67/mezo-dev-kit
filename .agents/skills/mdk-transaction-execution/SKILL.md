@@ -17,7 +17,7 @@ protocol reconciliation.
 - Investigating chain mismatch, provider, simulation, receipt, replacement,
   reorg, timeout, or reconciliation failures.
 - Defining a protocol module's execution requirements.
-- Implementing the future core client or a framework adapter over it.
+- Extending Core or implementing an adapter over its current public boundary.
 - Reviewing bounded event scans, checkpoints, backfills, or materialized
   reconciliation projections; pair with `mdk-indexing-reconciliation`.
 
@@ -51,6 +51,12 @@ protocol reconciliation.
    responsibilities and semantics, not a dependency, public API, or writer.
 
 ## Procedure
+
+Use the root-routed capability assessment once to inspect current package
+exports and required integrations. A missing public writer does not invalidate
+usable Chains, Contracts, or read APIs. Establish the actual signer and history
+source when the task needs them; never assume node-managed unlocked accounts.
+Apply the following steps only to the operation classes they concern.
 
 1. Classify the operation as pure, read-only, simulation, approval, action, or
    cross-chain reconciliation.

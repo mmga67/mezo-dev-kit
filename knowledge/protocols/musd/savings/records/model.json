@@ -12,7 +12,7 @@
   "limitations": [
     "This is not an ERC-4626 model and must not use exchange-rate share formulas.",
     "Mutable index, pending yield, roles, gauge cap, and balances require same-block reads.",
-    "No public read facade, deposit, withdrawal, stake, harvest, or claim writer is supported."
+    "This knowledge model does not authorize runtime APIs; current source-alpha reader scope is owned by the Savings package documentation and accepted architecture. Deposit, withdrawal, stake, harvest, and claim writers remain unsupported."
   ],
   "assetReference": {"moduleId": "contracts", "resourceId": "contract-deployments", "recordId": "musd.token@mezo-mainnet"},
   "principal": {

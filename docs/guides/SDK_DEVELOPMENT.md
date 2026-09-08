@@ -138,6 +138,14 @@ runtime boundary; future package distribution requires separate approval.
 
 ## Select contributor agent skills
 
+Trying the workspace packages is contributor work. Start with
+[`mdk-capability-assessment`](../../agents/skills/mdk-capability-assessment/SKILL.md)
+when the task uses, explains, tests, or extends MDK capabilities. It connects
+the requested operations to public package entrypoints, required injected
+ports, domain skills, and canonical evidence before implementation decisions.
+The source-alpha label describes distribution and scope; inspect current
+owners before deciding whether a particular operation is available.
+
 The nearest `AGENTS.md` routes the work category. The root instructions require
 `mdk-typescript-development` for authored product code, the relevant domain
 skill for protocol-sensitive work, and `mdk-testing` when test behavior,
@@ -166,6 +174,36 @@ The skill locations have different roles:
 Contributor skills must not be copied into consumer applications. Consumer
 skills describe supported application-facing behavior and must not expose MDK
 repository-maintenance procedures.
+
+### Try packages and reassess improvements
+
+For example, a request involving a Mezo contract read, account history, and
+signing crosses different boundaries. Resolve identity through Networks and
+Chains; use Contracts and Core or an owning protocol reader for applicable
+reads. Define the history source and coverage independently, and inspect
+current transaction exports and signer requirements. A gap in one operation
+does not invalidate other supported components. The
+[foundational walkthrough](../../examples/foundational-readonly/README.md)
+shows deterministic composition and an explicit bounded HTTP read.
+
+Package READMEs own usage scope and injected inputs; manifests/exports and
+built-entrypoint checks establish the available boundary. Canonical knowledge
+owns evidence-backed Mezo facts. Skill bodies own the procedures for applying
+them. Memory may point to these owners but cannot preserve an obsolete
+capability claim against current sources.
+
+After a checkout update, inspect the relevant revision/diff, docs, exports, and
+build state. Reuse newly supported APIs within the task; distinguish internal
+implementation changes, removed APIs, narrower support, and evidence-only
+updates. Private versions may remain unchanged throughout. A failed import
+before building is a build-state problem until proven otherwise. An unresolved
+code/docs/evidence conflict needs resolution at its owner.
+
+Record separate verification for source/types, built composition, adapter
+behavior, and live observations. Follow the
+[behavioral evaluation guide](./CONTRIBUTOR_AGENT_EVALUATION.md) to test agent
+decisions, and the [contributor maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
+when those boundaries change.
 
 ### Validate and materialize skills
 

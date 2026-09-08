@@ -8,7 +8,7 @@ description: Use, verify, or maintain MDK capability-profile network identity, M
 ## Purpose
 
 Use and maintain capability-profile network identity, Mezo RPC provider metadata, capability
-evidence, and future `packages/chains` projections without creating duplicate
+evidence, and generated `packages/chains` projections without creating duplicate
 sources of truth.
 
 ## Use When
@@ -49,6 +49,12 @@ Read in this order:
 
 ## Procedure
 
+For contributor package usage, use the root-routed capability assessment once,
+then consume Chains for supported identity and inject the selected transport.
+Verify only the endpoint methods required by the operation; package availability
+and endpoint availability are separate. The maintenance steps below apply when
+records or projections change, not to every ordinary knowledge read.
+
 1. Classify the change as stable chain identity, volatile endpoint state,
    capability evidence, or generated/runtime projection.
 2. Resolve the stable network or endpoint through module/resource/record IDs in
@@ -65,9 +71,9 @@ Read in this order:
 8. Update the canonical record and bounded evidence first.
 9. Run the common structure validator and network semantic validator.
 10. Regenerate runtime/docs projections when generation exists; do not hand-edit
-   generated values.
+    generated values.
 11. Apply Level 3 review to chain IDs, currency/unit metadata, or public support
-   changes.
+    changes.
 
 ## Architecture Rules
 

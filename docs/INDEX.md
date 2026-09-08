@@ -14,7 +14,7 @@ domains.
 
 ## Project and process
 
-- `../packages/protocols/musd-savings/README.md` — proposed Savings read API,
+- `../packages/protocols/musd-savings/README.md` — source-alpha Savings read API,
   transport/codec ports, exact-runtime role checks, and consumer guidance.
 - `../examples/musd-savings-readonly/README.md` — built Savings example.
 
@@ -62,6 +62,10 @@ domains.
 - `guides/SKILL_AUTHORING.md` — manual and coding-agent portable skill
   creation, update, audience selection, validation, testing, deprecation,
   review, and unchanged consumer materialization with disposable examples.
+- `../agents/skills/mdk-capability-assessment/SKILL.md` — contributor task routing,
+  current package capabilities, knowledge retrieval, and integration gaps.
+- `guides/CONTRIBUTOR_AGENT_EVALUATION.md` — behavioral evaluation of package
+  usage, evidence handling, selective routing, and capability changes.
 - `guides/INDEXING_RECONCILIATION.md` — provider-neutral bounded scans,
   checkpoints, completeness, reorg, negative-evidence, candidate-precedence,
   and protocol-reconciliation guidance without a hosted-indexer dependency.

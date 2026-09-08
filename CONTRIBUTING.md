@@ -71,6 +71,23 @@ artifact owner in docs, examples, templates, skills, or applications.
 6. Stop for direction if evidence conflicts, scope materially expands, or a
    public/security boundary must change unexpectedly.
 
+### Keep capability guidance current
+
+When an exported capability, required injected port, supported scope, or
+canonical evidence dependency changes, review the affected package docs,
+skill wording, examples, and behavioral cases in the same change. Reuse the
+owning sources rather than adding a second capability/support registry.
+Record the relevant checkout/diff and distinguish API changes from evidence
+refreshes and distribution status. Private package versions alone cannot
+identify the capability revision.
+
+Rerun the impacted cases from the
+[contributor agent evaluation guide](docs/guides/CONTRIBUTOR_AGENT_EVALUATION.md)
+for material capability or contributor-skill changes; record actual agent
+behavior separately from static validation. A change of agent/runtime also
+requires a new scoped behavioral comparison before carrying forward its
+previous evaluation claims.
+
 ## Dependencies
 
 Do not add or install a new external dependency without explicit human

@@ -81,3 +81,13 @@ the built-entrypoint smoke test, root `pnpm check`, and root shuffled tests.
   when their risk requires it.
 - No signer, transaction, route, hosted provider, or write capability is
   exposed.
+
+## Inspect this checkout
+
+Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
+alongside this package's scope and injected-input contract. Build before
+interpreting a missing artifact as an absent API. The [usage example](../../examples/foundational-readonly/README.md)
+exercises the workspace boundary. Reassess these owners after checkout changes;
+private versions alone do not identify capability changes. Follow the
+[capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
+when the public boundary, required inputs, or evidence dependencies change.

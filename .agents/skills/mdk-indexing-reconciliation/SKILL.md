@@ -20,6 +20,12 @@ description: Design, review, or diagnose provider-neutral bounded event scans, c
 
 ## Procedure
 
+For account-history requests, first define which transactions/events and what
+coverage the user needs. Assess current public package capabilities through the
+root-routed assessment; this skill supplies scan/reconciliation procedure, not
+a hosted history API or proof that such an API exists. Preserve supported
+package reuse while identifying the missing source or adapter precisely.
+
 1. Define the inclusive scan range, confirmed head, prior block/hash
    checkpoint, overlap/reorg policy, source/deployment generation, freshness,
    completeness, and required versus optional reads.

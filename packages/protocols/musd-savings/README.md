@@ -138,3 +138,13 @@ refresh owning evidence; do not hardcode an address or ABI to bypass failure.
 See the [focused example](../../../examples/musd-savings-readonly/README.md).
 This guidance covers the source-alpha candidate; it does not imply a released
 consumer skill or writer.
+
+## Inspect this checkout
+
+Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
+alongside this package's scope and injected-input contract. Build before
+interpreting a missing artifact as an absent API. The [usage example](../../../examples/musd-savings-readonly/README.md)
+exercises the workspace boundary. Reassess these owners after checkout changes;
+private versions alone do not identify capability changes. Follow the
+[capability guidance maintenance rule](../../../CONTRIBUTING.md#keep-capability-guidance-current)
+when the public boundary, required inputs, or evidence dependencies change.

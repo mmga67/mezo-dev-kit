@@ -4,6 +4,12 @@
   "profile": "portable-agent-skills-v1",
   "skills": [
     {
+      "name": "mdk-capability-assessment",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-capability-assessment",
+      "domains": ["development", "capabilities"]
+    },
+    {
       "name": "mdk-bridge-knowledge",
       "audience": "contributor",
       "path": "agents/skills/mdk-bridge-knowledge",

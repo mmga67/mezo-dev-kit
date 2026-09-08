@@ -100,3 +100,13 @@ entrypoint/declaration smoke tests, root `pnpm check`, and shuffled tests.
 - Dynamic instances continue to resolve through their reviewed roots; this
   package does not fabricate pool, gauge, VaultV2, or VaultGauge identities.
 - No full writer ABI or transaction capability is exported.
+
+## Inspect this checkout
+
+Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
+alongside this package's scope and injected-input contract. Build before
+interpreting a missing artifact as an absent API. The [usage example](../../examples/foundational-readonly/README.md)
+exercises the workspace boundary. Reassess these owners after checkout changes;
+private versions alone do not identify capability changes. Follow the
+[capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
+when the public boundary, required inputs, or evidence dependencies change.

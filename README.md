@@ -173,6 +173,12 @@ The detailed contributor path—including package-filter commands, agent-skill
 selection/materialization, the first-change workflow, and troubleshooting—is in
 the [SDK development quickstart](./docs/guides/SDK_DEVELOPMENT.md).
 
+Contributors trying these packages use the
+[capability assessment procedure](./agents/skills/mdk-capability-assessment/SKILL.md)
+to connect a task to current exports, required integrations, relevant skills,
+and canonical evidence. Reassess those owners as the alpha evolves; unchanged
+private package versions do not mean unchanged capabilities.
+
 The private foundational API and its built-entrypoint fixture are documented in
 [`packages/chains/README.md`](./packages/chains/README.md),
 [`packages/contracts/README.md`](./packages/contracts/README.md),

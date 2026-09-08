@@ -336,6 +336,10 @@ its authorities; retain only a useful pointer under the
 
 ## Update an existing skill
 
+For package capability or contributor routing changes, follow the
+[capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
+and run the impacted [behavioral cases](./CONTRIBUTOR_AGENT_EVALUATION.md).
+
 1. Resolve it by catalog name and confirm the audience/source path.
 2. Read the complete `SKILL.md` and only the supporting resources required for
    the requested mode.

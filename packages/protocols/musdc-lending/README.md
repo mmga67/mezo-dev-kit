@@ -63,3 +63,13 @@ synthetic transport/codec ports and hash-verified historical runtime bytes. They
 do not certify a production ABI encoder or RPC adapter. No signer, transaction,
 approval, liquidation, supply, borrow, repay, or writer API is exported. Browser
 bundling is not certified; runtime code hashing currently uses Node crypto.
+
+## Inspect this checkout
+
+Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
+alongside this package's scope and injected-input contract. Build before
+interpreting a missing artifact as an absent API. The [usage example](../../../examples/musdc-lending-readonly/README.md)
+exercises the workspace boundary. Reassess these owners after checkout changes;
+private versions alone do not identify capability changes. Follow the
+[capability guidance maintenance rule](../../../CONTRIBUTING.md#keep-capability-guidance-current)
+when the public boundary, required inputs, or evidence dependencies change.

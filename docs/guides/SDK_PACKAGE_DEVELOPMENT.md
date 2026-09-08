@@ -538,3 +538,7 @@ Core check when its transaction inputs are affected.
 - [Skill authoring](./SKILL_AUTHORING.md)
 - [External applications](./EXTERNAL_APPLICATIONS.md)
 - [Source-alpha governance ADR](../decisions/0013-github-source-alpha-governance.md)
+
+For changes to an existing public boundary or its evidence dependencies, follow
+the [capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
+and the affected [contributor behavioral cases](./CONTRIBUTOR_AGENT_EVALUATION.md).

@@ -8,7 +8,11 @@ the Stability Pool, or the redemption queue.
 
 Start with [`generated/reference.md`](generated/reference.md). Qualified Level
 3 review accepted the bounded knowledge and current Contract identity under
-Savings evidence review; knowledge support remains `proposed`, and there is no supported
-reader or writer. Contracts retains all five observed Savings proxy
+Savings evidence review; knowledge support remains `proposed`. That knowledge
+review does not authorize runtime APIs. The separately reviewed source-alpha
+reader and its current boundaries are owned by the
+[Savings package documentation](../../../../packages/protocols/musd-savings/README.md)
+and [architecture](../../../../ARCHITECTURE.md); writers remain unsupported.
+Contracts retains all five observed Savings proxy
 implementation generations for coordinate-scoped history and selects the
 latest verified generation for present operations.

@@ -67,7 +67,14 @@ Before non-trivial work:
 2. Classify the task by domain and risk.
 3. Identify the files/packages in scope.
 4. Read the nearest applicable nested `AGENTS.md`.
-5. Load only relevant skill(s). For implementation work, load
+5. For non-trivial contributor work that explains, uses, tests, or extends MDK
+   capabilities, load `agents/skills/mdk-capability-assessment/SKILL.md` to map
+   the requested operations to current package APIs, domain skills, canonical
+   evidence, integration gaps, and verification. Trying workspace packages is
+   contributor work, including during the alpha. Reassess relevant owners
+   after checkout changes; neither the alpha label nor an old missing-capability
+   conclusion substitutes for inspecting current exports and support.
+   Load only relevant skill(s). For implementation work, load
    `agents/skills/mdk-typescript-development/SKILL.md` plus the applicable
    domain skill. Also load `agents/skills/mdk-testing/SKILL.md` when test
    behavior, strategy, fixtures, regressions, or review is in scope.

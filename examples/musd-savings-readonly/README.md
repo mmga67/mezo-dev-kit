@@ -1,7 +1,7 @@
 # MUSD Savings read example
 
 This private source-alpha example imports the built
-`@mezo-dev-kit/musd-savings` entrypoint. It remains a Savings reader review review candidate;
+`@mezo-dev-kit/musd-savings` entrypoint. For its accepted bounded reader scope,
 see the [API and transport contract](../../packages/protocols/musd-savings/README.md).
 
 From the root, using the root-pinned pnpm and Node 24 or newer:

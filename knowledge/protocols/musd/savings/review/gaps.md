@@ -4,7 +4,10 @@
   history required by a separately scoped reader; the current packet includes
   a representative protocol-yield, user-yield, and withdrawal trace.
 - Published audit-to-deployed-bytecode mapping for Savings and converter.
-- Separate implementation task for any public reader or writer.
+- Runtime implementation and support review remain separate from knowledge
+  acceptance. The current bounded source-alpha reader is described by the
+  [Savings package owner](../../../../../packages/protocols/musd-savings/README.md).
+  Wider reader scope and writers still require their own implementation and review.
 
 Savings evidence review qualified review accepted the first two evidence gaps as explicit
 limitations of the bounded knowledge packet. They remain requirements only if

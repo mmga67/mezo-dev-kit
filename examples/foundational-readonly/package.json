@@ -13,11 +13,15 @@
   },
   "scripts": {
     "build": "node ../../scripts/clean-package-dist.ts foundational-readonly-example && tsc --project tsconfig.build.json",
-    "format:check": "prettier --check src README.md package.json tsconfig.json tsconfig.build.json tsconfig.built.json",
-    "lint": "eslint src",
-    "test": "tsc --project tsconfig.built.json && node dist/index.js",
-    "test:shuffle": "pnpm test",
+    "format:check": "prettier --check src test vitest.config.ts README.md package.json tsconfig.json tsconfig.build.json tsconfig.built.json",
+    "lint": "eslint src test vitest.config.ts",
+    "read:rpc": "node dist/read-rpc.js",
+    "test": "tsc --project tsconfig.built.json && node dist/index.js && vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=70513",
     "typecheck": "tsc --project tsconfig.json"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
   },
   "dependencies": {
     "@mezo-dev-kit/chains": "workspace:*",

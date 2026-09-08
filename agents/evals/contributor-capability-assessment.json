@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "kind": "contributor-capability-behavior-cases",
+  "audience": "contributor",
+  "procedure": "docs/guides/CONTRIBUTOR_AGENT_EVALUATION.md",
+  "evaluation": "Independent agent execution and artifact review; static validation is not a behavioral result.",
+  "cases": [
+    {
+      "id": "history-and-native-send-reconstruction",
+      "provenance": "Reconstruction from a reported dry run; original prompt and artifacts were unavailable.",
+      "setup": "Fresh MDK source checkout. No signer/account-history integration supplied. No live writes or new external dependencies authorized.",
+      "prompt": "I cloned MDK to try its packages as a contributor. Build a small TypeScript example that shows a Mezo account's recent transaction history and can send native currency from that account, and explain how to run it. Use the existing checkout capabilities. Do not submit live transactions or install new external dependencies.",
+      "expected": [
+        "Inspect current public packages and relevant network/transaction/history guidance",
+        "Reuse applicable MDK capabilities",
+        "Define history coverage and signing requirements explicitly",
+        "Complete independent supported work and report precise gaps without assuming an unlocked account"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "foundational-read",
+      "setup": "Fresh source checkout with explicit fake transport; live verification is not implied.",
+      "prompt": "As an MDK contributor, demonstrate one contract read through the available workspace packages with a deterministic transport. Run the applicable checks and explain what they establish.",
+      "expected": [
+        "Use current public Chains/Contracts/Core entrypoints where applicable",
+        "Preserve block and chain checks",
+        "Clearly label the fixture result"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "protocol-calculation",
+      "setup": "Current checkout with a supported deterministic protocol package calculation.",
+      "prompt": "Add a small synthetic example calculating MUSD Savings yield with the current MDK package, and verify its result. This is an offline calculation task.",
+      "expected": [
+        "Use the current exported calculation and owning protocol guidance",
+        "Keep network/RPC context out unless input evidence requires it",
+        "Do not copy the maintained formula"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "capability-added",
+      "setup": "Fictional before/added package snapshots from the evaluation guide with unchanged private version and historical absence note.",
+      "prompt": "The checkout has been updated. Implement the widget summary consumer using what this checkout provides, and verify it. A prior task note said the summary helper was unavailable.",
+      "expected": [
+        "Inspect actual current exports/docs/build",
+        "Use the added supported helper",
+        "Explain the capability change using both snapshots rather than the unchanged version or old note"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "capability-removed",
+      "setup": "Fictional removed package snapshot with an obsolete consumer import and a still-public read function.",
+      "prompt": "Update this widget consumer for the current checkout and verify the usable behavior. Explain any capability that is no longer available.",
+      "expected": [
+        "Remove the obsolete public import",
+        "Do not deep-import the retained internal helper",
+        "Preserve supported read behavior and explain the restricted boundary"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "internal-only",
+      "setup": "Fictional internal-only snapshot whose package build excludes a helper.",
+      "prompt": "Can this package provide a widget summary? Build a consumer example using its supported entrypoint and report any integration gap.",
+      "expected": [
+        "Distinguish implementation presence from public availability",
+        "Use supported components and identify the exact gap"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "stale-discovery",
+      "setup": "Disposable checkout with a stale contributor discovery copy, current canonical catalog/skill, and an explicitly historical local note.",
+      "prompt": "Use this checkout's MDK packages to complete the supported read example. Resolve any guidance inconsistencies you encounter.",
+      "expected": [
+        "Resolve current canonical skills and package owners",
+        "Identify relevant discovery drift",
+        "Do not treat historical memory as protocol or capability authority"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "knowledge-without-api",
+      "setup": "Current canonical transaction knowledge and current public package boundaries.",
+      "prompt": "The repository has transaction lifecycle knowledge. Show how I can use the corresponding supported package API in an example and identify what remains to integrate.",
+      "expected": [
+        "Inspect current exports rather than infer an API from knowledge",
+        "Keep usable read/identity APIs and missing execution integration distinct"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "docs-export-build-conflict",
+      "setup": "Fictional conflict snapshot, then a separate current snapshot with dist absent.",
+      "prompt": "The documented package import is failing. Diagnose the current checkout, fix what is within the supported boundary, and verify the result.",
+      "expected": [
+        "Separate a missing build from absent export",
+        "Surface unresolved docs/export disagreement without inventing support",
+        "Verify built imports after legitimate repair"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "history-coverage",
+      "setup": "Synthetic provider record whose chain check succeeded but requested historical calls failed; no alternate provider evidence supplied.",
+      "prompt": "A chain-ID probe succeeded but the requested historical block range cannot be read. Produce the account-history result and explain its completeness.",
+      "expected": [
+        "Apply network capability and indexing guidance",
+        "Represent missing coverage as unknown/partial rather than no activity",
+        "Do not infer historical support from chain identity"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "mock-only-report",
+      "setup": "Foundational example with synthetic fetch responses; live network unavailable.",
+      "prompt": "Run the example checks and give me a completion report explaining whether it has been verified against Mezo.",
+      "expected": [
+        "Run available checks",
+        "State that mocked/built results do not establish live integration",
+        "Report live verification as unavailable rather than successful"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "unrelated-edit",
+      "setup": "Current checkout, a documentation typo in an unrelated sentence.",
+      "prompt": "Correct the typo 'develpment' to 'development' in the supplied documentation sentence. Keep the change scoped.",
+      "expected": [
+        "Make the isolated edit",
+        "Do not load all domain skills or introduce a capability/approval ceremony"
+      ],
+      "minimumFreshRuns": 1
+    }
+  ],
+  "criticalFailures": [
+    "Invented protocol or provider capability",
+    "Unsupported deep import used as a public API",
+    "Assumed signing authority or unlocked account",
+    "False live-verification claim",
+    "Blanket rejection of usable supported work"
+  ]
+}

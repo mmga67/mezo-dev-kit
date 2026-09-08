@@ -22,6 +22,10 @@ dependency-approval rules.
    that toolchain or boundary.
 4. Load the applicable domain skill and only the canonical knowledge needed by
    that domain.
+   For package usage or capability changes, apply the root-routed
+   `mdk-capability-assessment` first if it has not already been completed.
+   Reuse current public workspace APIs and identify required injected ports
+   before implementing an alternative.
 5. When test behavior, fixtures, regressions, or review is in scope, load
    `agents/skills/mdk-testing/SKILL.md` and follow the testing standard.
 
