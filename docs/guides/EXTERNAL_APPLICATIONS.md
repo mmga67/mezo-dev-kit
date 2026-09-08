@@ -5,6 +5,12 @@ alpha does not publish packages and is not a production-application support
 promise. The model below describes the later external-application boundary;
 package distribution requires separate approval.
 
+The [SDK reference](../reference/sdk.md) covers the current private workspace
+APIs, including direct MUSD borrowing, Savings, lending, vault, gauge and
+approval workflows using Core execution. These writer implementations
+await qualified protocol review before release; current
+consumer guidance does not establish released writer support.
+
 MDK applications are TypeScript-first. Generated templates, examples, consumer
 guidance, and documented integration code use TypeScript by default, with TSX
 for React source containing JSX. An application can document a narrow
@@ -149,3 +155,16 @@ MCP is not required for static MDK instructions or release-pinned reference
 assets. A future MCP adapter may add value for live, remote, authenticated, or
 structured capabilities, but it must resolve the same public API and canonical
 knowledge owners rather than become a parallel source of truth.
+
+Private basic pool integrations can use Pools for verified instance discovery,
+MUSD/mUSDC liquidity and wallet fee claims, then Swaps for bounded candidate
+quotes and exact-input swaps. Follow each [SDK reference](../reference/sdk.md),
+configure the pool target resolver for approvals/claims, and keep approval,
+submission and reconciliation records separate. Initial writers accept the
+verified MUSD/mUSDC assets; broader quoted routes are not automatically executable.
+
+The private institutional debt reader exposes bounded requested positions,
+independent aggregate fees and both Enclave authority models. Keep unavailable
+price/health visible and preserve subset coverage. Recorded triparty UTXOs need
+separate Bitcoin/custody evidence before any backing claim; role membership is
+not transaction consent. See the [SDK reference](../reference/sdk.md).

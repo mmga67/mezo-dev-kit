@@ -36,6 +36,16 @@ unrelated human changes, and make the smallest complete change.
    `docs/standards/knowledge-management.md` owns v0.4 knowledge policy.
 6. Retrieve only relevant memory and verify it against current owners.
 
+Match research to the requested outcome. For explanations and workflow guidance,
+start with indexed domain records, canonical ABIs, and package references. If
+those answer the question within their stated scope, use them and stop retrieval.
+Before fetching explorer source or reproducing a build, identify the specific
+unresolved fact and check existing indexed evidence or retained source for it.
+An external documentation lookup does not by itself require a source download.
+Current transaction preparation separately requires live identity, mappings,
+liveness, balances, allowances, and exact-call simulation as applicable. Do not
+apply those execution checks to a conceptual explanation or an offline example.
+
 Skills: `agents/skills/` owns contributor procedures; `agents/consumer/skills/`
 owns consumer procedures; `agents/catalog.json` inventories both. Names match
 directory basenames. Never edit discovery copies such as `.agents/skills/`

@@ -32,6 +32,14 @@ Liquity behavior into MDK code.
 
 ## Relevant Repository Areas
 
+For the current private implementation, inspect
+`packages/protocols/musd-borrowing/README.md`, `REFERENCE.md`, and its public
+exports. The package implements direct borrower preparation/execution using
+Core. Distinguish implemented APIs from proposed canonical operation support
+and qualified release acceptance. Use the source-backed event caveat in the
+position model when reconciling debt increases; do not infer interest from an
+event field alone.
+
 - `knowledge/protocols/musd/borrowing/`
 - `knowledge/protocols/musd/`
 - `knowledge/contracts/`

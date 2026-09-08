@@ -25,7 +25,9 @@
     "@mezo-dev-kit/evm": "workspace:*",
     "@mezo-dev-kit/chains": "workspace:*",
     "@mezo-dev-kit/contracts": "workspace:*",
-    "@mezo-dev-kit/core": "workspace:*"
+    "@mezo-dev-kit/core": "workspace:*",
+    "@mezo-dev-kit/tokens": "workspace:*",
+    "@mezo-dev-kit/prices": "workspace:*"
   },
   "devDependencies": {
     "vitest": "4.1.11"

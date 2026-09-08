@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "mezo-basic-pool-accounting-model",
+  "id": "basic-pool-accounting",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T12:00:00Z",
+  "reviewAfter": "2026-10-08T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "sourceGeneration": "tigris-0a3b5e840ac8e187cc705fbeddcf00f88b09247e"
+  },
+  "limitations": [
+    "Private proposed writer accounting; qualified protocol review required before release.",
+    "Fee entitlements belong to the wallet LP balance. Gauge custody and gauge rewards have separate ownership.",
+    "Arithmetic follows checked uint256 products and floor division. Stored claims survive LP withdrawal; fee dust may remain in PoolFees."
+  ],
+  "constants": {
+    "feeIndexScale": "1000000000000000000",
+    "swapFeeDenominator": "10000"
+  },
+  "accounting": {
+    "globalIncrement": "floor(fee * feeIndexScale / totalSupply)",
+    "pending": "storedClaimable + floor(walletLpBalance * (globalIndex - supplyIndex) / feeIndexScale)",
+    "zeroBalance": "Return storedClaimable directly; _updateFor resets the user index without subtraction.",
+    "claim": "claimFees materializes both indices, zeroes both claimables and pays the caller from PoolFees; emits Claim only if either amount is positive.",
+    "transfer": "_updateFor updates sender and recipient before LP balances change.",
+    "swapFee": "floor(grossAmountIn * factory.getFee(pool, stable) / swapFeeDenominator)"
+  },
+  "evidence": [
+    {
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "basic-pool-interfaces"
+      },
+      "locator": "pool sourceCodeSha256; source/reproduction/runtime evidence"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "basic-pool-explorer"
+      },
+      "locator": "Pool._update0, _update1, _updateFor, claimFees, swap and _update"
+    }
+  ]
+}

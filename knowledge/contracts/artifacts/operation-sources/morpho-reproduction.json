@@ -1,0 +1,33 @@
+{
+  "contractName": "Morpho",
+  "implementationAddress": null,
+  "compilerVersion": "v0.8.19+commit.7dd6d404",
+  "explorerVerification": {
+    "fully": false,
+    "partially": true,
+    "changedBytecode": false
+  },
+  "creation": {
+    "constructorArgsBytes": 32,
+    "fullExact": true,
+    "executableExact": true,
+    "compiledSha256": "4ceb4afc3d61b043adfc4653565457e3b63bba6636b6765a63457e2d7fcf497a",
+    "explorerSha256": "4ceb4afc3d61b043adfc4653565457e3b63bba6636b6765a63457e2d7fcf497a",
+    "compiledExecutableSha256": "eedc07021adfd8f032f932cba6f63a8a418857ef9c8096b0a7e93a8541662088",
+    "explorerExecutableSha256": "eedc07021adfd8f032f932cba6f63a8a418857ef9c8096b0a7e93a8541662088",
+    "compiledMetadataBytes": 12,
+    "explorerMetadataBytes": 12
+  },
+  "runtime": {
+    "fullExact": false,
+    "executableExact": true,
+    "immutableSubstitutions": 2,
+    "compiledSha256": "6bde416e205d9c375ba8452eab14b8d3bc53256b196a6b93decd794de4db760b",
+    "explorerSha256": "503b1a0be404a21efd01e9491e6b1a132fd506352936c84db3e3aa38aa69e746",
+    "compiledTemplateExecutableSha256": "050838231d5d145479fa45938334a3f327a88a72b4e1f7761a3ef6fb6478770f",
+    "compiledExecutableSha256": "613e1df79c1eb308ca305d1d9f91bf38478603e94a70a151eff1d5e10d7ef9f0",
+    "explorerExecutableSha256": "613e1df79c1eb308ca305d1d9f91bf38478603e94a70a151eff1d5e10d7ef9f0",
+    "compiledMetadataBytes": 12,
+    "explorerMetadataBytes": 12
+  }
+}

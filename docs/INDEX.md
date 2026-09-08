@@ -12,6 +12,12 @@
 Use this page to route to the maintained owner without loading unrelated
 domains.
 
+## SDK API reference
+
+- [Package reference](reference/sdk.md) — all eleven implemented SDK packages,
+  public functions and client methods, types, required ports, errors, and
+  TypeScript examples.
+
 ## Project and process
 
 - `../packages/protocols/musd-savings/README.md` — source-alpha Savings read API,
@@ -171,3 +177,5 @@ deployment, protocol, and transaction facts remain owned under `../knowledge/`.
 ## Application integration
 
 - `guides/EXTERNAL_APPLICATIONS.md`
+- `decisions/0020-redemption-output-simulation.md` — explicit redemption output simulation.
+- `decisions/0021-incentives-locks-and-voting.md` — ordinary escrow locks and separate voting domains.

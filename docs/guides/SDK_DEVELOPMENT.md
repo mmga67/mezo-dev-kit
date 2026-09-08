@@ -2,8 +2,16 @@
 
 This guide takes an MDK contributor from an existing or clean source checkout
 to the repository's verified development workflow. MDK is currently an
-experimental, read-only GitHub source alpha. Workspace packages are private;
+experimental GitHub source alpha. Workspace packages are private;
 there is no npm or other package-registry installation path.
+
+For available methods, input/output contracts, errors, and usage examples,
+see the [SDK package reference](../reference/sdk.md).
+
+The [MUSD borrowing implementation](../../packages/protocols/musd-borrowing/REFERENCE.md)
+adds direct borrower writers and uses Core's explicit execution ports. It is
+awaiting qualified protocol review; source implementation and local fork tests do
+not establish production release support. Existing read APIs remain available.
 
 ## Prerequisites
 
@@ -132,8 +140,8 @@ pnpm --filter @mezo-dev-kit/core test:shuffle
 pnpm --filter @mezo-dev-kit/core check
 ```
 
-The root build emits JavaScript and declarations for EVM, Chains, Contracts, Core,
-and their focused example in dependency order. Verify the declared runtime
+The root build emits JavaScript and declarations for all implemented
+packages and their focused examples in dependency order. Verify the declared runtime
 entrypoints, unavailable deep paths, missing-artifact behavior, and the absence
 of the internal Core transaction proof with:
 
@@ -176,13 +184,13 @@ task and affected domain
 
 The skill locations have different roles:
 
-| Location                     | Role                                                                      |
-| ---------------------------- | ------------------------------------------------------------------------- |
-| `agents/skills/`             | Canonical contributor skill sources                                       |
-| `agents/consumer/skills/`    | Canonical external-application skill sources                              |
+| Location                     | Role                                                                       |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| `agents/skills/`             | Canonical contributor skill sources                                        |
+| `agents/consumer/skills/`    | Canonical external-application skill sources                               |
 | `.agents/skills/`            | Ignored local contributor discovery view, created explicitly after cloning |
-| Application `.agents/skills` | Materialized consumer view; never the canonical source                    |
-| Application `AGENTS.md`      | Application-owned instructions; MDK synchronization must not overwrite it |
+| Application `.agents/skills` | Materialized consumer view; never the canonical source                     |
+| Application `AGENTS.md`      | Application-owned instructions; MDK synchronization must not overwrite it  |
 
 Contributor skills must not be copied into consumer applications. Consumer
 skills describe supported application-facing behavior and must not expose MDK

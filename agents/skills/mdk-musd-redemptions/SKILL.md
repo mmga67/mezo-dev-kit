@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-redemptions
-description: Resolve MUSD redemption ordering, eligibility, hints, fees and settlement. Reads and calculations; the writer remains separately gated.
+description: Resolve MUSD redemption ordering, eligibility, hints, fees and settlement. Inspect private redemption reads, bounded hints, exact-output simulation and reconciliation; release remains gated.
 ---
 
 # MUSD redemptions knowledge
@@ -33,6 +33,19 @@ without importing explorer instructions, analytics models, or stale prose.
    the index.
 4. Network/contract registries.
 5. Pinned source and fixed-block evidence when changing a claim.
+
+## Current private SDK
+
+The approved full-SDK task adds `@mezo-dev-kit/musd-redemptions`; inspect its
+[README](../../../packages/protocols/musd-redemptions/README.md) and
+[reference](../../../packages/protocols/musd-redemptions/REFERENCE.md) before
+assessing capability. It composes Borrowing state, bounded tail/iteration inputs,
+a required explicit output simulator and Core execution. The provided adapter
+requires `debug_traceCall` with `callTracer`/`withLog`; the public Boar endpoint
+returned method-not-found when checked on 2026-09-08. Do not replace actual output
+verification with empty-call success. Qualified review/release is still required.
+Native wallet reconciliation requires canonical receipt gas fields and pinned
+balances; inclusion can violate preflight minimums, reported as `boundsSatisfied`.
 
 ## Procedure
 

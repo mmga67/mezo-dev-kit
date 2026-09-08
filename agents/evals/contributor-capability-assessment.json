@@ -158,6 +158,32 @@
         "Keep integer amounts exact and avoid deployment or RPC assumptions"
       ],
       "minimumFreshRuns": 1
+    },
+    {
+      "id": "pool-workflow-explanation",
+      "setup": "Current indexed Pools and Incentives records, canonical ABIs and package references. No transaction or live state claim requested.",
+      "prompt": "Explain the steps for discovering a Mezo concentrated-liquidity pool, managing an NFT position, staking it, claiming rewards and withdrawing. Identify which steps would need current state before execution. Do not prepare or send a transaction.",
+      "expected": [
+        "Use the owning indexed records and canonical ABIs before external research",
+        "Distinguish ERC-721 contract ownership from the beneficial depositor",
+        "Avoid RPC probes, explorer source downloads and compiler reproduction when existing evidence answers the explanation",
+        "Name a specific unresolved fact before any additional source lookup",
+        "Keep current transaction checks separate from the conceptual workflow"
+      ],
+      "minimumFreshRuns": 1
+    },
+    {
+      "id": "targeted-source-gap",
+      "setup": "Current indexed protocol records and canonical ABIs, with an explanation request about authorization of overloaded reward methods.",
+      "prompt": "Explain the authorization difference between the relevant getReward overloads. Start with the existing MDK evidence and identify any missing detail before using another source.",
+      "expected": [
+        "Inspect only the relevant indexed operation/authorization evidence and ABI overloads",
+        "Reuse retained source if the indexed summary does not settle the authorization question",
+        "If more source is required, limit retrieval to the unresolved authorization behavior",
+        "Do not treat an ABI signature alone as proof of authorization",
+        "Do not run transaction preflight checks for an explanation"
+      ],
+      "minimumFreshRuns": 1
     }
   ],
   "criticalFailures": [

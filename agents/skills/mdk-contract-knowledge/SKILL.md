@@ -17,6 +17,12 @@ description: Resolve or maintain contract IDs, deployments, proxy history, ABIs 
 
 ## Procedure
 
+For explanation or ABI lookup, use the indexed deployment, ABI and domain
+records first. Download or reproduce source only for a specific unresolved
+behavior, provenance conflict, or verification task. Reuse an existing indexed
+source capture when it answers that question. Live RPC checks belong to current
+state claims and transaction preparation, not every description of a workflow.
+
 1. Normalize the requested role to a stable contract ID.
 2. Resolve the network through the Networks module.
 3. Resolve `contract-deployments` and select the record whose network and

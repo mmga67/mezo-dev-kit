@@ -228,3 +228,14 @@ service.
 Use the module indexes to resolve physical paths. The references above remain
 the owners of protocol/network/deployment facts; this guide owns only the
 provider-neutral indexing procedure.
+
+## Private SDK implementation
+
+Core's [event scanner reference](../../packages/core/REFERENCE.md#bounded-event-scanning)
+describes `createEventScanner`, explicit provider/query limits, raw event
+identity, complete/partial/unknown coverage, JSON-safe checkpoint candidates and
+changed-anchor rewind. The implementation covers one currently registered ABI
+generation and does not decode events or prove historical executable bytes.
+Applications commit observations, required joins, coverage and candidates
+atomically under the rules in this guide. A source log query does not establish
+account-wide history or bridge delivery.

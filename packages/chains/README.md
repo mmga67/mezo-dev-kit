@@ -1,5 +1,7 @@
 # MDK Chains
 
+See the [SDK reference](REFERENCE.md) for functions, registry methods, result fields, and examples.
+
 `@mezo-dev-kit/chains` is the private, read-only source-alpha owner for typed
 network identity and capability data consumed by MDK workspace modules. It is
 not published to a package registry and its `0.0.0-private` version is not a

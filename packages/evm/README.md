@@ -1,9 +1,16 @@
 # MDK EVM values
 
+See the [SDK reference](REFERENCE.md) for every public function, type, and usage example.
+
 `@mezo-dev-kit/evm` owns reusable EVM representation validation and exact
 conversion for private MDK workspace consumers. It is part of the GitHub
 source alpha, not a published package or a transaction API. Use its public
 entrypoint instead of copying regexes, integer coercion, or decimal scaling.
+
+The scalar ABI codec also provides `encodeFunctionData`,
+`decodeFunctionResult`, and `decodeEventLog` over explicit canonical entries.
+See the reference for supported types and `InvalidAbi` failures. It uses the
+already approved Ox version and exposes no provider or Ox types.
 
 ```ts
 import {
@@ -104,3 +111,7 @@ Encoding references: [RPC value encoding](https://eips.ethereum.org/EIPS/eip-147
 [ERC-55](https://eips.ethereum.org/EIPS/eip-55), and
 [Ox](https://oxlib.sh/). These are EVM representation sources, not Mezo
 deployment or provider-capability evidence.
+
+`parseMinimalProxyImplementation` validates the standard 45-byte ERC-1167 runtime
+and extracts its implementation address. It does not validate implementation
+code or protocol ownership; see the [SDK reference](REFERENCE.md#standard-minimal-proxy-runtime).

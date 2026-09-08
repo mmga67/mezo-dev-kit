@@ -4,6 +4,17 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageDirectories = new Map([
+  ["musd-redemptions", resolve(repositoryRoot, "packages/protocols/musd-redemptions")],
+  [
+    "musd-institutional-debt",
+    resolve(repositoryRoot, "packages/protocols/musd-institutional-debt"),
+  ],
+  ["swaps", resolve(repositoryRoot, "packages/swaps")],
+  ["pools", resolve(repositoryRoot, "packages/protocols/pools")],
+  ["prices", resolve(repositoryRoot, "packages/prices")],
+  ["incentives", resolve(repositoryRoot, "packages/protocols/incentives")],
+  ["tokens", resolve(repositoryRoot, "packages/tokens")],
+  ["musd-borrowing", resolve(repositoryRoot, "packages/protocols/musd-borrowing")],
   ["evm", resolve(repositoryRoot, "packages/evm")],
   ["usdc-lending-vault", resolve(repositoryRoot, "packages/protocols/usdc-lending-vault")],
   ["usdc-lending-vault-example", resolve(repositoryRoot, "examples/usdc-lending-vault-readonly")],

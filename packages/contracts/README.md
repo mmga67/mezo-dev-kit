@@ -1,6 +1,8 @@
 # MDK Contracts
 
-`@mezo-dev-kit/contracts` is the private, read-only source-alpha resolver for
+See the [SDK reference](REFERENCE.md) for functions, registry methods, result fields, and examples.
+
+`@mezo-dev-kit/contracts` is the private source-alpha resolver for
 accepted contract IDs, deployment generations, and read-safe ABI projections.
 It is generated from the canonical Contracts module and is not an npm release
 or compatibility promise.
@@ -28,14 +30,20 @@ catalog verification and review-trigger timestamps, and limitations.
 `reviewAfter` remains the canonical trigger to reverify evidence, not an
 automatic lifecycle mutation.
 
-The generated ABI is deliberately read-only: it retains only `view`/`pure`
+The existing readAbi projection remains read-only: it retains only `view`/`pure`
 functions plus events and errors from each accepted full canonical ABI.
 Constructors, fallback/receive entries, and payable/nonpayable functions are
 excluded. The package exposes no encoding client, provider, signer, approval,
 transaction construction, submission, or writer.
 
-The public values are `createContractRegistry`, `resolveContract`,
-`listContractIds`, `isContractId`, and `ContractRegistryError`, plus their
+Additive `resolveOperation` exposes curated mainnet BorrowerOperations, Savings, Morpho and wrapper
+functions; `resolveRuntimeIdentity` provides generated code hashes and proxy
+slots for the borrowing dependency set. ABI availability does not authorize a
+transaction or promote proposed protocol support.
+
+The public values include `createContractRegistry`, `resolveContract`,
+`listContractIds`, `isContractId`, `resolveOperation`, `resolveRuntimeIdentity`,
+and `ContractRegistryError`, plus their
 documented types.
 
 The public error codes are `InvalidContractInput`, `UnknownContractId`,
@@ -100,7 +108,7 @@ entrypoint/declaration smoke tests, root `pnpm check`, and shuffled tests.
   supported.
 - Dynamic instances continue to resolve through their reviewed roots; this
   package does not fabricate pool, gauge, VaultV2, or VaultGauge identities.
-- No full writer ABI or transaction capability is exported.
+- Curated operation/event and discovered-role interfaces are available; domain writers own financial checks and Core owns execution.
 
 ## Inspect this checkout
 

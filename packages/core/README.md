@@ -1,6 +1,8 @@
 # MDK Core
 
-`@mezo-dev-kit/core` is the private, provider-neutral read coordination layer
+See the [SDK reference](REFERENCE.md) for client methods, transport ports, results, errors, and examples.
+
+`@mezo-dev-kit/core` is the private, provider-neutral read and execution coordination layer
 for the GitHub source alpha. Its built entrypoint exposes an injected read
 transport, exact chain assertion, accepted Contracts resolution, one-block
 multi-read consistency, and typed failure semantics. It is not published to a
@@ -50,9 +52,10 @@ The public codes are `InvalidReadInput`, `InvalidTransportResult`,
 resolution may also throw the typed `ContractRegistryError` owned by the
 Contracts package; Core does not erase that domain failure.
 
-The only public runtime values are `createCoreReadClient`, `CoreReadError`, and
-`serializeCoreReadError`; the remaining exports are the types needed to
-implement an adapter or consume a coherent result.
+The read API remains unchanged. The package also exports createExecutionClient,
+createRpcTransport, createRpcSigner, createMemorySubmissionStore,
+parseSubmissionRecord and ExecutionError; see the SDK reference for the complete
+execution contract.
 
 ## Injection and network requirements
 
@@ -78,15 +81,12 @@ proof files do not leak into `packages/core/dist`.
 
 ## Compatibility with the transaction proof
 
-core execution proof's accepted transaction execution proof remains under Core source and
-keeps its model-conformance and fake-port tests. It includes signer,
-simulation, submission, receipt, and lifecycle behavior, but it is deliberately
-internal: the foundational SDK review build includes only `index`, `read-client`, `read-errors`,
-and `read-validation`. None of the proof's writer values or types are exported
-or emitted. This is an intentional narrowing from the earlier private source
-entrypoint, not a claim that the proof became a supported writer.
+The original transaction proof remains private with its model tests. The new
+additive execution API uses current Chains, Contracts and EVM types and does
+not expose the proof's old interfaces. ADR-0015 owns the direct borrowing
+implementation scope; qualified release review remains outstanding.
 
-Its generated state/error tables still drift-check against stable transaction
+The proof's generated state/error tables still drift-check against stable transaction
 knowledge with:
 
 ```sh
@@ -100,8 +100,11 @@ node scripts/generate-core-transaction-model.ts --check
 - Block/hash pinning expresses the requested consistency contract. The injected
   adapter is responsible for honoring it and applications must select a
   provider with the required historical-read capability.
-- There is no signer, approval, simulation, submission, polling, persistence,
-  reconciliation, default RPC, credential, or writer in the supported export.
+- The application supplies signer requests, storage, timeouts, polling policy
+  and consent. Core selects no RPC URL and stores no credentials.
+- Execution supports explicitly selected EOAs without delegated code.
+  Approval workflows and smart-account integrations are not implemented.
+- Borrowing is a private implementation pending qualified protocol review.
 - A transport success is only an available raw read value, not proof of
   protocol correctness or current live-chain support.
 
@@ -114,3 +117,10 @@ exercises the workspace boundary. Reassess these owners after checkout changes;
 private versions alone do not identify capability changes. Follow the
 [capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
 when the public boundary, required inputs, or evidence dependencies change.
+
+Core also exposes `createEventScanner` for bounded registered-contract raw log
+queries. Explicit coverage, source/provider identity, checkpoint candidates and
+reorg anchors are described in the [SDK reference](REFERENCE.md#bounded-event-scanning).
+The caller owns capability evidence, whole-invocation cancellation and atomic
+persistence of rows, coverage and checkpoints. Complete query coverage does not
+prove protocol success or destination delivery.

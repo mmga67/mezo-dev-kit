@@ -1,5 +1,7 @@
 # mUSDC lending reader
 
+See the [SDK reference](REFERENCE.md) for reader/calculation methods, port signatures, results, errors, and examples.
+
 Private source-alpha candidate for the accepted mainnet BTC/mUSDC Morpho market.
 The maintainer accepted lending reader review on 2026-09-07. Import only
 `@mezo-dev-kit/musdc-lending` after building the workspace.
@@ -60,8 +62,7 @@ pnpm check:readers:mainnet
 
 Tests exercise deterministic arithmetic and public-registry orchestration with
 synthetic transport/codec ports and hash-verified historical runtime bytes. They
-do not certify a production ABI encoder or RPC adapter. No signer, transaction,
-approval, liquidation, supply, borrow, repay, or writer API is exported. Browser
+do not certify a production ABI encoder or RPC adapter. Direct supply, withdraw, collateral, borrow and repay writers now use Core execution and explicit token approvals. These private candidates require qualified review before release; liquidation and delegated account flows remain outside this API. Browser
 bundling is not certified; runtime code hashing currently uses Node crypto.
 
 ## Inspect this checkout

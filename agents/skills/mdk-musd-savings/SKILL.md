@@ -1,6 +1,6 @@
 ---
 name: mdk-musd-savings
-description: Resolve MUSD Savings principal, indexed yield, PCV/converter flow and gauge custody. Evidence and calculations; no writers.
+description: Resolve MUSD Savings principal, indexed yield, PCV/converter flow and gauge custody. Evidence, calculations and private writer review.
 ---
 
 # MUSD Savings knowledge
@@ -12,7 +12,16 @@ recipient flow, BTC conversion into MUSD yield, the current strategy, gauge
 stake, or maintenance of `knowledge/protocols/musd/savings`.
 
 Do not use it for classic troves/TCR, MUSD redemptions, ERC-4626 exchange-rate
-math, mUSDC lending, portfolio yield projections, or a writer.
+math, mUSDC lending, portfolio yield projections.
+
+## Current workspace capability
+
+Direct deposit, withdraw and yield claims are implemented as private candidates; Incentives owns gauge staking and reward claims.
+Inspect `packages/protocols/musd-savings/README.md`, `REFERENCE.md` and
+`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
+private implementation; canonical support remains proposed/none and qualified
+review is required before release. Pair writer work with transaction-execution
+and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 
@@ -43,7 +52,7 @@ math, mUSDC lending, portfolio yield projections, or a writer.
    redemption accounting.
 6. Resolve strategy, converter, and gauge through reviewed roots/current
    getters rather than turning dynamic roles into timeless registry facts.
-7. Treat operation records as requirements only. Writer support is `none`.
+7. Treat operation records as requirements only. Canonical writer support is `none`; the private implementation is separately documented above.
 
 ## Verification and stop conditions
 

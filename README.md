@@ -3,10 +3,11 @@
 **Mezo Developer Kit (MDK)** is a modular development environment being built
 for Mezo.
 
-> **Alpha status:** MDK is currently an experimental, read-only source alpha
+> **Alpha status:** MDK is currently an experimental source alpha
 > for a small developer community. Clone this GitHub repository to use or
-> contribute to it. No npm package, stable version, production support promise,
-> or protocol writer is provided at this stage.
+> contribute to it. Direct MUSD borrowing is implemented as a private candidate
+> awaiting qualified protocol review. Packages are not published to npm, and
+> there is no stable version or production support promise.
 
 MDK is **TypeScript-first**: SDK packages, protocol modules, tooling, framework
 adapters, tests, templates, examples, and generated application code are built
@@ -24,12 +25,21 @@ development tooling, examples, and agent guidance so developers can move from
 an idea to a working application with less repeated setup and protocol
 research.
 
-The source alpha includes private Chains, Contracts, and Core workspace
-packages plus [MUSD Savings](packages/protocols/musd-savings/README.md),
+The source alpha includes private EVM, Chains, Contracts, and Core workspace
+packages, a [MUSD borrowing SDK](packages/protocols/musd-borrowing/README.md)
+with direct borrower operations, plus [MUSD Savings](packages/protocols/musd-savings/README.md),
 [mUSDC lending](packages/protocols/musdc-lending/README.md), and
-[USDC Lending Vault](packages/protocols/usdc-lending-vault/README.md) readers.
-Their package guides define the supported mainnet read scope, injected ports,
-and explicit unavailable/error results.
+[USDC Lending Vault](packages/protocols/usdc-lending-vault/README.md) readers and
+private writers. [Tokens](packages/tokens/README.md) supplies explicit approvals;
+[Incentives](packages/protocols/incentives/README.md) owns Savings/Vault gauge
+staking, reward claims and ordinary escrow locks. [Pools](packages/protocols/pools/README.md) and
+[Swaps](packages/swaps/README.md) cover basic liquidity, fees and exact-input
+swaps. [Redemptions](packages/protocols/musd-redemptions/README.md) adds
+output-aware MUSD redemption; [Institutional debt](packages/protocols/musd-institutional-debt/README.md)
+provides bounded Enclave and position reads. Writer release still requires qualified review.
+The [SDK reference](docs/reference/sdk.md) documents every package's methods,
+types, integration requirements, and examples. Package guides define the
+implemented mainnet scope and release limitations.
 
 Run `pnpm check:readers:mainnet` to verify the source and its mainnet evidence.
 Follow the [evidence refresh guide](docs/guides/oracle-evidence-refresh.md)
@@ -57,14 +67,17 @@ Main implementation area.
 
 The directories establish ownership boundaries. Workspace packages remain
 private during the GitHub source alpha. Chains and Contracts contain generated
-runtime projections of accepted canonical inputs, while Core exposes a narrow
-injected read boundary. The prior transaction execution proof remains internal
-to Core and is not part of its built entrypoint.
+runtime projections of canonical inputs. Core exposes block-consistent reads,
+explicit RPC and signer adapters, and simulation, submission, observation, and
+reconciliation. The earlier transaction execution proof remains internal;
+[ADR-0015](docs/decisions/0015-direct-borrowing-execution.md) defines the new
+public workspace execution boundary.
 
 ```text
+evm/          Typed EVM values, exact units, and scalar ABI codecs
 chains/       Accepted network identity/capability registry; no default RPC
-contracts/    Stable deployment resolution and read-safe ABI projections
-core/         Provider-neutral, block-consistent read coordination
+contracts/    Deployment resolution, read ABIs, and curated operation ABIs
+core/         Block-consistent reads and explicit transaction execution
 protocols/    Mezo protocol-specific modules and workflows
 react/        React integrations
 cli/          Command-line tooling

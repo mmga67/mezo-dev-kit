@@ -1,9 +1,26 @@
 ---
 name: mdk-incentives-knowledge
-description: Resolve veBTC/veMEZO, boosts, voting, epochs, gauges and reward evidence or calculations. No incentive writers.
+description: Resolve veBTC/veMEZO, boosts, voting, epochs, gauges and reward evidence or calculations. Gauge and ordinary lock reader/writer review; wider incentives evidence.
 ---
 
 # Mezo incentives knowledge
+
+## Current workspace capability
+
+Savings/Vault gauge reads, stake, unstake and streamed reward claims are implemented
+as private candidates. Ordinary self-owned veBTC/veMEZO create, increase, extend,
+permanent, timed and withdraw operations now have bounded readers, simulation and
+receipt/state reconciliation under ADR-0021. Granted, managed, delegated, voted or
+boost-gauge-linked NFTs are excluded from this initial lock writer. Keep direct
+escrow custody separate from total locked supply; managed reward paths can custody
+assets elsewhere. Stored checkpoint boost, current boost and ownership-change
+suppressed voting power are distinct. Voting and other claims retain their own
+qualification boundaries. Native-token fork fixtures do not qualify mezod execution.
+Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
+`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
+private implementation; canonical support remains proposed/none and qualified
+review is required before release. Pair writer work with transaction-execution
+and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 

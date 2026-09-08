@@ -1,0 +1,19 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "paths": {
+      "@mezo-dev-kit/chains": ["../../chains/src/index.ts"],
+      "@mezo-dev-kit/contracts": ["../../contracts/src/index.ts"],
+      "@mezo-dev-kit/core": ["../../core/src/index.ts"],
+      "@mezo-dev-kit/evm": ["../../evm/src/index.ts"],
+      "@mezo-dev-kit/musd-redemptions": ["./src/index.ts"],
+      "@mezo-dev-kit/prices": ["../../prices/src/index.ts"],
+      "@mezo-dev-kit/musd-borrowing": ["../musd-borrowing/src/index.ts"],
+      "@mezo-dev-kit/tokens": ["../../tokens/src/index.ts"]
+    },
+    "types": ["node", "vitest"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
+}

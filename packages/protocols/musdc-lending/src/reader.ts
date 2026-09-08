@@ -1,4 +1,5 @@
 import { getNetwork } from "@mezo-dev-kit/chains";
+import { evaluatePriceFreshness } from "@mezo-dev-kit/prices";
 import { ContractRegistryError } from "@mezo-dev-kit/contracts";
 import type { ResolvedContract } from "@mezo-dev-kit/contracts";
 import { CoreReadError, createCoreReadClient } from "@mezo-dev-kit/core";
@@ -220,8 +221,10 @@ export function createLendingReader(config: LendingReaderConfig): Readonly<Lendi
       if (datum !== uint(answer * scale, "normalizedPrice"))
         throw new LendingReadError("PriceDisagreement", "oracle/Skip");
       if (publishedAt === 0n) throw new LendingReadError("PriceMissingTime", "updatedAt");
-      if (publishedAt > asOf) throw new LendingReadError("PriceFuture", "updatedAt");
-      if (asOf - publishedAt > maxAge) throw new LendingReadError("PriceStale", "updatedAt");
+      const freshness = evaluatePriceFreshness({ publishedAt, asOf, maxAgeSeconds: maxAge });
+      if (freshness.status === "future-dated")
+        throw new LendingReadError("PriceFuture", "updatedAt");
+      if (freshness.status === "stale") throw new LendingReadError("PriceStale", "updatedAt");
       return {
         sourceClass: "protocol-oracle-state" as const,
         price: datum,
@@ -325,6 +328,9 @@ export function createLendingReader(config: LendingReaderConfig): Readonly<Lendi
       borrowRate,
       accruedMarket,
       position,
+      feeRecipient: attempt<`0x${string}`>("feeRecipient", () =>
+        parseAddress(value(initial, "feeRecipient")),
+      ),
       price,
       supplyAssets,
       debt,

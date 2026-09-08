@@ -6,7 +6,7 @@ This deterministic page projects the canonical Contracts module for human review
 Resolve exact records, artifacts, and evidence through `knowledge/contracts/index.json`;
 this page is not an independent address/ABI authority or support promise.
 
-- Input digest: `sha256:97469eda36cfadc42eb0207119be7d289f8b08e34b37c7f457efd05b34e77852`
+- Input digest: `sha256:cf96593f75f2231246f6c96ecc89ac0dd4864a4dd8dc627a3e60dcdf4bb2e019`
 - Module support: `supported`
 - Module review: `accepted`
 - Module review after: `2026-09-22T00:00:00Z`

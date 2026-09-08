@@ -22,7 +22,7 @@ run(
   example,
   `const api = await import('@mezo-dev-kit/musdc-lending');
 const names = Object.keys(api).sort();
-if (JSON.stringify(names) !== JSON.stringify(['LendingReadError', 'accrueLendingMarket', 'calculateLendingHealth', 'calculateLendingInterest', 'createLendingReader', 'lendingToAssets', 'lendingToShares'])) throw new Error('unexpected export surface');
+if (JSON.stringify(names) !== JSON.stringify(["LendingReadError","LendingWriteError","accrueLendingMarket","calculateLendingHealth","calculateLendingInterest","createLendingReader","createLendingRpcConfig","createLendingRpcReader","createLendingTargetResolver","createLendingWriter","forecastLending","lendingToAssets","lendingToShares"])) throw new Error('unexpected export surface');
 if (api.calculateLendingInterest(1000000000000n,3600n,1000000n).interest !== 3606n) throw new Error('built accounting failed');
 await import('./dist/index.js');`,
   0,

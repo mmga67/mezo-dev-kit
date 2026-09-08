@@ -31,6 +31,12 @@ protocol reconciliation.
 
 ## Relevant repository areas
 
+Core now has additive execution and RPC/signer adapter exports for the private
+direct-borrowing implementation. Inspect its current README/reference and
+exports; the older transaction proof remains private. Review the injected
+submission store's atomic operation/nonce reservation and durable hash handling.
+Source availability does not waive protocol release review or transaction consent.
+
 - `knowledge/workflows/transactions/`
 - `knowledge/networks/`
 - `knowledge/contracts/`
@@ -49,6 +55,11 @@ protocol reconciliation.
 5. The protocol domain's canonical model and operation requirements.
 6. Accepted ADR-0002/0003 and package docs when relevant. The decisions accept
    responsibilities and semantics, not a dependency, public API, or writer.
+
+ADR-0016 adds protocol-owned target resolvers, explicit token approvals, Savings,
+lending, vault and gauge writers. Core verifies role destinations at simulation
+and submission; domains own runtime/topology and actual receipt outcomes.
+Consult each package reference for amount units, required bounds and recovery.
 
 ## Procedure
 

@@ -19,13 +19,17 @@ Do not load every skill, package, or knowledge module.
 
 ## Assess the task
 
-1. Separate the requested operations: identity/configuration, deterministic
+1. Separate the requested operations: explanation, identity/configuration, deterministic
    calculation, contract read, history, simulation, signing, submission, or
    knowledge maintenance. One request may cross several owners.
    EVM value parsing, validation, and exact conversion use the public
    `@mezo-dev-kit/evm` contract in `packages/evm/README.md`. Pure representation
    work needs no deployment, RPC, or protocol knowledge unless the task adds
    those semantics. It does not require a new skill.
+   An explanation normally needs the relevant indexed records, canonical ABI
+   and package reference. It does not require trying a wallet, fetching live
+   state, downloading source, or reproducing a deployment merely because those
+   steps would be necessary to execute the described operation.
 2. Inspect the relevant package README, `package.json` export map, exported
    types, implementation, and existing examples. Reuse the documented public
    entrypoint where it serves the operation. Contributor access to internal
@@ -37,6 +41,9 @@ Do not load every skill, package, or knowledge module.
    `status`, `supportStatus`, `reviewStatus`, freshness, and limitations. Follow
    bounded authoritative evidence when the decision depends on deployed
    behavior. A knowledge read does not require every maintenance command.
+   Identify the exact unanswered question before escalating to explorer source
+   or compiler reproduction. Check retained source/evidence first and retrieve
+   only the missing detail; stop once the requested claim is established.
 5. Establish the usable API, injected inputs, precise gap, and verification
    boundary for each operation. A few sentences suffice for a small task;
    significant work records this assessment in its task/review before coding.

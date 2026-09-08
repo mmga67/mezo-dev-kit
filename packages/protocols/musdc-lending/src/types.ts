@@ -66,6 +66,8 @@ export interface LendingSnapshot {
     LendingMarketState & { interest: bigint; feeShares: bigint }
   >;
   readonly position: LendingReadValue<LendingPosition>;
+  /** Present in current reader output; optional for compatibility with older stored snapshots. */
+  readonly feeRecipient?: LendingReadValue<ContractAddress>;
   readonly price: LendingReadValue<LendingPrice>;
   readonly supplyAssets: LendingReadValue<LendingAmount<"mUSDC">>;
   readonly debt: LendingReadValue<LendingAmount<"mUSDC-debt">>;

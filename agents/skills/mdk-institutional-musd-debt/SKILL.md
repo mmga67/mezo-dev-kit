@@ -1,6 +1,6 @@
 ---
 name: mdk-institutional-musd-debt
-description: Resolve institutional MUSD Enclave custody, positions, pledges, repayment, health and fees. Evidence and calculations; no writers.
+description: Resolve institutional MUSD Enclave custody, positions, pledges, repayment, health and fees. Private coherent reads and calculations; no partner writers.
 ---
 
 # Institutional MUSD debt knowledge
@@ -53,10 +53,11 @@ liquidation claims, or transaction writers.
    insufficient.
 8. Keep classic troves, ICR/TCR, ActivePool/DefaultPool, Recovery Mode,
    Stability Pool, redemption, and liquidation outside institutional totals.
-9. Treat operation records as future gates only. Current writer support is
+9. Inspect `packages/protocols/musd-institutional-debt/README.md` and `REFERENCE.md` for the private reader and calculations. Requested position/target subsets are not a full inventory; recorded UTXOs are not current Bitcoin unspent-state. Optional price failures must preserve an explicit unknown health result.
+10. Treat operation records as future gates only. Current writer support is
    `none`; exact fresh simulation and transaction reconciliation remain
    mandatory for any separately approved implementation.
-10. On maintenance, update evidence digests, source catalog, canonical record,
+11. On maintenance, update evidence digests, source catalog, canonical record,
     fixtures, generated reference, review files, and validator together.
 
 ## Verification

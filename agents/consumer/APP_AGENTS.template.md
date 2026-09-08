@@ -36,6 +36,12 @@ For Mezo-specific work:
 
 Do not load unrelated MDK skills by default.
 
+For explanations, start with version-compatible MDK references and available
+canonical protocol guidance. Use existing evidence when it answers the question.
+Fetch contract source only to resolve a specific remaining detail. Current
+transaction preparation separately needs live state and exact-call simulation;
+an explanation or offline example does not imply those execution checks.
+
 ## MDK Boundaries
 
 - Treat `@mezo-dev-kit/*` packages as external public dependencies.

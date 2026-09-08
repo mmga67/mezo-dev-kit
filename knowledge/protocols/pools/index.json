@@ -184,6 +184,12 @@
           "resourceId": "pools-source-reproduction"
         }
       ]
+    },
+    {
+      "id": "basic-pool-accounting",
+      "role": "canonical-record",
+      "kind": "mezo-basic-pool-accounting-model",
+      "path": "records/basic-accounting.json"
     }
   ],
   "checks": [

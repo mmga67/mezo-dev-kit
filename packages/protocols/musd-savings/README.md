@@ -1,9 +1,11 @@
-# MUSD Savings reader
+# MUSD Savings SDK
 
-`@mezo-dev-kit/musd-savings` is a private, experimental read-only workspace
+See the [SDK reference](REFERENCE.md) for reader, calculation and writer methods, approvals, results, errors, and examples.
+
+`@mezo-dev-kit/musd-savings` is a private, experimental workspace
 package for the GitHub source alpha. The maintainer accepted Savings reader review and its
 bounded dynamic interface review on 2026-09-07. The templates retain proposed
-deployment support; writers remain unsupported. The package is not available
+deployment support. Direct deposit, withdraw and yield-claim writers are now implemented as private candidates pending qualified review. The package is not available
 from a registry.
 
 ## Setup and API

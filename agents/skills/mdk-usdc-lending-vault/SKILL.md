@@ -1,6 +1,6 @@
 ---
 name: mdk-usdc-lending-vault
-description: Resolve USDC Lending Vault allocation, shares, wrapper yield, liquidity and gauge custody. Evidence and calculations; no writers.
+description: Resolve USDC Lending Vault allocation, shares, wrapper yield, liquidity and gauge custody. Evidence, calculations and private writer review.
 ---
 
 # USDC Lending Vault knowledge
@@ -12,7 +12,16 @@ wrapper receipts, high-water-mark yield, liquidity/deallocation, gauge custody,
 or maintenance of `knowledge/protocols/vaults/usdc-lending`.
 
 Do not use it for borrower health/liquidation, MUSD Savings, retired Stablecoin
-Vaults, generic vault strategy advice, APY forecasts, or a writer.
+Vaults, generic vault strategy advice, APY forecasts.
+
+## Current workspace capability
+
+VaultV2 deposit/mint/withdraw/redeem and wrapper wrap-and-stake/unwrap are implemented as private candidates; Incentives owns direct gauge operations.
+Inspect `packages/protocols/usdc-lending-vault/README.md`, `REFERENCE.md` and
+`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
+private implementation; canonical support remains proposed/none and qualified
+review is required before release. Pair writer work with transaction-execution
+and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 
@@ -38,7 +47,7 @@ operation gates. Load TypeScript/testing skills when changing code.
 6. Keep redirected VaultV2 yield shares, MEZO emissions, other voter revenue,
    and claimable rewards separate by asset and owner.
 7. Route borrower semantics to `protocols/lending/musdc` and gauge formulas to
-   incentives. Writer support is `none`.
+   incentives. Canonical writer support is `none`; the private implementation is separately documented above.
 
 ## Verification and stop conditions
 

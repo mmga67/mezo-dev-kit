@@ -1,6 +1,6 @@
 ---
 name: mdk-musdc-lending
-description: Resolve the BTC/mUSDC Morpho market, shares, interest, health, liquidation and oracle dependencies. Evidence and calculations; no writers.
+description: Resolve the BTC/mUSDC Morpho market, shares, interest, health, liquidation and oracle dependencies. Evidence, calculations and private writer review.
 ---
 
 # mUSDC lending knowledge
@@ -12,7 +12,16 @@ interest accrual, health, liquidation, bad debt, liquidity, or maintenance of
 `knowledge/protocols/lending/musdc`.
 
 Do not use it for MUSD troves/redemptions, bridge execution, the supplier
-vault's depositor shares, generic Morpho markets, APR forecasts, or a writer.
+vault's depositor shares, generic Morpho markets, APR forecasts.
+
+## Current workspace capability
+
+Direct supply, withdrawal, collateral, borrow and repay are implemented as private candidates with explicit approvals.
+Inspect `packages/protocols/musdc-lending/README.md`, `REFERENCE.md` and
+`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
+private implementation; canonical support remains proposed/none and qualified
+review is required before release. Pair writer work with transaction-execution
+and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 
@@ -40,7 +49,7 @@ skills when changing scripts or tests.
    and bad-debt ordering exactly.
 7. Route vault depositor accounting to `protocols/vaults/usdc-lending` and
    keep all classic MUSD aggregates inapplicable.
-8. Writer support is `none`; operation records are future requirements only.
+8. Writer support is `none`; operation records describe requirements and do not promote release support.
 
 ## Verification and stop conditions
 

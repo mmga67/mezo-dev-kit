@@ -1,8 +1,10 @@
 export type EvmValueErrorCode =
+  | "InvalidAbi"
   | "InvalidAddress"
   | "InvalidChecksum"
   | "InvalidHash"
   | "InvalidHexData"
+  | "InvalidProxyCode"
   | "InvalidRpcQuantity"
   | "InvalidInteger"
   | "InvalidBitWidth"

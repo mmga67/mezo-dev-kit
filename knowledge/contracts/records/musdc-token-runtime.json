@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "token-runtime-profile",
+  "id": "musdc-token-runtime",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T11:19:22.347Z",
+  "reviewAfter": "2026-10-08T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11703359,
+    "blockHash": "0x078766ba9ce5ca8ef08835cfdcdb1ed286f697423d787cd2a8ff9c2d209193fd"
+  },
+  "assetReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "bridge-assets",
+    "recordId": "usdc-native-bridge"
+  },
+  "representationId": "musdc-on-mezo-mainnet",
+  "tokenAddress": "0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+  "implementationAddress": "0x09d42a1c4792546c26451af2d373bf0d4c545baf",
+  "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+  "addressCodeSha256": "4bc884c60f64f3486dd8c1a31ede2542f7417edc9e94730d9a86ae386cb82f65",
+  "implementationCodeSha256": "378d40bcb07169de058746028e58f77128dcde6ff1660a70dbe338a7e700abc2",
+  "artifacts": [
+    {
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "musdc-token-proxy-explorer"
+      },
+      "sha256": "a113c9786ac784cb81573eeec3d5ceab19ee130f4491025f2c07cdf2b35e6d39"
+    },
+    {
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "musdc-token-implementation-explorer"
+      },
+      "sha256": "001560ae2dfc891d319857fb0abb30bd865c62548d59a4e88c8a382e4a7bc69a"
+    },
+    {
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "musdc-token-runtime-probe"
+      },
+      "sha256": "0a80a5a64346a7a357b8a836bda6d36940d133a58f1d7668e0b25659ffb8d57e"
+    }
+  ],
+  "transferSemantics": "Verified mUSDC is an empty mERC20 subclass. mERC20 overrides decimals and privileged minting but not ERC20 transfer/_update; inherited ERC20Upgradeable debits and credits the same amount and emits Transfer, with no transfer fee or rebase path.",
+  "sourceUrls": [
+    "https://api.explorer.mezo.org/api/v2/smart-contracts/0x04671c72aab5ac02a03c1098314b1bb6b560c197",
+    "https://api.explorer.mezo.org/api/v2/smart-contracts/0x09d42a1c4792546c26451af2d373bf0d4c545baf"
+  ],
+  "limitations": [
+    "Private writer asset profile; qualified protocol review remains required.",
+    "Both official explorer sources are fully verified and their deployed bytes match fixed-block RPC code. The implementation slot matches the stated generation.",
+    "Independent Solidity 0.8.29 compilation was not performed: that compiler is not locally installed. No compiler dependency was downloaded.",
+    "Any proxy implementation change invalidates this profile; native BTC and arbitrary pool-token write compatibility are outside this initial asset profile."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "contractName": "Pool",
+  "implementationAddress": null,
+  "compilerVersion": "v0.8.24+commit.e11b9ed9",
+  "explorerVerification": {
+    "fully": true,
+    "partially": false,
+    "changedBytecode": false
+  },
+  "creation": {
+    "constructorArgsBytes": 0,
+    "fullExact": true,
+    "executableExact": true,
+    "compiledSha256": "3dd692c95bfdf2072b58358a2c3c337dd2867c529de9f1967d22dc698a21ff28",
+    "explorerSha256": "3dd692c95bfdf2072b58358a2c3c337dd2867c529de9f1967d22dc698a21ff28",
+    "compiledExecutableSha256": "0e7ec452c1ccba0cd2fb30c341f7e536591c2ba14c704155d3ca5f89ec4f73e0",
+    "explorerExecutableSha256": "0e7ec452c1ccba0cd2fb30c341f7e536591c2ba14c704155d3ca5f89ec4f73e0",
+    "compiledMetadataBytes": 53,
+    "explorerMetadataBytes": 53
+  },
+  "runtime": {
+    "fullExact": false,
+    "executableExact": true,
+    "immutableSubstitutions": 7,
+    "compiledSha256": "56978e309d433299f883538bb9d9d6ea4b4783cc8fa6d66da108b947d00d8d13",
+    "explorerSha256": "be47c97ea04db178b687368a9ee672d66834f8ce86fa247a6c514527949b28a3",
+    "compiledTemplateExecutableSha256": "5467b1c2545c812d66561b6b8cf0a44e3c8896f968576e4a8a0a8f3792ce4d12",
+    "compiledExecutableSha256": "3847eec07128d3149176ae46e05e11336818d1a93b84bd5b3d75f23b7d0fa14b",
+    "explorerExecutableSha256": "3847eec07128d3149176ae46e05e11336818d1a93b84bd5b3d75f23b7d0fa14b",
+    "compiledMetadataBytes": 53,
+    "explorerMetadataBytes": 53
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "contractName": "FactoryRegistry",
+  "implementationAddress": null,
+  "compilerVersion": "v0.8.24+commit.e11b9ed9",
+  "explorerVerification": {
+    "fully": true,
+    "partially": false,
+    "changedBytecode": false
+  },
+  "creation": {
+    "constructorArgsBytes": 128,
+    "fullExact": true,
+    "executableExact": true,
+    "compiledSha256": "e54643b7c6c76fd9f06d88ede023207ef73e9aa3e9c654a54b9840693b2b835c",
+    "explorerSha256": "e54643b7c6c76fd9f06d88ede023207ef73e9aa3e9c654a54b9840693b2b835c",
+    "compiledExecutableSha256": "c44403b714b6eca4120639ba9510f8d450e41c016e8605b00fc52128c2553866",
+    "explorerExecutableSha256": "c44403b714b6eca4120639ba9510f8d450e41c016e8605b00fc52128c2553866",
+    "compiledMetadataBytes": 53,
+    "explorerMetadataBytes": 53
+  },
+  "runtime": {
+    "fullExact": false,
+    "executableExact": true,
+    "immutableSubstitutions": 2,
+    "compiledSha256": "c6698b8fbb812c03c8e8eb309bf76edea4f567709f641fd142c7ac53c5c6444e",
+    "explorerSha256": "6c3665c5086749d7eaceaff96e7bbcda753d2a8665b159666550261f0da01da7",
+    "compiledTemplateExecutableSha256": "8a3cf17e3499ca317ea65baa61a43be398348dba0dbd065a0ef087e3d188b53a",
+    "compiledExecutableSha256": "4e73d4c491e5cde44917d7915e0a7517c4ba00fbba8525390fe5f338505c3e8c",
+    "explorerExecutableSha256": "4e73d4c491e5cde44917d7915e0a7517c4ba00fbba8525390fe5f338505c3e8c",
+    "compiledMetadataBytes": 53,
+    "explorerMetadataBytes": 53
+  }
+}

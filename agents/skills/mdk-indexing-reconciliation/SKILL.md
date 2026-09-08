@@ -18,6 +18,14 @@ description: Design or diagnose bounded event scans, checkpoints, backfills, reo
 4. For implementation and tests, also load `mdk-typescript-development` and
    `mdk-testing`.
 
+## Current implementation
+
+Core exposes `createEventScanner` for bounded raw logs from one registered
+current generation. Its README/reference own policies, explicit coverage,
+JSON-safe checkpoint candidates, overlap and changed-anchor outcomes. Callers
+retain atomic storage, required protocol joins and provider capability evidence.
+Complete provider-query coverage is not protocol or cross-chain completion.
+
 ## Procedure
 
 For account-history requests, first define which transactions/events and what

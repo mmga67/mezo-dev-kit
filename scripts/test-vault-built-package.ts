@@ -22,7 +22,7 @@ run(
   example,
   `const api = await import('@mezo-dev-kit/usdc-lending-vault');
 const names = Object.keys(api).sort();
-if (JSON.stringify(names) !== JSON.stringify(['VaultReadError', 'calculateVaultHarvest', 'createVaultReader', 'previewVaultConversion', 'wrapperToReceipts', 'wrapperToVaultShares'])) throw new Error('unexpected export surface');
+if (JSON.stringify(names) !== JSON.stringify(["VaultReadError","VaultWriteError","calculateVaultHarvest","createVaultReader","createVaultRpcReader","createVaultTargetResolver","createVaultWriter","forecastVault","previewVaultConversion","wrapperToReceipts","wrapperToVaultShares"])) throw new Error('unexpected export surface');
 if (api.wrapperToVaultShares(1000n,9000n,8000n) !== 999n) throw new Error('built accounting failed');
 await import('./dist/index.js');`,
   0,

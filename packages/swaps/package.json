@@ -1,0 +1,35 @@
+{
+  "name": "@mezo-dev-kit/swaps",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Bounded basic-pool exact-input quotes and swap execution.",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/clean-package-dist.ts swaps && tsc --project tsconfig.build.json",
+    "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm build && pnpm test",
+    "format:check": "prettier --check src test vitest.config.ts package.json tsconfig.json tsconfig.build.json",
+    "lint": "eslint src test vitest.config.ts",
+    "test": "vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=45001",
+    "test:watch": "vitest",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/evm": "workspace:*",
+    "@mezo-dev-kit/chains": "workspace:*",
+    "@mezo-dev-kit/contracts": "workspace:*",
+    "@mezo-dev-kit/core": "workspace:*",
+    "@mezo-dev-kit/pools": "workspace:*",
+    "@mezo-dev-kit/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
+  }
+}

@@ -1,4 +1,6 @@
-# USDC Lending Vault reader
+# USDC Lending Vault SDK
+
+See the [SDK reference](REFERENCE.md) for reader, calculation and writer methods, approvals, results, errors, and examples.
 
 Private source-alpha reader under vault reader review, accepted on 2026-09-07.
 Import `@mezo-dev-kit/usdc-lending-vault` after building the workspace.
@@ -69,8 +71,7 @@ dates and digests identify the bounded inputs; the bounded interface is accepted
 promotion remains pending. Tests compose real MDK readers with synthetic ports
 and hash-verified runtime bytes, not a certified production provider/ABI codec.
 Node crypto is required; browser bundling and package-registry distribution are
-not certified. No signer, allocator, approval, staking, claim, transaction, or
-writer API is exported.
+not certified. Private deposit/mint/withdraw/redeem and wrap-and-stake/unwrap writers now compose Core and Tokens. Incentives owns direct gauge staking and reward claims. Qualified protocol review remains required before release; curator allocation is outside this API.
 
 ## Inspect this checkout
 

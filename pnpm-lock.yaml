@@ -112,7 +112,70 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
 
-  packages/protocols/musd-savings:
+  packages/prices:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../evm
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/protocols/incentives:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../../evm
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/protocols/musd-borrowing:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../../evm
+      '@mezo-dev-kit/prices':
+        specifier: workspace:*
+        version: link:../../prices
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/protocols/musd-institutional-debt:
     dependencies:
       '@mezo-dev-kit/chains':
         specifier: workspace:*
@@ -131,6 +194,56 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
 
+  packages/protocols/musd-redemptions:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../../evm
+      '@mezo-dev-kit/musd-borrowing':
+        specifier: workspace:*
+        version: link:../musd-borrowing
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/protocols/musd-savings:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../../evm
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+    devDependencies:
+      '@mezo-dev-kit/incentives':
+        specifier: workspace:*
+        version: link:../incentives
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
   packages/protocols/musdc-lending:
     dependencies:
       '@mezo-dev-kit/chains':
@@ -145,6 +258,34 @@ importers:
       '@mezo-dev-kit/evm':
         specifier: workspace:*
         version: link:../../evm
+      '@mezo-dev-kit/prices':
+        specifier: workspace:*
+        version: link:../../prices
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/protocols/pools:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../../evm
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -167,6 +308,56 @@ importers:
       '@mezo-dev-kit/musdc-lending':
         specifier: workspace:*
         version: link:../musdc-lending
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../../tokens
+    devDependencies:
+      '@mezo-dev-kit/incentives':
+        specifier: workspace:*
+        version: link:../incentives
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/swaps:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../evm
+      '@mezo-dev-kit/pools':
+        specifier: workspace:*
+        version: link:../protocols/pools
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../tokens
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/tokens:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../evm
     devDependencies:
       vitest:
         specifier: 4.1.11

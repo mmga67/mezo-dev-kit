@@ -1,6 +1,6 @@
 ---
 name: mdk-swap-routing-knowledge
-description: Verify Mezo swap discovery, quotes, route encoding, approvals and simulation requirements. No public swap reader or writer.
+description: Verify Mezo swap discovery, quotes, route encoding, approvals and simulation requirements. Private basic quotes/writes; inspect current package support.
 ---
 
 # Mezo swap and routing knowledge
@@ -15,7 +15,7 @@ swap reconciliation, or when maintaining `knowledge/workflows/swaps`.
 Do not use it to infer a Quoter or Universal Router, copy upstream command
 bytes, provide trading recommendations, perform unbounded route search, treat
 quotes as guarantees, combine separate routers into an unevidenced atomic
-route, or enable a reader/writer.
+route, or infer transaction authorization.
 
 ## Required context
 
@@ -63,7 +63,8 @@ route, or enable a reader/writer.
    evidenced. Preserve revert data; any call mutation invalidates simulation.
 9. Follow transaction tracking and reconcile actual recipient token deltas and
    architecture-specific events/state. Receipt success alone is insufficient.
-10. On maintenance, update evidence digest, source catalog, canonical records,
+10. Inspect `packages/swaps/README.md` and `REFERENCE.md` for current private APIs. Basic quotes accept up to three hops; initial writer assets are MUSD/mUSDC. Use explicit approvals, final simulation output verification, and event/balance reconciliation. Canonical support remains proposed pending qualified review.
+11. On maintenance, update evidence digest, source catalog, canonical records,
     fixtures, generated reference, candidate/gap disposition, validator, and
     qualified-review packet together.
 

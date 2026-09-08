@@ -1,6 +1,6 @@
 ---
 name: mdk-pool-liquidity-knowledge
-description: Resolve basic-AMM and concentrated-liquidity pools, math, positions and gauge ownership. Evidence and calculations; no pool writers.
+description: Resolve basic-AMM and concentrated-liquidity pools, math, positions and gauge ownership. Verified discovery, accounting and private basic liquidity/fee workflows.
 ---
 
 # Mezo pool and liquidity knowledge
@@ -14,7 +14,7 @@ boundaries, empty states, or maintenance of `knowledge/protocols/pools`.
 
 Do not use it to turn APY/TVL analytics into protocol facts, optimize a
 portfolio, infer a Quoter address, normalize vault/lending deposits as AMM
-liquidity, or enable a writer.
+liquidity, or infer transaction authorization.
 
 ## Required context
 
@@ -30,6 +30,13 @@ liquidity, or enable a writer.
    `agents/skills/mdk-typescript-development/SKILL.md`.
 
 ## Procedure
+
+For a step-by-step explanation, start with the indexed pool architecture,
+positions/gauges and operation records plus canonical ABIs. They already cover
+discovery, NFT ownership, staking, rewards and withdrawal. Apply the live
+discovery checks below when reading current state or preparing a transaction.
+Fetch source only for an unresolved detail, such as authorization differences
+between overloaded claim methods, after checking retained evidence.
 
 1. Resolve the network and provider capability through Networks.
 2. Resolve reusable roots, validity, source generation, and full ABI through
@@ -54,7 +61,7 @@ liquidity, or enable a writer.
    `null`/unknown rather than infer an identity.
 9. Route gauge emission/voting behavior to incentives and transaction
    lifecycle to `workflows/transactions`. `pools-operation-requirements` is a
-   future-writer gate, not an enabled API.
+   review gate. Inspect `packages/protocols/pools/REFERENCE.md` for current private discovery, liquidity and fee methods. Wallet fee indices and gauge custody remain separate.
 10. On maintenance, update evidence digest, source catalog, canonical record,
     fixtures, generated reference, candidate/gap disposition, and validator
     together.
@@ -71,7 +78,7 @@ verification, and stale dynamic mappings.
 ## Invariants and common failure modes
 
 - The module and seven CL registry roots received qualified Level 3 acceptance;
-  all pool writers remain unsupported.
+  canonical writer support remains proposed. The private Pools package now implements basic MUSD/mUSDC liquidity and fee writers; inspect its current README/REFERENCE.
 - No current official Quoter identity is known.
 - Zero minimum outputs are not safe defaults.
 - Implicit unlimited ERC-20 or ERC-721 approval is prohibited.

@@ -1,0 +1,25 @@
+{
+  "blockNumber": 11703359,
+  "blockHash": "0x078766ba9ce5ca8ef08835cfdcdb1ed286f697423d787cd2a8ff9c2d209193fd",
+  "observedAt": "2026-09-08T10:57:13.201Z",
+  "provider": "https://mezo-mainnet.boar.network",
+  "sourceCommit": "0a3b5e840ac8e187cc705fbeddcf00f88b09247e",
+  "records": [
+    {
+      "name": "Pool",
+      "address": "0xee8287b903cbba2dea6a9cfda296a05ada1a6cef",
+      "artifactSha256": "4a7aa65fafb7012575dde616f88c73bc279bb2c31608cd5dcb19a71556caddf4",
+      "runtimeSha256": "be47c97ea04db178b687368a9ee672d66834f8ce86fa247a6c514527949b28a3",
+      "artifactRuntimeSha256": "56978e309d433299f883538bb9d9d6ea4b4783cc8fa6d66da108b947d00d8d13",
+      "exactRuntime": false
+    },
+    {
+      "name": "FactoryRegistry",
+      "address": "0x265054f72bad343fdee3e018269cbb899e2e2ec5",
+      "artifactSha256": "0eba7209d1e11a4fbad6f89b4324b4c651a19a769569ad0513712b0b6c19f359",
+      "runtimeSha256": "6c3665c5086749d7eaceaff96e7bbcda753d2a8665b159666550261f0da01da7",
+      "artifactRuntimeSha256": "c6698b8fbb812c03c8e8eb309bf76edea4f567709f641fd142c7ac53c5c6444e",
+      "exactRuntime": false
+    }
+  ]
+}

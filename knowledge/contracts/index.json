@@ -984,6 +984,105 @@
       "role": "artifact",
       "kind": "official-explorer-source-response",
       "path": "artifacts/dynamic-interfaces/vault-vault-gauge-explorer.json"
+    },
+    {
+      "id": "protocol-operation-sources",
+      "role": "canonical-record",
+      "kind": "protocol-operation-source-catalog",
+      "path": "records/protocol-operation-sources.json",
+      "recordIds": [
+        "morpho-events"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "morpho-events-source",
+      "role": "artifact",
+      "kind": "solidity-source",
+      "path": "artifacts/operation-sources/morpho-events.sol"
+    },
+    {
+      "id": "morpho-events-interface",
+      "role": "artifact",
+      "kind": "compiled-library-event-abi",
+      "path": "artifacts/operation-sources/morpho-events-abi.json"
+    },
+    {
+      "id": "morpho-operation-reproduction",
+      "role": "artifact",
+      "kind": "compiler-reproduction",
+      "path": "artifacts/operation-sources/morpho-reproduction.json"
+    },
+    {
+      "id": "lending-morpho-explorer-source",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/operation-sources/morpho-explorer.json"
+    },
+    {
+      "id": "basic-pool-interfaces",
+      "role": "canonical-record",
+      "kind": "basic-pool-interface-catalog",
+      "path": "records/basic-pool-interfaces.json",
+      "recordIds": [
+        "pool",
+        "factory-registry"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "basic-pool-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/basic-pool-interfaces/pool-explorer.json"
+    },
+    {
+      "id": "basic-factory-registry-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/basic-pool-interfaces/factory-registry-explorer.json"
+    },
+    {
+      "id": "basic-pool-reproduction",
+      "role": "artifact",
+      "kind": "executable-reproduction",
+      "path": "artifacts/basic-pool-interfaces/pool-reproduction.json"
+    },
+    {
+      "id": "basic-factory-registry-reproduction",
+      "role": "artifact",
+      "kind": "executable-reproduction",
+      "path": "artifacts/basic-pool-interfaces/factory-registry-reproduction.json"
+    },
+    {
+      "id": "basic-pool-runtime-probe",
+      "role": "artifact",
+      "kind": "fixed-block-runtime-observation",
+      "path": "artifacts/basic-pool-interfaces/runtime-probe.json"
+    },
+    {
+      "id": "musdc-token-runtime",
+      "role": "canonical-record",
+      "kind": "token-runtime-profile",
+      "path": "records/musdc-token-runtime.json"
+    },
+    {
+      "id": "musdc-token-proxy-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/musdc-token-runtime/proxy-explorer.json"
+    },
+    {
+      "id": "musdc-token-implementation-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/musdc-token-runtime/implementation-explorer.json"
+    },
+    {
+      "id": "musdc-token-runtime-probe",
+      "role": "artifact",
+      "kind": "fixed-block-runtime-observation",
+      "path": "artifacts/musdc-token-runtime/runtime-probe.json"
     }
   ],
   "checks": [

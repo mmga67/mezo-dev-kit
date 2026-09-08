@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "protocol-operation-source-catalog",
+  "id": "protocol-operation-sources",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T00:00:00Z",
+  "reviewAfter": "2026-10-08T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "blockNumber": 11703359,
+    "blockHash": "0x078766ba9ce5ca8ef08835cfdcdb1ed286f697423d787cd2a8ff9c2d209193fd"
+  },
+  "limitations": [
+    "Source-alpha operation interfaces only; qualified writer review remains required.",
+    "The explorer marks Morpho partially verified. Creation matches in full; runtime executable matches after two immutable substitutions, while full runtime metadata differs.",
+    "Morpho emits library events that its explorer ABI omits. The compiler-produced EventsLib ABI is separate from the existing reader ABI."
+  ],
+  "records": [
+    {
+      "id": "morpho-events",
+      "contractId": "lending.morpho",
+      "sourceUrl": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x565834cE7E40b8987BC20EbF83E2159467bDA311",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "morpho-events-source"
+      },
+      "sourceSha256": "c267b23c5a3086ed00a712b841ef12b674be508ac8b8cf2e3f289ae09bd1677a",
+      "abiReference": {
+        "moduleId": "contracts",
+        "resourceId": "morpho-events-interface"
+      },
+      "abiSha256": "6fe355c04a83c54b8592cac44498457c3d84f77f07e7cc081630aefcd8ff32b7",
+      "reproductionReference": {
+        "moduleId": "contracts",
+        "resourceId": "morpho-operation-reproduction"
+      },
+      "compilerVersion": "v0.8.19+commit.7dd6d404",
+      "runtimeSha256": "503b1a0be404a21efd01e9491e6b1a132fd506352936c84db3e3aa38aa69e746",
+      "explorerReference": {
+        "moduleId": "contracts",
+        "resourceId": "lending-morpho-explorer-source"
+      },
+      "explorerSha256": "4c93a1b3e9d5d1b56790157ad3685a4744f00e7765c3cc7baa86f7e234d099f1"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: mdk-price-knowledge
-description: Verify price-source identity, typed scaling, freshness, confidence and fallback evidence. No public price reader, updater or writer.
+description: Verify price-source identity, typed scaling, freshness, confidence and fallback evidence. Private normalization/freshness helpers and direct mainnet Skip reader; no updater or writer.
 ---
 
 # MDK price knowledge
@@ -33,6 +33,14 @@ provider fallback order, or enable an updater/writer.
    separately approved future updater lifecycle.
 7. For authored scripts or runtime code, also load
    `agents/skills/mdk-typescript-development/SKILL.md`.
+
+## Current implementation
+
+`packages/prices/README.md` and `REFERENCE.md` own private amount/confidence
+normalization, inclusive freshness and direct mainnet Skip observations.
+Borrowing and Lending reuse the helpers without changing their deployed oracle
+paths. Inspect current exports and tests; this implementation does not promote
+canonical support or establish browser/release readiness.
 
 ## Procedure
 

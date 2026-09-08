@@ -22,7 +22,7 @@ run(
   example,
   `const api = await import('@mezo-dev-kit/musd-savings');
 const names = Object.keys(api).sort();
-if (JSON.stringify(names) !== JSON.stringify(['SavingsReadError', 'calculateSavingsDistribution', 'calculateSavingsYield', 'createSavingsReader'])) throw new Error('unexpected export surface');
+if (JSON.stringify(names) !== JSON.stringify(["SavingsReadError","SavingsWriteError","calculateSavingsDistribution","calculateSavingsYield","createSavingsReader","createSavingsRpcReader","createSavingsWriter"])) throw new Error('unexpected export surface');
 if (api.calculateSavingsYield({balance:333n,yieldIndex:100000000000000000n,supplyYieldIndex:0n,storedClaimableYield:2n}).claimable.baseUnits !== 35n) throw new Error('built accounting failed');
 await import('./dist/index.js');`,
   0,
