@@ -4,16 +4,27 @@ import { parseAddress } from "./address.ts";
 import { EvmValueError } from "./errors.ts";
 import { parseHash32, parseHexData } from "./hex.ts";
 import { parseUint } from "./integer.ts";
-import type { HexData } from "./types.ts";
+import type { Hash32, HexData } from "./types.ts";
 
 export type AbiValue = bigint | boolean | `0x${string}` | readonly AbiValue[];
+/** An indexed complex parameter contains only a hash, never a decoded preimage. */
+export interface AbiIndexedHash {
+  readonly kind: "indexed-hash";
+  readonly hash: Hash32;
+}
+export type AbiEventValue = AbiValue | Readonly<AbiIndexedHash>;
 export interface AbiCodec {
   encodeFunction(entry: unknown, args?: readonly AbiValue[]): HexData;
+  decodeCalldata(entry: unknown, data: unknown): readonly AbiValue[];
   decodeFunction(entry: unknown, data: unknown): readonly AbiValue[];
   decodeEvent(
     entry: unknown,
     log: { readonly data: unknown; readonly topics: readonly unknown[] },
   ): readonly AbiValue[] | null;
+  decodeEventWithHashes(
+    entry: unknown,
+    log: { readonly data: unknown; readonly topics: readonly unknown[] },
+  ): readonly AbiEventValue[] | null;
 }
 interface Parameter {
   readonly type: string;
@@ -132,7 +143,7 @@ function normalize(param: Parameter, value: unknown, budget = { remaining: MAX_B
   return number;
 }
 
-/** Bounded positional tuples/arrays and bytes; strings and hashed indexed complex values are excluded. */
+/** Bounded positional tuples/arrays and bytes. Hash-only event fields require explicit opt-in. */
 export function createAbiCodec(): Readonly<AbiCodec> {
   function encodeFunction(entry: unknown, args: readonly AbiValue[] = []): HexData {
     const abi = definition(entry);
@@ -170,10 +181,49 @@ export function createAbiCodec(): Readonly<AbiCodec> {
       return invalid("decoding");
     }
   }
+  function decodeCalldata(entry: unknown, data: unknown): readonly AbiValue[] {
+    const abi = definition(entry);
+    const encoded = bytes(data);
+    try {
+      const decoded: unknown = AbiFunction.decodeData(abi, encoded);
+      const values = abi.inputs.length === 0 ? [] : decoded;
+      if (!Array.isArray(values) || values.length !== abi.inputs.length)
+        return invalid("argument count");
+      const budget = { remaining: MAX_BYTES };
+      const normalized = Object.freeze(
+        abi.inputs.map((part, i) => normalize(part, values[i], budget)),
+      );
+      if (encodeFunction(abi, normalized) !== encoded) return invalid("noncanonical calldata");
+      return normalized;
+    } catch (error) {
+      if (error instanceof EvmValueError) throw error;
+      return invalid("calldata decoding");
+    }
+  }
   function decodeEvent(
     entry: unknown,
     log: { readonly data: unknown; readonly topics: readonly unknown[] },
   ): readonly AbiValue[] | null {
+    const values = eventValues(entry, log, false);
+    if (values === null) return null;
+    return Object.freeze(
+      values.map((value) => {
+        if (typeof value === "object" && "kind" in value) return invalid("hashed indexed value");
+        return value;
+      }),
+    );
+  }
+  function decodeEventWithHashes(
+    entry: unknown,
+    log: { readonly data: unknown; readonly topics: readonly unknown[] },
+  ): readonly AbiEventValue[] | null {
+    return eventValues(entry, log, true);
+  }
+  function eventValues(
+    entry: unknown,
+    log: { readonly data: unknown; readonly topics: readonly unknown[] },
+    allowHashes: boolean,
+  ): readonly AbiEventValue[] | null {
     const event = object(entry);
     if (
       event.type !== "event" ||
@@ -187,6 +237,7 @@ export function createAbiCodec(): Readonly<AbiCodec> {
       if (typeof input.indexed !== "boolean") return invalid("indexed");
       const part = parameter(input);
       if (
+        !allowHashes &&
         input.indexed &&
         (part.type.includes("[") || part.type === "tuple" || part.type === "bytes")
       )
@@ -199,7 +250,7 @@ export function createAbiCodec(): Readonly<AbiCodec> {
       anonymous: false,
       inputs,
     };
-    if (!log || !Array.isArray(log.topics)) return invalid("topics");
+    if (!log || !Array.isArray(log.topics) || log.topics.length > 4) return invalid("topics");
     if (parseHash32(log.topics[0]) !== AbiEvent.getSelector(abi)) return null;
     if (log.topics.length !== 1 + inputs.filter((part) => part.indexed).length)
       return invalid("topic count");
@@ -217,6 +268,14 @@ export function createAbiCodec(): Readonly<AbiCodec> {
     let topic = 1;
     return Object.freeze(
       inputs.map((part) => {
+        if (
+          part.indexed &&
+          (part.type.includes("[") || part.type === "tuple" || part.type === "bytes")
+        )
+          return Object.freeze({
+            kind: "indexed-hash" as const,
+            hash: parseHash32(log.topics[topic++]),
+          });
         const value = part.indexed
           ? decode([part], parseHash32(log.topics[topic++]))[0]
           : values.shift();
@@ -225,5 +284,11 @@ export function createAbiCodec(): Readonly<AbiCodec> {
       }),
     );
   }
-  return Object.freeze({ encodeFunction, decodeFunction, decodeEvent });
+  return Object.freeze({
+    encodeFunction,
+    decodeCalldata,
+    decodeFunction,
+    decodeEvent,
+    decodeEventWithHashes,
+  });
 }

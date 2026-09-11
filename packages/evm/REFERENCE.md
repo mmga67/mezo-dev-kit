@@ -22,13 +22,31 @@ malformed matching logs and noncanonical outputs throw
 no Ox type crosses the public interface.
 
 `createAbiCodec()` returns readonly `AbiCodec` with `encodeFunction(entry,
-args?)`, `decodeFunction(entry, data)`, and `decodeEvent(entry, { data, topics })`.
+args?)`, `decodeCalldata(entry, data)`, `decodeFunction(entry, data)`,
+`decodeEvent(entry, { data, topics })`, and
+`decodeEventWithHashes(entry, { data, topics })`.
 These methods use positional `AbiValue` tuples/arrays, bigint integers,
 booleans and hex data. The extended codec supports address, bool, intN/uintN,
 bytes/bytesN, and nested fixed/dynamic arrays and tuples. The scalar functions
-above remain compatible. Strings, anonymous events and hashed indexed complex
-values are deliberately rejected. A different event signature returns `null`;
+above remain compatible. Strings and anonymous events are rejected.
+`decodeEvent` also rejects indexed bytes, arrays and tuples. A different event signature returns `null`;
 malformed matching data throws `InvalidAbi`.
+
+`decodeCalldata` returns the declared input arguments, including an empty array
+for a zero-argument call. It verifies the exact function selector, canonical
+offsets/padding, argument values and absence of trailing data. `decodeFunction`
+continues to decode return data; the two methods are not interchangeable.
+
+`decodeEventWithHashes` returns positional `AbiEventValue` entries. Ordinary
+fields remain `AbiValue`; indexed bytes, arrays and tuples become a frozen
+`AbiIndexedHash` object `{ kind: "indexed-hash", hash: Hash32 }`. The hash does
+not reveal or authenticate a preimage. The consuming protocol must establish
+the appropriate indexed-event encoding and compare its independently obtained
+value under the [Solidity indexed-event encoding](https://docs.solidity.org/en/latest/abi-spec.html#encoding-of-indexed-event-parameters).
+A fixed `bytes32` field remains plain hex data. Event topics are bounded
+to four, including the signature. Existing `decodeEvent` callers retain their
+return type and rejection policy; handwritten `AbiCodec` implementations must
+provide the two new methods.
 
 Runtime bounds are eight levels of nesting, 128 parameters/components, 4,096
 array items and a 1 MiB payload, with a conservative aggregate work bound checked
@@ -44,7 +62,8 @@ const codec = createAbiCodec();
 const approve = getTokenInterface().find((entry) => entry.name === "approve");
 declare const verifiedSpender: `0x${string}`;
 const calldata = codec.encodeFunction(approve, [verifiedSpender, 12n]);
-console.log(calldata);
+const argumentsFromTransaction = codec.decodeCalldata(approve, calldata);
+console.log(calldata, argumentsFromTransaction);
 ```
 
 ```ts

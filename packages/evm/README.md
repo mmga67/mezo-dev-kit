@@ -12,6 +12,12 @@ The scalar ABI codec also provides `encodeFunctionData`,
 See the reference for supported types and `InvalidAbi` failures. It uses the
 already approved Ox version and exposes no provider or Ox types.
 
+`createAbiCodec` additionally handles positional arrays, tuples and bytes.
+Its `decodeCalldata` verifies a transaction's selector and exact input encoding;
+`decodeEventWithHashes` explicitly distinguishes hashed indexed complex fields
+from decoded values. Existing scalar functions and `decodeEvent` retain their
+contracts. These are representation checks, not transaction or delivery proof.
+
 ```ts
 import {
   parseUserAddress,

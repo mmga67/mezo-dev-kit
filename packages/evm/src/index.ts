@@ -7,7 +7,7 @@ export { EvmValueError } from "./errors.ts";
 export { encodeFunctionData, decodeFunctionResult, decodeEventLog } from "./abi.ts";
 export type { AbiScalar } from "./abi.ts";
 export { createAbiCodec } from "./codec.ts";
-export type { AbiValue, AbiCodec } from "./codec.ts";
+export type { AbiValue, AbiCodec, AbiIndexedHash, AbiEventValue } from "./codec.ts";
 export type { EvmValueErrorCode } from "./errors.ts";
 export type { Address, Hash32, HexData, RpcQuantity } from "./types.ts";
 export { parseMinimalProxyImplementation } from "./proxy.ts";
