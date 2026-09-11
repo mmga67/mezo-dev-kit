@@ -35,8 +35,9 @@ are `deposit`, `withdraw`, `getReward`; VaultV2 operations are `deposit`, `mint`
 `resolveRuntimeIdentity({ contractId, networkId, blockNumber })` returns
 `ContractRuntimeIdentity`: `addressCodeSha256`, nullable
 `implementationCodeSha256`, and nullable `implementationSlot`. Its generated
-scope is the thirteen mainnet MUSD borrowing roots plus Savings, Morpho, the
-USDC Lending Vault wrapper, PoolsVoter and Skip native interface (eighteen roots). Consumers
+scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
+Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
+institutional roots and Skip native interface. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution
 failures. Existing `readAbi` is unchanged.
@@ -151,3 +152,30 @@ primary source. Private operation support remains proposed pending review.
 `removeLiquidity`, and `swapExactTokensForTokens` on mainnet. Router and
 PoolFactory runtime identities are also projected. Direct Pool `mint`, `burn`
 and `swap`, governance and unsafe/FOT variants are not public operation helpers.
+
+## Voting interface profiles
+
+`resolveVotingInterface({networkId, domain}): VotingInterface` selects a mainnet
+`VotingDomain` (`pools`, `boost`, `validator`), returning `contractId`,
+`listGetter`, and decimal `targetListSlot`. These slots derive from retained
+compiler layouts reproduced against the accepted executable. Verify the runtime
+before reading the mapping's dynamic-array length; they are generation-specific.
+
+`resolveVotingRewardInterface({networkId, role}): VotingRewardInterface` selects
+`fees` or `bribe`, returning `factoryContractId`, full `runtimeTemplate`,
+`immutableWords` (`role`, byte `start`), and curated `abi`. The owning reader must
+resolve the current voter mapping, substitute every `forwarder`/`voter`/`ve`
+immutable, compare the full child runtime, and verify its getters. A template
+never establishes an arbitrary address as a reward contract.
+
+`resolveOperation` includes `vote`, `reset`, and `claimBribes` for all three
+voters, plus `claimFees` for PoolsVoter. Their events and exact runtime identities
+are projected with the reward factory. Escrow lock operations are also curated.
+These are private implementation inputs; use the Incentives preparation API.
+
+```ts
+import { resolveVotingInterface, resolveVotingRewardInterface } from "@mezo-dev-kit/contracts";
+const voter = resolveVotingInterface({ networkId: "mezo-mainnet", domain: "validator" });
+const rewards = resolveVotingRewardInterface({ networkId: "mezo-mainnet", role: "bribe" });
+console.log(voter.contractId, voter.targetListSlot, rewards.immutableWords);
+```

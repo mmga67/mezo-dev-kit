@@ -1,5 +1,6 @@
 /** Opt-in local escrow lifecycle. Native ERC-20 ledgers are explicit fixtures, gas price is zero. */
 import assert from "node:assert/strict";
+import { votingForkWorkflows } from "./voting-fork-workflows.ts";
 import { readFileSync } from "node:fs";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { createContractRegistry, getTokenInterface } from "@mezo-dev-kit/contracts";
@@ -31,11 +32,12 @@ function object(value: unknown): Record<string, unknown> {
   assert(value && typeof value === "object" && !Array.isArray(value));
   return value as Record<string, unknown>;
 }
-const [localUrl, sourceUrl, artifactPath] = process.argv.slice(2);
+const [localUrl, sourceUrl, artifactPath, mode] = process.argv.slice(2);
 if (
   !localUrl ||
   !sourceUrl ||
   !artifactPath ||
+  (mode !== undefined && mode !== "voting") ||
   !["127.0.0.1", "localhost", "[::1]"].includes(new URL(localUrl).hostname)
 )
   throw new Error(
@@ -229,6 +231,30 @@ try {
     await execute({ kind: "increase", tokenId, amount: W / 10n });
     await execute({ kind: "extend", tokenId, duration: 3n * week });
     await execute({ kind: "make-permanent", tokenId });
+    if (mode === "voting") {
+      await votingForkWorkflows({
+        registry,
+        transport,
+        request: (input) => request(input),
+        account,
+        tokenId,
+        role,
+        source,
+        sourceBlock: blockNumber,
+        seedToken: async (token, recipient, amount) => {
+          const hash = parseHash32(
+            await request({
+              method: "eth_sendTransaction",
+              params: [
+                { from: account, to: token, data: codec.encodeFunction(seed, [recipient, amount]) },
+              ],
+            }),
+          );
+          assert.equal(object(await transport.getReceipt(hash)).status, "0x1");
+        },
+      });
+      continue;
+    }
     const timed = await execute({ kind: "unlock-permanent", tokenId });
     await assert.rejects(
       writer.prepare({
@@ -290,9 +316,14 @@ try {
     const withdrawn = await execute({ kind: "withdraw", tokenId });
     assert.equal(withdrawn.snapshot.locks[0]?.owner, `0x${"00".repeat(20)}`);
   }
-  process.stdout.write(
-    `Fork ${blockNumber} ${parseHash32(parent.hash)}: 12 escrow operations and separate exact approvals reconciled; premature withdrawals rejected. Periodic real escrow checkpoints maintain the four-year interval. Native ERC-20 ledgers and zero gas price are explicit local fixtures, not native-engine qualification.\n`,
-  );
+  if (mode === "voting")
+    process.stdout.write(
+      `Fork ${blockNumber} ${parseHash32(parent.hash)}: three voter domains, replacement/reset/revote and same-epoch rejection reconciled; explicit native-token fixtures and zero gas.\n`,
+    );
+  else
+    process.stdout.write(
+      `Fork ${blockNumber} ${parseHash32(parent.hash)}: 12 escrow operations and separate exact approvals reconciled; premature withdrawals rejected. Periodic real escrow checkpoints maintain the four-year interval. Native ERC-20 ledgers and zero gas price are explicit local fixtures, not native-engine qualification.\n`,
+    );
 } finally {
   try {
     assert.equal(await request({ method: "evm_revert", params: [snapshotId] }), true);

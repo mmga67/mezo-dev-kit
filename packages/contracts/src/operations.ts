@@ -8,8 +8,48 @@ import {
   PROTOCOL_RUNTIME_IDENTITIES,
   TOKEN_ABI,
   BASIC_POOL_INTERFACES,
+  VOTING_INTERFACES,
+  VOTING_REWARD_INTERFACES,
 } from "./protocol-operations.generated.ts";
 import type { ContractId } from "./registry.ts";
+
+export type VotingDomain = "pools" | "boost" | "validator";
+export interface VotingInterface {
+  readonly contractId: ContractId;
+  readonly listGetter: "poolVote" | "gaugeVote";
+  readonly targetListSlot: string;
+}
+/** Compiler storage profile only; verify the registered runtime before using it. */
+export function resolveVotingInterface(input: {
+  readonly networkId: string;
+  readonly domain: VotingDomain;
+}): Readonly<VotingInterface> {
+  if (input.networkId !== "mezo-mainnet" || !Object.hasOwn(VOTING_INTERFACES, input.domain))
+    throw new ContractRegistryError("AbiUnavailable", "unknown voter generation", {
+      networkId: input.networkId,
+    });
+  return Object.freeze(structuredClone(VOTING_INTERFACES[input.domain]));
+}
+export interface VotingRewardInterface {
+  readonly factoryContractId: ContractId;
+  readonly runtimeTemplate: `0x${string}`;
+  readonly immutableWords: readonly Readonly<{
+    role: "forwarder" | "voter" | "ve";
+    start: number;
+  }>[];
+  readonly abi: readonly ContractAbiEntry[];
+}
+/** Exact factory-embedded child template, including metadata and every immutable word. */
+export function resolveVotingRewardInterface(input: {
+  readonly networkId: string;
+  readonly role: "fees" | "bribe";
+}): Readonly<VotingRewardInterface> {
+  if (input.networkId !== "mezo-mainnet" || !Object.hasOwn(VOTING_REWARD_INTERFACES, input.role))
+    throw new ContractRegistryError("AbiUnavailable", "unknown voting reward generation", {
+      networkId: input.networkId,
+    });
+  return Object.freeze(structuredClone(VOTING_REWARD_INTERFACES[input.role]));
+}
 
 export interface BasicPoolInterface {
   readonly anchorContractId: ContractId;

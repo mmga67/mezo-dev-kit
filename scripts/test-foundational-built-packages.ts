@@ -55,7 +55,7 @@ runNode(
     "]);",
     "const expected = [",
     "  ['ChainRegistryError', 'createChainRegistry', 'getNetwork', 'isNetworkId', 'listNetworks'],",
-    "  ['ContractRegistryError', 'createContractRegistry', 'getTokenInterface', 'isContractId', 'listContractIds', 'resolveBasicPoolInterface', 'resolveContract', 'resolveEvent', 'resolveOperation', 'resolveRoleInterface', 'resolveRuntimeIdentity'],",
+    "  ['ContractRegistryError', 'createContractRegistry', 'getTokenInterface', 'isContractId', 'listContractIds', 'resolveBasicPoolInterface', 'resolveContract', 'resolveEvent', 'resolveOperation', 'resolveRoleInterface', 'resolveRuntimeIdentity', 'resolveVotingInterface', 'resolveVotingRewardInterface'],",
     "  ['CoreReadError', 'EventScanError', 'ExecutionError', 'createCoreReadClient', 'createEventScanner', 'createExecutionClient', 'createMemorySubmissionStore', 'createRpcSigner', 'createRpcTransport', 'getReceiptExecutionFee', 'getReceiptLogs', 'parseSubmissionRecord', 'serializeCoreReadError', 'verifyContractRuntime'],",
     "];",
     "for (let index = 0; index < packages.length; index += 1) {",

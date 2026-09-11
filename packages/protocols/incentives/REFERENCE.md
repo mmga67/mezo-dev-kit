@@ -311,3 +311,157 @@ its snapshot, and uses explicit native ERC-20 ledger fixtures with zero gas pric
 It tests real escrow/voter/library composition, not mezod native engine behavior.
 Nonzero gas arithmetic has separate unit coverage; native-engine compatibility
 and qualified release review remain separate.
+
+## Voting and reset
+
+`createVotingReader({networkId, domain, registry, transport}): VotingReader`
+uses `VotingReaderConfig`; `domain` is Contracts' `VotingDomain`: `pools`,
+`boost`, or `validator`. Pools and validators use veBTC; boost uses veMEZO.
+`read({account, tokenId, targets, blockNumber?}): Promise<VotingSnapshot>` reads
+one NFT, up to 32 requested targets, and every existing allocation (up to 32).
+Their union is bounded at 64. A pool target is a pool address; the other domains
+use gauge addresses. No list is inferred from RPC reverts or partial weight sums.
+
+`VotingSnapshot` contains `domain`, `contract`, `escrow: LockSnapshot`, `tokenId`,
+`forwarder`, `totalWeight`, `usedWeight`, `lastVoted`, `maxVotingNum`,
+`whitelisted`, `deactivated`, `voterAuthorized`, `previousTargets`, and `targets`.
+Each `VotingTarget` has `target`, `gauge`, `registered`, `alive`, `weight`, `vote`,
+and `rewards`. Each `VotingRewardState` has `role`, `address`, `balance`,
+`totalSupply`, checkpoint counts (`numCheckpoints`, `supplyNumCheckpoints`), and
+nullable latest timestamps (`checkpointTimestamp`, `supplyCheckpointTimestamp`).
+The reader verifies deployed voters, escrow authority, compiler-derived storage,
+reward factory children including all immutables, and accounting at one block.
+
+`forecastVoting({snapshot, action, atTimestamp?}): VotingForecast` handles
+`VotingAction`: `{kind: "reset"}` or `{kind: "vote", targets, relativeWeights}`.
+It returns ordered `targets`, `allocations`, `usedWeight`, `votingPower`, and
+`lastVoted`. Quantities are bigint base units; relative weights need no fixed sum.
+Every floored allocation must be positive. The explicit snapshot timestamp keeps
+its observed ownership suppression; later timestamps produce lock-based estimates.
+Both operations require a new epoch strictly after its opening window. Voting
+also checks the closing window (except whitelisted NFTs), governed target limit,
+and live gauges. Reset can remove killed targets after the closing window and
+preserves `lastVoted`. Empty votes are excluded: use the distinct reset action.
+
+`createVotingWriter({reader, execution, transport}): VotingWriter` supports
+ordinary self-owned NFTs. It excludes grants, managed custody and delegation;
+independent votes in other voter domains are preserved. Its methods are:
+
+| Method      | Input → result                                                                     |
+| ----------- | ---------------------------------------------------------------------------------- |
+| `prepare`   | `{operationId, account, tokenId, action, bounds: VotingBounds}` → `PreparedVoting` |
+| `simulate`  | Owned preparation → Core `SimulatedTransaction`                                    |
+| `submit`    | Preparation and its simulation → Core `SubmissionRecord`                           |
+| `reconcile` | Preparation and persisted record → `ReconciledVoting`                              |
+
+`VotingBounds` requires `minAllocations` in action target order (empty for reset)
+and `maxBlockAge`. `PreparedVoting` contains `snapshot`, `action`, `bounds`,
+`forecast`, and exact `transaction`. All exact simulations re-read the matching
+coordinate; submission rechecks identity, ownership, power, liveness and the
+preparation's epoch. Voter operations need no token approval or target resolver.
+
+`ReconciledVoting` contains `state`, `record`, `receipt`, and `VotingOutcome`:
+receipt-block `snapshot`, recalculated `forecast`, `gasFee`, `boundsSatisfied`.
+It matches every Abstained/Voted and reward Withdraw/Deposit event, target/global
+weight changes, overwritten/appended reward checkpoints and escrow voter flags.
+Reconciliation retains old targets after reset and checks gas balances.
+
+```ts
+import { createVotingReader, createVotingWriter } from "@mezo-dev-kit/incentives";
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport;
+declare const execution: ExecutionClient;
+declare const account: `0x${string}`;
+declare const pool: `0x${string}`;
+const reader = createVotingReader({
+  networkId: "mezo-mainnet",
+  domain: "pools",
+  registry: createContractRegistry(),
+  transport,
+});
+const writer = createVotingWriter({ reader, execution, transport });
+const prepared = await writer.prepare({
+  operationId: "unique-pool-vote",
+  account,
+  tokenId: 1n,
+  action: { kind: "vote", targets: [pool], relativeWeights: [1n] },
+  bounds: { minAllocations: [1n], maxBlockAge: 2n },
+});
+const record = await writer.submit(prepared, await writer.simulate(prepared));
+// Observe confirmation using Core before reconciling.
+console.log(record);
+```
+
+## Voting fees and bribes
+
+`createVotingRewardReader({voting: VotingReader, transport, maxEpochs}): VotingRewardReader`
+reads one verified reward child per request. `maxEpochs` is an explicit integer
+budget from 1 to 52. `VotingRewardReadInput` requires `account`, `tokenId`,
+`target`, `role` (`fees` or `bribe`), 1–8 distinct registered `tokens`, and optional
+`blockNumber`. Fees are available in the pools domain. A killed gauge does not
+itself prevent claiming its existing reward entitlement.
+
+The reader bounds checkpoint counts at 4096 and history before calling `earned`.
+It reproduces past-epoch checkpoint allocation and compares the result to the
+contract. It never treats current-epoch funding or an unavailable history as
+claimable zero. A history over budget throws `LimitExceeded`.
+
+`VotingRewardSnapshot` contains `voting: VotingSnapshot`, `target`, `reward`,
+and `tokens: VotingRewardToken[]`. Token fields are `token`, `decimals`,
+`walletBalance`, `custody`, `lastEarn`, `firstClaimEpoch`, `epochs`, and `earned`.
+Amounts and timestamps are bigint; token amounts retain their own decimals.
+
+`createVotingRewardWriter({reader, execution, transport}): VotingRewardWriter`
+prepares the voter's `claimFees`/`claimBribes` for one verified child and its token
+list. It requires the ordinary NFT owner as direct caller and pays that owner.
+Managed/granted/delegated claims, donations, rebases and arbitrary reward calls
+are outside this writer. No token approval is required for claiming.
+
+`prepare` accepts the read fields except `blockNumber`, plus `operationId` and
+`bounds: VotingRewardBounds` (`minAmounts` in token order, `maxBlockAge`). It
+returns `PreparedVotingReward` (`snapshot`, `bounds`, `transaction`).
+`simulate` and `submit` preserve the same ownership/epoch/freshness and exact-call
+contract as the voting writer. `reconcile` returns `ReconciledVotingReward`
+(`state`, `record`, `receipt`, `outcome: VotingRewardOutcome`). The outcome holds
+receipt-block `snapshot`, ordered `paid`, `gasFee`, and `boundsSatisfied`.
+Settlement matches owner claim events even for zero payout, exact positive token
+transfers, custody/wallet deltas, `lastEarn`, and unchanged vote accounting.
+
+```ts
+import { createVotingRewardReader, createVotingRewardWriter } from "@mezo-dev-kit/incentives";
+import type { VotingReader } from "@mezo-dev-kit/incentives";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const voting: VotingReader;
+declare const transport: RpcTransport;
+declare const execution: ExecutionClient;
+declare const account: `0x${string}`;
+declare const target: `0x${string}`;
+declare const rewardToken: `0x${string}`;
+const reader = createVotingRewardReader({ voting, transport, maxEpochs: 26 });
+const writer = createVotingRewardWriter({ reader, execution, transport });
+const prepared = await writer.prepare({
+  operationId: "unique-bribe-claim",
+  account,
+  tokenId: 1n,
+  target,
+  role: "bribe",
+  tokens: [rewardToken],
+  bounds: { minAmounts: [0n], maxBlockAge: 2n },
+});
+console.log(prepared.snapshot.tokens, prepared.transaction);
+```
+
+Voting allocations and claim minimums are client policy: the contracts have no
+on-chain minimum arguments. A mined transaction may exceed policy despite a
+successful preflight; inspect `boundsSatisfied`. Adjacent-block settlement is
+conservative: unrelated changes to touched state, an NFT transfer, or a claim
+crossing an epoch can prevent reconciliation. Core confirmation alone does not
+prove this protocol outcome. Fee-on-transfer and rebasing token effects are not
+silently accepted as ordinary ERC-20 payouts.
+
+The opt-in `locks-fork.ts` command above accepts a final `voting` argument to run
+the three voter domains and fee/bribe claims instead of the full lock expiry
+sequence. It uses native ERC-20 ledger fixtures and zero gas; fee funding invokes
+real notification from a locally impersonated gauge. It restores the snapshot.
+These checks do not qualify the Mezo native engine or release support.

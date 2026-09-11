@@ -33,7 +33,12 @@ for (const [directory, name, exports] of [
       "createLockReader",
       "createLockTargetResolver",
       "createLockWriter",
+      "createVotingReader",
+      "createVotingRewardReader",
+      "createVotingRewardWriter",
+      "createVotingWriter",
       "forecastLock",
+      "forecastVoting",
     ],
   ],
   [

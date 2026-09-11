@@ -21,3 +21,5 @@ export type {
   ContractResolutionInput,
   ResolvedContract,
 } from "./registry.ts";
+export { resolveVotingInterface, resolveVotingRewardInterface } from "./operations.ts";
+export type { VotingDomain, VotingInterface, VotingRewardInterface } from "./operations.ts";

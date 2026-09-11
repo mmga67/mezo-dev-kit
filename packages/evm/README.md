@@ -115,3 +115,6 @@ deployment or provider-capability evidence.
 `parseMinimalProxyImplementation` validates the standard 45-byte ERC-1167 runtime
 and extracts its implementation address. It does not validate implementation
 code or protocol ownership; see the [SDK reference](REFERENCE.md#standard-minimal-proxy-runtime).
+
+`keccak256` hashes validated bytes for Ethereum storage keys and protocol message
+identities. See the [reference](REFERENCE.md#byte-hashing) for input semantics.

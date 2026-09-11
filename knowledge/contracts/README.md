@@ -169,3 +169,9 @@ catalog retains proposed protocol support and received bounded reader/interface
 acceptance on 2026-09-07.
 VaultV2 and VaultGauge remain runtime roles, with no static registry identity.
 Package projections are checked by the root generation gate.
+
+Compiler-derived voter storage and dynamic fee/bribe reward templates are indexed
+as `voting-interfaces`. The protocol-operation generator validates retained build
+and source hashes, accepted runtime generations, exact embedded child programs,
+and immutable coverage. These are private implementation profiles with qualified
+review pending; they do not promote protocol support.

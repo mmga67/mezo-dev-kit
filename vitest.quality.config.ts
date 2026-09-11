@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     include: [
       "scripts/test-pool-source.test.ts",
+      "scripts/test-voting-interfaces.test.ts",
       "scripts/test-source-boundary.test.ts",
       "scripts/test-coding-gates.test.ts",
       "scripts/test-evidence-scope.test.ts",

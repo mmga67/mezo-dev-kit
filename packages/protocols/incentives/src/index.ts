@@ -44,3 +44,36 @@ export type {
   ReconciledLock,
   LockWriter,
 } from "./lock-writer.ts";
+export { createVotingReader } from "./voting-reader.ts";
+export type {
+  VotingRewardState,
+  VotingTarget,
+  VotingSnapshot,
+  VotingReaderConfig,
+  VotingReader,
+} from "./voting-types.ts";
+export { forecastVoting } from "./voting-forecast.ts";
+export type { VotingAction, VotingForecast } from "./voting-forecast.ts";
+export { createVotingWriter } from "./voting-writer.ts";
+export type {
+  VotingBounds,
+  PreparedVoting,
+  VotingOutcome,
+  ReconciledVoting,
+  VotingWriter,
+} from "./voting-writer.ts";
+export { createVotingRewardReader } from "./voting-reward-reader.ts";
+export type {
+  VotingRewardToken,
+  VotingRewardSnapshot,
+  VotingRewardReadInput,
+  VotingRewardReader,
+} from "./voting-reward-reader.ts";
+export { createVotingRewardWriter } from "./voting-reward-writer.ts";
+export type {
+  VotingRewardBounds,
+  PreparedVotingReward,
+  VotingRewardOutcome,
+  ReconciledVotingReward,
+  VotingRewardWriter,
+} from "./voting-reward-writer.ts";

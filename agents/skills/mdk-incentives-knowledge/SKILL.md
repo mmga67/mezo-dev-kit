@@ -14,8 +14,10 @@ receipt/state reconciliation under ADR-0021. Granted, managed, delegated, voted 
 boost-gauge-linked NFTs are excluded from this initial lock writer. Keep direct
 escrow custody separate from total locked supply; managed reward paths can custody
 assets elsewhere. Stored checkpoint boost, current boost and ownership-change
-suppressed voting power are distinct. Voting and other claims retain their own
-qualification boundaries. Native-token fork fixtures do not qualify mezod execution.
+suppressed voting power are distinct. Pool/validator/boost vote-reset and bounded fee/bribe claims now have private
+readers and writers. Verify current reward child code/immutables, epoch bounds,
+owner recipient, checkpoint history budgets and exact payout reconciliation.
+Rebases and managed or delegated claims retain separate boundaries. Native-token fork fixtures do not qualify mezod execution.
 Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
 `src/index.ts` for current methods and required ports. ADR-0016 authorizes the
 private implementation; canonical support remains proposed/none and qualified

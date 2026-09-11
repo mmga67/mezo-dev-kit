@@ -163,3 +163,17 @@ creation bytecode, appended bytes, vanity optimizations and other proxy formats
 with `EvmValueError('InvalidProxyCode')`; malformed hex retains `InvalidHexData`.
 This is representation validation. The caller must check nonzero/live code,
 expected implementation identity, factory mappings and protocol ownership.
+
+## Byte hashing
+
+`keccak256(value: unknown): Hash32` hashes validated hexadecimal bytes with
+Ethereum Keccak-256. Empty bytes are valid; text, odd-length hex and non-hex
+characters are rejected with `InvalidHexData`. This does not encode text or ABI
+values, and is distinct from standardized SHA3-256. Protocols own mapping keys
+and storage-layout identity; this helper owns only byte hashing.
+
+```ts
+import { keccak256 } from "@mezo-dev-kit/evm";
+const emptyDigest = keccak256("0x");
+console.log(emptyDigest);
+```

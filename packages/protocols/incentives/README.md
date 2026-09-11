@@ -18,8 +18,10 @@ under [ADR-0021](../../../docs/decisions/0021-incentives-locks-and-voting.md).
 Create, increase, extend, make permanent, return to timed and withdraw each use
 explicit preparation, approval where required, exact simulation and reconciliation.
 The initial NFT writer excludes grants, managed custody, delegation, votes and
-associated boost gauges. Wider voter mutations and bribe/fee claims retain their
-separate operation boundaries.
+associated boost gauges. Pool, validator and boost voting now have bounded readers and vote/reset
+writers. Fee/bribe claims verify reward children, bounded checkpoint history,
+owner payouts and custody deltas. All remain private candidates; rebases,
+managed custody and wider permissioned operations retain separate boundaries.
 Node is the tested runtime. Local fork integrations in
 [Savings](../musd-savings/test/fork.ts) and [Vault](../usdc-lending-vault/test/fork.ts)
 use explicit native reward-token fixtures because Anvil cannot run mezod's

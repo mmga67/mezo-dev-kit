@@ -1142,6 +1142,79 @@
       "role": "artifact",
       "kind": "explorer-source-bundle",
       "path": "artifacts/pool-sources/incentives.cl-gauge-implementation.json"
+    },
+    {
+      "id": "voting-interfaces",
+      "role": "canonical-record",
+      "kind": "voting-interface-catalog",
+      "path": "records/voting-interfaces.json",
+      "recordIds": [
+        "pools",
+        "boost",
+        "validator",
+        "rewards-factory"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "voting-pools-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/pools-source.json"
+    },
+    {
+      "id": "voting-pools-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/pools-build.json"
+    },
+    {
+      "id": "voting-boost-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/boost-source.json"
+    },
+    {
+      "id": "voting-boost-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/boost-build.json"
+    },
+    {
+      "id": "voting-validator-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/validator-source.json"
+    },
+    {
+      "id": "voting-validator-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/validator-build.json"
+    },
+    {
+      "id": "voting-rewards-factory-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/rewards-factory-source.json"
+    },
+    {
+      "id": "voting-rewards-factory-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/rewards-factory-build.json"
+    },
+    {
+      "id": "voting-fees-reward-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/fees-reward-build.json"
+    },
+    {
+      "id": "voting-bribe-reward-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/voting-interfaces/bribe-reward-build.json"
     }
   ],
   "checks": [
@@ -1174,6 +1247,11 @@
       "id": "pool-retained-source-integrity",
       "type": "semantic",
       "command": "node scripts/validate-pool-source-bundles.ts"
+    },
+    {
+      "id": "voting-interface-projection",
+      "type": "semantic",
+      "command": "node scripts/generate-protocol-operations.ts --check"
     }
   ],
   "extensions": {

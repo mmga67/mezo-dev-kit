@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "voting-interface-catalog",
+  "id": "voting-interfaces",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T13:53:32.274Z",
+  "reviewAfter": "2026-10-08T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Compiler-derived private operation profiles; this adds no supported voter or reward operation.",
+    "Voter source runtimes agree with accepted current registry generations. The exact reward factory embeds the retained child creation programs. Each dynamic reward still requires current voter mapping, immutable substitution and complete runtime comparison.",
+    "Target-list storage locations come from exact compiler storage layouts; every read requires the matching current executable generation.",
+    "Compiler equality establishes executable behavior, not authorship, audit coverage or release qualification."
+  ],
+  "records": [
+    {
+      "id": "pools",
+      "contractId": "incentives.pools-voter",
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-pools-source"
+        },
+        "sha256": "99fe359335cb2917d2297c8dbd41f2a6f5f6c51364dded5953615359001cca5c"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-pools-build"
+        },
+        "sha256": "0e4323e04961bdf5a188f8e3f9b3aa70cc4867a218b922eef42ea187104e66fe"
+      },
+      "listGetter": "poolVote",
+      "targetListSlot": "166",
+      "runtimeSha256": "4f5949739ad463e691414ce46bb2f9c9bff2cfaab00ec123c2c81a319d2c2b42"
+    },
+    {
+      "id": "boost",
+      "contractId": "incentives.boost-voter",
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-boost-source"
+        },
+        "sha256": "519e7df3e46baf56ed4b352821e95fe1bc17d455703545ec6df90ab07cc90b0a"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-boost-build"
+        },
+        "sha256": "29ef1bda74b2fdde734de34fb9041b03edcccfb5698e3ca16abaa4f1b06921a5"
+      },
+      "listGetter": "gaugeVote",
+      "targetListSlot": "162",
+      "runtimeSha256": "9c84d580cbcacca181b716d42ce17c455d23bbb81126620f864c8699d30a97cc"
+    },
+    {
+      "id": "validator",
+      "contractId": "incentives.validators-voter",
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-validator-source"
+        },
+        "sha256": "430a32edeabdfcf237c0e6fd0c803f13738045ffa638055c3d317de882235b63"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-validator-build"
+        },
+        "sha256": "350a58385b9716934873a52547a9645abf8a312e2bb3213b63e69f7d67061164"
+      },
+      "listGetter": "gaugeVote",
+      "targetListSlot": "162",
+      "runtimeSha256": "28669ac5b44a1ce68f011b4f7c80a1160cc059693916d52732bfc8a3ff594c6c"
+    },
+    {
+      "id": "rewards-factory",
+      "contractId": "incentives.voting-rewards-factory",
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-rewards-factory-source"
+        },
+        "sha256": "99c5c08af4ecbeb39073d3bd9e2d3c6103ab203c3d0d68ed24fd49d0d4b1d4cd"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "voting-rewards-factory-build"
+        },
+        "sha256": "b650cb5adcfe44f92f56b3f0f4bada49071802b0cd5130eee34a6bf8a9883607"
+      },
+      "listGetter": null,
+      "targetListSlot": null,
+      "runtimeSha256": "b143c5256e32e827f46b69493b404e7f670bc967ad548e01ca11b4d8e60cde4f"
+    }
+  ],
+  "children": [
+    {
+      "role": "fees",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "voting-fees-reward-build"
+      },
+      "sha256": "8b379d0d615d7a7780d7047e392ee7728a8baba2e478a1b3aaa7c4aee6abaa54",
+      "immutableBindings": [
+        {
+          "role": "forwarder",
+          "ranges": [
+            {
+              "start": 1471,
+              "length": 32
+            }
+          ]
+        },
+        {
+          "role": "voter",
+          "ranges": [
+            {
+              "start": 477,
+              "length": 32
+            },
+            {
+              "start": 2430,
+              "length": 32
+            },
+            {
+              "start": 3092,
+              "length": 32
+            }
+          ]
+        },
+        {
+          "role": "ve",
+          "ranges": [
+            {
+              "start": 376,
+              "length": 32
+            },
+            {
+              "start": 2971,
+              "length": 32
+            },
+            {
+              "start": 3200,
+              "length": 32
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "bribe",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "voting-bribe-reward-build"
+      },
+      "sha256": "6a055c5d9f5c607682e362addd0052340948df2b3a4440da0179f5d5de319ce4",
+      "immutableBindings": [
+        {
+          "role": "forwarder",
+          "ranges": [
+            {
+              "start": 1471,
+              "length": 32
+            }
+          ]
+        },
+        {
+          "role": "voter",
+          "ranges": [
+            {
+              "start": 477,
+              "length": 32
+            },
+            {
+              "start": 2460,
+              "length": 32
+            },
+            {
+              "start": 3157,
+              "length": 32
+            }
+          ]
+        },
+        {
+          "role": "ve",
+          "ranges": [
+            {
+              "start": 376,
+              "length": 32
+            },
+            {
+              "start": 3036,
+              "length": 32
+            },
+            {
+              "start": 3265,
+              "length": 32
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "storageSpecification": "https://docs.soliditylang.org/en/latest/internals/layout_in_storage.html#mappings-and-dynamic-arrays"
+}

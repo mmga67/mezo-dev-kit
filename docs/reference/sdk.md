@@ -21,7 +21,7 @@ pending qualified protocol review and release.
 | `@mezo-dev-kit/swaps` | Bounded basic quotes and exact-input swaps | [Swaps reference](../../packages/swaps/REFERENCE.md) |
 | `@mezo-dev-kit/prices`             | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                          |
 | `@mezo-dev-kit/tokens`             | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                           |
-| `@mezo-dev-kit/incentives`         | Gauge workflows, escrow locks, boost and voting calculations   | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)        |
+| `@mezo-dev-kit/incentives`         | Gauges, escrow locks, voting/reset, bounded fee/bribe claims   | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)        |
 | `@mezo-dev-kit/musd-savings`       | sMUSD principal and MUSD indexed yield                         | [Savings reference](../../packages/protocols/musd-savings/REFERENCE.md)         |
 | `@mezo-dev-kit/musdc-lending`      | BTC/mUSDC Morpho market, debt, shares, interest, and health    | [Lending reference](../../packages/protocols/musdc-lending/REFERENCE.md)        |
 | `@mezo-dev-kit/usdc-lending-vault` | Depositor shares, wrapper yield, previews, and gauge ownership | [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)     |
