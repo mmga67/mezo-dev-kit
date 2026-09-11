@@ -10,7 +10,7 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Verified: `2026-08-24T21:59:22.983Z`
 - Review after: `2026-09-22T00:00:00Z`
 - Evidence block: `11366264` on `mezo-mainnet`
-- Input digest: `sha256:79c1631ac3022fbca112fe4343f1190b285967047981378fbb1c8e03544d1920`
+- Input digest: `sha256:5c3554115df6636e0138050e936bfec537d9344536a98582b7b241a552b1e21b`
 
 ## Inventory
 
@@ -73,6 +73,17 @@ The bounded history contains 1145 relevant voter events. The representative rewa
 Validator voting is independent from pool voting. Raw locked BTC, unboosted veBTC power, boosted veBTC power, external relative vote inputs, resulting gauge weights, indexed claimable amounts, distributed MEZO, and claimed MEZO remain separate typed values.
 
 The current official Validator Gauge guide agrees with persistent per-validator voting, while another pinned official validator guide says rewards are equal and not vote-directed. The active executable plus event/state evidence governs the current generation; the disagreement remains explicit documentation drift.
+
+## CL gauge claim overloads
+
+Review: `pending-qualified-review`; support: `none`. Additional explanatory scope under CL explanation; no claim writer is enabled.
+
+| Signature | Caller | Recipient | Coverage |
+| --- | --- | --- | --- |
+| getReward(uint256) | The caller must have tokenId in its own gauge stake set; an ERC-721 approval does not satisfy this check. | msg.sender | Settles gauge rewards for the supplied staked tokenId. |
+| getReward(address) | Only the gauge's configured voter may call this overload. A wallet calling getReward(itsOwnAddress) directly fails the voter check. | account | Iterates all tokenIds in the supplied account's gauge stake set and settles each position to that account. Use the voter-mediated claim route described by incentives-gauges-rewards. |
+
+Both overloads use _getReward: update position rewards, clear a positive stored reward before transferring rewardToken to the recipient, and emit ClaimRewards. A zero reward produces no transfer or ClaimRewards event in this path.
 
 ## Deployment and writer boundary
 

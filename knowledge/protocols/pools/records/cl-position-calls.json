@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-cl-position-call-model",
+  "id": "pools-cl-position-calls",
+  "owner": "protocols/pools",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T15:14:00.227Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11333787,
+    "verification": "Source semantics checked against retained bundles matching the accepted pool source-reproduction review source digests; no fresh chain observation."
+  },
+  "limitations": [
+    "Additional call semantics await CL explanation qualified Level 3 review. Existing accepted pool records are unchanged.",
+    "This explanatory model enables no writer. A current operation requires the preconditions and simulation owned by pools-operation-requirements.",
+    "Dynamic pool/gauge identities, prices, liquidity, balances, approvals and rewards are volatile."
+  ],
+  "mint": {
+    "contractId": "mezo-earn.cl-position-manager",
+    "abiReference": {
+      "moduleId": "contracts",
+      "resourceId": "abi.mezo-earn.cl-position-manager"
+    },
+    "functionName": "mint",
+    "parameter": {
+      "name": "sqrtPriceX96",
+      "type": "uint160"
+    },
+    "zero": "When mint.params.sqrtPriceX96 is zero, mint skips the factory.createPool branch and computes the existing pool address before adding liquidity. Zero does not initialize a missing pool.",
+    "nonzero": "A nonzero mint.params.sqrtPriceX96 calls factory.createPool with the token pair, tick spacing and initial square-root price before adding liquidity.",
+    "existingPool": "CLFactory.createPool requires the pool mapping to be zero. Passing the current pool price as a nonzero mint.params.sqrtPriceX96 for an existing pool therefore reverts; this parameter is not a slippage limit.",
+    "inputs": "Use the complete canonical MintParams tuple, including tickSpacing and sqrtPriceX96. Resolve token ordering, aligned bounds, desired/minimum amounts, recipient and deadline through the owning pool math and operation requirements.",
+    "evidence": [
+      {
+        "sourceReference": {
+          "moduleId": "contracts",
+          "resourceId": "source.mezo-earn.cl-position-manager"
+        },
+        "locator": "sourceCode: NonfungiblePositionManager.mint, lines 150-191; conditional createPool and addLiquidity"
+      },
+      {
+        "sourceReference": {
+          "moduleId": "contracts",
+          "resourceId": "source.mezo-earn.cl-factory"
+        },
+        "locator": "sourceCode: CLFactory.createPool, lines 70-100; existing mapping rejection and initialization"
+      }
+    ]
+  },
+  "workflowReferences": [
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-architectures"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-math"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-positions-gauges"
+    },
+    {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-cl-claims"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-operation-requirements"
+    }
+  ]
+}

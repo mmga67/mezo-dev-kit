@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-pool-retained-source-catalog",
+  "id": "pool-source-bundles",
+  "owner": "contracts",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T15:14:00.225Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11333787,
+    "verification": "Offline equality with the sourceBundleSha256 recorded by pool source-reproduction review; no new chain observation."
+  },
+  "limitations": [
+    "Source text is retained for all seven reviewed CL roots. Whole explorer responses are not reconstructed.",
+    "Preserves original source/compiler reproduction scope; no new deployment, ABI, authorship, audit, or writer support is established.",
+    "The newly retained artifact mapping awaits CL explanation qualified review; existing accepted reproduction evidence is unchanged."
+  ],
+  "digestProcedure": {
+    "input": "filePath, sourceCode, additionalSources from the explorer source fields; additionalSources sorted by JSON.stringify(entry).localeCompare before recursive object-key canonicalization.",
+    "canonicalization": "Recursively sort object keys with localeCompare, preserve array order, serialize with compact JSON.stringify, and SHA-256 the UTF-8 bytes. The retained file is pretty-printed; hash its parsed canonical content, not its raw file bytes.",
+    "implementation": "scripts/lib/pool-source.ts",
+    "responseBoundary": "responseSha256 hashes the entire original HTTP response. A response mismatch is not a source mismatch; this catalog binds only the exact recorded sourceBundleSha256."
+  },
+  "records": [
+    {
+      "id": "mezo-earn.cl-factory",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.mezo-earn.cl-factory"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "mezo-earn.cl-factory"
+      }
+    },
+    {
+      "id": "mezo-earn.cl-pool-implementation",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.mezo-earn.cl-pool-implementation"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "mezo-earn.cl-pool-implementation"
+      }
+    },
+    {
+      "id": "mezo-earn.cl-swap-router",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.mezo-earn.cl-swap-router"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "mezo-earn.cl-swap-router"
+      }
+    },
+    {
+      "id": "mezo-earn.cl-position-manager",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.mezo-earn.cl-position-manager"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "mezo-earn.cl-position-manager"
+      }
+    },
+    {
+      "id": "mezo-earn.cl-position-descriptor",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.mezo-earn.cl-position-descriptor"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "mezo-earn.cl-position-descriptor"
+      }
+    },
+    {
+      "id": "incentives.cl-gauge-factory",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.incentives.cl-gauge-factory"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "incentives.cl-gauge-factory"
+      }
+    },
+    {
+      "id": "incentives.cl-gauge-implementation",
+      "artifactReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.incentives.cl-gauge-implementation"
+      },
+      "reproductionReference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-source-reproduction",
+        "recordId": "incentives.cl-gauge-implementation"
+      }
+    }
+  ]
+}

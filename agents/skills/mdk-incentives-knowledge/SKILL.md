@@ -32,6 +32,10 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 4. Load only the lock, boost, pool-voting, validator-voting, gauge/reward,
    emission/splitter, operation, fixture, source, evidence, or review resources
    needed.
+   For CL reward-call explanations, resolve `incentives-cl-claims` alongside
+   `incentives-gauges-rewards`; retain the overload record's qualified-review
+   gate. An explanation needs no live simulation unless it proposes a current
+   executable operation.
 
 ## Procedure
 

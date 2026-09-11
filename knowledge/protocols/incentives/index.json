@@ -11,7 +11,9 @@
   "verifiedAt": "2026-08-24T21:59:22.983Z",
   "reviewAfter": "2026-09-22T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "blockNumber": 11366264,
     "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5"
   },
@@ -345,8 +347,18 @@
         {
           "moduleId": "protocols/incentives",
           "resourceId": "incentives-writer-integration"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-cl-claims"
         }
       ]
+    },
+    {
+      "id": "incentives-cl-claims",
+      "role": "canonical-record",
+      "kind": "mezo-cl-gauge-claim-model",
+      "path": "records/cl-claims.json"
     }
   ],
   "checks": [
@@ -364,6 +376,11 @@
       "id": "incentives-reference-drift",
       "type": "drift",
       "command": "node scripts/generate-incentives-reference.ts --check"
+    },
+    {
+      "id": "cl-call-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-cl-call-knowledge.ts"
     }
   ],
   "extensions": {

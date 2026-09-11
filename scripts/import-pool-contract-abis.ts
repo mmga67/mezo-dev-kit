@@ -3,6 +3,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  capturePoolSourceBundle,
+  poolSourceDigest,
+  serializePoolSourceBundle,
+} from "./lib/pool-source.ts";
+
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const explorerBase = "https://api.explorer.mezo.org";
 
@@ -138,6 +144,7 @@ for (const definition of definitions) {
   if (!Array.isArray(contract.abi) || contract.abi.length === 0) {
     fail(`${definition.contractId} ABI is missing`);
   }
+  const sourceBundle = capturePoolSourceBundle(contract);
 
   const relativeArtifactPath = `artifacts/abis/${definition.contractId.replaceAll(".", "/")}.json`;
   const artifactPath = join(repositoryRoot, "knowledge", "contracts", relativeArtifactPath);
@@ -145,13 +152,16 @@ for (const definition of definitions) {
   await mkdir(dirname(artifactPath), { recursive: true });
   await writeFile(artifactPath, output, "utf8");
 
-  const sourceBundle = {
-    filePath: contract.file_path,
-    sourceCode: contract.source_code,
-    additionalSources: [...(contract.additional_sources ?? [])].sort((left, right) =>
-      JSON.stringify(left).localeCompare(JSON.stringify(right)),
-    ),
-  };
+  const sourceArtifactPath = join(
+    repositoryRoot,
+    "knowledge",
+    "contracts",
+    "artifacts",
+    "pool-sources",
+    `${definition.contractId}.json`,
+  );
+  await mkdir(dirname(sourceArtifactPath), { recursive: true });
+  await writeFile(sourceArtifactPath, serializePoolSourceBundle(sourceBundle), "utf8");
   records.push({
     id: definition.contractId,
     contractId: definition.contractId,
@@ -170,7 +180,7 @@ for (const definition of definitions) {
     compilerVersion: contract.compiler_version,
     compilerSettingsSha256: sha256(JSON.stringify(canonicalize(contract.compiler_settings ?? {}))),
     librariesSha256: sha256(JSON.stringify(canonicalize(contract.external_libraries ?? []))),
-    sourceBundleSha256: sha256(JSON.stringify(canonicalize(sourceBundle))),
+    sourceBundleSha256: poolSourceDigest(sourceBundle),
     explorerCreationBytecodeSha256: sha256Hex(contract.creation_bytecode ?? ""),
     explorerRuntimeBytecodeSha256: sha256Hex(contract.deployed_bytecode ?? ""),
     reproduction: {

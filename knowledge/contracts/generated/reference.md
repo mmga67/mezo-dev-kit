@@ -6,7 +6,7 @@ This deterministic page projects the canonical Contracts module for human review
 Resolve exact records, artifacts, and evidence through `knowledge/contracts/index.json`;
 this page is not an independent address/ABI authority or support promise.
 
-- Input digest: `sha256:cf96593f75f2231246f6c96ecc89ac0dd4864a4dd8dc627a3e60dcdf4bb2e019`
+- Input digest: `sha256:d4f4595d3c90ab92004cf67c0adf7105da6b732f8bf81c1c99c373f619d5f7f0`
 - Module support: `supported`
 - Module review: `accepted`
 - Module review after: `2026-09-22T00:00:00Z`
@@ -290,6 +290,7 @@ remain coordinate-scoped history and do not inherit the current ABI.
 | economic-system-explorer-executable-reproductions | on-chain-explorer-executable-reproduction | bounded observation | 2026-08-24T15:30:07Z |
 | incentives-explorer-executable-reproductions | on-chain-explorer-executable-reproduction | bounded observation | 2026-08-24T21:31:04.189Z |
 | validator-incentives-explorer-executable-reproductions | on-chain-explorer-executable-reproduction | bounded observation | 2026-08-24T22:04:33.950Z |
+| pools-retained-source-bundles | logical-reference | bounded observation | pinned source |
 
 ## Evidence window
 

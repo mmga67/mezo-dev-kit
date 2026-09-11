@@ -1,5 +1,8 @@
 # Current incentives gaps
 
+- CL explanation adds `incentives-cl-claims` with exact retained CLGauge source;
+  qualified review of the additional overload semantics remains pending.
+
 Verified at Mezo mainnet block `11212253`:
 
 - PoolsVoter is an EIP-1967 proxy and its `ve()` reference resolves to the

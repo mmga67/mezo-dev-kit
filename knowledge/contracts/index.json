@@ -270,7 +270,8 @@
         "oracle-pyth-live-configuration",
         "economic-system-explorer-executable-reproductions",
         "incentives-explorer-executable-reproductions",
-        "validator-incentives-explorer-executable-reproductions"
+        "validator-incentives-explorer-executable-reproductions",
+        "pools-retained-source-bundles"
       ],
       "recordCollectionPointer": "/sources"
     },
@@ -1083,6 +1084,64 @@
       "role": "artifact",
       "kind": "fixed-block-runtime-observation",
       "path": "artifacts/musdc-token-runtime/runtime-probe.json"
+    },
+    {
+      "id": "pool-source-bundles",
+      "role": "source-catalog",
+      "kind": "mezo-pool-retained-source-catalog",
+      "path": "sources/pool-source-bundles.json",
+      "recordIds": [
+        "mezo-earn.cl-factory",
+        "mezo-earn.cl-pool-implementation",
+        "mezo-earn.cl-swap-router",
+        "mezo-earn.cl-position-manager",
+        "mezo-earn.cl-position-descriptor",
+        "incentives.cl-gauge-factory",
+        "incentives.cl-gauge-implementation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "source.mezo-earn.cl-factory",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/mezo-earn.cl-factory.json"
+    },
+    {
+      "id": "source.mezo-earn.cl-pool-implementation",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/mezo-earn.cl-pool-implementation.json"
+    },
+    {
+      "id": "source.mezo-earn.cl-swap-router",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/mezo-earn.cl-swap-router.json"
+    },
+    {
+      "id": "source.mezo-earn.cl-position-manager",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/mezo-earn.cl-position-manager.json"
+    },
+    {
+      "id": "source.mezo-earn.cl-position-descriptor",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/mezo-earn.cl-position-descriptor.json"
+    },
+    {
+      "id": "source.incentives.cl-gauge-factory",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/incentives.cl-gauge-factory.json"
+    },
+    {
+      "id": "source.incentives.cl-gauge-implementation",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/pool-sources/incentives.cl-gauge-implementation.json"
     }
   ],
   "checks": [
@@ -1110,6 +1169,11 @@
       "id": "savings-interface-projection",
       "type": "semantic",
       "command": "node scripts/generate-savings-package.ts --check"
+    },
+    {
+      "id": "pool-retained-source-integrity",
+      "type": "semantic",
+      "command": "node scripts/validate-pool-source-bundles.ts"
     }
   ],
   "extensions": {

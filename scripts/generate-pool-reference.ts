@@ -40,6 +40,7 @@ const index = await json("index.json");
 const architectureCatalog = await json("records/architectures.json");
 const math = await json("records/math.json");
 const positions = await json("records/positions-gauges.json");
+const positionCalls = await json("records/cl-position-calls.json");
 const operations = await json("records/operations.json");
 const classification = await json("records/classification.json");
 const fixtures = await json("fixtures/math.json");
@@ -95,6 +96,14 @@ lines.push(
   `- Staked ERC-721 owner: ${scalar(ownership.stakedContractOwner)}`,
   `- Beneficial depositor: ${scalar(ownership.beneficialDepositor)}`,
   `- Unknown depositor: ${scalar(ownership.missingDepositor)}`,
+  "",
+  "## CL mint call semantics",
+  "",
+  `- Review: \`${scalar(positionCalls.reviewStatus)}\`; support: \`${scalar(positionCalls.supportStatus)}\`. Additional explanatory scope under CL explanation; no writer is enabled.`,
+  ...["zero", "nonzero", "existingPool", "inputs"].map(
+    (key) => `- ${scalar(object(positionCalls.mint)[key])}`,
+  ),
+  "- For reward overloads resolve `protocols/incentives:incentives-cl-claims`. Staking ownership remains owned by `pools-positions-gauges`.",
   "",
   "## Deterministic math",
   "",

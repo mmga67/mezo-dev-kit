@@ -59,6 +59,7 @@ const locks = required("incentives-locks");
 const contractRoles = required("incentives-contract-roles");
 const boost = required("incentives-boost");
 const gauges = required("incentives-gauges-rewards");
+const clClaims = required("incentives-cl-claims");
 const emissions = required("incentives-emissions");
 const validatorModel = required("incentives-validator-voting-rewards");
 const operations = required("incentives-operations");
@@ -181,6 +182,22 @@ const output = [
   "Validator voting is independent from pool voting. Raw locked BTC, unboosted veBTC power, boosted veBTC power, external relative vote inputs, resulting gauge weights, indexed claimable amounts, distributed MEZO, and claimed MEZO remain separate typed values.",
   "",
   "The current official Validator Gauge guide agrees with persistent per-validator voting, while another pinned official validator guide says rewards are equal and not vote-directed. The active executable plus event/state evidence governs the current generation; the disagreement remains explicit documentation drift.",
+  "",
+  "## CL gauge claim overloads",
+  "",
+  `Review: \`${text(clClaims.reviewStatus, "CL claim review")}\`; support: \`${text(clClaims.supportStatus, "CL claim support")}\`. Additional explanatory scope under CL explanation; no claim writer is enabled.`,
+  "",
+  table(
+    ["Signature", "Caller", "Recipient", "Coverage"],
+    objects(clClaims.calls, "CL claims").map((call) => [
+      call.signature,
+      call.caller,
+      call.recipient,
+      call.coverage,
+    ]),
+  ),
+  "",
+  text(clClaims.settlement, "CL claim settlement"),
   "",
   "## Deployment and writer boundary",
   "",

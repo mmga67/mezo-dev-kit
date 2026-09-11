@@ -12,6 +12,12 @@ promoted. The pinned official specification is stored as the indexed artifact
 its official URL, digest, scope, and deployment conflict remain owned by
 `incentives-sources`.
 
+For CL claim instructions, resolve `incentives-cl-claims` for overload-specific
+caller and recipient rules, alongside `incentives-gauges-rewards` for the
+voter-mediated claim route. The added CL call record awaits CL explanation qualified
+review and enables no writer. Contracts resource `pool-source-bundles` retains
+the exact CL source for targeted offline inspection.
+
 For machine use, resolve module `protocols/incentives` through `index.json` and
 refer to resources by `resourceId`. `incentives-contract-roles` maps fifteen
 bounded roles to Contracts deployment and ABI records. The five registry provenance review roles,

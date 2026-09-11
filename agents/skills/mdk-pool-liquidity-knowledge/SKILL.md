@@ -26,6 +26,10 @@ liquidity, or infer transaction authorization.
    `index.json`.
 4. Load only the architecture, math, position/gauge, operation,
    classification, fixture, source, evidence, or review resources needed.
+   For a CL contract walkthrough, include `pools-cl-position-calls` for mint
+   parameter behavior and route reward overloads to `incentives-cl-claims`.
+   Preserve each resource's review state. Explain with symbolic inputs when
+   no concrete pool/account is requested; current execution is a separate task.
 5. For authored scripts or runtime code, also load
    `agents/skills/mdk-typescript-development/SKILL.md`.
 

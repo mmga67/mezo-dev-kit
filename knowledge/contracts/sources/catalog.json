@@ -220,6 +220,15 @@
         "https://api.explorer.mezo.org"
       ],
       "note": "Bounded official-explorer source/ABI responses, fixed-block runtime identity, direct activation, and exact isolated executable reproductions for the validator gauge and voting-rewards factory roots."
+    },
+    {
+      "id": "pools-retained-source-bundles",
+      "kind": "logical-reference",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "pool-source-bundles"
+      },
+      "note": "Exact source bundles for the seven pool source-reproduction review CL roots; recorded source-digest equality and bounded offline retrieval. Newly retained mapping awaits CL explanation qualified review."
     }
   ],
   "sourceArtifacts": [

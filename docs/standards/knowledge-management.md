@@ -215,6 +215,28 @@ node scripts/test-knowledge-structure.ts
 4. Check status, support, review, freshness, scope, and limitations before use.
 5. Follow the cited evidence for any protocol-sensitive decision.
 
+For an explanation, accepted indexed semantics and canonical interfaces are
+the normal starting point. Before opening external documentation or raw
+source, identify the unanswered claim, freshness question, or citation need.
+Retrieve only the resource that can resolve it and stop when the evidence is
+sufficient. An explanation does not inherit the live-state, simulation, or
+compiler-reproduction requirements of executing the described operation.
+Higher-priority tool or task requirements still apply.
+
+Select records or fields from large catalogs; if output truncates, narrow the
+selection instead of repeating the full read. Use retained source artifacts
+through their indexed identity before consulting caches or remote endpoints.
+Distinguish a full response digest from a source-content digest according to
+the owning module's procedure.
+
+When the task requests an action log, record completed retrievals with the
+requested resource/selection, the received result, and whether it resolved
+the stated need. For a partial or failed result, name the remaining gap.
+Keep one brief result per action; avoid unresolved `pending` placeholders.
+Include command/tool identity and timestamps when measuring calls or latency;
+do not infer either from the number of log lines. Logging is task-specific,
+not required for every knowledge read.
+
 ### Add or update a fact
 
 1. Identify the single owning module and stable record ID.

@@ -11,6 +11,14 @@ Start with `generated/reference.md`, then resolve the needed resource through
 through reviewed roots; they are not stable registry identities merely because
 they appear in dated evidence.
 
+For a CL contract walkthrough, resolve `pools-cl-position-calls` for mint
+parameter behavior and `pools-positions-gauges` for deposit/withdrawal and
+ownership. Rewards resolve to `protocols/incentives:incentives-cl-claims` and
+`incentives-gauges-rewards`. The added call details await CL explanation qualified
+review; their presence does not change accepted knowledge or writer scope.
+Contracts resource `pool-source-bundles` provides exact retained source when a
+call detail is missing; ordinary explanations need no deployment reproduction.
+
 ## Current boundary
 
 - Knowledge support received qualified Level 3 acceptance under pool evidence review.

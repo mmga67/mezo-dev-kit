@@ -1,5 +1,8 @@
 # Pool and liquidity gaps
 
+- Retained CL source and `pools-cl-position-calls` add explanatory scope whose
+  qualified review remains pending. Existing accepted pool evidence is unchanged.
+
 - pool evidence review qualified Level 3 review accepted the module and seven CL Contract
   identities/ABIs.
 - No current official Mezo Quoter identity was established.

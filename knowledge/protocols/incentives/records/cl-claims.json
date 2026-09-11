@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-cl-gauge-claim-model",
+  "id": "incentives-cl-claims",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-08T15:14:00.228Z",
+  "reviewAfter": "2026-09-23T00:00:00Z",
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "evidenceBlockNumber": 11333787,
+    "verification": "CLGauge source semantics checked against the retained bundle matching the accepted pool source-reproduction review digest; no fresh chain observation."
+  },
+  "limitations": [
+    "Additional CL overload semantics await CL explanation qualified Level 3 review. This is explanatory knowledge, not a supported claim writer.",
+    "The gauge implementation is an ABI/source template. Calls target the validated dynamic gauge for the pool, not its registry implementation address.",
+    "The source checks below describe authorization of these overloads; current identity, claimability and exact-call simulation are separate operation preconditions."
+  ],
+  "contractId": "incentives.cl-gauge-implementation",
+  "abiReference": {
+    "moduleId": "contracts",
+    "resourceId": "abi.incentives.cl-gauge-implementation"
+  },
+  "calls": [
+    {
+      "signature": "getReward(uint256)",
+      "inputType": "uint256",
+      "caller": "The caller must have tokenId in its own gauge stake set; an ERC-721 approval does not satisfy this check.",
+      "authorization": "_stakes[msg.sender].contains(tokenId)",
+      "revertReason": "NA",
+      "recipient": "msg.sender",
+      "coverage": "Settles gauge rewards for the supplied staked tokenId."
+    },
+    {
+      "signature": "getReward(address)",
+      "inputType": "address",
+      "caller": "Only the gauge's configured voter may call this overload. A wallet calling getReward(itsOwnAddress) directly fails the voter check.",
+      "authorization": "msg.sender == address(voter)",
+      "revertReason": "NV",
+      "recipient": "account",
+      "coverage": "Iterates all tokenIds in the supplied account's gauge stake set and settles each position to that account. Use the voter-mediated claim route described by incentives-gauges-rewards."
+    }
+  ],
+  "settlement": "Both overloads use _getReward: update position rewards, clear a positive stored reward before transferring rewardToken to the recipient, and emit ClaimRewards. A zero reward produces no transfer or ClaimRewards event in this path.",
+  "evidence": [
+    {
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "source.incentives.cl-gauge-implementation"
+      },
+      "locator": "sourceCode: CLGauge.getReward(address), lines 176-189; getReward(uint256), lines 192-199; _getReward, lines 201-215"
+    }
+  ],
+  "workflowReferences": [
+    {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-gauges-rewards"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-positions-gauges"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-operation-requirements"
+    }
+  ]
+}

@@ -35,6 +35,16 @@ state claims and transaction preparation, not every description of a workflow.
    generation's ABI through the proxy. For replay, audit, or historical reads,
    resolve the closed generation covering the exact coordinate and never apply
    the latest ABI outside its recorded range.
+   For explanations, use indexed semantics and full ABIs first. Identify the
+   exact missing behavior before retrieving source; a writer's live preflight
+   is not required merely to explain its contract calls. For CL source, resolve
+   `pool-source-bundles`, then its contract record and artifact, or use
+   `node scripts/read-pool-contract-source.ts <contract-id> [--file <source-path>]`.
+   This checks the recorded source digest and returns one file offline. Match
+   capture identity before hashing; a whole explorer-response mismatch does not
+   establish a source mismatch. Never turn unrelated temporary-directory
+   enumeration into the normal retrieval path. The Contracts README owns the
+   digest and retention procedure.
 6. For a fact change, update pinned evidence, sources, catalog records, ABI
    digests, and limitations together. Preserve candidate and release gates.
 7. Declare exactly one ADR-0005 provenance class on every deployment and ABI;

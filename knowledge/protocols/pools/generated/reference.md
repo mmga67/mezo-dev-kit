@@ -41,6 +41,15 @@
 - Beneficial depositor: The depositor is the address whose gauge stake set contains tokenId. A known candidate can be verified with stakedContains(depositor, tokenId).
 - Unknown depositor: If no depositor coordinate is available, represent beneficialDepositor as null/unknown; do not substitute the gauge address, the pre-stake owner, an NFT approval, or a transaction sender inferred from stale analytics.
 
+## CL mint call semantics
+
+- Review: `pending-qualified-review`; support: `none`. Additional explanatory scope under CL explanation; no writer is enabled.
+- When mint.params.sqrtPriceX96 is zero, mint skips the factory.createPool branch and computes the existing pool address before adding liquidity. Zero does not initialize a missing pool.
+- A nonzero mint.params.sqrtPriceX96 calls factory.createPool with the token pair, tick spacing and initial square-root price before adding liquidity.
+- CLFactory.createPool requires the pool mapping to be zero. Passing the current pool price as a nonzero mint.params.sqrtPriceX96 for an existing pool therefore reverts; this parameter is not a slippage limit.
+- Use the complete canonical MintParams tuple, including tickSpacing and sqrtPriceX96. Resolve token ordering, aligned bounds, desired/minimum amounts, recipient and deadline through the owning pool math and operation requirements.
+- For reward overloads resolve `protocols/incentives:incentives-cl-claims`. Staking ownership remains owned by `pools-positions-gauges`.
+
 ## Deterministic math
 
 - Tick range: `-887272` through `887272`

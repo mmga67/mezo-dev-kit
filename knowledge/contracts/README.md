@@ -78,6 +78,43 @@ Addresses belong to deployment records. Full ABI arrays are immutable
 `artifacts/` resolved through the ABI catalog. Other domains reference stable
 IDs and never own copied addresses, artifact paths, or ABI digests.
 
+### Retained CL source
+
+Resolve `pool-source-bundles`, select its contract ID, and follow
+`artifactReference` to `source.<contract-id>`. All seven pool source-reproduction review CL source
+bundles are retained under this mapping. Its `reproductionReference` resolves
+the unchanged, previously accepted source digest; the additional retention
+mapping awaits CL explanation qualified review. It adds no live-chain observation or
+writer support.
+
+For a missing implementation detail, retrieve one file offline:
+
+```sh
+node scripts/read-pool-contract-source.ts mezo-earn.cl-position-manager
+node scripts/read-pool-contract-source.ts incentives.cl-gauge-implementation
+node scripts/read-pool-contract-source.ts mezo-earn.cl-position-manager --file contracts/slipstream/core/interfaces/ICLPool.sol
+node scripts/validate-pool-source-bundles.ts
+```
+
+The reader checks the complete retained bundle against the recorded
+`sourceBundleSha256` before returning its main source or the exact `--file`
+entry. Source paths select entries within the bundle; they are never filesystem
+paths to execute or arbitrary files to read. Unknown IDs, missing artifacts,
+and source drift fail without network or temporary-directory fallback.
+
+The catalog's `digestProcedure` owns the exact pool source-reproduction review serialization rule,
+implemented by `scripts/lib/pool-source.ts`. A raw HTTP `responseSha256` also
+covers explorer metadata and response formatting; it must not be substituted
+for source identity. Matching source alone does not verify new compiler
+settings, bytecode, activation history or live state. Retained source file
+formatting is independent of its canonical content digest.
+
+`scripts/import-pool-contract-abis.ts` now retains each source bundle alongside
+the ABI. On a new capture, update the indexed artifact mapping and reproduction
+evidence through the owning maintenance/review procedure; never replace an old
+digest merely to make a different source pass. An explanation uses the indexed
+call records first and opens source only for an identified missing detail.
+
 For a proxy used at the present evidence coordinate, resolve the latest
 verified open implementation generation and its current ABI. Historical
 generations remain in closed, non-overlapping ranges for replay and audit; a

@@ -182,6 +182,10 @@
         {
           "moduleId": "protocols/pools",
           "resourceId": "pools-source-reproduction"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "pools-cl-position-calls"
         }
       ]
     },
@@ -190,6 +194,12 @@
       "role": "canonical-record",
       "kind": "mezo-basic-pool-accounting-model",
       "path": "records/basic-accounting.json"
+    },
+    {
+      "id": "pools-cl-position-calls",
+      "role": "canonical-record",
+      "kind": "mezo-cl-position-call-model",
+      "path": "records/cl-position-calls.json"
     }
   ],
   "checks": [
@@ -207,6 +217,11 @@
       "id": "pool-reference-drift",
       "type": "drift",
       "command": "node scripts/generate-pool-reference.ts --check"
+    },
+    {
+      "id": "cl-call-semantics",
+      "type": "semantic",
+      "command": "node scripts/validate-cl-call-knowledge.ts"
     }
   ],
   "extensions": {
