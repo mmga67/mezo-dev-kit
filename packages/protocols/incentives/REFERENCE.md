@@ -543,3 +543,139 @@ real minter upkeep and permanent/active/expired/zero claims, with explicit
 native-token balances, supply, mint dispatch and restored distributor allowance
 as local fixtures. All mutations are confined to localhost and snapshot-restored.
 This qualifies neither native mint authority nor release support.
+
+## CL gauge positions and rewards
+
+`createCLGaugeReader(config: CLGaugeReaderConfig): CLGaugeReader` requires a
+Contracts `registry`, Core `transport`, and an injected `positions:
+CLGaugePositionReader`. Bind the public Pools CL reader to one selected key as
+shown below. The port owns complete verified pool/NFT discovery and fee math;
+it must preserve that reader contract. Incentives owns the required structural
+subset and adds reward and gauge-operation checks. No package dependency from
+Incentives to Pools is introduced.
+
+`CLGaugePositionReader.read({account, tokenIds, blockNumber?})` returns
+`CLGaugePoolState`. The gauge reader supplies exactly one positive NFT ID and
+requires exactly that position, account and coordinate. `CLGaugePoolState`
+contains the Pools reader's coordinate/time/account/key, resolved
+factory/implementation/manager, pool/gauge, price/tick/unlocked state,
+active/staked liquidity, global fee growth, token wallet snapshots, pool custody,
+native balance, NFT counts, writer compatibility, ticks and positions.
+`CLGaugePositionState` is the position subset: token ID, owner/approval,
+staked/depositor proof, bounds/liquidity, last fee-growth checkpoints, stored
+owed amounts and `fees0`/`fees1` (`insideX128`, `tokensOwed`, `overflowed`).
+Extra fields from Pools are permitted. An arbitrary decoded object does not
+establish this verified port contract.
+
+`CLGaugeReader.read({account, tokenId, blockNumber?})` returns `CLGaugeState`:
+
+| Field                               | Meaning                                                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `pool`, `position`                  | Verified port state and its one requested NFT.                                                          |
+| `contract`, `gauge`                 | Registered gauge implementation template and verified dynamic clone.                                    |
+| `staked`                            | Supplied account's stake-set membership, checked against NFT custody/depositor.                         |
+| `gaugeApproved`, `operatorApproved` | Exact per-NFT or existing operator permission to the gauge; the writer never creates operator approval. |
+| `reward`, `rewardCustody`           | MEZO wallet TokenSnapshot and actual gauge custody, in base units.                                      |
+| `earned`                            | New accrual from the deployed getter; excludes already stored rewards. Zero for a non-staked NFT.       |
+| `rewards`                           | `CLGaugeRewardState` needed to reconstruct the source update sequence.                                  |
+
+`CLGaugeRewardState` contains bigint `rewardRate`, Unix `periodFinish`,
+`globalX128`, `reserve`, `rollover`, Unix `lastUpdated`,
+`lowerOutsideX128`, `upperOutsideX128`, `positionInsideX128`, Unix
+`positionLastUpdate`, and `stored`. Gauge/pool rate and period must agree.
+The reader verifies the accepted clone/manager generations, gauge topology and
+canonical MEZO identity/precision. It compares computed accrual to exact
+`earned(account, tokenId)` for a proven stake and rechecks the final chain/hash.
+
+`calculateCLGaugeEarned(snapshot, atTimestamp?): bigint` calculates new accrual
+from modular uint256 reward growth and uint128 NFT liquidity. Time defaults to
+the snapshot. It preserves the pool getter's zero-growth sentinel.
+`forecastCLGauge({snapshot, action, atTimestamp?}): CLGaugeForecast` additionally
+models stored rewards and the action's update sequence. Forward forecasts assume
+unchanged tick, liquidity, rates and reserves apart from that sequence; they are
+not a yield projection. Timestamp must fit the deployed uint32 pool clock.
+
+`CLGaugeAction` is `approve`, `stake`, `unstake` or `claim-reward`.
+Stake requires a live gauge, positive signed-int128 NFT liquidity and ordinary
+self ownership. Claim/unstake require stake-set ownership and can exit a dead
+gauge. The initial writer accepts verified MUSD/mUSDC positions. Deposit and
+withdrawal collect ordinary fees first; withdrawal also pays rewards. A claim
+does not collect those fees. An unchanged position-update timestamp skips new
+reward accrual and pays only stored credit. Pool emission updates consume the
+bounded reserve even with no active staked liquidity, assigning that emission
+to rollover. Period end alone does not replace the source reserve calculation.
+
+`CLGaugeForecast` returns `action`, MEZO `reward`, collection accounting
+`feeCap0`/`feeCap1`, signed `stakeDelta`, in-range `activeStakeDelta`, and
+`rewardsAfter: CLGaugeRewardState`. Newly deposited NFTs start at the resulting
+inside-growth baseline. Collection caps can exceed actual token payout by pool
+rounding; settlement reports actual transfers independently.
+
+```ts
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import { createCLPoolReader } from "@mezo-dev-kit/pools";
+import type { CLPoolKey } from "@mezo-dev-kit/pools";
+import { createCLGaugeReader, createCLGaugeTargetResolver } from "@mezo-dev-kit/incentives";
+import type { RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport, key: CLPoolKey;
+declare const account: `0x${string}`, tokenId: bigint;
+const registry = createContractRegistry();
+const pools = createCLPoolReader({ networkId: "mezo-mainnet", registry, transport });
+const reader = createCLGaugeReader({
+  registry,
+  transport,
+  positions: { read: (input) => pools.read({ key, ...input }) },
+});
+const state = await reader.read({ account, tokenId });
+const resolveTarget = createCLGaugeTargetResolver({ reader, account, tokenId });
+console.log(state.earned, state.rewards.stored, resolveTarget);
+```
+
+`createCLGaugeTargetResolver({reader, account, tokenId}): ExecutionTargetResolver`
+accepts only the implementation anchor and `cl-gauge` role at the requested
+coordinate, rereading the selected position and verified dynamic gauge. Pass it
+to Core's `resolveTarget`. NFT approvals target the registered manager directly.
+
+`createCLGaugeWriter({reader, execution, transport}): CLGaugeWriter` provides
+`prepare({operationId, account, tokenId, action, bounds})`, `simulate(prepared)`,
+`submit(prepared, simulated)` and `reconcile(prepared, record)`.
+`CLGaugeBounds` requires nonnegative bigint `minReward`, `minFee0`, `minFee1`,
+and `maxBlockAge`. An expected positive payout requires a positive explicit
+minimum; an expected zero requires zero. These are client forecast/final-preflight
+bounds, not contract arguments. The exact calls return void; simulation proves
+execution success and rechecks state, without pretending to decode payout amounts.
+
+`PreparedCLGauge` contains `snapshot`, `action`, frozen `bounds`, `forecast`,
+`approvalRequired`, and the exact zero-value `transaction`. `approve` encodes
+manager `approve(gauge, tokenId)` only. Confirm it and reprepare the stake;
+no `setApprovalForAll`, automatic approval, reward-token allowance, or voter-only
+`getReward(address)` call is constructed. Claim uses `getReward(uint256)`.
+Matching writer-owned preparations/simulations are required; stale age, changed
+identity/ownership/liveness, missing approval and unmet minimums reject sending.
+
+`ReconciledCLGauge` contains `state: "reconciled"`, Core `record`, `receipt`,
+and `outcome: CLGaugeOutcome`. The outcome contains receipt-block `snapshot`,
+`forecast`, actual `reward`, `fee0`, `fee1`, native BTC `gasFee`, and
+`boundsSatisfied`. Recovery checks persisted calldata and target identity before
+provider access. Adjacent-block reconciliation checks NFT approval/transfer and
+stake-set/counts, unchanged principal, tick virtual stake, reward reserve/growth/
+cursor/stored balances, fee accounting, actual payments/custody and gas. It uses
+the receipt timestamp to model emission updates. Unrelated same-block activity
+can prevent exact attribution and is not silently accepted.
+
+```ts
+import { createCLGaugeWriter } from "@mezo-dev-kit/incentives";
+import type { CLGaugeReader } from "@mezo-dev-kit/incentives";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const reader: CLGaugeReader, execution: ExecutionClient, transport: RpcTransport;
+declare const account: `0x${string}`, tokenId: bigint;
+const writer = createCLGaugeWriter({ reader, execution, transport });
+const prepared = await writer.prepare({
+  operationId: "application-owned-unique-claim",
+  account,
+  tokenId,
+  action: "claim-reward",
+  bounds: { minReward: 1n, minFee0: 0n, minFee1: 0n, maxBlockAge: 2n },
+});
+console.log(prepared.transaction); // Application consent precedes simulation and submission.
+```

@@ -469,6 +469,10 @@ source; Contracts owns root runtime projections. Read results distinguish active
 staked and NFT liquidity and require stake-set evidence for a gauge depositor.
 Position settlement separates principal credit, manager fee accounting and
 actual wallet payment; gauge custody and emissions remain Incentives-owned.
+Incentives consumes a structural, injected verified position-reader port for
+CL gauge custody/rewards. Applications bind the public Pools reader to a key;
+Incentives adds reward updates, exact NFT approval and stake/claim/exit settlement.
+This preserves the package dependency graph and keeps pool fee math in Pools.
 This adds no package dependency or release support.
 
 `@mezo-dev-kit/musd-institutional-debt` owns private Enclave/position readers and

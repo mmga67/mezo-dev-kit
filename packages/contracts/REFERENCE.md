@@ -157,9 +157,13 @@ PoolFactory runtime identities are also projected. Direct Pool `mint`, `burn`
 and `swap`, governance and unsafe/FOT variants are not public operation helpers.
 
 The CL position manager projection supplies `mint`, `increaseLiquidity`,
-`decreaseLiquidity`, `collect`, and `burn` with exact tuple shapes. Pools owns
+`decreaseLiquidity`, `collect`, `burn`, and single-NFT `approve` with exact shapes. Pools owns
 asset/owner/range checks, the existing-pool zero-price sentinel, approval
 planning, simulation and accounting-versus-payment reconciliation.
+The CL gauge implementation projection supplies `deposit(uint256)`,
+`withdraw(uint256)` and the two `getReward` overloads. Select explicit
+`inputTypes`; the address overload is voter-only. Calls target a verified dynamic
+gauge, not the implementation address. Incentives owns that role and lifecycle.
 
 ## Voting interface profiles
 

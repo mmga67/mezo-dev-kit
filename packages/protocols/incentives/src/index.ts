@@ -91,3 +91,24 @@ export type {
   ReconciledRebase,
   RebaseWriter,
 } from "./rebase-writer.ts";
+export { createCLGaugeReader, createCLGaugeTargetResolver } from "./cl-gauge-reader.ts";
+export { calculateCLGaugeEarned, forecastCLGauge } from "./cl-gauge-math.ts";
+export { createCLGaugeWriter } from "./cl-gauge-writer.ts";
+export type {
+  CLGaugePositionState,
+  CLGaugePoolState,
+  CLGaugePositionReader,
+  CLGaugeRewardState,
+  CLGaugeState,
+  CLGaugeReader,
+  CLGaugeReaderConfig,
+  CLGaugeAction,
+  CLGaugeBounds,
+  CLGaugeForecast,
+} from "./cl-gauge-types.ts";
+export type {
+  PreparedCLGauge,
+  CLGaugeOutcome,
+  ReconciledCLGauge,
+  CLGaugeWriter,
+} from "./cl-gauge-writer.ts";

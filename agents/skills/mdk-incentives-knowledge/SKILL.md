@@ -22,6 +22,11 @@ the 50-week cursor limit, current minter period, zero-claim cursor advancement,
 and active-lock deposit versus expired-lock owner payout. Voted ordinary NFTs
 remain eligible for this claim; managed, granted and delegated claims retain
 separate boundaries. Native-token fork fixtures do not qualify mezod execution.
+CL gauge NFT approval/stake/unstake/claim methods reuse an injected verified
+Pools position reader. Preserve stored versus newly earned rewards, the
+same-timestamp update skip, withdrawal's automatic claim and fee collection,
+and the self-service uint256 claim overload. Gauge fee accounting caps can
+exceed actual transfer; verify wallet/custody and native gas separately.
 Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
 `src/index.ts` for current methods and required ports. ADR-0016 authorizes the
 private implementation; canonical support remains proposed/none and qualified

@@ -53,8 +53,9 @@ for (const [id, names] of [
   ["incentives.mezo-rebase-distributor", ["claim"]],
   [
     "mezo-earn.cl-position-manager",
-    ["mint", "increaseLiquidity", "decreaseLiquidity", "collect", "burn"],
+    ["mint", "increaseLiquidity", "decreaseLiquidity", "collect", "burn", "approve"],
   ],
+  ["incentives.cl-gauge-implementation", ["deposit", "withdraw", "getReward"]],
   [
     "incentives.ve-btc",
     [

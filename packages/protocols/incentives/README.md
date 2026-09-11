@@ -29,3 +29,13 @@ Node is the tested runtime. Local fork integrations in
 [Savings](../musd-savings/test/fork.ts) and [Vault](../usdc-lending-vault/test/fork.ts)
 use explicit native reward-token fixtures because Anvil cannot run mezod's
 native engine; gauge and protocol bytecode remain unchanged.
+
+CL gauge operations use an injected verified Pools position reader. Incentives
+adds per-NFT reward growth, stored rewards, stake-set ownership and exact NFT
+approval, stake, claim and unstake operations. Deposit and withdrawal collect
+ordinary fees; withdrawal also settles emissions. The writer separates fee
+accounting caps from actual transfers and MEZO rewards from native BTC gas.
+Direct claims select `getReward(uint256)`; the address overload is voter-only.
+The adapter introduces no Pools package dependency in Incentives. Mainnet
+MUSD/mUSDC NFTs are the initial private writer profile; qualified review and
+native engine qualification remain outstanding.
