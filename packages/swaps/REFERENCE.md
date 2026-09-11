@@ -162,6 +162,8 @@ does not independently reproduce arbitrary injected readers' discovery or math.
 RPC endpoints, timeouts and cancellation remain application-owned. Calls are
 sequential, bounded by candidate count and the existing per-route/CL budgets;
 there are no retries, graph search, signer calls or background workers.
+An application `AbortError` propagates and stops evaluation; it is not converted
+into an optional candidate failure. Other reader failures retain their causes.
 
 `quote(input: SwapQuoteRequest): Promise<SwapQuoteResult>` requires distinct
 nonzero `tokenIn`/`tokenOut`, nonzero `account`, positive bigint `amountIn`,

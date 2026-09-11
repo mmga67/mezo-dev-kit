@@ -270,6 +270,14 @@ test("unconfigured families remain visible and all optional failures yield unava
   ).toBe(true);
 });
 
+test("application cancellation aborts the set without starting later candidates", async () => {
+  const f = fixture(),
+    cause = new DOMException("application cancelled", "AbortError");
+  f.basicReader.quote.mockRejectedValue(cause);
+  await expect(f.reader.quote(f.input)).rejects.toBe(cause);
+  expect(f.clReader.quote).not.toHaveBeenCalled();
+});
+
 test.for(["all-quotes", "writer-compatible"] as const)(
   "eligibility %s explicitly controls quote-only candidate ranking",
   async (eligibility) => {

@@ -304,6 +304,7 @@ export function createSwapQuoteReader(config: SwapQuoteReaderConfig): Readonly<S
             }),
           );
         } catch (cause) {
+          if (cause instanceof Error && cause.name === "AbortError") throw cause;
           results.push(
             Object.freeze({
               ...identity,
