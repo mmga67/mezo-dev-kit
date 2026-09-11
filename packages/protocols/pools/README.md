@@ -60,9 +60,12 @@ as events. These private operations still require qualified review before releas
 
 The opt-in `test/cl-fork.ts` command takes the same localhost/source RPC arguments
 and checks bounded pool/NFT reads plus wrong-code/mapping/anchor failures.
-Append `positions` to run the eight-operation NFT lifecycle, with local funding
-and a 1-wei gas-price fixture. Every mutation is confined to the verified local
-fork and reverted. This does not qualify native engine behavior.
+Append `positions` to run the twelve-operation NFT lifecycle and range rebalance,
+including recovery from a rejected replacement mint after collection. It uses
+local funding and a 1-wei gas-price fixture. Every mutation is confined to the
+verified local fork and reverted. This does not qualify native engine behavior.
+The reference explains independent transaction checkpoints, retained wallet
+funds, the new NFT ID, and retirement of the empty old NFT.
 
 CL exact-input step, fee-split and bitmap helpers support bounded Swaps quotes.
 They preserve source rounding, signed word traversal and the token0 overflow

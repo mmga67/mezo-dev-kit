@@ -196,8 +196,65 @@ export async function clPositionForkWorkflows(config: {
     await run({ kind: "collect", tokenId, amount0Max: cap, amount1Max: cap });
     await run({ kind: "collect", tokenId, amount0Max: cap, amount1Max: cap }, true);
     await run({ kind: "decrease", tokenId, liquidity: partial.forecast.liquidityAfter });
-    await run({ kind: "collect", tokenId, amount0Max: cap, amount1Max: cap });
-    const burned = await run({ kind: "burn", tokenId });
+    const withdrawn = await run({ kind: "collect", tokenId, amount0Max: cap, amount1Max: cap });
+    // Range changes are separate transactions. Keep the emptied old NFT until
+    // the new NFT has reconciled; a rejected mint must not replay the withdrawal.
+    const checkpoint = await reader.read({ account, key, tokenIds: [tokenId] }),
+      checkpointNonce = await transport.getNonce(account),
+      replacement = {
+        kind: "mint" as const,
+        tickLower: center - 200 * key.tickSpacing,
+        tickUpper: center + 200 * key.tickSpacing,
+        amount0Desired: withdrawn.amount0,
+        amount1Desired: withdrawn.amount1,
+      },
+      replacementBounds = {
+        minAmount0: 1n,
+        minAmount1: 1n,
+        minLiquidity: 1n,
+        sqrtPriceMinX96: getCLTickSqrtRatio(checkpoint.tick - 100),
+        sqrtPriceMaxX96: getCLTickSqrtRatio(checkpoint.tick + 100),
+        deadline: checkpoint.timestamp + 600n,
+        maxDeadlineSeconds: 600n,
+        maxBlockAge: 10n,
+      };
+    assert(withdrawn.amount0 > 0n && withdrawn.amount1 > 0n);
+    assert.equal(checkpoint.positions[0]?.liquidity, 0n);
+    await assert.rejects(
+      writer.prepare({
+        key,
+        account,
+        operationId: "cl-rebalance-rejected-mint",
+        action: { ...replacement, amount0Desired: checkpoint.token0.balance + 1n },
+        bounds: replacementBounds,
+      }),
+      { code: "BoundExceeded", message: "insufficient CL wallet balance" },
+    );
+    const recovered = await reader.read({ account, key, tokenIds: [tokenId] });
+    assert.equal(await transport.getNonce(account), checkpointNonce);
+    assert.equal(recovered.coordinate.blockHash, checkpoint.coordinate.blockHash);
+    assert.equal(recovered.token0.balance, checkpoint.token0.balance);
+    assert.equal(recovered.token1.balance, checkpoint.token1.balance);
+    assert.equal(recovered.positions[0]?.owner, account);
+    assert.equal(recovered.positions[0]?.liquidity, 0n);
+    const rebalanced = await run(replacement);
+    assert.notEqual(rebalanced.tokenId, tokenId);
+    assert.equal(rebalanced.forecast.tickLower, replacement.tickLower);
+    assert.equal(rebalanced.forecast.tickUpper, replacement.tickUpper);
+    assert(rebalanced.forecast.liquidityAfter > 0n);
+    assert(rebalanced.amount0 <= withdrawn.amount0 && rebalanced.amount1 <= withdrawn.amount1);
+    const retired = await run({ kind: "burn", tokenId });
+    assert.equal(retired.snapshot.ownedCount, initial.ownedCount + 1n);
+    process.stdout.write(
+      "CL range rebalance reconciled: collected funds survived rejected replacement; resumed mint once, then retired the old NFT.\n",
+    );
+    await run({
+      kind: "decrease",
+      tokenId: rebalanced.tokenId,
+      liquidity: rebalanced.forecast.liquidityAfter,
+    });
+    await run({ kind: "collect", tokenId: rebalanced.tokenId, amount0Max: cap, amount1Max: cap });
+    const burned = await run({ kind: "burn", tokenId: rebalanced.tokenId });
     assert.equal(burned.snapshot.ownedCount, initial.ownedCount);
     process.stdout.write(
       "CL position lifecycle reconciled; real token/manager/pool code, local funding and 1-wei gas-price fixture, snapshot restored.\n",

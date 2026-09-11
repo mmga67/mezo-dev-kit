@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "type": "module",
-  "description": "Bounded basic-pool exact-input quotes and swap execution.",
+  "description": "Bounded basic-pool and concentrated-liquidity exact-input quotes and swap execution.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

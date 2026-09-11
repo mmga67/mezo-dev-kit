@@ -444,6 +444,38 @@ confirmed approvals, mint/increase, partial/full decrease, positive/zero collect
 and burn through public entrypoints. It preserves deployed token/manager/pool
 code, uses local funding and explicit nonzero gas, and restores its snapshot.
 
+### Changing a position's range
+
+Compose the existing position operations as independently confirmed steps. A
+range change is not atomic. If the NFT is staked, first reconcile Incentives'
+`unstake`; then reread it through Pools. Decrease the selected liquidity and
+collect the credited assets. Decrease alone does not fund the wallet. Persist
+each prepared call and Core submission record before advancing the application
+checkpoint; an uncertain send must be tracked through its existing record.
+
+Choose the replacement range and desired amounts using fresh pool state and
+confirmed wallet balances. Bound the amounts to the application's rebalance
+budget, including actual collected amounts rather than manager accounting caps.
+Confirm any required approval separately, reprepare, simulate, submit once, and
+reconcile the replacement mint. Retain its returned NFT ID. Only then retire an
+empty old NFT with `burn`; a partially withdrawn NFT must remain. Staking the
+new NFT is another separately confirmed Incentives operation.
+
+If preparation or simulation rejects the replacement, the prior withdrawal
+remains complete and the collected assets remain in the wallet. Refresh the
+state and revise only the unsubmitted replacement. Do not repeat withdrawal or
+collection from a stale checkpoint, and do not rebuild a mint whose submission
+is uncertain. Burn the old NFT only after its current liquidity and owed
+balances are zero. The application chooses whether to retry a replacement or
+retain the withdrawn assets; MDK does not silently swap the surplus.
+
+The fork lifecycle additionally demonstrates a wider replacement range, an
+insufficient-funds rejection after collection, unchanged wallet/nonce/NFT state
+at that rejection, successful resumed mint, and retirement of the old NFT. It
+uses no swap and leaves unused desired amounts in the wallet. The fork's one-unit
+minimums and memory submission store are fixture choices; an application must
+provide its own slippage limits, consent, durable records and recovery policy.
+
 ## CL swap calculations
 
 `calculateCLSwapStep(input: CLSwapStepInput): CLSwapStep` models one exact-input
