@@ -1,6 +1,6 @@
 ---
 name: mdk-bridge-knowledge
-description: Verify MUSD NTT and Mezo Native Bridge assets, routes and transfer evidence. Knowledge only; bridge writers and routes remain unsupported.
+description: Verify MUSD NTT and Mezo Native Bridge assets, routes and transfer evidence. Inspect private NTT receipt observation; bridge writers and routes remain unsupported.
 ---
 
 # Mezo bridge knowledge
@@ -18,6 +18,14 @@ description: Verify MUSD NTT and Mezo Native Bridge assets, routes and transfer 
 Tracker/UI status, negative scans, and documentation address tables are not
 protocol authority.
 
+For private NTT receipt observation, assess `packages/bridges/README.md`, its
+reference and current exports. Supply independent source/destination transports,
+confirmation policies and bounded receipt candidates. Preserve prior anchors
+and all candidate outcomes; a later failed candidate does not erase another
+canonical completion. This API proves a digest join at observed blocks, not
+current configuration, intended recipient/amount, attestation validity or writer
+readiness. Native Bridge still requires its own tuple/post-state procedure.
+
 ## Procedure
 
 1. Select provider and route record; fail if route status is not explicitly
@@ -27,7 +35,7 @@ protocol authority.
    proposed Contract records as unaccepted and dated evidence addresses as
    checked coordinates. Token representations remain workflow-scoped unless a
    separate canonical owner is explicitly referenced.
-3. Resolve current provider configuration at one block per chain: identity,
+3. For current transfer preparation, resolve provider configuration at one block per chain: identity,
    implementation, peers/mappings, pause, capacity, limits, fees, and recipient
    encoding. Historical evidence is not a current quote.
 4. Apply `bridge-ntt-lifecycle` only to MUSD NTT. Join source and destination by

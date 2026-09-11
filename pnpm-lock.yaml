@@ -67,6 +67,25 @@ importers:
         specifier: workspace:*
         version: link:../../packages/protocols/usdc-lending-vault
 
+  packages/bridges:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../evm
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
   packages/chains:
     devDependencies:
       vitest:

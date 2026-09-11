@@ -186,3 +186,5 @@ deployment, protocol, and transaction facts remain owned under `../knowledge/`.
 - `guides/EXTERNAL_APPLICATIONS.md`
 - `decisions/0020-redemption-output-simulation.md` — explicit redemption output simulation.
 - `decisions/0021-incentives-locks-and-voting.md` — ordinary escrow locks and separate voting domains.
+- [ADR-0023](decisions/0023-ntt-receipt-observation.md) — bounded private NTT
+  receipt observation, digest joins and provider-specific delivery evidence.

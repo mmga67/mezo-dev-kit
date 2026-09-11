@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const packageDirectories = new Map([
+  ["bridges", resolve(repositoryRoot, "packages/bridges")],
   ["musd-redemptions", resolve(repositoryRoot, "packages/protocols/musd-redemptions")],
   [
     "musd-institutional-debt",

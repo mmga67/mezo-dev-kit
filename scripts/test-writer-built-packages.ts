@@ -5,6 +5,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 for (const [directory, name, exports] of [
+  ["packages/bridges", "bridges", ["NttObserverError", "createNttDeliveryObserver"]],
   [
     "packages/tokens",
     "tokens",
@@ -153,6 +154,4 @@ for (const [directory, name, exports] of [
   });
   assert.equal(result.status, 0, result.stderr);
 }
-process.stdout.write(
-  "Tokens, Incentives, Prices, Pools, Swaps and Institutional debt built entrypoints and deep-import boundaries passed.\n",
-);
+process.stdout.write("Private SDK runtime entrypoints and deep-import boundaries passed.\n");

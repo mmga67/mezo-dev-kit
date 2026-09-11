@@ -19,6 +19,27 @@ The observed capacities are volatile snapshots. Empty transceiver instructions
 reverted in fixed-block quote calls; this is evidence that instruction encoding
 is required, not a timeless fee or “bridge unavailable” conclusion.
 
+## Private NTT receipt observer review
+
+The private [Bridges reference](../../../../packages/bridges/REFERENCE.md) defines
+a bounded source/destination receipt join. It does not promote route or writer
+support. Qualified release review remains pending.
+
+At pinned source commit `8742584991b5f4d1ee63ff10fad8d833a460526c`,
+`evm/src/interfaces/INttManager.sol` declares both TransferSent overloads. The
+retained 1.1.0 TypeChain manager artifact omits the digest-only event and differs
+from Solidity on the six-field event's indexed parameters. This is a concrete
+ABI compatibility gap; accepted ABI bytes are not silently corrected here.
+
+The observer uses the correctly represented SendTransceiverMessage event.
+`evm/src/libraries/TransceiverStructs.sol` defines its strict manager envelope
+and chain-prefixed digest; `evm/src/NttManager/NttManager.sol` emits the same
+digest and redeems it in the successful destination mint/unlock transaction.
+The four existing completed-transfer records retain their original identities;
+private runtime verification does not renew canonical provider/configuration
+evidence. A future writer/ABI correction needs its own source-matched validation
+and review, plus the current preparation/recovery checks above.
+
 ## Relaying semantics
 
 At the recorded blocks, standard and special Wormhole relaying flags were

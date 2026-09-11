@@ -11,6 +11,11 @@ approval workflows using Core execution. These writer implementations
 await qualified protocol review before release; current
 consumer guidance does not establish released writer support.
 
+The private [bridge observer](../../packages/bridges/REFERENCE.md) joins bounded
+NTT source/destination receipts. It does not supply a transfer writer or certify
+current route configuration. As with other workspace APIs, its presence here
+does not imply availability in an application's installed release.
+
 MDK applications are TypeScript-first. Generated templates, examples, consumer
 guidance, and documented integration code use TypeScript by default, with TSX
 for React source containing JSX. An application can document a narrow

@@ -494,6 +494,14 @@ owns the required exact-call trace boundary and preflight-only output policy.
 Core supplies pinned native balance reads and validated EVM receipt execution fees;
 the domain owns their effect on protocol and wallet accounting.
 
+`@mezo-dev-kit/bridges` owns private provider-specific receipt observation. Its
+initial NTT observer joins source message and destination redemption digests with
+explicit confirmations, bounded candidate coverage and reorg checks. It consumes
+EVM, Chains, Contracts and Core without a signer or storage dependency. Route
+profiles derive from canonical knowledge; Native Bridge tuple/post-state proof,
+current writer preconditions and transfer execution remain separate. See
+[ADR-0023](docs/decisions/0023-ntt-receipt-observation.md).
+
 [ADR-0021](./docs/decisions/0021-incentives-locks-and-voting.md) extends Incentives
 with ordinary veBTC/veMEZO lock workflows and deterministic boost, epoch and vote
 allocation inputs. Bounded escrow reads distinguish direct custody, locked supply,
