@@ -50,6 +50,7 @@ for (const [id, names] of [
   ["incentives.pools-voter", ["vote", "reset", "claimFees", "claimBribes"]],
   ["incentives.boost-voter", ["vote", "reset", "claimBribes"]],
   ["incentives.validators-voter", ["vote", "reset", "claimBribes"]],
+  ["incentives.mezo-rebase-distributor", ["claim"]],
   [
     "incentives.ve-btc",
     [
@@ -149,6 +150,8 @@ for (const contractId of [
   "incentives.factory-registry",
   "incentives.validators-voter",
   "incentives.voting-rewards-factory",
+  "incentives.mezo-rebase-distributor",
+  "incentives.mezo-minter",
 ]) {
   const deployment = await loadKnowledgeReference(root, {
     moduleId: "contracts",

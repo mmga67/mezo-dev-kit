@@ -8,23 +8,23 @@ pending qualified protocol review and release.
 
 ## Package selection
 
-| Package                            | Use it for                                                     | Methods, types, and examples                                                    |
-| ---------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `@mezo-dev-kit/musd-borrowing`     | Classic borrower state and direct operations                   | [Borrowing SDK reference](../../packages/protocols/musd-borrowing/REFERENCE.md) |
-| `@mezo-dev-kit/evm`                | Typed EVM values, exact units, and bounded ABI codecs          | [EVM reference](../../packages/evm/REFERENCE.md)                                |
-| `@mezo-dev-kit/chains`             | Accepted network identities and capability metadata            | [Chains reference](../../packages/chains/REFERENCE.md)                          |
-| `@mezo-dev-kit/contracts`          | Deployment/runtime identity and read or curated operation ABIs | [Contracts reference](../../packages/contracts/REFERENCE.md)                    |
-| `@mezo-dev-kit/core`               | Block-consistent reads, event scans and transaction execution  | [Core reference](../../packages/core/REFERENCE.md)                              |
-| `@mezo-dev-kit/musd-redemptions` | Bounded redemption quotes, traced output and direct execution | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md) |
-| `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
-| `@mezo-dev-kit/pools` | Basic pool discovery, liquidity and LP fees | [Pools reference](../../packages/protocols/pools/REFERENCE.md) |
-| `@mezo-dev-kit/swaps` | Bounded basic quotes and exact-input swaps | [Swaps reference](../../packages/swaps/REFERENCE.md) |
-| `@mezo-dev-kit/prices`             | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                          |
-| `@mezo-dev-kit/tokens`             | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                           |
-| `@mezo-dev-kit/incentives`         | Gauges, escrow locks, voting/reset, bounded fee/bribe claims   | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)        |
-| `@mezo-dev-kit/musd-savings`       | sMUSD principal and MUSD indexed yield                         | [Savings reference](../../packages/protocols/musd-savings/REFERENCE.md)         |
-| `@mezo-dev-kit/musdc-lending`      | BTC/mUSDC Morpho market, debt, shares, interest, and health    | [Lending reference](../../packages/protocols/musdc-lending/REFERENCE.md)        |
-| `@mezo-dev-kit/usdc-lending-vault` | Depositor shares, wrapper yield, previews, and gauge ownership | [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)     |
+| Package                                 | Use it for                                                     | Methods, types, and examples                                                             |
+| --------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `@mezo-dev-kit/musd-borrowing`          | Classic borrower state and direct operations                   | [Borrowing SDK reference](../../packages/protocols/musd-borrowing/REFERENCE.md)          |
+| `@mezo-dev-kit/evm`                     | Typed EVM values, exact units, and bounded ABI codecs          | [EVM reference](../../packages/evm/REFERENCE.md)                                         |
+| `@mezo-dev-kit/chains`                  | Accepted network identities and capability metadata            | [Chains reference](../../packages/chains/REFERENCE.md)                                   |
+| `@mezo-dev-kit/contracts`               | Deployment/runtime identity and read or curated operation ABIs | [Contracts reference](../../packages/contracts/REFERENCE.md)                             |
+| `@mezo-dev-kit/core`                    | Block-consistent reads, event scans and transaction execution  | [Core reference](../../packages/core/REFERENCE.md)                                       |
+| `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
+| `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
+| `@mezo-dev-kit/pools`                   | Basic pool discovery, liquidity and LP fees                    | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
+| `@mezo-dev-kit/swaps`                   | Bounded basic quotes and exact-input swaps                     | [Swaps reference](../../packages/swaps/REFERENCE.md)                                     |
+| `@mezo-dev-kit/prices`                  | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                                   |
+| `@mezo-dev-kit/tokens`                  | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                                    |
+| `@mezo-dev-kit/incentives`              | Gauges, locks, voting, fee/bribe and bounded rebase claims     | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)                 |
+| `@mezo-dev-kit/musd-savings`            | sMUSD principal and MUSD indexed yield                         | [Savings reference](../../packages/protocols/musd-savings/REFERENCE.md)                  |
+| `@mezo-dev-kit/musdc-lending`           | BTC/mUSDC Morpho market, debt, shares, interest, and health    | [Lending reference](../../packages/protocols/musdc-lending/REFERENCE.md)                 |
+| `@mezo-dev-kit/usdc-lending-vault`      | Depositor shares, wrapper yield, previews, and gauge ownership | [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)              |
 
 Each package reference inventories its public runtime functions, methods on
 returned objects, exported types, input units, results, errors, required

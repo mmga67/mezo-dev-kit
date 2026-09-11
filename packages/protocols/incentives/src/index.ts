@@ -77,3 +77,17 @@ export type {
   ReconciledVotingReward,
   VotingRewardWriter,
 } from "./voting-reward-writer.ts";
+export { calculateRebaseClaim } from "./rebase-math.ts";
+export type { RebaseCursorInput, RebasePeriod, RebaseClaim } from "./rebase-math.ts";
+export { createRebaseReader } from "./rebase-reader.ts";
+export type { RebaseSnapshot, RebaseReader } from "./rebase-reader.ts";
+export { forecastRebaseClaim } from "./rebase-forecast.ts";
+export type { RebaseForecast } from "./rebase-forecast.ts";
+export { createRebaseWriter } from "./rebase-writer.ts";
+export type {
+  RebaseBounds,
+  PreparedRebase,
+  RebaseOutcome,
+  ReconciledRebase,
+  RebaseWriter,
+} from "./rebase-writer.ts";

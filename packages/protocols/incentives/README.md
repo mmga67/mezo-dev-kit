@@ -20,8 +20,11 @@ explicit preparation, approval where required, exact simulation and reconciliati
 The initial NFT writer excludes grants, managed custody, delegation, votes and
 associated boost gauges. Pool, validator and boost voting now have bounded readers and vote/reset
 writers. Fee/bribe claims verify reward children, bounded checkpoint history,
-owner payouts and custody deltas. All remain private candidates; rebases,
-managed custody and wider permissioned operations retain separate boundaries.
+owner payouts and custody deltas. Ordinary veMEZO rebase claims have a bounded
+reader, exact weekly calculation and claim writer that distinguishes lock
+deposits from expired-lock liquid payouts. It preserves voted NFT state and
+requires current minter upkeep. All remain private candidates; managed custody
+and wider permissioned operations retain separate boundaries.
 Node is the tested runtime. Local fork integrations in
 [Savings](../musd-savings/test/fork.ts) and [Vault](../usdc-lending-vault/test/fork.ts)
 use explicit native reward-token fixtures because Anvil cannot run mezod's

@@ -17,7 +17,11 @@ assets elsewhere. Stored checkpoint boost, current boost and ownership-change
 suppressed voting power are distinct. Pool/validator/boost vote-reset and bounded fee/bribe claims now have private
 readers and writers. Verify current reward child code/immutables, epoch bounds,
 owner recipient, checkpoint history budgets and exact payout reconciliation.
-Rebases and managed or delegated claims retain separate boundaries. Native-token fork fixtures do not qualify mezod execution.
+Ordinary veMEZO rebase claims have a separate bounded reader and writer: preserve
+the 50-week cursor limit, current minter period, zero-claim cursor advancement,
+and active-lock deposit versus expired-lock owner payout. Voted ordinary NFTs
+remain eligible for this claim; managed, granted and delegated claims retain
+separate boundaries. Native-token fork fixtures do not qualify mezod execution.
 Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
 `src/index.ts` for current methods and required ports. ADR-0016 authorizes the
 private implementation; canonical support remains proposed/none and qualified

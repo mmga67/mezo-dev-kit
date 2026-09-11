@@ -465,3 +465,81 @@ the three voter domains and fee/bribe claims instead of the full lock expiry
 sequence. It uses native ERC-20 ledger fixtures and zero gas; fee funding invokes
 real notification from a locally impersonated gauge. It restores the snapshot.
 These checks do not qualify the Mezo native engine or release support.
+
+## veMEZO rebases
+
+`createRebaseReader({networkId: "mezo-mainnet", registry, transport}): RebaseReader`
+reads `account`, `tokenId` and optional `blockNumber`. It verifies the registered
+distributor/minter runtimes, escrow graph and reverse mappings at one anchored
+block. `RebaseSnapshot` contains `contract`, `minter`, `escrow: LockSnapshot`,
+`tokenId`, `activePeriod`, `tokenLastBalance`, `userPointEpoch`, distributor
+`custody: TokenSnapshot`, `periods` and recomputed `claim`. Its `RebaseCursorInput`
+fields are `startTime`, `lastTokenTime`, `timeCursor` and `firstUserTimestamp`
+(null when no user point exists).
+
+`calculateRebaseClaim(cursor & {periods: RebasePeriod[]}): RebaseClaim` is pure.
+Each period supplies `week`, `votingPower`, `totalVotingPower` and `allocated`.
+It requires all contiguous weeks in the contract's bounded window, computes
+each integer product/division with Solidity uint256 bounds and floors, and
+uses denominator one for zero total power. The result has `amount`, `epochStart`
+(the pre-clamp event start), `nextCursor`, `periods` (count) and `hasMore`.
+Amounts, timestamps, cursors and counts are bigint; MEZO amounts use 18 decimals.
+Each call processes at most 50 completed weeks. `hasMore` requires another
+explicit claim after the first settles; it does not imply full history was
+consumed. The reader compares this bounded calculation to on-chain `claimable`.
+
+`forecastRebaseClaim({snapshot, atTimestamp?}): RebaseForecast` adds `disposition`
+(`locked`, `liquid`, `none`), resulting `lockedAmount` and `unboostedPower`.
+Only ordinary self-owned veMEZO NFTs are admitted: no grants, managed custody
+or delegation. Existing votes remain untouched and do not prevent this claim.
+The minter's active period must be current; the writer does not run upkeep.
+Positive claims deposit into active/permanent locks, or pay liquid MEZO to
+the owner at/after timed expiry. Distributor custody, tracked balance and its
+escrow allowance must suffice; the owner needs no token approval.
+
+`createRebaseWriter({reader, execution, transport}): RebaseWriter` exposes
+`prepare({operationId, account, tokenId, bounds: RebaseBounds})`, `simulate`,
+`submit` and `reconcile`. Bounds are `minAmount` and `maxBlockAge`.
+`PreparedRebase` holds `snapshot`, `forecast`, frozen `bounds` and `transaction`.
+Simulation checks the exact claim's uint256 return; submission rechecks
+ownership, cursor, epoch, disposition, age, identity and amount. Only objects
+prepared and simulated by that writer may be submitted. `reconcile` accepts a
+persisted submission record and returns `ReconciledRebase` (`state`, `record`,
+`receipt`, `outcome: RebaseOutcome`). The outcome contains the receipt-block
+`snapshot`, actual `forecast`, `gasFee` and `boundsSatisfied`.
+
+Settlement requires exact positive `Claimed` and token transfer events, cursor
+progress, distributor balance/accounting, owner wallet or escrow deposit,
+checkpoint count, lock/supply changes, and unchanged voter flags. Zero claims
+advance the cursor without emitting `Claimed` or transferring MEZO. Native BTC
+gas is reconciled separately. Unrelated touched-state changes can prevent the
+conservative adjacent-block proof. Minimum amounts and disposition are client
+policy, not on-chain claim arguments; inspect `boundsSatisfied` after mining.
+
+```ts
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import { createRebaseReader, createRebaseWriter } from "@mezo-dev-kit/incentives";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport;
+declare const execution: ExecutionClient;
+declare const account: `0x${string}`;
+const reader = createRebaseReader({
+  networkId: "mezo-mainnet",
+  registry: createContractRegistry(),
+  transport,
+});
+const writer = createRebaseWriter({ reader, execution, transport });
+const prepared = await writer.prepare({
+  operationId: "unique-rebase-claim",
+  account,
+  tokenId: 1n,
+  bounds: { minAmount: 1n, maxBlockAge: 2n },
+});
+console.log(prepared.forecast.disposition, prepared.forecast.hasMore);
+```
+
+The opt-in `locks-fork.ts` command accepts a final `rebase` argument. It runs
+real minter upkeep and permanent/active/expired/zero claims, with explicit
+native-token balances, supply, mint dispatch and restored distributor allowance
+as local fixtures. All mutations are confined to localhost and snapshot-restored.
+This qualifies neither native mint authority nor release support.

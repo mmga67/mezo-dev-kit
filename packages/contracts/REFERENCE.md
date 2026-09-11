@@ -14,7 +14,8 @@ returns `ResolvedOperation` with `contract: ResolvedContract` and
 `claimCollateral`. It also exposes Savings `deposit`, `withdraw`, `claimYield`,
 `approve`; MUSD `approve`; Morpho `supply`, `withdraw`, `supplyCollateral`,
 `withdrawCollateral`, `borrow`, `repay`; and wrapper `depositAndStake`,
-`withdraw`, `approve`. Overloads require exact `inputTypes`, e.g.
+`withdraw`, `approve`; and the MEZO rebase distributor's `claim(uint256)`.
+Overloads require exact `inputTypes`, e.g.
 `["uint256"]` for a direct wrapper call. Missing/ambiguous combinations throw
 `AbiUnavailable`.
 
@@ -37,6 +38,7 @@ are `deposit`, `withdraw`, `getReward`; VaultV2 operations are `deposit`, `mint`
 `implementationCodeSha256`, and nullable `implementationSlot`. Its generated
 scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
 Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
+MEZO rebase distributor/minter,
 institutional roots and Skip native interface. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution

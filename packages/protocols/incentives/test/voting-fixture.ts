@@ -98,7 +98,7 @@ export function fixtureLog(
   const parameters = abi.inputs.map((input: unknown) => {
     assert(input && typeof input === "object" && !Array.isArray(input));
     const row = input as Record<string, unknown>;
-    assert(row.type === "address" || row.type === "uint256");
+    assert(row.type === "address" || row.type === "uint256" || row.type === "uint8");
     return { type: row.type, indexed: row.indexed === true };
   });
   assert(typeof abi.name === "string");

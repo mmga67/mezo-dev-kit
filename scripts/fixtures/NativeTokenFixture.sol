@@ -1,18 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-/// Explicit Anvil test double for the native BTC ERC-20 dispatch boundary.
+/// Explicit Anvil test double for native BTC/MEZO ERC-20 dispatch boundaries.
 /// This models token accounting only; it does not validate mezod native execution.
 contract NativeTokenFixture {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
     uint8 public constant decimals = 18;
+    uint256 public totalSupply;
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     function seed(address account, uint256 value) external {
         balanceOf[account] += value;
         emit Transfer(address(0), account, value);
+    }
+    // Seeded balances may cover only selected accounts. Restore the real parent
+    // supply separately before exercising the real MEZO emission controller.
+    function seedTotalSupply(uint256 value) external {
+        totalSupply = value;
+    }
+    function mint(address account, uint256 value) external returns (bool) {
+        totalSupply += value;
+        balanceOf[account] += value;
+        emit Transfer(address(0), account, value);
+        return true;
     }
     function approve(address spender, uint256 value) external returns (bool) {
         allowance[msg.sender][spender] = value;

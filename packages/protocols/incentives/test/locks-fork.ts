@@ -1,6 +1,7 @@
 /** Opt-in local escrow lifecycle. Native ERC-20 ledgers are explicit fixtures, gas price is zero. */
 import assert from "node:assert/strict";
 import { votingForkWorkflows } from "./voting-fork-workflows.ts";
+import { rebaseForkWorkflows } from "./rebase-fork-workflows.ts";
 import { readFileSync } from "node:fs";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { createContractRegistry, getTokenInterface } from "@mezo-dev-kit/contracts";
@@ -37,11 +38,11 @@ if (
   !localUrl ||
   !sourceUrl ||
   !artifactPath ||
-  (mode !== undefined && mode !== "voting") ||
+  (mode !== undefined && mode !== "voting" && mode !== "rebase") ||
   !["127.0.0.1", "localhost", "[::1]"].includes(new URL(localUrl).hostname)
 )
   throw new Error(
-    "usage: node test/locks-fork.ts <localhost-anvil-url> <read-only-source-rpc> <compiled-native-token-fixture.json>",
+    "usage: node test/locks-fork.ts <localhost-anvil-url> <read-only-source-rpc> <compiled-native-token-fixture.json> [voting|rebase]",
   );
 function rpc(url: string, readOnly: boolean): RpcRequest {
   let id = 0;
@@ -171,6 +172,7 @@ try {
     }
   }
   for (const role of ["vebtc-current", "vemezo-current"] as const) {
+    if (mode === "rebase" && role === "vebtc-current") continue;
     const reader = createLockReader({ networkId: "mezo-mainnet", role, registry, transport });
     const execution = createExecutionClient({
       network,
@@ -225,6 +227,41 @@ try {
         `${role} ${action.kind}: id=${result.outcome.tokenId} amount=${result.outcome.forecast.amount} end=${result.outcome.forecast.end} permanent=${result.outcome.forecast.permanent}\n`,
       );
       return result.outcome;
+    }
+    if (mode === "rebase") {
+      const seedSupply: unknown = fixtureAbi.find(
+        (entry: unknown) => object(entry).name === "seedTotalSupply",
+      );
+      assert(seedSupply);
+      const seedCall = async (
+        token: `0x${string}`,
+        abi: unknown,
+        args: readonly (bigint | `0x${string}`)[],
+      ) => {
+        const hash = parseHash32(
+          await request({
+            method: "eth_sendTransaction",
+            params: [{ from: account, to: token, data: codec.encodeFunction(abi, args) }],
+          }),
+        );
+        assert.equal(object(await transport.getReceipt(hash)).status, "0x1");
+      };
+      await rebaseForkWorkflows({
+        registry,
+        transport,
+        request: (input) => request(input),
+        source,
+        sourceBlock: blockNumber,
+        account,
+        createLock: async (permanent) => {
+          const created = await execute({ kind: "create", amount: W, duration: 2n * week });
+          if (permanent) await execute({ kind: "make-permanent", tokenId: created.tokenId });
+          return created.tokenId;
+        },
+        seedToken: (token, recipient, amount) => seedCall(token, seed, [recipient, amount]),
+        seedSupply: (token, amount) => seedCall(token, seedSupply, [amount]),
+      });
+      continue;
     }
     const created = await execute({ kind: "create", amount: W, duration: 2n * week }),
       tokenId = created.tokenId;
@@ -316,7 +353,11 @@ try {
     const withdrawn = await execute({ kind: "withdraw", tokenId });
     assert.equal(withdrawn.snapshot.locks[0]?.owner, `0x${"00".repeat(20)}`);
   }
-  if (mode === "voting")
+  if (mode === "rebase")
+    process.stdout.write(
+      `Fork ${blockNumber} ${parseHash32(parent.hash)}: permanent/active deposits, expired payout, zero claims and minter upkeep rejection reconciled; real distributor/escrow/minter code, explicit native-token fixtures and zero gas.\n`,
+    );
+  else if (mode === "voting")
     process.stdout.write(
       `Fork ${blockNumber} ${parseHash32(parent.hash)}: three voter domains, replacement/reset/revote and same-epoch rejection reconciled; explicit native-token fixtures and zero gas.\n`,
     );
