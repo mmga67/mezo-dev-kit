@@ -84,6 +84,10 @@ verification, and stale dynamic mappings.
 - The module and seven CL registry roots received qualified Level 3 acceptance;
   canonical writer support remains proposed. The private Pools package now implements basic MUSD/mUSDC liquidity and fee writers; inspect its current README/REFERENCE.
 - No current official Quoter identity is known.
+- The private Pools package also has exact CL tick/liquidity/fee calculations
+  and a bounded pool/NFT reader. Check current method references: distinguish
+  rounding for mint debt versus principal, fee-growth wrap/truncation, active
+  versus staked liquidity, and verified versus unknown beneficial depositors.
 - Zero minimum outputs are not safe defaults.
 - Implicit unlimited ERC-20 or ERC-721 approval is prohibited.
 - Executable reproduction proves byte correspondence, not authorship, audit

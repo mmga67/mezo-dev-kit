@@ -17,7 +17,7 @@ pending qualified protocol review and release.
 | `@mezo-dev-kit/core`                    | Block-consistent reads, event scans and transaction execution  | [Core reference](../../packages/core/REFERENCE.md)                                       |
 | `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
 | `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
-| `@mezo-dev-kit/pools`                   | Basic pool discovery, liquidity and LP fees                    | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
+| `@mezo-dev-kit/pools`                   | Basic liquidity/fees; CL math and bounded pool/NFT reads       | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
 | `@mezo-dev-kit/swaps`                   | Bounded basic quotes and exact-input swaps                     | [Swaps reference](../../packages/swaps/REFERENCE.md)                                     |
 | `@mezo-dev-kit/prices`                  | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                                   |
 | `@mezo-dev-kit/tokens`                  | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                                    |

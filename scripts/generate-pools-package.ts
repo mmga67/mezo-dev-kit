@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import { loadKnowledgeReference } from "./lib/knowledge-reference.ts";
 import { object, objects, text } from "./lib/json.ts";
+import { clMathModel } from "./lib/cl-math-model.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 if (process.argv.slice(2).some((arg) => arg !== "--check"))
   throw new Error("usage: generate-pools-package.ts [--check]");
@@ -63,6 +64,7 @@ if (
 )
   throw new Error("invalid basic accounting generation");
 const model = {
+  cl: await clMathModel(root, await resource("protocols/pools", "pools-math")),
   feeIndexScale: constants.feeIndexScale,
   swapFeeDenominator: constants.swapFeeDenominator,
   musdc: {

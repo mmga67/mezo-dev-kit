@@ -463,6 +463,12 @@ until token behavior qualifies. [ADR-0018](docs/decisions/0018-basic-pools-and-s
 records the operation, simulation and reconciliation boundaries. Canonical
 support and publication remain subject to qualified review.
 
+Pools also owns the private CL tick/liquidity/fee calculations and bounded
+pool/NFT reader. Numerical coefficients derive from retained, digest-verified
+source; Contracts owns root runtime projections. Read results distinguish active,
+staked and NFT liquidity and require stake-set evidence for a gauge depositor.
+This adds no package dependency or release support.
+
 `@mezo-dev-kit/musd-institutional-debt` owns private Enclave/position readers and
 institutional fee, repayment and health calculations. It depends on EVM, Chains,
 Contracts and Core. Requested position/authority subsets carry explicit coverage;

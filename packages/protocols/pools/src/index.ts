@@ -31,3 +31,23 @@ export type {
   BasicLiquidityBounds,
   BasicLiquidityForecast,
 } from "./types.ts";
+export {
+  getCLTickSqrtRatio,
+  getCLTickAtSqrtRatio,
+  getCLUsableTicks,
+  calculateCLAmounts,
+  calculateCLLiquidity,
+  calculateCLFees,
+} from "./cl-math.ts";
+export type { CLPriceRange, CLAmounts, CLFeeInput, CLFees } from "./cl-math.ts";
+export { sortCLPoolKey, createCLPoolReader } from "./cl-reader.ts";
+export type {
+  CLPoolKey,
+  CLPoolReaderConfig,
+  CLPoolReadInput,
+  CLTick,
+  CLGaugeSnapshot,
+  CLPosition,
+  CLPoolSnapshot,
+  CLPoolReader,
+} from "./cl-types.ts";

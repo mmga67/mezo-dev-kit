@@ -39,6 +39,7 @@ are `deposit`, `withdraw`, `getReward`; VaultV2 operations are `deposit`, `mint`
 scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
 Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
 MEZO rebase distributor/minter,
+CL factory, pool implementation, position manager and gauge factory/implementation,
 institutional roots and Skip native interface. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution

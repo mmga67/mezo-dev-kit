@@ -152,6 +152,11 @@ for (const contractId of [
   "incentives.voting-rewards-factory",
   "incentives.mezo-rebase-distributor",
   "incentives.mezo-minter",
+  "mezo-earn.cl-factory",
+  "mezo-earn.cl-pool-implementation",
+  "mezo-earn.cl-position-manager",
+  "incentives.cl-gauge-factory",
+  "incentives.cl-gauge-implementation",
 ]) {
   const deployment = await loadKnowledgeReference(root, {
     moduleId: "contracts",

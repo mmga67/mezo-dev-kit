@@ -1,6 +1,6 @@
 # Pools
 
-Private basic-pool discovery and liquidity SDK. The
+Private basic-pool and concentrated-liquidity SDK. The
 [SDK reference](REFERENCE.md) documents every exported method/type and examples.
 
 `createBasicPoolReader` verifies the mainnet Router/PoolFactory, their discovered
@@ -42,3 +42,14 @@ oracle/token fixture. Run it sequentially with other local fork harnesses.
 `createBasicPoolFeeWriter` collects wallet LP fees, including stored claims after
 full LP withdrawal. It uses no approval and reconciles PoolFees payments and
 zero pending credit. Claim minimums are preflight bounds, not contract arguments.
+
+CL math uses source-derived TickMath coefficients, explicit floor/ceil amounts,
+uint128 liquidity limits and modular fee growth. `createCLPoolReader` verifies
+accepted roots, clones, factory and gauge mappings at one block. It reads up to
+16 explicit NFTs and 32 additional ticks, preserves empty-pool state, separates
+active/staked/position liquidity and proves a supplied depositor through the
+gauge stake set. Unknown depositors remain null. These reads and calculations
+do not establish CL writer or release support.
+
+The opt-in `test/cl-fork.ts` command takes the same localhost/source RPC arguments
+and checks bounded pool/NFT reads plus wrong-code/mapping/anchor failures.

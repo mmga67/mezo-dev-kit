@@ -1,9 +1,9 @@
 # Pools SDK reference
 
 Import from `@mezo-dev-kit/pools`. The [README](README.md) owns current support:
-mainnet basic pool reads and private MUSD/mUSDC liquidity/fee writers. Contracts owns
+mainnet basic/CL pool reads and private MUSD/mUSDC basic liquidity/fee writers. Contracts owns
 source/ABI/runtime evidence; [Pools knowledge](../../../knowledge/protocols/pools/README.md)
-owns protocol semantics. CL, pool creation and gauge writers
+owns protocol semantics. CL position, pool creation and gauge writers
 are not supplied by this package yet.
 
 ## Pool identity and reads
@@ -234,3 +234,110 @@ console.log(prepared.transaction); // Obtain application consent, then simulate/
 
 The [combined pool/swap fork example](../../swaps/test/fork.ts) earns fees in
 both assets, exits the LP position and collects the retained claim.
+
+## Concentrated-liquidity calculations
+
+`getCLTickSqrtRatio(tick: number): bigint` reproduces the retained TickMath
+algorithm with generated coefficients. Integer ticks range from -887272 to 887272. `getCLTickAtSqrtRatio(sqrtPriceX96: bigint): number` returns the greatest
+tick whose exact ratio is no greater than the input; its ratio interval includes
+the minimum and excludes the maximum. `getCLUsableTicks(tickSpacing: number)`
+returns aligned `tickLower`/`tickUpper`. Readable tick bounds and write alignment
+are distinct; spacing must be a positive integer.
+
+`CLPriceRange` contains bigint `sqrtPriceX96`, `sqrtLowerX96`, `sqrtUpperX96`.
+Prices use Q64.96, lower/upper must be strictly ordered, and current price must
+be initialized. `calculateCLAmounts(range & {liquidity, rounding}): CLAmounts`
+requires uint128 `liquidity` and explicit `rounding: "down" | "up"`. Principal
+estimates/removal amounts floor; core mint amounts ceil. `CLAmounts` has bigint
+`amount0`, `amount1` in sorted token base units. At/below the lower boundary all
+principal is token0; at/above the upper boundary it is token1.
+
+`calculateCLLiquidity(range & CLAmounts): bigint` returns the position manager's
+floor-rounded uint128 liquidity. Each single-token branch must fit uint128
+before choosing the minimum inside the range. Zero amounts/liquidity are valid
+math inputs, not a permission to submit an empty operation.
+
+`calculateCLFees(input: CLFeeInput): CLFees` handles one asset. Input fields are
+`liquidity`, `globalX128`, `lowerOutsideX128`, `upperOutsideX128`,
+`lastInsideX128`, `tokensOwed`, numeric `tick`, `tickLower`, `tickUpper`, and
+boolean `staked`. It returns `insideX128`, newly `accrued`, resulting `tokensOwed`
+and `overflowed`. Growth differences wrap at uint256 as deployed; stored owed
+amounts truncate at uint128. A writer must reject `overflowed`, even though the
+read faithfully reports the deployed arithmetic. Staked NFTs accrue no ordinary
+position-manager swap fees through this calculation; gauge emissions are separate.
+Calculated owed values are accounting estimates: the manager's Collect event
+can exceed actual transfer by core rounding, so execution must reconcile the
+actual payout independently.
+
+```ts
+import { getCLTickSqrtRatio, calculateCLLiquidity, calculateCLAmounts } from "@mezo-dev-kit/pools";
+const range = {
+  sqrtPriceX96: getCLTickSqrtRatio(0),
+  sqrtLowerX96: getCLTickSqrtRatio(-60),
+  sqrtUpperX96: getCLTickSqrtRatio(60),
+};
+const liquidity = calculateCLLiquidity({ ...range, amount0: 10000n, amount1: 10000n });
+console.log(calculateCLAmounts({ ...range, liquidity, rounding: "up" }));
+```
+
+## CL pool and position reads
+
+`sortCLPoolKey({tokenA, tokenB, tickSpacing}): CLPoolKey` sorts distinct nonzero
+addresses into `token0`/`token1` and preserves numeric `tickSpacing`.
+`createCLPoolReader(config: CLPoolReaderConfig): CLPoolReader` requires mainnet
+`networkId`, Contracts `registry` and Core `transport`. Its `read(CLPoolReadInput)`
+accepts sorted `key`, `account`, optional `blockNumber`, up to 16 unique positive
+`tokenIds`, and up to 32 unique additional `ticks`. NFT boundaries are added
+automatically, for at most 64 tick reads. No collection is silently truncated.
+The explicit NFTs must belong to the selected pool.
+
+`CLPoolSnapshot` contains `coordinate`, Unix `timestamp`, `providerId`, `account`,
+`key`, resolved `factory`, `implementation`, `manager`, `factoryRegistry`,
+`factoryApproved`, dynamic `pool`, and nullable `gauge: CLGaugeSnapshot`.
+It separates `liquidity` (active), `stakedLiquidity` (active staked), and each
+NFT's liquidity. Other fields are `sqrtPriceX96`, numeric `tick`, `unlocked`,
+live `fee`/`unstakedFee`, `globalFee0X128`/`globalFee1X128`, wallet
+`token0`/`token1: TokenSnapshot` with manager as spender, `poolBalance0`,
+`poolBalance1`, native BTC `nativeBalance`, manager `ownedCount`, `ticks`,
+and `positions`. Token values retain their own decimals. Fee integers use the
+deployed CL fee scale of 1,000,000; these are not a quote, APR, or safe price feed.
+
+`CLTick` contains numeric `tick`, `liquidityGross`, signed `liquidityNet` and
+`stakedLiquidityNet`, `feeGrowthOutside0X128`, `feeGrowthOutside1X128`, and
+`initialized`. `CLGaugeSnapshot` contains `address`, `factory`, `implementation`,
+`voter`, `rewardToken`, `alive`, and the supplied account's `stakeCount`.
+
+Each `CLPosition` has `tokenId`, ERC-721 `owner`, `approved`, `callerApproved`,
+`staked`, nullable `beneficialDepositor`, `tickLower`, `tickUpper`, `liquidity`,
+`lastInside0X128`, `lastInside1X128`, stored `tokensOwed0`/`tokensOwed1`,
+`fees0`/`fees1: CLFees`, floor-valued `principal: CLAmounts`, and nullable
+`gaugeReward`. For staked NFTs, the account's stake-set membership is required
+to report that account as depositor and read its earned reward; otherwise both
+fields stay null. A gauge owning an NFT does not identify its depositor.
+
+The reader verifies registered runtime generations, exact clone implementations,
+factory membership, pool key and reverse gauge/voter mappings, and the final
+chain/hash. Empty initialized pools and dead/missing gauges remain readable.
+It permits the deployed left-of-boundary tick when a swap ends exactly at the
+next tick's ratio. Missing required state, wrong identity or a changed anchor
+throws; partial state never becomes an executable snapshot. A missing factory
+pool throws `PoolError` with `UnavailablePool`.
+
+```ts
+import { createCLPoolReader, sortCLPoolKey } from "@mezo-dev-kit/pools";
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import type { RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport;
+declare const account: `0x${string}`, tokenA: `0x${string}`, tokenB: `0x${string}`;
+const reader = createCLPoolReader({
+  networkId: "mezo-mainnet",
+  registry: createContractRegistry(),
+  transport,
+});
+const state = await reader.read({
+  account,
+  key: sortCLPoolKey({ tokenA, tokenB, tickSpacing: 200 }),
+  tokenIds: [1n],
+});
+console.log(state.positions[0]?.beneficialDepositor);
+```
