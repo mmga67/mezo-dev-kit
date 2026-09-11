@@ -75,6 +75,15 @@ rounding, empty-range versus partial-fill behavior, router native refund custody
 and exact simulation/state reconciliation. MUSD/mUSDC is the initial writer
 asset profile; wider quotable paths do not establish executable multi-hop support.
 
+For a bounded read-only candidate set, use `@mezo-dev-kit/swaps/quotes` and
+`createSwapQuoteReader` with the existing source-verified readers. Require explicit
+eligibility and required/optional candidates; preserve failure coverage and null
+best selection when required results are missing. Display estimates may include
+quote-only assets under the explicit all-quotes policy; execution ranking retains
+its separate compatibility/simulation requirements. Fees keep each hop's input
+asset units. Numeric marginal impact, gas and currency conversion are explicitly
+unavailable. The subpath has no writers; the package root still exports them.
+
 ## Verification
 
 Run every check declared by `knowledge/workflows/swaps/index.json`, then the

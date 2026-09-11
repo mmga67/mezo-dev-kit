@@ -3,6 +3,14 @@
 Private mainnet basic/CL pool quotes and exact-input swaps. The
 [SDK reference](REFERENCE.md) covers every export, method, unit and example.
 
+The deliberate `@mezo-dev-kit/swaps/quotes` entrypoint exports readers and route
+helpers only. Its `createSwapQuoteReader` evaluates up to 16 caller-supplied basic
+or CL candidates at one fresh coordinate, preserves required/optional failures,
+and compares output under an explicit eligibility policy. It reports per-hop
+fee units, bounded coverage and unavailable price-impact/gas estimates. The root
+entrypoint still contains the writers; selecting a subpath is API organization,
+not package isolation or release qualification.
+
 `createBasicSwapReader` consumes verified Pools discovery to quote one to three
 contiguous, acyclic basic hops at one block. Callers supply candidate routes and
 an explicit intermediate-token allowlist. `rankBasicSwapQuotes` compares complete

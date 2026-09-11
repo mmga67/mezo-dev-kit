@@ -9,6 +9,7 @@
       "@mezo-dev-kit/core": ["../core/src/index.ts"],
       "@mezo-dev-kit/evm": ["../evm/src/index.ts"],
       "@mezo-dev-kit/swaps": ["./src/index.ts"],
+      "@mezo-dev-kit/swaps/quotes": ["./src/quotes.ts"],
       "@mezo-dev-kit/pools": ["../protocols/pools/src/index.ts"],
       "@mezo-dev-kit/tokens": ["../tokens/src/index.ts"]
     },

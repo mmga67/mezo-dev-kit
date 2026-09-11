@@ -67,15 +67,18 @@ or atomic mixed-family paths. Do not assume familiar Uniswap deployment addresse
 or interfaces just because a pool resembles that design. Reverify current
 Contracts/Pools/Swaps evidence before implementing a provider integration.
 
-The next read-only quote slice should:
+The private [Swaps quote entrypoint](../../packages/swaps/REFERENCE.md#bounded-read-only-candidate-comparison)
+now composes source-verified basic and CL readers under this bounded contract:
 
 1. Accept network, token pair, exact input amount, block coordinate, and bounded
    routing constraints, including permitted pools, fees, hops, and route families.
 2. Verify the current factory/router/pool generations and asset decimals. Use
    source-matched math and complete required reserve/tick/liquidity state.
-3. Return expected output, pool fees, price impact, route/pool identities,
-   coordinate, and coverage. Rank by an explicit objective within the evaluated
-   set; describe the result as the best evaluated candidate, not a global optimum.
+3. Return expected output, per-hop pool fees, route/pool identities, coordinate,
+   coverage and explicit eligibility. Numeric marginal price impact remains
+   unavailable until a validated reference is supplied; never substitute zero.
+   Rank by an explicit objective within the evaluated set; describe the result
+   as the best evaluated candidate, not a global optimum.
 4. Keep output-token amounts separate from gas cost. Gas-adjusted ranking needs
    an explicit, validated currency-conversion source and cost policy.
 5. Preserve insufficient liquidity, incomplete tick coverage, unsupported route
@@ -90,8 +93,10 @@ thin or transient liquidity can distort a market observation. Keep the source
 class and derivation explicit. Protocol health continues to use the protocol's
 configured oracle, even when a DEX market disagrees.
 
-A read-only DEX quote module is a future extension of the Swaps workflow.
-No DEX quote reader or swap writer is exported by the changes in this guide.
+Use `@mezo-dev-kit/swaps/quotes` for reader-only exports. The existing root
+entrypoint also contains private writers. A required candidate failure suppresses
+best selection; optional failures remain visible. Gas and currency conversion
+are not estimated, and no support or qualified-release status is promoted here.
 
 ## Recent state and missing historical state
 

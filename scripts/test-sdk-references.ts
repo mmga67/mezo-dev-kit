@@ -35,26 +35,36 @@ try {
     await symlink(directory, link, "dir");
     const path = resolve(directory, "REFERENCE.md");
     const reference = await readFile(path, "utf8");
-    const entryPath = resolve(directory, "src/index.ts");
-    const entry = ts.createSourceFile(
-      entryPath,
-      await readFile(entryPath, "utf8"),
-      ts.ScriptTarget.Latest,
-      true,
-    );
-    for (const statement of entry.statements) {
-      if (
-        !ts.isExportDeclaration(statement) ||
-        !statement.exportClause ||
-        !ts.isNamedExports(statement.exportClause)
-      )
-        continue;
-      for (const element of statement.exportClause.elements) {
-        assert(
-          reference.includes(element.name.text),
-          `${manifest.name}: missing reference for ${element.name.text}`,
-        );
-        symbols++;
+    for (const [subpath, target] of Object.entries(object(manifest.exports))) {
+      const declaration = object(target).types;
+      assert(
+        typeof declaration === "string" && /^\.\/dist\/[a-z0-9-]+\.d\.ts$/.test(declaration),
+        `${manifest.name}${subpath}: unsupported declaration entrypoint`,
+      );
+      const entryPath = resolve(
+        directory,
+        declaration.replace("./dist/", "./src/").replace(/\.d\.ts$/, ".ts"),
+      );
+      const entry = ts.createSourceFile(
+        entryPath,
+        await readFile(entryPath, "utf8"),
+        ts.ScriptTarget.Latest,
+        true,
+      );
+      for (const statement of entry.statements) {
+        if (
+          !ts.isExportDeclaration(statement) ||
+          !statement.exportClause ||
+          !ts.isNamedExports(statement.exportClause)
+        )
+          continue;
+        for (const element of statement.exportClause.elements) {
+          assert(
+            reference.includes(element.name.text),
+            `${manifest.name}${subpath}: missing reference for ${element.name.text}`,
+          );
+          symbols++;
+        }
       }
     }
     let count = 0;

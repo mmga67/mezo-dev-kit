@@ -143,6 +143,110 @@ Exported types also include `BasicSwapHop`, `BasicSwapQuoteInput`, `BasicSwapQuo
 `BasicSwapReader`, `BasicSwapBounds`, `PreparedBasicSwap`, `BasicSwapOutcome`, and
 `BasicSwapWriter`.
 
+## Bounded read-only candidate comparison
+
+Import `@mezo-dev-kit/swaps/quotes` for the deliberate reader-only entrypoint.
+It exports `SwapError`, `SwapErrorCode`, the basic reader, route validator and
+existing `rankBasicSwapQuotes`, their types, plus the CL reader, route/path
+helpers and quote types documented here. It exposes no writer or execution
+target resolver. The installed package and root entrypoint still contain writers;
+this is not a separately published read-only artifact or a security sandbox.
+
+`createSwapQuoteReader(config: SwapQuoteReaderConfig): SwapQuoteReader` composes
+existing `BasicSwapReader` and `CLSwapReader` ports. Supply `networkId:
+"mezo-mainnet"`, Core `transport` methods `getChainId`, `getBlockNumber`,
+`getBlock`, `getBlockTimestamp`, and optional `basic` and
+`concentratedLiquidity` readers. Use the source-verified factories in this
+package: the comparator validates request identity and result consistency but
+does not independently reproduce arbitrary injected readers' discovery or math.
+RPC endpoints, timeouts and cancellation remain application-owned. Calls are
+sequential, bounded by candidate count and the existing per-route/CL budgets;
+there are no retries, graph search, signer calls or background workers.
+
+`quote(input: SwapQuoteRequest): Promise<SwapQuoteResult>` requires distinct
+nonzero `tokenIn`/`tokenOut`, nonzero `account`, positive bigint `amountIn`,
+nonnegative bigint `maxAgeBlocks`, optional bigint `blockNumber`, explicit
+`eligibility`, and 1–16 `SwapQuoteCandidate`s. Each candidate contains unique
+`id` (1–64 lowercase ASCII letters/digits/hyphens, starting alphanumeric),
+boolean `required`, and explicit `intermediateAssets`. `family: "basic"` has
+basic `route` hops; `family: "concentrated-liquidity"` has CL hops and `budget`.
+Both use existing 1–3-hop acyclic route checks and must match the requested pair.
+Comparing separate families does not construct a mixed-family path.
+
+Malformed requests fail before RPC. A request snapshots its inputs, pins every
+candidate to the same number/hash/timestamp and verifies the transport chain.
+The block must be at or behind the initial head, within `maxAgeBlocks` at both
+ends; equality is accepted. A reorg, disappearing block, regressing head, chain
+change or differing candidate decimals invalidates the comparison. A stale or
+future block throws `SwapError("BoundExceeded")`; incoherent identity throws
+`SwapError("InconsistentQuote")`. Transport failures during these shared checks
+propagate; they cannot become partial success. Explicit historical inspection
+outside this age policy can use the individual readers.
+
+`SwapQuoteResult` has `coordinate`, Unix `timestamp`, `observedHead`,
+`expiresAfterBlock`, `rankingPolicy: "highest-estimated-output"`, `eligibility`,
+`candidates`, `ranked` candidate IDs and nullable `best`. Output ordering is
+descending bigint output-token base units, then ascending ASCII candidate ID.
+`eligibility: "all-quotes"` compares display estimates even for quote-only
+assets. `"writer-compatible"` excludes quotes whose existing writer profile is
+false. Neither establishes exact-call simulation or authorizes an execution;
+`rankBasicSwapQuotes` retains its original writer-compatible contract.
+
+| Result field or state | Meaning                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `complete`            | Every supplied candidate produced an eligible quote.                                                                                                          |
+| `partial`             | At least one eligible quote exists; only optional candidates failed or were ineligible.                                                                       |
+| `incomplete`          | A required candidate failed or was ineligible; `best` is null even if provisional `ranked` candidates exist.                                                  |
+| `unavailable`         | No eligible candidate remains and no required failure took precedence; `best` is null.                                                                        |
+| `coverage`            | `scope: "provided-candidates-only"`, numeric `requested`, actual reader `attempted`, successful `quoted`, `eligible`, `failed` and `requiredFailures` counts. |
+| `priceImpact`         | `{status: "unavailable", reason: "no-validated-marginal-price-reference"}`; no zero-impact assumption or reserve-ratio approximation.                         |
+| `gas`                 | `{status: "not-estimated", rankingAdjustment: "none"}`.                                                                                                       |
+| `currencyConversion`  | `"none"`; no gas/output-token or fiat conversion is assumed.                                                                                                  |
+
+Each `SwapQuoteCandidateResult` retains input `id` and `required`. `status:
+"quoted" | "ineligible"` includes its family, full existing quote and per-hop
+`fees`. Every `SwapQuoteFee` contains `pool`, input `token`, bigint `decimals`
+and `amount` in that asset's base units. Basic fees reuse the Pools source-based
+helper; CL fees come from each traversal. Fees are already reflected in output;
+do not subtract them again or sum fees of different assets as one currency.
+The output incorporates size/fees but does not isolate numeric marginal impact.
+
+Failed candidates retain `SwapQuoteIssue` with `code: "ReaderUnavailable" |
+"QuoteUnavailable" | "InvalidQuote"`, a stable `message`, and optional upstream
+`cause` for local diagnosis. Causes can contain private provider details: redact
+before logging or presentation. Missing reader, liquidity, tick-budget or
+provider failures stay visible; zero, partial and malformed quotes never rank.
+Candidate results retain request order; a best evaluated estimate is not a
+global optimum, minimum received, USD price or usable execution preparation.
+Requote for changed inputs, state or freshness policy. Qualified review and
+numeric marginal-impact requirements remain separate from private implementation.
+
+```ts
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import { createBasicPoolReader, createCLPoolReader } from "@mezo-dev-kit/pools";
+import {
+  createBasicSwapReader,
+  createCLSwapReader,
+  createSwapQuoteReader,
+} from "@mezo-dev-kit/swaps/quotes";
+import type { SwapQuoteRequest } from "@mezo-dev-kit/swaps/quotes";
+import type { RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport;
+declare const request: SwapQuoteRequest;
+const registry = createContractRegistry();
+const config = { networkId: "mezo-mainnet", registry, transport } as const;
+const reader = createSwapQuoteReader({
+  networkId: config.networkId,
+  transport,
+  basic: createBasicSwapReader({ ...config, pools: createBasicPoolReader(config) }),
+  concentratedLiquidity: createCLSwapReader({ ...config, pools: createCLPoolReader(config) }),
+});
+const result = await reader.quote(request);
+const best = result.best === null ? undefined : result.candidates.find((c) => c.id === result.best);
+if (best?.status === "quoted") console.log(best.quote.estimatedAmountOut, best.fees);
+console.log(result.state, result.coverage, result.priceImpact, result.gas);
+```
+
 ## Concentrated-liquidity routes and quotes
 
 `validateCLSwapRoute(route, intermediateAssets)` validates one to three

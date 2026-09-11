@@ -19,7 +19,7 @@ pending qualified protocol review and release.
 | `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
 | `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
 | `@mezo-dev-kit/pools`                   | Basic liquidity/fees; CL math, reads and NFT position lifecycle | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
-| `@mezo-dev-kit/swaps`                   | Bounded basic/CL quotes and exact-input swaps                  | [Swaps reference](../../packages/swaps/REFERENCE.md)                                     |
+| `@mezo-dev-kit/swaps`                   | Basic/CL swaps; `/quotes` provides read-only candidate comparison | [Swaps reference](../../packages/swaps/REFERENCE.md)                                   |
 | `@mezo-dev-kit/prices`                  | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                                   |
 | `@mezo-dev-kit/tokens`                  | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                                    |
 | `@mezo-dev-kit/incentives`              | Gauges, locks, voting, fee/bribe and bounded rebase claims     | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)                 |

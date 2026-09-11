@@ -1,5 +1,18 @@
 # Swap and routing gaps
 
+## Private quote comparison qualification
+
+The private [Swaps reference](../../../../packages/swaps/REFERENCE.md) now defines
+a writer-free quote subpath and bounded basic/CL candidate comparison. Existing
+readers own generation, discovery and math. Required/optional failures, explicit
+display-versus-writer-compatible eligibility, per-hop fee units and common
+coordinate/freshness checks are implementation contracts awaiting qualification.
+Numeric marginal price impact remains unavailable pending an owning Pools
+reference; gas/currency conversion is not assumed. This does not alter accepted
+execution ranking, route evidence dates or canonical support status.
+
+## Accepted knowledge and wider requirements
+
 - Qualified Level 3 review accepted the bounded knowledge model on 2026-08-25;
   the module still exposes no public reader or writer.
 - No current official Mezo Quoter or Universal Router deployment was

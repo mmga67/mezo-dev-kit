@@ -168,6 +168,12 @@ configure the pool target resolver for approvals/claims, and keep approval,
 submission and reconciliation records separate. Initial writers accept the
 verified MUSD/mUSDC assets; broader quoted routes are not automatically executable.
 
+For read-only comparison, import `@mezo-dev-kit/swaps/quotes`. Its bounded
+candidate reader preserves coverage and partial failures and requires explicit
+eligibility. Required failures suppress best selection; price impact, gas and
+currency conversion are not assumed. Follow the owning Swaps reference for the
+private Node distribution and freshness contract.
+
 The private institutional debt reader exposes bounded requested positions,
 independent aggregate fees and both Enclave authority models. Keep unavailable
 price/health visible and preserve subset coverage. Recorded triparty UTXOs need

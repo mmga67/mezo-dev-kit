@@ -463,6 +463,12 @@ until token behavior qualifies. [ADR-0018](docs/decisions/0018-basic-pools-and-s
 records the operation, simulation and reconciliation boundaries. Canonical
 support and publication remain subject to qualified review.
 
+The deliberate `@mezo-dev-kit/swaps/quotes` subpath exposes reader/route helpers
+and bounded candidate comparison without writer exports. It composes existing
+readers at one coordinate, retains required/optional failures, and keeps display
+ranking separate from writer compatibility. The root API and dependency direction
+remain compatible; the subpath is not a separately isolated distribution.
+
 Pools also owns the private CL tick/liquidity/fee calculations and bounded
 pool/NFT reader and ordinary unstaked MUSD/mUSDC NFT position writer. Numerical coefficients derive from retained, digest-verified
 source; Contracts owns root runtime projections. Read results distinguish active,

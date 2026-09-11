@@ -155,3 +155,14 @@ for (const [directory, name, exports] of [
   assert.equal(result.status, 0, result.stderr);
 }
 process.stdout.write("Private SDK runtime entrypoints and deep-import boundaries passed.\n");
+const quoteSource = `import assert from 'node:assert/strict';
+const api = await import('@mezo-dev-kit/swaps/quotes');
+assert.deepEqual(Object.keys(api).sort(), ['SwapError', 'createBasicSwapReader', 'createCLSwapReader', 'createSwapQuoteReader', 'encodeCLSwapPath', 'rankBasicSwapQuotes', 'validateBasicSwapRoute', 'validateCLSwapRoute']);
+await assert.rejects(import('@mezo-dev-kit/swaps/quote-reader'), {code:'ERR_PACKAGE_PATH_NOT_EXPORTED'});
+`;
+const quoteCheck = spawnSync(process.execPath, ["--input-type=module", "--eval", quoteSource], {
+  cwd: resolve(root, "packages/swaps"),
+  encoding: "utf8",
+});
+assert.equal(quoteCheck.status, 0, quoteCheck.stderr);
+process.stdout.write("Read-only Swaps subpath exports and deep-import boundary passed.\n");
