@@ -77,6 +77,7 @@ export interface CLPoolSnapshot {
   readonly unlocked: boolean;
   readonly liquidity: bigint;
   readonly stakedLiquidity: bigint;
+  readonly maxLiquidityPerTick: bigint;
   readonly fee: bigint;
   readonly unstakedFee: bigint;
   readonly globalFee0X128: bigint;
@@ -86,6 +87,9 @@ export interface CLPoolSnapshot {
   readonly poolBalance0: bigint;
   readonly poolBalance1: bigint;
   readonly nativeBalance: bigint;
+  readonly managerNativeBalance: bigint;
+  readonly nftSupply: bigint;
+  readonly writeCompatible: boolean;
   readonly ownedCount: bigint;
   readonly ticks: readonly Readonly<CLTick>[];
   readonly positions: readonly Readonly<CLPosition>[];

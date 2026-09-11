@@ -85,7 +85,10 @@ verification, and stale dynamic mappings.
   canonical writer support remains proposed. The private Pools package now implements basic MUSD/mUSDC liquidity and fee writers; inspect its current README/REFERENCE.
 - No current official Quoter identity is known.
 - The private Pools package also has exact CL tick/liquidity/fee calculations
-  and a bounded pool/NFT reader. Check current method references: distinguish
+  and a bounded pool/NFT reader plus an ordinary unstaked MUSD/mUSDC NFT writer.
+  Mint uses the existing-pool zero-price sentinel. Decrease credits principal;
+  collection reconciles actual payment separately from manager accounting.
+  Check current method references: distinguish
   rounding for mint debt versus principal, fee-growth wrap/truncation, active
   versus staked liquidity, and verified versus unknown beneficial depositors.
 - Zero minimum outputs are not safe defaults.

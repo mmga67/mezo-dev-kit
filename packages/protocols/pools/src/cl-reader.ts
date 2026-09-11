@@ -2,7 +2,7 @@ import { getNetwork } from "@mezo-dev-kit/chains";
 import { getTokenInterface } from "@mezo-dev-kit/contracts";
 import type { ContractAbiEntry, ContractId } from "@mezo-dev-kit/contracts";
 import { verifyContractRuntime } from "@mezo-dev-kit/core";
-import type { ReadCoordinate } from "@mezo-dev-kit/core";
+import type { ExecutionTargetResolver, ReadCoordinate } from "@mezo-dev-kit/core";
 import {
   createAbiCodec,
   parseAddress,
@@ -13,6 +13,7 @@ import {
 import type { AbiValue } from "@mezo-dev-kit/evm";
 import { createTokenReader } from "@mezo-dev-kit/tokens";
 import { poolAddress, poolEntry, poolRequire } from "./basic.ts";
+import { verifyPoolWriterAssets } from "./assets.ts";
 import {
   calculateCLAmounts,
   calculateCLFees,
@@ -400,7 +401,11 @@ export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolR
         );
       }
       const tokenInput = (address: `0x${string}`) => ({
-        target: { contractId: factory.contractId, address },
+        target: {
+          contractId: factory.contractId,
+          address,
+          targetRole: address === key.token0 ? "cl-token-0" : "cl-token-1",
+        },
         account,
         spender: manager.address,
         coordinate,
@@ -410,6 +415,12 @@ export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolR
         tokens.read(tokenInput(key.token1)),
       ]);
       const snapshot = {
+        writeCompatible: await verifyPoolWriterAssets({
+          registry,
+          transport,
+          coordinate,
+          tokens: [token0, token1],
+        }),
         coordinate,
         timestamp,
         providerId: transport.id,
@@ -427,6 +438,7 @@ export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolR
         unlocked: boolean(slot[5]),
         liquidity,
         stakedLiquidity,
+        maxLiquidityPerTick: parseUint(await one(pool, poolAbi, "maxLiquidityPerTick"), 128),
         fee: parseUint(await one(pool, poolAbi, "fee"), 24),
         unstakedFee: parseUint(
           await one(factory.address, factory.readAbi, "getUnstakedFee", [pool]),
@@ -439,6 +451,8 @@ export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolR
         poolBalance0: parseUint(await one(key.token0, getTokenInterface(), "balanceOf", [pool])),
         poolBalance1: parseUint(await one(key.token1, getTokenInterface(), "balanceOf", [pool])),
         nativeBalance: parseUint(await transport.getBalance(account, coordinate)),
+        managerNativeBalance: parseUint(await transport.getBalance(manager.address, coordinate)),
+        nftSupply: parseUint(await one(manager.address, manager.readAbi, "totalSupply")),
         ownedCount: parseUint(await one(manager.address, manager.readAbi, "balanceOf", [account])),
         ticks: Object.freeze(ticks),
         positions: Object.freeze(positions),
@@ -452,4 +466,35 @@ export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolR
       return Object.freeze(snapshot);
     },
   } satisfies CLPoolReader);
+}
+/** Approval token targets remain bound to the verified CL pool and writer asset generation. */
+export function createCLPositionTargetResolver(config: {
+  readonly reader: CLPoolReader;
+  readonly key: CLPoolKey;
+  readonly account: `0x${string}`;
+}): ExecutionTargetResolver {
+  const key = Object.freeze({ ...config.key }),
+    account = poolAddress(config.account);
+  return async (input) => {
+    poolRequire(
+      input.contractId === "mezo-earn.cl-factory" &&
+        ["cl-token-0", "cl-token-1"].includes(input.role),
+      "IdentityMismatch",
+      "unknown CL approval role",
+    );
+    const snapshot = await config.reader.read({
+      account,
+      key,
+      blockNumber: input.coordinate.blockNumber,
+    });
+    poolRequire(
+      snapshot.writeCompatible &&
+        snapshot.coordinate.blockHash === input.coordinate.blockHash &&
+        snapshot.coordinate.chainId === input.coordinate.chainId &&
+        snapshot.coordinate.networkId === input.coordinate.networkId,
+      "IdentityMismatch",
+      "CL approval target generation or coordinate differs",
+    );
+    return input.role === "cl-token-0" ? snapshot.key.token0 : snapshot.key.token1;
+  };
 }

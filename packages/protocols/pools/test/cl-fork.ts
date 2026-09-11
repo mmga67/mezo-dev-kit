@@ -17,17 +17,21 @@ import type { AbiValue } from "@mezo-dev-kit/evm";
 import { createCLPoolReader, sortCLPoolKey } from "@mezo-dev-kit/pools";
 import { verifyLocalForkParent } from "../../../../scripts/lib/local-native-fixture.ts";
 import { loadKnowledgeReference } from "../../../../scripts/lib/knowledge-reference.ts";
+import { clPositionForkWorkflows } from "./cl-position-fork-workflows.ts";
 function object(value: unknown): Record<string, unknown> {
   assert(value && typeof value === "object" && !Array.isArray(value));
   return value as Record<string, unknown>;
 }
-const [localUrl, sourceUrl] = process.argv.slice(2);
+const [localUrl, sourceUrl, mode] = process.argv.slice(2);
 if (
   !localUrl ||
   !sourceUrl ||
+  (mode !== undefined && mode !== "positions") ||
   !["localhost", "127.0.0.1", "[::1]"].includes(new URL(localUrl).hostname)
 )
-  throw new Error("usage: node test/cl-fork.ts <localhost-anvil-url> <read-only-source-rpc>");
+  throw new Error(
+    "usage: node test/cl-fork.ts <localhost-anvil-url> <read-only-source-rpc> [positions]",
+  );
 let id = 0;
 const request: RpcRequest = async (input) => {
   const callId = ++id,
@@ -101,117 +105,134 @@ async function call(
   )[0];
 }
 const reader = createCLPoolReader({ networkId: "mezo-mainnet", registry, transport });
-const manager = registry.resolve({
-  contractId: "mezo-earn.cl-position-manager",
-  networkId: network.id,
-  blockNumber,
-});
-const supply = parseUint(await call("totalSupply", [], manager)),
-  candidates: { tokenId: bigint; token0: `0x${string}`; token1: `0x${string}`; spacing: bigint }[] =
-    [];
-for (let i = 0n; i < supply && i < 64n; i++) {
-  const tokenId = parseUint(await call("tokenByIndex", [i], manager));
-  const abi = manager.readAbi.find((row) => row.type === "function" && row.name === "positions");
-  assert(abi);
-  const row = codec.decodeFunction(
-    abi,
-    await transport.read({
-      networkId: network.id,
-      chainId: network.evmChainId,
-      blockNumber,
-      blockHash: anchorHash,
-      contractId: manager.contractId,
-      address: manager.address,
-      data: codec.encodeFunction(abi, [tokenId]),
-    }),
-  );
-  assert(typeof row[4] === "bigint");
-  candidates.push({
-    tokenId,
-    token0: parseAddress(row[2]),
-    token1: parseAddress(row[3]),
-    spacing: row[4],
+if (mode === "positions") {
+  const key = sortCLPoolKey({ tokenA: musd.address, tokenB: musdc, tickSpacing: 1 });
+  await clPositionForkWorkflows({
+    registry,
+    transport,
+    request,
+    account,
+    key,
+    musd: musd.address,
+    musdc,
   });
-}
-let found = false;
-let positionsChecked = 0;
-for (const tickSpacing of [1, 10, 50, 100, 200, 2000]) {
-  const key = sortCLPoolKey({ tokenA: musd.address, tokenB: musdc, tickSpacing });
-  if (
-    parseAddress(await call("getPool", [key.token0, key.token1, BigInt(tickSpacing)])) ===
-    `0x${"0".repeat(40)}`
-  )
-    continue;
-  const tokenIds = candidates
-    .filter(
-      (row) =>
-        row.token0 === key.token0 &&
-        row.token1 === key.token1 &&
-        row.spacing === BigInt(key.tickSpacing),
-    )
-    .slice(0, 16)
-    .map((row) => row.tokenId);
-  const snapshot = await reader.read({ account, key, tokenIds });
-  assert.equal(snapshot.coordinate.blockHash, parent.hash);
-  assert(snapshot.stakedLiquidity <= snapshot.liquidity);
-  for (const position of snapshot.positions) {
-    if (position.staked) {
-      assert.equal(position.owner, snapshot.gauge?.address);
-      assert.equal(position.beneficialDepositor, null);
-      assert.equal(position.gaugeReward, null);
-    } else assert.equal(position.beneficialDepositor, position.owner);
+} else {
+  const manager = registry.resolve({
+    contractId: "mezo-earn.cl-position-manager",
+    networkId: network.id,
+    blockNumber,
+  });
+  const supply = parseUint(await call("totalSupply", [], manager)),
+    candidates: {
+      tokenId: bigint;
+      token0: `0x${string}`;
+      token1: `0x${string}`;
+      spacing: bigint;
+    }[] = [];
+  for (let i = 0n; i < supply && i < 64n; i++) {
+    const tokenId = parseUint(await call("tokenByIndex", [i], manager));
+    const abi = manager.readAbi.find((row) => row.type === "function" && row.name === "positions");
+    assert(abi);
+    const row = codec.decodeFunction(
+      abi,
+      await transport.read({
+        networkId: network.id,
+        chainId: network.evmChainId,
+        blockNumber,
+        blockHash: anchorHash,
+        contractId: manager.contractId,
+        address: manager.address,
+        data: codec.encodeFunction(abi, [tokenId]),
+      }),
+    );
+    assert(typeof row[4] === "bigint");
+    candidates.push({
+      tokenId,
+      token0: parseAddress(row[2]),
+      token1: parseAddress(row[3]),
+      spacing: row[4],
+    });
   }
-  positionsChecked += snapshot.positions.length;
-  process.stdout.write(
-    `CL pool ${snapshot.pool}: spacing=${tickSpacing} tick=${snapshot.tick} liquidity=${snapshot.liquidity} staked=${snapshot.stakedLiquidity} gauge=${snapshot.gauge?.address ?? "none"} positions=${snapshot.positions.length}\n`,
-  );
-  const wrongClone = createCLPoolReader({
-    networkId: "mezo-mainnet",
-    registry,
-    transport: {
-      ...transport,
-      getCode: async (address, at) =>
-        address === snapshot.pool ? "0x00" : transport.getCode(address, at),
-    },
-  });
-  await assert.rejects(wrongClone.read({ account, key }));
-  const isPool = factory.readAbi.find((row) => row.type === "function" && row.name === "isPool");
-  assert(isPool);
-  const isPoolData = codec.encodeFunction(isPool, [snapshot.pool]);
-  const wrongMapping = createCLPoolReader({
-    networkId: "mezo-mainnet",
-    registry,
-    transport: {
-      ...transport,
-      read: async (input) =>
-        input.address === factory.address && input.data === isPoolData
-          ? `0x${"0".repeat(64)}`
-          : transport.read(input),
-    },
-  });
-  await assert.rejects(wrongMapping.read({ account, key }), /factory recognition/);
-  let anchors = 0;
-  const wrongAnchor = createCLPoolReader({
-    networkId: "mezo-mainnet",
-    registry,
-    transport: {
-      ...transport,
-      getBlock: async (number) => {
-        const block = await transport.getBlock(number);
-        return ++anchors > 1 && block ? { ...block, hash: `0x${"ef".repeat(32)}` } : block;
+  let found = false;
+  let positionsChecked = 0;
+  for (const tickSpacing of [1, 10, 50, 100, 200, 2000]) {
+    const key = sortCLPoolKey({ tokenA: musd.address, tokenB: musdc, tickSpacing });
+    if (
+      parseAddress(await call("getPool", [key.token0, key.token1, BigInt(tickSpacing)])) ===
+      `0x${"0".repeat(40)}`
+    )
+      continue;
+    const tokenIds = candidates
+      .filter(
+        (row) =>
+          row.token0 === key.token0 &&
+          row.token1 === key.token1 &&
+          row.spacing === BigInt(key.tickSpacing),
+      )
+      .slice(0, 16)
+      .map((row) => row.tokenId);
+    const snapshot = await reader.read({ account, key, tokenIds });
+    assert.equal(snapshot.coordinate.blockHash, parent.hash);
+    assert(snapshot.stakedLiquidity <= snapshot.liquidity);
+    for (const position of snapshot.positions) {
+      if (position.staked) {
+        assert.equal(position.owner, snapshot.gauge?.address);
+        assert.equal(position.beneficialDepositor, null);
+        assert.equal(position.gaugeReward, null);
+      } else assert.equal(position.beneficialDepositor, position.owner);
+    }
+    positionsChecked += snapshot.positions.length;
+    process.stdout.write(
+      `CL pool ${snapshot.pool}: spacing=${tickSpacing} tick=${snapshot.tick} liquidity=${snapshot.liquidity} staked=${snapshot.stakedLiquidity} gauge=${snapshot.gauge?.address ?? "none"} positions=${snapshot.positions.length}\n`,
+    );
+    const wrongClone = createCLPoolReader({
+      networkId: "mezo-mainnet",
+      registry,
+      transport: {
+        ...transport,
+        getCode: async (address, at) =>
+          address === snapshot.pool ? "0x00" : transport.getCode(address, at),
       },
-    },
-  });
-  // The shared token reader detects the changed coordinate before the pool's
-  // final anchor check. Preserve that owning error rather than masking it.
-  await assert.rejects(wrongAnchor.read({ account, key }), {
-    name: "TokenError",
-    code: "InvalidInput",
-  });
-  found = true;
+    });
+    await assert.rejects(wrongClone.read({ account, key }));
+    const isPool = factory.readAbi.find((row) => row.type === "function" && row.name === "isPool");
+    assert(isPool);
+    const isPoolData = codec.encodeFunction(isPool, [snapshot.pool]);
+    const wrongMapping = createCLPoolReader({
+      networkId: "mezo-mainnet",
+      registry,
+      transport: {
+        ...transport,
+        read: async (input) =>
+          input.address === factory.address && input.data === isPoolData
+            ? `0x${"0".repeat(64)}`
+            : transport.read(input),
+      },
+    });
+    await assert.rejects(wrongMapping.read({ account, key }), /factory recognition/);
+    let anchors = 0;
+    const wrongAnchor = createCLPoolReader({
+      networkId: "mezo-mainnet",
+      registry,
+      transport: {
+        ...transport,
+        getBlock: async (number) => {
+          const block = await transport.getBlock(number);
+          return ++anchors > 1 && block ? { ...block, hash: `0x${"ef".repeat(32)}` } : block;
+        },
+      },
+    });
+    // The shared token reader detects the changed coordinate before the pool's
+    // final anchor check. Preserve that owning error rather than masking it.
+    await assert.rejects(wrongAnchor.read({ account, key }), {
+      name: "TokenError",
+      code: "InvalidInput",
+    });
+    found = true;
+  }
+  assert(found, "no MUSD/mUSDC CL pool in bounded spacing candidates");
+  assert(positionsChecked > 0, "no matching NFTs among the first 64 enumerated positions");
+  process.stdout.write(
+    `${positionsChecked} NFTs read; wrong clone, factory recognition and anchor rejected.\n`,
+  );
 }
-assert(found, "no MUSD/mUSDC CL pool in bounded spacing candidates");
-assert(positionsChecked > 0, "no matching NFTs among the first 64 enumerated positions");
-process.stdout.write(
-  `${positionsChecked} NFTs read; wrong clone, factory recognition and anchor rejected.\n`,
-);

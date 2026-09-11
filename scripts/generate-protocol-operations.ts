@@ -52,6 +52,10 @@ for (const [id, names] of [
   ["incentives.validators-voter", ["vote", "reset", "claimBribes"]],
   ["incentives.mezo-rebase-distributor", ["claim"]],
   [
+    "mezo-earn.cl-position-manager",
+    ["mint", "increaseLiquidity", "decreaseLiquidity", "collect", "burn"],
+  ],
+  [
     "incentives.ve-btc",
     [
       "createLock",

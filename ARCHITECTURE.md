@@ -464,9 +464,11 @@ records the operation, simulation and reconciliation boundaries. Canonical
 support and publication remain subject to qualified review.
 
 Pools also owns the private CL tick/liquidity/fee calculations and bounded
-pool/NFT reader. Numerical coefficients derive from retained, digest-verified
+pool/NFT reader and ordinary unstaked MUSD/mUSDC NFT position writer. Numerical coefficients derive from retained, digest-verified
 source; Contracts owns root runtime projections. Read results distinguish active,
 staked and NFT liquidity and require stake-set evidence for a gauge depositor.
+Position settlement separates principal credit, manager fee accounting and
+actual wallet payment; gauge custody and emissions remain Incentives-owned.
 This adds no package dependency or release support.
 
 `@mezo-dev-kit/musd-institutional-debt` owns private Enclave/position readers and

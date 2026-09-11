@@ -15,31 +15,11 @@ import {
 import type { AbiValue } from "@mezo-dev-kit/evm";
 import { createTokenReader } from "@mezo-dev-kit/tokens";
 import type { BasicPoolKey, BasicPoolReader, BasicPoolReaderConfig } from "./types.ts";
-import { POOL_MODEL } from "./model.generated.ts";
 import { calculateBasicPoolFees } from "./fees.ts";
-
-export type PoolErrorCode =
-  | "InvalidInput"
-  | "IdentityMismatch"
-  | "UnavailablePool"
-  | "UnsafeState"
-  | "BoundExceeded"
-  | "ReconciliationMismatch";
-export class PoolError extends Error {
-  readonly code: PoolErrorCode;
-  constructor(code: PoolErrorCode, message: string) {
-    super(message);
-    this.name = "PoolError";
-    this.code = code;
-  }
-}
-export function poolRequire(
-  condition: boolean,
-  code: PoolErrorCode,
-  message: string,
-): asserts condition {
-  if (!condition) throw new PoolError(code, message);
-}
+import { verifyPoolWriterAssets } from "./assets.ts";
+import { poolRequire } from "./errors.ts";
+export { PoolError, poolRequire } from "./errors.ts";
+export type { PoolErrorCode } from "./errors.ts";
 export function poolAddress(value: unknown): `0x${string}` {
   const address = parseAddress(value);
   poolRequire(address !== `0x${"0".repeat(40)}`, "InvalidInput", "zero pool address input");
@@ -257,41 +237,14 @@ export function createBasicPoolReader(config: BasicPoolReaderConfig): Readonly<B
         read(key.token0, getTokenInterface(), "balanceOf", [pool]),
         read(key.token1, getTokenInterface(), "balanceOf", [pool]),
       ]);
-      const musd = registry.resolve({
-        networkId: network.id,
-        contractId: "musd.token",
-        blockNumber,
+      const writeCompatible = await verifyPoolWriterAssets({
+        registry,
+        transport,
+        coordinate,
+        tokens: [token0, token1],
       });
-      const writeCompatible = [key.token0, key.token1].every(
-        (address) => address === musd.address || address === POOL_MODEL.musdc.address,
-      );
       if (writeCompatible) {
-        await Promise.all([
-          verifyContractRuntime({ contract: musd, coordinate, transport }),
-          runtime(POOL_MODEL.musdc.address, POOL_MODEL.musdc.addressCodeSha256),
-          runtime(
-            POOL_MODEL.musdc.implementationAddress,
-            POOL_MODEL.musdc.implementationCodeSha256,
-          ),
-        ]);
-        poolRequire(
-          parseHash32(
-            await transport.getStorage(
-              POOL_MODEL.musdc.address,
-              POOL_MODEL.musdc.implementationSlot,
-              coordinate,
-            ),
-          ) === `0x${"0".repeat(24)}${POOL_MODEL.musdc.implementationAddress.slice(2)}`,
-          "IdentityMismatch",
-          "mUSDC implementation changed",
-        );
-        poolRequire(
-          lp.decimals === 18n &&
-            token0.decimals === (key.token0 === musd.address ? 18n : 6n) &&
-            token1.decimals === (key.token1 === musd.address ? 18n : 6n),
-          "IdentityMismatch",
-          "writer asset precision changed",
-        );
+        poolRequire(lp.decimals === 18n, "IdentityMismatch", "writer asset precision changed");
       }
       const feeValues = await Promise.all(
         ["index0", "index1", "supplyIndex0", "supplyIndex1", "claimable0", "claimable1"].map(

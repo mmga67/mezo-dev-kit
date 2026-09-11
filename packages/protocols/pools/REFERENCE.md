@@ -1,10 +1,10 @@
 # Pools SDK reference
 
 Import from `@mezo-dev-kit/pools`. The [README](README.md) owns current support:
-mainnet basic/CL pool reads and private MUSD/mUSDC basic liquidity/fee writers. Contracts owns
+mainnet basic/CL pool reads and private MUSD/mUSDC basic/CL position writers. Contracts owns
 source/ABI/runtime evidence; [Pools knowledge](../../../knowledge/protocols/pools/README.md)
-owns protocol semantics. CL position, pool creation and gauge writers
-are not supplied by this package yet.
+owns protocol semantics. Pool creation is not supplied; Incentives owns gauge
+custody and streamed rewards.
 
 ## Pool identity and reads
 
@@ -298,8 +298,10 @@ It separates `liquidity` (active), `stakedLiquidity` (active staked), and each
 NFT's liquidity. Other fields are `sqrtPriceX96`, numeric `tick`, `unlocked`,
 live `fee`/`unstakedFee`, `globalFee0X128`/`globalFee1X128`, wallet
 `token0`/`token1: TokenSnapshot` with manager as spender, `poolBalance0`,
-`poolBalance1`, native BTC `nativeBalance`, manager `ownedCount`, `ticks`,
-and `positions`. Token values retain their own decimals. Fee integers use the
+`poolBalance1`, native BTC `nativeBalance`, `managerNativeBalance`, manager
+`ownedCount`, global `nftSupply`, `maxLiquidityPerTick`, `writeCompatible`,
+`ticks`, and `positions`. `writeCompatible` requires the same verified MUSD/mUSDC
+asset profile as the basic writer. Token values retain their own decimals. Fee integers use the
 deployed CL fee scale of 1,000,000; these are not a quote, APR, or safe price feed.
 
 `CLTick` contains numeric `tick`, `liquidityGross`, signed `liquidityNet` and
@@ -341,3 +343,103 @@ const state = await reader.read({
 });
 console.log(state.positions[0]?.beneficialDepositor);
 ```
+
+## CL position operations
+
+`forecastCLPosition({snapshot, action, bounds}): CLPositionForecast` calculates
+one ordinary self-owned, unstaked position operation. `CLPositionAction` is:
+
+| `kind`     | Additional fields (amounts and NFT IDs are bigint)                   |
+| ---------- | -------------------------------------------------------------------- |
+| `mint`     | Numeric `tickLower`, `tickUpper`, `amount0Desired`, `amount1Desired` |
+| `increase` | `tokenId`, `amount0Desired`, `amount1Desired`                        |
+| `decrease` | `tokenId`, `liquidity`                                               |
+| `collect`  | `tokenId`, uint128 `amount0Max`, `amount1Max`                        |
+| `burn`     | `tokenId`                                                            |
+
+Mint uses an existing initialized pool and encodes the manager's zero price
+sentinel. Increase/mint require an approved factory, zero manager native refund
+custody, funded desired maxima, a positive signed-int128 liquidity delta and
+per-tick/total liquidity capacity. Amounts spent round up. Newly initialized
+boundaries establish their fee baseline and do not earn historical growth.
+Decrease rounds principal down and credits it to the NFT's owed balances; it
+pays nothing to the wallet. Collect caps fee/principal accounting independently
+for both assets. Burn requires zero liquidity and zero stored owed balances.
+Overflowed fee accounting is rejected. No pool creation, native wrapping,
+third-party recipient, gauge-held NFT mutation or implicit approval is included.
+
+`CLPositionBounds` requires `minAmount0`, `minAmount1`, `minLiquidity`,
+`sqrtPriceMinX96`, `sqrtPriceMaxX96`, Unix-second `deadline`, positive
+`maxDeadlineSeconds`, and nonnegative `maxBlockAge`. Every field is bigint.
+Each expected positive amount needs an explicit positive minimum; an expected
+zero amount needs zero. Increase/mint require positive minimum liquidity;
+the other operations require zero. The observed price must remain within the
+ordered Q64.96 interval. Min amounts and deadline are on-chain for mint,
+increase and decrease. Collection/burn, price and minimum-liquidity bounds are
+client checks in initial/final simulation and post-receipt reporting.
+
+`CLPositionForecast` contains `kind`, nullable `tokenId` (null before mint),
+`tickLower`, `tickUpper`, signed `liquidityDelta`, `liquidityAfter`,
+`amount0`, `amount1`, `tokensOwedAfter0`, `tokensOwedAfter1`, and
+`lastInsideAfter0X128`, `lastInsideAfter1X128`. Amounts represent spend for
+mint/increase, principal credit for decrease, and manager accounting caps for
+collect. The deployed pool may pay slightly less than the collection caps.
+
+`createCLPositionWriter({reader, execution, transport}): CLPositionWriter`
+provides `prepare({operationId, account, key, action, bounds})`,
+`simulate(prepared)`, `submit(prepared, simulated)`, and
+`reconcile(prepared, record)`. Preparation returns `PreparedCLPosition` with
+`snapshot`, frozen `action`/`bounds`, `forecast`, exact zero-value `transaction`,
+and explicit `approvals` entries (`token`, `requiredAmount`, `plan`). Desired
+maxima need manager allowance for mint/increase; other operations need none.
+Confirm each Tokens approval independently and reprepare. Use
+`createCLPositionTargetResolver({reader, key, account}): ExecutionTargetResolver`
+for Core's approval resolution: it accepts only the CL factory anchor and
+`cl-token-0`/`cl-token-1` roles and rereads verified assets at the exact coordinate.
+
+Simulation decodes exact manager output and checks current identity, owner,
+price, funding, approvals, minimums, deadline and age. Preparations and simulations
+must originate from the same writer. Submission rechecks state and Core reruns
+the verifier on the final exact call. Durable reconciliation validates saved
+calldata/identity before provider work, then uses the receipt predecessor and
+receipt block. It verifies NFT events/counts/ownership, manager fee accounting,
+pool Mint/Burn/Collect events, tick gross/net liquidity and fee boundaries,
+active/staked liquidity, token transfers, wallet/pool custody and native gas.
+
+`ReconciledCLPosition` contains `state: "reconciled"`, Core `record`, `receipt`,
+and `outcome: CLPositionOutcome`. The outcome has receipt-block `snapshot`,
+actual `tokenId`, `forecast`, `amount0`, `amount1`, signed `walletDelta0`,
+`walletDelta1`, native-base-unit `gasFee`, and `boundsSatisfied`. Actual collection
+payment comes from pool events and token/custody deltas; manager owed balances
+decrease by the accounting caps even when payment is lower. Decrease reports
+credited principal with zero wallet deltas. Other activity in the receipt block
+can prevent exact state attribution and is not silently ignored.
+
+```ts
+import { createCLPositionWriter, createCLPositionTargetResolver } from "@mezo-dev-kit/pools";
+import type { CLPoolReader, CLPoolKey, CLPositionBounds } from "@mezo-dev-kit/pools";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const reader: CLPoolReader, execution: ExecutionClient, transport: RpcTransport;
+declare const key: CLPoolKey, account: `0x${string}`, tokenId: bigint;
+declare const bounds: CLPositionBounds;
+const resolveTarget = createCLPositionTargetResolver({ reader, key, account });
+const writer = createCLPositionWriter({ reader, execution, transport });
+const prepared = await writer.prepare({
+  operationId: "application-owned-unique-id",
+  key,
+  account,
+  bounds,
+  action: {
+    kind: "collect",
+    tokenId,
+    amount0Max: (1n << 128n) - 1n,
+    amount1Max: (1n << 128n) - 1n,
+  },
+});
+console.log(resolveTarget, prepared.transaction); // Application consent precedes simulation/submission.
+```
+
+The [CL fork lifecycle](test/cl-position-fork-workflows.ts) demonstrates
+confirmed approvals, mint/increase, partial/full decrease, positive/zero collect
+and burn through public entrypoints. It preserves deployed token/manager/pool
+code, uses local funding and explicit nonzero gas, and restores its snapshot.

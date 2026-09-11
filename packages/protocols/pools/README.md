@@ -48,8 +48,18 @@ uint128 liquidity limits and modular fee growth. `createCLPoolReader` verifies
 accepted roots, clones, factory and gauge mappings at one block. It reads up to
 16 explicit NFTs and 32 additional ticks, preserves empty-pool state, separates
 active/staked/position liquidity and proves a supplied depositor through the
-gauge stake set. Unknown depositors remain null. These reads and calculations
-do not establish CL writer or release support.
+gauge stake set. Unknown depositors remain null.
+
+`createCLPositionWriter` handles self-owned unstaked MUSD/mUSDC NFTs: mint into
+existing initialized pools, increase/decrease liquidity, collect and burn a
+cleared NFT. Explicit approvals, token/liquidity/price/time bounds and exact
+simulation precede submission. Settlement separates removed principal credit
+from wallet payment, manager collection accounting from actual pool transfers,
+and token amounts from native gas. It checks NFT, tick and pool state as well
+as events. These private operations still require qualified review before release.
 
 The opt-in `test/cl-fork.ts` command takes the same localhost/source RPC arguments
 and checks bounded pool/NFT reads plus wrong-code/mapping/anchor failures.
+Append `positions` to run the eight-operation NFT lifecycle, with local funding
+and a 1-wei gas-price fixture. Every mutation is confined to the verified local
+fork and reverted. This does not qualify native engine behavior.

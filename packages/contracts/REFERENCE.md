@@ -156,6 +156,11 @@ primary source. Private operation support remains proposed pending review.
 PoolFactory runtime identities are also projected. Direct Pool `mint`, `burn`
 and `swap`, governance and unsafe/FOT variants are not public operation helpers.
 
+The CL position manager projection supplies `mint`, `increaseLiquidity`,
+`decreaseLiquidity`, `collect`, and `burn` with exact tuple shapes. Pools owns
+asset/owner/range checks, the existing-pool zero-price sentinel, approval
+planning, simulation and accounting-versus-payment reconciliation.
+
 ## Voting interface profiles
 
 `resolveVotingInterface({networkId, domain}): VotingInterface` selects a mainnet

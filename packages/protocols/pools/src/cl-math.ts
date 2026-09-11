@@ -1,5 +1,5 @@
 import { parseUint } from "@mezo-dev-kit/evm";
-import { poolRequire } from "./basic.ts";
+import { poolRequire } from "./errors.ts";
 import { POOL_MODEL } from "./model.generated.ts";
 const model = POOL_MODEL.cl,
   minTick = model.constants.minTick,

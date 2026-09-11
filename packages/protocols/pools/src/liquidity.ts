@@ -1,5 +1,5 @@
 import { parseUint } from "@mezo-dev-kit/evm";
-import { poolRequire } from "./basic.ts";
+import { poolRequire } from "./errors.ts";
 import type {
   BasicLiquidityAction,
   BasicLiquidityBounds,

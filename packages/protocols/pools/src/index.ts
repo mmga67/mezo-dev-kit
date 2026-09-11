@@ -40,7 +40,7 @@ export {
   calculateCLFees,
 } from "./cl-math.ts";
 export type { CLPriceRange, CLAmounts, CLFeeInput, CLFees } from "./cl-math.ts";
-export { sortCLPoolKey, createCLPoolReader } from "./cl-reader.ts";
+export { sortCLPoolKey, createCLPoolReader, createCLPositionTargetResolver } from "./cl-reader.ts";
 export type {
   CLPoolKey,
   CLPoolReaderConfig,
@@ -51,3 +51,12 @@ export type {
   CLPoolSnapshot,
   CLPoolReader,
 } from "./cl-types.ts";
+export { forecastCLPosition } from "./cl-actions.ts";
+export type { CLPositionAction, CLPositionBounds, CLPositionForecast } from "./cl-actions.ts";
+export { createCLPositionWriter } from "./cl-writer.ts";
+export type {
+  PreparedCLPosition,
+  CLPositionOutcome,
+  ReconciledCLPosition,
+  CLPositionWriter,
+} from "./cl-writer.ts";
