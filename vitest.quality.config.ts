@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: [
+      "scripts/test-local-tasks.test.ts",
       "scripts/test-pool-source.test.ts",
       "scripts/test-voting-interfaces.test.ts",
       "scripts/test-source-boundary.test.ts",

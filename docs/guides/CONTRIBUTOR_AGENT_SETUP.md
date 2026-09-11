@@ -40,6 +40,12 @@ For contribution work, follow the maintainer-selected branch and the
 Run these setup commands in the checkout where the agent executes, including
 remote or disposable workspaces that do not share your local files.
 
+For significant contributor work using local tasks, run `pnpm setup:tasks` and
+follow [task management](TASK_MANAGEMENT.md). An ignored task or nested
+instruction may be absent from a repository-wide search; use an explicit path
+or a targeted search including ignored files. `pnpm check:tasks` checks the
+actual local tree, and generic rules remain tracked even when that tree is absent.
+
 ## Verify files and runtime discovery
 
 Spot-check the assessment skill and verify that discovery output stays local:

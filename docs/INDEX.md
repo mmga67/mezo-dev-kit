@@ -33,6 +33,8 @@ domains.
 - `../CONTRIBUTING.md` — contributor workflow, verification, and review gates.
 - [Branch workflow](guides/BRANCH_WORKFLOW.md) — daily `feat/next` work,
   canonical `main`, ignored local data, Git safeguards and whole-feature merges.
+- [Task management](guides/TASK_MANAGEMENT.md) — local task IDs, lifecycle,
+  instruction discovery, tracked template and filesystem-based validation.
 - `../SECURITY.md` — private reporting and repository security boundaries.
 - `../LICENSE` — MIT license for repository source.
 - `../knowledge/README.md` — knowledge evidence and authority boundary.

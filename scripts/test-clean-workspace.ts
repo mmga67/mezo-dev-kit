@@ -37,6 +37,7 @@ try {
   }
 
   runPnpm(temporaryRoot, ["install", "--offline", "--frozen-lockfile"]);
+  runPnpm(temporaryRoot, ["check:tasks"]);
   runPnpm(temporaryRoot, ["typecheck"]);
   runPnpm(temporaryRoot, ["boundaries"]);
   runPnpm(temporaryRoot, ["build"]);

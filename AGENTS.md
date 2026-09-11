@@ -27,6 +27,15 @@ Promote complete reviewed commits, preserving ancestry; do not reconstruct
 filtered public snapshots. Inspect/preserve existing changes before switching
 branches, and refresh generated local skills after canonical updates.
 
+Ignored paths retain the same instruction and lifecycle requirements. Before
+using local records, read applicable instructions by explicit filesystem path;
+repository-wide searches may omit them. Follow
+[task management](docs/guides/TASK_MANAGEMENT.md): use status folders,
+`TASK-NNN-short-name.md`, the tracked template and current evidence. Use
+`pnpm tasks:list` or a targeted `rg --hidden --no-ignore` search for local tasks;
+run `pnpm check:tasks` after updating them. Never invent a parallel note format
+because a directory is ignored or absent from search results.
+
 ## Route the task once
 
 1. Identify the outcome, affected owners, risk, and nearest nested `AGENTS.md`.

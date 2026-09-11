@@ -67,13 +67,21 @@ artifact owner in docs, examples, templates, skills, or applications.
 1. Confirm the requested outcome and affected domains.
 2. Inspect existing files, tests, patterns, and current worktree changes.
 3. Classify the risk level.
-4. Agree on scope and acceptance criteria in an issue or pull request for
+4. Agree on scope and acceptance criteria in a task, issue or pull request for
    architectural, multi-step, migration, public-interface, or protocol-sensitive
    changes. Keep individual planning notes outside the public source snapshot.
 5. Identify authoritative evidence for every Mezo-specific or
    protocol-sensitive claim.
 6. Stop for direction if evidence conflicts, scope materially expands, or a
    public/security boundary must change unexpectedly.
+
+For local tasks, follow [task management](docs/guides/TASK_MANAGEMENT.md) and the
+[tracked template](docs/templates/TASK.md). Git ignore changes tracking and
+search visibility, not instruction authority. Read relevant ignored records
+and nested instructions explicitly. `pnpm setup:tasks`, `pnpm task:new` and
+`pnpm check:tasks` keep the local tree consistent; the last check also runs in
+`pnpm check`. Fresh checkouts do not require private task data. Resolve current
+status from evidence and preserve existing user authorization across resumes.
 
 ### Keep capability guidance current
 

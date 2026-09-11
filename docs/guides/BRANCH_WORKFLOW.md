@@ -25,6 +25,11 @@ merges, pushes and fresh clones. A separate clean clone/worktree has no local
 reference material. Back up local material separately if it must survive loss
 of this checkout.
 
+Ignoring these paths does not relax their instructions or record conventions.
+The tracked [task-management guide](TASK_MANAGEMENT.md) and template remain
+available in fresh checkouts. Local task checks read the filesystem directly;
+keep individual records ignored rather than changing Git policy for discovery.
+
 Root-only rules preserve maintained nested examples. Canonical reviews under
 `knowledge/*/review/` and shared memory seeds under `agents/memory/seed/` remain
 normal source; they are different owners from private working records.
