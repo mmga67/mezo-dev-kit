@@ -473,6 +473,11 @@ Incentives consumes a structural, injected verified position-reader port for
 CL gauge custody/rewards. Applications bind the public Pools reader to a key;
 Incentives adds reward updates, exact NFT approval and stake/claim/exit settlement.
 This preserves the package dependency graph and keeps pool fee math in Pools.
+Pools supplies exact CL swap-step, fee-split and bitmap arithmetic. Swaps uses
+those methods for bounded source-based quotes and owns CL router execution,
+crossing/fee state reconciliation and wallet outcomes. The initial MUSD/mUSDC
+writer profile is distinct from broader quote-only routes; no Quoter or atomic
+mixed-family router is assumed.
 This adds no package dependency or release support.
 
 `@mezo-dev-kit/musd-institutional-debt` owns private Enclave/position readers and

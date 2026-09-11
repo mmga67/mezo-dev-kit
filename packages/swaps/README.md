@@ -1,6 +1,6 @@
 # Swaps
 
-Private mainnet basic-pool quotes and exact-input swaps. The
+Private mainnet basic/CL pool quotes and exact-input swaps. The
 [SDK reference](REFERENCE.md) covers every export, method, unit and example.
 
 `createBasicSwapReader` consumes verified Pools discovery to quote one to three
@@ -20,7 +20,7 @@ payments, segregated fees, reserve changes and wallet outcome.
 
 Approvals are independent transactions. Applications own consent, signer, RPC,
 atomic operation storage, tracking and recovery. Qualified protocol review and
-release remain outstanding; this is a Node private workspace package. CL,
+release remain outstanding; this is a Node private workspace package.
 Universal Router, atomic mixed routes, native value and fee-on-transfer variants
 are not implemented by this facade.
 
@@ -35,3 +35,14 @@ the local Anvil fork for funding and transactions, and reverts its snapshot. It
 adds liquidity, swaps both directions, withdraws partially and fully, and claims
 LP fees after exit. All token and protocol code stays unchanged. Run sequentially
 with other fork harnesses.
+
+`createCLSwapReader` uses verified Pools discovery and source-based step/fee math
+to quote one to three contiguous CL hops without wallet approval or an assumed
+Quoter. Explicit budgets bound steps, bitmap words and initialized tick crossings.
+Partial fills and exhausted budgets reject the quote. `createCLSwapWriter`
+encodes the exact CL router tuple or packed path, confirms input approval
+separately, checks output in initial/final simulation and reconciles pool price,
+active/staked liquidity, crossed fee boundaries, gauge fees, token transfers,
+wallet/custody and native gas. Router native refund custody must be empty.
+The current verified MUSD/mUSDC asset profile permits single-hop writes; broader
+CL routes can be quoted without establishing writer compatibility.

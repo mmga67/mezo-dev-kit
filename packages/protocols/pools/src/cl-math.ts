@@ -87,6 +87,19 @@ function range(input: CLPriceRange) {
 function division(numerator: bigint, denominator: bigint, up: boolean) {
   return parseUint(numerator / denominator + (up && numerator % denominator !== 0n ? 1n : 0n));
 }
+/** Internal shared SqrtPriceMath delta sequence, including the two token0 roundings. */
+export function clAmountDelta(
+  a: bigint,
+  b: bigint,
+  liquidity: bigint,
+  token0: boolean,
+  up: boolean,
+): bigint {
+  poolRequire(a > 0n && a <= b, "InvalidInput", "ordered positive CL delta prices required");
+  return token0
+    ? division(division((liquidity << 96n) * (b - a), b, up), a, up)
+    : division(liquidity * (b - a), q96, up);
+}
 /** Principal burns floor; core mint debts ceil. Explicit rounding prevents display estimates becoming mint guarantees. */
 export function calculateCLAmounts(
   input: CLPriceRange & { readonly liquidity: bigint; readonly rounding: "down" | "up" },
@@ -95,9 +108,8 @@ export function calculateCLAmounts(
     liquidity = parseUint(input.liquidity, 128),
     up = input.rounding === "up";
   poolRequire(input.rounding === "down" || up, "InvalidInput", "explicit CL rounding required");
-  const amount0 = (a: bigint, b: bigint) =>
-      division(division((liquidity << 96n) * (b - a), b, up), a, up),
-    amount1 = (a: bigint, b: bigint) => division(liquidity * (b - a), q96, up);
+  const amount0 = (a: bigint, b: bigint) => clAmountDelta(a, b, liquidity, true, up),
+    amount1 = (a: bigint, b: bigint) => clAmountDelta(a, b, liquidity, false, up);
   return Object.freeze({
     amount0: current >= upper ? 0n : amount0(current <= lower ? lower : current, upper),
     amount1: current <= lower ? 0n : amount1(lower, current >= upper ? upper : current),

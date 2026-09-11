@@ -56,6 +56,7 @@ for (const [id, names] of [
     ["mint", "increaseLiquidity", "decreaseLiquidity", "collect", "burn", "approve"],
   ],
   ["incentives.cl-gauge-implementation", ["deposit", "withdraw", "getReward"]],
+  ["mezo-earn.cl-swap-router", ["exactInputSingle", "exactInput"]],
   [
     "incentives.ve-btc",
     [
@@ -159,6 +160,7 @@ for (const contractId of [
   "incentives.mezo-minter",
   "mezo-earn.cl-factory",
   "mezo-earn.cl-pool-implementation",
+  "mezo-earn.cl-swap-router",
   "mezo-earn.cl-position-manager",
   "incentives.cl-gauge-factory",
   "incentives.cl-gauge-implementation",

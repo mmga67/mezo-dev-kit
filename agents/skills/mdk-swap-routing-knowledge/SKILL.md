@@ -68,6 +68,13 @@ route, or infer transaction authorization.
     fixtures, generated reference, candidate/gap disposition, validator, and
     qualified-review packet together.
 
+The current private CL reader calculates exact-input estimates through bounded
+bitmap/tick traversal and Pools step/fee math, without an assumed Quoter. Inspect
+the current Swaps reference for step/word/crossing budgets, source overflow and
+rounding, empty-range versus partial-fill behavior, router native refund custody,
+and exact simulation/state reconciliation. MUSD/mUSDC is the initial writer
+asset profile; wider quotable paths do not establish executable multi-hop support.
+
 ## Verification
 
 Run every check declared by `knowledge/workflows/swaps/index.json`, then the

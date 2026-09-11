@@ -39,7 +39,7 @@ are `deposit`, `withdraw`, `getReward`; VaultV2 operations are `deposit`, `mint`
 scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
 Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
 MEZO rebase distributor/minter,
-CL factory, pool implementation, position manager and gauge factory/implementation,
+CL factory, pool implementation, position manager, swap router and gauge factory/implementation,
 institutional roots and Skip native interface. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution
@@ -164,6 +164,9 @@ The CL gauge implementation projection supplies `deposit(uint256)`,
 `withdraw(uint256)` and the two `getReward` overloads. Select explicit
 `inputTypes`; the address overload is voter-only. Calls target a verified dynamic
 gauge, not the implementation address. Incentives owns that role and lifecycle.
+The CL router projection supplies `exactInputSingle` and `exactInput`. Swaps owns
+bounded source-based quoting, token/spender checks, the exact tuple/packed path,
+default price-limit sentinel and complete receipt/asset reconciliation.
 
 ## Voting interface profiles
 

@@ -142,3 +142,138 @@ propagate. Refresh stale quotes; resolve identity/output mismatches before retry
 Exported types also include `BasicSwapHop`, `BasicSwapQuoteInput`, `BasicSwapQuote`,
 `BasicSwapReader`, `BasicSwapBounds`, `PreparedBasicSwap`, `BasicSwapOutcome`, and
 `BasicSwapWriter`.
+
+## Concentrated-liquidity routes and quotes
+
+`validateCLSwapRoute(route, intermediateAssets)` validates one to three
+contiguous, acyclic `CLSwapHop`s (`tokenIn`, `tokenOut`, numeric positive
+`tickSpacing`) and up to 16 explicit intermediate-token addresses. It returns
+frozen normalized hops. `encodeCLSwapPath(route): HexData` packs the first token,
+then each three-byte signed-int24 spacing and output token. It validates shape
+and continuity; candidate selection must also validate the caller's allowlist.
+Basic tuples and CL paths are separate formats. No atomic mixed router is assumed.
+
+`createCLSwapReader({networkId, registry, transport, pools}): CLSwapReader` requires
+mainnet, Contracts registry, Core transport and a verified Pools `CLPoolReader`.
+Its `quote(input: CLSwapQuoteInput)` takes `route`, `intermediateAssets`,
+`account`, positive signed-int256 `amountIn`, bigint `maxAgeBlocks`, optional
+`blockNumber`, and an explicit `budget: CLSwapBudget`:
+
+| Budget field      | Per-hop maximum                                          |
+| ----------------- | -------------------------------------------------------- |
+| `maxSteps`        | Positive integer, at most 256 price steps.               |
+| `maxBitmapWords`  | Positive integer, at most 32 distinct bitmap RPC reads.  |
+| `maxCrossedTicks` | Positive integer, at most 32 initialized boundary reads. |
+
+The reader checks the router generation/factory, coherent verified pools and
+final chain/hash. It uses source-exact integer steps, directional bitmap search,
+tick liquidity changes and fee splits. Quotes require initial active liquidity
+and a fully consumed input. Empty intervening ranges can be crossed within the
+budget; an exhausted budget or default price limit rejects partial output.
+No allowance, wallet funding, Quoter or transaction simulation is required to
+calculate a quote. Unknown token behavior remains outside writer compatibility.
+
+`CLSwapQuote` contains `sourceClass: "dex-execution-quote"`, `providerId`,
+`coordinate`, Unix `timestamp`, `account`, resolved `router`,
+`routerNativeBalance`, normalized `route`, `intermediateAssets`, packed `path`,
+`amountIn`, `estimatedAmountOut`, per-hop `amounts`, `pools`, input/output
+`TokenSnapshot`s with the router as spender, `maxAgeBlocks`, frozen `budget`,
+and `writeCompatible`. TTL is checked before execution; explicit historical
+coordinates remain usable for inspection/reconciliation. Amounts are bigint
+base units. A quote is an estimate, not a guaranteed output or oracle price.
+
+Each `CLSwapPoolQuote` contains the initial pool `snapshot`, `amountIn`,
+`amountOut`, `feeAmount`, resulting `sqrtPriceX96`, `tick`, `liquidity`,
+`stakedLiquidity`, `globalFee0X128`, `globalFee1X128`, `gaugeFeeBefore0`,
+`gaugeFeeBefore1`, `gaugeFeeAfter0`, `gaugeFeeAfter1`, numeric `steps`,
+`bitmapWords`, and `crossings`. A `CLSwapCrossing` records `tick`,
+`liquidityGross`, signed `liquidityNet`, `stakedLiquidityNet`, and
+`feeOutsideAfter0X128`/`feeOutsideAfter1X128`. Reward/time oracle updates caused
+by a crossing retain their protocol owners; swap reconciliation proves the
+swap's price/liquidity/fee and asset outcome.
+
+```ts
+import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import { createCLPoolReader } from "@mezo-dev-kit/pools";
+import { createCLSwapReader } from "@mezo-dev-kit/swaps";
+import type { RpcTransport } from "@mezo-dev-kit/core";
+declare const transport: RpcTransport;
+declare const account: `0x${string}`, tokenIn: `0x${string}`, tokenOut: `0x${string}`;
+const registry = createContractRegistry();
+const pools = createCLPoolReader({ networkId: "mezo-mainnet", registry, transport });
+const reader = createCLSwapReader({ networkId: "mezo-mainnet", registry, transport, pools });
+const quote = await reader.quote({
+  route: [{ tokenIn, tokenOut, tickSpacing: 10 }],
+  intermediateAssets: [],
+  account,
+  amountIn: 1000000n,
+  maxAgeBlocks: 2n,
+  budget: { maxSteps: 64, maxBitmapWords: 8, maxCrossedTicks: 8 },
+});
+console.log(quote.estimatedAmountOut, quote.writeCompatible);
+```
+
+## CL exact-input writer
+
+`createCLSwapWriter({reader, pools, execution, transport}): CLSwapWriter` provides
+`prepare(quoteInput & {operationId, bounds})`, `simulate(prepared)`,
+`submit(prepared, simulated)` and `reconcile(prepared, record)`. Preparation
+selects the latest state; it accepts the quote inputs except `blockNumber`.
+`CLSwapBounds` contains positive bigint `minAmountOut`, Unix `deadline`, positive
+`maxDeadlineSeconds`, and nonnegative `maxBlockAge`. The output minimum and
+deadline are on-chain. Both the original quote TTL and writer age bound apply.
+
+`PreparedCLSwap` contains `quote`, frozen `bounds`, Tokens `approval` plan,
+and exact zero-value `transaction`. Initial writer assets are MUSD/mUSDC, so
+current executable routes have one hop. Other CL routes remain quotable.
+The router's native balance must be zero before execution because `refundBTC`
+would otherwise transfer unrelated custody. Direct self recipient, sufficient
+wallet input and explicit deadline/output bounds are required. Single hops use
+`exactInputSingle` with the zero default-limit sentinel; the validated multi-hop
+encoder uses `exactInput` with the packed path when asset compatibility allows.
+
+`createCLSwapTargetResolver({reader, input}): ExecutionTargetResolver` binds an
+input-token approval to the selected quote request (without `blockNumber`). It
+rereads the exact coordinate, writer assets, factory anchor and input token role.
+Pass it to Core's `resolveTarget`. Confirm any exact/reset Tokens approval as a
+separate transaction and prepare again. No unlimited approval or native payment
+is inferred. The initial and final exact simulations must return the current
+quoted output and satisfy the minimum. Changed state, budgets, recipient,
+calldata, identity, allowance or age reject sending; preparations and simulations
+must belong to this writer.
+
+`ReconciledCLSwap` contains `state: "reconciled"`, Core `record`, `receipt`,
+and `outcome: CLSwapOutcome`. The outcome has `amountIn`, actual `amountOut`,
+receipt-block `pools`, native-base-unit `gasFee`, and `boundsSatisfied`.
+Recovery verifies persisted identity/calldata before provider work. It requotes
+the predecessor block and proves exact Swap events, token payer/recipient edges,
+pool balances, final price/tick and active/staked liquidity, crossed fee-growth
+boundaries, global/gauge fees, unchanged NFT counts, wallet changes and gas.
+Intermediate router custody is verified through its incoming/outgoing transfers.
+It rechecks the receipt coordinate after additional fee reads. Other activity
+in the receipt block can prevent this exact attribution and requires investigation.
+
+```ts
+import { createCLSwapWriter, createCLSwapTargetResolver } from "@mezo-dev-kit/swaps";
+import type { CLSwapReader, CLSwapQuoteInput } from "@mezo-dev-kit/swaps";
+import type { CLPoolReader } from "@mezo-dev-kit/pools";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+declare const reader: CLSwapReader, pools: CLPoolReader;
+declare const execution: ExecutionClient, transport: RpcTransport;
+declare const input: Omit<CLSwapQuoteInput, "blockNumber">;
+const resolveTarget = createCLSwapTargetResolver({ reader, input });
+const writer = createCLSwapWriter({ reader, pools, execution, transport });
+const quote = await reader.quote(input);
+const prepared = await writer.prepare({
+  ...input,
+  operationId: "application-owned-unique-swap",
+  bounds: {
+    minAmountOut: (quote.estimatedAmountOut * 99n) / 100n,
+    deadline: quote.timestamp + 120n,
+    maxDeadlineSeconds: 120n,
+    maxBlockAge: 2n,
+  },
+});
+console.log(resolveTarget, prepared.approval, prepared.transaction);
+// Application consent, confirmed approvals and re-preparation precede submission.
+```

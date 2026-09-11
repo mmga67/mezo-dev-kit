@@ -63,3 +63,8 @@ and checks bounded pool/NFT reads plus wrong-code/mapping/anchor failures.
 Append `positions` to run the eight-operation NFT lifecycle, with local funding
 and a 1-wei gas-price fixture. Every mutation is confined to the verified local
 fork and reverted. This does not qualify native engine behavior.
+
+CL exact-input step, fee-split and bitmap helpers support bounded Swaps quotes.
+They preserve source rounding, signed word traversal and the token0 overflow
+fallback. The fee scale and source digests derive from retained accepted source.
+Quotes, router execution and multi-pool outcomes remain owned by Swaps.

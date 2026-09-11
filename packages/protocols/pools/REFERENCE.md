@@ -443,3 +443,48 @@ The [CL fork lifecycle](test/cl-position-fork-workflows.ts) demonstrates
 confirmed approvals, mint/increase, partial/full decrease, positive/zero collect
 and burn through public entrypoints. It preserves deployed token/manager/pool
 code, uses local funding and explicit nonzero gas, and restores its snapshot.
+
+## CL swap calculations
+
+`calculateCLSwapStep(input: CLSwapStepInput): CLSwapStep` models one exact-input
+step between prices. Input has bigint `sqrtPriceX96`, `sqrtTargetX96`, uint128
+`liquidity`, nonnegative signed-int256 `amountRemaining`, and uint24 `fee` below
+the generated CL fee scale. It returns next `sqrtPriceX96`, net `amountIn`,
+`amountOut` and `feeAmount`. Input plus fee never exceeds the remaining amount.
+The target is inclusive of canonical min/max ratios; current price is in the
+normal half-open interval. Empty liquidity can advance a step to its target
+without consuming input; an executable quote still needs a complete bounded path.
+The source's token0 overflow fallback and separate rounding operations are
+preserved. A partial step charges the remaining rounding residue as fee, even
+when the configured fee is zero. This calculation is not a quote or simulation.
+
+`calculateCLSwapFeeSplit({feeAmount, liquidity, stakedLiquidity, unstakedFee}):
+CLSwapFeeSplit` requires positive uint128 active liquidity, staked liquidity no
+greater than total, and a levy no greater than the generated fee scale. All
+inputs are bigint. It returns `unstakedFeeAmount`, `gaugeFeeAmount`,
+`growthX128`, and `overflowed` for uint128 gauge accounting. The staked share and
+levy on the remaining unstaked share each round up separately. Global fee growth
+uses only unstaked liquidity; fully staked liquidity assigns the full fee to the
+gauge. Swaps rejects overflowing gauge accounting before writing.
+
+`getCLBitmapLocation({tick, tickSpacing, zeroForOne}): CLBitmapLocation` returns
+numeric `word`, `bit`, `compressed`. Negative ticks floor toward minus infinity;
+rightward search starts with the next compressed tick. `findCLBitmapTick` takes
+the same input plus a uint256 `bitmap` and returns numeric `tick` and boolean
+`initialized`. Only that word is searched. An empty word returns its directional
+boundary, which the caller must clamp to canonical ticks. The signed-int24
+result preserves the library's arithmetic; accepted factory spacing constrains
+usable execution inputs. Current ticks permit the left-of-minimum transition
+state for this low-level helper. Neither method performs RPC or enumerates pools.
+
+```ts
+import { calculateCLSwapStep, getCLTickSqrtRatio } from "@mezo-dev-kit/pools";
+const step = calculateCLSwapStep({
+  sqrtPriceX96: getCLTickSqrtRatio(0),
+  sqrtTargetX96: getCLTickSqrtRatio(-60),
+  liquidity: 10n ** 18n,
+  amountRemaining: 10n ** 15n,
+  fee: 3000n,
+});
+console.log(step.amountIn, step.amountOut, step.feeAmount);
+```

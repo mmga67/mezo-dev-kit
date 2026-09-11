@@ -9,6 +9,8 @@ export async function clMathModel(
   constants: Record<string, unknown>;
   tickMultipliers: readonly string[];
   sourceDigest: string;
+  swapFeeScale: string;
+  swapSourceDigest: string;
 }> {
   const model = object(record, "CL math"),
     constants = object(model.constants, "CL constants");
@@ -42,5 +44,17 @@ export async function clMathModel(
     BigInt(text(constants.Q128, "Q128")) !== 1n << 128n
   )
     throw new Error("TickMath source and accepted model differ");
-  return { constants, tickMultipliers, sourceDigest: poolSourceDigest(bundle) };
+  const poolBundle = await loadPoolSourceBundle(root, "mezo-earn.cl-pool-implementation");
+  const swapMath = selectPoolSource(poolBundle, "contracts/slipstream/core/libraries/SwapMath.sol");
+  const pool = selectPoolSource(poolBundle, "contracts/slipstream/core/CLPool.sol");
+  const feeScale = /uint256\(amountRemaining\),\s*(\d+e\d+) - feePips,/.exec(swapMath)?.[1];
+  if (!feeScale || !/unstakedFee\(\),\s*1_000_000/.test(pool) || Number(feeScale) !== 1_000_000)
+    throw new Error("CL swap and fee split scales differ");
+  return {
+    constants,
+    tickMultipliers,
+    sourceDigest: poolSourceDigest(bundle),
+    swapFeeScale: String(Number(feeScale)),
+    swapSourceDigest: poolSourceDigest(poolBundle),
+  };
 }

@@ -60,3 +60,15 @@ export type {
   ReconciledCLPosition,
   CLPositionWriter,
 } from "./cl-writer.ts";
+export {
+  calculateCLSwapStep,
+  calculateCLSwapFeeSplit,
+  getCLBitmapLocation,
+  findCLBitmapTick,
+} from "./cl-swap-math.ts";
+export type {
+  CLSwapStepInput,
+  CLSwapStep,
+  CLSwapFeeSplit,
+  CLBitmapLocation,
+} from "./cl-swap-math.ts";

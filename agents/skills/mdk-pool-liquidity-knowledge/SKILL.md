@@ -91,6 +91,9 @@ verification, and stale dynamic mappings.
   Check current method references: distinguish
   rounding for mint debt versus principal, fee-growth wrap/truncation, active
   versus staked liquidity, and verified versus unknown beneficial depositors.
+- Pools also owns exact CL swap-step, fee-split and bitmap calculations; Swaps
+  owns bounded quote traversal and router settlement. Preserve per-step rounding,
+  the token0 overflow fallback and separate gauge versus unstaked fee growth.
 - Zero minimum outputs are not safe defaults.
 - Implicit unlimited ERC-20 or ERC-721 approval is prohibited.
 - Executable reproduction proves byte correspondence, not authorship, audit
