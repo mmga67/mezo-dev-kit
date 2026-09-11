@@ -16,24 +16,24 @@ import { delimiter, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { validateAgentSkills } from "./lib/agent-skills.ts";
+import { isLocalSourcePath, LOCAL_SOURCE_ROOTS } from "./lib/source-boundary.ts";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const temporaryRoot = await mkdtemp(join(tmpdir(), "mdk-clean-workspace-"));
 const pnpmExecutable = await findPnpmExecutable();
-const excludedDirectoryNames = new Set([
-  ".git",
-  ".mdk",
-  "coverage",
-  "dist",
-  "legacy",
-  "local",
-  "node_modules",
-]);
+const excludedDirectoryNames = new Set([".git", "coverage", "dist", "node_modules"]);
 
 try {
   await copyRepositoryDirectory("");
   if ((await readdir(temporaryRoot)).includes(".agents")) {
     throw new Error("clean source must not contain local agent discovery");
+  }
+  for (const localPath of LOCAL_SOURCE_ROOTS) {
+    const exists = await access(resolve(temporaryRoot, localPath)).then(
+      () => true,
+      () => false,
+    );
+    if (exists) throw new Error(`clean source contains local material: ${localPath}`);
   }
 
   runPnpm(temporaryRoot, ["install", "--offline", "--frozen-lockfile"]);
@@ -87,11 +87,10 @@ async function copyRepositoryDirectory(relativeDirectory: string): Promise<void>
   const sourceDirectory = resolve(repositoryRoot, relativeDirectory);
   const entries = await readdir(sourceDirectory, { withFileTypes: true });
   for (const entry of entries) {
-    // A local installation (including a symlink) is not part of a fresh source checkout.
-    if (relativeDirectory === "" && entry.name === ".agents") continue;
+    const relativePath = join(relativeDirectory, entry.name);
+    if (isLocalSourcePath(relativePath.split(sep).join("/"))) continue;
     if (entry.isDirectory() && excludedDirectoryNames.has(entry.name)) continue;
     if (entry.isFile() && isLocalSecretOrLog(entry.name)) continue;
-    const relativePath = join(relativeDirectory, entry.name);
     const source = resolve(repositoryRoot, relativePath);
     const relation = relative(repositoryRoot, source);
     if (relation === "" || relation === ".." || relation.startsWith(`..${sep}`)) {

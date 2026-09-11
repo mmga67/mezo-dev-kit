@@ -281,10 +281,13 @@ credentials, or exercised a materially different path. Record the exact gap.
 during the source-alpha stage. CODEOWNERS records that default; passing checks
 does not replace maintainer approval.
 
-Target alpha-development pull requests to `dev`. The maintainer promotes the
-reviewed `dev` source to `main` only after the complete alpha is polished and
-accepted. Do not bypass that manual gate or infer an automated branch/release
-workflow.
+Daily development uses `feat/next`; pull requests target `main`. The maintainer
+merges the complete reviewed feature while preserving ancestry. Both branches
+share one public-source history and ignore policy; legacy material, individual
+plans/tasks and internal review packets stay local and untracked. Follow the
+[branch workflow](docs/guides/BRANCH_WORKFLOW.md), including `pnpm setup:git`
+once per clone and `pnpm check:source --base main` before promotion. This replaces
+filtered source snapshots; manual review and protocol release gates still apply.
 
 A reviewable change should include:
 

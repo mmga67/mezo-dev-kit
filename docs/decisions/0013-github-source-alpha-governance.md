@@ -37,9 +37,10 @@ automation can be designed later using evidence from the source alpha.
   material repository decisions during this stage.
 - No hosted automation replaces maintainer approval. Deterministic local
   checks remain required according to task risk.
-- Active alpha development integrates on `dev`. Pull requests target `dev`,
-  and `@mmga67` manually promotes the accepted, polished alpha source to
-  `main`; no automated branch-promotion workflow is implied.
+- Branch integration now follows [ADR-0022](0022-main-and-feature-workflow.md):
+  daily work on `feat/next`, whole-feature merges into canonical `main`, and
+  local ignored development material. This supersedes the original `dev`
+  promotion process; maintainer review remains manual.
 
 ### Security and deferrals
 
@@ -85,8 +86,10 @@ On 2026-09-07 the maintainer approved a new public root history for `main`.
 Public promotion includes MDK source, canonical knowledge/evidence, tests,
 examples, reusable skills, and maintained developer documentation. Individual
 planning records, internal review packets, local diagnostics, and predecessor
-project material are excluded. Public snapshots are independently verified;
-private development history is never merged into the public branch.
+project material are excluded. The initial public snapshot was independently
+verified. ADR-0022 replaces subsequent filtered snapshots with shared
+publishable branch history; archived private development history remains
+excluded from the public branch.
 
 Public preparation may remove internal tracking labels from MDK-owned prose
 and metadata. Digests of those sanitized local resources are recomputed and

@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: [
+      "scripts/test-source-boundary.test.ts",
       "scripts/test-coding-gates.test.ts",
       "scripts/test-evidence-scope.test.ts",
       "scripts/test-current-price-state.test.ts",

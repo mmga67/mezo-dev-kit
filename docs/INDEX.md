@@ -31,6 +31,8 @@ domains.
 - `../ARCHITECTURE.md` — accepted repository boundaries, dependency direction,
   and architectural change process.
 - `../CONTRIBUTING.md` — contributor workflow, verification, and review gates.
+- [Branch workflow](guides/BRANCH_WORKFLOW.md) — daily `feat/next` work,
+  canonical `main`, ignored local data, Git safeguards and whole-feature merges.
 - `../SECURITY.md` — private reporting and repository security boundaries.
 - `../LICENSE` — MIT license for repository source.
 - `../knowledge/README.md` — knowledge evidence and authority boundary.
@@ -81,6 +83,9 @@ domains.
   and protocol-reconciliation guidance without a hosted-indexer dependency.
 
 ## Accepted architecture decisions
+
+- [ADR-0022](decisions/0022-main-and-feature-workflow.md) — shared main/feature
+  history and local development material; replaces filtered publication.
 
 - `decisions/0001-contract-registry-bootstrap-ownership.md`
 - `decisions/0002-core-client-model.md`

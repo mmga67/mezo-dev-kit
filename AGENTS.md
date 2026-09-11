@@ -16,6 +16,17 @@ Keep one canonical owner for each fact/rule, including addresses, ABIs,
 deployments, formulas, and generated data. Inspect existing code, preserve
 unrelated human changes, and make the smallest complete change.
 
+## Branches and local records
+
+Work on `feat/next`; `main` is the canonical GitHub-synchronized source. Follow
+[the branch workflow](docs/guides/BRANCH_WORKFLOW.md) and ADR-0022. Both branches
+share publishable history and ignore rules. Keep legacy references, individual
+task/plan/review records, diagnostics and recovery archives in the documented
+ignored roots. Never merge archived private history or force-add those paths.
+Promote complete reviewed commits, preserving ancestry; do not reconstruct
+filtered public snapshots. Inspect/preserve existing changes before switching
+branches, and refresh generated local skills after canonical updates.
+
 ## Route the task once
 
 1. Identify the outcome, affected owners, risk, and nearest nested `AGENTS.md`.

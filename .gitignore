@@ -1,13 +1,15 @@
-local/
-.mdk/
-# Contributor skill discovery is generated locally from agents/skills/.
-.agents/
-legacy/
+# Local development material: identical policy on main and feat/next.
+# Keep these root paths out of every commit, including feature commits.
+/local/
+/legacy/
+/.mdk/
+/.agents/
+/.codex/
+/tasks/
+/plans/
+/docs/reviews/
+
+# Generated dependency, build, and test output at any workspace depth.
 node_modules/
 coverage/
 dist/
-
-# Individual development records are excluded from public source.
-tasks/
-plans/
-docs/reviews/

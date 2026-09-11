@@ -188,10 +188,11 @@ for discovery checks, existing non-empty folders, updates after pulling, and
 other agent runtimes. Installing the skills requires only the supported Node
 version; package development also uses the pnpm workflow above.
 
-Active alpha development is integrated on the `dev` branch. Pull requests
-should target `dev`; after the complete alpha is polished and accepted,
-`@mmga67` manually promotes the reviewed source to `main`. There is no
-automatic branch-promotion or release workflow.
+Daily development uses `feat/next`; `main` is the canonical source synchronized
+with GitHub. Completed feature commits merge into `main` under manual maintainer
+review. Both branches keep legacy material and individual development records
+local and ignored. Run `pnpm setup:git` once per clone to enable the commit/push
+checks, and follow the [branch workflow](docs/guides/BRANCH_WORKFLOW.md).
 
 The repository has one root `pnpm-lock.yaml`. Do not create package-local
 lockfiles or use npm or Yarn for repository workflows.

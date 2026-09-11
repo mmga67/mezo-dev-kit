@@ -45,12 +45,10 @@ git branch --show-current
 git status --short --branch
 ```
 
-For contribution work, use the branch selected by the maintainer for the task.
-The normal integration policy targets `dev`, with manual maintainer promotion
-to `main`, as recorded in [ADR-0013](../decisions/0013-github-source-alpha-governance.md).
-An explicit maintainer task on another branch supplies that direction. If the
-target is unclear, resolve it before branch/push operations; trying packages
-and setting up skills do not require a branch change.
+Daily contribution work uses `feat/next`, based on canonical `main`. Complete
+reviewed feature commits merge into `main`, preserving ancestry. Follow the
+[branch workflow](BRANCH_WORKFLOW.md) for synchronization, ignored legacy and
+private records, local hooks, and normal whole-feature promotion.
 
 Clone the published source with:
 
@@ -59,8 +57,16 @@ git clone https://github.com/mmga67/mezo-dev-kit.git
 cd mezo-dev-kit
 ```
 
-Do not assume that a remote `dev` branch exists or create one just to run this
-guide. Keep the maintainer's public-source promotion boundary intact.
+For a new contributor checkout, create the working branch and install the
+local Git safeguards:
+
+```sh
+git switch -c feat/next main
+pnpm setup:git
+```
+
+For an existing checkout, use `git switch feat/next` after preserving unfinished
+changes. Trying packages on `main` does not require a branch change.
 
 ## Set up the contributor agent
 
