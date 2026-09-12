@@ -137,3 +137,93 @@ and 8 MiB aggregate data/topics. NTT envelopes must fit the transceiver's 16-bit
 byte length. Exceeding a bound is invalid evidence, not partial successful
 decoding. Candidate reads are sequential; initial source/destination identity
 reads may run concurrently.
+
+## Native historical observation
+
+`createNativeDeliveryObserver(config: NativeObserverConfig): NativeDeliveryObserver`
+supports the two `NativeRouteId` values `mezo-native-usdc-ethereum-to-mezo` and
+`mezo-native-btc-mezo-to-ethereum`. It validates historical included direct
+`bridgeERC20` / `bridgeOut` calls, both with zero native call value, against their
+source events. This does not prepare or authorize a current source transaction.
+
+`NativeObservationTransport` picks chain, head, block, transaction, receipt,
+code, storage and read methods from Core's `RpcTransport`. Supply independent
+`sourceTransport`, `destinationTransport`, positive bigint `sourceConfirmations`
+and `destinationConfirmations`. Inbound additionally needs
+`getMezoConsensusBlock(blockNumber)`, returning the raw CometBFT `/block` **result**
+object (`block_id`, `block.header`, `block.data.txs`). The caller owns endpoints,
+credentials, response-size limits and in-flight cancellation. EVM block counts
+exclude non-EVM transactions and cannot substitute for this port.
+
+```ts
+import { createNativeDeliveryObserver } from "@mezo-dev-kit/bridges";
+import type { NativeObservationTransport } from "@mezo-dev-kit/bridges";
+import { parseHash32 } from "@mezo-dev-kit/evm";
+declare const ethereum: NativeObservationTransport;
+declare const mezo: NativeObservationTransport;
+declare const readConsensusBlock: (blockNumber: bigint) => Promise<unknown>;
+declare const sourceHash: string;
+declare const destinationHashes: readonly string[];
+const observer = createNativeDeliveryObserver({
+  routeId: "mezo-native-usdc-ethereum-to-mezo",
+  sourceTransport: ethereum,
+  destinationTransport: mezo,
+  sourceConfirmations: 12n,
+  destinationConfirmations: 12n,
+  getMezoConsensusBlock: readConsensusBlock,
+});
+const observation = await observer.observe({
+  sourceTransactionHash: parseHash32(sourceHash),
+  destinationTransactionHashes: destinationHashes.map((hash) => parseHash32(hash)),
+});
+console.log(observation.state, observation.completionTransactions);
+```
+
+`NativeObserveInput` allows at most 32 unique destination hashes, optional
+`previous.source` / `previous.destinations` (`NativeReceiptAnchor`) and optional
+`signal`. Prior anchors must retain the same hashes and candidate coverage.
+Cancellation stops subsequent reads and propagates the abort; it does not turn
+an in-flight transport into a cancellable one.
+
+`NativeDeliveryObservation` returns `routeId`, `state`, the decoded
+`NativeTransferTuple` or null, `source`, every `destinations` outcome,
+`completionTransactions`, and
+`coverage: "provided-receipts-and-historical-coordinates-only"`. The tuple contains
+sequence, sender, recipient, source/destination token, amount in base units and
+target chain. It is distinct from an NTT digest. The states are `source-pending`,
+`source-reverted`, `message-pending`, `destination-progress`, `completed`,
+`reorged`, and `ambiguous`.
+
+Each `NativeReceiptObservation` carries transaction hash, nullable anchor,
+confirmation counts, receipt state (`missing`, `included`, `confirmed`,
+`reverted`, `reorged`, `invalid`, `unavailable`), proof (`none`,
+`source-validated`, `payload-accepted`, `attested`, `delivered`), nullable
+`settlement` (`gross`, `net`, `fee`), and nullable `NativeObservationIssue`.
+Only a confirmed source and confirmed, canonical delivered candidate establish
+completion. All contributing block anchors, including inbound parent state,
+are rechecked. A failed candidate cannot erase another canonical completion.
+Future reorgs still require another observation.
+
+`NativeObserverError` uses `NativeObserverErrorCode`: `InvalidInput`,
+`UnknownRoute`, `ChainMismatch`, `TransportFailure`, `InvalidEvidence`,
+`RegistryUnavailable`, `DeliveryUnproven`. Issues contain code, stage and a safe
+message. Primitive input errors may also come from EVM validation. Provider
+failures never become zero balances. Missing evidence does not authorize retries.
+
+Inbound completion is deliberately restricted to one bridge entry in the sole
+consensus transaction, exact source/system tuple, mapping at both coordinates,
+sequence transition and recipient balance delta. Skipped/failed mints remain
+incomplete. Outbound requires a preceding matching attestation and one
+confirmation in the same receipt, plus exactly one recipient and one fee
+transfer from the portal, summing to gross. Confounded batches, separate
+attestation receipts, overlapping collector/recipient addresses and other
+settlement shapes remain unproven. Receipts retain the NTT log/byte bounds;
+Native calldata is capped at 128 KiB, parsed batches at 128 entries, and the
+single consensus transaction at 2 MiB encoded text.
+
+The separate Contracts catalog currently covers five observed blocks, with
+exact hashes and proposed generation evidence. Unknown coordinates fail closed.
+This is provider-backed historical observation, not independent consensus or
+validator-signature verification. Current mappings, capacity, fees, allowance,
+Cosmos authorization, exact source simulation and recovery remain separate
+requirements. No release, route or writer support is implied.

@@ -20,8 +20,10 @@ acceptance/release gates.
 
 `packages/chains/`, `packages/contracts/`, and `packages/core/` now contain the
 private foundational read implementation for the GitHub source alpha.
-Chains and Contracts consume deterministic projections of accepted canonical
-knowledge; Core exposes a provider-neutral, block-consistent read client through
+Chains and current Contracts resolution consume deterministic projections of accepted canonical
+knowledge. ADR-0024 adds an explicit historical evidence result for proposed,
+fixed-coordinate profiles, separate from current operation/writer resolution.
+Core exposes a provider-neutral, block-consistent read client through
 a built workspace entrypoint. The ADR-0002/0003 transaction execution
 proof remains tested inside Core but is neither exported nor emitted. The
 maintainer accepted foundational SDK review on 2026-09-06 for the source alpha. These private
@@ -504,9 +506,12 @@ the domain owns their effect on protocol and wallet accounting.
 initial NTT observer joins source message and destination redemption digests with
 explicit confirmations, bounded candidate coverage and reorg checks. It consumes
 EVM, Chains, Contracts and Core without a signer or storage dependency. Route
-profiles derive from canonical knowledge; Native Bridge tuple/post-state proof,
-current writer preconditions and transfer execution remain separate. See
-[ADR-0023](docs/decisions/0023-ntt-receipt-observation.md).
+profiles derive from canonical knowledge. Its separate Native observer validates
+historical direct source calls and tuple/recipient delivery using Contracts'
+historical evidence boundary and caller-supplied consensus-block coverage.
+Current writer preconditions and transfer execution remain separate. See
+[ADR-0023](docs/decisions/0023-ntt-receipt-observation.md) and
+[ADR-0024](docs/decisions/0024-historical-contract-evidence.md).
 
 [ADR-0021](./docs/decisions/0021-incentives-locks-and-voting.md) extends Incentives
 with ordinary veBTC/veMEZO lock workflows and deterministic boost, epoch and vote

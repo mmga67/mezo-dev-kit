@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "native-delivery-qualification",
+  "id": "native-delivery-qualification-2026-09-12",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-12T15:01:49.467Z",
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": [
+      "ethereum-mainnet",
+      "mezo-mainnet"
+    ],
+    "transferIds": [
+      "native-usdc-ethereum-to-mezo-completed",
+      "native-btc-mezo-to-ethereum-completed"
+    ]
+  },
+  "limitations": [
+    "Private historical observation only. Qualified release review remains pending; no supported route, current preflight, writer or recovery action is added.",
+    "Inbound attribution requires one injected payload entry, one consensus transaction, matching parent/block hashes, stable mapping, exact sequence transition and exact recipient balance delta. EVM-only block counts and pseudo traces cannot establish this.",
+    "Outbound qualification requires a matching attestation and confirmation in one receipt and exactly attributable recipient/fee token transfers. Broader batches and separate attestation receipts remain incomplete.",
+    "The two dated representation pairs come from bridge-native-evidence. No new asset or mapping is inferred."
+  ],
+  "contractEvidenceReference": {
+    "moduleId": "contracts",
+    "resourceId": "historical-contract-evidence"
+  },
+  "rpcReference": {
+    "moduleId": "contracts",
+    "resourceId": "historical-native-rpc"
+  },
+  "rpcSha256": "399ad457904e7f9e09f0077a9ca4589abe936aea8473282242b493cdb26ddcce",
+  "consensusReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "native-consensus-block-8944561"
+  },
+  "consensusSha256": "92abf00ac05122748bf480768d1f12327469fd87aede3e603570db9f76281ff0",
+  "sourceReference": {
+    "moduleId": "contracts",
+    "resourceId": "historical-native-mezo-source"
+  },
+  "transferEvidenceReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "bridge-native-evidence"
+  }
+}

@@ -1,7 +1,7 @@
 # Bridges
 
-Private, bounded receipt observation for the four recorded MUSD NTT directions
-between Mezo and Ethereum/Base. The [SDK reference](REFERENCE.md) owns the public
+Private, bounded observation for the four recorded MUSD NTT directions and the
+two evidenced Native Bridge directions. The [SDK reference](REFERENCE.md) owns the public
 contract, injected transports, limits and examples.
 
 `createNttDeliveryObserver` joins one source message to destination redemption
@@ -15,11 +15,20 @@ ownership. The [bridge module](../../knowledge/workflows/bridges/index.json)
 owns route/message semantics; its generated profile supplies runtime references
 without runtime knowledge-file access.
 
-This is historical receipt evidence. Current implementation, peers, pause,
+The NTT observer supplies historical receipt evidence. Current implementation, peers, pause,
 capacity, fees, intended amount/recipient, attestations and relay policy are not
 verified. There is no quote, allowance, transfer writer, wallet, automatic retry
-or recovery transaction. Native Bridge requires separate tuple and recipient
-delivery proof. Canonical route/writer support remains absent; private source
+or recovery transaction.
+
+`createNativeDeliveryObserver` separately validates the included direct source
+call and joins the Native sequence/recipient/token/amount tuple. Inbound USDC
+requires the system payload, stable mapping, exact sequence and recipient balance
+transition, and consensus-block coverage excluding other transactions. Outbound
+BTC requires attestation, confirmation and fee/net token settlement. Historical
+Contracts evidence bounds both directions to their explicitly qualified
+observation coordinates; it does not backdate current ABI or writer support.
+
+Canonical route/writer support remains absent; private source
 implementation does not satisfy qualified release review.
 
 Run `pnpm --filter @mezo-dev-kit/bridges check`. Root `pnpm check` also verifies

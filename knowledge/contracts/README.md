@@ -51,6 +51,21 @@ protocol or workflow support.
 
 ## Human use
 
+`historical-contract-evidence` owns separate, proposed generation profiles for
+the bounded Native replay coordinates. Full source/build/RPC artifacts live in
+indexed `artifacts/historical-interfaces/` resources. Their closed one-block
+ranges express observation coverage, not inferred activation heights. Current
+deployment/ABI counts and writer restrictions are unchanged. Run the Contracts
+generator to validate exact source, ABI, runtime, slot and execution evidence;
+qualified release review remains pending. See Contracts' SDK reference and ADR-0024.
+
+The offline importer is
+`packages/contracts/tools/import-historical-native-evidence.ts`. It accepts a
+retained capture directory and official mezod checkout, verifies pinned source
+and compiler output, and writes the indexed evidence. Direct generator/importer
+invocation requires the existing EVM workspace package to be built first.
+Do not rerun capture as a formatting step or replace digests to accept new bytes.
+
 Savings reader review adds the proposed `savings-dynamic-read-interfaces` resource and full
 explorer source/ABI snapshots under `artifacts/dynamic-interfaces/`. These
 exact-runtime templates serve root-discovered Savings roles; they add no

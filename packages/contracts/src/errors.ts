@@ -1,6 +1,7 @@
 export type ContractRegistryErrorCode =
   | "AbiUnavailable"
   | "HistoricalGenerationUnsupported"
+  | "HistoricalEvidenceUnavailable"
   | "InvalidContractInput"
   | "MalformedGeneratedContract"
   | "MissingDeployment"

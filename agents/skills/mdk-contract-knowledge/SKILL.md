@@ -35,6 +35,10 @@ state claims and transaction preparation, not every description of a workflow.
    generation's ABI through the proxy. For replay, audit, or historical reads,
    resolve the closed generation covering the exact coordinate and never apply
    the latest ABI outside its recorded range.
+   For the private historical API, inspect the separate indexed
+   `historical-contract-evidence` catalog and Contracts reference. Observation
+   coverage is not an activation range; gaps remain unavailable and proposed
+   evidence cannot qualify current operation/runtime resolvers or writer targets.
    For explanations, use indexed semantics and full ABIs first. Identify the
    exact missing behavior before retrieving source; a writer's live preflight
    is not required merely to explain its contract calls. For CL source, resolve

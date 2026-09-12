@@ -1215,6 +1215,47 @@
       "role": "artifact",
       "kind": "json-artifact",
       "path": "artifacts/voting-interfaces/bribe-reward-build.json"
+    },
+    {
+      "id": "historical-native-ethereum-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/historical-interfaces/historical-native-ethereum-source.json"
+    },
+    {
+      "id": "historical-native-ethereum-build",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/historical-interfaces/historical-native-ethereum-build.json"
+    },
+    {
+      "id": "historical-native-mezo-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/historical-interfaces/historical-native-mezo-source.json"
+    },
+    {
+      "id": "historical-native-mezo-interface",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/historical-interfaces/historical-native-mezo-interface.json"
+    },
+    {
+      "id": "historical-native-rpc",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/historical-interfaces/historical-native-rpc.json"
+    },
+    {
+      "id": "historical-contract-evidence",
+      "role": "canonical-record",
+      "kind": "historical-contract-evidence-catalog",
+      "path": "records/historical-contract-evidence.json",
+      "recordIds": [
+        "native-ethereum-7e994d7f",
+        "native-mezo-v5"
+      ],
+      "recordCollectionPointer": "/records"
     }
   ],
   "checks": [
@@ -1252,6 +1293,11 @@
       "id": "voting-interface-projection",
       "type": "semantic",
       "command": "node scripts/generate-protocol-operations.ts --check"
+    },
+    {
+      "id": "historical-contract-evidence",
+      "type": "semantic",
+      "command": "node scripts/generate-contracts-package.ts --check"
     }
   ],
   "extensions": {

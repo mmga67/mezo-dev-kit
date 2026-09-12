@@ -87,6 +87,22 @@ acceptance may skip a blocked recipient, missing token mapping, or failed ERC-20
 mint. A logless system receipt or advanced sequence is therefore progress, not
 standalone recipient-delivery proof.
 
+## Private Native observer review
+
+The private Native observer now joins both saved directions through the explicit
+historical Contracts API. Additional source/runtime and consensus-block evidence
+is indexed as `native-delivery-qualification-2026-09-12`, with proposed support
+and pending qualified review. Ethereum RPC omits non-EVM Cosmos transactions;
+its count alone cannot attribute an inbound balance delta. The retained consensus
+block has the same hash and one injected transaction. The observer also requires
+one bridge entry, stable mapping and exact sequence/recipient state transition.
+Pseudo traces are synthesized by the client and do not report actual mint success.
+
+Release review must assess these new historical profiles and attribution limits.
+Current source preparation, wider/multi-entry attribution, separate attestation
+receipts, other assets and recovery remain separate gaps. The saved replay does
+not refresh current transaction preconditions.
+
 ## MEZO NTT
 
 Official `ntt-bridge-mezo-mainnet` and testnet repositories were discovered.

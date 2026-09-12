@@ -17,6 +17,12 @@ second identity owner.
 
 ## Current boundary
 
+The additional `native-delivery-qualification-2026-09-12` evidence supports the
+private Native observer and references Contracts' separate historical profiles.
+It remains proposed/pending-qualified-review. Its consensus block closes the
+EVM-only transaction-count gap for inbound attribution. The package reference
+owns implemented limits; this evidence creates no current writer or route support.
+
 - Both provider models and six directions have reproducible completed-transfer
   evidence.
 - bridge evidence review qualified review accepted the bounded provider, representation,

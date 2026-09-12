@@ -1,4 +1,6 @@
 export { ContractRegistryError } from "./errors.ts";
+export { resolveHistoricalContractEvidence } from "./historical.ts";
+export type { HistoricalContractEvidence } from "./historical.ts";
 export { resolveOperation, resolveRuntimeIdentity } from "./operations.ts";
 export { resolveRoleInterface, getTokenInterface, resolveEvent } from "./operations.ts";
 export type { ProtocolRole, ProtocolRoleInterface } from "./operations.ts";

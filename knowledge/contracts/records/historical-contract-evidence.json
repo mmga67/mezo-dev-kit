@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "historical-contract-evidence-catalog",
+  "id": "historical-contract-evidence",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-12T14:40:49.831Z",
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": [
+      "ethereum-mainnet",
+      "mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Private historical evidence only; qualified release review is pending. No route, writer or current-generation support is implied.",
+    "Coverage consists only of pinned observed blocks. One-block intervals are observation coverage, never claimed deployment activation heights.",
+    "Historical block hashes and exact source/build artifacts govern validity; widening coverage requires new indexed evidence and review."
+  ],
+  "records": [
+    {
+      "id": "native-ethereum-7e994d7f",
+      "contractId": "bridge.native-mezo-bridge",
+      "networkId": "ethereum-mainnet",
+      "address": "0xf6680ea3b480ca2b72d96ea13ccaf2cfd8e6908c",
+      "provenanceClass": "deployed-executable-reproduction",
+      "implementationAddress": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+      "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+      "generationRange": {
+        "implementationAddress": "0x7e994d7fc7a2c3cad2331dadb07902f3a46b6cd9",
+        "effectiveFrom": {
+          "blockNumber": 23589330,
+          "transactionHash": "0x81fc9f0dfea4c6d3b85f38164f481ffbbc199772a0623baed8e77f00f6da005f",
+          "logIndex": 467,
+          "blockHash": "0xf06da4bdaef43561ed36eaefb850e9aca0e4752411f218b055320a186ab452ca",
+          "blockTimestamp": "2025-10-16T09:27:35.000Z"
+        },
+        "effectiveUntilExclusive": {
+          "blockNumber": 25435730,
+          "transactionHash": "0xb2b367b706d88e052af124594a0045b80231a9bf2b0077fc812eb367f26d9961",
+          "logIndex": 97,
+          "blockHash": "0x894a1904a49d46dc3aa976048a56dbef4412b2caa0993662a444cd6ac91032f0",
+          "blockTimestamp": "2026-07-01T05:59:35.000Z"
+        }
+      },
+      "executionVersion": null,
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-ethereum-source"
+        },
+        "sha256": "7816dc511e43eef907061e69a2b89d20e38119def00db4d81ae1dfea2002965d"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-ethereum-build"
+        },
+        "sha256": "300f4aab1b255b5be922c03bb01aae852b6bb7635b0404c5d66524604a3c50cd"
+      },
+      "observations": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-rpc"
+        },
+        "sha256": "399ad457904e7f9e09f0077a9ca4589abe936aea8473282242b493cdb26ddcce"
+      },
+      "chainProbeId": 1,
+      "coverage": [
+        {
+          "fromBlock": "25094211",
+          "untilExclusiveBlock": "25094212",
+          "blockHash": "0x18f79894dd390946a3621244a9a45f3de700ce6975703ce49e478dbe044ef3da",
+          "blockProbeId": 3,
+          "codeProbeId": 2,
+          "probeIds": [
+            4
+          ]
+        },
+        {
+          "fromBlock": "25096347",
+          "untilExclusiveBlock": "25096348",
+          "blockHash": "0x422b7c86ff549188497b0d3b4ad97933d3ac0976bd11df0301c91a0cce754394",
+          "blockProbeId": 6,
+          "codeProbeId": 5,
+          "probeIds": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "id": "native-mezo-v5",
+      "contractId": "bridge.native-assets-precompile",
+      "networkId": "mezo-mainnet",
+      "address": "0x7b7c000000000000000000000000000000000012",
+      "provenanceClass": "official-client-precompile-source",
+      "implementationAddress": null,
+      "implementationSlot": null,
+      "generationRange": null,
+      "executionVersion": 5,
+      "source": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-mezo-source"
+        },
+        "sha256": "a458b831db6c795a64407cd10e8f0f74e02405aae442d68599b95a104ed06da6"
+      },
+      "build": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-mezo-interface"
+        },
+        "sha256": "f0ca6a9060e6c37c3895b32afddd558591f0dd176df9483baba6745dd6885702"
+      },
+      "observations": {
+        "reference": {
+          "moduleId": "contracts",
+          "resourceId": "historical-native-rpc"
+        },
+        "sha256": "399ad457904e7f9e09f0077a9ca4589abe936aea8473282242b493cdb26ddcce"
+      },
+      "chainProbeId": 13,
+      "coverage": [
+        {
+          "fromBlock": "8944560",
+          "untilExclusiveBlock": "8944561",
+          "blockHash": "0xe8b62de3c5767ffe56afa38aeaa4d8d0bd4ef50f348988e83ca65153bde267f1",
+          "blockProbeId": 14,
+          "codeProbeId": 15,
+          "probeIds": [
+            16,
+            18
+          ]
+        },
+        {
+          "fromBlock": "8944561",
+          "untilExclusiveBlock": "8944562",
+          "blockHash": "0x10e06819efc5f861e3759120f1c67029ea6483a7171ea293fd0308f7c6eb85b0",
+          "blockProbeId": 21,
+          "codeProbeId": 22,
+          "probeIds": [
+            23,
+            25
+          ]
+        },
+        {
+          "fromBlock": "8951377",
+          "untilExclusiveBlock": "8951378",
+          "blockHash": "0x067123e67543ccf040f4b4d3f05fc24066fe3934a6d7f88f7de74efa382505eb",
+          "blockProbeId": 28,
+          "codeProbeId": 29,
+          "probeIds": [
+            30,
+            32
+          ]
+        }
+      ]
+    }
+  ]
+}

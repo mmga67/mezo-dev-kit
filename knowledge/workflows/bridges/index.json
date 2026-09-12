@@ -11,9 +11,16 @@
   "verifiedAt": "2026-08-24T13:39:35.987Z",
   "reviewAfter": "2026-09-23T13:39:35.987Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
-    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
+    "providerIds": [
+      "wormhole-ntt",
+      "mezo-native-bridge"
+    ]
   },
   "limitations": [
     "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
@@ -26,7 +33,10 @@
       "role": "canonical-record",
       "kind": "bridge-provider-catalog",
       "path": "records/providers.json",
-      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
+      "recordIds": [
+        "wormhole-ntt",
+        "mezo-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -34,7 +44,11 @@
       "role": "canonical-record",
       "kind": "bridge-asset-catalog",
       "path": "records/assets.json",
-      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
+      "recordIds": [
+        "musd",
+        "usdc-native-bridge",
+        "btc-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -170,9 +184,26 @@
           "resourceId": "bridge-native-evidence"
         }
       ]
+    },
+    {
+      "id": "native-delivery-qualification-2026-09-12",
+      "role": "evidence",
+      "kind": "native-delivery-qualification",
+      "path": "evidence/native-delivery-2026-09-12.json"
+    },
+    {
+      "id": "native-consensus-block-8944561",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-consensus-8944561.json"
     }
   ],
   "checks": [
+    {
+      "id": "private-native-projection",
+      "type": "semantic",
+      "command": "node scripts/generate-bridges-package.ts --check"
+    },
     {
       "id": "common-structure",
       "type": "structural",
@@ -211,7 +242,9 @@
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-contract-roles"
     },
-    "blockers": ["current exact-call writer verification for any future supported route"],
+    "blockers": [
+      "current exact-call writer verification for any future supported route"
+    ],
     "currentContractEvidenceReference": {
       "moduleId": "contracts",
       "resourceId": "contract-bridge-v13-probes-2026-08-24"

@@ -194,3 +194,41 @@ const voter = resolveVotingInterface({ networkId: "mezo-mainnet", domain: "valid
 const rewards = resolveVotingRewardInterface({ networkId: "mezo-mainnet", role: "bribe" });
 console.log(voter.contractId, voter.targetListSlot, rewards.immutableWords);
 ```
+
+## Historical evidence
+
+`resolveHistoricalContractEvidence(input: ContractResolutionInput): HistoricalContractEvidence`
+resolves the separate proposed historical catalog. It throws
+`HistoricalEvidenceUnavailable` for gaps, including unobserved blocks inside an
+otherwise known implementation interval. Existing resolvers keep their current
+generation restrictions.
+
+The result contains `kind: "historical-contract-evidence"`, logical `contractId`,
+`networkId`, `generationId`, `address`, and the exact `coordinate` (bigint block
+number and hash). `coverage.fromBlock` and `coverage.untilExclusiveBlock` describe
+observation coverage, not installation heights. `runtime` provides `codeAddress`,
+the Keccak-256 `codeHash`, `implementationAddress`, `implementationSlot`,
+`executionVersion`, and `provenanceClass`. The caller must verify these at the
+coordinate when observing live provider responses.
+
+`readAbi` contains view/pure functions and events. `calldataAbi` contains the full
+generation's functions for decoding included calls, including system payloads.
+It is not an operation allowlist. `evidence` preserves lifecycle, `verifiedAt`,
+and SHA-256 digests for ABI serialization, source, build and observations.
+`limitations` travels with the result. Nested ABI data and result fields are
+immutable. Artifact and source/build provenance are checked by generation;
+runtime does not re-read files or qualify release evidence.
+
+This type intentionally lacks current deployment fields and is not assignable
+to `ResolvedContract`. It adds no fallback to current ABI resolution, signer,
+writer or supported route. Initial profiles remain pending qualified review.
+
+```ts
+import { resolveHistoricalContractEvidence } from "@mezo-dev-kit/contracts";
+const evidence = resolveHistoricalContractEvidence({
+  contractId: "bridge.native-assets-precompile",
+  networkId: "mezo-mainnet",
+  blockNumber: 8_944_561n,
+});
+console.log(evidence.generationId, evidence.coordinate, evidence.evidence.reviewStatus);
+```

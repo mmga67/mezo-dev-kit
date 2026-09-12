@@ -48,7 +48,7 @@ documented types.
 
 The public error codes are `InvalidContractInput`, `UnknownContractId`,
 `MissingDeployment`, `UnsupportedDeploymentState`, `OverlappingDeployments`,
-`HistoricalGenerationUnsupported`, `AbiUnavailable`, and
+`HistoricalGenerationUnsupported`, `HistoricalEvidenceUnavailable`, `AbiUnavailable`, and
 `MalformedGeneratedContract`. Every failure includes structured context and no
 failure is converted into a fallback address or ABI.
 
@@ -70,6 +70,16 @@ validity/generation ranges, ABI references/counts/file digests, and read-entry
 mutability. It records a SHA-256 digest over the Contracts module index and all
 exact consumed bytes, then emits `src/data.generated.ts` deterministically.
 Runtime code never reads `knowledge/`.
+
+The same generator validates `contracts:historical-contract-evidence` and its
+separate source/build/RPC artifacts, then emits `src/historical.generated.ts`.
+`resolveHistoricalContractEvidence` returns `HistoricalContractEvidence` at
+explicitly observed blocks. Its separate calldata ABI is for observing included
+transactions. It cannot be passed as `ResolvedContract` to current operation or
+runtime helpers. See [ADR-0024](../../docs/decisions/0024-historical-contract-evidence.md).
+These additional profiles remain proposed pending qualified release review.
+Contracts' offline capture tools use its existing EVM workspace dependency;
+build EVM before invoking the generator directly from a fresh checkout.
 
 ```sh
 pnpm --filter @mezo-dev-kit/contracts generate:check

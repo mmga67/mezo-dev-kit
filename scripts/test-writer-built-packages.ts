@@ -5,7 +5,16 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 for (const [directory, name, exports] of [
-  ["packages/bridges", "bridges", ["NttObserverError", "createNttDeliveryObserver"]],
+  [
+    "packages/bridges",
+    "bridges",
+    [
+      "NativeObserverError",
+      "NttObserverError",
+      "createNativeDeliveryObserver",
+      "createNttDeliveryObserver",
+    ],
+  ],
   [
     "packages/tokens",
     "tokens",
