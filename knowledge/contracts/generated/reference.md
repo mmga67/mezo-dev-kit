@@ -6,14 +6,14 @@ This deterministic page projects the canonical Contracts module for human review
 Resolve exact records, artifacts, and evidence through `knowledge/contracts/index.json`;
 this page is not an independent address/ABI authority or support promise.
 
-- Input digest: `sha256:55ee82f6538abb829e58d1cca19112ada12ec5966ea32a4c4d1dd5a5d0955d77`
+- Input digest: `sha256:a045633c006b60be373c4df64445327f0a4901571c2bb0676c416715f8330ff3`
 - Module support: `supported`
 - Module review: `accepted`
 - Module review after: `2026-09-22T00:00:00Z`
 - Contracts: 58
 - Deployments: 86
 - Full ABI artifacts: 58
-- Evidence observations: 65
+- Evidence observations: 66
 
 An open validity range means no supersession was observed at the verification block;
 it does not make a deployment immutable. Re-verify after an upgrade, after the review
@@ -84,7 +84,7 @@ date, or before protocol-sensitive use.
 | musd.enclave-v2 | mezo-mainnet | 0x147379a0174780570d07d70a14fb244ee5f2d786 | transparent-proxy | deployed-executable-reproduction | 0x05bd601c3c381fd3d099dbb574cc39ea5d8b4a69 | 9863657 | verified-current | supported | accepted | observe-musd-enclave-v2-mezo-mainnet |
 | musd.enclave-debt-manager | mezo-mainnet | 0x2c5e9afbb670c4a61ac2dcad62c258ee2391389a | transparent-proxy | deployed-executable-reproduction | 0x3ea98a11d349b515e628c1cc74ca999230744c43 | 10032345 | verified-current | supported | accepted | observe-musd-enclave-debt-manager-mezo-mainnet |
 | oracle.skip-btc-usd | mezo-mainnet | 0x7b7c000000000000000000000000000000000015 | precompile | official-client-precompile-source | direct | 1 | verified-current | supported | accepted | observe-oracle-skip-btc-usd-mezo-mainnet |
-| oracle.pyth-price-feed | mezo-mainnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0x6e7d74fa7d5c90fef9f0512987605a6d546181bb | 11408732 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06 |
+| oracle.pyth-price-feed | mezo-mainnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0x6e7d74fa7d5c90fef9f0512987605a6d546181bb | 11408732 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13 |
 | oracle.skip-btc-usd | mezo-testnet | 0x7b7c000000000000000000000000000000000015 | precompile | official-client-precompile-source | direct | 2213000 | verified-current | supported | accepted | observe-oracle-skip-btc-usd-mezo-testnet |
 | oracle.pyth-price-feed | mezo-testnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0xfc6bd9f9f0c6481c6af3a7eb46b296a5b85ed379 | 15131069 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-testnet-2026-08-27 |
 | bridge.native-assets-precompile | mezo-mainnet | 0x7b7c000000000000000000000000000000000012 | precompile | official-client-precompile-source | direct | 11260864 | verified-current | supported | accepted | observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution |

@@ -6169,9 +6169,9 @@
         "declaredImplementationAddress": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb"
       },
       "runtime": {
-        "observedAt": "2026-09-06T09:52:32.237Z",
-        "blockNumber": 11660852,
-        "blockHash": "0xda549ebce98d29c5d182d25dfcc9cf06f5dac3d7cd75adb0afad8e4c93e14667",
+        "observedAt": "2026-09-13T16:42:37.789Z",
+        "blockNumber": 11823840,
+        "blockHash": "0xc4a4dccfffd6b8530f33d73577db64007cd39c107de6e872e6fa519774cfd843",
         "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
         "implementationCodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611",
         "version": "1.4.6"
@@ -6184,18 +6184,18 @@
           "deploymentArtifactSha256": "11e9c65b0c75bb919d5f42f07d6b3982e46c75702608914b319ce6cb6ac5b3f1",
           "configurationReference": {
             "moduleId": "prices",
-            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06",
-            "recordId": "observe-pyth-mezo-mainnet-2026-09-06"
+            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13",
+            "recordId": "observe-pyth-mezo-mainnet-2026-09-13"
           },
           "activationHistoryReference": {
             "moduleId": "contracts",
-            "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-06",
-            "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
+            "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13",
+            "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
           },
           "networkEvidenceReference": {
             "moduleId": "prices",
-            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06",
-            "recordId": "observe-pyth-mezo-mainnet-2026-09-06"
+            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13",
+            "recordId": "observe-pyth-mezo-mainnet-2026-09-13"
           },
           "providerUpgradeSource": {
             "repository": "https://github.com/pyth-network/pyth-crosschain",
@@ -6207,8 +6207,8 @@
       },
       "evidenceReference": {
         "moduleId": "contracts",
-        "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-06",
-        "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
+        "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13",
+        "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
       },
       "status": "verified-current",
       "supportStatus": "supported",

@@ -66,9 +66,9 @@
 
 | Observation | Network | Result |
 | --- | --- | --- |
-| Review deadline | mezo-mainnet | 2026-09-13T09:52:32.237Z |
-| `observe-skip-mezo-mainnet-2026-09-06` | `mezo-mainnet` | `valid-bounded-observation` |
-| `observe-pyth-mezo-mainnet-2026-09-06` | `mezo-mainnet` | `stale-at-3600-seconds` |
+| Review deadline | mezo-mainnet | 2026-09-20T16:42:37.789Z |
+| `observe-skip-mezo-mainnet-2026-09-13` | `mezo-mainnet` | `valid-bounded-observation` |
+| `observe-pyth-mezo-mainnet-2026-09-13` | `mezo-mainnet` | `stale-at-3600-seconds` |
 | Review deadline | mezo-testnet | 2026-09-03T14:24:36.881Z |
 | `observe-skip-mezo-testnet-2026-08-27` | `mezo-testnet` | `valid-bounded-observation` |
 | `observe-pyth-mezo-testnet-2026-08-27` | `mezo-testnet` | `stale-at-3600-seconds` |

@@ -109,7 +109,8 @@
         "transaction-boundary",
         "pyth-evm-api",
         "adr-0009-price-ownership",
-        "price-fixed-block-capture-mezo-mainnet-2026-09-06"
+        "price-fixed-block-capture-mezo-mainnet-2026-09-06",
+        "price-fixed-block-capture-mezo-mainnet-2026-09-13"
       ],
       "recordCollectionPointer": "/records"
     },
@@ -193,6 +194,10 @@
         {
           "moduleId": "prices",
           "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
         }
       ]
     },
@@ -237,6 +242,29 @@
       "role": "artifact",
       "kind": "upstream-price-diagnostic",
       "path": "artifacts/current-state/hermes-attempt-2026-09-07.json"
+    },
+    {
+      "id": "price-fixed-block-observations-mezo-mainnet-2026-09-13",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-13.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-09-13",
+        "observe-pyth-mezo-mainnet-2026-09-13"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-current-state-mezo-mainnet-2026-09-13",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-mainnet-2026-09-13.json"
+    },
+    {
+      "id": "price-current-state-mezo-testnet-2026-09-13",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-testnet-2026-09-13.json"
     }
   ],
   "checks": [
@@ -282,7 +310,7 @@
     "currentEvidenceByNetwork": {
       "mezo-mainnet": {
         "moduleId": "prices",
-        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
       },
       "mezo-testnet": {
         "moduleId": "prices",
@@ -292,11 +320,11 @@
     "currentStateEvidenceByNetwork": {
       "mezo-mainnet": {
         "moduleId": "prices",
-        "resourceId": "price-current-state-mezo-mainnet-2026-09-07"
+        "resourceId": "price-current-state-mezo-mainnet-2026-09-13"
       },
       "mezo-testnet": {
         "moduleId": "prices",
-        "resourceId": "price-current-state-mezo-testnet-2026-09-07"
+        "resourceId": "price-current-state-mezo-testnet-2026-09-13"
       }
     }
   }

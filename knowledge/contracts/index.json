@@ -703,6 +703,10 @@
         {
           "moduleId": "contracts",
           "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-06"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13"
         }
       ]
     },
@@ -1280,6 +1284,22 @@
         "native-mezo-v5"
       ],
       "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "oracle-capture-mezo-mainnet-2026-09-13",
+      "role": "artifact",
+      "kind": "price-source-capture",
+      "path": "artifacts/oracle-captures/mezo-mainnet-2026-09-13.json"
+    },
+    {
+      "id": "contract-oracle-probes-mezo-mainnet-2026-09-13",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-13.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
+      ],
+      "recordCollectionPointer": "/observations"
     }
   ],
   "checks": [

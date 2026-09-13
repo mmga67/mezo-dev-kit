@@ -223,14 +223,28 @@ async function syncSourceDigests(directory: string): Promise<void> {
 }
 async function currentEvidencePath(directory: string, module: string): Promise<string> {
   const index = await read(resolve(directory, `knowledge/${module}/index.json`));
+  // A refresh appends evidence while retaining earlier generations. Select the
+  // owning current pointer, never resource order or the first matching date.
+  let reference: JsonObject;
+  if (module === "contracts") {
+    const deployments = await read(
+      resolve(directory, "knowledge/contracts/records/deployments.json"),
+    );
+    const deployment = objects(deployments.records, "deployments").find(
+      ({ id }) => id === "oracle.pyth-price-feed@mezo-mainnet",
+    );
+    if (!deployment) throw new Error("fixture mainnet deployment missing");
+    reference = object(deployment.evidenceReference, "current contract evidence");
+  } else {
+    reference = object(
+      object(object(index.extensions, "extensions").currentEvidenceByNetwork, "current evidence")[
+        "mezo-mainnet"
+      ],
+      "current price evidence",
+    );
+  }
   const resource = objects(index.resources, "resources").find(
-    ({ id }) =>
-      typeof id === "string" &&
-      id.startsWith(
-        module === "contracts"
-          ? "contract-oracle-probes-mezo-mainnet-"
-          : "price-fixed-block-observations-mezo-mainnet-",
-      ),
+    ({ id }) => id === reference.resourceId,
   );
   if (!resource) throw new Error("fixture mainnet evidence missing");
   return resolve(directory, `knowledge/${module}`, String(resource.path));

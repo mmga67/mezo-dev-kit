@@ -192,6 +192,17 @@
       "sha256": "f94402dd5053456e5463dc2db33d371143ff0bd2b6129cd59a34a4b6c617bd57",
       "retrievedAt": "2026-09-06T09:52:32.237Z",
       "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
+    },
+    {
+      "id": "price-fixed-block-capture-mezo-mainnet-2026-09-13",
+      "kind": "fixed-block-read-only-probes",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
+      },
+      "sha256": "0269301f9b0600810c41ee41852540444542ef563d93b10eaff80d161e852edb",
+      "retrievedAt": "2026-09-13T16:42:37.789Z",
+      "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
     }
   ]
 }

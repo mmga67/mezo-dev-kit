@@ -13,3 +13,20 @@
 
 These gaps prevent support promotion; they do not invalidate the accepted
 ownership model or either immutable fixed-block evidence generation.
+
+## September 13 refresh disposition
+
+The current mainnet full-history observation matches the accepted source pins,
+ABIs, runtime, implementation history and feed outcomes. Earlier evidence stays
+immutable and the new Contracts observation retains its supersession reference.
+Fresh current-state captures for both networks still distinguish usable Skip
+observations from stale Pyth diagnostics under the explicit one-hour policy.
+
+Testnet's original proxy creation-state storage could not be reread through the
+indexed public RPC or the assessed dRPC alternative. Its recent upgrade boundary
+is available; that partial history does not satisfy the complete historical
+refresh. Other assessed public endpoints failed availability checks. Testnet
+full-history evidence remains expired, and unscoped Contracts/Prices checks
+continue to reject it. An archive source covering the original creation boundary
+is required to finish that separate scope. Current-state captures cannot replace
+those requests or qualify testnet reader support.

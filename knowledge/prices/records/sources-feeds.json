@@ -99,7 +99,7 @@
       "currentEvidenceByNetwork": {
         "mezo-mainnet": {
           "moduleId": "prices",
-          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-06"
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
         },
         "mezo-testnet": {
           "moduleId": "prices",

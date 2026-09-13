@@ -34,6 +34,12 @@ canonical review deadline, rewrite old evidence, or promote testnet reader
 support. In particular, do not pass them to the full-history importer below.
 The complete source/history workflow remains available for that different scope.
 
+For an approved knowledge refresh, retain each successful snapshot as a new
+indexed `current-price-state-capture` artifact under Prices. Advance only the
+matching `currentStateEvidenceByNetwork` pointer after checking its network,
+coordinate, generation and observation outcomes. Preserve the previous artifact.
+This is independent of the full-history import and its review window.
+
 Current-state capture verifies the present observation scope. Lack of
 archive state is no longer an alpha/current-state blocker. Historical audits
 retain an explicit limitation; no historical request is silently served from

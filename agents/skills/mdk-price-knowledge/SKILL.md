@@ -80,11 +80,13 @@ explicit source-class fallback, partial reads, and total failure.
 
 ## Invariants and common failure modes
 
-- oracle evidence review accepted the module review and Contract roots; feed/current support
-  remains proposed pending the scheduled Pyth re-observation.
-- Both one-hour Pyth reads were stale at the fixed evidence blocks.
-- The Pyth proxy, implementation, ABI, and feeds require re-observation after
-  the announced 2026-08-26 16:00 UTC upgrade boundary.
+- Accepted Pyth generations and bounded registry support do not establish
+  feed liveness or a public Prices API. Resolve the current indexed evidence.
+- Select `currentEvidenceByNetwork` for full-history review and
+  `currentStateEvidenceByNetwork` for the narrower present-state capture.
+  A current-state snapshot cannot renew historical implementation evidence.
+- Follow the oracle refresh guide for unchanged-generation maintenance; keep
+  unavailable archive coordinates and stale feed diagnostics explicit.
 - MUSD owns adapter consumption and normalization; Pools owns pool math;
   Contracts and Networks own executable/network identity.
 - No universal max age or fallback order exists.
