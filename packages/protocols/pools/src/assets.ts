@@ -16,34 +16,49 @@ export async function verifyPoolWriterAssets(input: {
 }): Promise<boolean> {
   const { registry, transport, coordinate, tokens } = input,
     musd = registry.resolve({ ...coordinate, contractId: "musd.token" }),
-    profile = POOL_MODEL.musdc;
+    profiles = [{ ...POOL_MODEL.musdc, decimals: 6 }, POOL_MODEL.musdt];
   const compatible = tokens.every(
-    (token) => token.target.address === musd.address || token.target.address === profile.address,
+    (token) =>
+      token.target.address === musd.address ||
+      profiles.some((profile) => token.target.address === profile.address),
   );
   if (!compatible) return false;
-  await verifyContractRuntime({ contract: musd, coordinate, transport });
-  for (const [address, expected] of [
-    [profile.address, profile.addressCodeSha256],
-    [profile.implementationAddress, profile.implementationCodeSha256],
-  ] as const) {
-    const code = parseHexData(await transport.getCode(address, coordinate));
+  if (tokens.some((token) => token.target.address === musd.address))
+    await verifyContractRuntime({ contract: musd, coordinate, transport });
+  for (const profile of profiles.filter((profile) =>
+    tokens.some((token) => token.target.address === profile.address),
+  )) {
+    for (const [address, expected] of [
+      [profile.address, profile.addressCodeSha256],
+      [profile.implementationAddress, profile.implementationCodeSha256],
+    ] as const) {
+      const code = parseHexData(await transport.getCode(address, coordinate));
+      poolRequire(
+        createHash("sha256")
+          .update(Buffer.from(code.slice(2), "hex"))
+          .digest("hex") === expected,
+        "IdentityMismatch",
+        "mapped ERC20 writer asset runtime changed",
+      );
+    }
     poolRequire(
-      createHash("sha256")
-        .update(Buffer.from(code.slice(2), "hex"))
-        .digest("hex") === expected,
+      parseHash32(
+        await transport.getStorage(profile.address, profile.implementationSlot, coordinate),
+      ) === `0x${"0".repeat(24)}${profile.implementationAddress.slice(2)}`,
       "IdentityMismatch",
-      "mUSDC runtime changed",
+      "mapped ERC20 writer asset implementation changed",
     );
   }
   poolRequire(
-    parseHash32(
-      await transport.getStorage(profile.address, profile.implementationSlot, coordinate),
-    ) === `0x${"0".repeat(24)}${profile.implementationAddress.slice(2)}`,
-    "IdentityMismatch",
-    "mUSDC implementation changed",
-  );
-  poolRequire(
-    tokens.every((token) => token.decimals === (token.target.address === musd.address ? 18n : 6n)),
+    tokens.every(
+      (token) =>
+        token.decimals ===
+        BigInt(
+          token.target.address === musd.address
+            ? 18
+            : profiles.find((profile) => profile.address === token.target.address)!.decimals,
+        ),
+    ),
     "IdentityMismatch",
     "writer asset precision changed",
   );

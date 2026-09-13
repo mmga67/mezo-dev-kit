@@ -1,7 +1,7 @@
 # Pools SDK reference
 
 Import from `@mezo-dev-kit/pools`. The [README](README.md) owns current support:
-mainnet basic/CL pool reads and private MUSD/mUSDC basic/CL position writers. Contracts owns
+mainnet basic/CL pool reads and private MUSD/mUSDC/mUSDT basic/CL position writers. Contracts owns
 source/ABI/runtime evidence; [Pools knowledge](../../../knowledge/protocols/pools/README.md)
 owns protocol semantics. Pool creation is not supplied; Incentives owns gauge
 custody and streamed rewards.
@@ -31,8 +31,11 @@ balances use each token's base units; LP quantities use the LP token's precision
 `token0`, `token1` and `lp` are Tokens `TokenSnapshot`s with exact balances,
 allowances, precision and role-bound targets. The spender is always the Router.
 
-`writeCompatible` is true only for the initial MUSD/mUSDC pair after verifying
-MUSD runtime and mUSDC proxy, implementation slot/code and token precisions.
+`writeCompatible` requires both tokens to belong to the private MUSD, mUSDC,
+mUSDT profile. For each token present, the reader verifies its runtime and
+precision; each mapped ERC-20 uses its own proxy/implementation hashes and slot.
+The mUSDT profile references its indexed Contracts source, current Native
+mapping and six-decimal evidence; it does not authorize Native Bridge writes.
 Other factory-created tokens are not assumed to have ordinary transfer behavior.
 Discovery alone does not qualify an asset for a writer. Pool gauge positions and
 streamed rewards are separate beneficial ownership, outside these wallet LP reads.
@@ -300,7 +303,7 @@ live `fee`/`unstakedFee`, `globalFee0X128`/`globalFee1X128`, wallet
 `token0`/`token1: TokenSnapshot` with manager as spender, `poolBalance0`,
 `poolBalance1`, native BTC `nativeBalance`, `managerNativeBalance`, manager
 `ownedCount`, global `nftSupply`, `maxLiquidityPerTick`, `writeCompatible`,
-`ticks`, and `positions`. `writeCompatible` requires the same verified MUSD/mUSDC
+`ticks`, and `positions`. `writeCompatible` requires the same verified MUSD/mUSDC/mUSDT
 asset profile as the basic writer. Token values retain their own decimals. Fee integers use the
 deployed CL fee scale of 1,000,000; these are not a quote, APR, or safe price feed.
 

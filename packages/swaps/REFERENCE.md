@@ -36,7 +36,7 @@ missing pools and chain/hash changes reject the quote.
 | `maxAgeBlocks`                                         | Caller maximum preparation age checked before submission.                                                    |
 | `inputToken`, `outputToken`                            | Tokens snapshots with asset, precision, balances and Router allowance targets.                               |
 | `pools`                                                | Verified pool snapshots in route order.                                                                      |
-| `writeCompatible`                                      | Every pool's writer token compatibility passed. Initially only MUSD/mUSDC.                                   |
+| `writeCompatible`                                      | Every pool's writer token compatibility passed. Private profile: MUSD, mUSDC, mUSDT.                         |
 
 `rankBasicSwapQuotes(quotes)` accepts 1–64 complete writer-compatible quotes for
 the same account, input amount, input/output assets and precisions, age policy,
@@ -330,8 +330,9 @@ selects the latest state; it accepts the quote inputs except `blockNumber`.
 deadline are on-chain. Both the original quote TTL and writer age bound apply.
 
 `PreparedCLSwap` contains `quote`, frozen `bounds`, Tokens `approval` plan,
-and exact zero-value `transaction`. Initial writer assets are MUSD/mUSDC, so
-current executable routes have one hop. Other CL routes remain quotable.
+and exact zero-value `transaction`. Writer assets are MUSD, mUSDC and mUSDT,
+with each used token generation and precision verified through Pools. Other CL
+routes remain quotable without writer compatibility.
 The router's native balance must be zero before execution because `refundBTC`
 would otherwise transfer unrelated custody. Direct self recipient, sufficient
 wallet input and explicit deadline/output bounds are required. Single hops use
@@ -383,3 +384,33 @@ const prepared = await writer.prepare({
 console.log(resolveTarget, prepared.approval, prepared.transaction);
 // Application consent, confirmed approvals and re-preparation precede submission.
 ```
+
+## Separate basic/CL continuation example
+
+[`examples/mixed-recovery.ts`](examples/mixed-recovery.ts) is application code,
+not a package export or an atomic router. `prepareMixedSwapContinuation` takes a
+first-leg writer, validated preparation and Core submission record; a different
+second router family with current quote inputs and bounds; a stable second
+operation ID; an intermediate token; explicit consent; and persistence callbacks.
+
+It reconciles first-leg inclusion and custody again, requires its bounds to hold,
+and atomically persists a JSON-safe checkpoint containing both operation IDs,
+account/network, receipt hash/block, intermediate token and actual output amount.
+A saved checkpoint must match that fresh result. The second writer receives
+exactly the realized output in base units, never the old quote or the wallet's
+entire balance. A failed second preparation leaves the checkpoint available for
+inspection, stopping, or a newly consented re-preparation with current bounds.
+
+`loadSecondSubmission` must read the same durable store Core reserves before
+sending. An existing record returns `state: "second-submitted"` and prevents
+preparation, including when its hash is null. Reconcile or investigate that
+record; do not assign another operation ID to evade uncertain submission. With
+no saved submission, `state: "ready"` supplies the family, fresh preparation and
+checkpoint. Confirm separate Tokens approvals, invoke the helper again, then
+simulate/submit through that writer. The helper never calls a wallet.
+
+The application owns validated serialization of prepared values, atomic durable
+storage, concurrent intent control and retention of both legs' Core records.
+Wallet tokens remain fungible: this checkpoint does not reserve them against
+other operations. Two transactions carry independent failure and price exposure;
+no cross-family atomicity or native BTC/MEZO engine guarantee is established.

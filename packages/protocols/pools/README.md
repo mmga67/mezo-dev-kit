@@ -10,8 +10,9 @@ live balances, LP supply/custody, token allowances and the account's LP position
 Dynamic pool addresses are observations, not new static Contract IDs.
 
 `createBasicLiquidityWriter` prepares, simulates, submits and reconciles
-add/remove liquidity for initialized MUSD/mUSDC pools. Both token generations
-are checked; mUSDC proxy/implementation changes invalidate its writer profile.
+add/remove liquidity for initialized pools among MUSD, mUSDC and mUSDT.
+Each used token generation is checked; a mapped ERC-20 proxy, implementation
+slot/code or precision change invalidates its own writer profile.
 Other basic pools remain readable with `writeCompatible: false`. Native BTC
 needs separate gas-aware wallet reconciliation and is not in this writer slice.
 Fee-on-transfer/rebasing assets and new-pool creation are not implemented.
@@ -23,7 +24,7 @@ Router argument. Applications own consent, signer, RPC bounds, atomic storage
 and whole-flow recovery. No new external client dependency is needed.
 
 Qualified protocol review and release remain outstanding. Source/runtime
-provenance is indexed in Contracts; mUSDC's fully verified explorer bytes match
+provenance is indexed in Contracts; mUSDC and mUSDT fully verified explorer bytes match
 RPC, but independent Solidity 0.8.29 reproduction was not performed. Node crypto
 is used; browser distribution has not been verified.
 
@@ -50,7 +51,7 @@ accepted roots, clones, factory and gauge mappings at one block. It reads up to
 active/staked/position liquidity and proves a supplied depositor through the
 gauge stake set. Unknown depositors remain null.
 
-`createCLPositionWriter` handles self-owned unstaked MUSD/mUSDC NFTs: mint into
+`createCLPositionWriter` handles self-owned unstaked NFTs for the same three-asset profile: mint into
 existing initialized pools, increase/decrease liquidity, collect and burn a
 cleared NFT. Explicit approvals, token/liquidity/price/time bounds and exact
 simulation precede submission. Settlement separates removed principal credit

@@ -15,3 +15,10 @@
   beneficial depositor remains `null` until established by bounded evidence.
 - No concrete pool integration failure was reproduced during bootstrap, so no
   troubleshooting candidate was promoted as a known issue.
+
+The private [Pools reference](../../../../packages/protocols/pools/REFERENCE.md)
+now includes mUSDT beside MUSD/mUSDC. Its own indexed Contracts source, runtime,
+slot, mapping and precision evidence define the proposed profile. Only tokens
+present in a pool are checked. This private implementation does not change
+canonical writer support or qualify native engine/bridge execution; independent
+Solidity 0.8.29 compilation and qualified release review remain outstanding.

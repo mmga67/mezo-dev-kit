@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "kind": "token-runtime-profile",
+  "id": "musdt-token-runtime",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-13T12:27:40.592Z",
+  "reviewAfter": "2026-10-13T12:27:40.592Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "blockNumber": "11819839",
+    "blockHash": "0x76202e1578765d265d3d124c9a4b4a24001212eae4d2e64f79bef554dda0b0a8"
+  },
+  "sourceMappingReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "bridge-native-evidence"
+  },
+  "sourceToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  "tokenAddress": "0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+  "decimals": 6,
+  "implementationAddress": "0xa9187635a3f6b245888c874e57dbd9fc7139864d",
+  "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+  "addressCodeSha256": "74d711981a42c17959bd1cff5b365bf85f36e5fe11d2a4649ea437df976bce96",
+  "implementationCodeSha256": "fdc02144e01e0db4d7179d46cf6e51edbda2d9aacf0ee83f1700788be80f8cef",
+  "artifacts": [
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "musdt-token-proxy-explorer" },
+      "sha256": "10392e88be5d4861ae4ec7fd09648a8e02eeeade8927308954c0a4042812d2eb"
+    },
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "musdt-token-implementation-explorer" },
+      "sha256": "df764d0dac519f3340c3af8d8c079853e8938aa0a6166506e670d37a9d43c839"
+    },
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "musdt-token-runtime-probe" },
+      "sha256": "84fc5b9a7bacceed83aa00c342e3090c28d66a525d0c5603cda704c80e599c8b"
+    }
+  ],
+  "transferSemantics": "mUSDT is an empty mERC20 subclass. Its inherited source files match the retained mUSDC source class. ERC20Upgradeable transfers debit and credit the exact value and emit Transfer; mERC20 changes precision and privileged minting without overriding transfer/_update. No transfer fee or rebase path is present in this generation.",
+  "sourceUrls": [
+    "https://api.explorer.mezo.org/api/v2/smart-contracts/0xeb5a5d39de4ea42c2aa6a57eca2894376683bb8e",
+    "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa9187635a3f6b245888c874e57dbd9fc7139864d"
+  ],
+  "limitations": [
+    "Private pool/swap writer asset qualification only, pending qualified review; this does not qualify a USDT Native Bridge writer or destination delivery.",
+    "Own fully verified explorer source/runtime and fixed-block RPC code/slot/mapping/precision agree. Proxy and implementation hashes differ from mUSDC and must not be substituted.",
+    "Independent Solidity 0.8.29 compilation was not performed; no compiler dependency was installed. Source equivalence and deployed bytes, plus separate fork verification, define this private qualification.",
+    "Factory pool lookups are fixed-block discovery candidates, not current liquidity or transaction authorization. Native BTC/MEZO execution remains outside this profile."
+  ]
+}

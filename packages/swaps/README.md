@@ -19,8 +19,9 @@ method invents routes, estimates profitability or substitutes a DEX quote for a
 protocol oracle.
 
 `createBasicSwapWriter` prepares, simulates, submits and reconciles exact-input
-Router calls. The initial verified writer assets are MUSD and mUSDC, so current
-writes use a single hop; other basic routes can be read without being executable.
+Router calls. The private writer profile includes MUSD, mUSDC and mUSDT.
+Each asset must pass its own runtime and precision checks; broader readable
+routes do not acquire writer compatibility through ranking.
 The writer checks output minimums, deadline, wallet balance, exact approvals,
 source generation and quote age, including decoded output from the final
 simulation. Receipt reconciliation checks each pool's Swap/Fees events, token
@@ -52,5 +53,19 @@ encodes the exact CL router tuple or packed path, confirms input approval
 separately, checks output in initial/final simulation and reconciles pool price,
 active/staked liquidity, crossed fee boundaries, gauge fees, token transfers,
 wallet/custody and native gas. Router native refund custody must be empty.
-The current verified MUSD/mUSDC asset profile permits single-hop writes; broader
-CL routes can be quoted without establishing writer compatibility.
+The same three-asset profile applies to CL paths. A qualifying token does not
+establish a pool or its liquidity; every hop is discovered and checked again.
+
+The maintained [mixed recovery example](examples/mixed-recovery.ts) composes
+two separately consented basic/CL transactions. It reconciles the first receipt
+again, persists its actual intermediate output and inclusion anchor, and prepares
+the second transaction against current state. A rejected second preparation
+leaves the first transaction settled and its intermediate funds in the wallet.
+Saved second-leg reservations, including records without a hash, require recovery
+through the same durable Core store. The helper never approves or submits.
+
+The example requires application-validated prepared values and atomic durable
+checkpoint storage. Its checkpoint is evidence to recheck, not completion proof
+or a reservation of fungible wallet funds. Keep stable operation IDs and retain
+both prepared calls and submission records for reconciliation. Native engine
+behavior and atomic execution across router families remain unqualified.

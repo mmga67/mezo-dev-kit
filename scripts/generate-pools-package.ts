@@ -6,6 +6,7 @@ import { format } from "prettier";
 import { loadKnowledgeReference } from "./lib/knowledge-reference.ts";
 import { object, objects, text } from "./lib/json.ts";
 import { clMathModel } from "./lib/cl-math-model.ts";
+import { validateMusdtTokenEvidence } from "../packages/contracts/tools/musdt-token-evidence.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 if (process.argv.slice(2).some((arg) => arg !== "--check"))
   throw new Error("usage: generate-pools-package.ts [--check]");
@@ -63,6 +64,8 @@ if (
   constants.swapFeeDenominator !== "10000"
 )
   throw new Error("invalid basic accounting generation");
+const musdt = await validateMusdtTokenEvidence(root);
+digest.update(musdt.digest);
 const model = {
   cl: await clMathModel(root, await resource("protocols/pools", "pools-math")),
   feeIndexScale: constants.feeIndexScale,
@@ -74,6 +77,7 @@ const model = {
     addressCodeSha256: profile.addressCodeSha256,
     implementationCodeSha256: profile.implementationCodeSha256,
   },
+  musdt: musdt.profile,
 };
 digest.update(JSON.stringify(model.cl));
 const output = await format(

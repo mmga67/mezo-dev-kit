@@ -63,7 +63,7 @@ route, or infer transaction authorization.
    evidenced. Preserve revert data; any call mutation invalidates simulation.
 9. Follow transaction tracking and reconcile actual recipient token deltas and
    architecture-specific events/state. Receipt success alone is insufficient.
-10. Inspect `packages/swaps/README.md` and `REFERENCE.md` for current private APIs. Basic quotes accept up to three hops; initial writer assets are MUSD/mUSDC. Use explicit approvals, final simulation output verification, and event/balance reconciliation. Canonical support remains proposed pending qualified review.
+10. Inspect `packages/swaps/README.md` and `REFERENCE.md` for current private APIs. Basic quotes accept up to three hops; private writer assets are MUSD/mUSDC/mUSDT. Use explicit approvals, final simulation output verification, and event/balance reconciliation. Canonical support remains proposed pending qualified review.
 11. On maintenance, update evidence digest, source catalog, canonical records,
     fixtures, generated reference, candidate/gap disposition, validator, and
     qualified-review packet together.
@@ -72,8 +72,12 @@ The current private CL reader calculates exact-input estimates through bounded
 bitmap/tick traversal and Pools step/fee math, without an assumed Quoter. Inspect
 the current Swaps reference for step/word/crossing budgets, source overflow and
 rounding, empty-range versus partial-fill behavior, router native refund custody,
-and exact simulation/state reconciliation. MUSD/mUSDC is the initial writer
-asset profile; wider quotable paths do not establish executable multi-hop support.
+and exact simulation/state reconciliation. MUSD/mUSDC/mUSDT is the private writer
+asset profile; wider quotable paths do not establish writer compatibility.
+For separate basic/CL operations, inspect the maintained Swaps mixed-recovery
+example. Reconcile and persist realized first-leg custody before fresh second-leg
+preparation. Keep stable IDs and uncertain Core reservations; never repeat the
+first transaction or imply atomicity across router families.
 
 For a bounded read-only candidate set, use `@mezo-dev-kit/swaps/quotes` and
 `createSwapQuoteReader` with the existing source-verified readers. Require explicit

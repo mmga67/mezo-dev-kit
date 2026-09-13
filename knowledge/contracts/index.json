@@ -1086,6 +1086,30 @@
       "path": "artifacts/musdc-token-runtime/runtime-probe.json"
     },
     {
+      "id": "musdt-token-runtime",
+      "role": "canonical-record",
+      "kind": "token-runtime-profile",
+      "path": "records/musdt-token-runtime.json"
+    },
+    {
+      "id": "musdt-token-proxy-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/musdt-token-runtime/proxy-explorer.json"
+    },
+    {
+      "id": "musdt-token-implementation-explorer",
+      "role": "artifact",
+      "kind": "explorer-contract-source",
+      "path": "artifacts/musdt-token-runtime/implementation-explorer.json"
+    },
+    {
+      "id": "musdt-token-runtime-probe",
+      "role": "artifact",
+      "kind": "fixed-block-runtime-observation",
+      "path": "artifacts/musdt-token-runtime/runtime-probe.json"
+    },
+    {
       "id": "pool-source-bundles",
       "role": "source-catalog",
       "kind": "mezo-pool-retained-source-catalog",
