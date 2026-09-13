@@ -11,9 +11,13 @@ not accept routes or writers:
 
 - bridge evidence review qualified review accepted the bounded knowledge surface, but the
   route surface and writer surface were not promoted to support.
-- Recipient encoding, instruction encoding, current quote construction,
-  allowance/write preconditions, and recovery execution have not been tested
-  as a writer interface.
+- The private transfer/recovery implementation now covers recipient/instruction
+  encoding, current quote construction, explicit token approval composition,
+  source custody and ordinary manual recovery. The indexed
+  `ntt-transfer-qualification-2026-09-13` record retains pinned source and fresh
+  fixed-block observations with proposed support and pending qualified review.
+  Package tests and local forks qualify their stated private scope; they do not
+  promote routes or writers to supported release status.
 
 The observed capacities are volatile snapshots. Empty transceiver instructions
 reverted in fixed-block quote calls; this is evidence that instruction encoding
@@ -37,8 +41,18 @@ and chain-prefixed digest; `evm/src/NttManager/NttManager.sol` emits the same
 digest and redeems it in the successful destination mint/unlock transaction.
 The four existing completed-transfer records retain their original identities;
 private runtime verification does not renew canonical provider/configuration
-evidence. A future writer/ABI correction needs its own source-matched validation
-and review, plus the current preparation/recovery checks above.
+evidence. The private writer also uses the transceiver envelope and verifies
+token custody. It does not depend on either discrepant TransferSent overload.
+An ABI correction still needs separate source-matched validation and review.
+
+The manual recovery surface bounds and matches VAA bytes before exact simulation;
+guardian validity is established by the deployed transceiver. Historical VAA
+replay must use its recorded destination generation and guardian-validity time.
+It does not establish today's guardian-set availability. A local queue-limit or
+time fixture is not evidence of live administrative authority. Approved-message
+execution has source and component coverage; its special approved/unexecuted
+state is not an ordinary guardian relay integration claim. New source sends and
+historical destination replays remain separate tests, not a newly relayed transfer.
 
 ## Relaying semantics
 

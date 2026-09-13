@@ -17,6 +17,12 @@ second identity owner.
 
 ## Current boundary
 
+`ntt-transfer-qualification-2026-09-13` retains current manager/transceiver and
+token runtime observations plus the pinned official source for private source
+preparation and manual recovery. It remains proposed/pending-qualified-review.
+The package reference owns implemented call and verification limits; this
+additional evidence creates no route or writer release support.
+
 The additional `native-delivery-qualification-2026-09-12` evidence supports the
 private Native observer and references Contracts' separate historical profiles.
 It remains proposed/pending-qualified-review. Its consensus block closes the

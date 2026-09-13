@@ -1,7 +1,9 @@
-# Bridge observation SDK reference
+# Bridge SDK reference
 
 Import from `@mezo-dev-kit/bridges`. The package remains private source.
 [ADR-0023](../../docs/decisions/0023-ntt-receipt-observation.md) owns its boundary.
+Private NTT execution additionally follows
+[ADR-0025](../../docs/decisions/0025-ntt-transfer-recovery.md).
 
 ## Factory and inputs
 
@@ -227,3 +229,187 @@ This is provider-backed historical observation, not independent consensus or
 validator-signature verification. Current mappings, capacity, fees, allowance,
 Cosmos authorization, exact source simulation and recovery remain separate
 requirements. No release, route or writer support is implied.
+
+## Private MUSD NTT source preparation
+
+`createNttTransferReader(config: NttTransferReaderConfig): Readonly<NttTransferReader>`
+uses the same four `NttRouteId` values and independent `sourceTransport` and
+`destinationTransport`. `NttTransferTransport` selects Core RPC chain, block,
+code, storage, read, native balance and timestamp methods. No signer is needed
+for `reader.quote(input: NttTransferQuoteInput)`.
+
+The input requires EVM `account`, `recipient`, `refundRecipient`, positive bigint
+`amount` in source token base units, explicit boolean `shouldQueue`, bigint
+`maxNativeFee`, and independent `maxSourceAgeBlocks` / `maxDestinationAgeBlocks`.
+Optional `sourceBlockNumber` / `destinationBlockNumber` must remain within those
+bounds. Optional `signal` stops subsequent reads and propagates cancellation;
+the caller owns in-flight request cancellation and response-size/time limits.
+Inputs are copied before asynchronous reads. Zero addresses and protocol custody
+addresses as account/recipient are rejected.
+
+`NttTransferQuote` includes immutable source and destination
+`NttEndpointSnapshot` values with each chain's coordinate, timestamp, manager,
+transceiver, token, decimals, locking/burning mode, pause flags, transceiver index,
+capacity, queue duration, next sequence and relay configuration. It also contains
+source `amount`, `destinationAmount`, uint64 `trimmedAmount`, `trimmedDecimals`,
+uint72 `packedAmount`, explicit manual `instructions`, native fee/balance, token
+balance/allowance, both age bounds, and `sourceWouldQueue` / `destinationWouldQueue`.
+These are observations, not reservations. A quote can expose paused endpoints,
+insufficient balances or a fee above the user bound; source preparation enforces usability.
+
+Runtime and token code must match their canonical projections. Both manager and
+transceiver peers must match the independently resolved opposite chain, with one
+enabled transceiver and threshold one. Registered history may include removed
+transceivers. Token precision and mode must
+match the indexed MUSD representation. The deployed amount rule rejects dust
+instead of silently rounding it away. An amount exceeding uint64 after trimming
+is rejected. Account native balance covers the quoted call value only; the wallet
+and application must also handle gas funding.
+
+The private profile explicitly selects manual Wormhole publication. The enabled
+transceiver's actual registered index is encoded; no zero-index assumption is
+made. Its quote reproduces the transfer path's fee calculation. The manager view
+quote has an enabled-count/registered-index discrepancy in the retained generation
+and cannot replace it. Historical zero fees are not current quotes. Manual mode
+does not prevent an external service from delivering a message or imply an SLA.
+
+`createNttTransferWriter({ reader, execution, sourceTransport }): Readonly<NttTransferWriter>`
+composes the reader with a source-chain Core `ExecutionClient`. Its methods are:
+
+- `prepare({ operationId, quote }) → Promise<Readonly<PreparedNttTransfer>>`.
+- `simulate(prepared) → Promise<Readonly<SimulatedTransaction>>`.
+- `submit(prepared, simulated) → Promise<Readonly<SubmissionRecord>>`.
+- `reconcile(prepared, record) → Promise` of Core's reconciled source receipt
+  and `NttSourceOutcome`.
+
+`PreparedNttTransfer` contains the quote, exact transaction and an `approval`
+description: token, manager spender, required amount, current allowance and a
+`required` flag. Source preparation requires adequate token/native balances,
+unpaused endpoints and explicit consent if source capacity would queue. Simulation
+requires sufficient allowance. Execute an exact Tokens approval separately,
+confirm it, then prepare again. A nonzero existing allowance may need a separate
+reset according to Tokens' `planApproval`; no unlimited approval is implied.
+
+```ts
+import { createNttTransferReader, createNttTransferWriter } from "@mezo-dev-kit/bridges";
+import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
+import type { Address } from "@mezo-dev-kit/evm";
+
+declare const sourceTransport: RpcTransport;
+declare const destinationTransport: RpcTransport;
+declare const sourceExecution: ExecutionClient;
+declare const account: Address;
+declare const recipient: Address;
+
+const reader = createNttTransferReader({
+  routeId: "wormhole-ntt-musd-mezo-to-ethereum",
+  sourceTransport,
+  destinationTransport,
+});
+const writer = createNttTransferWriter({ reader, execution: sourceExecution, sourceTransport });
+const prepared = await writer.prepare({
+  operationId: "application-owned-ntt-transfer-id",
+  quote: {
+    account,
+    recipient,
+    refundRecipient: recipient,
+    amount: 1_000_000_000_000_000_000n,
+    shouldQueue: false,
+    maxNativeFee: 0n,
+    maxSourceAgeBlocks: 2n,
+    maxDestinationAgeBlocks: 2n,
+  },
+});
+// Confirm any required token approval separately, then prepare again.
+if (!prepared.approval.required) await writer.simulate(prepared);
+```
+
+This example only prepares and simulates. The application supplies its durable
+execution store, chosen fee/freshness bounds, explicit submission decision and
+subsequent source/destination evidence handling.
+
+For approval composition, use Tokens' `TokenTarget` with the manager contract ID,
+actual quoted token and `targetRole: "ntt-source-token"`. Configure Core with
+`createNttTokenTargetResolver({ routeId, sourceTransport }): ExecutionTargetResolver`.
+It validates the source manager/runtime, its token getter, representation/code and
+block anchor, and rejects another contract, role or network. An approval does not
+require repeating destination route reads; source transfer preparation separately
+revalidates both endpoints after approval confirmation.
+
+The writer encodes only `transfer(uint256,uint16,bytes32,bytes32,bool,bytes)`.
+Token amount and native fee are separate; exact call value is the current fee.
+Both initial and final Core simulations repeat the domain checks and decode a
+uint64 returned sequence. Submission rejects changed calldata, fee, runtime,
+allowance or expired source/destination preparation. Core owns nonce reservation,
+durable hash storage and duplicate-submission protection. Calls require prepared
+and simulated objects from their owning instances.
+
+Source reconciliation checks saved call identity, receipt runtime, token custody
+and the exact transceiver message or matching rate-limit/queue tuple.
+`NttSourceOutcome` is `source-sent` with sequence, digest and encoded manager
+message, or `source-queued` with sequence and null digest/message. Neither means
+destination completion. Persist source hash, intended fields and outcome; use
+`createNttDeliveryObserver` with destination candidates for delivery evidence.
+
+## Manual NTT recovery
+
+`createNttRecoveryWriter(config: NttRecoveryConfig): Readonly<NttRecoveryWriter>`
+requires route ID, both Core `RpcTransport` values, independent positive
+confirmation counts and independent age bounds. Supply `sourceExecution` and/or
+`destinationExecution` for the sides on which transactions will execute; an
+unused side needs no signer. The application supplies each transaction's account and explicitly
+selects its recovery kind. All kinds require `operationId` and `maxNativeFee`.
+
+`NttRecoveryInput` is a discriminated union:
+
+| Kind                  | Additional input                                                 | Preconditions and exact operation                                                                                                                                                     |
+| --------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cancel-outbound`     | sequence, source amount, recipient, refund recipient             | Existing source queue must match the retained intent and caller/sender; calls `cancelOutboundQueuedTransfer(sequence)` with zero value. Destination RPC is unnecessary.               |
+| `complete-outbound`   | same retained source fields                                      | Queue delay elapsed, stored instructions still match, current fee available; calls `completeOutboundQueuedTransfer(sequence)` without another token deposit or approval.              |
+| `complete-inbound`    | source transaction hash and encoded manager message              | Same confirmed source digest, exact destination queue amount/recipient and elapsed delay; calls `completeInboundQueuedTransfer(digest)` with zero value.                              |
+| `execute-approved`    | source transaction hash and encoded manager message              | Same confirmed source digest, manager-approved and neither executed nor queued; calls `executeMsg` with the bound source manager/message and zero value.                              |
+| `receive-attestation` | source transaction hash, encoded manager message and `vaa` bytes | Same confirmed source digest; bounded version-1 VAA body/emitter and full transceiver payload match, VAA unconsumed, message unexecuted; calls `receiveMessage(vaa)` with zero value. |
+
+Queue amounts are checked in the contract's packed representation. Missing queues,
+wrong senders, changed recipients, immature timestamps, consumed VAAs and executed
+messages prevent dependent calls. Outbound cancellation intentionally reads only
+the source chain. Other recovery kinds require current route evidence. The ordinary
+message is exactly 145 bytes with no additional payload; VAA input is capped at
+64 KiB. VAA body matching does not verify guardian signatures: the actual transceiver
+must verify them in initial/final exact simulation and execution. No operator or
+relayer-only entrypoint is exposed.
+
+The recovery writer has `prepare(input)`, `simulate(prepared)`,
+`submit(prepared, simulated)` and `reconcile(prepared, record)` methods with the
+same Core lifecycle. `PreparedNttRecovery` retains normalized input, exact
+transaction, source/destination selection, sequence, digest when known, amount,
+recipient and a quote when required. `NttRecoveryOutcome` is a source outcome,
+`source-cancelled` with sequence/amount, or `destination-progress` with digest and
+`queued` / `redeemed` evidence. Cancellation/redemption verifies token settlement.
+Even redeemed recovery evidence must be passed through the independent delivery
+observer to establish cross-chain completion and preserve prior anchors.
+
+Persist Core submission records and the original recovery context. An uncertain
+submission requires `observe` / `inspectHash` and exact-call recovery; it does not
+permit a new source transfer or a new operation ID to evade nonce reservation.
+Prepared/simulated objects are instance-local and are not a serialization format.
+After a restart, restore the durable Core store, inspect the saved submission and
+reobserve the bridge hashes/anchors. Prepare a new recovery only for the remaining
+action justified by those observations. Do not reprepare an already submitted
+source transfer merely to recover its receipt; source balance or queue state may
+already have changed. Writer `reconcile` requires its original preparation;
+the independent observer provides the persisted-hash delivery path.
+If another party already delivered or completed a queue, reobserve that outcome.
+Absent destination evidence alone never authorizes retransferring source tokens.
+
+`NttTransferError` exposes `NttTransferErrorCode`: `InvalidInput`, `UnknownRoute`,
+`ChainMismatch`, `InvalidConfiguration`, `RuntimeMismatch`, `TransportFailure`,
+`ReorgDetected`, `StaleQuote`, `AmountHasDust`, `BoundExceeded`, `ApprovalRequired`,
+`InvalidEvidence`, `RecoveryUnavailable`. EVM parsing, Contracts registry and Core
+execution failures retain their owning error types. Error causes are diagnostic;
+applications must redact provider details before displaying or storing them.
+
+The indexed qualification remains proposed and pending qualified review. Retained
+RPC observations, deterministic component tests and any local fork runs have
+separate scope. They do not publish a package, promise relaying or authorize live
+value-bearing transactions. Native Bridge source writers remain outside this API.

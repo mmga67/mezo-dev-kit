@@ -11,16 +11,9 @@
   "verifiedAt": "2026-08-24T13:39:35.987Z",
   "reviewAfter": "2026-09-23T13:39:35.987Z",
   "scope": {
-    "canonicalNetworkIds": [
-      "mezo-mainnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
     "evidenceLocalNetworkLabels": [],
-    "providerIds": [
-      "wormhole-ntt",
-      "mezo-native-bridge"
-    ]
+    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
   },
   "limitations": [
     "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
@@ -29,14 +22,35 @@
   ],
   "resources": [
     {
+      "id": "ntt-transfer-qualification-2026-09-13",
+      "role": "evidence",
+      "kind": "ntt-transfer-qualification",
+      "path": "evidence/ntt-transfer-2026-09-13.json"
+    },
+    {
+      "id": "ntt-transfer-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/ntt-transfer-source.json"
+    },
+    {
+      "id": "ntt-current-2026-09-13",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/ntt-current-2026-09-13.json"
+    },
+    {
+      "id": "ntt-attestations-2026-09-13",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/ntt-attestations-2026-09-13.json"
+    },
+    {
       "id": "bridge-providers",
       "role": "canonical-record",
       "kind": "bridge-provider-catalog",
       "path": "records/providers.json",
-      "recordIds": [
-        "wormhole-ntt",
-        "mezo-native-bridge"
-      ],
+      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -44,11 +58,7 @@
       "role": "canonical-record",
       "kind": "bridge-asset-catalog",
       "path": "records/assets.json",
-      "recordIds": [
-        "musd",
-        "usdc-native-bridge",
-        "btc-native-bridge"
-      ],
+      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -242,9 +252,7 @@
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-contract-roles"
     },
-    "blockers": [
-      "current exact-call writer verification for any future supported route"
-    ],
+    "blockers": ["current exact-call writer verification for any future supported route"],
     "currentContractEvidenceReference": {
       "moduleId": "contracts",
       "resourceId": "contract-bridge-v13-probes-2026-08-24"

@@ -1,7 +1,8 @@
 # Bridges
 
-Private, bounded observation for the four recorded MUSD NTT directions and the
-two evidenced Native Bridge directions. The [SDK reference](REFERENCE.md) owns the public
+Private MUSD NTT preparation, manual recovery and bounded observation for the
+four recorded directions, plus observation of two evidenced Native Bridge directions.
+The [SDK reference](REFERENCE.md) owns the public
 contract, injected transports, limits and examples.
 
 `createNttDeliveryObserver` joins one source message to destination redemption
@@ -15,10 +16,13 @@ ownership. The [bridge module](../../knowledge/workflows/bridges/index.json)
 owns route/message semantics; its generated profile supplies runtime references
 without runtime knowledge-file access.
 
-The NTT observer supplies historical receipt evidence. Current implementation, peers, pause,
-capacity, fees, intended amount/recipient, attestations and relay policy are not
-verified. There is no quote, allowance, transfer writer, wallet, automatic retry
-or recovery transaction.
+The NTT observer supplies historical receipt evidence. The separate
+`createNttTransferReader` checks current runtime, peers, token representations,
+capacity and fees. `createNttTransferWriter` prepares exact ordinary source calls
+and preserves separate approval and source outcomes. `createNttRecoveryWriter`
+handles explicitly selected queue and attestation operations. Applications own
+wallets, durable submission storage and recovery decisions. No automatic retry
+or delivery service is selected.
 
 `createNativeDeliveryObserver` separately validates the included direct source
 call and joins the Native sequence/recipient/token/amount tuple. Inbound USDC

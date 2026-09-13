@@ -1,4 +1,32 @@
 export { createNttDeliveryObserver } from "./observer.ts";
+export {
+  createNttTransferReader,
+  createNttTokenTargetResolver,
+  NttTransferError,
+} from "./ntt-transfer-reader.ts";
+export { createNttTransferWriter } from "./ntt-transfer-writer.ts";
+export { createNttRecoveryWriter } from "./ntt-recovery.ts";
+export type {
+  NttRecoveryInput,
+  NttRecoveryConfig,
+  PreparedNttRecovery,
+  NttRecoveryOutcome,
+  NttRecoveryWriter,
+} from "./ntt-recovery.ts";
+export type {
+  NttTransferTransport,
+  NttTransferErrorCode,
+  NttEndpointSnapshot,
+  NttTransferReaderConfig,
+  NttTransferQuoteInput,
+  NttTransferQuote,
+  NttTransferReader,
+} from "./ntt-transfer-types.ts";
+export type {
+  PreparedNttTransfer,
+  NttSourceOutcome,
+  NttTransferWriter,
+} from "./ntt-transfer-writer.ts";
 export { createNativeDeliveryObserver } from "./native-observer.ts";
 export { NativeObserverError } from "./native-evidence.ts";
 export type {

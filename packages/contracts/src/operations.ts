@@ -1,6 +1,7 @@
 import { BORROWER_OPERATION_ABI, BORROWING_RUNTIME_IDENTITIES } from "./operations.generated.ts";
 import { ContractRegistryError } from "./errors.ts";
 import { resolveContract } from "./registry.ts";
+import { NTT_CONTRACT_INTERFACES } from "./ntt.generated.ts";
 import type { ContractAbiEntry, ContractResolutionInput, ResolvedContract } from "./registry.ts";
 import {
   PROTOCOL_OPERATION_ABIS,
@@ -130,10 +131,13 @@ export function resolveRuntimeIdentity(
 ): Readonly<ContractRuntimeIdentity> {
   resolveContract(input);
   const identity =
-    input.networkId === "mezo-mainnet"
+    NTT_CONTRACT_INTERFACES.find(
+      (p) => p.networkId === input.networkId && p.contractId === input.contractId,
+    )?.runtime ??
+    (input.networkId === "mezo-mainnet"
       ? (BORROWING_RUNTIME_IDENTITIES[input.contractId] ??
         PROTOCOL_RUNTIME_IDENTITIES[input.contractId])
-      : undefined;
+      : undefined);
   if (!identity)
     throw new ContractRegistryError(
       "AbiUnavailable",
@@ -152,11 +156,14 @@ export function resolveOperation(
 ): Readonly<ResolvedOperation> {
   const contract = resolveContract(input);
   const abi =
-    input.networkId !== "mezo-mainnet"
+    NTT_CONTRACT_INTERFACES.find(
+      (p) => p.networkId === input.networkId && p.contractId === input.contractId,
+    )?.operationAbi ??
+    (input.networkId !== "mezo-mainnet"
       ? []
       : input.contractId === "musd.borrower-operations"
         ? BORROWER_OPERATION_ABI
-        : (PROTOCOL_OPERATION_ABIS[input.contractId] ?? []);
+        : (PROTOCOL_OPERATION_ABIS[input.contractId] ?? []));
   const matches = abi.filter(
     (entry) =>
       entry.type === "function" &&

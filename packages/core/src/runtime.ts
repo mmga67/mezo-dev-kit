@@ -10,7 +10,7 @@ import { ExecutionError } from "./execution.ts";
 /** Verify canonical address and implementation code at an explicit read coordinate. */
 export async function verifyContractRuntime(input: {
   readonly contract: ResolvedContract;
-  readonly transport: RpcTransport;
+  readonly transport: Pick<RpcTransport, "getChainId" | "getCode" | "getStorage">;
   readonly coordinate: ReadCoordinate;
 }): Promise<void> {
   const { contract, transport, coordinate } = input;

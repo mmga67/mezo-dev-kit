@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "ntt-transfer-qualification",
+  "id": "ntt-transfer-qualification-2026-09-13",
+  "owner": "workflows/bridges",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-13T10:53:27.470Z",
+  "reviewAfter": null,
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "assetIds": ["musd"],
+    "sourceCommit": "8742584991b5f4d1ee63ff10fad8d833a460526c"
+  },
+  "sourceReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "ntt-transfer-source"
+  },
+  "sourceSha256": "2cef993403374a17af441e5572244ed45d2bdf244b1973186db74ab9bf7330a5",
+  "captureReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "ntt-current-2026-09-13"
+  },
+  "captureSha256": "e15b8da6de382fc66c848866e70bc2068ca13c3572782043c7e10a110873274b",
+  "attestationReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "ntt-attestations-2026-09-13"
+  },
+  "attestationSha256": "f21d18ce5d16495f12c5e2c1dbc115a55e94bb64e4bb43d8ba8a0975e240589a",
+  "attestationFormat": {
+    "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/",
+    "checkedAt": "2026-09-13",
+    "scope": "Version-1 header/signature/body layout only; guardian validity requires deployed verification."
+  },
+  "limitations": [
+    "Pinned observations and source, not live availability or a fee quote. Current preparation must re-read both chains and compare the registered runtimes.",
+    "The retained manager TypeChain TransferSent event discrepancy is unchanged. Source intent uses the separately verified transceiver message, not TransferSent decoding.",
+    "The manager view fee quote indexes an enabled-length array by registered index; the retained configurations have one enabled transceiver at index one. The transfer path uses the registered count. Direct enabled-transceiver quotes require exact source-call simulation.",
+    "MUSD amounts with trimming dust revert. Outbound queues already custody or burn tokens; recovery must not transfer the source amount again.",
+    "Source/built/fork qualification and qualified release review are separate. No route, relayer SLA, writer support or live value-bearing test is accepted by this record."
+  ]
+}

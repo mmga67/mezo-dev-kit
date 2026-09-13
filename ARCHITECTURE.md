@@ -502,16 +502,21 @@ owns the required exact-call trace boundary and preflight-only output policy.
 Core supplies pinned native balance reads and validated EVM receipt execution fees;
 the domain owns their effect on protocol and wallet accounting.
 
-`@mezo-dev-kit/bridges` owns private provider-specific receipt observation. Its
+`@mezo-dev-kit/bridges` owns private bridge observation and MUSD NTT execution. Its
 initial NTT observer joins source message and destination redemption digests with
 explicit confirmations, bounded candidate coverage and reorg checks. It consumes
 EVM, Chains, Contracts and Core without a signer or storage dependency. Route
 profiles derive from canonical knowledge. Its separate Native observer validates
 historical direct source calls and tuple/recipient delivery using Contracts'
 historical evidence boundary and caller-supplied consensus-block coverage.
-Current writer preconditions and transfer execution remain separate. See
+Its separate NTT transfer reader/writer verifies current configuration and exact
+source intent, and manual recovery preserves existing queue custody. Applications
+compose Tokens approvals through Core's explicit target resolver. No dependency
+is added to Bridges. Core's runtime verifier accepts only the chain, code and
+storage methods it actually uses. See
 [ADR-0023](docs/decisions/0023-ntt-receipt-observation.md) and
-[ADR-0024](docs/decisions/0024-historical-contract-evidence.md).
+[ADR-0024](docs/decisions/0024-historical-contract-evidence.md), with
+[ADR-0025](docs/decisions/0025-ntt-transfer-recovery.md) for private NTT execution.
 
 [ADR-0021](./docs/decisions/0021-incentives-locks-and-voting.md) extends Incentives
 with ordinary veBTC/veMEZO lock workflows and deterministic boost, epoch and vote

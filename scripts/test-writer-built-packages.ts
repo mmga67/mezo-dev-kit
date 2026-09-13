@@ -11,8 +11,13 @@ for (const [directory, name, exports] of [
     [
       "NativeObserverError",
       "NttObserverError",
+      "NttTransferError",
       "createNativeDeliveryObserver",
       "createNttDeliveryObserver",
+      "createNttRecoveryWriter",
+      "createNttTokenTargetResolver",
+      "createNttTransferReader",
+      "createNttTransferWriter",
     ],
   ],
   [

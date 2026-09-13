@@ -6,11 +6,14 @@ import { format } from "prettier";
 import { loadKnowledgeReference } from "./lib/knowledge-reference.ts";
 import { object, objects, text } from "./lib/json.ts";
 import { validateNativeDeliveryEvidence } from "./lib/native-delivery-evidence.ts";
+import { validateNttTransferEvidence } from "../packages/contracts/tools/ntt-transfer-evidence.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 if (process.argv.slice(2).some((arg) => arg !== "--check"))
   throw new Error("usage: generate-bridges-package.ts [--check]");
 const digest = createHash("sha256");
 digest.update(await validateNativeDeliveryEvidence(root));
+const nttEvidence = await validateNttTransferEvidence(root);
+digest.update(nttEvidence.digest);
 async function resource(id: string) {
   const loaded = await loadKnowledgeReference(root, {
     moduleId: "workflows/bridges",
@@ -39,6 +42,15 @@ function endpoint(id: unknown) {
   if (!representation) throw new Error("missing bridge representation");
   const networkId = text(representation.network, "network"),
     snapshot = snapshots.find((s) => s.networkId === networkId);
+  const deployment = objects(evidence.deploymentObservations, "observations").find(
+    (d) => d.id === representation.deploymentObservation,
+  );
+  if (
+    !deployment ||
+    typeof representation.decimals !== "number" ||
+    !["locking", "burning"].includes(text(representation.managerMode, "mode"))
+  )
+    throw new Error("NTT token representation unavailable");
   if (
     !snapshot ||
     typeof snapshot.wormholeChainId !== "number" ||
@@ -59,6 +71,16 @@ function endpoint(id: unknown) {
     wormholeChainId: snapshot.wormholeChainId,
     managerId: contract("ntt-manager"),
     transceiverId: contract("wormhole-transceiver"),
+    token: text(deployment.tokenAddress, "token"),
+    tokenCodeSha256:
+      nttEvidence.tokens.find(
+        (t) => t.networkId === networkId && t.address === deployment.tokenAddress,
+      )?.codeSha256 ??
+      (() => {
+        throw new Error("missing NTT token runtime");
+      })(),
+    decimals: representation.decimals,
+    mode: representation.managerMode === "locking" ? 0 : 1,
   };
 }
 const model = objects(routes.records, "routes")

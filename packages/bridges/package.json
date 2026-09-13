@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "type": "module",
-  "description": "Bounded provider-specific bridge delivery observation.",
+  "description": "Private MUSD NTT preparation, recovery and bridge delivery observation.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

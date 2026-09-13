@@ -1,6 +1,6 @@
 ---
 name: mdk-bridge-knowledge
-description: Verify MUSD NTT and Mezo Native Bridge assets, routes and transfer evidence. Inspect private NTT and Native observation; bridge writers and routes remain unsupported.
+description: Verify MUSD NTT and Native Bridge evidence. Inspect private NTT preparation/recovery and separate delivery observers; route and writer release remain unsupported.
 ---
 
 # Mezo bridge knowledge
@@ -29,6 +29,16 @@ same package. Resolve historical generations explicitly through Contracts;
 never backdate the current resolver or infer delivery from system success.
 Use the indexed Native qualification for consensus-block attribution limits;
 an EVM-only block list or synthetic pseudo trace does not prove a mint.
+
+For private MUSD NTT source work, inspect the transfer reader/writer and recovery
+reference separately from the observer. Apply the indexed NTT qualification:
+registered transceiver indices matter for instruction/fee construction; amounts
+with trimming dust revert; queued funds are already held or burned. Compose
+Tokens approvals through Core's explicit target role, confirm them and prepare
+again. Source submission/reconciliation never establishes destination completion.
+Manual recovery must bind an existing source queue or the same confirmed source
+digest; VAA body matching does not verify guardian signatures. Preserve Core
+submission uncertainty and use the actual transceiver's exact simulation.
 
 ## Procedure
 

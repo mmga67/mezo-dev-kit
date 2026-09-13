@@ -19,6 +19,16 @@ Overloads require exact `inputTypes`, e.g.
 `["uint256"]` for a direct wrapper call. Missing/ambiguous combinations throw
 `AbiUnavailable`.
 
+For registered MUSD NTT managers on Mezo, Ethereum and Base mainnet, ordinary
+private interfaces include only the six-argument `transfer`,
+`completeOutboundQueuedTransfer`, `cancelOutboundQueuedTransfer`,
+`completeInboundQueuedTransfer` and `executeMsg`. The registered Wormhole
+transceiver exposes `receiveMessage`. Administrative, relayer-only and shortened
+transfer entrypoints remain unavailable through this projection. The separate
+Bridges workflow owns runtime/configuration, consent, fee, simulation and
+reconciliation requirements. The retained TypeChain `TransferSent` discrepancy
+is unchanged; this projection does not correct or rely on that event.
+
 `resolveEvent({ contractId, networkId, blockNumber, eventName })` returns a
 curated `ContractAbiEntry` for receipt decoding. This includes compiler-derived
 Morpho library events omitted by its explorer/read ABI. `getTokenInterface()`
@@ -40,7 +50,8 @@ scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
 Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
 MEZO rebase distributor/minter,
 CL factory, pool implementation, position manager, swap router and gauge factory/implementation,
-institutional roots and Skip native interface. Consumers
+institutional roots and Skip native interface, plus the six registered NTT
+manager/transceiver deployments on Mezo, Ethereum and Base. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution
 failures. Existing `readAbi` is unchanged.

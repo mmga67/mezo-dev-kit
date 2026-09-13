@@ -15,7 +15,7 @@ pending qualified protocol review and release.
 | `@mezo-dev-kit/chains`                  | Accepted network identities and capability metadata            | [Chains reference](../../packages/chains/REFERENCE.md)                                   |
 | `@mezo-dev-kit/contracts`               | Deployment/runtime identity and read or curated operation ABIs | [Contracts reference](../../packages/contracts/REFERENCE.md)                             |
 | `@mezo-dev-kit/core`                    | Block-consistent reads, event scans and transaction execution  | [Core reference](../../packages/core/REFERENCE.md)                                       |
-| `@mezo-dev-kit/bridges`                 | Bounded NTT source/destination receipt and digest observation  | [Bridges reference](../../packages/bridges/REFERENCE.md)                                 |
+| `@mezo-dev-kit/bridges`                 | Private MUSD NTT preparation/recovery and separate bridge delivery observation | [Bridges reference](../../packages/bridges/REFERENCE.md)                                 |
 | `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
 | `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
 | `@mezo-dev-kit/pools`                   | Basic liquidity/fees; CL math, reads and NFT position lifecycle | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |

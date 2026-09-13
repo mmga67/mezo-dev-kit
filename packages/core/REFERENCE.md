@@ -20,6 +20,8 @@ checks the resolved canonical address, chain and coordinate, full address-code
 SHA-256, and the ERC-1967 implementation slot/code where applicable. It uses
 Contracts' curated runtime identities; unavailable identities reject. It does
 not establish dynamic role topology or support status. Hashing uses Node crypto.
+Its transport parameter requires only `getChainId`, `getCode` and `getStorage`
+from `RpcTransport`; callers need not supply unrelated execution methods.
 
 `getReceiptLogs(receipt, address) → readonly ExecutionLog[]` filters one address,
 checks transaction/block ownership, rejects removed or duplicate-index logs,
