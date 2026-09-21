@@ -110,6 +110,60 @@ A reference landing page may route to detailed owners. Say what readers will
 find there and link the useful section. Avoid repeating a changing capability
 inventory or evidence status already maintained at the destination.
 
+#### Package API references
+
+Open with what the package lets a developer do, its import path, and a short
+choice of useful entry points. Define package-specific terms before relying on
+them. Explain units and the relationship between readers, calculations and
+writers where those distinctions affect use. Link the existing setup or
+walkthrough for a complete runnable workflow.
+
+Group APIs by responsibility, then give substantial functions and client methods
+their own descriptive, linkable headings containing the exact API name. Keep a
+predictable order within each entry:
+
+1. **Purpose:** what the call does and when it is useful.
+2. **Inputs:** signature, required and optional values, defaults, units and bounds.
+3. **Example:** one representative use, with its prerequisites stated.
+4. **Result:** what the returned value means and what to inspect next.
+5. **Failures and limits:** rejection conditions and the caller's next action.
+
+Adapt this pattern for small helpers; avoid empty sections or repeated boilerplate.
+Use compact tables for comparable fields and choices. Give lengthy validation,
+accounting or recovery contracts their own prose subsections instead of placing
+whole paragraphs in table cells. A type inventory supplements the API entries;
+it does not replace explanations of how the types are used.
+
+Preserve exact behavior while improving language. In particular, distinguish
+base units from display units, estimates from received amounts, client checks
+from contract-enforced bounds, and confirmation from reconciled outcomes.
+Explain unusual field names and differences between related APIs explicitly.
+Keep detailed protocol facts with their existing owners and link there.
+
+#### Reference code examples
+
+Introduce each example with its purpose and required setup. State whether it is
+a complete runnable example or an excerpt with application-supplied values.
+TypeScript `declare` statements describe dependencies; they do not initialize
+them. Show representative request contents when those contents are the subject
+of the example. Link a maintained walkthrough for transport, wallet or storage
+setup instead of hiding that setup behind unexplained placeholders.
+
+Separate imports, supplied dependencies, construction, the operation, and result
+handling with blank lines. Use one variable declaration per statement and
+expand complex input objects so related fields are easy to scan. Keep examples
+within the repository formatter's conventions; avoid compressed one-line control
+flow and nested lifecycle calls. Comments explain units or consequential choices.
+Follow the code with expected output or an explanation of the fields the reader
+should inspect. Label illustrative values; never fabricate a live result.
+
+Keep each TypeScript example independently typecheckable. The existing
+`scripts/tests/test-sdk-references.ts` checks exported-name coverage, snippet
+types against built entrypoints, and local link destinations. It does not run
+RPC examples or assess prose, heading anchors, or usability. Review those
+properties explicitly, including whether a developer can choose a call, supply
+valid inputs and understand the result without opening its implementation.
+
 ### Explanations and architecture
 
 Begin with the question the page answers and a compact mental model. Describe
@@ -201,3 +255,7 @@ These conventions apply [GitHub's README guidance](https://docs.github.com/en/re
 [Diátaxis's distinction between documentation needs](https://diataxis.fr/),
 the [AGENTS.md separation of audiences](https://agents.md/), and
 [Google's guidance on useful cross-references](https://developers.google.com/style/cross-references).
+Package references also follow
+[Microsoft's API reference guidance](https://learn.microsoft.com/en-us/style-guide/developer-content/reference-documentation),
+[Microsoft's code-example guidance](https://learn.microsoft.com/en-us/style-guide/developer-content/code-examples),
+and [Google's code-sample guidance](https://developers.google.com/style/code-samples).

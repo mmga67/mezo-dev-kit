@@ -1,68 +1,143 @@
 # MUSD Savings SDK reference
 
-Import from `@mezo-dev-kit/musd-savings`. This private workspace package reads
-Savings positions and calculates indexed yield. See
-[setup](../../../docs/reference/sdk.md) and the [package contract](README.md).
-Classic MUSD borrowing belongs to a separate domain.
+Use `@mezo-dev-kit/musd-savings` to read saved MUSD principal, calculate indexed yield, and prepare
+deposits, withdrawals or yield claims.
+
+**sMUSD receipts** represent saved principal. The **yield index** records yield assigned per
+receipt; an account’s stored index lets the SDK calculate yield earned since its last update.
+Principal and claimable MUSD yield remain separate values. A **gauge** holds staked receipts and has
+its own reward accounting.
+
+Use `createSavingsRpcReader` when you have Core’s `RpcTransport`. Use `createSavingsReader` when
+supplying your own transport and ABI codec. A codec translates contract calls to bytes and responses
+to typed values. Both reader paths expose the same snapshot model.
+
+See [package scope](README.md), [workspace setup](../../../docs/reference/sdk.md), and the
+[Savings walkthrough](../../../examples/save-musd/README.md). Classic borrowing has a separate
+package.
+
+On this page:
+
+- [Functions and reader method](#functions-and-reader-method)
+- [Adapter contract](#adapter-contract)
+- [Example: inspect principal and yield](#example-inspect-principal-and-yield)
+- [Snapshot fields](#snapshot-fields)
+- [Errors and public types](#errors-and-public-types)
+- [Writer](#writer)
 
 ## Functions and reader method
 
-| API                                   | Input → result                                                                       | Behavior                                                                          |
-| ------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| `createSavingsReader(config)`         | `SavingsReaderConfig → SavingsReader`                                                | Configure a reader with `networkId`, public `registry`, `transport`, and `codec`. |
-| `reader.read(input)`                  | `{ account, blockNumber? }` → promise of `Readonly<SavingsSnapshot>`                 | Read one account at an explicit bigint block or a head selected once.             |
-| `calculateSavingsYield(input)`        | `SavingsYieldInput → Readonly<SavingsYield>`                                         | Separate stored, newly indexed, and total claimable yield.                        |
-| `calculateSavingsDistribution(input)` | `{ amount, pendingYield, totalSupply, yieldIndex }` → `{ pendingYield, yieldIndex }` | Calculate the next index and buffered yield without sending a transaction.        |
-| `error.toJSON()`                      | none → `{ code, field }`                                                             | Serialize a `SavingsReadError`.                                                   |
+### `createSavingsReader`
 
-`account` is required. The current reader accepts `mezo-mainnet` and a
-supported Savings deployment generation. The broader `NetworkId` type does
-not promise other network implementations.
+Configure a reader with `networkId`, public `registry`, `transport`, and `codec`.
 
-`SavingsYieldInput` requires bigint `balance` (sMUSD receipts), `yieldIndex`,
-`supplyYieldIndex` (the account index), and `storedClaimableYield` (MUSD).
-`SavingsYield` returns `storedClaimable`, `indexedUnclaimed`, and `claimable`,
-each a `SavingsAmount<"MUSD">` with `unit` and `baseUnits`.
+**Call:** `createSavingsReader(config)`
 
-Distribution arguments are bigint: `amount` and `pendingYield` are MUSD base
-units; `totalSupply` is sMUSD receipt base units; `yieldIndex` is the protocol's
-index. Zero supply buffers the incoming amount. With nonzero supply a ratio
-that rounds to zero throws `AmountTooSmall`. Pure helpers use checked uint256
-intermediate arithmetic and the deployed floor order. A zero receipt balance
-skips index subtraction; a positive balance with a larger account index fails.
+**Input → result:** `SavingsReaderConfig → SavingsReader`
+
+### `reader.read`
+
+Read one account at an explicit bigint block or a head selected once.
+
+**Call:** `reader.read(input)`
+
+**Input → result:** `{ account, blockNumber? }` → promise of `Readonly<SavingsSnapshot>`
+
+### `calculateSavingsYield`
+
+Separate stored, newly indexed, and total claimable yield.
+
+**Call:** `calculateSavingsYield(input)`
+
+**Input → result:** `SavingsYieldInput → Readonly<SavingsYield>`
+
+### `calculateSavingsDistribution`
+
+Calculate the next index and buffered yield without sending a transaction.
+
+**Call:** `calculateSavingsDistribution(input)`
+
+**Input → result:** `{ amount, pendingYield, totalSupply, yieldIndex }` →
+`{ pendingYield, yieldIndex }`
+
+### `error.toJSON`
+
+Serialize a `SavingsReadError`.
+
+**Call:** `error.toJSON()`
+
+**Input → result:** none → `{ code, field }`
+
+### Reader configuration and availability
+
+`account` is required. The current reader accepts `mezo-mainnet` and a supported Savings deployment
+generation. The broader `NetworkId` type does not promise other network implementations.
+
+### Yield calculation inputs and results
+
+`SavingsYieldInput` requires bigint `balance` (sMUSD receipts), `yieldIndex`, `supplyYieldIndex`
+(the account index), and `storedClaimableYield` (MUSD). `SavingsYield` returns `storedClaimable`,
+`indexedUnclaimed`, and `claimable`, each a `SavingsAmount<"MUSD">` with `unit` and `baseUnits`.
+
+### Distribution units and rounding
+
+Distribution arguments are bigint: `amount` and `pendingYield` are MUSD base units; `totalSupply` is
+sMUSD receipt base units; `yieldIndex` is the protocol's index. Zero supply buffers the incoming
+amount. With nonzero supply a ratio that rounds to zero throws `AmountTooSmall`. Pure helpers use
+checked uint256 intermediate arithmetic and the deployed floor order. A zero receipt balance skips
+index subtraction; a positive balance with a larger account index fails.
 
 ## Adapter contract
 
-`SavingsReadTransport` implements Core's `id`, `getChainId`, `getBlockNumber`,
-and `getBlock`, plus the following methods (sync or async):
+`SavingsReadTransport` implements Core's `id`, `getChainId`, `getBlockNumber`, and `getBlock`, plus
+the following methods (sync or async):
 
-| Method                | Request / response                                                                                           |
-| --------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `read(request)`       | `ReadCoordinate` plus `address`, `data`; raw return value. No `contractId` is required for discovered roles. |
-| `getCode(request)`    | Coordinate plus `address`; runtime hex bytes.                                                                |
-| `getStorage(request)` | Coordinate plus `address`, `slot`; storage word.                                                             |
+### `read`
 
-`SavingsReadCodec.encodeRead(call)` receives `abi`, `functionName`, and address
-`args`; it returns real EVM calldata. `decodeRead({ ...call, data })` returns
-one scalar. Integers must decode to bigint and addresses to valid strings.
-Every call, code read, and storage read must honor the same coordinate.
+**Call:** `read(request)`
 
-Runtime hashing uses Node crypto. No production ABI/RPC adapter, browser
-bundle certification, wallet, retry, timeout, or cancellation policy is
-provided. The application supplies those integrations and I/O policies.
+**Request / response:** `ReadCoordinate` plus `address`, `data`; raw return value. No `contractId`
+is required for discovered roles.
 
-The direct role code, including immutables, and converter implementation must
-match their captured profiles. Savings implementation storage and runtime must
-agree with the registry generation and source. Converter proxy dispatch is
-bounded by governed PCV discovery and checked getter links; this does not add
-proxy activation history or establish a new audit. Gauge creation input remains
-absent. The indexed Contracts templates and source digests own those limits.
+### `getCode`
 
-Querying the gauge itself as the beneficial account is rejected. Gauge reward-token
-identity is read from state, not assumed from a symbol. Paid-yield history,
-voter claims, APY, cross-system TVL, and classic MUSD debt are outside this reader.
+**Call:** `getCode(request)`
+
+**Request / response:** Coordinate plus `address`; runtime hex bytes.
+
+### `getStorage`
+
+**Call:** `getStorage(request)`
+
+**Request / response:** Coordinate plus `address`, `slot`; storage word.
+
+### Encoding and decoding read calls
+
+`SavingsReadCodec.encodeRead(call)` receives `abi`, `functionName`, and address `args`; it returns
+real EVM calldata. `decodeRead({ ...call, data })` returns one scalar. Integers must decode to
+bigint and addresses to valid strings. Every call, code read, and storage read must honor the same
+coordinate.
+
+Runtime hashing uses Node crypto. No production ABI/RPC adapter, browser bundle certification,
+wallet, retry, timeout, or cancellation policy is provided. The application supplies those
+integrations and I/O policies.
+
+### Runtime and relationship checks
+
+The direct role code, including immutables, and converter implementation must match their captured
+profiles. Savings implementation storage and runtime must agree with the registry generation and
+source. Converter proxy dispatch is bounded by governed PCV discovery and checked getter links; this
+does not add proxy activation history or establish a new audit. Gauge creation input remains absent.
+The indexed Contracts templates and source digests own those limits.
+
+Querying the gauge itself as the beneficial account is rejected. Gauge reward-token identity is read
+from state, not assumed from a symbol. Paid-yield history, voter claims, APY, cross-system TVL, and
+classic MUSD debt are outside this reader.
 
 ## Example: inspect principal and yield
+
+Read principal and wallet yield using an application-supplied transport and codec. The helper
+accepts an untrusted account value and an optional block:
 
 ```ts
 import { createContractRegistry } from "@mezo-dev-kit/contracts";
@@ -82,12 +157,16 @@ export async function readSavings(
     transport,
     codec,
   });
+
   const snapshot = await reader.read({
     account: parseUserAddress(accountInput),
     ...(blockNumber === undefined ? {} : { blockNumber }),
   });
+
   const principal = snapshot.beneficialPrincipal;
+
   const wallet = snapshot.wallet;
+
   return {
     coordinate: snapshot.coordinate,
     principal: principal.status === "available" ? principal.value : principal.error,
@@ -95,6 +174,11 @@ export async function readSavings(
   };
 }
 ```
+
+The returned principal and wallet yield each retain their own availability. An unavailable group
+contains its error; it must not be displayed as a zero balance.
+
+Calculate two small synthetic accounting cases locally:
 
 ```ts
 import { calculateSavingsDistribution, calculateSavingsYield } from "@mezo-dev-kit/musd-savings";
@@ -115,8 +199,11 @@ export const emptyWalletYield = calculateSavingsYield({
 }); // claimable.baseUnits === 7n
 ```
 
-See the [executable example](../../../examples/save-musd/README.md)
-for deterministic transport/codec composition and failure handling.
+With no receipt supply, the distribution buffers `7n` rather than increasing the index. A wallet
+with no receipts still retains its previously stored `7n` of claimable yield.
+
+See the [executable example](../../../examples/save-musd/README.md) for deterministic
+transport/codec composition and failure handling.
 
 ## Snapshot fields
 
@@ -129,57 +216,86 @@ for deterministic transport/codec composition and failure handling.
 | `gauge`                                        | Beneficial stake, custody, total stake, reward-token identity, earnings, and cached voter revenue. |
 | `beneficialPrincipal`                          | Wallet receipts plus the account's gauge stake, counted once.                                      |
 
-Optional groups use `SavingsReadValue<T>`: available with `value`, or unavailable
-with `{ code, field }`. Gauge `earnedRewards` and `cachedVoterRevenue` have their
-own availability. An unavailable value is not zero. Gauge custody may include
-donations and must not be added to an account's beneficial principal. Voter
-revenue and gauge-token rewards are separate from wallet MUSD yield.
+Optional groups use `SavingsReadValue<T>`: available with `value`, or unavailable with
+`{ code, field }`. Gauge `earnedRewards` and `cachedVoterRevenue` have their own availability. An
+unavailable value is not zero. Gauge custody may include donations and must not be added to an
+account's beneficial principal. Voter revenue and gauge-token rewards are separate from wallet MUSD
+yield.
 
 ## Errors and public types
 
-`SavingsReadError(code, field, options?)` preserves an optional `cause` and
-exposes `code`, `field`, and `toJSON()`. Codes: `InvalidInput`, `InvalidReadValue`,
-`UnsupportedNetwork`, `UnsupportedRole`, `TopologyMismatch`,
-`InconsistentCoordinate`, `ReadUnavailable`, `ArithmeticOverflow`,
-`InvalidIndex`, `AmountTooSmall`. Core and Contracts typed failures may propagate.
-Required root failures reject; topology conflicts or a changed coordinate
-invalidate the snapshot. Unknown role runtimes are not called through.
+`SavingsReadError(code, field, options?)` preserves an optional `cause` and exposes `code`, `field`,
+and `toJSON()`. Codes: `InvalidInput`, `InvalidReadValue`, `UnsupportedNetwork`, `UnsupportedRole`,
+`TopologyMismatch`, `InconsistentCoordinate`, `ReadUnavailable`, `ArithmeticOverflow`,
+`InvalidIndex`, `AmountTooSmall`. Core and Contracts typed failures may propagate. Required root
+failures reject; topology conflicts or a changed coordinate invalidate the snapshot. Unknown role
+runtimes are not called through.
 
-Public types: `SavingsAmount`, `SavingsYield`, `SavingsYieldInput`,
-`SavingsReadErrorCode`, `SavingsCall`, `SavingsReadCodec`, `SavingsReadTransport`,
-`SavingsTransportReadRequest`, `SavingsReaderConfig`, `SavingsReadValue`,
-`SavingsWallet`, `SavingsStrategy`, `SavingsConverter`, `SavingsGauge`,
-`SavingsSnapshot`, `SavingsReader`. See the [exports](src/index.ts) and
+Public types: `SavingsAmount`, `SavingsYield`, `SavingsYieldInput`, `SavingsReadErrorCode`,
+`SavingsCall`, `SavingsReadCodec`, `SavingsReadTransport`, `SavingsTransportReadRequest`,
+`SavingsReaderConfig`, `SavingsReadValue`, `SavingsWallet`, `SavingsStrategy`, `SavingsConverter`,
+`SavingsGauge`, `SavingsSnapshot`, `SavingsReader`. See the [exports](src/index.ts) and
 [port/result definitions](src/types.ts).
 
 ## Writer
 
-`createSavingsRpcReader({ networkId, registry, transport })` supplies the
-existing reader's codec and transport ports using Core's `RpcTransport`.
-`createSavingsWriter({ reader, registry, transport, execution })` returns
-`SavingsWriter`. This is a private candidate; qualified protocol review remains
-required before release. Existing signer-free reader methods remain available.
+### `createSavingsRpcReader` — use a Core transport
 
-| Method      | Input → result                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------- |
-| `prepare`   | `{ operationId, account, action, bounds }` → `PreparedSavings`.                                   |
-| `simulate`  | Owned preparation → Core `SimulatedTransaction`; pending approval rejects.                        |
-| `submit`    | Preparation and its simulation → Core `SubmissionRecord`, after fresh state and allowance checks. |
-| `reconcile` | Preparation and durable record → `{ state, record, receipt, outcome: SavingsOutcome }`.           |
+`createSavingsRpcReader({ networkId, registry, transport })` supplies the existing reader's codec
+and transport ports using Core's `RpcTransport`.
 
-`SavingsAction` is `{ kind: "deposit" | "withdraw", amount }` or
-`{ kind: "claim-yield" }`. Positive `amount` is bigint MUSD/sMUSD base units
-(18 decimals, principal receipts are 1:1). `SavingsBounds` requires positive
-`maxBlockAge` and `minYield` in MUSD base units. Deposit requires `minYield: 0n`;
-withdraw pays principal plus currently claimable wallet yield. A direct yield
-claim requires nonzero claimable yield. This is indexed Savings accounting,
-not ERC-4626 share conversion.
+### `createSavingsWriter` — configure transactions
 
-`PreparedSavings` contains `snapshot`, `action`, `bounds`, token balance and
-allowance `token`, explicit `approval`, and exact `transaction`. Deposit may
-require a separate MUSD approval. Withdraw/claim do not. A gauge position must
-be unstaked through [Incentives](../incentives/REFERENCE.md) before withdrawing
-its principal here. Gauge rewards and redirected voter revenue are independent.
+`createSavingsWriter({ reader, registry, transport, execution })` returns `SavingsWriter`. This is a
+private candidate; qualified protocol review remains required before release. Existing signer-free
+reader methods remain available.
+
+### `prepare`
+
+Read current state and build the exact transaction intent, including the action’s checks and bounds.
+
+**Input → result:** `{ operationId, account, action, bounds }` → `PreparedSavings`.
+
+### `simulate`
+
+Simulate the prepared transaction before requesting submission. Use the preparation created by this
+writer.
+
+**Input → result:** Owned preparation → Core `SimulatedTransaction`; pending approval rejects.
+
+### `submit`
+
+Submit the matching prepared and simulated operation. Retain the returned record for confirmation
+and recovery.
+
+**Input → result:** Preparation and its simulation → Core `SubmissionRecord`, after fresh state and
+allowance checks.
+
+### `reconcile`
+
+Verify the confirmed transaction against the saved intent and protocol outcome.
+
+**Input → result:** Preparation and durable record →
+`{ state, record, receipt, outcome: SavingsOutcome }`.
+
+### Actions, amounts and minimum yield
+
+`SavingsAction` is `{ kind: "deposit" | "withdraw", amount }` or `{ kind: "claim-yield" }`. Positive
+`amount` is bigint MUSD/sMUSD base units (18 decimals, principal receipts are 1:1). `SavingsBounds`
+requires positive `maxBlockAge` and `minYield` in MUSD base units. Deposit requires `minYield: 0n`;
+withdraw pays principal plus currently claimable wallet yield. A direct yield claim requires nonzero
+claimable yield. This is indexed Savings accounting, not ERC-4626 share conversion.
+
+### Approvals and prepared state
+
+`PreparedSavings` contains `snapshot`, `action`, `bounds`, token balance and allowance `token`,
+explicit `approval`, and exact `transaction`. Deposit may require a separate MUSD approval.
+Withdraw/claim do not. A gauge position must be unstaked through
+[Incentives](../incentives/REFERENCE.md) before withdrawing its principal here. Gauge rewards and
+redirected voter revenue are independent.
+
+Prepare a deposit with an application-selected provider/wallet request and durable store. The two
+branches show the separate approval and deposit stages:
 
 ```ts
 import { createSavingsRpcReader, createSavingsWriter } from "@mezo-dev-kit/musd-savings";
@@ -188,12 +304,17 @@ import { getNetwork } from "@mezo-dev-kit/chains";
 import { createContractRegistry } from "@mezo-dev-kit/contracts";
 import { createExecutionClient, createRpcSigner, createRpcTransport } from "@mezo-dev-kit/core";
 import type { RpcRequest, SubmissionStore } from "@mezo-dev-kit/core";
+
 declare const request: RpcRequest;
 declare const account: `0x${string}`;
 declare const store: SubmissionStore;
-const network = getNetwork("mezo-mainnet"),
-  registry = createContractRegistry();
+
+const network = getNetwork("mezo-mainnet");
+
+const registry = createContractRegistry();
+
 const transport = createRpcTransport({ id: "application", request });
+
 const execution = createExecutionClient({
   network,
   registry,
@@ -203,54 +324,71 @@ const execution = createExecutionClient({
   maxBlockAge: 5n,
   confirmations: 2n,
 });
+
 const reader = createSavingsRpcReader({ networkId: network.id, registry, transport });
+
 const writer = createSavingsWriter({ reader, registry, transport, execution });
+
 const prepared = await writer.prepare({
   operationId: "unique-savings-deposit",
   account,
   action: { kind: "deposit", amount: 100n * 10n ** 18n },
   bounds: { maxBlockAge: 5n, minYield: 0n },
 });
+
 if (prepared.approval.kind !== "sufficient") {
   const approvals = createApprovalWriter({
     reader: createTokenReader({ transport }),
     transport,
     execution,
   });
+
   const approval = await approvals.prepare({
     ...prepared.token,
     operationId: "unique-approval",
     amount: prepared.approval.amount,
     expectedAllowance: prepared.token.allowance,
   });
-  const record = await approvals.submit(approval, await approvals.simulate(approval));
+
+  const simulated = await approvals.simulate(approval);
+
+  const record = await approvals.submit(approval, simulated);
+
   console.log(await execution.observe(record));
   // Persist, observe until confirmed, reconcile the approval, then prepare again.
   // A reset-to-zero requires another fresh approval before the deposit.
 } else {
-  const record = await writer.submit(prepared, await writer.simulate(prepared));
+  const simulated = await writer.simulate(prepared);
+
+  const record = await writer.submit(prepared, simulated);
+
   console.log(await execution.observe(record));
   // Persist record, await confirmation through execution.observe, then:
   // const result = await writer.reconcile(prepared, record);
 }
 ```
 
-`SavingsOutcome` reports action `kind`, `principal`, actual `yieldPaid`,
-`boundsSatisfied`, and receipt-block `snapshot`. Reconciliation checks protocol
-events, MUSD principal/yield transfers, sMUSD mint/burn and wallet ownership.
-Bounds are client preflight checks; the contract does not enforce a minimum
-yield argument. Receipt-block state includes other transactions in that block.
+Each branch prints an observation of the submitted transaction. Persist and confirm an approval
+before preparing the deposit again; a single observation may still be pending. The code comments
+identify the required confirmation and reconciliation steps.
 
-Use [Core recovery](../../core/REFERENCE.md) for pending, uncertain, reverted,
-replaced and reorged records. Never repeat a whole approval/deposit sequence
-after a lost wallet response. New simulations need this instance's preparation;
-reconciliation accepts restored exact intent and a durable record. The
-[local fork example](test/fork.ts) exercises approval, deposit, withdrawal,
+### Reconciled outcome and recovery
+
+`SavingsOutcome` reports action `kind`, `principal`, actual `yieldPaid`, `boundsSatisfied`, and
+receipt-block `snapshot`. Reconciliation checks protocol events, MUSD principal/yield transfers,
+sMUSD mint/burn and wallet ownership. Bounds are client preflight checks; the contract does not
+enforce a minimum yield argument. Receipt-block state includes other transactions in that block.
+
+Use [Core recovery](../../core/REFERENCE.md) for pending, uncertain, reverted, replaced and reorged
+records. Never repeat a whole approval/deposit sequence after a lost wallet response. New
+simulations need this instance's preparation; reconciliation accepts restored exact intent and a
+durable record. The [local fork example](test/fork.ts) exercises approval, deposit, withdrawal,
 yield and gauge flows; its native reward-token fixture is explicitly labelled.
 
-`SavingsWriteError` exposes `code: SavingsWriteErrorCode`: `InvalidInput`,
-`UnavailableState`, `InsufficientBalance`, `ApprovalRequired`, `StaleState`,
-`ReconciliationMismatch`. Required role/state absence rejects preparation.
-EVM, Contracts, Tokens and Core errors may propagate. Public writer types are
-`SavingsAction`, `SavingsBounds`, `PreparedSavings`, `SavingsOutcome`,
+### Writer errors
+
+`SavingsWriteError` exposes `code: SavingsWriteErrorCode`: `InvalidInput`, `UnavailableState`,
+`InsufficientBalance`, `ApprovalRequired`, `StaleState`, `ReconciliationMismatch`. Required
+role/state absence rejects preparation. EVM, Contracts, Tokens and Core errors may propagate. Public
+writer types are `SavingsAction`, `SavingsBounds`, `PreparedSavings`, `SavingsOutcome`,
 `SavingsWriteErrorCode`, and `SavingsWriter`.
