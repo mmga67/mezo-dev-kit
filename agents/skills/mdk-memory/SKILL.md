@@ -19,7 +19,7 @@ provider.
 
 Do not use memory to store secrets, personal data, raw logs, copied source
 trees, routine task history, speculation presented as fact, or information that
-belongs directly in `knowledge/`, docs, an ADR, code/tests, or another skill.
+belongs directly in `knowledge/`, current project docs, code/tests, or another skill.
 
 ## Relevant repository areas
 
@@ -38,20 +38,27 @@ current Mezo behavior.
 ## Procedure
 
 1. Classify the task and name the narrow domain whose memory could help.
-2. Read `agents/memory/seed/index.json` and, when present,
-   `.mdk/memory/index.json`. Select by domain and title before opening entries;
-   do not load either store wholesale.
+2. Use `pnpm context find --query '<topic>' --memory-domain <domain>` to retrieve
+   relevant shared pointers alongside canonical knowledge. Include
+   `--local-memory` when local context is relevant. `memory-read --scope
+shared|local --id <id>` opens one indexed entry. The
+   [retrieval manual](../../../scripts/agents/CONTEXT.md) owns exact commands and
+   coverage. Alternatively select from the shared/optional local index by
+   domain and title. A known direct canonical reference needs no memory detour.
 3. Verify any important retrieved claim against current code, tests, canonical
    knowledge, or authoritative external evidence before relying on it.
 4. At the end of meaningful work, make the memory decision required by
    `CONTRIBUTING.md`.
-5. Capture new or uncertain observations locally by default. Use one concise
-   JSON entry per stable ID, add it to the local index, and link sources rather
-   than copying their content.
+5. Follow [memory authoring](../../../docs/guides/MEMORY_MANAGEMENT.md#write-for-future-retrieval):
+   search before saving, choose the canonical owner or appropriate store, use a
+   concrete searchable title, and preserve source pointers, applicability,
+   uncertainty and recheck conditions. Capture useful uncertain observations
+   locally by default. Keep task progress and exploratory reasoning out of
+   memory. Update one stable JSON entry and its index together.
 6. Share an entry only when it is durable, broadly useful, reviewed, safe to
    export, and not better placed in a canonical owner. A shared entry must be
    grounded by sources and added to `agents/memory/seed/index.json`.
-7. When authoritative content is promoted to knowledge, docs, an ADR,
+7. When authoritative content is promoted to knowledge, current project docs,
    code/tests, or a skill, reduce the memory to a useful pointer and mark it
    `promoted`, or mark it `deprecated` if the pointer adds no retrieval value.
 8. Keep provider indexes, embeddings, credentials, remote record IDs, and
@@ -63,6 +70,9 @@ current Mezo behavior.
 
 - Validate changed JSON against the schemas under `agents/memory/schema/` and
   ensure every plain-text entry is listed exactly once in its index.
+- Run `pnpm context memory-check`, adding `--local-memory` for local changes.
+  Search a realistic phrase/domain, read the returned entry and follow its
+  sources. Tool validity does not verify source truth, privacy or review.
 - Confirm local memory and provider state remain ignored with
   `git check-ignore -v`.
 - Check shared entries for source links, compactness, export safety, correct

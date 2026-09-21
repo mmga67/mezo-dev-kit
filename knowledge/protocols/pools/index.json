@@ -206,22 +206,22 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module protocols/pools"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/pools"
     },
     {
       "id": "pool-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-pool-knowledge.ts"
+      "command": "node scripts/checks/validate-pool-knowledge.ts"
     },
     {
       "id": "pool-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-pool-reference.ts --check"
+      "command": "node scripts/generate/generate-pool-reference.ts --check"
     },
     {
       "id": "cl-call-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-cl-call-knowledge.ts"
+      "command": "node scripts/checks/validate-cl-call-knowledge.ts"
     }
   ],
   "extensions": {

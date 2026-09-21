@@ -1,27 +1,25 @@
-# Institutional MUSD debt knowledge
+# Institutional MUSD debt
 
-This module owns deployment-scoped knowledge for the Enclave custody and
-execution boundary and the separate EnclaveDebtManager position/accounting
-model on Mezo Mainnet.
+Understand Enclave roles and custody boundaries, institutional debt positions, pledged collateral, fees, repayment, and health on Mezo Mainnet.
 
-Start with `generated/reference.md`, then resolve the required resource through
-`index.json`. Roles, target-selector allowlists, UTXOs, positions, rates, caps,
-and totals are governed state and are only current at their recorded block.
+## Start here
 
-## Current boundary
+- [Institutional debt reference](generated/reference.md): roles, positions, formulas, and aggregate boundaries.
+- [Institutional debt SDK](../../../../packages/protocols/musd-institutional-debt/README.md): bounded reads and pure calculations.
+- [Classic borrowing](../borrowing/README.md): the separate trove model.
+- [Contract deployments](../../../contracts/README.md): Enclave and debt-manager generations.
 
-- The module review is accepted under institutional debt evidence review; knowledge support remains
-  proposed and no public reader or writer is enabled.
-- The two active Enclave generations and the current debt-manager generation
-  are distinct accepted Contract identities with full ABI artifacts.
-- Institutional positions are not classic troves and their collateral and debt
-  do not enter classic ActivePool, DefaultPool, ICR, TCR, Recovery Mode,
-  Stability Pool, redemption, or liquidation accounting.
-- Enclave asset movement is not proof of a debt-position mutation. A matching
-  debt-manager call/event and post-state are required.
-- No read facade, transaction writer, portfolio metric, or product backing
-  ratio is supported.
+## Scope and evidence
 
-Maintainers follow the knowledge-management standard and the institutional
-debt, MUSD, Contracts, Networks, incentives, transaction, troubleshooting, and
-TypeScript skills applicable to the change.
+The module's review is accepted and knowledge support remains proposed. Roles,
+allowlists, UTXOs, positions, rates, and totals describe their recorded block.
+The SDK provides private reads; no partner writer is implemented.
+
+Institutional positions do not enter classic trove or Stability Pool accounting.
+Enclave asset movement alone does not prove a debt-position change: the matching
+debt-manager call/event and post-state matter. Recorded UTXOs do not prove
+Bitcoin unspent state, off-chain custody, or a product backing ratio.
+
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

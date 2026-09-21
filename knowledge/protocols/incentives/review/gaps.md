@@ -1,7 +1,7 @@
 # Current incentives gaps
 
-- CL explanation adds `incentives-cl-claims` with exact retained CLGauge source;
-  qualified review of the additional overload semantics remains pending.
+- Qualified review of `incentives-cl-claims` and its exact retained CLGauge
+  source was accepted on 2026-09-15. Claim writer support remains separate.
 
 Verified at Mezo mainnet block `11212253`:
 
@@ -109,3 +109,28 @@ Documentation conflict retained for resolution:
   transition, or gauge mutation performs the change. `voting.json` records this
   deployed state fact while leaving reward-contract epoch eligibility scoped
   separately.
+
+## MEZO Gauges and remote incentives
+
+The [third-party model](../records/third-party-voting-rewards.json) and
+[observation](../evidence/third-party-mainnet-2026-09-15.json) add a separate
+veMEZO voting domain at Mezo block `11870214`. Retained voter source and
+runtime match the previously accepted implementation evidence. Seven gauges
+were enumerated; four active remote destinations are documented for Curve,
+Uniswap and Aerodrome. Qualified review accepted the bounded model, sources,
+observation, fixtures and validation on 2026-09-15; the delivery gaps below
+remain outside that acceptance.
+
+- The retained official voting guide permits repeated voting throughout an
+  epoch; the scoped executable enforces a new-epoch guard, excludes the first
+  hour and restricts final-hour voting to whitelisted NFTs. Preserve this
+  conflict when explaining voting eligibility.
+- All five active gauge runtimes match the returned source template runtime.
+  The reference is partially verified and remote entries point to that twin;
+  this is not independent compiler reproduction or registry acceptance.
+- Merkl veMEZO LP rewards and Aerodrome MEZO voting incentives/AERO LP rewards
+  are documented mechanisms. Remote registry and allocator provenance, Merkl
+  campaign configuration, exact lock duration in seconds, claim-chain identity,
+  bridge delivery and final recipient settlement remain unverified.
+- A weight snapshot is not a settled payout or complete epoch history. No
+  third-party SDK reader/writer support follows from this knowledge update.

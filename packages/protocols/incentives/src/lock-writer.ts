@@ -17,12 +17,23 @@ import { forecastLock } from "./lock-forecast.ts";
 import type { LockAction, LockForecast } from "./lock-forecast.ts";
 import { calculateLockVotingPower } from "./math.ts";
 import type { LockReader, LockSnapshot } from "./lock-types.ts";
+/**
+ * Minimum locked amount/power, latest allowed Unix-second expiry and maximum preparation age in
+ * blocks.
+ */
 export interface LockBounds {
   readonly minLockedAmount: bigint;
   readonly minUnboostedPower: bigint;
   readonly maxLockEnd: bigint;
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Snapshot, lock forecast, caller bounds and separate underlying approval plan bound to an
+ * exact call.
+ */
 export interface PreparedLock {
   readonly snapshot: Readonly<LockSnapshot>;
   readonly action: Readonly<LockAction>;
@@ -31,32 +42,68 @@ export interface PreparedLock {
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Receipt-block lock/NFT/token custody result with native gas and actual bounds outcome.
+ */
 export interface LockOutcome {
   readonly kind: LockAction["kind"];
   readonly tokenId: bigint;
   readonly snapshot: Readonly<LockSnapshot>;
   readonly forecast: Readonly<LockForecast>;
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Durable call/receipt matched to verified lock settlement; future reorgs still require
+ * observation.
+ */
 export interface ReconciledLock {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<LockOutcome>;
 }
+/**
+ * Ordinary lock action lifecycle; underlying approvals are separate and managed
+ * custody/delegation are outside this interface.
+ */
 export interface LockWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly action: LockAction;
     readonly bounds: LockBounds;
   }): Promise<Readonly<PreparedLock>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedLock): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedLock,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify NFT lock and underlying
+   * custody. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(prepared: PreparedLock, record: unknown): Promise<Readonly<ReconciledLock>>;
 }
 const zero = parseAddress(`0x${"0".repeat(40)}`),
@@ -109,6 +156,15 @@ function satisfies(forecast: LockForecast, bounds: LockBounds) {
     forecast.end <= bounds.maxLockEnd
   );
 }
+/**
+ * Create the six ordinary self-owned escrow lock operations.
+ *
+ * @remarks
+ * Preparation retains any underlying-token approval separately. Simulation verifies
+ * current eligibility and operation output; submission rechecks identity, age and
+ * bounds. Reconciliation checks NFT events, lock state, token custody and gas.
+ * Managed custody, grants and delegation remain outside this writer's contract.
+ */
 export function createLockWriter(config: {
   readonly reader: LockReader;
   readonly execution: ExecutionClient;

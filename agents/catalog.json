@@ -140,6 +140,12 @@
       "audience": "contributor",
       "path": "agents/skills/mdk-typescript-development",
       "domains": ["typescript", "development"]
+    },
+    {
+      "name": "mdk-foundation-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-foundation-application",
+      "domains": ["foundation"]
     }
   ]
 }

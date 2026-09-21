@@ -6,7 +6,7 @@ legacy/
 # Deliberately invalid coding standard review negative fixtures.
 scripts/fixtures/coding-gates/
 
-# Generated and drift-checked by scripts/generate-core-transaction-model.ts.
+# Generated and drift-checked by scripts/generate/generate-core-transaction-model.ts.
 packages/core/src/model.generated.ts
 
 # Generated and drift-checked by the foundational package generators.

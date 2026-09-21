@@ -4,15 +4,11 @@
   "domain": "prices",
   "status": "promoted",
   "title": "Route price selection, DEX quotes, and current versus historical evidence",
-  "summary": "For price usability, Pyth diagnostics, amount-specific DEX quotes, and current-state versus historical-state maintenance, follow the maintained guide and its stable canonical references. Re-read the indexed observations before making liveness claims; this entry is a retrieval pointer, not a feed status cache.",
+  "summary": "For price usability, Pyth diagnostics, amount-specific DEX quotes, and current-state versus historical-state maintenance, follow the maintained guides and their stable canonical references. Re-read indexed observations before making liveness claims; this entry is a retrieval pointer, not a feed status cache. The separate testnet-current-state-evidence-policy pointer routes testnet scope decisions to the manifest.",
   "sources": [
     "docs/guides/price-selection-and-dex-quotes.md",
     "docs/guides/oracle-evidence-refresh.md"
   ],
-  "related": [
-    "prices:price-freshness-fallback-rules",
-    "workflows/swaps",
-    "protocols/pools"
-  ],
-  "updated": "2026-09-07"
+  "related": ["prices:price-freshness-fallback-rules", "workflows/swaps", "protocols/pools"],
+  "updated": "2026-09-15"
 }

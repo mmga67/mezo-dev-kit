@@ -5,20 +5,18 @@
   "owner": "contracts",
   "status": "verified",
   "supportStatus": "none",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-08T15:14:00.225Z",
   "reviewAfter": "2026-09-23T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet"],
     "evidenceBlockNumber": 11333787,
     "verification": "Offline equality with the sourceBundleSha256 recorded by pool source-reproduction review; no new chain observation."
   },
   "limitations": [
     "Source text is retained for all seven reviewed CL roots. Whole explorer responses are not reconstructed.",
     "Preserves original source/compiler reproduction scope; no new deployment, ABI, authorship, audit, or writer support is established.",
-    "The newly retained artifact mapping awaits CL explanation qualified review; existing accepted reproduction evidence is unchanged."
+    "The maintainer accepted qualified Level 3 review of this retained artifact mapping on 2026-09-15; original reproduction evidence and its verification coordinates are unchanged."
   ],
   "digestProcedure": {
     "input": "filePath, sourceCode, additionalSources from the explorer source fields; additionalSources sorted by JSON.stringify(entry).localeCompare before recursive object-key canonicalization.",

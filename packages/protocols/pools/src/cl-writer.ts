@@ -17,6 +17,10 @@ import { clBounds, forecastCLPosition } from "./cl-actions.ts";
 import type { CLPositionAction, CLPositionBounds, CLPositionForecast } from "./cl-actions.ts";
 import type { CLPoolKey, CLPoolReader, CLPoolSnapshot } from "./cl-types.ts";
 import { clReceiptTokenId, verifyCLPositionSettlement } from "./cl-settlement.ts";
+/**
+ * Exact manager call with verified position forecast and separate token approvals, owned by its
+ * writer instance.
+ */
 export interface PreparedCLPosition {
   readonly snapshot: Readonly<CLPoolSnapshot>;
   readonly action: Readonly<CLPositionAction>;
@@ -29,6 +33,10 @@ export interface PreparedCLPosition {
   }>[];
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual position result including token payments, signed wallet deltas, gas and caller-policy
+ * outcome.
+ */
 export interface CLPositionOutcome {
   readonly snapshot: Readonly<CLPoolSnapshot>;
   readonly tokenId: bigint;
@@ -38,16 +46,35 @@ export interface CLPositionOutcome {
   readonly amount1: bigint;
   readonly walletDelta0: bigint;
   readonly walletDelta1: bigint;
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Confirmed exact manager intent with verified NFT, pool, tick and token settlement evidence.
+ */
 export interface ReconciledCLPosition {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<CLPositionOutcome>;
 }
+/**
+ * Ordinary unstaked NFT lifecycle; range changes compose independent decrease/collect/mint
+ * operations.
+ */
 export interface CLPositionWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
@@ -55,11 +82,24 @@ export interface CLPositionWriter {
     readonly action: CLPositionAction;
     readonly bounds: CLPositionBounds;
   }): Promise<Readonly<PreparedCLPosition>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedCLPosition): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedCLPosition,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify NFT/pool/tick and token
+   * settlement. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(prepared: PreparedCLPosition, record: unknown): Promise<Readonly<ReconciledCLPosition>>;
 }
 const codec = createAbiCodec();
@@ -173,6 +213,16 @@ function validateOutput(
     "CL exact simulation amounts differ",
   );
 }
+/**
+ * Create existing-pool NFT mint, increase, decrease, collect and burn operations.
+ *
+ * @remarks
+ * Token approvals are separate and require fresh preparation after confirmation.
+ * Simulation decodes manager output; submission requires matching owned objects and
+ * rechecks identity, custody and bounds. Reconciliation uses predecessor/receipt
+ * state, events and token movements. Decrease credits owed balances; only collection
+ * pays them out. Range changes compose independently settled operations.
+ */
 export function createCLPositionWriter(config: {
   readonly reader: CLPoolReader;
   readonly execution: ExecutionClient;

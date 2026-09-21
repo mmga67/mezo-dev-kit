@@ -17,6 +17,14 @@ import { INCENTIVES_MODEL } from "./model.generated.ts";
 import { calculateCLGaugeEarned } from "./cl-gauge-math.ts";
 import type { CLGaugeReader, CLGaugeReaderConfig, CLGaugeState } from "./cl-gauge-types.ts";
 const zero = parseAddress(`0x${"0".repeat(40)}`);
+/**
+ * Create CL gauge/NFT custody and reward reads over an injected verified Pools reader.
+ *
+ * @remarks
+ * The pool reader owns position identity and liquidity. This reader establishes
+ * beneficial deposit membership and gauge reward state; a gauge-held NFT alone
+ * does not prove that the supplied account owns its economic position.
+ */
 export function createCLGaugeReader(config: CLGaugeReaderConfig): Readonly<CLGaugeReader> {
   const { transport, registry } = config,
     codec = createAbiCodec(),
@@ -223,6 +231,13 @@ export function createCLGaugeReader(config: CLGaugeReaderConfig): Readonly<CLGau
     },
   } satisfies CLGaugeReader);
 }
+/**
+ * Resolve the verified CL gauge target through its Pools position reader.
+ *
+ * @remarks
+ * Core calls the resolver at an exact coordinate. Anchor, role and pool identity
+ * must match; a caller-provided arbitrary target is not accepted.
+ */
 export function createCLGaugeTargetResolver(config: {
   readonly reader: CLGaugeReader;
   readonly account: `0x${string}`;

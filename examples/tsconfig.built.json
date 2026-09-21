@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {}
+  },
+  "include": ["test/built/index.ts", "test/foundations.ts"],
+  "exclude": ["dist", "node_modules"]
+}

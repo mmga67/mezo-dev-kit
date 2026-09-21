@@ -19,6 +19,10 @@ import type {
   CLGaugeReader,
   CLGaugeState,
 } from "./cl-gauge-types.ts";
+/**
+ * Verified NFT action, forecast, explicit approval requirement and exact call; reprepare after
+ * a separate approval.
+ */
 export interface PreparedCLGauge {
   readonly snapshot: Readonly<CLGaugeState>;
   readonly action: CLGaugeAction;
@@ -27,22 +31,44 @@ export interface PreparedCLGauge {
   readonly approvalRequired: boolean;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual gauge reward and token0/token1 fees with custody state, native gas and policy result.
+ */
 export interface CLGaugeOutcome {
   readonly snapshot: Readonly<CLGaugeState>;
   readonly forecast: Readonly<CLGaugeForecast>;
   readonly reward: bigint;
   readonly fee0: bigint;
   readonly fee1: bigint;
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Confirmed matching NFT/gauge intent with verified custody, reward and fee settlement.
+ */
 export interface ReconciledCLGauge {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<CLGaugeOutcome>;
 }
+/**
+ * Explicit NFT approval/stake/unstake/claim lifecycle. Approval is an independent action with
+ * its own confirmation.
+ */
 export interface CLGaugeWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
@@ -50,11 +76,25 @@ export interface CLGaugeWriter {
     readonly action: CLGaugeAction;
     readonly bounds: CLGaugeBounds;
   }): Promise<Readonly<PreparedCLGauge>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedCLGauge): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedCLGauge,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify NFT custody and
+   * token-specific rewards/fees. Required evidence mismatches can reject even when the EVM
+   * receipt succeeded.
+   */
   reconcile(prepared: PreparedCLGauge, record: unknown): Promise<Readonly<ReconciledCLGauge>>;
 }
 const codec = createAbiCodec();
@@ -103,6 +143,15 @@ function bounded(s: CLGaugeState, action: CLGaugeAction, bounds: CLGaugeBounds) 
     incentiveRequire(!s.gaugeApproved, "IneligibleOperation", "CL gauge already approved");
   return forecast;
 }
+/**
+ * Create CL NFT staking, unstaking and gauge-reward claim operations.
+ *
+ * @remarks
+ * Preparation keeps any required NFT approval explicit. Matching writer-owned
+ * preparation/simulation are required for submission. Reconciliation verifies
+ * beneficial custody, position accounting and actual reward transfers; a receipt
+ * alone does not establish those outcomes.
+ */
 export function createCLGaugeWriter(config: {
   readonly reader: CLGaugeReader;
   readonly execution: ExecutionClient;

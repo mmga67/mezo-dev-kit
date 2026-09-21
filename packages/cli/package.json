@@ -1,0 +1,38 @@
+{
+  "name": "@mezo-dev-kit/cli",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "Private standalone MDK project setup and versioned consumer reference tooling.",
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "schema",
+    "README.md",
+    "LICENSE",
+    "REFERENCE.md"
+  ],
+  "scripts": {
+    "build": "node ../../scripts/workspace/clean-package-dist.ts cli && tsc --project tsconfig.build.json",
+    "typecheck": "tsc --project tsconfig.json",
+    "lint": "eslint src test vitest.config.ts",
+    "format:check": "prettier --check src test schema README.md REFERENCE.md package.json tsconfig.json tsconfig.build.json vitest.config.ts",
+    "test": "vitest run",
+    "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=81085"
+  },
+  "devDependencies": {
+    "vitest": "4.1.11"
+  },
+  "bin": {
+    "mdk": "./dist/bin.js"
+  }
+}

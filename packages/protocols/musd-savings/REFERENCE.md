@@ -51,6 +51,17 @@ Runtime hashing uses Node crypto. No production ABI/RPC adapter, browser
 bundle certification, wallet, retry, timeout, or cancellation policy is
 provided. The application supplies those integrations and I/O policies.
 
+The direct role code, including immutables, and converter implementation must
+match their captured profiles. Savings implementation storage and runtime must
+agree with the registry generation and source. Converter proxy dispatch is
+bounded by governed PCV discovery and checked getter links; this does not add
+proxy activation history or establish a new audit. Gauge creation input remains
+absent. The indexed Contracts templates and source digests own those limits.
+
+Querying the gauge itself as the beneficial account is rejected. Gauge reward-token
+identity is read from state, not assumed from a symbol. Paid-yield history,
+voter claims, APY, cross-system TVL, and classic MUSD debt are outside this reader.
+
 ## Example: inspect principal and yield
 
 ```ts
@@ -104,7 +115,7 @@ export const emptyWalletYield = calculateSavingsYield({
 }); // claimable.baseUnits === 7n
 ```
 
-See the [executable example](../../../examples/musd-savings-readonly/README.md)
+See the [executable example](../../../examples/save-musd/README.md)
 for deterministic transport/codec composition and failure handling.
 
 ## Snapshot fields

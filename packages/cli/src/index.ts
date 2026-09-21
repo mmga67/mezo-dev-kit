@@ -1,0 +1,13 @@
+export { CliError } from "./errors.ts";
+export type { CliErrorCode } from "./errors.ts";
+export { parseConfig, parseBundle, parseLock, bundleDigest } from "./contracts.ts";
+export type { ProjectConfig, GuidanceLock, ReferenceBundle } from "./contracts.ts";
+export { runCommand } from "./command.ts";
+export { buildReferenceBundle } from "./distribution.ts";
+export { packPrivateArtifacts } from "./pack.ts";
+export { parseArtifactSet } from "./contracts.ts";
+export type { ArtifactSet } from "./contracts.ts";
+export type { CommandContext, CommandResult } from "./command.ts";
+export type { DistributionInput } from "./distribution.ts";
+export { parseRecoveryJournal } from "./transactions.ts";
+export type { RecoveryJournal } from "./contracts.ts";

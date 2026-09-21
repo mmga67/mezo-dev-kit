@@ -1,2 +1,2 @@
 #!/bin/sh
-exec node scripts/validate-source-boundary.ts --pre-push
+exec node scripts/checks/validate-source-boundary.ts --pre-push

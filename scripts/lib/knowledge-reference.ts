@@ -265,23 +265,33 @@ export async function loadKnowledgeReference(
   const resolved = await resolveKnowledgeResource(repositoryRoot, reference);
   const contents = await readFile(resolved.path, "utf8");
   const document = extname(resolved.path) === ".json" ? parseJson(contents) : contents;
+  const value = selectKnowledgeValue(document, resolved.resource, reference);
+  return { ...resolved, document, value };
+}
+
+/** Select a declared record and/or field from bytes already read by the caller. */
+export function selectKnowledgeValue(
+  document: unknown,
+  resource: KnowledgeResource,
+  referenceInput: unknown,
+): unknown {
+  const reference = parseKnowledgeReference(referenceInput);
   let value: unknown = document;
 
   if (reference.recordId !== undefined) {
     assert(isRecord(document), "record references require a JSON resource");
     assert(
-      Array.isArray(resolved.resource.recordIds) &&
-        resolved.resource.recordIds.includes(reference.recordId),
+      Array.isArray(resource.recordIds) && resource.recordIds.includes(reference.recordId),
       `record '${reference.recordId}' is not declared by resource '${reference.resourceId}'`,
     );
     if (document.id === reference.recordId) {
       value = document;
     } else {
       assert(
-        typeof resolved.resource.recordCollectionPointer === "string",
+        typeof resource.recordCollectionPointer === "string",
         `resource '${reference.resourceId}' needs recordCollectionPointer to resolve '${reference.recordId}'`,
       );
-      const collection = resolveJsonPointer(document, resolved.resource.recordCollectionPointer);
+      const collection = resolveJsonPointer(document, resource.recordCollectionPointer);
       assert(
         Array.isArray(collection),
         `resource '${reference.resourceId}' record collection is not an array`,
@@ -298,5 +308,5 @@ export async function loadKnowledgeReference(
   }
 
   if (reference.pointer !== undefined) value = resolveJsonPointer(value, reference.pointer);
-  return { ...resolved, document, value };
+  return value;
 }

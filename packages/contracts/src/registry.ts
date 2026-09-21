@@ -15,12 +15,20 @@ export type ContractId = (typeof GENERATED_CONTRACT_IDS)[number];
 export type ContractAddress = `0x${string}`;
 export type ContractAbiEntry = Readonly<Record<string, GeneratedJsonValue>>;
 
+/**
+ * Stable contract/network identity at a nonnegative bigint block number. Deployment and ABI
+ * selection are coordinate-specific.
+ */
 export interface ContractResolutionInput {
   readonly contractId: ContractId;
   readonly networkId: NetworkId;
   readonly blockNumber: bigint;
 }
 
+/**
+ * Resolved deployment and read-ABI evidence at one coordinate. The domain reader must still
+ * compare actual runtime and topology.
+ */
 export interface ResolvedContract {
   readonly contractId: ContractId;
   readonly networkId: NetworkId;
@@ -51,8 +59,20 @@ export interface ResolvedContract {
   readonly limitations: readonly string[];
 }
 
+/**
+ * Local deployment resolver over canonical generated evidence. ID membership alone does not
+ * establish a supported generation.
+ */
 export interface ContractRegistry {
+  /**
+   * Resolve deployment/read-ABI evidence at the exact supplied network/block; missing or
+   * unsupported generations reject.
+   */
   resolve(input: ContractResolutionInput): Readonly<ResolvedContract>;
+  /**
+   * List generated IDs; membership alone does not establish a deployment at any particular
+   * block.
+   */
   listContractIds(): readonly ContractId[];
 }
 
@@ -88,6 +108,13 @@ interface RuntimeAbi extends Omit<GeneratedAbiData, "contractId" | "readAbi"> {
   readonly readAbi: readonly ContractAbiEntry[];
 }
 
+/**
+ * Create the local resolver for generated deployment identities and read ABIs.
+ *
+ * @remarks
+ * Call resolve with an explicit network and block. Resolution uses retained evidence;
+ * callers still verify actual runtime and topology through their domain reader.
+ */
 export function createContractRegistry(): Readonly<ContractRegistry> {
   return createContractRegistryFromData(GENERATED_CONTRACTS_DATA);
 }
@@ -221,14 +248,31 @@ export function createContractRegistryFromData(
 
 const defaultRegistry = createContractRegistry();
 
+/**
+ * Resolve one contract deployment and read ABI at an explicit network/block.
+ *
+ * @param input - Stable contract/network IDs and a nonnegative bigint block number.
+ * @throws ContractRegistryError - Invalid input, unavailable generation or unsupported ABI.
+ * @returns Retained deployment evidence; this function performs no on-chain reads.
+ */
 export function resolveContract(input: ContractResolutionInput): Readonly<ResolvedContract> {
   return defaultRegistry.resolve(input);
 }
 
+/**
+ * List generated stable contract IDs without selecting a network or deployment.
+ *
+ * @remarks
+ * An ID in this list need not resolve at every block. Resolve the intended coordinate
+ * before using an address or ABI.
+ */
 export function listContractIds(): readonly ContractId[] {
   return defaultRegistry.listContractIds();
 }
 
+/**
+ * Test generated contract-ID membership without asserting deployment support.
+ */
 export function isContractId(value: unknown): value is ContractId {
   return typeof value === "string" && (GENERATED_CONTRACT_IDS as readonly string[]).includes(value);
 }

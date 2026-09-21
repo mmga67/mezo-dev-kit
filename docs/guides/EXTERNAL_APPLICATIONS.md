@@ -1,181 +1,125 @@
-# External Applications with MDK
+# Build an external application with MDK
 
-MDK is being built as a **library/tooling product**. The current GitHub source
-alpha does not publish packages and is not a production-application support
-promise. The model below describes the later external-application boundary;
-package distribution requires separate approval.
+Use MDK from an independent TypeScript application through its documented
+package entrypoints. Your application owns its source, framework, providers,
+wallet integration, storage, and configuration.
 
-The [SDK reference](../reference/sdk.md) covers the current private workspace
-APIs, including direct MUSD borrowing, Savings, lending, vault, gauge and
-approval workflows using Core execution. These writer implementations
-await qualified protocol review before release; current
-consumer guidance does not establish released writer support.
+MDK currently offers private workspace packages and a
+[private standalone-project tooling pilot](MDK_CLI.md). There is no public
+package-registry release or production support promise. Each
+[package owner](../reference/sdk.md#package-selection) defines its available
+APIs, required inputs, verification, and protocol-writer qualification.
 
-The private [bridge observer](../../packages/bridges/REFERENCE.md) joins bounded
-NTT source/destination receipts. It does not supply a transfer writer or certify
-current route configuration. As with other workspace APIs, its presence here
-does not imply availability in an application's installed release.
+## Start with a working project
 
-MDK applications are TypeScript-first. Generated templates, examples, consumer
-guidance, and documented integration code use TypeScript by default, with TSX
-for React source containing JSX. An application can document a narrow
-tool-required exception, but MDK does not present JavaScript as an equivalent
-default integration path.
+Choose the path that matches your starting point:
 
-Do not create normal user applications as packages inside the MDK monorepo. The monorepo may contain `examples/` and `templates/` only for testing, demonstrations, and project generation.
+| Starting point                      | Next step                                                                                                                                                |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| New application                     | [Build the private artifacts](MDK_CLI.md#build-private-artifacts), then [create a TypeScript project](MDK_CLI.md#create-a-standalone-typescript-project) |
+| Existing TypeScript application     | Follow [existing-application setup](MDK_CLI.md#initialize-an-existing-application)                                                                       |
+| Explore APIs before creating an app | Run the [offline source example](../../README.md#try-the-offline-example), then read a [focused package example](../../examples/PACKAGES.md)             |
+
+The generated starter runs a deterministic fixture without an RPC connection.
+Its setup guide shows how to install the matching artifacts and verify the
+project. Keep MDK package and reference artifacts from the same compatible set.
 
 ## Application Model
 
-```text
-MDK monorepo
-├── packages/               private SDK/tooling workspace modules today
-├── templates/              project sources
-└── agents/consumer/        canonical consumer-agent sources
-          │
-          │ release / generate
-          ▼
-external application
-├── package.json            @mezo-dev-kit/* dependencies
-├── tsconfig.json           application TypeScript configuration
-├── AGENTS.md               application-owned
-├── .agents/skills/         portable discovery root
-│   └── mdk-*/              unchanged MDK consumer skill directories
-└── src/
-```
-
-Once external application support is released, an application should use only
-documented MDK APIs. Framework layers should consume MDK core/protocol APIs
-rather than duplicate Mezo protocol behavior.
-Application checks should include TypeScript typechecking in addition to
-runtime tests and the framework's build checks.
-
-## Agent Guidance
-
-External applications use two instruction layers.
-
-### `AGENTS.md` — application-owned
-
-Created once when the application is bootstrapped.
-
-It defines:
-
-- what the application is;
-- its architecture and conventions;
-- project-specific rules;
-- how agents should route Mezo-specific work to MDK guidance.
-
-After creation, MDK upgrades must **not overwrite this file**.
-
-Canonical bootstrap source:
+Normal applications live outside the MDK monorepo. Repository examples and
+templates demonstrate integrations and project generation.
 
 ```text
-agents/consumer/APP_AGENTS.template.md
+MDK public package entrypoints and matching references
+  → application-owned integration
+      → provider and wallet adapters
+      → protocol workflows and durable submission storage
+      → framework, UI, and application state
 ```
 
-### Consumer skill directories — MDK-owned
+MDK's generated applications and maintained integration examples use TypeScript;
+JSX uses TSX. Document any narrow tool-required language exception in the
+application. Include typechecking alongside tests and framework build checks.
 
-Each `mdk-*` directory contains one versioned consumer skill and any bounded
-assets or references needed for building **with** MDK. Canonical sources live
-under `agents/consumer/skills/` and are indexed by `agents/catalog.json`.
+### Choose packages and supply inputs
 
-It should contain only consumer-relevant guidance: public APIs, supported workflows, required patterns, troubleshooting, and links/references to deeper documentation.
+1. Select the owner in the [SDK reference](../reference/sdk.md). Follow its
+   package reference for exact methods, imports, and limitations.
+2. Declare the package dependency and use a documented export. Keep dependency
+   versions and private artifact overrides consistent with the selected set.
+3. Supply application-owned network selection, RPC requests, and any wallet,
+   timeouts, confirmation policy, and durable storage required by that API.
+4. Keep financial amounts in integer base units and validate external inputs
+   through the owning public boundary.
+5. Preserve returned block coordinates and availability results. For a writer,
+   follow that package's preparation, simulation, submission, and outcome checks.
 
-It must not expose MDK contributor workflows, internal architecture rules,
-release procedures, or unrelated protocol knowledge. Contributor skills and
-consumer skills are separate catalog audiences and must be installed
-separately.
+The [connection example](../../examples/SETUP.md) shows the concrete ports and
+factory construction. Focused examples keep the owning protocol calls visible
+so an application can reuse their composition.
 
-For an agent that discovers the common root, install the directories under
-`.agents/skills/`. For a supported runtime that requires a compatibility root,
-the same directories may instead be copied unchanged; Claude Code's project
-root is `.claude/skills/`. The skill body is not recompiled or rewritten for
-either target.
+### Verify the integration
 
-These directories may be synchronized when MDK is upgraded. An
-application-owned `AGENTS.md` remains outside that synchronization boundary.
+Run your application's typecheck, tests, and build as applicable. Test the
+actual installed package entrypoints and your supplied adapters. For a project
+using the CLI, `pnpm exec mdk doctor --json` checks its SDK/configuration/guidance
+compatibility.
+
+A compatibility check does not verify live protocol state or a transaction
+outcome. Review the chosen package's evidence scope and verify the behavior
+your application uses. Bridge preparation/recovery and delivery observation,
+for example, have distinct inputs and outcomes in the
+[Bridges reference](../../packages/bridges/REFERENCE.md).
 
 ## Distribution
 
-The intended workflow is:
+The CLI runs as a project-local development dependency; global installation
+is optional. The [utility guide](MDK_CLI.md) owns private artifact packaging,
+installation, offline reference retrieval, updates, and recovery.
 
-```text
-create-mezo-app / mdk init
-→ create application AGENTS.md if absent
-→ install matching MDK consumer guidance
-
-mdk sync
-→ refresh the selected consumer-skill discovery root
-→ never overwrite application AGENTS.md
-
-mdk doctor
-→ check SDK/config/guidance compatibility
-```
-
-Until the public CLI exists, repository maintainers can validate and
-materialize the current sources with dependency-free TypeScript tooling:
-
-```sh
-node scripts/validate-agent-skills.ts
-node scripts/materialize-agent-skills.ts \
-  --audience consumer \
-  --output <application>/.agents/skills
-```
-
-Use a new or empty output directory. To test a supported compatibility target,
-change only `--output`; the selected source directories remain unchanged.
-Templates may also copy the cataloged consumer directories directly.
-
-Maintainers creating, updating, reviewing, or deprecating those portable
-consumer sources follow the
-[`skill-authoring guide`](./SKILL_AUTHORING.md). In particular, they validate
-audience separation, materialize into a new/empty target, compare source and
-output unchanged, and confirm the application-owned `AGENTS.md` was not
-modified.
-
-Consumer guidance must match the MDK source or future installed release being
-used. During the source alpha, treat materialized consumer skills as repository
-development artifacts, not a package compatibility guarantee. A future
-versioned consumer must not rely on documentation from a different SDK
-version.
+Private versions alone do not identify an exact evolving source snapshot.
+The tooling pilot checks built inventories and matching bundle identities.
+Use the references delivered with the selected artifact rather than assuming
+a different checkout describes your installed APIs.
 
 ## Documentation Ownership
 
-```text
-MDK repository docs/knowledge
-→ canonical MDK documentation and verified knowledge
+| Owner                                  | Responsibility                                                  |
+| -------------------------------------- | --------------------------------------------------------------- |
+| MDK package docs and indexed knowledge | Canonical API contracts and evidence-backed Mezo facts          |
+| Generated consumer reference bundle    | Version-compatible distribution of selected canonical resources |
+| Application source and configuration   | Integration choices and application behavior                    |
+| Application `AGENTS.md`, when used     | Application-specific coding-agent instructions                  |
+| MDK consumer skills, when installed    | Guidance for using the matching public MDK APIs                 |
 
-agents/consumer/
-→ canonical source for distributable consumer-agent guidance
+The utility provides a complete index of its declared consumer corpus, a small
+local selection, and verified retrieval of additional bundled resources. An
+optional complete download makes that corpus available offline. The
+[knowledge access guide](MDK_CLI.md#how-the-agent-gets-knowledge) describes its
+scope and provenance.
 
-external AGENTS.md
-→ application-specific instructions
+## Agent Guidance
 
-external discovery root / mdk-*/
-→ synchronized MDK consumer guidance
-```
+Agent assistance is optional. Applications using it have two instruction owners:
 
-Do not copy the full MDK documentation or knowledge tree into applications. Copy only the small operational guidance required for correct MDK usage and reference deeper version-compatible documentation when needed.
+- **Application-owned `AGENTS.md`:** describes the product, architecture,
+  conventions, and routing to MDK guidance. Initialization creates it only
+  when absent; MDK updates must not overwrite it.
+- **MDK consumer skills:** describe supported application-facing usage.
+  Install the version-compatible consumer selection into the application's
+  chosen discovery root. Contributor maintenance skills belong to MDK itself.
 
-MCP is not required for static MDK instructions or release-pinned reference
-assets. A future MCP adapter may add value for live, remote, authenticated, or
-structured capabilities, but it must resolve the same public API and canonical
-knowledge owners rather than become a parallel source of truth.
+The ordinary discovery root is `.agents/skills/`; documented compatibility
+roots receive the same portable skill directories. Use
+[guidance setup and updates](MDK_CLI.md#add-skills-and-update-guidance) for CLI
+commands and conflict handling.
 
-Private basic pool integrations can use Pools for verified instance discovery,
-MUSD/mUSDC liquidity and wallet fee claims, then Swaps for bounded candidate
-quotes and exact-input swaps. Follow each [SDK reference](../reference/sdk.md),
-configure the pool target resolver for approvals/claims, and keep approval,
-submission and reconciliation records separate. Initial writers accept the
-verified MUSD/mUSDC assets; broader quoted routes are not automatically executable.
+Maintainers changing distributable guidance use the
+[skill-authoring guide](SKILL_AUTHORING.md). Its source is
+`agents/consumer/`, with audience selection in the agent catalog.
+The [consumer distribution baseline](../manifest#standalone-project-tooling)
+owns compatibility and preservation requirements.
 
-For read-only comparison, import `@mezo-dev-kit/swaps/quotes`. Its bounded
-candidate reader preserves coverage and partial failures and requires explicit
-eligibility. Required failures suppress best selection; price impact, gas and
-currency conversion are not assumed. Follow the owning Swaps reference for the
-private Node distribution and freshness contract.
-
-The private institutional debt reader exposes bounded requested positions,
-independent aggregate fees and both Enclave authority models. Keep unavailable
-price/health visible and preserve subset coverage. Recorded triparty UTXOs need
-separate Bitcoin/custody evidence before any backing claim; role membership is
-not transaction consent. See the [SDK reference](../reference/sdk.md).
+MCP is optional. Static instructions and bundled references work without an
+external service; any future adapter must resolve the same API and knowledge
+owners.

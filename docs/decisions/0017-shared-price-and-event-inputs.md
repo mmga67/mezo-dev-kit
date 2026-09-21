@@ -1,5 +1,11 @@
 # ADR-0017 — Shared price and event inputs
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Price meaning](../manifest#price-meaning).
+> See also [Events and bridge outcomes](../manifest#events-and-bridge-outcomes).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for implementation under the full-SDK task
 - Date: 2026-09-08
 

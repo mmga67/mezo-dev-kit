@@ -103,6 +103,17 @@ standalone recipient-delivery proof.
 
 ## Private Native observer review
 
+The additional private source/current-delivery slice is indexed as
+`native-transfer-qualification-2026-09-15`. It implements current source
+preparation, explicit BTC/ERC20 approval composition, exact Core simulation and
+source reconciliation for the two initial routes. Token runtime/proxy checks,
+Mezo client reporting, mint authority, current limits and fee estimates are
+verified separately from historical completion. Current `WithdrawalFailed`
+evidence produces a governance-recovery handoff; no retry is implemented.
+The source call cannot enforce a future destination fee. Qualified release
+review, wider routes and independent mint attribution for confounded batches
+remain open. This does not promote route support or claim a new live transfer.
+
 The private Native observer now joins both saved directions through the explicit
 historical Contracts API. Additional source/runtime and consensus-block evidence
 is indexed as `native-delivery-qualification-2026-09-12`, with proposed support
@@ -112,10 +123,11 @@ block has the same hash and one injected transaction. The observer also requires
 one bridge entry, stable mapping and exact sequence/recipient state transition.
 Pseudo traces are synthesized by the client and do not report actual mint success.
 
-Release review must assess these new historical profiles and attribution limits.
-Current source preparation, wider/multi-entry attribution, separate attestation
-receipts, other assets and recovery remain separate gaps. The saved replay does
-not refresh current transaction preconditions.
+Release review must assess the historical profiles, current source workflow and
+attribution limits. Wider/multi-entry attribution, separate attestation receipts
+and other assets remain gaps. Confirmed failed-payout recovery ends at the
+governance handoff. The saved replay does not refresh current transaction
+preconditions.
 
 ## MEZO NTT
 

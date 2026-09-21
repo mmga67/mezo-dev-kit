@@ -24,6 +24,10 @@ import type {
   ScannedEvent,
 } from "./event-types.ts";
 
+/**
+ * Typed core failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class EventScanError extends Error {
   readonly code: EventScanIssue | "invalid-input";
   constructor(code: EventScanIssue | "invalid-input", message: string) {
@@ -173,6 +177,8 @@ export function createEventScanner(config: EventScannerConfig): Readonly<EventSc
         .update(JSON.stringify([sourceKey, from.toString(), filter]))
         .digest("hex");
       const previous = checkpoint(input.checkpoint, queryId, from, to, policy.overlapBlocks);
+      // Resume from the retained overlap, not just the next unseen block: those
+      // hashes must still agree before older checkpoint coverage can be trusted.
       const start = previous ? BigInt(previous.anchors[0]!.blockNumber) : from;
       let confirmedHead: bigint | null = null,
         through: bigint | null = null;

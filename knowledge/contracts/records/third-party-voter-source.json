@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "contract-retained-source",
+  "id": "third-party-voter-source",
+  "owner": "contracts",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-15T18:27:38.372Z",
+  "reviewAfter": "2026-09-29T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11870214
+  },
+  "limitations": [
+    "Retains the explorer capture matching the already accepted reproduction; it adds no deployment generation, ABI, registry support or writer.",
+    "Source equality, ABI equality and fixed-block code equality are checked separately. Executable reproduction does not establish authorship or audit coverage."
+  ],
+  "contractReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-deployments",
+    "recordId": "incentives.third-party-voter@mezo-mainnet"
+  },
+  "abiReference": {
+    "moduleId": "contracts",
+    "resourceId": "abi.incentives.third-party-voter"
+  },
+  "reproductionReference": {
+    "moduleId": "contracts",
+    "resourceId": "contract-incentives-probes-2026-08-21",
+    "recordId": "observe-incentives-third-party-voter-mezo-mainnet"
+  },
+  "artifactReference": {
+    "moduleId": "contracts",
+    "resourceId": "source.incentives.third-party-voter"
+  },
+  "artifactSha256": "6675f67de285c2e177f2679414e7148dea0bbd1b59edc41e3e91d90a9aa1b39a",
+  "sourceLocator": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x8d696ae943b97ff36449014e4400a9560d1664dc",
+  "retrievedOn": "2026-09-15",
+  "digestProcedure": "scripts/evidence/import-incentives-contract-records.ts: sourceBundleSha256 canonicalizes filePath, sourceCode and additionalSources sorted by file_path; ABI semantics sort canonicalized entries. Compare with the referenced reproduction, not the mutable explorer response digest.",
+  "sourcePaths": [
+    "contracts/ThirdPartyVoter.sol",
+    "contracts/NonStakingVoter.sol",
+    "contracts/libraries/ProtocolTimeLibrary.sol"
+  ]
+}

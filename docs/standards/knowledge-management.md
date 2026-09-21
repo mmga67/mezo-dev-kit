@@ -1,10 +1,12 @@
-# Knowledge Management Standard v0.4
-
-**Status:** Accepted by ADR-0006 on 2026-08-20.
+# Knowledge management standard
 
 This standard defines how humans and agents read, add, update, review, move,
 deprecate, and generate MDK knowledge. It applies to every knowledge module,
 while domain schemas and validators add stricter rules where needed.
+
+The [manifest](../manifest#knowledge-structure) defines the knowledge boundary.
+This standard owns the detailed maintenance contract. The layout identifier
+remains `knowledgeVersion: "0.4"`; it is independent of the manifest version.
 
 ## Authority and audiences
 
@@ -15,23 +17,24 @@ for the scope it establishes.
 
 Humans and agents use the same facts and lifecycle:
 
-| Need | Start here | Responsibility |
-| --- | --- | --- |
-| Understand a domain | module `README.md` | Human orientation, scope, status, owner, normal checks |
-| Find machine-readable content | module `index.json` | Stable resource IDs and physical resolution |
-| Learn maintenance policy | this standard | Human-neutral repository workflow |
-| Receive automatic agent rules | `knowledge/AGENTS.md` | Short subtree constraints and routing |
-| Perform repeated maintenance | knowledge and domain skills | Agent procedures, not facts |
-| Check record shape | JSON Schema | Local structural contract |
-| Check meaning and relationships | semantic validator | Cross-record and domain invariants |
+| Need                            | Start here                  | Responsibility                                     |
+| ------------------------------- | --------------------------- | -------------------------------------------------- |
+| Understand a domain             | module `README.md`          | Purpose, subjects, relevant limits, and next steps |
+| Find machine-readable content   | module `index.json`         | Stable resource IDs and physical resolution        |
+| Learn maintenance policy        | this standard               | Human-neutral repository workflow                  |
+| Receive automatic agent rules   | `knowledge/AGENTS.md`       | Short subtree constraints and routing              |
+| Perform repeated maintenance    | knowledge and domain skills | Agent procedures, not facts                        |
+| Check record shape              | JSON Schema                 | Local structural contract                          |
+| Check meaning and relationships | semantic validator          | Cross-record and domain invariants                 |
 
-`README.md` is not an agent instruction file. `AGENTS.md` must not become a
-human manual. A skill must not copy either the policy or protocol facts; it
-routes an agent through them in a repeatable order.
+Follow the [documentation standard](documentation.md) for README structure,
+human/agent separation, and references. Human maintenance follows the
+[authoring guide](../guides/KNOWLEDGE_AUTHORING.md). Skills route agents through
+this policy without copying it or the protocol facts.
 
 ## Universal module contract
 
-Every v0.4 module requires:
+Every knowledge module requires:
 
 ```text
 README.md    human entry point
@@ -84,13 +87,13 @@ choose the owner whose lifecycle actually governs it.
 
 The contract was checked against the repository's domain shapes:
 
-| Domain shape | v0.4 specialization |
-| --- | --- |
-| Networks | Chain and endpoint records; short-lived probe evidence |
-| Contracts | Deployment records plus ABI/source-bundle `artifacts/` |
-| Protocols | Semantic/model records, governed-state evidence, and calculation fixtures |
-| Workflows | Lifecycle/requirement records and end-to-end observation evidence |
-| Troubleshooting | Issue records, reproduction evidence, and review-only unresolved leads |
+| Domain shape    | v0.4 specialization                                                       |
+| --------------- | ------------------------------------------------------------------------- |
+| Networks        | Chain and endpoint records; short-lived probe evidence                    |
+| Contracts       | Deployment records plus ABI/source-bundle `artifacts/`                    |
+| Protocols       | Semantic/model records, governed-state evidence, and calculation fixtures |
+| Workflows       | Lifecycle/requirement records and end-to-end observation evidence         |
+| Troubleshooting | Issue records, reproduction evidence, and review-only unresolved leads    |
 
 These differences extend record kinds and semantic checks; they do not require
 different human, index, evidence, lifecycle, or stable-reference contracts.
@@ -101,19 +104,19 @@ Every v0.4 maintained JSON record, module index included, uses the common
 envelope. Raw artifacts, JSON Schemas, and generated outputs are exempt because
 their formats have separate owners.
 
-| Field | Meaning |
-| --- | --- |
-| `schemaVersion` | Positive integer version of that record kind |
-| `kind` | Stable machine-readable record kind |
-| `id` | Stable identity within the owning module |
-| `owner` | Team/domain responsible for maintenance |
-| `status` | Evidence maturity: `candidate`, `unverified`, `verified`, `conflicting`, or `superseded` |
-| `supportStatus` | MDK promise: `none`, `proposed`, `supported`, `historical`, or `deprecated` |
-| `reviewStatus` | Approval: `unreviewed`, `pending-architecture-review`, `pending-qualified-review`, `accepted`, or `rejected` |
-| `verifiedAt` | Last completed evidence check, or `null` when not verified |
-| `reviewAfter` | Freshness/review trigger, or `null` when governed another way |
-| `scope` | Explicit networks, versions, deployments, blocks, or other applicability |
-| `limitations` | What must not be inferred from the record |
+| Field           | Meaning                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------ |
+| `schemaVersion` | Positive integer version of that record kind                                                                 |
+| `kind`          | Stable machine-readable record kind                                                                          |
+| `id`            | Stable identity within the owning module                                                                     |
+| `owner`         | Team/domain responsible for maintenance                                                                      |
+| `status`        | Evidence maturity: `candidate`, `unverified`, `verified`, `conflicting`, or `superseded`                     |
+| `supportStatus` | MDK promise: `none`, `proposed`, `supported`, `historical`, or `deprecated`                                  |
+| `reviewStatus`  | Approval: `unreviewed`, `pending-architecture-review`, `pending-qualified-review`, `accepted`, or `rejected` |
+| `verifiedAt`    | Last completed evidence check, or `null` when not verified                                                   |
+| `reviewAfter`   | Freshness/review trigger, or `null` when governed another way                                                |
+| `scope`         | Explicit networks, versions, deployments, blocks, or other applicability                                     |
+| `limitations`   | What must not be inferred from the record                                                                    |
 
 The three status fields are independent. In particular, `verified` does not
 mean `supported`, and `accepted` review does not waive a future freshness
@@ -187,7 +190,7 @@ Validation has two deliberately separate layers:
 The dependency-free repository conformance check is:
 
 ```bash
-node scripts/validate-knowledge-structure.ts
+node scripts/checks/validate-knowledge-structure.ts
 ```
 
 It validates every v0.4 index it finds. Use `--module <module-id>` for one
@@ -202,7 +205,7 @@ does not supply missing evidence, review, or a support promise.
 The contract's five-domain fixture and negative cases run with:
 
 ```bash
-node scripts/test-knowledge-structure.ts
+node scripts/tests/test-knowledge-structure.ts
 ```
 
 ## Human maintenance workflows
@@ -215,6 +218,21 @@ node scripts/test-knowledge-structure.ts
 4. Check status, support, review, freshness, scope, and limitations before use.
 5. Follow the cited evidence for any protocol-sensitive decision.
 
+Classify each requested claim as a recorded fact/explanation, historical fact,
+current observation, or execution prerequisite. Resolve its owner and as-of
+scope before collecting evidence. Reuse previously loaded, unchanged material;
+"read" requirements mean obtain the relevant missing context, not repeatedly
+load entire manuals. Maintenance verification applies when maintaining or
+re-verifying inputs, not to every lookup.
+
+Discover paths from catalog results or file listing, collection shapes from
+indexes/schema, and exact methods, overloads and parameters from the matching
+ABI or package reference. Never probe a guessed API or endpoint to discover
+its existence. The offline [contributor retrieval manual](../../scripts/agents/CONTEXT.md)
+describes bounded search, record/field selection, reference following, source
+inspection, and supporting memory retrieval. Search results are discovery;
+read the selected record and its applicable evidence before relying on it.
+
 For an explanation, accepted indexed semantics and canonical interfaces are
 the normal starting point. Before opening external documentation or raw
 source, identify the unanswered claim, freshness question, or citation need.
@@ -222,6 +240,15 @@ Retrieve only the resource that can resolve it and stop when the evidence is
 sufficient. An explanation does not inherit the live-state, simulation, or
 compiler-reproduction requirements of executing the described operation.
 Higher-priority tool or task requirements still apply.
+
+Before an online request, establish the exact missing claim, which local owner
+or evidence was insufficient and why, and the authoritative source that can
+resolve it. An unavailable, incompatible, contradicted or out-of-scope local
+record can justify targeted retrieval; an empty search alone cannot prove the
+fact absent. Preserve partial coverage and failures. Prefer a bounded live read
+for a missing state field to downloading unrelated sources. Check deployment,
+network, historical coordinates and review conditions required by the claim;
+do not renew all evidence merely because one current field is needed.
 
 Select records or fields from large catalogs; if output truncates, narrow the
 selection instead of repeating the full read. Use retained source artifacts
@@ -249,6 +276,41 @@ not required for every knowledge read.
 7. Regenerate declared outputs; never patch generated facts by hand.
 8. Run structural, semantic, drift, and relevant link checks.
 9. Obtain the risk-appropriate human review before promotion or release.
+
+### Store information for retrieval
+
+Store authoritative information in its existing owner first. Memory may retain
+a useful route, investigation context or rationale pointer; it must not become
+a second copy of maintained facts. The [memory guide](../guides/MEMORY_MANAGEMENT.md#write-for-future-retrieval)
+owns memory-specific capture and lifecycle instructions.
+
+For a new or revised knowledge record:
+
+1. Keep one coherent subject and stable identity. Use the owning schema's
+   supported fields and the terminology a future caller will search for;
+   include exact method/error names where they describe the evidenced fact.
+   Do not add undocumented fields or maintain a separate handwritten synonym
+   database. Discovery indexes are derived from canonical bytes.
+2. Preserve network/version/coordinate, units, boundaries, uncertainty and
+   applicability beside the claim. Separate a recorded observation from a
+   general rule. A successful historical call does not establish current
+   eligibility.
+3. Link to precise source/evidence resources through logical references and
+   applicable locators. Retain source captures under indexed artifacts when
+   required to reproduce the claim; record the owning digest procedure and
+   what those bytes establish. Do not leave sole proof in a temporary file or
+   provider-only record.
+4. Declare the resource and record IDs in the module index, including the
+   actual `recordCollectionPointer` for a collection. Preserve incoming IDs
+   across moves. Update related records/projections instead of leaving two
+   competing current explanations.
+5. Validate the owning module and exercise retrieval: search a realistic
+   phrase/identifier without supplying the answer's path, read the returned
+   record/field, and follow its evidence. Confirm the result preserves scope
+   and limitations without loading the whole artifact.
+6. Apply the normal review/promotion process. Retrieval success is not evidence
+   acceptance. Keep unresolved gaps explicit and retire superseded records
+   through their lifecycle rather than silently replacing history.
 
 ### Reverify stale knowledge
 
@@ -330,17 +392,16 @@ Before declaring a module v0.4-conformant, verify:
 
 ## Cutover state
 
-ADR-0006 is accepted. network schema migration through troubleshooting schema migration proved domain-by-domain
-semantic equivalence. The knowledge architecture acceptance all-v0.4 cutover implementation completed on
-2026-08-21 and was accepted under architecture and qualified Level 3 review on
-the same date.
+The module-by-module migration preserved semantic equivalence. The all-module
+cutover completed and received architecture and qualified Level 3 acceptance
+on 2026-08-21. This is migration history, not a new evidence observation.
 `knowledge/index.json` now catalogs every maintained module. The required
 production gate is:
 
 ```bash
-node scripts/validate-knowledge-structure.ts --require-all-v0.4
-node scripts/validate-knowledge-catalog.ts
-node scripts/validate-markdown-links.ts
+node scripts/checks/validate-knowledge-structure.ts --require-all-v0.4
+node scripts/checks/validate-knowledge-catalog.ts
+node scripts/checks/validate-markdown-links.ts
 ```
 
 No legacy module index or empty planned knowledge domain remains. Historical

@@ -18,7 +18,7 @@ Will the note materially help a later task?
 ├── no  → do not store it
 └── yes
     ├── Is it a project/protocol fact, decision, procedure, or behavior?
-    │   ├── yes → update knowledge, docs/ADR, skill, or code/tests
+    │   ├── yes → update knowledge, current docs, skill, or code/tests
     │   │         optionally retain only a useful memory pointer
     │   └── no
     ├── Is it uncertain, investigation-local, or provider synchronization state?
@@ -28,13 +28,13 @@ Will the note materially help a later task?
         └── no  → local memory or no memory
 ```
 
-| Destination                     | Use for                                                         | Git state | Authority                        |
-| ------------------------------- | --------------------------------------------------------------- | --------- | -------------------------------- |
-| No memory                       | Routine progress, disposable context, or duplicated material    | None      | None                             |
-| `.mdk/memory/`                  | Discoveries, unfinished investigation, local/sync state         | Ignored   | Supporting local context only    |
-| `agents/memory/seed/`           | Reviewed, durable, compact, export-safe cross-developer context | Tracked   | Supporting shared context only   |
-| Knowledge/docs/ADR/code/skill   | Maintained fact, decision, behavior, or procedure               | Tracked   | Canonical for its owned concern  |
-| External provider/index storage | Rebuildable search index, embedding, cache, or remote ID        | External  | Derived retrieval infrastructure |
+| Destination                       | Use for                                                         | Git state | Authority                        |
+| --------------------------------- | --------------------------------------------------------------- | --------- | -------------------------------- |
+| No memory                         | Routine progress, disposable context, or duplicated material    | None      | None                             |
+| `.mdk/memory/`                    | Discoveries, unfinished investigation, local/sync state         | Ignored   | Supporting local context only    |
+| `agents/memory/seed/`             | Reviewed, durable, compact, export-safe cross-developer context | Tracked   | Supporting shared context only   |
+| Knowledge/current docs/code/skill | Maintained fact, decision, behavior, or procedure               | Tracked   | Canonical for its owned concern  |
+| External provider/index storage   | Rebuildable search index, embedding, cache, or remote ID        | External  | Derived retrieval infrastructure |
 
 If the same content belongs in a canonical owner, put it there. Do not create a
 memory copy merely because it may be easier to search.
@@ -76,6 +76,27 @@ change its stable ID merely because status or wording changes.
 5. Follow `sources` and verify every important claim against current canonical
    knowledge, docs, code/tests, or authoritative evidence before relying on it.
 
+The offline contributor tool searches knowledge and relevant memory together:
+
+```sh
+pnpm context find --query 'price' --module prices --memory-domain prices
+pnpm context memory-read --scope shared --id price-selection-evidence-routing
+pnpm context find --query 'price' --module prices --memory-domain prices --local-memory
+```
+
+Use memory when prior context could shorten a search, resolve terminology or
+prevent a repeated investigation. A direct known canonical reference needs no
+mandatory memory detour. Instructions define the procedure; memory preserves
+useful context between sessions; canonical knowledge establishes the facts.
+One query can find both without treating them as equally authoritative.
+
+Without a domain filter, memory index metadata selects candidates before their
+summaries are read. With `--memory-domain`, summaries in that narrow domain and
+its children are searched. Local memory is explicit and optional; deprecated
+entries require `--include-deprecated`. Absent local storage does not require
+setup or a replacement provider. See the [retrieval manual](../../scripts/agents/CONTEXT.md)
+for exact coverage and output limits.
+
 Start with the tracked shared index:
 
 ```sh
@@ -93,6 +114,128 @@ fi
 After identifying a candidate, open that one file. Do not recursively load
 `.mdk/memory`, the shared seed, provider indexes, or the entire repository by
 default.
+
+## Write for future retrieval
+
+Save a note only when it will help a later task. The goal is a useful route back
+to the right evidence, not a larger store. Follow this sequence when finishing
+an investigation or maintaining a durable finding.
+
+### 1. Decide what survives this session
+
+| Information                                                                                   | Save it in                                                                   |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Verified protocol rule, deployment identity, formula or bounded observation                   | Its indexed knowledge owner and evidence resources                           |
+| Reusable way to perform a task                                                                | The existing skill or guide                                                  |
+| Runtime behavior or a regression                                                              | The owning code and meaningful tests                                         |
+| Active work, next actions or a review decision                                                | The local task/review record                                                 |
+| Useful cross-session route, terminology connection or explanation of an earlier investigation | A compact memory entry linked to the owner                                   |
+| Raw output, exploratory reasoning, repeated progress or copied documentation                  | Do not store in memory; retain necessary evidence under its designated owner |
+
+For example, a transaction's wallet, token ID and receipt do not belong in
+shared memory. A useful memory might instead explain which indexed operation
+and source catalog answer a recurring class of integration question. If the
+guide already supplies that route clearly, no memory entry is needed.
+
+### 2. Search before creating an entry
+
+Choose the existing narrow domain, search relevant shared and optional local
+memory, and inspect candidate entries. Update an existing stable ID for the
+same subject. Similar wording is not enough to merge unrelated scopes; a local
+entry never silently overrides a shared entry with the same ID.
+
+Use the established schema. Do not invent parallel Markdown notes, append a
+chat transcript, or add unvalidated fields because a provider once supported
+them. `sources` and `related` contain pointers; they do not carry copied facts.
+
+### 3. Make the entry independently useful
+
+- **Title:** include concrete topic nouns and the lookup question. Prefer
+  “Locate retained widget parser evidence” to “Important discovery”. Use the
+  domain's normal terminology rather than a transaction hash or task number.
+- **Summary:** state when the pointer helps, where to look, and what must be
+  rechecked. Keep it within 800 characters. Distinguish an observed result
+  from an unresolved question. Do not include exploratory reasoning.
+- **Sources:** point to the canonical record/evidence or exact source section
+  supporting the context. For knowledge, include its owning file/index and
+  name the stable module/resource/record identity in the summary when useful.
+  Use `pnpm context` to resolve those IDs; paths alone can move.
+- **Related:** point to the current owner, replacement or follow-up context.
+  Keep task progress in the task itself. A promoted memory needs a canonical
+  destination here.
+- **Scope and invalidation:** use the summary to state meaningful version,
+  network or change conditions when needed. For example, recheck when the
+  package export map or source generation changes. Schema v1 has no dedicated
+  validity fields; do not invent them or interpret `updated` as verification.
+- **Status/date:** choose an existing lifecycle state and use the actual edit
+  date. A recent edit, search ranking or successful schema check does not make
+  the claim current or accepted.
+
+Keep source bytes, hashes, historical coordinates and full reproduction detail
+in their canonical evidence owner. Memory should lead there, not maintain a
+second snapshot that must be kept synchronized by hand.
+
+### 4. Write the entry and index together
+
+Create/update `<stable-id>.json` in the selected store and the matching entry
+in its sibling `index.json`. Preserve the ID when improving wording or moving
+through the lifecycle. New uncertain observations remain local and explicitly
+`discovered`; shared promotion follows the existing review procedure below.
+
+Run:
+
+```sh
+pnpm context memory-check
+pnpm context memory-check --local-memory
+git check-ignore -v .mdk/memory/index.json
+```
+
+The tool checks the owning schemas, duplicates, filenames, orphan entries and
+index agreement. It rejects discovered entries in shared storage. It does not
+certify privacy, links, source truth or review; inspect those separately.
+
+### 5. Prove the note is retrievable
+
+Search with a plausible future question and its domain, rather than the exact
+ID you just wrote. Read the returned entry and follow its sources to the
+canonical answer. Check that the title/domain select it and that its scope and
+uncertainty remain visible. If the note cannot be found, improve its useful
+wording or domain; do not repeat keywords or copy the source into it.
+
+Record only the task's actual validation outcome. Do not create another memory
+entry saying that memory maintenance completed.
+
+### 6. Maintain the pointer when the owner changes
+
+Recheck a retrieved pointer against current source before depending on it.
+After promotion, shorten it to a route and mark it `promoted` if it still helps.
+When contradicted or superseded, mark shared context `deprecated` and link the
+replacement; update or discard a local draft under the lifecycle below.
+Deprecated entries remain available for deliberate historical lookup but are
+excluded from ordinary retrieval. An absent search match is not a conclusion
+that a capability or historical fact is unavailable.
+
+## Moving from a previous memory application
+
+An external memory service is replaceable infrastructure. Existing useful
+context can be preserved through a separately authorized export, but it must
+not be silently reconstructed from recollection or imported as verified fact.
+
+1. Obtain a bounded export through the provider's actual documented capability.
+   Do not guess its API, install a replacement provider or add credentials just
+   to read this repository.
+2. Keep the export in approved ignored storage and review it for prohibited
+   content. Do not place raw exports in shared seed memory.
+3. Match each useful item to an existing canonical owner or memory ID; discard
+   duplicate, obsolete and routine history.
+4. Verify source identity and scope outside the old provider. If the source
+   cannot be recovered, keep only an explicit local evidence gap when useful;
+   do not mark the old provider's assertion verified.
+5. Write valid provider-neutral entries using the normal capture/review flow,
+   then test retrieval without the provider. Provider record IDs and caches
+   remain derived local state.
+
+No provider export or synchronization is performed by `pnpm context`.
 
 ## Capture a local discovery
 
@@ -145,7 +288,7 @@ Verification follows sources out of memory:
 
 - protocol/network/contract claims → authoritative evidence and canonical
   knowledge;
-- architecture or governance → accepted architecture/ADR;
+- architecture or governance → manifest and detailed architecture;
 - runtime behavior → current code plus meaningful tests;
 - procedure → the maintained guide/skill and an executed workflow.
 
@@ -168,7 +311,9 @@ behavior:
 
 The synthetic
 [`promoted` example](./examples/memory/example-promoted-pointer.json) contains a
-pointer to ADR-0013 rather than another copy of its governance policy.
+pointer to the original source-governance decision rather than a copy of its
+policy. That historical example retains its original reference; new pointers
+to current governance use the manifest.
 
 ## Deprecate, supersede, or delete
 
@@ -216,8 +361,8 @@ For every changed entry and index:
 6. Run agent-skill and documentation checks when tracked guidance changes:
 
    ```sh
-   node scripts/validate-agent-skills.ts
-   node scripts/validate-markdown-links.ts
+   node scripts/agents/validate-agent-skills.ts
+   node scripts/checks/validate-markdown-links.ts
    git diff --check
    ```
 
@@ -254,7 +399,7 @@ Memory domain: <narrow lowercase domain>
 Operation: retrieve | capture-local | propose-shared | verify | promote | deprecate
 Allowed store: none | .mdk/memory | agents/memory/seed
 Canonical sources to verify: <paths/evidence>
-Related canonical owner: <knowledge/doc/ADR/code/skill path or none>
+Related canonical owner: <knowledge/current-doc/code/skill path or none>
 Prohibited data: secrets, credentials, private endpoints, personal data,
   raw logs, copied source files, speculation, routine task history
 Required checks: entry/index schema review, JSON formatting, index agreement,
@@ -307,6 +452,6 @@ The complete synthetic fixture set is documented in
 
 - `discovered` — an unverified local timeout observation;
 - `verified` — a reviewed pointer to current tooling owners;
-- `promoted` — a short pointer after governance moved to ADR-0013; and
+- `promoted` — a historical pointer after governance moved into a decision record; and
 - `deprecated` — a stale package-publication assumption retained only to route
   readers to the accepted source-alpha decision.

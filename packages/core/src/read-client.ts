@@ -16,11 +16,19 @@ import type { BlockHash, HexData } from "./read-validation.ts";
 
 type Awaitable<T> = T | Promise<T>;
 
+/**
+ * Untrusted provider block fields. Core validates the requested number and canonical hash
+ * before returning a coordinate.
+ */
 export interface CoreReadBlock {
   readonly number: unknown;
   readonly hash: unknown;
 }
 
+/**
+ * Exact contract read including network/block/hash, resolved target and calldata. Transport
+ * results remain untrusted.
+ */
 export interface CoreTransportReadRequest {
   readonly networkId: Network["id"];
   readonly chainId: bigint;
@@ -31,27 +39,62 @@ export interface CoreTransportReadRequest {
   readonly data: HexData;
 }
 
+/**
+ * Minimal provider port for anchored reads. Implementations preserve exact block requests and
+ * propagate failures; Core validates results.
+ */
 export interface CoreReadTransport {
   readonly id: string;
+  /**
+   * Return untrusted provider chain identity for Core to validate; do not infer it from the
+   * configured URL.
+   */
   getChainId(): Awaitable<unknown>;
+  /**
+   * Return the current provider head as an untrusted quantity for validation.
+   */
   getBlockNumber(): Awaitable<unknown>;
+  /**
+   * Read exactly the requested block and retain absence as null/undefined; callers validate
+   * number/hash.
+   */
   getBlock(blockNumber: bigint): Awaitable<CoreReadBlock | null | undefined>;
+  /**
+   * Execute the exact target/calldata at the supplied coordinate and propagate failures; domain
+   * decoding remains external.
+   */
   read(request: Readonly<CoreTransportReadRequest>): Awaitable<unknown>;
 }
 
+/**
+ * Explicit network, registry and transport dependencies. Construction never infers a network or
+ * chooses a provider.
+ */
 export interface CoreReadClientConfig {
   readonly network: Readonly<Network>;
   readonly registry: Readonly<ContractRegistry>;
   readonly transport: CoreReadTransport;
 }
 
+/**
+ * One raw ABI call under an application-owned result ID. Required failures reject the batch;
+ * optional failures retain an unavailable result.
+ */
 export interface CoreReadCall {
   readonly id: string;
   readonly contractId: ContractId;
   readonly data: HexData;
+  /**
+   * Defaults to required. Set false to retain an unavailable result for this call rather than
+   * rejecting the batch.
+   */
   readonly required?: boolean;
 }
 
+/**
+ * Identity of one observed EVM block. Preserve network, chain, number and hash together when
+ * combining or rechecking reads.
+ */
 export interface ReadCoordinate {
   readonly networkId: Network["id"];
   readonly chainId: bigint;
@@ -59,12 +102,20 @@ export interface ReadCoordinate {
   readonly blockHash: BlockHash;
 }
 
+/**
+ * Raw successful read and its resolved contract; domain decoding and semantic validation remain
+ * required.
+ */
 export interface AvailableRead {
   readonly status: "available";
   readonly contract: Readonly<ResolvedContract>;
   readonly value: unknown;
 }
 
+/**
+ * Explicit optional-read failure with owned error details. Absence is not an assumed zero or
+ * valid empty position.
+ */
 export interface UnavailableRead {
   readonly status: "unavailable";
   readonly contract: Readonly<ResolvedContract>;
@@ -73,23 +124,51 @@ export interface UnavailableRead {
 
 export type CoherentReadItem = AvailableRead | UnavailableRead;
 
+/**
+ * A batch tied to one checked coordinate. Each entry retains availability and contract
+ * identity; values remain undecoded.
+ */
 export interface CoherentReadResult {
   readonly coordinate: Readonly<ReadCoordinate>;
   readonly reads: Readonly<Record<string, Readonly<CoherentReadItem>>>;
 }
 
+/**
+ * Signer-free contract reads with chain and block-anchor checks. Required failures reject;
+ * optional failures remain observable.
+ */
 export interface CoreReadClient {
+  /**
+   * Query the transport chain ID and reject a mismatch with the configured network.
+   */
   assertChain(): Promise<Readonly<{ expectedChainId: bigint; transportChainId: bigint }>>;
+  /**
+   * Resolve a contract at the requested block or one selected head, preserving chain and anchor
+   * checks.
+   */
   resolveContract(input: {
     readonly contractId: ContractId;
     readonly blockNumber?: bigint;
   }): Promise<Readonly<ResolvedContract>>;
+  /**
+   * Read the batch at one checked block/hash. Required failures reject; optional failures
+   * remain unavailable entries.
+   */
   readCoherent(input: {
     readonly calls: readonly Readonly<CoreReadCall>[];
     readonly blockNumber?: bigint;
   }): Promise<Readonly<CoherentReadResult>>;
 }
 
+/**
+ * Create a provider-neutral client for reads anchored to one network/block/hash.
+ *
+ * @param config - Explicit network, contract registry and read transport.
+ * @remarks
+ * Construction validates configuration. Methods perform RPC and recheck the anchor;
+ * required read failures reject, while optional failures remain explicit results.
+ * No signer is required. Domain callers own decoding the returned values.
+ */
 export function createCoreReadClient(config: CoreReadClientConfig): Readonly<CoreReadClient> {
   const network = validateConfiguration(config);
 

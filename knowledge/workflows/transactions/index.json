@@ -18,7 +18,7 @@
     "runtimeFamily": "EVM"
   },
   "limitations": [
-    "The architecture responsibilities and lifecycle are accepted and have a private dependency-free implementation proof, but no public core package interface, external dependency, protocol writer, or runtime support has been accepted.",
+    "The architecture responsibilities and lifecycle are accepted. This module does not qualify a runtime implementation or writer; current package docs and exports own API availability, and protocol release retains independent review gates.",
     "Generic EVM architecture requirements are proposals, not Mezo facts.",
     "incentives evidence review owns deployment-scoped lock/vote/boost semantics plus bounded historical createLock/vote replay and reconciliation, and bridge evidence review owns evidence-verified MUSD NTT and scoped Native routes. Neither supplies a supported writer until registry/activation ownership, fresh exact-call writer verification, and qualified review are complete."
   ],
@@ -125,22 +125,22 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module workflows/transactions"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module workflows/transactions"
     },
     {
       "id": "transaction-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-transaction-knowledge.ts"
+      "command": "node scripts/checks/validate-transaction-knowledge.ts"
     },
     {
       "id": "transaction-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-transaction-reference.ts --check"
+      "command": "node scripts/generate/generate-transaction-reference.ts --check"
     }
   ],
   "extensions": {
     "architectureStatus": "accepted",
-    "factProposalBoundary": "ADR-0002 and ADR-0003 accept the state machine, client requirements, error taxonomy, and domain-routing semantics. packages/core is a private dependency-free proof only. Transaction-mezo-observations is the sole evidence-backed resource; neither architecture acceptance nor the proof creates a public interface, protocol writer, or runtime support.",
+    "factProposalBoundary": "The project baseline accepts the state machine, client requirements, error taxonomy, and domain-routing semantics. Transaction-mezo-observations is the sole evidence-backed resource in this module. Generic architecture requirements are not Mezo facts; current package docs and exports own implementation interfaces. Architecture acceptance alone does not establish protocol evidence, writer qualification, or runtime support.",
     "owningDecisionIds": [
       "ADR-0002",
       "ADR-0003"

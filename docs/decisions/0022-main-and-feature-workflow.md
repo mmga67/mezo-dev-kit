@@ -1,5 +1,10 @@
 # ADR-0022 — Main and feature workflow
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Source workflow and governance](../manifest#source-workflow-and-governance).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-09-11
 - Supersedes: ADR-0013's branch and filtered-publication workflow only.

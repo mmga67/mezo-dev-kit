@@ -1,0 +1,43 @@
+# Historical architecture decisions
+
+The [manifest](../manifest) states the current project baseline. These records
+preserve the reasons, alternatives, dates, and original acceptance limits behind
+earlier decisions. They are historical context and do not override the baseline.
+
+The baseline incorporated their operative rules on 2026-09-15. Original paths
+remain available for evidence references and existing links. New changes follow
+[Changing the baseline](../manifest#changing-the-baseline).
+
+The original price-ownership record is pinned by hash in the Prices source
+catalog. Its bytes remain unchanged; the table below records its consolidation
+into the current baseline. Other records carry a notice in the file itself.
+
+| Record                                                                                                            | Current baseline section                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [ADR-0001 — Contract Registry Bootstrap Ownership](./0001-contract-registry-bootstrap-ownership.md)               | [Contract identity and provenance](../manifest#contract-identity-and-provenance)                                                                        |
+| [ADR-0002 — Core Client Model](./0002-core-client-model.md)                                                       | [Shared client and transaction lifecycle](../manifest#shared-client-and-transaction-lifecycle)                                                          |
+| [ADR-0003 — Transaction Lifecycle](./0003-transaction-lifecycle.md)                                               | [Shared client and transaction lifecycle](../manifest#shared-client-and-transaction-lifecycle)                                                          |
+| [ADR-0004 — Capability-profiled external EVM network records](./0004-external-evm-network-records.md)             | [Network scope](../manifest#network-scope)                                                                                                              |
+| [ADR-0005 — Contract evidence provenance classes](./0005-contract-evidence-provenance-classes.md)                 | [Contract identity and provenance](../manifest#contract-identity-and-provenance)                                                                        |
+| [ADR-0006 — Knowledge module architecture v0.4](./0006-knowledge-module-architecture.md)                          | [Knowledge structure](../manifest#knowledge-structure)                                                                                                  |
+| [ADR-0007 — TypeScript-first implementation](./0007-typescript-first.md)                                          | [Engineering and verification](../manifest#engineering-and-verification)                                                                                |
+| [ADR-0008 — Portable agent-skill distribution](./0008-portable-agent-skill-distribution.md)                       | [Human and agent documentation](../manifest#human-and-agent-documentation)                                                                              |
+| [ADR-0009 — Oracle and price-source ownership](./0009-oracle-price-source-ownership.md)                           | [Price meaning](../manifest#price-meaning)                                                                                                              |
+| [ADR-0010 — Vitest as the default TypeScript test framework](./0010-vitest-default-testing.md)                    | [Engineering and verification](../manifest#engineering-and-verification)                                                                                |
+| [ADR-0011 — Mezo economic-system composition ownership](./0011-economic-system-composition-ownership.md)          | [Separate economic owners](../manifest#separate-economic-owners)                                                                                        |
+| [ADR-0012 — Coding-standard ownership and TypeScript quality gates](./0012-coding-standard-and-quality-gates.md)  | [Engineering and verification](../manifest#engineering-and-verification)                                                                                |
+| [ADR-0013 — GitHub source-alpha governance](./0013-github-source-alpha-governance.md)                             | [Source workflow and governance](../manifest#source-workflow-and-governance)                                                                            |
+| [ADR-0014 — Shared EVM value foundation](./0014-evm-value-foundation.md)                                          | [Composable packages](../manifest#composable-packages)                                                                                                  |
+| [ADR-0015 — Direct MUSD borrowing execution](./0015-direct-borrowing-execution.md)                                | [Protocol execution boundaries](../manifest#protocol-execution-boundaries)                                                                              |
+| [ADR-0016 — Protocol writers and discovered destinations](./0016-protocol-writers-and-discovered-targets.md)      | [Shared client and transaction lifecycle](../manifest#shared-client-and-transaction-lifecycle)                                                          |
+| [ADR-0017 — Shared price and event inputs](./0017-shared-price-and-event-inputs.md)                               | [Price meaning](../manifest#price-meaning) · [Events and bridge outcomes](../manifest#events-and-bridge-outcomes)                                       |
+| [ADR-0018 — Basic pool and swap workflows](./0018-basic-pools-and-swaps.md)                                       | [Protocol execution boundaries](../manifest#protocol-execution-boundaries)                                                                              |
+| [ADR-0019 — Institutional debt reads and accounting](./0019-institutional-debt-reads.md)                          | [Protocol execution boundaries](../manifest#protocol-execution-boundaries)                                                                              |
+| [ADR-0020 — Redemption output simulation](./0020-redemption-output-simulation.md)                                 | [Protocol execution boundaries](../manifest#protocol-execution-boundaries)                                                                              |
+| [ADR-0021 — Incentives locks and voting](./0021-incentives-locks-and-voting.md)                                   | [Protocol execution boundaries](../manifest#protocol-execution-boundaries)                                                                              |
+| [ADR-0022 — Main and feature workflow](./0022-main-and-feature-workflow.md)                                       | [Source workflow and governance](../manifest#source-workflow-and-governance)                                                                            |
+| [ADR-0023 — Bounded NTT receipt observation](./0023-ntt-receipt-observation.md)                                   | [Events and bridge outcomes](../manifest#events-and-bridge-outcomes)                                                                                    |
+| [ADR-0024 — Historical contract evidence and Native delivery observation](./0024-historical-contract-evidence.md) | [Contract identity and provenance](../manifest#contract-identity-and-provenance) · [Events and bridge outcomes](../manifest#events-and-bridge-outcomes) |
+| [ADR-0025 — Private MUSD NTT transfer and recovery](./0025-ntt-transfer-recovery.md)                              | [Events and bridge outcomes](../manifest#events-and-bridge-outcomes)                                                                                    |
+| [ADR-0026 — Mainnet evidence and current testnet state](./0026-testnet-current-state-evidence.md)                 | [Network scope](../manifest#network-scope)                                                                                                              |
+| [ADR-0027 — Standalone MDK project utility](./0027-standalone-project-utility.md)                                 | [Standalone project tooling](../manifest#standalone-project-tooling)                                                                                    |

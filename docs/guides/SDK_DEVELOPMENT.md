@@ -1,27 +1,22 @@
 # MDK SDK development quickstart
 
-This guide takes an MDK contributor from an existing or clean source checkout
-to the repository's verified development workflow. MDK is currently an
-experimental GitHub source alpha. Workspace packages are private;
-there is no npm or other package-registry installation path.
+Use this guide to set up an MDK source checkout, run an offline example, and
+make a first verified change. For an independent application, follow the
+[standalone project guide](MDK_CLI.md) instead.
 
-For available methods, input/output contracts, errors, and usage examples,
-see the [SDK package reference](../reference/sdk.md).
-
-The [MUSD borrowing implementation](../../packages/protocols/musd-borrowing/REFERENCE.md)
-adds direct borrower writers and uses Core's explicit execution ports. It is
-awaiting qualified protocol review; source implementation and local fork tests do
-not establish production release support. Existing read APIs remain available.
+MDK is a GitHub source alpha with private workspace packages. The
+[SDK reference](../reference/sdk.md) helps you choose a package and find its
+current APIs, required inputs, and verification scope.
 
 ## Prerequisites
 
-Use the versions declared by the root [`package.json`](../../package.json):
+Use the versions declared by the root [package configuration](../../package.json):
 
 - Node.js 24 or later;
-- pnpm 11.x, with `pnpm@11.0.8` recorded as the repository package manager;
+- pnpm 11.0.8, the repository-pinned package manager;
 - Git.
 
-Confirm the environment before installing dependencies:
+Check the environment before installing dependencies:
 
 ```sh
 node --version
@@ -29,127 +24,81 @@ pnpm --version
 git --version
 ```
 
-Do not use npm or Yarn for repository dependency or script workflows, and do
-not create another lockfile. If the required Node or pnpm command is missing,
-install it through your trusted environment manager before continuing. MDK
-does not provide a bootstrap installer.
+Use your environment manager to install a missing tool. Repository workflows
+use pnpm and the root lockfile; do not create package-local lockfiles.
 
 ## Checkout and branch policy
 
-Fresh public clones use `main` and can remain there while trying the source
-alpha, installing local skills, and running examples. In an existing checkout,
-inspect the current branch and worktree:
-
-```sh
-git branch --show-current
-git status --short --branch
-```
-
-Daily contribution work uses `feat/next`, based on canonical `main`. Complete
-reviewed feature commits merge into `main`, preserving ancestry. Follow the
-[branch workflow](BRANCH_WORKFLOW.md) for synchronization, ignored legacy and
-private records, local hooks, and normal whole-feature promotion.
-
-Clone the published source with:
+Clone the source:
 
 ```sh
 git clone https://github.com/mmga67/mezo-dev-kit.git
 cd mezo-dev-kit
 ```
 
-For a new contributor checkout, create the working branch and install the
-local Git safeguards:
+A fresh clone can stay on `main` while you try examples. Daily contribution
+uses `feat/next`. For a new contributor checkout:
 
 ```sh
 git switch -c feat/next main
 pnpm setup:git
 ```
 
-For an existing checkout, use `git switch feat/next` after preserving unfinished
-changes. Trying packages on `main` does not require a branch change.
-
-## Set up the contributor agent
-
-Fresh clones do not include `.agents/`. Before agent-assisted work, follow
-[contributor agent setup](./CONTRIBUTOR_AGENT_SETUP.md) to validate canonical
-skills and materialize an ignored local discovery tree:
+In an existing checkout, inspect and preserve unfinished changes before
+switching to the existing `feat/next` branch:
 
 ```sh
-node scripts/validate-agent-skills.ts
-node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
+git branch --show-current
+git status --short --branch
 ```
 
-This step needs only the supported Node version. Use the setup guide for
-non-empty targets, refresh after checkout changes, and runtime discovery checks.
+The [branch workflow](BRANCH_WORKFLOW.md) covers existing custom Git hooks,
+synchronization, ignored local records, and promotion of reviewed commits.
 
 ## Install and verify the workspace
 
-From the repository root:
+Run from the repository root:
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm check
-pnpm test:shuffle
+pnpm --filter '@mezo-dev-kit/examples...' build
+pnpm --filter @mezo-dev-kit/examples foundations
 ```
 
-`pnpm install --frozen-lockfile` installs only from the root lockfile and fails
-instead of rewriting it. The two verification commands prove different
-properties:
+The build emits JavaScript and declarations for the examples and their
+dependencies. The final command prints deterministic results for amounts,
+registry metadata, price policy, repayment allocation, and project
+configuration. It needs no RPC or wallet. Read
+[the foundation example](../../examples/foundations.ts) to follow the calls.
 
-| Command             | What it proves                                                              |
-| ------------------- | --------------------------------------------------------------------------- |
-| `pnpm check`        | Formatting, typechecking, typed lint, package boundaries, builds, and tests |
-| `pnpm test:shuffle` | Seeded order-independent root and package tests with repository-owned seeds |
+You now have a built workspace and a first working example. Choose a focused
+operation from the [package examples](../../examples/PACKAGES.md), or continue
+below to make a change. Transaction demonstrations have their own
+[local-fork prerequisites](../../examples/README.md#build-and-run).
 
-The exact gate definitions live in the root `package.json`, the
-[`coding standard`](../standards/coding.md), and the
-[`testing standard`](../standards/testing.md). Do not report a narrower command
-as equivalent to `pnpm check`.
-
-For the mainnet Savings, mUSDC lending, and vault reader dependency checks, run
-`pnpm check:readers:mainnet` (code and evidence) or
-`pnpm check:evidence:mainnet` (evidence only). `pnpm check` does not capture live
-evidence or renew its review dates. Follow the
-[oracle evidence refresh instructions](oracle-evidence-refresh.md) when those
-observations need re-verification; the full-registry/testnet gate remains
-separate.
+`--frozen-lockfile` fails if installation would require a lockfile update.
+For contributor verification, use the checks in
+[Make a first change](#make-a-first-change).
 
 ## Work on one workspace package
 
-Use the
-[`workspace-module authoring guide`](./SDK_PACKAGE_DEVELOPMENT.md) when deciding
-whether to create a package, extending an existing owner, defining exports and
-generated inputs, or proving declarations and runnable built entrypoints. The
-commands below apply to the private foundational modules; they are not a
-generic package scaffold or publication contract.
+Read the package's README and reference before changing it. Use the
+[package authoring guide](SDK_PACKAGE_DEVELOPMENT.md) for ownership decisions,
+public exports, generated inputs, or a new module.
 
-Discover the package's own scripts before running them:
+Discover the selected package's commands first. For Core:
 
 ```sh
-pnpm --filter @mezo-dev-kit/chains run
-pnpm --filter @mezo-dev-kit/evm run
-pnpm --filter @mezo-dev-kit/contracts run
 pnpm --filter @mezo-dev-kit/core run
-```
-
-Each foundational module supports focused `format:check`, `typecheck`, `lint`,
-`build`, `test`, seeded `test:shuffle`, and composed `check` commands. For
-example:
-
-```sh
-pnpm --filter @mezo-dev-kit/core format:check
-pnpm --filter @mezo-dev-kit/core typecheck
-pnpm --filter @mezo-dev-kit/core lint
-pnpm --filter @mezo-dev-kit/core build
-pnpm --filter @mezo-dev-kit/core test
-pnpm --filter @mezo-dev-kit/core test:shuffle
 pnpm --filter @mezo-dev-kit/core check
 ```
 
-The root build emits JavaScript and declarations for all implemented
-packages and their focused examples in dependency order. Verify the declared runtime
-entrypoints, unavailable deep paths, missing-artifact behavior, and the absence
-of the internal Core transaction proof with:
+Core's check composes formatting, typechecking, lint, build, and tests.
+Individual scripts are available when a narrower check suits the change.
+The [repository scripts manual](../../scripts/README.md) explains the wider
+command families.
+
+To verify built entrypoints and clean-checkout behavior:
 
 ```sh
 pnpm build
@@ -157,180 +106,79 @@ pnpm test:built
 pnpm test:clean
 ```
 
-`test:clean` creates a disposable source copy, excludes the local dependency
-tree and prior build output, installs from the frozen lockfile in offline mode,
-and proves source typechecking plus built imports/runtime. The packages remain
-private repository boundaries. Do not claim a packed or registry-installed
-runtime boundary; future package distribution requires separate approval.
-
-## Select contributor agent skills
-
-Trying the workspace packages is contributor work. Start with
-[`mdk-capability-assessment`](../../agents/skills/mdk-capability-assessment/SKILL.md)
-when the task uses, explains, tests, or extends MDK capabilities. It connects
-the requested operations to public package entrypoints, required injected
-ports, domain skills, and canonical evidence before implementation decisions.
-The source-alpha label describes distribution and scope; inspect current
-owners before deciding whether a particular operation is available.
-
-The nearest `AGENTS.md` routes the work category. The root instructions require
-`mdk-typescript-development` for authored product code, the relevant domain
-skill for protocol-sensitive work, and `mdk-testing` when test behavior,
-fixtures, regressions, or strategy are in scope.
-
-Use [`agents/catalog.json`](../../agents/catalog.json) to find a skill by its
-`audience` and `domains`. Load only the smallest relevant set.
-
-```text
-task and affected domain
-→ root and nearest AGENTS.md
-→ contributor skill(s) from catalog domains
-→ owning docs, code, tests, and canonical knowledge
-```
-
-The skill locations have different roles:
-
-| Location                     | Role                                                                       |
-| ---------------------------- | -------------------------------------------------------------------------- |
-| `agents/skills/`             | Canonical contributor skill sources                                        |
-| `agents/consumer/skills/`    | Canonical external-application skill sources                               |
-| `.agents/skills/`            | Ignored local contributor discovery view, created explicitly after cloning |
-| Application `.agents/skills` | Materialized consumer view; never the canonical source                     |
-| Application `AGENTS.md`      | Application-owned instructions; MDK synchronization must not overwrite it  |
-
-Contributor skills must not be copied into consumer applications. Consumer
-skills describe supported application-facing behavior and must not expose MDK
-repository-maintenance procedures.
-
-### Try packages and reassess improvements
-
-For example, a request involving a Mezo contract read, account history, and
-signing crosses different boundaries. Resolve identity through Networks and
-Chains; use Contracts and Core or an owning protocol reader for applicable
-reads. Define the history source and coverage independently, and inspect
-current transaction exports and signer requirements. A gap in one operation
-does not invalidate other supported components. The
-[foundational walkthrough](../../examples/foundational-readonly/README.md)
-shows deterministic composition and an explicit bounded HTTP read.
-
-Package READMEs own usage scope and injected inputs; manifests/exports and
-built-entrypoint checks establish the available boundary. Canonical knowledge
-owns evidence-backed Mezo facts. Skill bodies own the procedures for applying
-them. Memory may point to these owners but cannot preserve an obsolete
-capability claim against current sources.
-
-After a checkout update, inspect the relevant revision/diff, docs, exports, and
-build state. Reuse newly supported APIs within the task; distinguish internal
-implementation changes, removed APIs, narrower support, and evidence-only
-updates. Private versions may remain unchanged throughout. A failed import
-before building is a build-state problem until proven otherwise. An unresolved
-code/docs/evidence conflict needs resolution at its owner.
-
-Record separate verification for source/types, built composition, adapter
-behavior, and live observations. Follow the
-[behavioral evaluation guide](./CONTRIBUTOR_AGENT_EVALUATION.md) to test agent
-decisions, and the [contributor maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
-when those boundaries change.
-
-### Validate and materialize skills
-
-Validate every canonical skill and the catalog:
-
-```sh
-node scripts/validate-agent-skills.ts
-```
-
-The materializer accepts only a new or empty target. For normal installation,
-use the [contributor setup guide](./CONTRIBUTOR_AGENT_SETUP.md). For a disposable
-materialization check that leaves an existing local installation untouched:
-
-```sh
-mdk_contributor_skills="$(mktemp -d)"
-node scripts/materialize-agent-skills.ts \
-  --audience contributor \
-  --output "$mdk_contributor_skills"
-find "$mdk_contributor_skills" -mindepth 1 -maxdepth 1 -type d | sort
-```
-
-Consumer materialization is a separate explicit operation:
-
-```sh
-mdk_consumer_skills="$(mktemp -d)"
-node scripts/materialize-agent-skills.ts \
-  --audience consumer \
-  --output "$mdk_consumer_skills"
-find "$mdk_consumer_skills" -mindepth 1 -maxdepth 1 -type d | sort
-```
-
-Do not point either command at a non-empty discovery directory. The tool fails
-closed instead of merging or replacing existing instructions. See
-[`agents/README.md`](../../agents/README.md) and
-[`ADR-0008`](../decisions/0008-portable-agent-skill-distribution.md) for the
-canonical-source and audience-separation contract.
+Built checks exercise package exports without source fallbacks. The clean
+check creates a disposable source copy, installs the frozen lockfile offline,
+and checks source types plus built imports/runtime. The separate
+[private tooling pilot](MDK_CLI.md) owns packed-artifact and standalone-project
+verification. These checks establish different boundaries from a registry release.
 
 ## Make a first change
 
 ### 1. Confirm scope and task state
 
-Agree on scope and acceptance criteria in the maintainer-approved issue or
-pull request. Humans control goals, priority, and material scope changes.
-Keep individual planning notes outside the public source snapshot.
+Agree on the outcome and acceptance criteria for significant work in a task,
+issue, or pull request. Humans own goals, priority, and material scope changes.
+Follow [task management](TASK_MANAGEMENT.md) for ignored local records.
 
-Before editing, inspect current state:
+Inspect the current checkout:
 
 ```sh
 git branch --show-current
 git status --short
-rg --files -g 'AGENTS.md'
 ```
 
-Read the root and nearest applicable `AGENTS.md`, the active task, and only the
-owning code/docs/knowledge needed for the change.
+Read the relevant contributor standard and owning code, docs, or knowledge.
+Use [Architecture](../../ARCHITECTURE.md#repository-areas) to locate a package
+responsibility and the [documentation index](../INDEX.md) to locate guidance.
 
 ### 2. Edit the canonical owner
 
-- Runtime behavior belongs in its owning workspace package.
-- Network, address, ABI, deployment, and protocol facts belong in canonical
-  `knowledge/` owners, not copied source or examples.
-- Architecture and durable repository decisions belong in architecture docs or
-  ADRs.
-- Procedures belong in skills or guides; task files own execution state only.
-- Memory is supporting retrieval context, never protocol authority.
+- Runtime behavior belongs in the owning workspace package.
+- Protocol facts, deployments, addresses, and ABIs belong in indexed knowledge.
+- Project decisions belong in the manifest and its detailed owners.
+- Human procedures belong in guides; coding-agent procedures belong in skills.
+- Task files record progress; memory supplies retrieval pointers.
 
-Generated files identify their generator or canonical input. Change the input
-and generator, regenerate, and run the declared drift check; do not patch the
-output by hand.
+Generated files identify their input or generator. Change that owner,
+regenerate, and run its drift check. The
+[documentation standard](../standards/documentation.md) applies to prose;
+the [coding standard](../standards/coding.md) applies to authored code.
 
 ### 3. Verify from narrow to broad
 
-Start with the owner-specific command documented by the package, generator, or
-knowledge module. For current Core work, for example:
+Choose checks for the boundary you changed. For documentation, explicitly
+format the edited files and check links; for example:
 
 ```sh
-pnpm --filter @mezo-dev-kit/core check
+pnpm exec prettier --check README.md docs/guides/SDK_DEVELOPMENT.md
+node scripts/checks/validate-markdown-links.ts
+git diff --check
 ```
 
-Run package boundaries whenever imports, exports, package dependencies, or
-workspace structure change:
+Review changed heading anchors and follow the reader's path as well.
+Root `format:check` does not include root Markdown or `docs/`.
 
-```sh
-pnpm boundaries
-```
-
-Before review, widen to the risk-appropriate root checks:
+For package behavior, start with its documented check and relevant tests.
+Run `pnpm boundaries` when imports, exports, dependencies, or workspace
+structure change. Shared configuration or multi-package changes require
+the root checks:
 
 ```sh
 pnpm check
 pnpm test:shuffle
-node scripts/validate-markdown-links.ts
-git diff --check
 ```
 
-Level 1 documentation work needs scoped formatting/link checks. Level 2 runtime
-behavior needs targeted tests and applicable type/lint/build/integration
-checks. Level 3 protocol, transaction, registry, financial, and security work
-also needs authoritative evidence, failure/compatibility review, and qualified
-human acceptance. The root `AGENTS.md` and standards own the complete rules.
+`pnpm check` combines formatting, generation drift, typechecking, lint,
+boundaries, builds, and tests. `test:shuffle` separately checks seeded test
+order. Neither command captures live evidence or renews review dates.
+
+[Contributor verification](../../CONTRIBUTING.md#verification) owns the
+risk levels. Protocol-sensitive work additionally needs authoritative evidence,
+failure/compatibility review, and qualified acceptance. For mainnet reader
+evidence, use `pnpm check:evidence:mainnet`, or `pnpm check:readers:mainnet`
+for code and evidence together. The
+[oracle refresh guide](oracle-evidence-refresh.md) covers capture and
+historical-data limitations.
 
 ### 4. Review and hand off
 
@@ -342,94 +190,97 @@ git diff --check
 git diff --stat
 ```
 
-Report the commands actually run, their outcomes, any unavailable checks, API
-or compatibility impact, and the documentation/knowledge/memory decision.
-Move a significant task to `review/` only when its deliverables and technical
-verification are complete; move it to `done/` only after required acceptance.
+Report actual commands/results, unavailable checks, API or compatibility
+impact, and the documentation/knowledge/memory decision. Keep the local task
+status consistent with [task lifecycle](TASK_MANAGEMENT.md#lifecycle-and-evidence).
+Required maintainer review remains part of contribution.
+
+## Optional coding-agent assistance
+
+The manual workflow above is complete without agent setup. Before asking an
+agent to work on MDK, use the contributor setup below.
+
+### Set up the contributor agent
+
+Fresh clones do not include the generated `.agents/` directory. Follow
+[contributor agent setup](CONTRIBUTOR_AGENT_SETUP.md) for installation,
+discovery checks, non-empty targets, and refresh after checkout updates.
+The supported Node version is sufficient for skill installation.
+
+### Select contributor agent skills
+
+The root and nearest applicable AGENTS instructions route agent work.
+[Capability assessment](../../agents/skills/mdk-capability-assessment/SKILL.md)
+helps an agent connect a task to current package APIs and required inputs.
+[The agent overview](../../agents/README.md) explains contributor versus
+application guidance.
+
+Use the relevant domain procedure for protocol-sensitive work, TypeScript
+development guidance for authored code, and testing guidance for test changes.
+Load only the task's relevant sources. Reassess changed docs, exports, and
+evidence after checkout updates; private versions alone do not identify a
+capability revision.
+
+### Validate and materialize skills
+
+The [setup guide](CONTRIBUTOR_AGENT_SETUP.md#verify-files-and-runtime-discovery)
+owns discovery verification. Maintainers changing canonical skill sources
+follow [skill authoring](SKILL_AUTHORING.md#8-review-distribution-and-documentation).
+Consumer skills are a separate audience; the setup guide and
+[external application guide](EXTERNAL_APPLICATIONS.md#agent-guidance) describe
+the appropriate installation path.
 
 ## Dependency and safety stops
 
-Do not add or install a new external dependency without explicit maintainer
-approval and the dependency review required by `CONTRIBUTING.md`. Stop for an
-unexpected architecture/API change, missing or conflicting authoritative
-evidence, an unsafe write, a security-boundary change, or a need to bypass a
-repository invariant.
-
-The source alpha does not authorize protocol writers, live value-bearing calls,
-publishing credentials, CI/CD changes, package publication, or automatic
-promotion to `main`.
+Follow [dependency review](../../CONTRIBUTING.md#dependencies) before adding a
+dependency. A new writer, release process, or CI/security change needs its
+own authorized scope. Preserve application-owned instructions and unrelated
+work. [Security](../../SECURITY.md) owns private reporting.
 
 ## Troubleshooting
 
 ### Node or pnpm version mismatch
 
-Compare `node --version` and `pnpm --version` with root `package.json#engines`
-and `packageManager`. Switch the external environment to a compatible version;
-do not edit the repository constraints merely to fit the current machine.
+Compare `node --version` and `pnpm --version` with root package configuration.
+Use the required toolchain before installing or running repository scripts.
 
 ### Wrong package manager or lockfile drift
 
-Stop if npm/Yarn created a lockfile or `pnpm install --frozen-lockfile` reports
-that `pnpm-lock.yaml` is stale. Do not regenerate or delete lockfiles unless the
-dependency change is approved and in scope.
+Use the root pnpm lockfile. If frozen installation fails, inspect the diff and
+the task's intended dependency change; do not regenerate it merely to silence
+the failure.
 
 ### Stale generated output
 
-Find the generator and declared `--check` or module validation command in the
-owning README/index. Update canonical inputs first, regenerate deterministically,
-and review both input and output. Never make the generated file pass by editing
-it directly.
+Follow the input/generator named in the affected file or package reference.
+Regenerate that output and run its declared drift check.
 
 ### Skill discovery is missing or stale
 
-Run `node scripts/validate-agent-skills.ts`. Confirm the catalog entry,
-audience, canonical directory name, and frontmatter `name` agree. Materialize
-into a new empty temporary target to distinguish a source/catalog defect from
-a runtime discovery-path issue. Follow the
-[setup and refresh guide](./CONTRIBUTOR_AGENT_SETUP.md) to install the local
-view; Git does not synchronize ignored discovery copies.
+Use [agent setup troubleshooting](CONTRIBUTOR_AGENT_SETUP.md#troubleshooting).
+Edit canonical sources and refresh discovery through the documented workflow.
 
 ### Workspace or deep-import leak
 
-Run `pnpm boundaries`. Cross-package imports must use a declared workspace
-dependency and an exported package entrypoint. Do not import another package's
-`src/` tree or use a relative path across package roots.
+Build dependencies and import the package's declared public entrypoint.
+`pnpm boundaries` checks package ownership; built/clean checks detect source
+fallbacks and missing output.
 
 ### A test passes but typechecking fails
 
-Fix the type error. Vitest executes transformed TypeScript and does not replace
-the package or root TypeScript check.
-
-## Do not
-
-- use npm or Yarn for repository workflows or create another lockfile;
-- treat private workspace names/versions as registry or compatibility promises;
-- deep-import package source or rely on undeclared workspace dependencies;
-- copy addresses, ABIs, deployments, or protocol rules out of canonical owners;
-- edit generated outputs by hand;
-- add a dependency, writer, release workflow, or CI/CD change without approval;
-- treat memory, tasks, generated references, or discovery copies as canonical
-  protocol authority;
-- overwrite application-owned `AGENTS.md` or mix contributor and consumer
-  skills; or
-- push or merge ordinary alpha work directly to `main`.
+Runtime tests do not prove public types. Run the package's typecheck and build,
+then inspect the reported input, declaration, or dependency mismatch.
 
 ## Related guidance
 
-- [`CONTRIBUTING.md`](../../CONTRIBUTING.md)
-- [`ARCHITECTURE.md`](../../ARCHITECTURE.md)
-- [`docs/standards/coding.md`](../standards/coding.md)
-- [`docs/standards/testing.md`](../standards/testing.md)
-- [`docs/guides/SDK_PACKAGE_DEVELOPMENT.md`](./SDK_PACKAGE_DEVELOPMENT.md)
-- [`docs/guides/EXTERNAL_APPLICATIONS.md`](./EXTERNAL_APPLICATIONS.md)
-- [`agents/README.md`](../../agents/README.md)
-- [`agents/memory/README.md`](../../agents/memory/README.md)
-- [`docs/guides/MEMORY_MANAGEMENT.md`](./MEMORY_MANAGEMENT.md)
+- [Contributor guide](../../CONTRIBUTING.md) — scope, dependencies, review, and completion.
+- [Package authoring](SDK_PACKAGE_DEVELOPMENT.md) — a bounded implementation workflow.
+- [External applications](EXTERNAL_APPLICATIONS.md) — integrating from another repository.
+- [Testing standard](../standards/testing.md) — behavior, fixtures, and verification.
+- [Memory management](MEMORY_MANAGEMENT.md) — optional retrieval context and promotion.
 
 ## Price usability and DEX rates
 
-Use the [price-selection guide](price-selection-and-dex-quotes.md) when choosing
-between a protocol adapter, a direct price reference, and an amount-specific DEX
-quote. Keep unavailable/stale observations explicit; do not convert DEX prices
-into protocol health inputs. The [refresh guide](oracle-evidence-refresh.md)
-distinguishes current-state captures from archive-dependent historical checks.
+Use [price selection](price-selection-and-dex-quotes.md) when choosing a
+protocol price input, direct reference, or amount-specific DEX quote.
+The guide explains freshness and meaning; package references own exact calls.

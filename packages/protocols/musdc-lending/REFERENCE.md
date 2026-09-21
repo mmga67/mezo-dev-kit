@@ -118,7 +118,7 @@ export const accrued = accrueLendingMarket(market, 0n, 101n);
 export const health = calculateLendingHealth(0n, 0n, 0n, 0n); // healthy: true
 ```
 
-See the [executable example](../../../examples/musdc-lending-readonly/README.md).
+See the [executable example](../../../examples/lend-and-borrow-musdc/README.md).
 
 ## Results, freshness, and errors
 
@@ -139,6 +139,9 @@ normalized feed, with a nonfuture timestamp within `maxPriceAgeSeconds` at
 `asOf`. Equality at the age limit is accepted. Zero debt can be healthy without
 a price; unavailable debt is never zero. Historical freshness is evaluated at
 the block timestamp, not the current wall clock. There is no price fallback.
+Skip's zero round fields are accepted only for the verified source generation.
+Stored totals exclude unaccrued interest; projected fee-recipient assets include
+newly accrued fee shares while stored position shares remain separately visible.
 
 `LendingReadError(code, field, options?)` exposes `code`, `field`, optional
 `cause`, and `toJSON() → { code, field }`. Codes: `InvalidValue`,

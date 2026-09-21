@@ -6,6 +6,13 @@ import type { VaultReader, VaultReaderConfig } from "./types.ts";
 import { VAULT_MODEL } from "./model.generated.ts";
 import { VaultReadError } from "./errors.ts";
 
+/**
+ * Compose the vault and lending readers with MDK's ABI and Core RPC adapters.
+ *
+ * @param config - Mainnet identity, registry and application-owned RpcTransport.
+ * @returns A VaultReader with the same availability and accounting contract as the
+ * lower-level factory; no endpoint or wallet is selected.
+ */
 export function createVaultRpcReader(config: {
   readonly networkId: VaultReaderConfig["networkId"];
   readonly registry: ContractRegistry;
@@ -24,6 +31,14 @@ export function createVaultRpcReader(config: {
     },
   });
 }
+/**
+ * Resolve verified vault asset, share and wrapper roles for Core execution.
+ *
+ * @remarks
+ * The resolver rereads the account's vault graph at the requested coordinate and
+ * rejects another anchor/role. Inject it into Core for dynamic-target approvals;
+ * it is not permission to execute against an arbitrary supplied address.
+ */
 export function createVaultTargetResolver(config: {
   readonly reader: VaultReader;
   readonly account: `0x${string}`;

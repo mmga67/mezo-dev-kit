@@ -22,6 +22,10 @@ export interface SerializedCoreReadError {
   readonly context: CoreReadErrorContext;
 }
 
+/**
+ * Typed core failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class CoreReadError extends Error {
   readonly code: CoreReadErrorCode;
   readonly stage: string;
@@ -42,6 +46,9 @@ export class CoreReadError extends Error {
     this.context = Object.freeze({ ...context });
   }
 
+  /**
+   * Serialize owned fields without exposing the raw cause or stack.
+   */
   toJSON(): SerializedCoreReadError {
     return {
       name: "CoreReadError",
@@ -54,6 +61,11 @@ export class CoreReadError extends Error {
   }
 }
 
+/**
+ * Serialize an owned read failure without including its raw cause or stack.
+ *
+ * @returns Stable code, stage, retryability, message and caller-provided context.
+ */
 export function serializeCoreReadError(error: CoreReadError): SerializedCoreReadError {
   return error.toJSON();
 }

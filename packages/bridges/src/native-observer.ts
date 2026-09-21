@@ -12,7 +12,7 @@ import type { AbiEventValue, Hash32 } from "@mezo-dev-kit/evm";
 import { NATIVE_ROUTES } from "./model.generated.ts";
 import {
   finishNative,
-  historical,
+  nativeContract,
   inspectNative,
   nativeChain,
   nativeCodec,
@@ -33,6 +33,7 @@ import type {
   NativeDeliveryObserver,
   NativeObserveInput,
   NativeObserverConfig,
+  NativeCurrentObserverConfig,
   NativeReceiptAnchor,
   NativeTransferTuple,
 } from "./native-types.ts";
@@ -93,6 +94,17 @@ function sourceTuple(route: Route, source: InspectedNative): Readonly<NativeTran
         parseUint(v[5], 8) === targetChain,
       "source calldata/event tuple differs",
     );
+  requireEvidence(recipient !== zero, "Native recipient is zero");
+  if (inbound && contract.kind === "current-native-contract-evidence") {
+    const custody = nativeEvents(receipt, contract, "Transfer", sourceToken, getTokenInterface());
+    requireEvidence(
+      custody.length === 1 &&
+        parseAddress(custody[0]?.values[0]) === sender &&
+        parseAddress(custody[0]?.values[1]) === contract.address &&
+        parseUint(custody[0]?.values[2]) === amount,
+      "Native source custody differs",
+    );
+  }
   source.observation = { ...source.observation, proof: "source-validated" };
   return Object.freeze({
     sequence,
@@ -144,7 +156,7 @@ async function inboundDelivery(
     "system/source tuple conflict",
   );
   destination.observation = { ...destination.observation, proof: "payload-accepted" };
-  const before = historical(ctx, receipt.blockNumber - 1n);
+  const before = await nativeContract(ctx, receipt.blockNumber - 1n);
   destination.auxiliary.push({ ...before.coordinate });
   await nativeRuntime(ctx, before);
   const seq = nativeEntry(contract.readAbi, "getCurrentSequenceTip"),
@@ -257,6 +269,10 @@ async function outboundDelivery(
       parseUint(v[4], 8) === tuple.targetChain,
     "confirmation/source tuple conflict",
   );
+  if (contract.kind === "current-native-contract-evidence") {
+    currentOutboundSettlement(destination, tuple, confirmation.logIndex);
+    return;
+  }
   requireEvidence(
     attestations.some((a) => a.logIndex < confirmation.logIndex),
     "confirmation needs the matching attestation in this bounded receipt",
@@ -296,6 +312,96 @@ async function outboundDelivery(
   requireEvidence(
     net > 0n && net + fee === tuple.amount,
     "recipient net plus fee does not equal gross source amount",
+    "DeliveryUnproven",
+  );
+  destination.observation = {
+    ...destination.observation,
+    proof: "delivered",
+    settlement: Object.freeze({ gross: tuple.amount, net, fee }),
+  };
+}
+
+function currentOutboundSettlement(
+  destination: InspectedNative,
+  tuple: NativeTransferTuple,
+  confirmationIndex: bigint,
+): void {
+  const { receipt, contract } = destination;
+  requireEvidence(receipt && contract, "Native destination evidence missing");
+  // A single withdrawal makes attribution explicit even for batched signature attestations.
+  requireEvidence(
+    nativeEvents(receipt, contract, "AssetsUnlockConfirmed").length === 1,
+    "multiple withdrawals need independent settlement attribution",
+    "DeliveryUnproven",
+  );
+  requireEvidence(
+    tuple.recipient !== contract.address,
+    "bridge recipient cannot establish an external payout",
+    "DeliveryUnproven",
+  );
+  const transfers = nativeEvents(
+    receipt,
+    contract,
+    "Transfer",
+    tuple.destinationToken,
+    getTokenInterface(),
+  ).filter((e) => parseAddress(e.values[0]) === contract.address);
+  const fees = nativeEvents(receipt, contract, "WithdrawalFeeCollected");
+  requireEvidence(fees.length <= 1, "multiple fee events confound settlement", "DeliveryUnproven");
+  let fee = 0n,
+    feeTransferIndex = confirmationIndex;
+  const feeEvent = fees[0];
+  if (feeEvent) {
+    fee = parseUint(feeEvent.values[2]);
+    const collector = parseAddress(feeEvent.values[1]);
+    requireEvidence(
+      parseAddress(feeEvent.values[0]) === tuple.destinationToken &&
+        collector !== zero &&
+        fee > 0n &&
+        feeEvent.logIndex > confirmationIndex,
+      "withdrawal fee event differs",
+    );
+    const matches = transfers.filter(
+      (e) =>
+        parseAddress(e.values[1]) === collector &&
+        parseUint(e.values[2]) === fee &&
+        e.logIndex > feeEvent.logIndex,
+    );
+    const first = matches[0];
+    requireEvidence(first, "fee transfer is missing", "DeliveryUnproven");
+    feeTransferIndex = first.logIndex;
+  }
+  requireEvidence(fee < tuple.amount, "withdrawal fee consumes the amount");
+  const net = tuple.amount - fee;
+  const payouts = transfers.filter((e) => e.logIndex !== feeTransferIndex);
+  const failures = nativeEvents(receipt, contract, "WithdrawalFailed");
+  const failure = failures[0];
+  if (failure) {
+    requireEvidence(
+      failures.length === 1 &&
+        parseUint(failure.values[0]) === tuple.sequence &&
+        parseAddress(failure.values[1]) === tuple.destinationToken &&
+        parseAddress(failure.values[2]) === tuple.recipient &&
+        parseUint(failure.values[3]) === net &&
+        failure.logIndex > feeTransferIndex &&
+        payouts.length === 0,
+      "failed withdrawal tuple or payout evidence conflicts",
+    );
+    destination.observation = {
+      ...destination.observation,
+      proof: "governance-recovery-required",
+      settlement: Object.freeze({ gross: tuple.amount, net: 0n, fee }),
+    };
+    return;
+  }
+  const payout = payouts[0];
+  requireEvidence(
+    payouts.length === 1 &&
+      payout &&
+      parseAddress(payout.values[1]) === tuple.recipient &&
+      parseUint(payout.values[2]) === net &&
+      payout.logIndex > feeTransferIndex,
+    "recipient transfer is missing or differs",
     "DeliveryUnproven",
   );
   destination.observation = {
@@ -362,8 +468,32 @@ function inputHashes(input: NativeObserveInput): {
     );
   return { source, destinations, previous };
 }
+/**
+ * Create bounded delivery observation for an evidenced Native Bridge direction.
+ *
+ * @param config - Route, per-chain transports and positive confirmation counts;
+ * USDC inbound evidence additionally needs the Mezo consensus-block reader.
+ * @remarks
+ * Observation joins explicit source/destination candidates and rechecks anchors.
+ * It neither submits transactions nor scans exhaustive history. Incomplete or
+ * conflicting evidence remains explicit; historical coverage does not certify a writer.
+ */
 export function createNativeDeliveryObserver(
   config: NativeObserverConfig,
+): Readonly<NativeDeliveryObserver> {
+  return nativeObserver(config);
+}
+
+/** Observe current Native runtimes and exact settlement; a confirmed failed payout requires governance recovery. */
+export function createNativeCurrentDeliveryObserver(
+  config: NativeCurrentObserverConfig,
+): Readonly<NativeDeliveryObserver> {
+  return nativeObserver(config, { getMezoClientVersion: config.getMezoClientVersion });
+}
+
+function nativeObserver(
+  config: NativeObserverConfig,
+  current?: NativeContext["current"],
 ): Readonly<NativeDeliveryObserver> {
   const selected = NATIVE_ROUTES.find((r) => r.id === config.routeId);
   if (!selected) throw new NativeObserverError("UnknownRoute", "route", "unknown Native route");
@@ -387,12 +517,14 @@ export function createNativeDeliveryObserver(
         endpoint: route.source,
         transport: sourceTransport,
         required: sourceRequired,
+        ...(current ? { current } : {}),
         ...(signal ? { signal } : {}),
       },
       destinationContext: NativeContext = {
         endpoint: route.destination,
         transport: destinationTransport,
         required: destinationRequired,
+        ...(current ? { current } : {}),
         ...(signal ? { signal } : {}),
       };
     const source = await inspectNative(
@@ -438,25 +570,34 @@ export function createNativeDeliveryObserver(
           .map((d) => d.observation.transactionHash)
       : [];
     const sourceState = source.observation.state;
+    const governanceRequired =
+      sourceConfirmed &&
+      destinations.some(
+        (d) =>
+          d.observation.state === "confirmed" &&
+          d.observation.proof === "governance-recovery-required",
+      );
     const state: NativeDeliveryObservation["state"] =
       completionTransactions.length > 0
         ? "completed"
-        : sourceState === "reorged"
-          ? "reorged"
-          : sourceState === "reverted"
-            ? "source-reverted"
-            : sourceState === "missing" || sourceState === "included"
-              ? "source-pending"
-              : [source, ...destinations].some(
-                    (d) =>
-                      d.observation.state === "invalid" || d.observation.state === "unavailable",
-                  )
-                ? "ambiguous"
-                : destinations.some((d) => d.observation.state === "reorged")
-                  ? "reorged"
-                  : destinations.some((d) => d.observation.proof !== "none")
-                    ? "destination-progress"
-                    : "message-pending";
+        : governanceRequired
+          ? "governance-recovery-required"
+          : sourceState === "reorged"
+            ? "reorged"
+            : sourceState === "reverted"
+              ? "source-reverted"
+              : sourceState === "missing" || sourceState === "included"
+                ? "source-pending"
+                : [source, ...destinations].some(
+                      (d) =>
+                        d.observation.state === "invalid" || d.observation.state === "unavailable",
+                    )
+                  ? "ambiguous"
+                  : destinations.some((d) => d.observation.state === "reorged")
+                    ? "reorged"
+                    : destinations.some((d) => d.observation.proof !== "none")
+                      ? "destination-progress"
+                      : "message-pending";
     return Object.freeze({
       routeId: route.id,
       state,
@@ -464,7 +605,9 @@ export function createNativeDeliveryObserver(
       source: Object.freeze(source.observation),
       destinations: Object.freeze(destinations.map((d) => Object.freeze(d.observation))),
       completionTransactions: Object.freeze(completionTransactions),
-      coverage: "provided-receipts-and-historical-coordinates-only",
+      coverage: current
+        ? "provided-receipts-and-current-runtime-only"
+        : "provided-receipts-and-historical-coordinates-only",
     });
   }
   return Object.freeze({ observe });

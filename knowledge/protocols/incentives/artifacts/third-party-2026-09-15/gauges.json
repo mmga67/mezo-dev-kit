@@ -1,0 +1,52 @@
+{
+  "endpoint": "https://mainnet.mezo.public.validationcloud.io",
+  "block": {
+    "number": "0xb52006",
+    "hash": "0xc64e0565d64b6b39b340c2d2858650b82631e4b1ef182103793e75c787ffdb66",
+    "timestamp": "0x6aa989a7"
+  },
+  "rows": [
+    {
+      "index": 0,
+      "address": "0x99d72df93df5a5f352bd89012e93a91d0fcf8a35",
+      "isAlive": false,
+      "weight": "0"
+    },
+    {
+      "index": 1,
+      "address": "0xbc4156e8bd22efa106498c1dd7a4d5b932fd3219",
+      "isAlive": false,
+      "weight": "0"
+    },
+    {
+      "index": 2,
+      "address": "0x309edc04e8adcb10c6db7d2c28149d89942d4930",
+      "isAlive": true,
+      "weight": "0"
+    },
+    {
+      "index": 3,
+      "address": "0xc7e81dd77a4624f0dd14a8bb97bc721b0cee6e26",
+      "isAlive": true,
+      "weight": "8550657546210684821792592"
+    },
+    {
+      "index": 4,
+      "address": "0x4440a9b2954cb98416c0122e2ea996c46555f4b6",
+      "isAlive": true,
+      "weight": "2702232064762403279065698"
+    },
+    {
+      "index": 5,
+      "address": "0x2ced96e759ab481210d41c567eee5c42edb59a1d",
+      "isAlive": true,
+      "weight": "6713395892803277378964220"
+    },
+    {
+      "index": 6,
+      "address": "0xc39a294024dca62f579c49d7c83a6c831d4976d0",
+      "isAlive": true,
+      "weight": "6728511992757215892283206"
+    }
+  ]
+}

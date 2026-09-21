@@ -2,11 +2,19 @@ import { parseAddress, parseUint } from "@mezo-dev-kit/evm";
 import { incentiveRequire } from "./escrow-errors.ts";
 import { calculateLockEnd, calculateLockVotingPower } from "./math.ts";
 import type { LockSnapshot } from "./lock-types.ts";
+/**
+ * An ordinary self-owned escrow action. Amounts are underlying-token base units and durations
+ * are seconds.
+ */
 export type LockAction =
   | Readonly<{ kind: "create"; amount: bigint; duration: bigint }>
   | Readonly<{ kind: "increase"; tokenId: bigint; amount: bigint }>
   | Readonly<{ kind: "extend"; tokenId: bigint; duration: bigint }>
   | Readonly<{ kind: "make-permanent" | "unlock-permanent" | "withdraw"; tokenId: bigint }>;
+/**
+ * Expected lock amount/end and power at the chosen timestamp; not a historical checkpoint or
+ * fresh chain observation.
+ */
 export interface LockForecast {
   readonly amount: bigint;
   readonly end: bigint;
@@ -16,6 +24,15 @@ export interface LockForecast {
   readonly withdraw: bigint;
 }
 const zero = parseAddress(`0x${"0".repeat(40)}`);
+/**
+ * Forecast an ordinary self-owned lock action from a supplied escrow snapshot.
+ *
+ * @remarks
+ * Amounts are underlying-token base units and durations/timestamps are seconds.
+ * Optional atTimestamp supports inclusion calculations without fetching fresh state.
+ * Eligibility, duration and ownership failures reject; the result is not a historical
+ * checkpoint or a promise of transferable voting power.
+ */
 export function forecastLock(input: {
   readonly snapshot: LockSnapshot;
   readonly action: LockAction;

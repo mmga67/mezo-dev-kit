@@ -3,6 +3,10 @@ import { PRICE_MODEL } from "./model.generated.ts";
 export type PriceRounding = (typeof PRICE_MODEL.rounding)[number];
 export type PriceSourceClass = (typeof PRICE_MODEL.sourceClasses)[number];
 export type PriceErrorCode = "InvalidInput" | "UnsupportedSource" | "InconsistentCoordinate";
+/**
+ * Typed prices failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class PriceError extends Error {
   readonly code: PriceErrorCode;
   constructor(code: PriceErrorCode, message: string) {
@@ -11,14 +15,29 @@ export class PriceError extends Error {
     this.code = code;
   }
 }
+/**
+ * Explicit decimal normalization policy: raw times ten to exponent, converted to targetDecimals
+ * with chosen rounding and loss policy.
+ */
 export interface PriceAmountInput {
   readonly raw: bigint;
+  /**
+   * Signed decimal exponent belonging to raw; source decimals alone do not determine its sign.
+   */
   readonly exponent: number;
   readonly targetDecimals: number;
   readonly rounding: PriceRounding;
   readonly zeroAllowed: boolean;
+  /**
+   * Whether nonzero discarded remainder is allowed during downscaling; reported in the valid
+   * result.
+   */
   readonly allowPrecisionLoss: boolean;
 }
+/**
+ * Normalization outcome. Narrow status before using value; invalid/failed results are never
+ * actionable zero prices.
+ */
 export type PriceAmountResult =
   | Readonly<{ status: "valid"; value: bigint; remainderDiscarded: boolean }>
   | Readonly<{ status: "negative" | "zero-invalid" }>
@@ -26,7 +45,16 @@ export type PriceAmountResult =
       status: "failed";
       cause: "exponent-overflow" | "numeric-overflow" | "unsupported-precision-loss";
     }>;
-/** Normalize an explicitly scaled nonnegative price, retaining division loss. */
+/**
+ * Convert an explicitly scaled nonnegative price to the requested decimal precision.
+ *
+ * @returns A discriminated normalization result, preserving discarded remainder;
+ * negative, forbidden-zero and failed numeric results are not executable prices.
+ * @throws PriceError - Malformed scaling, rounding or precision-loss policy.
+ * @remarks
+ * The input describes raw times ten to exponent. Downscaling follows the explicit
+ * rounding/loss policy; source identity and asset pair are validated separately.
+ */
 export function normalizePriceAmount(input: PriceAmountInput): PriceAmountResult {
   if (
     typeof input.raw !== "bigint" ||
@@ -61,10 +89,21 @@ export function normalizePriceAmount(input: PriceAmountInput): PriceAmountResult
   if (value === 0n && !input.zeroAllowed) return Object.freeze({ status: "zero-invalid" });
   return Object.freeze({ status: "valid", value, remainderDiscarded: remainder !== 0n });
 }
+/**
+ * Time comparison at the supplied asOf timestamp. Missing/future timestamps retain null age
+ * rather than a fabricated duration.
+ */
 export type PriceFreshness =
   | Readonly<{ status: "valid" | "stale"; ageSeconds: bigint }>
   | Readonly<{ status: "future-dated" | "missing-time"; ageSeconds: null }>;
-/** Inclusive maximum age. A timestamp of zero is a timestamp; sources own missing-value conventions. */
+/**
+ * Compare publication and asOf Unix seconds with an inclusive maximum age.
+ *
+ * @remarks
+ * No clock is read. Null publication means missing time; zero is a timestamp, with
+ * source-specific missing-value conventions left to the caller. Future timestamps
+ * remain a separate result, not a negative valid age.
+ */
 export function evaluatePriceFreshness(input: {
   readonly publishedAt: bigint | null;
   readonly asOf: bigint;
@@ -79,10 +118,21 @@ export function evaluatePriceFreshness(input: {
   const age = asOf - published;
   return Object.freeze({ status: age <= maximum ? "valid" : "stale", ageSeconds: age });
 }
+/**
+ * Scaled source confidence or an explicit unavailable result. Missing confidence cannot be
+ * inferred as zero or a percentage.
+ */
 export type PriceConfidenceResult =
   | PriceAmountResult
   | Readonly<{ status: "unsupported"; value: null; limitation: "source-confidence-unavailable" }>;
-/** Confidence is scaled with its paired exponent; it is never inferred as zero or a percentage. */
+/**
+ * Scale confidence with its paired price exponent and explicit loss policy.
+ *
+ * @returns Unsupported with null value when the source exposes no confidence;
+ * otherwise a price-normalization result with zero permitted.
+ * @remarks
+ * Confidence is never inferred as zero or converted implicitly to a percentage.
+ */
 export function normalizePriceConfidence(
   input: Omit<PriceAmountInput, "raw" | "zeroAllowed"> & { readonly raw: bigint | null },
 ): PriceConfidenceResult {

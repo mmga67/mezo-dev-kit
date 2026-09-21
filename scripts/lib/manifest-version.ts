@@ -33,7 +33,7 @@ export function validateManifestVersion(
 
   const released = releasedPattern.exec(manifest);
   if (!released) throw new Error("manifest must declare a YYYY-MM-DD release date");
-  if (!manifest.includes("[`manifest-changelog.md`](./manifest-changelog.md)")) {
+  if (!/\[[^[\]\r\n]+\]\((?:\.\/)?manifest-changelog\.md\)/.test(manifest)) {
     throw new Error("manifest must link its improvement log");
   }
 

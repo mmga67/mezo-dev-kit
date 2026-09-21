@@ -1,61 +1,30 @@
-# Mezo incentives knowledge
+# Locks, voting, and rewards
 
-This module owns deployment-scoped knowledge for current veBTC and veMEZO
-locks, boost voting, independent PoolsVoter and ValidatorsVoter domains,
-epochs and votes, gauges, emissions, rewards, and their deterministic formulas.
+Understand veBTC and veMEZO locks, boost, pool and validator voting, gauges, emissions, and claims. This module keeps each voting and reward domain’s accounting explicit.
 
-For human use, start with `generated/reference.md`, then open only the indexed
-record or evidence resource needed. `review/gaps.md` is the current production
-blocker checklist; `review/candidates.md` records material that was not
-promoted. The pinned official specification is stored as the indexed artifact
-[`official-mezo-earn-whitepaper-pdf`](./artifacts/mezo-earn-whitepaper-2025-12.pdf);
-its official URL, digest, scope, and deployment conflict remain owned by
-`incentives-sources`.
+## Start here
 
-For CL claim instructions, resolve `incentives-cl-claims` for overload-specific
-caller and recipient rules, alongside `incentives-gauges-rewards` for the
-voter-mediated claim route. The added CL call record awaits CL explanation qualified
-review and enables no writer. Contracts resource `pool-source-bundles` retains
-the exact CL source for targeted offline inspection.
+- [Incentives reference](generated/reference.md): locks, formulas, emissions, and validator allocation.
+- [CL gauge claims](generated/reference.md#cl-gauge-claim-overloads): caller, recipient, and overload-specific behavior.
+- [MEZO Gauges and remote incentives](generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives): veMEZO voting, Curve/Uniswap LP rewards, Aerodrome voting incentives, and delivery evidence limits.
+- [Current evidence guide](../../../docs/reference/incentives/current-evidence.md): deployment scope and known conflicts.
+- [Incentives SDK](../../../packages/protocols/incentives/README.md): private reads, calculations, lock/vote, staking, and claim workflows.
+- [Official Earn whitepaper](artifacts/mezo-earn-whitepaper-2025-12.pdf): retained specification; use the evidence guide for differences from deployment.
 
-For machine use, resolve module `protocols/incentives` through `index.json` and
-refer to resources by `resourceId`. `incentives-contract-roles` maps fifteen
-bounded roles to Contracts deployment and ABI records. The five registry provenance review roles,
-eight emission evidence review emission roles, and two validator evidence review validator factory roots are
-accepted registry scope. The 24 observed
-validator gauges and paired voting-reward contracts are dynamic evidence
-instances rather than independently maintained registry roots. Addresses
-inside dated evidence remain observation coordinates, not protocol constants.
+## Scope and evidence
 
-## Current boundary
+The earlier lock, boost, emission, pool and validator models have qualified
+review, but module support is `none`: operation release requires its own review.
+The third-party voting model also has qualified review; its reference
+separates deployed rules, published destination descriptions and unverified
+delivery. Dynamic gauges and reward children are observations, not independently
+maintained registry roots.
 
-- Canonical protocol behavior is verified and version scoped.
-- Module support is `none`; no lock, vote, reset, poke, distribute, or claim
-  writer is released.
-- incentives evidence review qualified Level 3 review accepted the bounded lock, boost, vote,
-  gauge, reward, and emission model on 2026-08-25. emission evidence review independently
-  accepted the emission/rebase/splitter model and its registry additions.
-- Stable current-generation contract IDs, ABIs, and activation histories
-  received qualified registry acceptance under registry provenance review. This does not accept
-  the incentives protocol or a writer surface.
-- Eight emission-specific contract IDs, deployments, and ABIs added by
-  emission evidence review received qualified registry acceptance.
-- validator evidence review qualified review accepted the current ValidatorsVoter generation, its independent
-  persistent vote state, exact allocation/index/distribution formulas, dynamic
-  gauge lifecycle, and representative vote, notification, distribution, and
-  claim reconciliation and its two reusable factory roots. Dynamic children,
-  readers, writers, validator operations, and analytics remain unsupported.
-- The active deployed validator generation and settled events take precedence
-  over conflicting descriptive prose. The conflict between the current
-  validator-gauge guide and a separate equal-split guide remains explicit
-  review evidence rather than being silently normalized.
-- Historical create-lock and replacement-vote replay proves only those exact
-  historical pre-state transitions.
-- Qualified review does not enable a public reader or writer. Every future
-  operation still requires fresh identities, preconditions, exact-call
-  simulation, reconciliation, and operation-specific review.
-- APY, forecasts, planners, and user yield are analytics outside this module.
+Current deployed generations and settled events take precedence over conflicting
+descriptive guides. Historical lock/vote replay proves only those recorded
+transitions. Keep principal, stored/current boost, voter revenue, fees, and
+emissions separate; APY forecasts and portfolio projections are outside this module.
 
-Maintainers follow `docs/standards/knowledge-management.md` and the incentives
-skill. Update evidence, sources, record projections, fixtures, generated
-reference, and declared checks together.
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

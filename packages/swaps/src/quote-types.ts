@@ -2,6 +2,10 @@ import type { ReadCoordinate, RpcTransport } from "@mezo-dev-kit/core";
 import type { BasicSwapHop, BasicSwapQuote, BasicSwapReader } from "./reader.ts";
 import type { CLSwapBudget, CLSwapHop, CLSwapQuote, CLSwapReader } from "./cl-types.ts";
 
+/**
+ * Application-supplied basic or CL route with explicit intermediate policy and
+ * required/optional failure semantics.
+ */
 export type SwapQuoteCandidate = Readonly<{
   id: string;
   required: boolean;
@@ -16,6 +20,10 @@ export type SwapQuoteCandidate = Readonly<{
       }>
   );
 
+/**
+ * One token pair/input amount and up to sixteen candidate routes with an explicit
+ * writer-compatibility policy.
+ */
 export interface SwapQuoteRequest {
   readonly tokenIn: `0x${string}`;
   readonly tokenOut: `0x${string}`;
@@ -27,6 +35,10 @@ export interface SwapQuoteRequest {
   readonly candidates: readonly SwapQuoteCandidate[];
 }
 
+/**
+ * Shared coordinate transport and optional family readers; absent family support is an explicit
+ * candidate failure.
+ */
 export interface SwapQuoteReaderConfig {
   readonly networkId: "mezo-mainnet";
   readonly transport: Pick<
@@ -37,6 +49,10 @@ export interface SwapQuoteReaderConfig {
   readonly concentratedLiquidity?: CLSwapReader;
 }
 
+/**
+ * A fee already included in a quote, denominated in that hop's input token; do not subtract it
+ * again.
+ */
 export interface SwapQuoteFee {
   readonly pool: `0x${string}`;
   readonly token: `0x${string}`;
@@ -52,6 +68,10 @@ export interface SwapQuoteIssue {
   readonly cause?: unknown;
 }
 
+/**
+ * Explicit failed, quoted or ineligible candidate. A readable quote need not satisfy
+ * writer-compatibility policy.
+ */
 export type SwapQuoteCandidateResult = Readonly<{
   id: string;
   required: boolean;
@@ -68,9 +88,16 @@ export type SwapQuoteCandidateResult = Readonly<{
         ))
   );
 
+/**
+ * One-coordinate comparison over supplied candidates only. Ranking excludes gas/currency
+ * adjustments and does not imply exhaustive best execution.
+ */
 export interface SwapQuoteResult {
   readonly state: "complete" | "partial" | "incomplete" | "unavailable";
   readonly coordinate: Readonly<ReadCoordinate>;
+  /**
+   * Unix seconds at the snapshot coordinate; not milliseconds or an ambient clock.
+   */
   readonly timestamp: bigint;
   readonly observedHead: bigint;
   readonly expiresAfterBlock: bigint;
@@ -97,6 +124,14 @@ export interface SwapQuoteResult {
   readonly currencyConversion: "none";
 }
 
+/**
+ * Read-only bounded candidate comparison with visible required/optional failures and explicit
+ * coverage.
+ */
 export interface SwapQuoteReader {
+  /**
+   * Compare only supplied candidates at one coordinate. Preserve required/optional failures and
+   * inspect state/coverage before choosing best.
+   */
   quote(input: SwapQuoteRequest): Promise<Readonly<SwapQuoteResult>>;
 }

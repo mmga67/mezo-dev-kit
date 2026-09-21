@@ -6,9 +6,9 @@ private repository boundaries: they are not npm releases, reserved names,
 semantic-version promises, or permission to expose a protocol writer.
 
 Use the [SDK development quickstart](./SDK_DEVELOPMENT.md) first for checkout,
-branch, toolchain, and contributor-skill setup. The
+toolchain setup, and a working example. The
 [architecture](../../ARCHITECTURE.md), [coding standard](../standards/coding.md),
-[testing standard](../standards/testing.md), root and nested `AGENTS.md`, and
+[testing standard](../standards/testing.md), [contributor guide](../../CONTRIBUTING.md), and
 owning domain sources remain authoritative if this practical guide is
 incomplete.
 
@@ -37,7 +37,7 @@ justified by a planned directory, a desire for a generic `utils` home, one
 large file, or an imagined future consumer. Search the workspace first:
 
 ```sh
-find packages extensions templates examples -name package.json -print | sort
+rg --files packages extensions templates examples -g package.json
 rg -n 'the capability or public type' packages docs ARCHITECTURE.md
 ```
 
@@ -47,25 +47,8 @@ architecture accidentally.
 
 ## Preserve dependency direction
 
-The accepted high-level direction is:
-
-```text
-evm value primitives
-  ↓
-chains
-  ↓
-contracts
-  ↓
-core
-  ↓
-protocol modules
-  ↓
-framework adapters
-  ↓
-examples / applications
-```
-
-Consult `ARCHITECTURE.md` for the complete graph and ownership rules. A package
+Use the [architecture dependency map](../../ARCHITECTURE.md#dependency-direction)
+for current imports, domain composition, and ownership rules. A package
 may depend only on an accepted upstream owner. Declare every workspace edge in
 the consuming `package.json`, import the provider by package name, and use only
 an exported entrypoint. Cycles, cross-package relative paths, undeclared edges,
@@ -186,12 +169,12 @@ mode. Change the canonical input and generator first; regenerate and review the
 input/output diff together. Never patch generated output by hand.
 
 Core demonstrates the real repository boundary with
-`scripts/generate-core-transaction-model.ts`: it resolves stable transaction
+`scripts/generate/generate-core-transaction-model.ts`: it resolves stable transaction
 resources, produces `packages/core/src/model.generated.ts`, records a SHA-256
 input digest, and supports:
 
 ```sh
-node scripts/generate-core-transaction-model.ts --check
+node scripts/generate/generate-core-transaction-model.ts --check
 ```
 
 The disposable example below uses a fictional package-local input so it cannot
@@ -279,7 +262,7 @@ narrow substitute as the full gate.
 
 Update the package README with support scope, configuration, units,
 coordinates, failure behavior, examples, limitations, and exact commands.
-Update architecture or an ADR only when the accepted design changed. Update a
+Update the manifest and detailed architecture when the accepted design changes. Update a
 guide/reference only when its owner changed.
 
 For each added or changed export, review source and built resolution, type
@@ -425,7 +408,7 @@ Run the repository boundary validator against the disposable root:
 
 ```sh
 MDK_FIXTURE_ROOT="$mdk_module_fixture_root" node --input-type=module --eval '
-  import { validateWorkspaceBoundaries } from "./scripts/validate-package-boundaries.ts";
+  import { validateWorkspaceBoundaries } from "./scripts/checks/validate-package-boundaries.ts";
   const diagnostics = await validateWorkspaceBoundaries(process.env.MDK_FIXTURE_ROOT);
   if (diagnostics.length > 0) {
     throw new Error(JSON.stringify(diagnostics, null, 2));
@@ -539,7 +522,7 @@ Core check when its transaction inputs are affected.
 - [Knowledge authoring](./KNOWLEDGE_AUTHORING.md)
 - [Skill authoring](./SKILL_AUTHORING.md)
 - [External applications](./EXTERNAL_APPLICATIONS.md)
-- [Source-alpha governance ADR](../decisions/0013-github-source-alpha-governance.md)
+- [Source workflow and governance](../manifest#source-workflow-and-governance)
 
 For changes to an existing public boundary or its evidence dependencies, follow
 the [capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)

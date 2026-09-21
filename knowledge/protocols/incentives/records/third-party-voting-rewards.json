@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-third-party-voting-reward-model",
+  "id": "incentives-third-party-voting-rewards",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-15T18:58:39.000Z",
+  "reviewAfter": "2026-09-29T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11870214
+  },
+  "protocolStatus": "verified-versioned",
+  "limitations": [
+    "Qualified review accepted the bounded source, observation and published-document scope on 2026-09-15. This provides no third-party reader, writer or delivery support.",
+    "Voting weight, lazily accrued voter claimable, gauge reward stream, beneficiary claim, bridged funds, destination campaign and LP payout are separate states. No APR/APY or settled payout follows from weights.",
+    "Remote destination labels bind dated voter metadata to official descriptions; they are not a verified remote registry or pool deployment catalog.",
+    "The documented funding share and lock duration are not immutable parameters. Do not convert three months into an assumed number of seconds or infer the Merkl claim chain or deadline.",
+    "Use the current Contracts deployment generation and fresh operation preconditions before any transaction.",
+    "Remote gauge runtime matches the partially verified NonStakingGauge twin at the sampled block; full source provenance and independent reproduction are not newly established. Preserve individual explorer labels."
+  ],
+  "summary": "veMEZO votes in ThirdPartyVoter allocate MEZO to non-staking MEZO Gauges. The documented remote destinations are Curve and Uniswap on Ethereum and Aerodrome on Base. Gauge incentives paid to veMEZO voters are separate from the emissions directed toward destination LPs or veAERO voters.",
+  "topology": {
+    "voterReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "third-party-voter"
+    },
+    "escrowReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-contract-roles",
+      "recordId": "vemezo-current"
+    },
+    "fundingReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-emissions"
+    },
+    "observationReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-third-party-mainnet"
+    },
+    "sourceReference": {
+      "moduleId": "contracts",
+      "resourceId": "third-party-voter-source"
+    },
+    "abiReference": {
+      "moduleId": "contracts",
+      "resourceId": "abi.incentives.third-party-voter"
+    }
+  },
+  "units": {
+    "votingPower": "veMEZO votingPowerOfNFT integer units",
+    "relativeWeights": "dimensionless caller-supplied integers, normalized across selected gauges",
+    "rewardAmounts": "MEZO integer base units",
+    "snapshotShares": "relative stored voting weights only; not epoch settlement"
+  },
+  "epochReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-voting",
+    "pointer": "/epoch"
+  },
+  "voting": {
+    "functionSignature": "vote(uint256,address[],uint256[])",
+    "resetSignature": "reset(uint256)",
+    "authorization": "Owner or approved operator of the veMEZO NFT; managed/deactivated restrictions and current escrow authority still apply.",
+    "asset": "veMEZO",
+    "target": "gauge address",
+    "allocationState": "ThirdPartyVoter's own lastVoted, votes, gaugeVote, weights, totalWeight and usedWeights; never read PoolsVoter, ValidatorsVoter or BoostVoter allocations as substitutes.",
+    "frequency": "vote and reset use onlyNewEpoch: epochStart(now) must exceed lastVoted[tokenId]. A successful vote, including an empty vote, writes lastVoted. reset does not write it; reset-then-vote is possible when the previous vote is from an older epoch.",
+    "window": "Both vote and reset require now strictly after epochVoteStart. Non-whitelisted vote calls must be at or before epochVoteEnd; whitelisted NFTs may vote later. Reset has no final-hour whitelist check.",
+    "persistence": "Epoch rollover does not erase stored allocations. reset, replacement vote, poke, managed transitions or gauge handling mutate them.",
+    "poke": "Anyone can call poke after epochVoteStart; it refreshes the current veMEZO power at the stored relative allocation, removes killed targets, and does not write lastVoted. This is distinct from choosing a new allocation through vote.",
+    "allocation": "The source normalizes relative weights over the entire current votingPowerOfNFT. Every nonempty target must be registered, alive, unique and receive a nonzero floor-rounded result. Empty arrays reset without division; nonempty all-zero weights divide by zero. An arbitrary percentage total does not reserve unused power.",
+    "boostIndependence": "The separate ThirdPartyVoter mappings do not consume BoostVoter allocations. Official guides describe unchanged veBTC boost and staking-gauge votes. This does not waive escrow-level voted, managed, ownership or exit restrictions.",
+    "sourceLocators": [
+      "contracts/NonStakingVoter.sol: onlyNewEpoch, vote, reset, _vote, _reset, poke, _poke",
+      "contracts/libraries/ProtocolTimeLibrary.sol: epochVoteStart and epochVoteEnd"
+    ]
+  },
+  "accounting": {
+    "sharedMathReferences": [
+      {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-voting-rewards",
+        "pointer": "/formulas/0/integerOrder"
+      },
+      {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-voting-rewards",
+        "pointer": "/formulas/1/integerOrder"
+      },
+      {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-voting-rewards",
+        "pointer": "/formulas/2/integerOrder"
+      },
+      {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-voting-rewards",
+        "pointer": "/formulas/3/integerOrder"
+      }
+    ],
+    "binding": "Only the arithmetic of the common NonStakingVoter implementation is reused. Bind voting power to ThirdPartyVoter.ve (veMEZO), and every weight, index, claimable and splitter input to this ThirdPartyVoter instance. Validator eligibility, veBTC inputs and state are not reused.",
+    "notification": "Only the configured splitter may notifyRewardAmount. Transfer the notified MEZO into the voter, then advance its index using the total weight at notification time. Zero total weight uses a denominator of one; this does not allocate rewards to a nonexistent voter.",
+    "accrual": "_updateFor checkpoints a gauge's supply index and accrues its floor-rounded share; killed-gauge accrual returns to the splitter. A stored claimable read can omit lazy accrual.",
+    "distribution": "distribute(address[]) or distribute(uint256,uint256) first calls splitter.updatePeriod. _distribute updates gauge accrual and transfers only above both strict thresholds: gauge.left() and DURATION measured as a raw token-amount integer. Settled DistributeReward amounts take precedence over reconstructed vote percentages.",
+    "epochBoundary": "The published epoch-end allocation explanation is not proof of an on-chain epoch-final snapshot. notifyRewardAmount, _updateFor and actual distribution events define the source accounting."
+  },
+  "lifecycle": {
+    "creationSignature": "createThirdPartyGauge(address,address,string)",
+    "creation": "Governor only; the gauge factory must be approved. The initial rewards beneficiary is thirdParty; one current mapping per third-party address, with metadata stored alongside the gauge.",
+    "killSignature": "killThirdPartyGauge(address)",
+    "kill": "Governor deletes thirdPartyToGauge and kills the gauge, returning stored claimable to the splitter. Killed instances cannot be revived by ThirdPartyVoter. The append-only gauges array retains historical entries; count and liveness differ.",
+    "metadata": "Metadata is an arbitrary string, not a trusted proof of destination network, pool address or contract ownership.",
+    "beneficiary": "Non-staking gauges route their reward stream to their current beneficiary. A beneficiary can change; do not assume thirdPartyToGauge's original key remains the current recipient. The sampled active mappings happened to agree.",
+    "beneficiaryTemplateReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-validator-voting-rewards",
+      "pointer": "/validatorGaugeLifecycle/beneficiary"
+    }
+  },
+  "claims": {
+    "voterIncentives": {
+      "functionSignature": "claimBribes(address[],address[][],uint256)",
+      "recipient": "The NFT reward entitlement is settled by its bribe reward contract; ThirdPartyVoter requires owner/operator authorization. Exact reward-child epoch/checkpoint and recipient semantics require that child's verified implementation.",
+      "meaning": "Incentives posted to attract veMEZO votes; not the directed MEZO emission budget."
+    },
+    "directedEmissions": {
+      "functionSignature": "claimRewards(address[])",
+      "recipient": "Calls each gauge.getReward(_msgSender()); a veMEZO vote does not make the caller the gauge's beneficiary.",
+      "meaning": "A gauge-beneficiary claim is a Mezo-side step, not proof of a bridge transfer, destination incentive deposit or LP payout."
+    }
+  },
+  "documentedFunding": {
+    "share": "8% of weekly emission rewards in the overview",
+    "status": "documented-not-reverified",
+    "sourceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-third-party-sources",
+      "recordId": "official-mezo-gauges-overview"
+    },
+    "limitation": "Governed splitter state must be read at the relevant distribution coordinate; do not hard-code this description into calculations."
+  },
+  "destinations": [
+    {
+      "id": "aerodrome-usdc-musd",
+      "label": "Aerodrome USDC/MUSD",
+      "venue": "Aerodrome",
+      "version": "concentrated liquidity, tick spacing 10",
+      "mechanism": "aerodrome-voting-incentive",
+      "directRecipient": "veAERO voters",
+      "directReward": "MEZO",
+      "lpReward": "AERO",
+      "claimSurface": "Aerodrome on Base",
+      "timing": "Mezo vote in epoch N; MEZO voting incentive in N+1; AERO emissions to LPs in N+2.",
+      "networkReference": {
+        "moduleId": "networks",
+        "resourceId": "base-mainnet"
+      },
+      "gaugeObservationReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/gauges/3"
+      },
+      "distributionStatus": "documented-not-reconciled",
+      "documentationReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-overview"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-where-your-vote-goes"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-claiming-incentives"
+        }
+      ]
+    },
+    {
+      "id": "aerodrome-mezo-musd",
+      "label": "Aerodrome MEZO/MUSD",
+      "venue": "Aerodrome",
+      "version": "concentrated liquidity, tick spacing 200",
+      "mechanism": "aerodrome-voting-incentive",
+      "directRecipient": "veAERO voters",
+      "directReward": "MEZO",
+      "lpReward": "AERO",
+      "claimSurface": "Aerodrome on Base",
+      "timing": "Mezo vote in epoch N; MEZO voting incentive in N+1; AERO emissions to LPs in N+2.",
+      "networkReference": {
+        "moduleId": "networks",
+        "resourceId": "base-mainnet"
+      },
+      "gaugeObservationReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/gauges/4"
+      },
+      "distributionStatus": "documented-not-reconciled",
+      "documentationReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-overview"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-where-your-vote-goes"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-claiming-incentives"
+        }
+      ]
+    },
+    {
+      "id": "uniswap-usdc-musd",
+      "label": "Uniswap v4 USDC/MUSD",
+      "venue": "Uniswap",
+      "version": "v4, fee 100 in on-chain metadata",
+      "mechanism": "merkl-campaign",
+      "directRecipient": "liquidity providers",
+      "directReward": "veMEZO",
+      "lpReward": "veMEZO",
+      "claimSurface": "Merkl",
+      "timing": "LP eligibility accrues during the destination campaign; the guide describes a three-month veMEZO lock.",
+      "networkReference": {
+        "moduleId": "networks",
+        "resourceId": "ethereum-mainnet"
+      },
+      "gaugeObservationReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/gauges/5"
+      },
+      "distributionStatus": "documented-not-reconciled",
+      "documentationReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-overview"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-where-your-vote-goes"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-claiming-incentives"
+        }
+      ]
+    },
+    {
+      "id": "curve-usdt-usdc-musd",
+      "label": "Curve USDT/USDC/MUSD",
+      "venue": "Curve",
+      "version": "MUSD/2pool in on-chain metadata",
+      "mechanism": "merkl-campaign",
+      "directRecipient": "liquidity providers",
+      "directReward": "veMEZO",
+      "lpReward": "veMEZO",
+      "claimSurface": "Merkl",
+      "timing": "LP eligibility accrues during the destination campaign; the guide describes a three-month veMEZO lock.",
+      "networkReference": {
+        "moduleId": "networks",
+        "resourceId": "ethereum-mainnet"
+      },
+      "gaugeObservationReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/gauges/6"
+      },
+      "distributionStatus": "documented-not-reconciled",
+      "documentationReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-overview"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-where-your-vote-goes"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-sources",
+          "recordId": "official-mezo-gauges-claiming-incentives"
+        }
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "third-party-voting-window-and-frequency",
+      "status": "conflicting-documentation",
+      "documentationReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-how-to-vote"
+      },
+      "publishedClaim": "The guide allows voting throughout the epoch and changing or resetting as often as desired within it.",
+      "deployedResolution": "The matching current source enforces onlyNewEpoch for vote/reset and its first/final-hour restrictions. Preserve direct-call guards; a third-party UI description cannot waive them.",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "third-party-voter-source"
+      },
+      "sourceLocator": "contracts/NonStakingVoter.sol: onlyNewEpoch, reset and vote"
+    }
+  ],
+  "deliveryGaps": [
+    {
+      "id": "remote-registry-and-allocator-provenance",
+      "status": "unverified",
+      "need": "Identify the governance-controlled remote registry and reproduce allocator source/code before promoting their mapping, bridge or scheduling behavior.",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/sourceFailures"
+      }
+    },
+    {
+      "id": "merkl-campaign-and-lock-settlement",
+      "status": "unverified",
+      "need": "Pin each campaign, pool identity, reward/lock creation contract, eligibility interval, claim network, exact lock terms and deadline. Current beneficiaries without bytecode do not explain the downstream mechanism.",
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-claiming-incentives"
+      }
+    },
+    {
+      "id": "end-to-end-remote-settlement",
+      "status": "unverified",
+      "need": "Reconcile voter distribution, beneficiary claim, applicable bridge delivery, destination deposit/campaign and final claim for each distinct mechanism.",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet",
+        "pointer": "/settlement"
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "third-party-voter-source"
+      },
+      "locator": "ThirdPartyVoter and inherited NonStakingVoter"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet"
+      },
+      "locator": "fixed-block graph, liveness, metadata, beneficiary code and total-weight reconciliation"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-overview"
+      },
+      "locator": "published product description; preserve documented-not-reconciled status"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-how-to-vote"
+      },
+      "locator": "published product description; preserve documented-not-reconciled status"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-where-your-vote-goes"
+      },
+      "locator": "published product description; preserve documented-not-reconciled status"
+    },
+    {
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-sources",
+        "recordId": "official-mezo-gauges-claiming-incentives"
+      },
+      "locator": "published product description; preserve documented-not-reconciled status"
+    }
+  ]
+}

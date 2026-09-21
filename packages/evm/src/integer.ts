@@ -15,6 +15,14 @@ export function isUint(value: unknown, bits = 256): value is bigint {
   return typeof value === "bigint" && value >= 0n && value < 1n << BigInt(bits);
 }
 
+/**
+ * Validate a decoded bigint against an unsigned Solidity integer width.
+ *
+ * @param bits - Width from 8 through 256 in multiples of 8; defaults to 256.
+ * @throws EvmValueError - Invalid width or a value outside the unsigned range.
+ * @remarks
+ * Numbers and decimal strings are not decoded bigint values and are rejected.
+ */
 export function parseUint(value: unknown, bits = 256, field = "integer"): bigint {
   if (!isUint(value, bits)) throw new EvmValueError("InvalidInteger", field);
   return value;

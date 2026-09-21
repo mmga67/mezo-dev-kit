@@ -12,33 +12,67 @@ import { decodeTokenTransfers } from "@mezo-dev-kit/tokens";
 import { poolAddress, poolEntry, poolRequire } from "./basic.ts";
 import type { BasicPoolKey, BasicPoolReader, BasicPoolSnapshot } from "./types.ts";
 
+/**
+ * Independent token0/token1 payout minimums plus block age. Claim minimums are client policy,
+ * not pool arguments.
+ */
 export interface BasicPoolFeeBounds {
   readonly minAmount0: bigint;
   readonly minAmount1: bigint;
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Verified wallet fee balances and exact claimFees call; no token approval is required.
+ */
 export interface PreparedBasicPoolFeeClaim {
   readonly snapshot: Readonly<BasicPoolSnapshot>;
   readonly bounds: Readonly<BasicPoolFeeBounds>;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual two-token fee payout and receipt-block accounting with caller bounds reported
+ * separately.
+ */
 export interface BasicPoolFeeOutcome {
   readonly amount0: bigint;
   readonly amount1: bigint;
   readonly snapshot: Readonly<BasicPoolSnapshot>;
 }
+/**
+ * Wallet LP fee-claim lifecycle; gauge-owned fees belong to Incentives.
+ */
 export interface BasicPoolFeeWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly key: BasicPoolKey;
     readonly account: `0x${string}`;
     readonly bounds: BasicPoolFeeBounds;
   }): Promise<Readonly<PreparedBasicPoolFeeClaim>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedBasicPoolFeeClaim): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedBasicPoolFeeClaim,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify wallet LP fee payouts and
+   * custody. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedBasicPoolFeeClaim,
     record: unknown,

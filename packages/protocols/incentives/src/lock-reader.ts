@@ -41,6 +41,14 @@ function tuple(value: unknown, length: number): readonly unknown[] {
 function boundedIds(value: unknown): value is readonly bigint[] {
   return Array.isArray(value) && value.length <= 32;
 }
+/**
+ * Create bounded current veBTC/veMEZO NFT and ownership-page inspection.
+ *
+ * @remarks
+ * Select an explicit escrow role. Reads verify its generation, duration and reverse
+ * token/voter/booster graph. Supplied IDs and pages are bounded; pin one block across
+ * pages. Missing or burned IDs do not imply an invented beneficial owner.
+ */
 export function createLockReader(config: LockReaderConfig): Readonly<LockReader> {
   incentiveRequire(config.networkId === "mezo-mainnet", "InvalidInput", "mainnet escrow required");
   const selectedProfile = INCENTIVES_MODEL.escrows.find((row) => row.role === config.role);
@@ -380,6 +388,13 @@ export function createLockReader(config: LockReaderConfig): Readonly<LockReader>
     },
   } satisfies LockReader);
 }
+/**
+ * Resolve the verified underlying escrow-token role for a separate Core approval.
+ *
+ * @remarks
+ * The account and reader determine the target at the requested coordinate. This
+ * resolver does not grant an NFT operator approval or substitute a new escrow role.
+ */
 export function createLockTargetResolver(config: {
   readonly reader: LockReader;
   readonly account: `0x${string}`;

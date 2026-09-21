@@ -186,6 +186,53 @@
       "minimumFreshRuns": 1
     }
   ],
+  "retrievalCases": [
+    {
+      "id": "discover-record-content-offline",
+      "setup": "Isolated synthetic knowledge module with a fact only inside a record body, a collection named items, and an unrelated large artifact. Network unavailable.",
+      "prompt": "Find the recorded rule for the yellow rotary assembly, explain its scope, and identify its evidence. Use the available checkout.",
+      "expected": [
+        "Discover indexed records and select the declared record/field without guessing a path or collection name",
+        "Read relevant evidence without dumping the unrelated artifact",
+        "Report search coverage and make no network requests"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "inspect-interface-before-probing",
+      "setup": "Synthetic ABI contains overloaded methods and a differently named getter than the prompt's informal term; all required source is retained. No live-state question.",
+      "prompt": "Find the exact interface for the widget duration and explain the two transfer overloads. Identify any detail the ABI cannot establish.",
+      "expected": [
+        "Inspect exact ABI entries before forming calls or selectors",
+        "Use retained source only for the unresolved semantics",
+        "Make no guessed RPC calls or online source downloads"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "memory-pointer-and-stale-local-context",
+      "setup": "Synthetic shared pointer and local discovered note share a subject; current canonical evidence contradicts the local note. Include an unrelated domain and a deprecated entry.",
+      "prompt": "Use relevant prior context to locate the widget rule and explain what currently establishes it. Preserve useful context for a later investigation.",
+      "expected": [
+        "Select only relevant memory and distinguish shared/local identity and lifecycle",
+        "Follow the pointer to current evidence instead of trusting ranking or the most recent memory date",
+        "Retire or qualify stale context appropriately; save no copied rule, raw log or routine completion note",
+        "Validate changed entry/index data and demonstrate a realistic retrieval query"
+      ],
+      "minimumFreshRuns": 3
+    },
+    {
+      "id": "bounded-live-evidence-gap",
+      "setup": "Synthetic retained interface/semantics and an injected read-only provider fixture; the requested current field is absent from retained observations. No signer.",
+      "prompt": "Determine the widget's current active setting and explain the governing rule. Use the injected provider only where needed.",
+      "expected": [
+        "Use local evidence for semantics and identify the precise current-state gap",
+        "Call only the verified interface needed for the scoped observation",
+        "Keep observed state separate from retained evidence and never claim a fixture proves live network behavior"
+      ],
+      "minimumFreshRuns": 3
+    }
+  ],
   "criticalFailures": [
     "Invented protocol or provider capability",
     "Unsupported deep import used as a public API",

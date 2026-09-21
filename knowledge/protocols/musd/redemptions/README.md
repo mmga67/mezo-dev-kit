@@ -1,31 +1,23 @@
-# MUSD redemption knowledge
+# MUSD redemptions
 
-This v0.4 module owns the accepted, deployment-scoped redemption model,
-ordering, hints, formulas, parameters, fixtures, and fixed-block observations.
-It resolves shared MUSD, borrowing formulas, contracts, networks, and sources
-through stable logical references.
+Understand redemption ordering, position eligibility, hints, fees, and settlement. These records explain how MUSD is redeemed through classic borrower positions.
 
-## Current status
+## Start here
 
-The knowledge is `supported` / `accepted` within its declared scope. A public
-redemption writer is not implemented or implied. The deployed entrypoint lacks
-a minimum-received parameter, so any future writer must enforce quote
-freshness, simulation, and user output policy outside the call.
+- [Redemption explanation](../../../../docs/reference/musd-redemptions.md): how ordering and settlement work.
+- [Redemption reference](generated/reference.md): the recorded model, formulas, and parameters.
+- [Redemption SDK](../../../../packages/protocols/musd-redemptions/README.md): bounded discovery, output simulation, execution, and reconciliation.
+- [Borrowing model](../borrowing/README.md): underlying position state and calculations.
 
-## Human and machine use
+## Scope and evidence
 
-Humans start with [`generated/reference.md`](./generated/reference.md) and the
-maintained explanation in
-[`docs/reference/musd-redemptions.md`](../../../../docs/reference/musd-redemptions.md).
-Machines start at [`index.json`](./index.json) and resolve only the model,
-formula, parameter, fixture, or evidence resource needed.
+The knowledge is supported and reviewed for its declared deployment scope.
+The private SDK's implementation and release status are documented separately.
 
-## Maintenance
+The deployed entrypoint has no minimum-received parameter. Quote freshness and
+exact-output simulation enforce a preflight policy, not an on-chain received-amount
+guarantee. Settlement must preserve actual outputs, fees, and position changes.
 
-Run:
+## Contributing
 
-```bash
-node scripts/validate-knowledge-structure.ts --module protocols/musd/redemptions
-node scripts/validate-redemption-knowledge.ts
-node scripts/generate-musd-reference.ts --check
-```
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

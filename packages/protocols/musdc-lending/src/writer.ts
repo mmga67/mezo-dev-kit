@@ -23,6 +23,10 @@ import type { LendingAction, LendingBounds, LendingForecast } from "./forecast.t
 import { LENDING_MODEL } from "./model.generated.ts";
 import type { LendingReader, LendingSnapshot } from "./types.ts";
 
+/**
+ * Anchored market action with exact call and separate token approval requirement; original
+ * writer provenance is required for submission.
+ */
 export interface PreparedLending {
   readonly snapshot: Readonly<LendingSnapshot>;
   readonly action: LendingAction;
@@ -32,25 +36,54 @@ export interface PreparedLending {
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Observed receipt-block market result, retaining actual assets/shares and policy checks rather
+ * than assuming the forecast settled exactly.
+ */
 export interface LendingOutcome {
   readonly kind: LendingAction["kind"];
   readonly assets: bigint;
   readonly shares: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
   readonly snapshot: Readonly<LendingSnapshot>;
 }
+/**
+ * Direct market action lifecycle over Core. Confirm approvals separately and reconcile the
+ * protocol outcome after inclusion.
+ */
 export interface LendingWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly action: LendingAction;
     readonly bounds: LendingBounds;
   }): Promise<Readonly<PreparedLending>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedLending): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedLending,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify market assets/shares and
+   * position. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedLending,
     record: unknown,
@@ -63,6 +96,16 @@ export interface LendingWriter {
     }>
   >;
 }
+/**
+ * Create direct supply, withdrawal, collateral, borrow and repay operations.
+ *
+ * @remarks
+ * Preparation returns the exact call, forecast and independent token approval plan.
+ * After confirming an approval, prepare again. Matching writer-owned preparations
+ * and simulations are required for submit. Core reserves the durable intent before
+ * signing; reconciliation checks market events, amounts and receipt-block position.
+ * Applications supply price-age policy and recover uncertain sends by persisted intent.
+ */
 export function createLendingWriter(config: {
   readonly reader: LendingReader;
   readonly registry: ContractRegistry;

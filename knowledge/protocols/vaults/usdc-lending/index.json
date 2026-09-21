@@ -28,9 +28,9 @@
     {"id": "usdc-lending-vault-reference", "role": "generated", "kind": "human-reference", "path": "generated/reference.md", "generatedFrom": [{"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-architecture"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-accounting"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-liquidity"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-fixed-block-state"}, {"moduleId": "protocols/vaults/usdc-lending", "resourceId": "usdc-lending-vault-flow-reconciliation"}]}
   ],
   "checks": [
-    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/vaults/usdc-lending"},
-    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/validate-economic-system-knowledge.ts --module protocols/vaults/usdc-lending"},
-    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate-economic-system-reference.ts --module protocols/vaults/usdc-lending --check"}
+    {"id": "common-structure", "type": "structural", "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/vaults/usdc-lending"},
+    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/checks/validate-economic-system-knowledge.ts --module protocols/vaults/usdc-lending"},
+    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate/generate-economic-system-reference.ts --module protocols/vaults/usdc-lending --check"}
   ],
   "extensions": {"writerSupport": "none", "underlyingMarketReference": {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"}, "compositionReference": "docs/architecture/mezo-economic-system-composition.md", "blockers": ["fresh same-block reads and exact-operation simulation before any public operation", "separate public API and security review before any reader or writer"]}
 }

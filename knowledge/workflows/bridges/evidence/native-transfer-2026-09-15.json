@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-15T19:24:31.257Z",
+  "reviewAfter": null,
+  "kind": "native-transfer-qualification",
+  "id": "native-transfer-qualification-2026-09-15",
+  "owner": "workflows/bridges",
+  "scope": {
+    "routeIds": ["mezo-native-usdc-ethereum-to-mezo", "mezo-native-btc-mezo-to-ethereum"]
+  },
+  "artifacts": [
+    {
+      "reference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "native-transfer-client-source"
+      },
+      "sha256": "16a77c9c3cfe4f7de2552679b0a2af0e9997294fb0e93549e1f7e534cdf20a1f"
+    },
+    {
+      "reference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "native-transfer-ethereum-source"
+      },
+      "sha256": "5f541681947e411e3a4d0bd63507b54cae3fcfb905be314eabad0eb3e6b5b0ad"
+    },
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "native-transfer-current-rpc" },
+      "sha256": "1d231294c38de1456041ec9b21c041a157096c5a651959dc8d443c55292de3b9"
+    },
+    {
+      "reference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "native-transfer-minter-probe"
+      },
+      "sha256": "4ec55a2833dc98ee76b2af03d2907ad3c8489cc8f29edf05403c143d029c22b0"
+    }
+  ],
+  "tokenRuntimeReference": {
+    "moduleId": "contracts",
+    "resourceId": "native-transfer-token-runtime"
+  },
+  "historicalTransferReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "bridge-native-evidence"
+  },
+  "historicalDeliveryQualification": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "native-delivery-qualification-2026-09-12"
+  },
+  "client": {
+    "commit": "42ddabe17f20580d145441d8f607f6306d753311",
+    "reportedVersionPrefix": "Mezod/13.0.0/",
+    "blockedRecipients": [
+      { "moduleName": "fee_collector", "address": "0xf1829676db577682e944fc3493d451b67ff3e29f" },
+      { "moduleName": "poa", "address": "0x70963e33ab0c3fcd4d195e3545795885f13140c8" },
+      { "moduleName": "evm", "address": "0x603871c2ddd41c26ee77495e2e31e6de7f9957e0" },
+      { "moduleName": "bridge", "address": "0x17f29b073143d8cd97b5bbe492bdeffec1c5fee5" }
+    ],
+    "mintAuthority": "0x17f29b073143d8cd97b5bbe492bdeffec1c5fee5"
+  },
+  "behavior": {
+    "approval": "BTC EVM approve creates/updates Cosmos bank SendAuthorization; ordinary bridgeOut consumes it atomically. No Cosmos signer is needed.",
+    "sourceCalls": "bridgeERC20 and bridgeOut are nonpayable with value zero. Source success does not establish delivery.",
+    "inbound": "A valid enabled ERC20, current mapping, expected mUSDC runtime/minter and non-module recipient are required. A skipped or failed system mint may advance the sequence; destination settlement must be proved separately.",
+    "outboundFee": "When collector is nonzero: floor(amount * (percentageExempt ? 0 : withdrawalFee) / BASIS_POINTS_DENOMINATOR) + flatWithdrawalFees[token]. Zero collector disables fees; fee >= amount reverts. uint256 multiplication/addition overflow reverts.",
+    "feeBound": "Source bridgeOut has no max destination fee argument. A quote bound is checked during preparation/simulation/submission; it cannot guarantee the later settlement fee.",
+    "recovery": "WithdrawalFailed after confirmation requires governance recovery; expose governance-recovery-required and never retry or resend automatically."
+  },
+  "compatibility": {
+    "unchangedFiles": [
+      "precompile/erc20/approve.go",
+      "precompile/erc20/allowance.go",
+      "precompile/assetsbridge/bridge_out.go"
+    ],
+    "fromCommit": "8542dad7bab1ca2b32d96c37d966f5b713906737",
+    "toCommit": "42ddabe17f20580d145441d8f607f6306d753311"
+  },
+  "limitations": [
+    "No live value-bearing transfer, new dependency or local node was used.",
+    "Historical real transfers prove the retained generations. Current state/source compatibility is additional bounded evidence, not a fresh end-to-end transfer.",
+    "RPC-reported client version is an operator assertion, not cryptographic proof of native engine code or past execution.",
+    "Current delivery needs runtime/tuple/settlement evidence at candidate coordinates; ambiguous inbound batches remain unproven.",
+    "Runtime changes invalidate this bounded qualification. No route support or release promotion is implied."
+  ],
+  "minterReference": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "native-transfer-minter-probe"
+  }
+}

@@ -1,34 +1,24 @@
-# Troubleshooting knowledge
+# Mezo troubleshooting
 
-This directory owns reproducible diagnosis and safe mitigation records. It does
-not own the underlying network, deployment, protocol, or transaction fact.
-Every issue links to that canonical owner and to the evidence used to reproduce
-the symptom.
+Find reproduced symptoms, diagnostic steps, and bounded mitigations for Mezo RPC, protocol, documentation, and bridge problems.
 
-Start at `index.json`. It resolves seven stable issue resources plus the
-generated human reference. Retained records must state exact scope, repeatable
-verification, a negative/control case, a bounded mitigation, review timing, and
-limitations. A missing RPC result is not automatically a missing transaction;
-a documentation statement is not deployed evidence; and an unreproduced report
-is not automatically an MDK issue.
+## Start here
 
-For human diagnosis, start with `troubleshooting-reference`, then open the one
-issue and its logical canonical-owner references. For agent procedure, use the
-troubleshooting skill; for maintenance, use the knowledge-management standard.
+- [Issue reference](generated/reference.md#issue-inventory): choose the symptom and follow its prerequisites, diagnosis, and limitations.
+- [Indexing and reconciliation guide](../../docs/guides/INDEXING_RECONCILIATION.md): investigate partial scans, archive gaps, and uncertain outcomes.
+- [Security reporting](../../SECURITY.md): report vulnerabilities through the private reporting process.
 
-Troubleshooting records are validated projections of evidence. If a record
-conflicts with the source or block-pinned observation it cites, the record is
-drift and must be corrected.
+## Scope and evidence
 
-For archive gaps, bounded rescans, retryable negative evidence, and indexed
-reconciliation projections, use `docs/guides/INDEXING_RECONCILIATION.md`.
-Provider omission remains unknown/partial evidence unless the exact canonical
-source, range, and finality establish absence.
+The recorded issues received qualified review, but issue support remains absent
+and each diagnosis applies only to its documented scope. Reproduce the symptom
+and follow its source evidence before applying a mitigation.
 
-## Production boundary
+A missing RPC result does not prove a missing transaction. A source receipt does
+not prove bridge delivery. Conflicting documentation must be checked against
+version-matched source and observed state. Security findings belong in the
+private reporting process, not in public troubleshooting records.
 
-The v0.4 module structure and the seven reproduced issues received qualified
-protocol/security acceptance under implementation review on 2026-08-21. Issue support
-remains `none`: acceptance makes no writer, route, provider-availability, or
-security-support promise. Security reports follow `SECURITY.md`; they do not
-belong in this public troubleshooting module.
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

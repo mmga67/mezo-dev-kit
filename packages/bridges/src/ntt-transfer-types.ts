@@ -27,8 +27,15 @@ export type NttTransferErrorCode =
   | "ApprovalRequired"
   | "InvalidEvidence"
   | "RecoveryUnavailable";
+/**
+ * Verified endpoint state at its own chain coordinate. Capacities use endpoint token units;
+ * timestamp/rate-limit duration use seconds.
+ */
 export interface NttEndpointSnapshot {
   readonly coordinate: Readonly<ReadCoordinate>;
+  /**
+   * Unix seconds at the snapshot coordinate; not milliseconds or an ambient clock.
+   */
   readonly timestamp: bigint;
   readonly manager: Address;
   readonly transceiver: Address;
@@ -46,11 +53,19 @@ export interface NttEndpointSnapshot {
   readonly specialRelayingEnabled: boolean;
   readonly wormholeEvmChain: boolean;
 }
+/**
+ * One explicit route with separate source/destination read ports. The two chains have
+ * independent coordinates.
+ */
 export interface NttTransferReaderConfig {
   readonly routeId: NttRouteId;
   readonly sourceTransport: NttTransferTransport;
   readonly destinationTransport: NttTransferTransport;
 }
+/**
+ * Explicit sender/recipients, source-token base units, queue preference and per-chain age
+ * bounds. Native fee uses source-native base units.
+ */
 export interface NttTransferQuoteInput {
   readonly account: Address;
   readonly recipient: Address;
@@ -64,6 +79,10 @@ export interface NttTransferQuoteInput {
   readonly destinationBlockNumber?: bigint;
   readonly signal?: AbortSignal;
 }
+/**
+ * Current endpoint/fee/capacity quote. Source, destination and trimmed amounts retain different
+ * decimal scales; a queue prediction is not delivery proof.
+ */
 export interface NttTransferQuote {
   readonly routeId: NttRouteId;
   readonly account: Address;
@@ -90,6 +109,14 @@ export interface NttTransferQuote {
   readonly maxSourceAgeBlocks: bigint;
   readonly maxDestinationAgeBlocks: bigint;
 }
+/**
+ * Signer-free current NTT quote inspection. Runtime/peer/capacity verification is separate from
+ * historical delivery observation.
+ */
 export interface NttTransferReader {
+  /**
+   * Verify both current endpoints and calculate source/destination/trimmed amounts, fee and
+   * queue disposition; no transfer is submitted.
+   */
   quote(input: NttTransferQuoteInput): Promise<Readonly<NttTransferQuote>>;
 }

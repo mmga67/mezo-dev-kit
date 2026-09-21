@@ -56,7 +56,7 @@ Keep brief while active.
 
 ## Decisions
 
-Only task-specific decisions. Promote durable decisions/facts to the appropriate ADR, docs, knowledge, or memory.
+Only task-specific decisions. Put current project rules in the manifest or owning docs, protocol facts in knowledge, and useful retrieval pointers in memory.
 
 - ...
 

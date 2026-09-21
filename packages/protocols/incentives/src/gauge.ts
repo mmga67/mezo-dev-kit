@@ -34,6 +34,10 @@ export type GaugeErrorCode =
   | "ApprovalRequired"
   | "StaleState"
   | "ReconciliationMismatch";
+/**
+ * Typed incentives failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class GaugeError extends Error {
   readonly code: GaugeErrorCode;
   constructor(code: GaugeErrorCode, message: string) {
@@ -42,8 +46,15 @@ export class GaugeError extends Error {
     this.code = code;
   }
 }
+/**
+ * Anchored gauge graph and account state. Stake/custody use staking-token units; earned rewards
+ * use the independently identified reward token.
+ */
 export interface GaugeSnapshot {
   readonly coordinate: Readonly<ReadCoordinate>;
+  /**
+   * Unix seconds at the snapshot coordinate; not milliseconds or an ambient clock.
+   */
   readonly timestamp: bigint;
   readonly role: GaugeRole;
   readonly anchorContractId: ContractId;
@@ -62,13 +73,28 @@ export interface GaugeSnapshot {
   readonly periodFinish: bigint;
   readonly token: Readonly<TokenSnapshot>;
 }
+/**
+ * Signer-free runtime/topology, beneficial stake and reward inspection at one coordinate.
+ */
 export interface GaugeReader {
+  /**
+   * Verify one block's gauge graph, beneficial stake, actual custody and token-specific reward
+   * state for the account.
+   */
   read(input: {
     readonly account: `0x${string}`;
     readonly blockNumber?: bigint;
   }): Promise<Readonly<GaugeSnapshot>>;
 }
 const zero = `0x${"0".repeat(40)}` as const;
+/**
+ * Create a Savings or Vault gauge reader that verifies its discovered staking graph.
+ *
+ * @remarks
+ * Reads anchor runtime, reverse voter/token mappings, balances and rewards to one
+ * block. Beneficial stake differs from raw custody; principal and streamed rewards
+ * retain their token units. Required failures reject rather than returning zero.
+ */
 export function createGaugeReader(config: {
   readonly networkId: Network["id"];
   readonly role: GaugeRole;
@@ -219,6 +245,14 @@ export function createGaugeReader(config: {
     },
   } satisfies GaugeReader);
 }
+/**
+ * Resolve the reader's verified gauge role for Core execution.
+ *
+ * @remarks
+ * Resolution rereads the selected account at the requested coordinate and rejects
+ * unrelated anchors/roles. Compose domain resolvers explicitly when one execution
+ * client serves several protocol owners.
+ */
 export function createGaugeTargetResolver(config: {
   readonly reader: GaugeReader;
   readonly account: `0x${string}`;
@@ -239,12 +273,26 @@ export function createGaugeTargetResolver(config: {
     return snapshot.gauge;
   };
 }
+/**
+ * Positive staking-token base units for stake/unstake, or a distinct streamed-reward claim.
+ */
 export type GaugeAction =
   Readonly<{ kind: "stake" | "unstake"; amount: bigint }> | Readonly<{ kind: "claim-reward" }>;
+/**
+ * Preparation age in blocks and minimum reward-token payout. Stake/unstake require zero minimum
+ * reward; principal does not imply a reward claim.
+ */
 export interface GaugeBounds {
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
   readonly minReward: bigint;
 }
+/**
+ * Verified gauge intent and separate token approval plan. Confirm approval and prepare again
+ * before simulation.
+ */
 export interface PreparedGauge {
   readonly snapshot: Readonly<GaugeSnapshot>;
   readonly action: GaugeAction;
@@ -253,26 +301,55 @@ export interface PreparedGauge {
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual principal movement and streamed reward payout with receipt-block state. Never sum
+ * distinct token units.
+ */
 export interface GaugeOutcome {
   readonly kind: GaugeAction["kind"];
   readonly amount: bigint;
   readonly rewardPaid: bigint;
   readonly rewardToken: `0x${string}`;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
   readonly snapshot: Readonly<GaugeSnapshot>;
 }
+/**
+ * Separate stake/unstake/reward-claim lifecycle. Core handles durable submission; gauge
+ * reconciliation owns actual custody/reward evidence.
+ */
 export interface GaugeWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly action: GaugeAction;
     readonly bounds: GaugeBounds;
   }): Promise<Readonly<PreparedGauge>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedGauge): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedGauge,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify beneficial stake and streamed
+   * rewards. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedGauge,
     record: unknown,
@@ -285,6 +362,15 @@ export interface GaugeWriter {
     }>
   >;
 }
+/**
+ * Create separate gauge stake, unstake and streamed-reward claim operations.
+ *
+ * @remarks
+ * Stake approvals are independent transactions; prepare again after confirmation.
+ * Only this writer's matching preparation/simulation can be submitted. Reconciliation
+ * separates principal movement from rewards. Claim minimums are preflight policy
+ * and post-receipt reporting, because the gauge has no on-chain minimum argument.
+ */
 export function createGaugeWriter(config: {
   readonly reader: GaugeReader;
   readonly execution: ExecutionClient;

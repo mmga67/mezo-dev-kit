@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-third-party-voting-boundary-fixtures",
+  "id": "incentives-third-party-voting-fixtures",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-15T18:27:38.372Z",
+  "reviewAfter": "2026-09-29T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11870214,
+    "inputs": "Synthetic Unix-second coordinates in the second week; no real NFT or account."
+  },
+  "limitations": [
+    "Fixtures prove the selected source guard order only, not owner/approval, gauge validity, escrow state, balances or transaction readiness.",
+    "Shared integer allocation fixtures retain their existing owner; this set targets the newly recorded documentation conflict."
+  ],
+  "epochFixtureReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-formula-fixtures",
+    "recordId": "epoch-zero"
+  },
+  "sourceReference": {
+    "moduleId": "contracts",
+    "resourceId": "third-party-voter-source"
+  },
+  "records": [
+    {
+      "id": "third-party-at-epoch-start",
+      "inputs": {
+        "timestamp": "604800",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "DistributeWindow",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-at-vote-start",
+      "inputs": {
+        "timestamp": "608400",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "DistributeWindow",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-after-vote-start",
+      "inputs": {
+        "timestamp": "608401",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "eligible",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-at-vote-end",
+      "inputs": {
+        "timestamp": "1206000",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "eligible",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-after-vote-end",
+      "inputs": {
+        "timestamp": "1206001",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "NotWhitelistedNFT",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-whitelisted-final-hour",
+      "inputs": {
+        "timestamp": "1206001",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": true
+      },
+      "expected": "eligible",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-whitelisted-first-hour",
+      "inputs": {
+        "timestamp": "608400",
+        "lastVoted": "1",
+        "action": "vote",
+        "whitelisted": true
+      },
+      "expected": "DistributeWindow",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-repeat-vote",
+      "inputs": {
+        "timestamp": "608402",
+        "lastVoted": "608401",
+        "action": "vote",
+        "whitelisted": true
+      },
+      "expected": "AlreadyVotedOrDeposited",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-reset-after-vote",
+      "inputs": {
+        "timestamp": "608402",
+        "lastVoted": "608401",
+        "action": "reset",
+        "whitelisted": false
+      },
+      "expected": "AlreadyVotedOrDeposited",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-reset-final-hour",
+      "inputs": {
+        "timestamp": "1206001",
+        "lastVoted": "1",
+        "action": "reset",
+        "whitelisted": false
+      },
+      "expected": "eligible",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-reset-first-hour",
+      "inputs": {
+        "timestamp": "608400",
+        "lastVoted": "1",
+        "action": "reset",
+        "whitelisted": false
+      },
+      "expected": "DistributeWindow",
+      "formulaId": "third-party-direct-vote-guards"
+    },
+    {
+      "id": "third-party-next-epoch-reenables-vote",
+      "inputs": {
+        "timestamp": "1213201",
+        "lastVoted": "608401",
+        "action": "vote",
+        "whitelisted": false
+      },
+      "expected": "eligible",
+      "formulaId": "third-party-direct-vote-guards"
+    }
+  ],
+  "protocolStatus": "verified-versioned"
+}

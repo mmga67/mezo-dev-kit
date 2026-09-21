@@ -54,6 +54,15 @@ function codeHash(value: unknown): string {
     .digest("hex");
 }
 
+/**
+ * Create a signer-free reader for borrower state and sorted insertion hints.
+ *
+ * @remarks
+ * Reads verify runtime/proxy topology and oracle identity at one anchored block.
+ * Required failures reject instead of producing zero debt. Hints use a supplied
+ * snapshot, explicit seed and bounded trials; they do not establish eligibility.
+ * @param config - Mainnet identity, canonical registry and application RPC transport.
+ */
 export function createBorrowingReader(config: BorrowingReaderConfig): Readonly<BorrowingReader> {
   if (config.networkId !== "mezo-mainnet")
     throw new BorrowingError("UnsupportedDeployment", "initial borrowing deployment is mainnet");

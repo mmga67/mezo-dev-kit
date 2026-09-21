@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-third-party-observation",
+  "id": "incentives-third-party-mainnet",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-15T18:58:39.000Z",
+  "reviewAfter": "2026-09-29T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11870214
+  },
+  "evidenceStatus": "verified-point-in-time",
+  "limitations": [
+    "Decoded gauge and destination captures are retained faithfully; the root voter and gauge/beneficiary bytecode captures retain raw RPC values. Every chain-state claim is bounded to the recorded block.",
+    "The remote gauge explorer reported is_verified=false while returning a NonStakingGauge source/ABI response. Do not promote these responses into independently verified deployments.",
+    "No remote registry identity, allocator source, bridge receipt, Merkl campaign configuration or LP claim was verified. No final payout or complete epoch history is established.",
+    "The source and ABI match the existing reproduction; no new compiler build or historical upgrade scan was performed."
+  ],
+  "networkSnapshot": {
+    "networkId": "mezo-mainnet",
+    "chainId": "31612",
+    "blockNumber": 11870214,
+    "blockHash": "0xc64e0565d64b6b39b340c2d2858650b82631e4b1ef182103793e75c787ffdb66",
+    "blockTimestamp": "2026-09-15T18:08:39.000Z",
+    "observedAt": "2026-09-15T18:08:49.201Z"
+  },
+  "voter": {
+    "deploymentReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-deployments",
+      "recordId": "incentives.third-party-voter@mezo-mainnet"
+    },
+    "sourceReference": {
+      "moduleId": "contracts",
+      "resourceId": "third-party-voter-source"
+    },
+    "address": "0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb",
+    "implementation": "0x8d696ae943b97ff36449014e4400a9560d1664dc"
+  },
+  "state": {
+    "ve": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+    "rewardToken": "0x7b7c000000000000000000000000000000000001",
+    "splitter": "0xe9e697d49d47c7042e768177f42d5789666d99fa",
+    "governor": "0x98d8899c3030741925be630c710a98b57f397c7a",
+    "gaugeCount": 7,
+    "totalWeightRaw": "24694797496533581372105716",
+    "maxVotingNum": "30"
+  },
+  "gauges": [
+    {
+      "id": "gauge-0",
+      "index": 0,
+      "address": "0x99d72df93df5a5f352bd89012e93a91d0fcf8a35",
+      "alive": false,
+      "weightRaw": "0",
+      "metadata": null,
+      "beneficiary": null,
+      "metadataCoverage": "not queried for retired gauge",
+      "explorerVerified": null,
+      "beneficiaryCode": {
+        "status": "not-observed",
+        "reason": "outside bounded beneficiary code capture"
+      }
+    },
+    {
+      "id": "gauge-1",
+      "index": 1,
+      "address": "0xbc4156e8bd22efa106498c1dd7a4d5b932fd3219",
+      "alive": false,
+      "weightRaw": "0",
+      "metadata": null,
+      "beneficiary": null,
+      "metadataCoverage": "not queried for retired gauge",
+      "explorerVerified": null,
+      "beneficiaryCode": {
+        "status": "not-observed",
+        "reason": "outside bounded beneficiary code capture"
+      }
+    },
+    {
+      "id": "gauge-2",
+      "index": 2,
+      "address": "0x309edc04e8adcb10c6db7d2c28149d89942d4930",
+      "alive": true,
+      "weightRaw": "0",
+      "metadata": "snf-community",
+      "beneficiary": "0xbe6fdc9da59cadc157f959b5b28a7e3ea74bdcd4",
+      "metadataCoverage": "current beneficiary maps back to this gauge through thirdPartyToGauge",
+      "explorerVerified": true,
+      "beneficiaryCode": {
+        "status": "not-observed",
+        "reason": "outside bounded beneficiary code capture"
+      },
+      "explorerFullyVerified": false,
+      "explorerPartiallyVerified": true,
+      "verifiedTwin": null
+    },
+    {
+      "id": "gauge-3",
+      "index": 3,
+      "address": "0xc7e81dd77a4624f0dd14a8bb97bc721b0cee6e26",
+      "alive": true,
+      "weightRaw": "8550657546210684821792592",
+      "metadata": "remote-gauge-aerodrome-usdc-musd-cl10-ff56d037",
+      "beneficiary": "0x31c72c4e04ecdfe4073e06b553702c1651388eb3",
+      "metadataCoverage": "current beneficiary maps back to this gauge through thirdPartyToGauge",
+      "explorerVerified": false,
+      "beneficiaryCode": {
+        "status": "observed",
+        "bytes": 5474,
+        "sha256": "fb430d5e4f61ec539374d4d33d15c5c72d93314908a077b61e6156903516a9e3"
+      },
+      "explorerFullyVerified": false,
+      "explorerPartiallyVerified": false,
+      "verifiedTwin": "0x309EDC04E8AdcB10C6db7d2C28149D89942D4930"
+    },
+    {
+      "id": "gauge-4",
+      "index": 4,
+      "address": "0x4440a9b2954cb98416c0122e2ea996c46555f4b6",
+      "alive": true,
+      "weightRaw": "2702232064762403279065698",
+      "metadata": "remote-gauge-aerodrome-mezo-musd-cl200-ef458a32",
+      "beneficiary": "0xf07033c58ff054f97d7f9ff8301fad00a2fa32d2",
+      "metadataCoverage": "current beneficiary maps back to this gauge through thirdPartyToGauge",
+      "explorerVerified": false,
+      "beneficiaryCode": {
+        "status": "observed",
+        "bytes": 5474,
+        "sha256": "11a8269ba5123734befb41683bfc0d7eae02f84c0eacdeb27172908da5e8440a"
+      },
+      "explorerFullyVerified": false,
+      "explorerPartiallyVerified": false,
+      "verifiedTwin": "0x309EDC04E8AdcB10C6db7d2C28149D89942D4930"
+    },
+    {
+      "id": "gauge-5",
+      "index": 5,
+      "address": "0x2ced96e759ab481210d41c567eee5c42edb59a1d",
+      "alive": true,
+      "weightRaw": "6713395892803277378964220",
+      "metadata": "remote-gauge-uniswap-v4-usdc-musd-fee100-a9bf5691",
+      "beneficiary": "0x6b57b0ef5594a5820fd473353180442764d8601d",
+      "metadataCoverage": "current beneficiary maps back to this gauge through thirdPartyToGauge",
+      "explorerVerified": false,
+      "beneficiaryCode": {
+        "status": "observed",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "explorerFullyVerified": false,
+      "explorerPartiallyVerified": false,
+      "verifiedTwin": "0x309EDC04E8AdcB10C6db7d2C28149D89942D4930"
+    },
+    {
+      "id": "gauge-6",
+      "index": 6,
+      "address": "0xc39a294024dca62f579c49d7c83a6c831d4976d0",
+      "alive": true,
+      "weightRaw": "6728511992757215892283206",
+      "metadata": "remote-gauge-curve-musd-2pool-b5571e76",
+      "beneficiary": "0x125bc117ecb87a81f3646e79dc2fc218def0debe",
+      "metadataCoverage": "current beneficiary maps back to this gauge through thirdPartyToGauge",
+      "explorerVerified": false,
+      "beneficiaryCode": {
+        "status": "observed",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "explorerFullyVerified": false,
+      "explorerPartiallyVerified": false,
+      "verifiedTwin": "0x309EDC04E8AdcB10C6db7d2C28149D89942D4930"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "third-party-rpc-capture-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-rpc-capture-2026-09-15"
+      },
+      "sha256": "edda88609f3dfdee6c10d33cde173f099111d6b44a75ddba8db18ad2e926e84b"
+    },
+    {
+      "id": "third-party-gauge-capture-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-gauge-capture-2026-09-15"
+      },
+      "sha256": "77d59c1aa28f6e10b94c3faf69d4cb724c2ea799090f94eae94e9bfea2a745df"
+    },
+    {
+      "id": "third-party-destination-capture-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-destination-capture-2026-09-15"
+      },
+      "sha256": "1c02132df719daa9cdaaee3d87b56eead78b08ec99c5812226badee4ed046ea1"
+    },
+    {
+      "id": "third-party-beneficiary-code-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-beneficiary-code-2026-09-15"
+      },
+      "sha256": "b286c4ef6db6f163ed7a12f2a8743492be020d72fefb00b4bce54106841df104"
+    },
+    {
+      "id": "third-party-official-docs-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-official-docs-2026-09-15"
+      },
+      "sha256": "b5f5b6a8a974e95739d36988012a06b02aa553b2cc1d7ad12c8a33636c4942a7"
+    },
+    {
+      "id": "third-party-gauge-explorer-2026-09-15",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "third-party-gauge-explorer-2026-09-15"
+      },
+      "sha256": "e697975e565a90f88be642011943e74dd7a1056fd823cca348625ac8c43c4277"
+    },
+    {
+      "id": "third-party-gauge-code-2026-09-15",
+      "reference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-gauge-code-2026-09-15"
+      },
+      "sha256": "137c2b66b7f080032efd83d6c42e1261a6c26ae5013797908cecc06cc9ddd758"
+    }
+  ],
+  "methods": [
+    "eth_chainId",
+    "eth_getBlockByNumber",
+    "eth_getStorageAt (ERC-1967 implementation)",
+    "eth_getCode",
+    "eth_call: ve, rewardToken, splitter, governor, length, totalWeight, maxVotingNum, gauges, isAlive, weights, rewardsBeneficiary, thirdPartyToGauge",
+    "official explorer smart-contract source/ABI",
+    "offline source/ABI digest comparison with accepted reproduction"
+  ],
+  "providerCoverage": [
+    {
+      "endpoint": "https://mezo-mainnet.boar.network",
+      "outcome": "root voter snapshot completed; initial gauge follow-up rate-limited",
+      "limitation": "IP rate limit exceeded is a provider failure, not evidence of missing gauges."
+    },
+    {
+      "endpoint": "https://mainnet.mezo.public.validationcloud.io",
+      "outcome": "chain identity and the same block hash checked; all seven gauges and five beneficiary mappings read",
+      "limitation": "Does not establish provider uptime or historical completeness."
+    }
+  ],
+  "sourceFailures": [
+    {
+      "address": "0x31c72c4e04ecdfe4073e06b553702c1651388eb3",
+      "endpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/{address}",
+      "httpStatus": 404,
+      "result": "source unavailable despite nonempty bytecode"
+    },
+    {
+      "address": "0x6b57b0ef5594a5820fd473353180442764d8601d",
+      "endpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/{address}",
+      "httpStatus": 404,
+      "result": "source unavailable; eth_getCode returned empty bytes at this block"
+    }
+  ],
+  "settlement": {
+    "status": "unverified",
+    "voterDistributionReceipt": null,
+    "remoteDepositReceipt": null,
+    "lpClaimReceipt": null,
+    "reason": "Research established topology and allocation state only; no complete emission-to-LP claim was reconciled."
+  },
+  "gaugeSourceComparison": {
+    "status": "matching-runtime-and-returned-source-template",
+    "observedAt": "2026-09-15T18:40:12.085Z",
+    "limitation": "All five active runtime byte strings match each other and the returned explorer runtime. The reference gauge is partially verified; remote gauges are unverified entries pointing to that twin. No independent compiler reproduction or new registry acceptance is established."
+  }
+}

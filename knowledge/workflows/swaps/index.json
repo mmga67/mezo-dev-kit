@@ -133,17 +133,17 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module workflows/swaps"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module workflows/swaps"
     },
     {
       "id": "swap-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-swap-knowledge.ts"
+      "command": "node scripts/checks/validate-swap-knowledge.ts"
     },
     {
       "id": "swap-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-swap-reference.ts --check"
+      "command": "node scripts/generate/generate-swap-reference.ts --check"
     }
   ],
   "extensions": {

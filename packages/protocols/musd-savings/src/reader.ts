@@ -35,6 +35,15 @@ import type {
   SavingsWallet,
 } from "./types.ts";
 
+/**
+ * Create a signer-free Savings reader with explicit transport and ABI codec ports.
+ *
+ * @remarks
+ * Reads reconcile the Savings, converter and gauge graph at one block. Required
+ * identity/state failures reject; unavailable optional results retain their status.
+ * Wallet receipts, gauge custody and indexed MUSD yield remain separate quantities.
+ * Use createSavingsRpcReader when supplying a Core RPC transport.
+ */
 export function createSavingsReader(config: SavingsReaderConfig): Readonly<SavingsReader> {
   if (
     !config ||

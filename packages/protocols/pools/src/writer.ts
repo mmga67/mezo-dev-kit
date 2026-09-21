@@ -21,6 +21,10 @@ import type {
   BasicPoolSnapshot,
 } from "./types.ts";
 
+/**
+ * Verified add/remove intent with forecast, exact router call and independent per-token
+ * approvals.
+ */
 export interface PreparedBasicLiquidity {
   readonly snapshot: Readonly<BasicPoolSnapshot>;
   readonly action: BasicLiquidityAction;
@@ -33,6 +37,10 @@ export interface PreparedBasicLiquidity {
   }>[];
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual token/LP movement and receipt-block reserves/supply; conservative reconciliation can
+ * reject unrelated same-block activity.
+ */
 export interface BasicLiquidityOutcome {
   readonly kind: "add" | "remove";
   readonly amount0: bigint;
@@ -40,7 +48,15 @@ export interface BasicLiquidityOutcome {
   readonly liquidity: bigint;
   readonly snapshot: Readonly<BasicPoolSnapshot>;
 }
+/**
+ * Existing-pool add/remove lifecycle with independent approvals and exact receipt/accounting
+ * reconciliation.
+ */
 export interface BasicLiquidityWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly key: BasicPoolKey;
@@ -48,11 +64,25 @@ export interface BasicLiquidityWriter {
     readonly action: BasicLiquidityAction;
     readonly bounds: BasicLiquidityBounds;
   }): Promise<Readonly<PreparedBasicLiquidity>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedBasicLiquidity): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedBasicLiquidity,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify pool reserves/supply and
+   * token/LP movements. Required evidence mismatches can reject even when the EVM receipt
+   * succeeded.
+   */
   reconcile(
     prepared: PreparedBasicLiquidity,
     record: unknown,

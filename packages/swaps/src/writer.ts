@@ -15,17 +15,35 @@ import type { ApprovalPlan } from "@mezo-dev-kit/tokens";
 import { basicRouteArguments, swapRequire } from "./reader.ts";
 import type { BasicSwapQuote, BasicSwapQuoteInput, BasicSwapReader } from "./reader.ts";
 
+/**
+ * Output-token minimum, absolute deadline and freshness policy used by the exact-input router
+ * lifecycle.
+ */
 export interface BasicSwapBounds {
   readonly amountOutMinimum: bigint;
+  /**
+   * Absolute Unix seconds, not a duration.
+   */
   readonly deadline: bigint;
+  /**
+   * Maximum allowed deadline distance from the observed timestamp, in seconds.
+   */
   readonly maxDeadlineSeconds: bigint;
 }
+/**
+ * Verified quote, exact router call and independent input-token approval plan owned by its
+ * writer.
+ */
 export interface PreparedBasicSwap {
   readonly quote: Readonly<BasicSwapQuote>;
   readonly bounds: BasicSwapBounds;
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual route/token settlement and receipt-block state; each hop's fee keeps its input-token
+ * units.
+ */
 export interface BasicSwapOutcome {
   readonly amountIn: bigint;
   readonly amountOut: bigint;
@@ -33,17 +51,38 @@ export interface BasicSwapOutcome {
   readonly fees: readonly bigint[];
   readonly coordinate: BasicSwapQuote["coordinate"];
 }
+/**
+ * Explicit exact-input basic swap lifecycle; approvals and any subsequent CL action are
+ * separate transactions.
+ */
 export interface BasicSwapWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly quote: BasicSwapQuoteInput;
     readonly bounds: BasicSwapBounds;
   }): Promise<Readonly<PreparedBasicSwap>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedBasicSwap): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedBasicSwap,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify every hop and wallet token
+   * settlement. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedBasicSwap,
     record: unknown,
@@ -109,6 +148,15 @@ function check(quote: BasicSwapQuote, bounds: BasicSwapBounds) {
     "insufficient wallet balance or invalid recipient",
   );
 }
+/**
+ * Create exact-input basic-router swaps with explicit approval and output bounds.
+ *
+ * @remarks
+ * Preparation verifies the route and returns a separate input-token approval plan.
+ * After approvals settle, prepare again. Matching owned simulation is required for
+ * submit; output is decoded in both initial and final simulation. Reconciliation
+ * checks every hop's events, fees, reserves and wallet settlement.
+ */
 export function createBasicSwapWriter(config: {
   readonly reader: BasicSwapReader;
   readonly pools: BasicPoolReader;

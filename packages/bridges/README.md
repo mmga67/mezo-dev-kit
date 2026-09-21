@@ -1,41 +1,57 @@
-# Bridges
+# Bridge transfers and delivery
 
-Private MUSD NTT preparation, manual recovery and bounded observation for the
-four recorded directions, plus observation of two evidenced Native Bridge directions.
-The [SDK reference](REFERENCE.md) owns the public
-contract, injected transports, limits and examples.
+`@mezo-dev-kit/bridges` prepares private MUSD NTT and Native Bridge transfers, supports manual NTT recovery, and checks bounded delivery evidence.
 
-`createNttDeliveryObserver` joins one source message to destination redemption
-evidence by its NTT digest. It validates receipt/log identity and registered
-emitters, checks both chain identities, applies explicit confirmation policies,
-and rechecks canonical block anchors. Applications supply up to 32 destination
-transaction candidates; the observer does not discover exhaustive history.
+## Start here
 
-EVM, Chains, Contracts and Core retain value, identity, ABI and transport
-ownership. The [bridge module](../../knowledge/workflows/bridges/index.json)
-owns route/message semantics; its generated profile supplies runtime references
-without runtime knowledge-file access.
+Build the workspace with the [SDK setup guide](../../docs/guides/SDK_DEVELOPMENT.md), then follow [the bridge walkthrough](../../examples/bridge-musd/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-The NTT observer supplies historical receipt evidence. The separate
-`createNttTransferReader` checks current runtime, peers, token representations,
-capacity and fees. `createNttTransferWriter` prepares exact ordinary source calls
-and preserves separate approval and source outcomes. `createNttRecoveryWriter`
-handles explicitly selected queue and attestation operations. Applications own
-wallets, durable submission storage and recovery decisions. No automatic retry
-or delivery service is selected.
+## Choose a workflow
 
-`createNativeDeliveryObserver` separately validates the included direct source
-call and joins the Native sequence/recipient/token/amount tuple. Inbound USDC
-requires the system payload, stable mapping, exact sequence and recipient balance
-transition, and consensus-block coverage excluding other transactions. Outbound
-BTC requires attestation, confirmation and fee/net token settlement. Historical
-Contracts evidence bounds both directions to their explicitly qualified
-observation coordinates; it does not backdate current ABI or writer support.
+| Need                                                  | API                                                        |
+| ----------------------------------------------------- | ---------------------------------------------------------- |
+| Inspect current NTT configuration, capacity, and fees | `createNttTransferReader`                                  |
+| Prepare and execute an ordinary source transfer       | `createNttTransferWriter`                                  |
+| Recover an existing queue or attestation operation    | `createNttRecoveryWriter`                                  |
+| Join source and destination NTT evidence              | `createNttDeliveryObserver`                                |
+| Verify a recorded Native Bridge delivery              | `createNativeDeliveryObserver`                             |
+| Prepare USDC into Mezo or BTC out to Ethereum         | `createNativeTransferReader`, `createNativeTransferWriter` |
+| Check current Native delivery or failed payout        | `createNativeCurrentDeliveryObserver`                      |
 
-Canonical route/writer support remains absent; private source
-implementation does not satisfy qualified release review.
+Applications provide both chains' transports, confirmation policies, and
+candidate destination receipts. Writers additionally require explicit wallets,
+consent, and durable submission storage. The [API reference](REFERENCE.md)
+defines route coverage, bounds, and recovery requirements.
 
-Run `pnpm --filter @mezo-dev-kit/bridges check`. Root `pnpm check` also verifies
-the canonical projection, built imports, reference examples and clean workspace.
-Synthetic tests establish failure/confirmation/reorg behavior; historical receipt
-verification has a separate scope and does not qualify current bridge writers.
+## Delivery and scope
+
+A source receipt or attestation alone is not delivery. NTT joins the same message
+digest across chains; Native joins its direction-specific tuple and recipient
+settlement evidence. The historical Native observer retains its pinned coordinates;
+the current observer checks current deployment and token runtimes. A confirmed
+withdrawal with a failed recipient payout reports `governance-recovery-required`.
+It never causes an automatic resend.
+
+Native source preparation covers Ethereum USDC to Mezo mUSDC and Mezo BTC to
+Ethereum tBTC. Approval is separate, including the BTC precompile's native bank
+authorization. Destination fees are estimates: the source call cannot enforce
+the fee that applies later. See the [Native example](../../examples/bridge-musd/native.ts).
+
+Delivery observation does not establish current fees or transfer readiness.
+Recovery preserves the existing sequence/digest and custody; it does not create
+a new source transfer to compensate for missing destination evidence.
+
+This is a private implementation. Canonical route/writer support remains absent
+pending qualified release review. No relayer, automatic retry, exhaustive history,
+or delivery service is provided. See [bridge knowledge](../../knowledge/workflows/bridges/README.md)
+for the provider models and evidence.
+
+## Development
+
+From the repository root:
+
+```sh
+pnpm --filter @mezo-dev-kit/bridges check
+```
+
+See the [contributor guide](../../CONTRIBUTING.md) for workspace setup and review.

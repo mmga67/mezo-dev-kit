@@ -101,7 +101,7 @@ by location or filename.
   release actions require explicit task scope and human authorization.
 
 The transaction semantics are accepted in
-[ADR-0003](./docs/decisions/0003-transaction-lifecycle.md); public
+[Shared client and transaction lifecycle](docs/manifest#shared-client-and-transaction-lifecycle); public
 implementation and writer release remain subject to its implementation and
 protocol-specific Level 3 gates.
 

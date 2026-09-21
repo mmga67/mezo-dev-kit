@@ -35,6 +35,16 @@ import type {
   LendingSnapshot,
 } from "./types.ts";
 
+/**
+ * Create a BTC/mUSDC market reader using explicit transport and codec ports.
+ *
+ * @remarks
+ * Reads verify market/runtime/oracle identity at one block and retain stored versus
+ * accrued totals. Optional failures remain unavailable results; they are not zero
+ * positions or prices. The reader obtains timestamped protocol-oracle state for
+ * nonzero-debt health and applies the requested maximum price age.
+ * Use createLendingRpcReader for the existing Core RPC adapter.
+ */
 export function createLendingReader(config: LendingReaderConfig): Readonly<LendingReader> {
   if (
     !config?.codec ||

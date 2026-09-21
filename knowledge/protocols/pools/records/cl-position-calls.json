@@ -5,18 +5,16 @@
   "owner": "protocols/pools",
   "status": "verified",
   "supportStatus": "none",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-08T15:14:00.227Z",
   "reviewAfter": "2026-09-23T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet"],
     "evidenceBlockNumber": 11333787,
     "verification": "Source semantics checked against retained bundles matching the accepted pool source-reproduction review source digests; no fresh chain observation."
   },
   "limitations": [
-    "Additional call semantics await CL explanation qualified Level 3 review. Existing accepted pool records are unchanged.",
+    "The maintainer accepted qualified Level 3 review of these source-scoped mint call semantics on 2026-09-15. Existing pool evidence and writer-support boundaries are unchanged.",
     "This explanatory model enables no writer. A current operation requires the preconditions and simulation owned by pools-operation-requirements.",
     "Dynamic pool/gauge identities, prices, liquidity, balances, approvals and rewards are volatile."
   ],

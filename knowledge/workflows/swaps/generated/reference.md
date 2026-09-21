@@ -10,7 +10,7 @@
 - Evidence block: Mezo Mainnet `11376104` (`0x358c55c8879f9a6711408df6e4dbc75e4b82d3e7f2f0cbab47fd73bfeaf32bc3`)
 - Public readers: none
 - Writers: none
-- Input digest: `520d325a28f15d1f4347e01bfc510b1dfeb254a92a6e5c89b49cca2544d7704f`
+- Input digest: `c635ffa7b3b40405df0535029026a510b01a5ec83d3203c7d681e91d64216f57`
 
 ## Deployed providers
 

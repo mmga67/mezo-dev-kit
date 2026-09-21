@@ -1,41 +1,47 @@
-# Incentive operations
+# Locks, voting, and gauge rewards
 
-`@mezo-dev-kit/incentives` implements Savings and USDC Lending Vault gauge
-reads, staking, unstaking and streamed reward claims. It is a private source
-candidate under [ADR-0016](../../../docs/decisions/0016-protocol-writers-and-discovered-targets.md);
-canonical operation support remains proposed/none pending qualified review.
+`@mezo-dev-kit/incentives` reads locks and gauges, calculates voting power and rewards, and provides private lock, voting, staking, and claim workflows.
 
-The [SDK reference](REFERENCE.md) documents the complete public surface.
-Gauges are discovered through their registered Savings or wrapper root, matched
-against exact runtime templates, and checked against the current PoolsVoter.
-They are not invented static registry identities. Rewards, voter revenue and
-the user's principal remain separate. A dead gauge blocks new stake but retains
-the direct unstake path when simulation permits it.
+## Start here
 
-The package also provides lock/boost/epoch/allocation calculations, bounded
-veBTC/veMEZO readers, ownership pages and six ordinary self-owned lock operations
-under [ADR-0021](../../../docs/decisions/0021-incentives-locks-and-voting.md).
-Create, increase, extend, make permanent, return to timed and withdraw each use
-explicit preparation, approval where required, exact simulation and reconciliation.
-The initial NFT writer excludes grants, managed custody, delegation, votes and
-associated boost gauges. Pool, validator and boost voting now have bounded readers and vote/reset
-writers. Fee/bribe claims verify reward children, bounded checkpoint history,
-owner payouts and custody deltas. Ordinary veMEZO rebase claims have a bounded
-reader, exact weekly calculation and claim writer that distinguishes lock
-deposits from expired-lock liquid payouts. It preserves voted NFT state and
-requires current minter upkeep. All remain private candidates; managed custody
-and wider permissioned operations retain separate boundaries.
-Node is the tested runtime. Local fork integrations in
-[Savings](../musd-savings/test/fork.ts) and [Vault](../usdc-lending-vault/test/fork.ts)
-use explicit native reward-token fixtures because Anvil cannot run mezod's
-native engine; gauge and protocol bytecode remain unchanged.
+Build the workspace with the [SDK setup guide](../../../docs/guides/SDK_DEVELOPMENT.md), then follow [the locks and voting walkthrough](../../../examples/lock-and-vote/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-CL gauge operations use an injected verified Pools position reader. Incentives
-adds per-NFT reward growth, stored rewards, stake-set ownership and exact NFT
-approval, stake, claim and unstake operations. Deposit and withdrawal collect
-ordinary fees; withdrawal also settles emissions. The writer separates fee
-accounting caps from actual transfers and MEZO rewards from native BTC gas.
-Direct claims select `getReward(uint256)`; the address overload is voter-only.
-The adapter introduces no Pools package dependency in Incentives. Mainnet
-MUSD/mUSDC NFTs are the initial private writer profile; qualified review and
-native engine qualification remain outstanding.
+## Choose a workflow
+
+| Area                          | Available work                                                                                                                    |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Savings and vault gauges      | Read stake and rewards; stake, unstake, and claim streamed rewards                                                                |
+| veBTC and veMEZO locks        | Read ownership and lock state; create, increase, extend, make permanent, return to timed, or withdraw an ordinary self-owned lock |
+| Voting and rewards            | Bounded pool, validator, and boost voting; vote/reset, fee/bribe claims, and ordinary veMEZO rebase claims                        |
+| Concentrated-liquidity gauges | Read per-NFT rewards and stake ownership; approve, stake, claim, and unstake within the verified position profile                 |
+
+The [API reference](REFERENCE.md) separates each operation's requirements.
+CL gauge workflows use an injected verified Pools position reader; see the
+[liquidity-position walkthrough](../../../examples/manage-cl-position/README.md).
+Applications supply Core execution, consent, RPC policy, and durable storage.
+
+## Accounting and scope
+
+Keep principal, voter-directed revenue, ordinary pool fees, and gauge emissions
+separate. Gauge custody and a user's beneficial stake are different. Withdrawals
+may also settle rewards; reconcile actual transfers rather than accounting caps.
+
+These are private Node implementations with operation support still proposed
+or absent pending qualified review. Ordinary lock operations exclude managed,
+granted, delegated, and otherwise restricted positions; voting and claims have
+their own checks. Local native-token fixtures do not qualify Mezo's native engine.
+See [incentives knowledge](../../../knowledge/protocols/incentives/README.md)
+for the underlying lock, vote, and reward models.
+The [MEZO Gauge reference](../../../knowledge/protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives)
+also covers third-party voting and remote incentives; this package's voting
+workflows currently cover the three domains listed above.
+
+## Development
+
+From the repository root:
+
+```sh
+pnpm --filter @mezo-dev-kit/incentives check
+```
+
+See the [contributor guide](../../../CONTRIBUTING.md) for workspace setup and review.

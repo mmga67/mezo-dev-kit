@@ -11,6 +11,9 @@ importers:
       '@eslint/js':
         specifier: 10.0.1
         version: 10.0.1(eslint@10.8.1)
+      '@mezo-dev-kit/cli':
+        specifier: workspace:*
+        version: link:packages/cli
       '@types/node':
         specifier: 24.13.3
         version: 24.13.3
@@ -30,42 +33,63 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
 
-  examples/foundational-readonly:
+  examples:
     dependencies:
+      '@mezo-dev-kit/bridges':
+        specifier: workspace:*
+        version: link:../packages/bridges
       '@mezo-dev-kit/chains':
         specifier: workspace:*
-        version: link:../../packages/chains
+        version: link:../packages/chains
+      '@mezo-dev-kit/cli':
+        specifier: workspace:*
+        version: link:../packages/cli
       '@mezo-dev-kit/contracts':
         specifier: workspace:*
-        version: link:../../packages/contracts
+        version: link:../packages/contracts
       '@mezo-dev-kit/core':
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../packages/core
       '@mezo-dev-kit/evm':
         specifier: workspace:*
-        version: link:../../packages/evm
+        version: link:../packages/evm
+      '@mezo-dev-kit/incentives':
+        specifier: workspace:*
+        version: link:../packages/protocols/incentives
+      '@mezo-dev-kit/musd-borrowing':
+        specifier: workspace:*
+        version: link:../packages/protocols/musd-borrowing
+      '@mezo-dev-kit/musd-institutional-debt':
+        specifier: workspace:*
+        version: link:../packages/protocols/musd-institutional-debt
+      '@mezo-dev-kit/musd-redemptions':
+        specifier: workspace:*
+        version: link:../packages/protocols/musd-redemptions
+      '@mezo-dev-kit/musd-savings':
+        specifier: workspace:*
+        version: link:../packages/protocols/musd-savings
+      '@mezo-dev-kit/musdc-lending':
+        specifier: workspace:*
+        version: link:../packages/protocols/musdc-lending
+      '@mezo-dev-kit/pools':
+        specifier: workspace:*
+        version: link:../packages/protocols/pools
+      '@mezo-dev-kit/prices':
+        specifier: workspace:*
+        version: link:../packages/prices
+      '@mezo-dev-kit/swaps':
+        specifier: workspace:*
+        version: link:../packages/swaps
+      '@mezo-dev-kit/tokens':
+        specifier: workspace:*
+        version: link:../packages/tokens
+      '@mezo-dev-kit/usdc-lending-vault':
+        specifier: workspace:*
+        version: link:../packages/protocols/usdc-lending-vault
     devDependencies:
       vitest:
         specifier: 4.1.11
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
-
-  examples/musd-savings-readonly:
-    dependencies:
-      '@mezo-dev-kit/musd-savings':
-        specifier: workspace:*
-        version: link:../../packages/protocols/musd-savings
-
-  examples/musdc-lending-readonly:
-    dependencies:
-      '@mezo-dev-kit/musdc-lending':
-        specifier: workspace:*
-        version: link:../../packages/protocols/musdc-lending
-
-  examples/usdc-lending-vault-readonly:
-    dependencies:
-      '@mezo-dev-kit/usdc-lending-vault':
-        specifier: workspace:*
-        version: link:../../packages/protocols/usdc-lending-vault
 
   packages/bridges:
     dependencies:
@@ -87,6 +111,12 @@ importers:
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
 
   packages/chains:
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/cli:
     devDependencies:
       vitest:
         specifier: 4.1.11

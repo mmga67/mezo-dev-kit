@@ -1,9 +1,8 @@
 # Bridge SDK reference
 
 Import from `@mezo-dev-kit/bridges`. The package remains private source.
-[ADR-0023](../../docs/decisions/0023-ntt-receipt-observation.md) owns its boundary.
-Private NTT execution additionally follows
-[ADR-0025](../../docs/decisions/0025-ntt-transfer-recovery.md).
+The [bridge outcome baseline](../../docs/manifest#events-and-bridge-outcomes)
+defines the observation, private execution, and recovery boundaries.
 
 ## Factory and inputs
 
@@ -412,4 +411,121 @@ applications must redact provider details before displaying or storing them.
 The indexed qualification remains proposed and pending qualified review. Retained
 RPC observations, deterministic component tests and any local fork runs have
 separate scope. They do not publish a package, promise relaying or authorize live
-value-bearing transactions. Native Bridge source writers remain outside this API.
+value-bearing transactions. Native source preparation uses the separate API below.
+
+## Private Native source preparation
+
+`createNativeTransferReader(config: NativeTransferReaderConfig)` and
+`createNativeTransferWriter(config)` cover exactly:
+
+- `mezo-native-usdc-ethereum-to-mezo`: Ethereum USDC to mapped Mezo mUSDC.
+- `mezo-native-btc-mezo-to-ethereum`: Mezo native BTC to Ethereum tBTC.
+
+The factories return `NativeTransferReader` and `NativeTransferWriter`, respectively.
+
+Supply independent `sourceTransport` and `destinationTransport`, plus
+`getMezoClientVersion: () => Promise<unknown>` calling `web3_clientVersion` on the
+same Mezo provider. `NativeTransferTransport` selects Core's chain, head, block,
+code, storage, read and native-balance methods. The recorded client version is
+checked before and after a quote. This is a provider assertion, not cryptographic
+proof of the native engine. A changed version or runtime requires reassessment.
+
+`reader.quote(input: NativeTransferQuoteInput)` takes `account`, `recipient`,
+positive `amount` in source-token base units, `maxEstimatedDestinationFee` in
+destination-token units, `sourceGasReserve` in source-native units, independent
+`maxSourceAgeBlocks` / `maxDestinationAgeBlocks`, optional explicit
+`sourceBlockNumber` / `destinationBlockNumber`, and optional `signal`.
+Both routes preserve token precision. Gas reserve is an application-selected
+balance floor; the signer still owns actual gas and fee policy.
+
+The reader verifies both bridge and token runtimes, including token proxy slots,
+decimals, mappings and balances/allowance. Inbound additionally checks enabled
+ERC20 minimum, mapped-token mint authority and blocked module recipients.
+Outbound checks enabled destination chain, minimum, available outflow capacity,
+validator threshold and current destination custody. Zero capacity blocks a
+transfer. All coordinates are checked again before returning.
+
+`NativeTransferQuote` includes anchored `source` / `destination` snapshots
+(`NativeEndpointSnapshot`: coordinate, contract ID, bridge, token and decimals),
+`sourceMinimum`, nullable `sourceCapacity` / `capacityResetBlock`, token/native
+balances, allowance, and `estimatedDestinationFee` / `estimatedDestinationAmount`.
+The reader rejects violated amount, balance, capacity, reserve or estimate bounds.
+Insufficient allowance is returned so the caller can prepare a separate approval.
+Bridge-contract recipients are outside this bounded settlement interface.
+
+The destination fee uses current percentage, recipient exemption, flat fee and
+collector settings. A zero collector disables fees; percentage exemption leaves
+the flat fee in place. Integer rounding and uint256 overflow match the pinned
+source. **The outbound source method has no maximum-fee or minimum-received
+argument.** `maxEstimatedDestinationFee` is checked during preparation,
+simulation and submission; it cannot cap a fee changed before destination payout.
+The observer reports actual settlement independently.
+
+The writer takes the reader, Core `execution`, both transports and the same
+`getMezoClientVersion` callback:
+
+- `prepare({ operationId, quote })` returns `PreparedNativeTransfer`: a quote,
+  exact transaction and separate `approval` requirement (token, spender, amount,
+  current allowance and required flag). Both source calls have `value: 0n`.
+- `simulate(prepared)` requires this writer's preparation and sufficient
+  allowance, checks the exact return (`true` for BTC `bridgeOut`, empty for
+  `bridgeERC20`) and revalidates both chains.
+- `submit(prepared, simulated)` accepts only the matching writer-owned pair,
+  revalidates the original anchors and current limits, and submits through Core.
+  Persist Core's record. An uncertain submission must retain its reservation;
+  missing delivery never authorizes another source transfer.
+- `reconcile(prepared, record)` binds the confirmed source call to the original
+  intent and full bridge event tuple. USDC requires actual custody transfer;
+  BTC authorization consumption/burn follows the qualified native engine and
+  does not fabricate an ERC20 burn log. Its `NativeSourceOutcome` is `source-confirmed` with
+  `NativeTransferTuple`, **not** destination completion.
+
+Compose Tokens using `createNativeTokenTargetResolver(config)` and target role
+`native-source-token`, with the route's source contract ID. BTC EVM `approve`
+creates/updates the native bank authorization; no separate Cosmos signer is
+needed. Confirm any approval/reset and prepare again. No approval is hidden in
+the transfer method. [The focused example](../../examples/bridge-musd/native.ts)
+shows this composition and independent delivery observation.
+
+Preparation/simulation objects are local to the writer instance. After restart,
+recover the durable source submission through Core and observe its confirmed
+hash with the current observer; do not resubmit to recreate an in-memory object.
+
+`NativeTransferError` exposes `NativeTransferErrorCode`: `InvalidInput`,
+`UnknownRoute`, `ChainMismatch`, `RuntimeMismatch`, `InvalidConfiguration`,
+`TransportFailure`, `ReorgDetected`, `StaleQuote`, `BoundExceeded`,
+`ApprovalRequired`, `InvalidEvidence`. EVM, Contracts and Core failures retain
+their own error boundaries; Core simulation failures can wrap a Native cause.
+
+## Current Native delivery and governance recovery
+
+`createNativeCurrentDeliveryObserver(config: NativeCurrentObserverConfig)` uses
+the same two route IDs, receipt inputs, transports, confirmation policies and
+optional inbound consensus reader as the historical observer. It additionally
+requires `getMezoClientVersion`. It resolves current bridge generations and token
+runtime identities at each observed coordinate, including inbound parent state.
+Old deployment generations still use `createNativeDeliveryObserver`.
+
+The result has `coverage: "provided-receipts-and-current-runtime-only"`.
+Inbound retains the single-entry, sole-consensus-transaction and exact recipient
+balance-delta requirements. Outbound accepts the verified contract's confirmation
+without requiring individual attestation logs: signature-batch confirmation need
+not emit those logs. It still requires the full matching tuple and a uniquely
+attributable recipient transfer, with either no fee or a matching fee event and
+transfer. Multiple withdrawals in one receipt remain unproven. Fee collector and
+recipient may coincide when ordered transfers establish both amounts.
+
+A matching `WithdrawalFailed` after confirmation, with consistent fee settlement
+and no recipient payout, yields proof and aggregate state
+`governance-recovery-required` once both chains satisfy confirmation policy.
+`settlement.net` is then zero (amount actually paid); `gross - fee` is the amount
+requiring recovery. The tuple identifies sequence, recipient and asset.
+There is no SDK retry or governance transaction. Missing payout evidence alone
+does not establish this outcome. Current runtime checks, full tuple joins and
+anchor rechecks also apply to recovery evidence.
+
+The [Native qualification](../../knowledge/workflows/bridges/evidence/native-transfer-2026-09-15.json)
+combines retained real historical transfers, pinned-source compatibility and
+current read-only runtime/configuration captures. SDK failure tests and modeled
+simulation results do not claim fresh native execution or a new cross-chain
+transfer. Qualified release review remains required.

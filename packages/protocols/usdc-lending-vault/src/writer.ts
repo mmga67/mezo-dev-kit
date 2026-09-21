@@ -19,6 +19,10 @@ import type { VaultWriteState } from "./write-state.ts";
 import { VAULT_MODEL } from "./model.generated.ts";
 import type { VaultReader, VaultSnapshot } from "./types.ts";
 
+/**
+ * Verified vault action, separate approval requirement and exact Core call;
+ * simulation/submission require its writer-owned object.
+ */
 export interface PreparedVault {
   readonly snapshot: Readonly<VaultSnapshot>;
   readonly action: VaultAction;
@@ -29,6 +33,10 @@ export interface PreparedVault {
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Receipt-block asset/share/receipt settlement with actual policy outcome, distinct from the
+ * earlier forecast.
+ */
 export interface VaultOutcome {
   readonly kind: VaultAction["kind"];
   readonly input: bigint;
@@ -36,21 +44,47 @@ export interface VaultOutcome {
   readonly assets: bigint;
   readonly shares: bigint;
   readonly receipts: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
   readonly snapshot: Readonly<VaultSnapshot>;
 }
+/**
+ * Separate depositor/wrapper preparation, simulation, submission and reconciliation; direct
+ * gauge actions belong to Incentives.
+ */
 export interface VaultWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly action: VaultAction;
     readonly bounds: VaultBounds;
   }): Promise<Readonly<PreparedVault>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedVault): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedVault,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify vault assets/shares and
+   * wrapper custody. Required evidence mismatches can reject even when the EVM receipt
+   * succeeded.
+   */
   reconcile(
     prepared: PreparedVault,
     record: unknown,
@@ -63,6 +97,15 @@ export interface VaultWriter {
     }>
   >;
 }
+/**
+ * Create vault deposit/mint/withdraw/redeem and wrapper stake/unwrap operations.
+ *
+ * @remarks
+ * Preparation separates token approvals from the vault action. Confirm them and
+ * prepare again before simulating. Submit requires the matching writer-owned
+ * objects; Core owns signing and durable intent reservation. Reconciliation checks
+ * receipt-block shares, assets and custody. Direct gauge actions belong to Incentives.
+ */
 export function createVaultWriter(config: {
   readonly reader: VaultReader;
   readonly registry: ContractRegistry;

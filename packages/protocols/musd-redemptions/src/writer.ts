@@ -61,6 +61,16 @@ function outputSatisfied(amounts: RedemptionAmounts, bounds: RedemptionBounds) {
 function accrual(numerator: bigint, elapsed: bigint) {
   return calculateSimpleInterest(numerator, 1n, elapsed);
 }
+/**
+ * Create direct redemption preparation, exact-output simulation and reconciliation.
+ *
+ * @remarks
+ * The injected output simulator supplies traced actual MUSD/BTC amounts. Preparation
+ * and simulation remain distinct, and only matching writer-owned objects may be
+ * submitted. Bounds include actual output/fee constraints; reconciliation proves
+ * the mined outcome from the event and receipt-block state. No approval or automatic
+ * retry is added. The package reference owns partial-fill and provider requirements.
+ */
 export function createRedemptionWriter(config: RedemptionWriterConfig): Readonly<RedemptionWriter> {
   const owned = new WeakSet<PreparedRedemption>(),
     simulations = new WeakMap<object, PreparedRedemption>();

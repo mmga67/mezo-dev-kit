@@ -12,11 +12,11 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/clean-package-dist.ts contracts && tsc --project tsconfig.build.json",
+    "build": "node ../../scripts/workspace/clean-package-dist.ts contracts && tsc --project tsconfig.build.json",
     "check": "pnpm format:check && pnpm generate:check && pnpm typecheck && pnpm lint && pnpm build && pnpm test",
     "format:check": "prettier --check src test tools README.md vitest.config.ts package.json tsconfig.json tsconfig.build.json",
-    "generate": "pnpm --filter @mezo-dev-kit/evm build && node ../../scripts/generate-contracts-package.ts",
-    "generate:check": "pnpm --filter @mezo-dev-kit/evm build && node ../../scripts/generate-contracts-package.ts --check",
+    "generate": "pnpm --filter @mezo-dev-kit/evm build && node ../../scripts/generate/generate-contracts-package.ts",
+    "generate:check": "pnpm --filter @mezo-dev-kit/evm build && node ../../scripts/generate/generate-contracts-package.ts --check",
     "lint": "eslint src test tools vitest.config.ts",
     "test": "vitest run",
     "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=56012",
@@ -29,5 +29,11 @@
   },
   "devDependencies": {
     "vitest": "4.1.11"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "REFERENCE.md",
+    "LICENSE"
+  ]
 }

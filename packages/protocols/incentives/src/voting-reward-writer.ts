@@ -19,40 +19,86 @@ import {
   validateVotingRewardClaim,
   verifyVotingRewardSettlement,
 } from "./voting-reward-settlement.ts";
+/**
+ * Token-specific minimum payouts in requested order and maximum preparation age in blocks;
+ * minimums are client policy.
+ */
 export interface VotingRewardBounds {
   /** Minimum token base units in requested token order. Checked policy, not an on-chain argument. */
   readonly minAmounts: readonly bigint[];
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Verified bounded claim state, exact token order, caller minimums and claim transaction.
+ */
 export interface PreparedVotingReward {
   readonly snapshot: Readonly<VotingRewardSnapshot>;
   readonly bounds: Readonly<VotingRewardBounds>;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Per-token actual claim settlement with native gas and bounds result; different reward assets
+ * are not aggregated.
+ */
 export interface VotingRewardOutcome {
   readonly snapshot: Readonly<VotingRewardSnapshot>;
   readonly paid: readonly bigint[];
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Matching confirmed claim and verified per-token payout/checkpoint changes.
+ */
 export interface ReconciledVotingReward {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<VotingRewardOutcome>;
 }
+/**
+ * Explicit fee/bribe claim lifecycle for a verified NFT and token set; receipt success alone is
+ * insufficient for settlement.
+ */
 export interface VotingRewardWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(
     input: Omit<VotingRewardReadInput, "blockNumber"> & {
       readonly operationId: string;
       readonly bounds: VotingRewardBounds;
     },
   ): Promise<Readonly<PreparedVotingReward>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedVotingReward): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedVotingReward,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify per-token fee/bribe payouts.
+   * Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedVotingReward,
     record: unknown,
@@ -97,6 +143,15 @@ function readInput(snapshot: VotingRewardSnapshot, blockNumber?: bigint): Voting
     ...(blockNumber === undefined ? {} : { blockNumber }),
   };
 }
+/**
+ * Create bounded fee or bribe claims for an explicit voting NFT and token set.
+ *
+ * @remarks
+ * Preparation retains token-specific minimums. Simulation/submission require matching
+ * owned objects and current eligibility. Reconciliation attributes each reward-token
+ * payout separately; principal, streamed rewards and gas are not combined.
+ * No on-chain claim minimum is invented from the caller's bounds.
+ */
 export function createVotingRewardWriter(config: {
   readonly reader: VotingRewardReader;
   readonly execution: ExecutionClient;

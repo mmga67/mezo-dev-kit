@@ -1,74 +1,52 @@
 # Mezo Developer Kit Architecture
 
-[ADR-0015](docs/decisions/0015-direct-borrowing-execution.md) adds the private
-direct MUSD borrowing implementation: curated operation ABIs in Contracts,
-scalar ABI codecs in EVM, explicit execution and RPC adapters in Core, and
-borrower semantics in musd-borrowing. Qualified protocol review and publication
-remain separate from implementation acceptance.
+MDK combines TypeScript packages, maintained Mezo knowledge, and development
+tools. This document explains how those parts fit together and where each
+responsibility belongs.
+
+- [Package map](#repository-areas): find the owner of a capability.
+- [Dependencies](#dependency-direction): understand imports and composition.
+- [Public API rules](#domain-and-public-api-rules): understand reads,
+  calculations, execution, and injected application inputs.
+- [Workflow composition](#implemented-workflow-composition): follow the
+  relationships between protocol packages.
 
 ## Status and Authority
 
-This document defines the current repository architecture for Mezo Developer
-Kit (MDK). It owns package boundaries, dependency direction, public design
-constraints, and the relationship between code, knowledge, and agent process.
+The [manifest](docs/manifest) owns the project baseline; this document owns
+its detailed package map and technical boundaries. Package docs and exports
+own exact APIs, indexed knowledge owns protocol facts, and shared standards
+own contributor policy.
 
-MDK remains documentation- and evidence-first. Directory names describe
-intended ownership; they do not imply that a package, API, workflow, or
-deployment is implemented or supported. Each decision under
-[`docs/decisions/`](./docs/decisions/) carries its own current status and
-acceptance/release gates.
+MDK is an experimental source alpha with private workspace packages and a
+private standalone-project tooling pilot. Implementation, verification,
+protocol support, and distribution have separate boundaries. The
+[SDK reference](docs/reference/sdk.md) routes their current package contracts;
+the [project utility guide](docs/guides/MDK_CLI.md) describes the tooling pilot.
 
-`packages/chains/`, `packages/contracts/`, and `packages/core/` now contain the
-private foundational read implementation for the GitHub source alpha.
-Chains and current Contracts resolution consume deterministic projections of accepted canonical
-knowledge. ADR-0024 adds an explicit historical evidence result for proposed,
-fixed-coordinate profiles, separate from current operation/writer resolution.
-Core exposes a provider-neutral, block-consistent read client through
-a built workspace entrypoint. The ADR-0002/0003 transaction execution
-proof remains tested inside Core but is neither exported nor emitted. The
-maintainer accepted foundational SDK review on 2026-09-06 for the source alpha. These private
-packages provide the foundation for protocol readers. ADR-0015 extends them
-with execution and direct borrowing; registry distribution remains separate.
+## System Model
 
-ADR-0016 extends the existing Savings, lending and vault owners with private
-writers. `packages/tokens/` owns reusable exact approval workflows; the new
-`packages/protocols/incentives/` owns gauge staking and streamed rewards used
-by both Savings and Vault. Both depend only on the public foundational
-packages (Incentives also uses Tokens); neither depends on a consumer protocol.
-Vault continues to compose Lending. Discovered target roles are verified by
-their domain and resolved through an explicit Core execution port.
+The system has three cooperating parts:
 
-`packages/evm/` provides the shared typed value and exact-conversion layer
-beneath these packages. Its public workspace API and pinned Ox implementation
-follow ADR-0014; callers retain network, protocol, and domain error ownership.
+| Part                           | Responsibility                                                               | Starting point                            |
+| ------------------------------ | ---------------------------------------------------------------------------- | ----------------------------------------- |
+| Runtime packages               | Typed values, reads, calculations, and explicit execution                    | [Package map](#repository-areas)          |
+| Knowledge and generation       | Evidence, stable identities, and generated runtime/reference projections     | [Knowledge overview](knowledge/README.md) |
+| Development tools and guidance | Project creation, examples, contributor procedures, and optional agent setup | [Documentation index](docs/INDEX.md)      |
 
-`packages/protocols/musd-savings/` contains the Savings reader
-above that foundation. It owns Savings accounting and staged same-block role
-reconciliation, consumes public Chains/Contracts/Core entrypoints, and accepts
-application-owned transport and codec ports. Generated role interfaces derive
-from proposed, exact-runtime Contracts templates without adding static
-registry identities. The maintainer accepted the bounded reader/interface review for Savings reader review on
-2026-09-07. Wider deployment support remains proposed.
+The following arrows show evidence and derived-data flow, not package imports:
 
-`packages/protocols/musdc-lending/` adds the mainnet market reader and
-exact debt/share/interest/health calculations above the same public foundation.
-Its generated market, asset, and runtime inputs retain Lending, Bridges,
-Contracts, and Prices ownership. A timestamped, normalized oracle observation
-is required for nonzero-debt health; transport and codec ports remain explicit.
+```text
+external sources and deployed evidence
+  → validated knowledge and registry inputs
+  → generated runtime data and reference material
+  → public package APIs
+  → adapters, examples, templates, and applications
+```
 
-`packages/protocols/usdc-lending-vault/` adds the depositor reader. It
-consumes the public lending reader for the adapter position and owns VaultV2
-fee-aware previews, wrapper high-water yield, receipt ownership, and gauge
-reconciliation. VaultV2/VaultGauge are discovered exact-runtime roles, while
-the adapter/wrapper resolve through Contracts. The maintainer accepted both
-private reader packages on 2026-09-07. Shared primitive validation now uses
-EVM. ADR-0016 adds private protocol writers, while new static identities for discovered roles and package-registry release remain separate.
-
-The versioned strategic design input is [`docs/manifest`](./docs/manifest), and
-its dated improvements are recorded in
-[`docs/manifest-changelog.md`](./docs/manifest-changelog.md). It does not
-override accepted architecture, canonical knowledge, current code, or the
-review gates owned by this repository.
+Skills help apply current owners. Memory supplies retrieval pointers. Neither
+is a runtime dependency or an authority over evidence, knowledge, architecture,
+or code.
 
 ## Goals
 
@@ -101,13 +79,12 @@ MDK is not currently:
 - a released set of SDK packages merely because package directories exist.
 
 Production applications normally live in separate repositories and consume
-published MDK interfaces. Local `examples/` and `templates/` exist to prove and
+MDK's public package entrypoints through the approved distribution. Local `examples/` and `templates/` exist to prove and
 bootstrap that external developer experience.
 
 ### Residual candidate scope
 
-The knowledge migration knowledge-migration program did not turn every discovered product
-theme into an MDK domain. The current disposition is:
+The following themes remain outside the current domain scope:
 
 | Candidate theme                      | Current disposition                                                                                                                                                                   |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,131 +103,134 @@ support goal before any deferred theme enters the roadmap.
 
 ## TypeScript-First Implementation
 
-TypeScript is the default implementation language for MDK product code and the
-applications MDK generates or documents. This applies to SDK/runtime packages,
-protocol modules, CLI code, framework adapters, tests, examples, templates,
-and generated runtime source. React source uses TSX when it contains JSX.
+SDK packages, automation, tests, examples, templates, and generated applications
+use TypeScript; JSX uses TSX. Solidity contracts and canonical data retain their
+own formats. A tool-required language exception must be narrow and documented.
 
-Package boundaries must preserve useful TypeScript types instead of exposing
-untyped objects and provider-specific values. Runtime validation remains
-required at external boundaries; static types do not replace chain checks,
-schema validation, unit validation, or protocol reconciliation.
-
-The language boundary is intentional:
-
-- EVM contracts remain Solidity;
-- canonical knowledge, schemas, evidence, and documentation remain JSON,
-  Markdown, or their owning data format;
-- tool-constrained configuration or scripts may use another language only
-  when required by that tool or execution boundary, with a narrow documented
-  exception;
-- maintained repository automation is TypeScript; tool-constrained
-  configuration may remain in another language only through the narrow
-  exception above.
-
-[ADR-0007](./docs/decisions/0007-typescript-first.md) owns the language
-decision. [ADR-0010](./docs/decisions/0010-vitest-default-testing.md)
-separately selects Vitest as the default TypeScript package test framework.
-The accepted [ADR-0012](./docs/decisions/0012-coding-standard-and-quality-gates.md)
-selects Node 24 as the development baseline plus the exact compiler, typed
-linter, formatter, declaration, and local quality-gate model. The normative
-authored-code rules live in
-[`docs/standards/coding.md`](./docs/standards/coding.md).
-
-The root `package.json` and `pnpm-workspace.yaml` select and version the
-approved development toolchain. This does not satisfy the separate public
-release-security, packed-artifact, compatibility, or support gates.
-
-## System Model
-
-MDK has three coordinated systems:
-
-```text
-CODE                         KNOWLEDGE                    PROCESS
-packages                     knowledge                   tasks
-tooling                      docs                        reviews
-templates and examples       skills                      agent instructions
-                             memory
-```
-
-They evolve together, but their authority is different:
-
-```text
-authoritative external source / deployed evidence
-                         ↓
-validated canonical knowledge and registry inputs
-                         ↓
-generated data, package behavior, reference docs, and skills
-                         ↓
-adapters, templates, examples, and external applications
-```
-
-Memory helps agents retrieve context. It is not part of the runtime package
-graph and never outranks current evidence, canonical knowledge, architecture,
-or code.
+The [engineering baseline](docs/manifest#engineering-and-verification) and
+[coding standard](docs/standards/coding.md) own implementation requirements.
+Root package configuration and the lockfile own exact tool versions. Useful
+public types and runtime validation are both required; types alone do not
+validate external data.
 
 ## Repository Areas
 
-| Area                                     | Owns                                                                                                                                                                          | Must not own                                                                                                     |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `packages/evm/`                          | Shared EVM value validation, checksum policy, exact conversions, and scalar ABI codecs; see ADR-0014 and ADR-0015                                                             | Network/deployment facts, protocol policy, provider clients, signers, and localized presentation                 |
-| `packages/chains/`                       | Typed accepted network identity and capability profiles generated from canonical inputs                                                                                       | RPC endpoints, provider selection, protocol behavior, or application policy                                      |
-| `packages/contracts/`                    | Stable contract IDs, deployment resolution, read-safe and curated operation ABI projections, runtime identity, digests, provenance, and freshness; depends on Chains identity | Protocol workflows, provider behavior, copied application addresses, or transaction execution                    |
-| `packages/core/`                         | Framework-independent block-consistent reads, explicit RPC/signer adapters, simulation, submission intent, receipt observation, and reconciliation coordination; see ADR-0015 | Protocol-specific rules, RPC endpoint selection, wallet UI, React, storage implementations, or application state |
-| `packages/protocols/`                    | Protocol modules, workflow preconditions, quotes, reconciliation rules, and pure domain calculations                                                                          | Framework state, UI, or hidden transport configuration                                                           |
-| `packages/react/`                        | React adapters over public core and protocol APIs                                                                                                                             | Independent protocol implementations                                                                             |
-| `packages/hardhat/`, `packages/foundry/` | Tool-specific adapters and development workflows                                                                                                                              | Canonical network, address, ABI, or protocol facts                                                               |
-| `packages/cli/`                          | Discovery, creation, inspection, validation, and maintenance commands over public MDK capabilities                                                                            | A competing runtime implementation                                                                               |
-| `packages/test-utils/`                   | Reusable deterministic fixtures and test clients                                                                                                                              | Production behavior or canonical facts                                                                           |
-| `extensions/`                            | Ecosystem integrations composed from public packages                                                                                                                          | Forked or duplicated MDK internals                                                                               |
-| `templates/`, `examples/`                | Tested starting points and focused usage demonstrations                                                                                                                       | Canonical facts or private package imports                                                                       |
-| `knowledge/`                             | Validated, evidence-linked Mezo facts and bootstrap registry inputs                                                                                                           | Procedures, task history, or unsupported narrative                                                               |
-| `docs/`                                  | Architecture, ADRs, guides, derived reference, and troubleshooting explanations                                                                                               | Independent copies of volatile facts                                                                             |
-| `agents/`                                | Contributor and consumer skills, memory policy/adapters, and evals                                                                                                            | Runtime package requirements or canonical protocol facts                                                         |
+Each package owns a coherent responsibility. Runtime packages consume public
+exports and injected application inputs. They do not select hidden providers,
+own application UI/state, or maintain independent copies of canonical facts.
 
-Create a package only when a real vertical slice gives it a clear
-responsibility, consumer, and verification path. Empty planned directories are
-not public architecture commitments.
+### Foundations and shared services
+
+| Package                                   | Owns                                                                                                                                           |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| [EVM](packages/evm/README.md)             | Shared value validation, checksum policy, exact units, and scalar ABI codecs                                                                   |
+| [Chains](packages/chains/README.md)       | Generated network identity and capability profiles; no RPC endpoint selection                                                                  |
+| [Contracts](packages/contracts/README.md) | Deployment resolution, ABI projections, runtime identity, historical evidence, digests, and provenance                                         |
+| [Core](packages/core/README.md)           | Block-consistent reads, bounded event scans, RPC/signer adapters, simulation, submission, receipt observation, and reconciliation coordination |
+| [Tokens](packages/tokens/README.md)       | Token balances, allowances, and explicit approval workflows                                                                                    |
+| [Prices](packages/prices/README.md)       | Typed price observations, normalization, confidence, freshness, and source policy                                                              |
+
+EVM owns no network, deployment, protocol, provider, signer, or presentation
+policy. Contracts consumes Chains identity and owns deployment/ABI resolution;
+protocol packages retain workflow meaning and discovered-target checks. Core
+coordinates execution while each protocol defines its required outcome.
+
+### Protocol and workflow packages
+
+| Package                                                                         | Owns                                                                                     |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [MUSD borrowing](packages/protocols/musd-borrowing/README.md)                   | Classic borrower positions, debt/collateral calculations, hints, and direct operations   |
+| [MUSD redemptions](packages/protocols/musd-redemptions/README.md)               | Redemption ordering, bounded hints, exact-output simulation, and settlement              |
+| [MUSD Savings](packages/protocols/musd-savings/README.md)                       | Savings principal, indexed yield, and deposit/withdrawal accounting                      |
+| [mUSDC lending](packages/protocols/musdc-lending/README.md)                     | Market shares, debt, collateral, interest, and market operations                         |
+| [USDC Lending Vault](packages/protocols/usdc-lending-vault/README.md)           | Vault shares, allocation, wrapper accounting, and vault operations                       |
+| [Institutional MUSD debt](packages/protocols/musd-institutional-debt/README.md) | Bounded Enclave/position reads and institutional fee, repayment, and health calculations |
+| [Incentives](packages/protocols/incentives/README.md)                           | Gauges, locks, voting, rewards, and gauge custody                                        |
+| [Pools](packages/protocols/pools/README.md)                                     | Basic and concentrated-liquidity pool discovery, math, liquidity, fees, and positions    |
+| [Swaps](packages/swaps/README.md)                                               | Quotes, route comparison, execution, and swap outcomes                                   |
+| [Bridges](packages/bridges/README.md)                                           | MUSD NTT preparation/recovery and separate cross-chain delivery observation              |
+
+Each package reference defines implemented operations and qualification limits.
+These ownership rows do not confer support on an operation or deployment.
+
+### Tools and repository support
+
+| Area                                                                           | Owns                                                                                      |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| [CLI](packages/cli/README.md)                                                  | Project creation, compatibility checks, guidance updates, and bundled reference retrieval |
+| [Examples](examples/README.md) and [templates](templates/typescript/README.md) | Tested starting points using public APIs                                                  |
+| [Knowledge](knowledge/README.md)                                               | Validated, evidence-linked Mezo facts and canonical registry inputs                       |
+| [Documentation](docs/INDEX.md)                                                 | Architecture, guides, references, standards, troubleshooting, and historical decisions    |
+| [Agent guidance](agents/README.md)                                             | Contributor/consumer skills, optional memory adapters, and evaluations                    |
+| [Scripts](scripts/README.md)                                                   | Repository generation, verification, evidence, and workspace automation                   |
+
+React, Hardhat, Foundry, and test-utils package directories are planned areas.
+Their intended roles are framework adapters, tool-specific workflows, and
+reusable deterministic test support. They must not duplicate protocol logic
+or canonical facts; production packages must not consume test-only behavior.
+Ecosystem integrations under `extensions/` compose public MDK APIs.
+
+Create a package only for a demonstrated responsibility, consumer, and
+verification path. Empty directories are not public architecture commitments.
 
 ## Dependency Direction
 
-Runtime dependencies flow toward consumers:
+Arrows below point **from an importing package to its dependency**. The
+foundation graph records direct MDK runtime dependencies:
 
-```text
-evm value primitives (available to all higher layers)
-  ↓
-chains
-  ↓
-contracts
-  ↓
-core
-  ↓
-protocol packages
-  ↓
-framework and tool adapters
-  ↓
-templates, examples, external applications
+```mermaid
+flowchart LR
+  Core --> Contracts
+  Core --> Chains
+  Core --> EVM
+  Contracts --> Chains
+  Contracts --> EVM
 ```
+
+EVM and Chains have no MDK runtime dependencies. EVM has its separately
+declared external dependency. All current domain/shared-service packages
+import EVM, Chains, Contracts, and Core; those repeated edges are omitted
+from the next view, which shows their additional package imports:
+
+```mermaid
+flowchart LR
+  Swaps --> Pools
+  Swaps --> Tokens
+  Pools --> Tokens
+  Incentives --> Tokens
+  Savings --> Tokens
+  Lending["mUSDC lending"] --> Tokens
+  Lending --> Prices
+  Borrowing["MUSD borrowing"] --> Prices
+  Redemptions --> Borrowing
+  Redemptions --> Tokens
+  Vault["USDC Lending Vault"] --> Lending
+  Vault --> Tokens
+```
+
+Bridges, institutional debt, Tokens, and Prices need only the common
+foundations. The CLI currently has no runtime SDK import dependency: its
+distribution tooling packages matching artifacts and generates a reference
+bundle. Artifact inclusion is separate from a runtime import edge.
+
+Applications compose Savings/Vault with Incentives for gauge operations.
+Incentives accepts an injected verified position-reader port for concentrated
+liquidity; an application can bind the Pools reader to it. These connections
+do not introduce Incentives/Pools or Savings/Incentives package dependencies.
 
 The following rules apply:
 
-- product packages and their tests use TypeScript unless an accepted
-  architecture decision defines a narrower interoperability exception;
-- Contracts consumes the public Chains identity boundary so it cannot invent
-  or duplicate network IDs; neither package selects an RPC provider;
-- lower layers never import framework, template, example, or application code;
-- EVM primitive consumers use the public `@mezo-dev-kit/evm` entrypoint and
-  declare that dependency; the foundation imports no other MDK package.
-  [ADR-0014](./docs/decisions/0014-evm-value-foundation.md) owns this addition.
-- core and protocol logic remain framework-independent;
-- adapters consume public lower-layer APIs instead of reimplementing behavior;
-- the CLI may orchestrate public package APIs but does not become their owner;
-- test utilities may support packages but production packages must not depend
-  on test-only behavior;
-- runtime packages must not depend on agent skills, memory providers, tasks, or
-  documentation tooling;
-- package cycles are not allowed;
-- applications and persistence remain outside the core dependency graph.
+- Declare every runtime import in the consuming package manifest and use a
+  public entrypoint. Package cycles and deep imports are not allowed.
+- Lower layers never import framework, template, example, or application code.
+- Core and protocol logic remain framework-independent. Adapters and the CLI
+  compose public behavior rather than becoming competing owners.
+- EVM value consumers use the public EVM boundary; domain policy retains its
+  own owner.
+- Runtime packages do not depend on agent skills, memory providers, tasks,
+  documentation tooling, or test-only behavior.
+- Applications own persistence, scheduling, provider selection, wallet UI,
+  and application state outside the runtime dependency graph.
 
 ## Domain and Public API Rules
 
@@ -286,13 +266,10 @@ Write workflows must validate inputs and chain/account context, resolve the
 intended deployment, simulate the exact call, submit safely, inspect receipt
 outcome, and reconcile protocol state as the domain requires.
 
-The core-client responsibility boundary and transaction semantics are accepted in
-[ADR-0002](./docs/decisions/0002-core-client-model.md) and
-[ADR-0003](./docs/decisions/0003-transaction-lifecycle.md). No dependency,
-public package API, or writer implementation is accepted by those decisions
-alone. [ADR-0015](./docs/decisions/0015-direct-borrowing-execution.md) accepts
-the private direct borrowing implementation and its explicit Core execution
-surface; qualified protocol review remains required before release.
+The [execution baseline](docs/manifest#shared-client-and-transaction-lifecycle)
+defines responsibility, simulation, submission, and reconciliation. Current Core
+and protocol package docs define their implemented interfaces and scoped
+verification. Canonical public-writer support and publication retain separate gates.
 
 ### Errors and observability
 
@@ -312,44 +289,39 @@ source identity, verification coordinates, limitations, and review status.
 Conflicts are preserved as evidence gaps or discrepancies rather than averaged
 away.
 
+[Network scope](docs/manifest#network-scope) defines the
+maintained evidence scope: mainnet deployment/history and recent testnet state.
+Long-term testnet archive recovery and historical certification are outside MDK's
+required scope. Current testnet operations retain their own network, runtime,
+freshness, and bounded transaction/reconciliation evidence requirements.
+
 Network identity is separate from RPC-provider availability. Contract records
 use stable identifiers and own addresses, proxy/implementation history, ABIs,
 digests, activation ranges, and provenance. Protocol and workflow domains
 reference those identifiers rather than copying volatile data.
 
-Bootstrap contract-registry knowledge ownership is accepted in
-[ADR-0001](./docs/decisions/0001-contract-registry-bootstrap-ownership.md).
-Additional provenance classes are accepted in
-[ADR-0005](./docs/decisions/0005-contract-evidence-provenance-classes.md).
-External EVM network profiles for the bounded Ethereum/Base scope are accepted in
-[ADR-0004](./docs/decisions/0004-external-evm-network-records.md).
+The [contract evidence rules](docs/manifest#contract-identity-and-provenance)
+define registry ownership and provenance classes. The [network scope](docs/manifest#network-scope)
+defines capability profiles and the initial external Ethereum/Base identity scope.
 
-[ADR-0009](./docs/decisions/0009-oracle-price-source-ownership.md) establishes
-`prices` as the provider-neutral owner for source/feed identity and typed
+The Prices knowledge module is the provider-neutral owner for source/feed identity and typed
 datum, scaling, confidence, freshness, disagreement, and fallback-result
-semantics. Prices depends on Networks and Contracts. Protocol consumers may
+semantics. Its records reference Networks and Contracts; runtime package
+imports are shown in the dependency map above. Protocol consumers may
 reference Prices while retaining protocol-specific consumption semantics;
 Pools retains DEX math, routing retains execution quotes, and analytics retains
 stored projections. A source-class change is always explicit.
 
-[ADR-0006](./docs/decisions/0006-knowledge-module-architecture.md) establishes
-the universal v0.4 module contract: human README, machine index, role-based content
-directories, a common lifecycle envelope, stable logical references, and
-separate structural/semantic validation. The detailed workflow is in
-[`docs/standards/knowledge-management.md`](./docs/standards/knowledge-management.md).
-The root catalog at [`knowledge/index.json`](./knowledge/index.json) discovers
-all maintained modules. The repository-wide cutover was accepted under
-knowledge architecture acceptance's architecture and qualified Level 3 review on 2026-08-21: all modules
-use v0.4, every maintained resource is indexed by role, and cross-domain
-identity uses logical references. Child-module lifecycle fields remain
-authoritative; catalog membership does not promote support or review.
+The [knowledge standard](docs/standards/knowledge-management.md) defines
+human READMEs, machine indexes, content roles, lifecycle fields, stable
+references, and structural/semantic validation. The [root catalog](knowledge/index.json)
+discovers all maintained modules. Each resource is indexed by role, and
+cross-domain identity uses logical references. The current layout identifier
+remains 0.4. Catalog membership does not promote child support or review.
 
-[ADR-0011](./docs/decisions/0011-economic-system-composition-ownership.md)
-establishes composition ownership for the current Mezo economic system. It
-keeps classic MUSD, MUSD Savings, mUSDC lending, the USDC Lending Vault, pools,
-and incentives as distinct accounting owners connected by stable logical
-references. The human map is
-[`docs/architecture/mezo-economic-system-composition.md`](./docs/architecture/mezo-economic-system-composition.md).
+Classic MUSD, Savings, lending, vaults, pools, and incentives retain separate
+accounting owners. The [economic-system map](docs/architecture/mezo-economic-system-composition.md)
+explains their composition.
 
 ## Generated Outputs
 
@@ -363,163 +335,144 @@ guidance must not become independent address or ABI stores.
 
 ## Agent Guidance and Memory
 
-Root and nested `AGENTS.md` files route work and define operating constraints.
-Skills define reusable procedures. Neither owns protocol data.
+Contributor and consumer skills are authored under [agents](agents/README.md)
+for separate audiences. Discovery directories are generated installation views.
+The root `.agents/` tree is local and ignored; setup and refresh belong in the
+[contributor agent guide](docs/guides/CONTRIBUTOR_AGENT_SETUP.md).
 
-Keep persistent instructions compact and retrieve task-specific detail through
-existing canonical owners. Reuse current context and revisit only changed
-inputs; skill cross-references do not restart assessment or load every domain.
-Measure source footprint separately from runtime token/cache usage and retain
-the behavioral quality gates in the contributor evaluation guide.
+Human workflows remain usable without agent instructions. AGENTS files route
+scoped work; skills provide procedures and link current owners. They do not
+own protocol facts. Knowledge maintenance follows the knowledge standard and
+its scoped instructions.
 
-Maintained agent guidance is authored under [`agents/`](./agents/). Contributor
-and consumer skills are separate audiences, while agent discovery directories
-are materialized installation views rather than canonical sources. The
-repository-root `.agents/` tree is ignored local output and is absent from
-fresh source checkouts; contributors install it explicitly using the
-[agent setup guide](./docs/guides/CONTRIBUTOR_AGENT_SETUP.md). The
-portable skill profile and optional MCP boundary are defined under
-[ADR-0008](./docs/decisions/0008-portable-agent-skill-distribution.md); the ADR
-is accepted as the repository's distribution model but does not by itself
-establish a released integration.
+Memory is optional retrieval context under the
+[memory contract](agents/memory/README.md). Provider state, credentials, and
+local observations stay outside Git. Shared seeds remain small, reviewed
+pointers; verified durable discoveries belong in knowledge, code, or current
+docs. The repository must work without an external memory provider.
 
-Knowledge maintenance is routed by `knowledge/AGENTS.md` to the shared
-knowledge-maintenance skill and the relevant domain skill. Human maintenance
-policy remains outside automatically scoped instructions in the accepted
-knowledge-management standard.
-
-Memory follows the provider-neutral contract in
-[`agents/memory/README.md`](./agents/memory/README.md):
-
-```text
-session discovery
-→ local memory
-→ optional curated shared memory
-→ verification
-→ knowledge / docs / ADR / code
-→ memory retained as a pointer, promoted, or deprecated
-```
-
-The repository must work when an external memory provider is absent. Provider
-state, embeddings, indexes, credentials, and local investigation memory stay
-outside Git. Shared seed memory must be small, reviewed, source-linked, and
-free of secrets or personal data.
+The [agent documentation baseline](docs/manifest#human-and-agent-documentation)
+owns these constraints. [Contributor evaluation](docs/guides/CONTRIBUTOR_AGENT_EVALUATION.md)
+owns discovery, context-efficiency, and behavioral checks.
 
 ## Testing and Release Boundaries
 
-[`docs/standards/testing.md`](./docs/standards/testing.md) owns repository test
-design and test-code conventions. Vitest is the default for TypeScript package
-tests, with explicit imports, environment-appropriate configuration, isolated
-state, and cleanup. Tests are selected from observable behavior, invariants,
-boundaries, failure classes, ordering, and side effects rather than a test-count
-or coverage quota. Standalone bootstrap automation can retain Node's built-in
-runner until its owning toolchain migration; that is a bounded exception, not
-an equal package default.
+Verification covers public types and built entrypoints, deterministic behavior,
+and the integrations crossed by a change. A supported vertical slice includes
+implementation, tests, integration verification, documentation, an example,
+agent guidance, and a knowledge/memory decision.
 
-Verification is proportional to risk:
+The [testing standard](docs/standards/testing.md) owns Vitest conventions,
+fixtures, isolation, and documented tool exceptions.
+[Contributor verification](CONTRIBUTING.md#verification) defines the three risk
+levels and their required checks. [Security](SECURITY.md) owns sensitive
+review and release requirements.
 
-- Level 1: changed documentation/examples plus applicable formatting, link, or
-  generated-reference checks;
-- Level 2: targeted tests, type/lint/build checks, and integration verification
-  at changed boundaries;
-- Level 3: authoritative evidence, deterministic tests, integration evidence,
-  failure/compatibility review, and qualified human review.
+A passing source or local-fork check does not establish registry distribution
+or production support. Package owners record scoped verification and support
+separately; proposed knowledge remains review material.
 
-Public packages must eventually pass typechecking and declaration/build checks,
-then be tested as built artifacts outside workspace aliases. A supported
-vertical slice includes implementation, tests, integration verification,
-docs, an example, agent guidance, and a knowledge/memory decision.
-Protocol-sensitive releases also require evidence, registry verification, and
-the review defined by
-[`SECURITY.md`](./SECURITY.md).
+## Implemented workflow composition
 
-At the current bootstrap stage, validated knowledge marked proposed is review
-material, not a released support promise.
+The package map links exact APIs and verification limits. These relationships
+explain why related capabilities retain separate owners.
+
+### Prices and event inputs
+
+Prices supplies normalization, confidence, freshness, and a direct mainnet
+Skip observation. Borrowing and Lending reuse its pure helpers while retaining
+their protocol oracle paths. Core has no Prices dependency.
+
+Core owns bounded raw event scans, coverage, and checkpoint candidates.
+Applications own atomic persistence; protocols own the joins and post-state
+checks needed to establish an outcome.
+
+### Borrowing, Savings, lending, and vaults
+
+Borrowing owns the classic borrower engine. Redemptions composes its verified
+state with bounded queue/hint discovery, redemption math, exact-output
+simulation, and direct execution/reconciliation. Core supplies pinned native
+balances and validated receipt execution fees; the domain owns their effect
+on protocol and wallet accounting.
+
+Savings retains principal and indexed-yield accounting. Lending owns market
+shares and debt. Vault imports Lending for underlying market composition while
+retaining vault and wrapper accounting. Applications compose Savings/Vault
+with Incentives for gauge staking and rewards.
+
+### Pools, swaps, and gauge custody
+
+Pools owns verified discovery, liquidity, positions, and fee math for basic
+and concentrated-liquidity (CL) pools. Swaps composes those inputs into bounded
+quotes, routes, and execution outcomes. Quote coverage and executable asset
+profiles have different qualification boundaries.
+
+The `@mezo-dev-kit/swaps/quotes` subpath exposes reader/route helpers and
+bounded candidate comparison without writer exports. It preserves a common
+coordinate, required/optional failures, and the difference between display
+ranking and writer compatibility. It is not an isolated distribution.
+
+CL coefficients derive from retained, digest-verified source; Contracts owns
+runtime identity projections. Pools separates active, staked, and NFT liquidity,
+requires stake-set evidence for a gauge depositor, and distinguishes principal
+credit, manager fee accounting, and wallet payment. Incentives owns gauge
+custody/emissions and uses the injected verified position-reader port.
+
+Pools supplies CL swap-step, fee-split, and bitmap arithmetic. Swaps owns CL
+router execution, crossing/fee state reconciliation, and wallet outcomes.
+The initial MUSD/mUSDC writer profile is distinct from broader quote-only
+routes; no Quoter or atomic mixed-family router is assumed.
+
+### Institutional debt
+
+Institutional debt owns bounded Enclave/position reads, independent aggregate
+accounting, and fee/repayment/health calculations. Requested position and
+authority subsets retain explicit coverage. Classic borrowing, partner writers,
+and product-backing metrics remain separate responsibilities.
+
+### Bridge source execution and delivery
+
+Bridges separates current source preparation/recovery from delivery observation.
+The NTT observer joins source-message and destination-redemption digests with
+explicit confirmations, bounded candidate coverage, and reorg checks. Route
+profiles derive from canonical knowledge.
+
+The Native observer validates historical source calls and tuple/recipient
+delivery using Contracts' historical evidence boundary and caller-supplied
+consensus-block coverage. Historical observations do not certify a current
+route or source writer.
+
+NTT preparation checks current configuration and exact source intent; recovery
+preserves existing sequence and queue custody. Applications compose Tokens
+approvals through Core's explicit target resolver without adding a Bridges
+runtime dependency on Tokens. Core's runtime verifier requires only the chain,
+code, and storage methods it uses.
+
+### Locks and voting
+
+Incentives owns ordinary veBTC/veMEZO locks and deterministic boost, epoch, and
+vote-allocation inputs. Its bounded reads distinguish direct custody, locked
+supply, stored boost, and current voting power. Pool, boost, and validator
+voting retain independent qualification paths.
+
+The [execution baseline](docs/manifest#protocol-execution-boundaries) and
+[bridge outcome baseline](docs/manifest#events-and-bridge-outcomes) define the
+shared operation boundaries. Package owners retain detailed support limits.
+
+## Standalone project utility
+
+The [standalone tooling baseline](docs/manifest#standalone-project-tooling) defines the private
+`@mezo-dev-kit/cli` artifact, application-owned instructions, exact SDK
+compatibility, generated consumer corpus, and recoverable updates.
+[The utility guide](docs/guides/MDK_CLI.md) owns executable private-pilot examples.
 
 ## Architecture Changes
 
-Use a task for architectural, multi-package, migration, public-interface, or
-protocol-sensitive work. A change to dependency direction, domain ownership,
-public API policy, registry ownership, transaction semantics, or security
-boundary requires an ADR or an explicit revision to an existing accepted
-decision.
+Use an agreed task, issue, or PR for architectural, multi-package, migration,
+public-interface, or protocol-sensitive work. Update the affected manifest
+section and this detailed map when accepted ownership or dependency rules change.
+Existing standards and package contracts change together where affected.
 
-An ADR must state context, decision, alternatives, consequences, status, and
-acceptance gate. Proposed ADRs inform implementation planning but do not
-establish released interfaces. Update this file in the same change when an
-accepted decision changes the repository-wide model.
-
-ADR-0017 implements `packages/prices/` for explicit normalization, confidence,
-freshness and a direct mainnet Skip observation. Borrowing and Lending reuse
-its pure helpers while retaining protocol oracle paths. Prices depends on
-EVM, Chains, Contracts and Core; Core has no Prices dependency. Core also owns
-bounded raw event scans, coverage and checkpoint candidates. Applications own
-atomic persistence and protocols own required joins and outcome semantics.
-
-The private basic-pool slice adds `@mezo-dev-kit/pools` (depends on EVM, Chains,
-Contracts, Core and Tokens) and `@mezo-dev-kit/swaps` (those shared boundaries plus
-Pools). Pools owns verified dynamic discovery, wallet liquidity and LP fee
-accounting. Swaps owns bounded basic quotes and exact-input route outcomes. The
-initial writer assets are MUSD/mUSDC; broader basic routes remain observations
-until token behavior qualifies. [ADR-0018](docs/decisions/0018-basic-pools-and-swaps.md)
-records the operation, simulation and reconciliation boundaries. Canonical
-support and publication remain subject to qualified review.
-
-The deliberate `@mezo-dev-kit/swaps/quotes` subpath exposes reader/route helpers
-and bounded candidate comparison without writer exports. It composes existing
-readers at one coordinate, retains required/optional failures, and keeps display
-ranking separate from writer compatibility. The root API and dependency direction
-remain compatible; the subpath is not a separately isolated distribution.
-
-Pools also owns the private CL tick/liquidity/fee calculations and bounded
-pool/NFT reader and ordinary unstaked MUSD/mUSDC NFT position writer. Numerical coefficients derive from retained, digest-verified
-source; Contracts owns root runtime projections. Read results distinguish active,
-staked and NFT liquidity and require stake-set evidence for a gauge depositor.
-Position settlement separates principal credit, manager fee accounting and
-actual wallet payment; gauge custody and emissions remain Incentives-owned.
-Incentives consumes a structural, injected verified position-reader port for
-CL gauge custody/rewards. Applications bind the public Pools reader to a key;
-Incentives adds reward updates, exact NFT approval and stake/claim/exit settlement.
-This preserves the package dependency graph and keeps pool fee math in Pools.
-Pools supplies exact CL swap-step, fee-split and bitmap arithmetic. Swaps uses
-those methods for bounded source-based quotes and owns CL router execution,
-crossing/fee state reconciliation and wallet outcomes. The initial MUSD/mUSDC
-writer profile is distinct from broader quote-only routes; no Quoter or atomic
-mixed-family router is assumed.
-This adds no package dependency or release support.
-
-`@mezo-dev-kit/musd-institutional-debt` owns private Enclave/position readers and
-institutional fee, repayment and health calculations. It depends on EVM, Chains,
-Contracts and Core. Requested position/authority subsets carry explicit coverage;
-independent aggregate accounting stays separate from classic borrowing. See
-[ADR-0019](docs/decisions/0019-institutional-debt-reads.md). No partner writer or
-custody/product backing metric is introduced.
-
-`@mezo-dev-kit/musd-redemptions` composes Borrowing's verified state with bounded
-queue/hint discovery, redemption math, an explicit output simulator and direct
-execution/reconciliation. [ADR-0020](./docs/decisions/0020-redemption-output-simulation.md)
-owns the required exact-call trace boundary and preflight-only output policy.
-Core supplies pinned native balance reads and validated EVM receipt execution fees;
-the domain owns their effect on protocol and wallet accounting.
-
-`@mezo-dev-kit/bridges` owns private bridge observation and MUSD NTT execution. Its
-initial NTT observer joins source message and destination redemption digests with
-explicit confirmations, bounded candidate coverage and reorg checks. It consumes
-EVM, Chains, Contracts and Core without a signer or storage dependency. Route
-profiles derive from canonical knowledge. Its separate Native observer validates
-historical direct source calls and tuple/recipient delivery using Contracts'
-historical evidence boundary and caller-supplied consensus-block coverage.
-Its separate NTT transfer reader/writer verifies current configuration and exact
-source intent, and manual recovery preserves existing queue custody. Applications
-compose Tokens approvals through Core's explicit target resolver. No dependency
-is added to Bridges. Core's runtime verifier accepts only the chain, code and
-storage methods it actually uses. See
-[ADR-0023](docs/decisions/0023-ntt-receipt-observation.md) and
-[ADR-0024](docs/decisions/0024-historical-contract-evidence.md), with
-[ADR-0025](docs/decisions/0025-ntt-transfer-recovery.md) for private NTT execution.
-
-[ADR-0021](./docs/decisions/0021-incentives-locks-and-voting.md) extends Incentives
-with ordinary veBTC/veMEZO lock workflows and deterministic boost, epoch and vote
-allocation inputs. Bounded escrow reads distinguish direct custody, locked supply,
-stored boost and current voting power. The existing dependency direction is
-unchanged. Pool, boost and validator voting remain independently qualified paths.
+Follow [Changing the baseline](docs/manifest#changing-the-baseline) for versioning
+and review. Retain a separate historical decision when its alternatives and
+rationale warrant one; it does not become a second current-policy owner.

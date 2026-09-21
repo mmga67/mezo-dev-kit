@@ -16,8 +16,9 @@ dependency-approval rules.
 1. Reuse the active task and current root/nearest instructions already loaded.
    Inspect the owning package's documentation and affected source.
 2. Consult the applicable `ARCHITECTURE.md` boundary when imports, exports,
-   ownership, or package structure are involved. Read ADR-0007 only for a
-   language-boundary decision, and ADR-0012 for toolchain changes.
+   ownership, or package structure are involved. Read the
+   [engineering baseline](../../../docs/manifest#engineering-and-verification)
+   for language-boundary or toolchain decisions.
 3. Read the applicable sections of `docs/standards/coding.md`; it owns modular
    design, TypeScript, public APIs, errors, async work, formatting,
    suppressions, exceptions, and quality gates. The standard applies to all

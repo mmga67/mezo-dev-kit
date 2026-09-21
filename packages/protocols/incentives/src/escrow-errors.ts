@@ -7,6 +7,10 @@ export type IncentiveErrorCode =
   | "ApprovalRequired"
   | "BoundExceeded"
   | "ReconciliationMismatch";
+/**
+ * Typed incentives failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class IncentiveError extends Error {
   readonly code: IncentiveErrorCode;
   constructor(code: IncentiveErrorCode, message: string) {

@@ -91,22 +91,22 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module knowledge"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module knowledge"
     },
     {
       "id": "module-catalog",
       "type": "semantic",
-      "command": "node scripts/validate-knowledge-catalog.ts"
+      "command": "node scripts/checks/validate-knowledge-catalog.ts"
     },
     {
       "id": "all-modules-v0.4",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --require-all-v0.4"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --require-all-v0.4"
     },
     {
       "id": "maintained-markdown-links",
       "type": "semantic",
-      "command": "node scripts/validate-markdown-links.ts"
+      "command": "node scripts/checks/validate-markdown-links.ts"
     }
   ],
   "extensions": {

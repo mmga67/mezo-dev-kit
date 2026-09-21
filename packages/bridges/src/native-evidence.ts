@@ -1,7 +1,11 @@
 import { getNetwork } from "@mezo-dev-kit/chains";
-import { resolveHistoricalContractEvidence } from "@mezo-dev-kit/contracts";
+import {
+  getNativeBridgeCalldataAbi,
+  resolveContract,
+  resolveHistoricalContractEvidence,
+} from "@mezo-dev-kit/contracts";
 import type { ContractAbiEntry, HistoricalContractEvidence } from "@mezo-dev-kit/contracts";
-import { getReceiptLogs } from "@mezo-dev-kit/core";
+import { getReceiptLogs, verifyContractRuntime } from "@mezo-dev-kit/core";
 import type { ExecutionReceipt, ReadCoordinate } from "@mezo-dev-kit/core";
 import {
   createAbiCodec,
@@ -14,6 +18,7 @@ import {
 } from "@mezo-dev-kit/evm";
 import type { Address, AbiValue, AbiEventValue, Hash32 } from "@mezo-dev-kit/evm";
 import type { NATIVE_ROUTES } from "./model.generated.ts";
+import { checkNativeClient, transferTokenRuntime } from "./native-transfer-runtime.ts";
 import type {
   NativeObservationIssue,
   NativeObservationTransport,
@@ -21,6 +26,10 @@ import type {
   NativeReceiptAnchor,
   NativeReceiptObservation,
 } from "./native-types.ts";
+/**
+ * Typed bridges failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class NativeObserverError extends Error {
   readonly code: NativeObserverErrorCode;
   readonly stage: string;
@@ -44,12 +53,22 @@ export interface NativeContext {
   readonly transport: NativeObservationTransport;
   readonly required: bigint;
   readonly signal?: AbortSignal;
+  readonly current?: { readonly getMezoClientVersion: () => Promise<unknown> };
 }
+type NativeContractEvidence =
+  | HistoricalContractEvidence
+  | (Pick<
+      HistoricalContractEvidence,
+      "contractId" | "address" | "coordinate" | "readAbi" | "calldataAbi"
+    > & {
+      readonly kind: "current-native-contract-evidence";
+      readonly current: ReturnType<typeof resolveContract>;
+    });
 export interface InspectedNative {
   observation: NativeReceiptObservation;
   receipt: ExecutionReceipt | null;
   transaction: Record<string, unknown> | null;
-  contract: Readonly<HistoricalContractEvidence> | null;
+  contract: Readonly<NativeContractEvidence> | null;
   readonly auxiliary: { blockNumber: bigint; blockHash: Hash32 }[];
 }
 export function requireEvidence(
@@ -124,11 +143,35 @@ export async function nativeCanonical(
   requireEvidence(parseUint(block.number) === anchor.blockNumber, "block number mismatch");
   return parseHash32(block.hash) === anchor.blockHash;
 }
-export function historical(
+export async function nativeContract(
   ctx: NativeContext,
   blockNumber: bigint,
-): Readonly<HistoricalContractEvidence> {
+): Promise<Readonly<NativeContractEvidence>> {
   try {
+    if (ctx.current) {
+      const input = {
+        contractId: ctx.endpoint.contractId,
+        networkId: ctx.endpoint.networkId,
+        blockNumber,
+      };
+      const current = resolveContract(input);
+      const block = await nativeRequest(ctx, "current-block", () =>
+        ctx.transport.getBlock(blockNumber),
+      );
+      requireEvidence(
+        block && parseUint(block.number) === blockNumber,
+        "current Native block unavailable",
+      );
+      return Object.freeze({
+        kind: "current-native-contract-evidence",
+        contractId: current.contractId,
+        address: parseAddress(current.address),
+        coordinate: Object.freeze({ blockNumber, blockHash: parseHash32(block.hash) }),
+        readAbi: current.readAbi,
+        calldataAbi: getNativeBridgeCalldataAbi(input),
+        current,
+      });
+    }
     return resolveHistoricalContractEvidence({
       contractId: ctx.endpoint.contractId,
       networkId: ctx.endpoint.networkId,
@@ -137,15 +180,15 @@ export function historical(
   } catch (cause) {
     throw new NativeObserverError(
       "RegistryUnavailable",
-      "historical-contract",
-      "historical generation evidence unavailable at this coordinate",
+      "native-contract",
+      "Native generation evidence unavailable at this coordinate",
       { cause },
     );
   }
 }
 export function nativeCoordinate(
   ctx: NativeContext,
-  contract: HistoricalContractEvidence,
+  contract: NativeContractEvidence,
 ): Readonly<ReadCoordinate> {
   return {
     networkId: ctx.endpoint.networkId,
@@ -155,8 +198,22 @@ export function nativeCoordinate(
 }
 export async function nativeRuntime(
   ctx: NativeContext,
-  contract: HistoricalContractEvidence,
+  contract: NativeContractEvidence,
 ): Promise<void> {
+  if (contract.kind === "current-native-contract-evidence") {
+    const coordinate = nativeCoordinate(ctx, contract);
+    if (ctx.endpoint.networkId === "mezo-mainnet") {
+      requireEvidence(ctx.current, "current Native client reader missing");
+      await checkNativeClient(ctx.current.getMezoClientVersion);
+    }
+    await verifyContractRuntime({
+      contract: contract.current,
+      transport: ctx.transport,
+      coordinate,
+    });
+    await transferTokenRuntime(ctx.endpoint, ctx.transport, coordinate);
+    return;
+  }
   const coordinate = nativeCoordinate(ctx, contract),
     runtime = contract.runtime;
   requireEvidence(
@@ -195,7 +252,7 @@ export function nativeEntry(
 }
 export async function nativeRead(
   ctx: NativeContext,
-  contract: HistoricalContractEvidence,
+  contract: NativeContractEvidence,
   entry: ContractAbiEntry,
   args: readonly AbiValue[] = [],
   address: Address = contract.address,
@@ -213,7 +270,7 @@ export async function nativeRead(
 }
 export function nativeEvents(
   receipt: ExecutionReceipt,
-  contract: HistoricalContractEvidence,
+  contract: NativeContractEvidence,
   name: string,
   address: Address = contract.address,
   abi: readonly ContractAbiEntry[] = contract.readAbi,
@@ -297,7 +354,7 @@ export async function inspectNative(
       return result;
     }
     if (status === 0n) return result;
-    const contract = historical(ctx, blockNumber);
+    const contract = await nativeContract(ctx, blockNumber);
     requireEvidence(
       contract.coordinate.blockHash === blockHash,
       "receipt differs from pinned historical block",

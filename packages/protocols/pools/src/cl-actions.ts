@@ -8,6 +8,10 @@ import {
   getCLTickSqrtRatio,
 } from "./cl-math.ts";
 import type { CLPoolSnapshot, CLPosition } from "./cl-types.ts";
+/**
+ * One existing-pool position action. Token amounts, NFT IDs and liquidity are bigint; tick
+ * bounds are integer numbers.
+ */
 export type CLPositionAction =
   | Readonly<{
       kind: "mint";
@@ -20,16 +24,39 @@ export type CLPositionAction =
   | Readonly<{ kind: "decrease"; tokenId: bigint; liquidity: bigint }>
   | Readonly<{ kind: "collect"; tokenId: bigint; amount0Max: bigint; amount1Max: bigint }>
   | Readonly<{ kind: "burn"; tokenId: bigint }>;
+/**
+ * Token minimums, liquidity/price bounds and deadline/age policy. Some bounds are client
+ * checks; consult the writer reference.
+ */
 export interface CLPositionBounds {
   readonly minAmount0: bigint;
   readonly minAmount1: bigint;
   readonly minLiquidity: bigint;
+  /**
+   * Lower bound in Q64.96 square-root price units.
+   */
   readonly sqrtPriceMinX96: bigint;
+  /**
+   * Upper bound in Q64.96 square-root price units.
+   */
   readonly sqrtPriceMaxX96: bigint;
+  /**
+   * Absolute Unix seconds, not a duration.
+   */
   readonly deadline: bigint;
+  /**
+   * Maximum allowed deadline distance from the observed timestamp, in seconds.
+   */
   readonly maxDeadlineSeconds: bigint;
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Expected liquidity, amounts and owed balances. Decrease credits principal to the NFT; collect
+ * is the wallet payment step.
+ */
 export interface CLPositionForecast {
   readonly kind: CLPositionAction["kind"];
   readonly tokenId: bigint | null;
@@ -259,6 +286,15 @@ export function clBounds(bounds: CLPositionBounds): void {
     "ordered CL price bounds and deadline budget required",
   );
 }
+/**
+ * Forecast one ordinary self-owned, unstaked CL position operation.
+ *
+ * @remarks
+ * Mint/increase spend rounds up; decrease credits principal down into the NFT's owed
+ * balances and does not pay the wallet. Collect and burn have separate eligibility.
+ * Bounds distinguish token units, liquidity and Q64.96 prices. This pure forecast
+ * uses supplied state; consult the reference for on-chain versus preflight bounds.
+ */
 export function forecastCLPosition(input: {
   readonly snapshot: CLPoolSnapshot;
   readonly action: CLPositionAction;

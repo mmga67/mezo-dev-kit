@@ -228,7 +228,7 @@
         "moduleId": "contracts",
         "resourceId": "pool-source-bundles"
       },
-      "note": "Exact source bundles for the seven pool source-reproduction review CL roots; recorded source-digest equality and bounded offline retrieval. Newly retained mapping awaits CL explanation qualified review."
+      "note": "Exact source bundles for the seven pool source-reproduction review CL roots; recorded source-digest equality and bounded offline retrieval. Qualified review of the retained mapping was accepted on 2026-09-15; original evidence and writer-support boundaries are unchanged."
     }
   ],
   "sourceArtifacts": [

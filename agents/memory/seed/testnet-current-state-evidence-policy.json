@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "testnet-current-state-evidence-policy",
+  "domain": "networks/testnet",
+  "status": "promoted",
+  "title": "Testnet archive history is outside MDK's required scope",
+  "summary": "Consult the manifest's Network scope section before creating testnet historical-evidence work or a blocker. It defines maintained mainnet evidence, current testnet operations, and excluded long-term testnet history. Use the oracle refresh guide for commands and diagnostic boundaries. Indexed evidence owns protocol facts; this entry is only a retrieval pointer.",
+  "sources": ["docs/manifest", "docs/guides/oracle-evidence-refresh.md"],
+  "related": ["ARCHITECTURE.md", "agents/skills/mdk-capability-assessment/SKILL.md"],
+  "updated": "2026-09-15"
+}

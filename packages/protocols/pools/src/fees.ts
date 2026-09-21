@@ -2,6 +2,10 @@ import { parseUint } from "@mezo-dev-kit/evm";
 import { poolRequire } from "./errors.ts";
 import { POOL_MODEL } from "./model.generated.ts";
 
+/**
+ * Wallet LP balance plus global/user fee indexes and stored credits at one coordinate. Each
+ * token accrues separately.
+ */
 export interface BasicPoolFeeInput {
   readonly balance: bigint;
   readonly index0: bigint;
@@ -11,6 +15,9 @@ export interface BasicPoolFeeInput {
   readonly claimable0: bigint;
   readonly claimable1: bigint;
 }
+/**
+ * Token-specific pending LP fee accounting retaining its input indexes and stored credits.
+ */
 export interface BasicPoolFees extends BasicPoolFeeInput {
   readonly pending0: bigint;
   readonly pending1: bigint;

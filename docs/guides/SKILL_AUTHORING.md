@@ -3,8 +3,9 @@
 This guide explains how to create, update, validate, distribute, deprecate, and
 review MDK contributor and consumer skills manually or with a coding agent. It
 applies the portable source and audience model accepted in
-[`ADR-0008`](../decisions/0008-portable-agent-skill-distribution.md) and the
-repository rules in [`AGENTS.md`](../../AGENTS.md). It does not establish a new
+[the agent documentation baseline](../manifest#human-and-agent-documentation) and
+the [contributor workflow](../../CONTRIBUTING.md). Agent-assisted work also
+follows scoped AGENTS instructions. This guide does not establish a new
 agent runtime, public CLI, vendor metadata format, or protocol authority.
 
 Canonical skill sources live under `agents/`. Discovery roots such as
@@ -22,7 +23,7 @@ Will the guidance materially improve a recurring class of agent task?
     ├── Repository-wide invariant or authority/routing rule?
     │   └── root or nearest AGENTS.md
     ├── Normative human/project standard or architecture decision?
-    │   └── docs/standard, ARCHITECTURE.md, or ADR
+    │   └── manifest, shared standard, or ARCHITECTURE.md
     ├── Package-specific command/API/behavior contract?
     │   └── owning package documentation and code/tests
     ├── Evidence-backed protocol/network/contract fact?
@@ -35,16 +36,16 @@ Will the guidance materially improve a recurring class of agent task?
         └── a narrowly scoped skill
 ```
 
-| Owner                     | Use for                                                           | Do not put there                                            |
-| ------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------- |
-| `AGENTS.md`               | Always-applicable scope, authority, routing, and safety rules     | A long task-specific tutorial or protocol database          |
-| Standard/ADR/architecture | Normative policy, durable decision, dependency direction          | Runtime-specific prompt phrasing                            |
-| Package docs/code/tests   | Implemented commands, public behavior, executable invariants      | Unimplemented plans or copied external facts                |
-| Knowledge                 | Evidence-backed facts, identities, formulas, bounded observations | Agent procedure or vendor instructions                      |
-| Guide                     | Human explanation and end-to-end workflow                         | A second normative owner when a standard exists             |
-| Task/review               | Scope, progress, verification, acceptance, pending decisions      | Permanent reusable procedure                                |
-| Memory                    | Compact supporting context and canonical pointers                 | Proof, policy, or copied skill bodies                       |
-| Skill                     | Reusable task routing, procedure, verification, stop conditions   | Canonical facts, broad policy, secrets, or an entire manual |
+| Owner                          | Use for                                                           | Do not put there                                            |
+| ------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------- |
+| `AGENTS.md`                    | Always-applicable scope, authority, routing, and safety rules     | A long task-specific tutorial or protocol database          |
+| Manifest/standard/architecture | Current policy, project decisions, dependency direction           | Runtime-specific prompt phrasing                            |
+| Package docs/code/tests        | Implemented commands, public behavior, executable invariants      | Unimplemented plans or copied external facts                |
+| Knowledge                      | Evidence-backed facts, identities, formulas, bounded observations | Agent procedure or vendor instructions                      |
+| Guide                          | Human explanation and end-to-end workflow                         | A second normative owner when a standard exists             |
+| Task/review                    | Scope, progress, verification, acceptance, pending decisions      | Permanent reusable procedure                                |
+| Memory                         | Compact supporting context and canonical pointers                 | Proof, policy, or copied skill bodies                       |
+| Skill                          | Reusable task routing, procedure, verification, stop conditions   | Canonical facts, broad policy, secrets, or an entire manual |
 
 A skill should contain guidance that changes an agent's decisions or improves
 reliability. Do not create one merely to restate generic coding ability,
@@ -74,7 +75,7 @@ workspace internals.
 The machine contract is owned by
 [`agents/catalog.json`](../../agents/catalog.json), its
 [`catalog schema`](../../agents/schema/agent-skill-catalog.schema.json), and the
-[`validator`](../../scripts/validate-agent-skills.ts). The human architecture
+[`validator`](../../scripts/agents/validate-agent-skills.ts). The human architecture
 summary lives in [`agents/README.md`](../../agents/README.md).
 
 A minimal skill is:
@@ -304,8 +305,8 @@ directory cannot remain hidden or duplicated.
 Run:
 
 ```bash
-node scripts/validate-agent-skills.ts
-node scripts/test-agent-skills.test.ts
+node scripts/agents/validate-agent-skills.ts
+node scripts/tests/test-agent-skills.test.ts
 ```
 
 The validator proves portable frontmatter, stable identity, path containment,
@@ -374,7 +375,7 @@ Exercise the current source-alpha behavior in a disposable application:
 application_root="$(mktemp -d)"
 cp agents/consumer/APP_AGENTS.template.md "$application_root/AGENTS.md"
 application_agents_digest="$(sha256sum "$application_root/AGENTS.md" | cut -d " " -f 1)"
-node scripts/materialize-agent-skills.ts \
+node scripts/agents/materialize-agent-skills.ts \
   --audience consumer \
   --output "$application_root/.agents/skills"
 ```
@@ -607,15 +608,15 @@ Review the files and observed behavior, not only the agent's explanation:
 Common commands from the repository root:
 
 ```bash
-node scripts/validate-agent-skills.ts
-node scripts/test-agent-skills.test.ts
-node scripts/materialize-agent-skills.ts \
+node scripts/agents/validate-agent-skills.ts
+node scripts/tests/test-agent-skills.test.ts
+node scripts/agents/materialize-agent-skills.ts \
   --audience contributor \
   --output <new-empty-contributor-root>
-node scripts/materialize-agent-skills.ts \
+node scripts/agents/materialize-agent-skills.ts \
   --audience consumer \
   --output <new-empty-consumer-root>
-node scripts/validate-markdown-links.ts
+node scripts/checks/validate-markdown-links.ts
 pnpm exec prettier --check <changed-files>
 git diff --check
 ```

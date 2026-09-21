@@ -168,7 +168,7 @@ export async function buildChainsPackageFile(
   const inputDigest = digest.digest("hex");
   const inputIds = resources.map((resource) => `networks:${resource.id}`);
   const output = renderGeneratedFile({
-    generator: "scripts/generate-chains-package.ts",
+    generator: "scripts/generate/generate-chains-package.ts",
     inputDescription: `networks:index; ${inputIds.join("; ")}`,
     digest: inputDigest,
     typeImport: "GeneratedChainsData",
@@ -232,7 +232,7 @@ export async function buildContractsPackageFile(
   });
   const inputDigest = digest.digest("hex");
   const output = renderGeneratedFile({
-    generator: "scripts/generate-contracts-package.ts",
+    generator: "scripts/generate/generate-contracts-package.ts",
     inputDescription:
       "contracts:index; contracts:contract-deployments; contracts:contract-abis; indexed contracts:abi.* artifacts",
     digest: inputDigest,

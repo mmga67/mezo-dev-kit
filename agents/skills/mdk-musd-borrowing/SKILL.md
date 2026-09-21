@@ -88,10 +88,10 @@ event field alone.
 
 ## Verification
 
-- `node scripts/validate-borrowing-knowledge.ts`
-- `node scripts/validate-musd-knowledge.ts`
-- `node scripts/validate-contract-knowledge.ts`
-- `node scripts/validate-network-knowledge.ts`
+- `node scripts/checks/validate-borrowing-knowledge.ts`
+- `node scripts/checks/validate-musd-knowledge.ts`
+- `node scripts/checks/validate-contract-knowledge.ts`
+- `node scripts/checks/validate-network-knowledge.ts`
 
 For evidence review, additionally pass the pinned documentation and MUSD source
 checkouts to the MUSD validator.

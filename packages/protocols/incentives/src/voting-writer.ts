@@ -15,11 +15,22 @@ import type { VotingAction, VotingForecast } from "./voting-forecast.ts";
 import { verifyVotingSettlement } from "./voting-settlement.ts";
 import type { VotingReader, VotingSnapshot } from "./voting-types.ts";
 
+/**
+ * Per-target minimum power in action order and maximum age in blocks. Reset requires an empty
+ * minimum array.
+ */
 export interface VotingBounds {
   /** Base units of voting power, in action target order; empty for reset. */
   readonly minAllocations: readonly bigint[];
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Verified NFT/target state, forecast and exact domain vote/reset call; no token approval is
+ * required.
+ */
 export interface PreparedVoting {
   readonly snapshot: Readonly<VotingSnapshot>;
   readonly action: Readonly<VotingAction>;
@@ -27,19 +38,42 @@ export interface PreparedVoting {
   readonly forecast: Readonly<VotingForecast>;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual domain allocations, receipt-block state, gas and caller-policy outcome; other voter
+ * domains remain separate.
+ */
 export interface VotingOutcome {
   readonly snapshot: Readonly<VotingSnapshot>;
   readonly forecast: Readonly<VotingForecast>;
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Confirmed matching vote/reset intent plus verified event and allocation accounting.
+ */
 export interface ReconciledVoting {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<VotingOutcome>;
 }
+/**
+ * Ordinary self-owned NFT vote/reset lifecycle with epoch/liveness checks and conservative
+ * state reconciliation.
+ */
 export interface VotingWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
@@ -47,11 +81,24 @@ export interface VotingWriter {
     readonly action: VotingAction;
     readonly bounds: VotingBounds;
   }): Promise<Readonly<PreparedVoting>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedVoting): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedVoting,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify voter allocations and reward
+   * accounting. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(prepared: PreparedVoting, record: unknown): Promise<Readonly<ReconciledVoting>>;
 }
 const codec = createAbiCodec();
@@ -94,6 +141,15 @@ function satisfies(forecast: VotingForecast, bounds: VotingBounds) {
     )
   );
 }
+/**
+ * Create explicit vote/reset operations for ordinary self-owned NFTs in one domain.
+ *
+ * @remarks
+ * No token approval is needed. Submit rechecks the owned preparation's identity,
+ * epoch, ownership, target liveness and bounds. Reconciliation checks allocations,
+ * events and receipt-block accounting while preserving other voter domains.
+ * Minimum allocations are client policy; inspect the reconciled boundsSatisfied.
+ */
 export function createVotingWriter(config: {
   readonly reader: VotingReader;
   readonly execution: ExecutionClient;

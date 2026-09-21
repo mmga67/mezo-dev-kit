@@ -5,6 +5,10 @@ export type NttObserverErrorCode =
   | "TransportFailure"
   | "InvalidEvidence"
   | "RegistryUnavailable";
+/**
+ * Typed bridges failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class NttObserverError extends Error {
   readonly code: NttObserverErrorCode;
   readonly stage: string;

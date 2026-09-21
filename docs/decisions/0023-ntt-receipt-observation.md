@@ -1,5 +1,10 @@
 # ADR-0023 — Bounded NTT receipt observation
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Events and bridge outcomes](../manifest#events-and-bridge-outcomes).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for private implementation under the full-SDK task
 - Date: 2026-09-11
 

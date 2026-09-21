@@ -1,7 +1,8 @@
 # Pool and liquidity gaps
 
-- Retained CL source and `pools-cl-position-calls` add explanatory scope whose
-  qualified review remains pending. Existing accepted pool evidence is unchanged.
+- Qualified review of retained CL source and `pools-cl-position-calls` was
+  accepted on 2026-09-15. This explanatory scope preserves the original
+  evidence coordinates and enables no writer.
 
 - pool evidence review qualified Level 3 review accepted the module and seven CL Contract
   identities/ABIs.

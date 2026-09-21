@@ -1,5 +1,10 @@
 # ADR-0021 — Incentives locks and voting
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Protocol execution boundaries](../manifest#protocol-execution-boundaries).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for private implementation under the full-SDK task
 - Date: 2026-09-08
 

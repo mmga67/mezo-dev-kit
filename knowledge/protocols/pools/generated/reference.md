@@ -43,7 +43,7 @@
 
 ## CL mint call semantics
 
-- Review: `pending-qualified-review`; support: `none`. Additional explanatory scope under CL explanation; no writer is enabled.
+- Review: `accepted`; support: `none`. Additional explanatory scope under CL explanation; no writer is enabled.
 - When mint.params.sqrtPriceX96 is zero, mint skips the factory.createPool branch and computes the existing pool address before adding liquidity. Zero does not initialize a missing pool.
 - A nonzero mint.params.sqrtPriceX96 calls factory.createPool with the token pair, tick spacing and initial square-root price before adding liquidity.
 - CLFactory.createPool requires the pool mapping to be zero. Passing the current pool price as a nonzero mint.params.sqrtPriceX96 for an existing pool therefore reverts; this parameter is not a slippage limit.

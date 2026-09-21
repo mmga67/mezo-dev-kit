@@ -44,6 +44,12 @@ function signed(value: unknown, bits: number): bigint {
   );
   return value;
 }
+/**
+ * Normalize and sort distinct nonzero tokens with a validated numeric tick spacing.
+ *
+ * @remarks
+ * A well-formed key does not prove factory registration, pool existence or liquidity.
+ */
 export function sortCLPoolKey(input: {
   readonly tokenA: `0x${string}`;
   readonly tokenB: `0x${string}`;
@@ -59,6 +65,15 @@ export function sortCLPoolKey(input: {
     tickSpacing: input.tickSpacing,
   });
 }
+/**
+ * Create bounded CL pool, tick and NFT-position inspection at one coordinate.
+ *
+ * @remarks
+ * Reads verify pool/factory/manager/gauge topology and exact runtime identities.
+ * At most 16 supplied NFT IDs and 32 supplied ticks are accepted. Custody and
+ * beneficial depositor remain distinct; absent membership leaves depositor unknown.
+ * Inspect writeCompatible before preparing a writer action.
+ */
 export function createCLPoolReader(config: CLPoolReaderConfig): Readonly<CLPoolReader> {
   poolRequire(config.networkId === "mezo-mainnet", "InvalidInput", "CL pools require mainnet");
   const { registry, transport } = config,

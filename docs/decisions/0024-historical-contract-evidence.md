@@ -1,5 +1,11 @@
 # ADR-0024 — Historical contract evidence and Native delivery observation
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Contract identity and provenance](../manifest#contract-identity-and-provenance).
+> See also [Events and bridge outcomes](../manifest#events-and-bridge-outcomes).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for private implementation
 - Date: 2026-09-12
 

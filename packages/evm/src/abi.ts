@@ -73,6 +73,15 @@ function scalar(type: string, value: unknown): AbiScalar {
   return normalized;
 }
 
+/**
+ * Encode an explicit function ABI and positional scalar arguments into calldata.
+ *
+ * @remarks
+ * This bounded codec rejects unsupported ABI types; use createAbiCodec for the
+ * supported array/tuple surface. The ABI's provenance and target identity remain
+ * with the caller's contract/domain owner.
+ * @throws EvmValueError - InvalidAbi when the entry or arguments cannot be encoded.
+ */
 export function encodeFunctionData(entry: unknown, args: readonly AbiScalar[] = []): HexData {
   const abi = definition(entry);
   if (!Array.isArray(args) || args.length !== abi.inputs.length)

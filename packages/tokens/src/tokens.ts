@@ -15,6 +15,10 @@ import { createAbiCodec, parseAddress, parseHash32, parseUint } from "@mezo-dev-
 
 export type TokenErrorCode =
   "InvalidInput" | "StaleAllowance" | "ResetRequired" | "ReconciliationMismatch";
+/**
+ * Typed tokens failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class TokenError extends Error {
   readonly code: TokenErrorCode;
   constructor(code: TokenErrorCode, message: string) {
@@ -23,35 +27,79 @@ export class TokenError extends Error {
     this.code = code;
   }
 }
+/**
+ * Protocol-verified token address plus registry anchor and optional discovered role. ERC-20
+ * shape alone is not token identity.
+ */
 export interface TokenTarget {
   readonly contractId: ContractId;
   readonly address: `0x${string}`;
   readonly targetRole?: string;
 }
+/**
+ * Exact token/account/spender read at one coordinate; the domain supplies the verified target.
+ */
 export interface TokenReadInput {
   readonly target: TokenTarget;
   readonly account: `0x${string}`;
   readonly spender: `0x${string}`;
   readonly coordinate: ReadCoordinate;
 }
+/**
+ * Token balance and allowance in base units, with decoded decimal precision. Both values belong
+ * to the same account/spender/coordinate.
+ */
 export interface TokenSnapshot extends TokenReadInput {
   readonly balance: bigint;
+  /**
+   * Current total allowance for the named spender in this token's base units.
+   */
   readonly allowance: bigint;
+  /**
+   * Decoded precision from 0 through 255; this is configuration, not a token amount.
+   */
   readonly decimals: bigint;
 }
+/**
+ * Anchored balance, allowance and precision reads; required failures reject rather than
+ * yielding zero.
+ */
 export interface TokenReader {
+  /**
+   * Read balance, allowance and precision for the exact verified token/account/spender
+   * coordinate; failures do not become zero.
+   */
   read(input: TokenReadInput): Promise<Readonly<TokenSnapshot>>;
 }
+/**
+ * Pure allowance decision. Reset is a separate zero-approval transaction before a later exact
+ * positive approval.
+ */
 export type ApprovalPlan =
   | Readonly<{ kind: "sufficient" }>
   | Readonly<{ kind: "approve"; amount: bigint }>
   | Readonly<{ kind: "reset"; amount: 0n; requiredAmount: bigint }>;
+/**
+ * Observed allowance, chosen new allowance and exact call. Amount is the target allowance, not
+ * an increment.
+ */
 export interface PreparedApproval {
   readonly before: Readonly<TokenSnapshot>;
+  /**
+   * Exact resulting allowance; zero explicitly revokes/resets it.
+   */
   readonly amount: bigint;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Explicit reset/approval lifecycle; successful approval does not execute the subsequent
+ * protocol action.
+ */
 export interface ApprovalWriter {
+  /**
+   * Read the exact allowance and reject a mismatch with expectedAllowance. Amount is the new
+   * total allowance; nonzero-to-nonzero changes require a separate zero reset.
+   */
   prepare(
     input: TokenReadInput & {
       readonly operationId: string;
@@ -59,11 +107,24 @@ export interface ApprovalWriter {
       readonly expectedAllowance: bigint;
     },
   ): Promise<Readonly<PreparedApproval>>;
+  /**
+   * Simulate the exact owned approve/reset call without submitting; preserve the result with
+   * this preparation.
+   */
   simulate(prepared: PreparedApproval): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedApproval,
     simulation: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify the Approval event and actual
+   * allowance. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedApproval,
     record: unknown,
@@ -76,6 +137,10 @@ export interface ApprovalWriter {
     }>
   >;
 }
+/**
+ * One receipt-owned token transfer in that token's base units; not a complete wallet balance
+ * reconciliation.
+ */
 export interface TokenTransfer {
   readonly from: `0x${string}`;
   readonly to: `0x${string}`;
@@ -94,6 +159,15 @@ function nonzero(value: unknown): `0x${string}` {
     throw new TokenError("InvalidInput", "zero token/account/spender");
   return address;
 }
+/**
+ * Plan an exact ERC-20 allowance change without sending a transaction.
+ *
+ * @param input - Current allowance and required spend in the same token's base units.
+ * @returns Sufficient allowance, an exact positive approval, or a zero-reset step.
+ * @remarks
+ * A nonzero insufficient allowance requires reset, confirmation and a fresh read
+ * before the subsequent positive approval. No unlimited approval is inferred.
+ */
 export function planApproval(input: {
   readonly allowance: bigint;
   readonly requiredAmount: bigint;
@@ -108,6 +182,14 @@ export function planApproval(input: {
         : { kind: "reset", amount: 0n, requiredAmount },
   );
 }
+/**
+ * Create a token balance, allowance and precision reader at an explicit coordinate.
+ *
+ * @remarks
+ * The owning protocol supplies the verified token target and spender. Reads validate
+ * chain/hash consistency but do not discover or prove a token's economic identity.
+ * Required RPC/decoding failures reject instead of becoming zero balances.
+ */
 export function createTokenReader(config: {
   readonly transport: RpcTransport;
 }): Readonly<TokenReader> {
@@ -168,6 +250,15 @@ export function createTokenReader(config: {
     },
   });
 }
+/**
+ * Create separate ERC-20 reset/approval operations over Core execution.
+ *
+ * @remarks
+ * Preparation checks the expected allowance. Submit requires this writer's matching
+ * preparation/simulation and rechecks allowance before signing. Reconciliation
+ * matches the Approval event and receipt-block allowance. Approving does not
+ * execute the intended protocol action; read and prepare that action again.
+ */
 export function createApprovalWriter(config: {
   readonly reader: TokenReader;
   readonly execution: ExecutionClient;
@@ -270,6 +361,14 @@ export function createApprovalWriter(config: {
     },
   } satisfies ApprovalWriter);
 }
+/**
+ * Decode a token's Transfer events after validating receipt/log ownership.
+ *
+ * @param receipt - The receipt whose transaction/block identities must match the logs.
+ * @param token - Exact token emitter; unrelated event types are ignored.
+ * @returns Normalized addresses and token-base-unit amounts. Transfers alone do not
+ * prove a protocol action or an account's complete balance change.
+ */
 export function decodeTokenTransfers(
   receipt: ExecutionReceipt,
   token: `0x${string}`,

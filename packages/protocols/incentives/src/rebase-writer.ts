@@ -14,40 +14,88 @@ import { forecastRebaseClaim } from "./rebase-forecast.ts";
 import type { RebaseForecast } from "./rebase-forecast.ts";
 import type { RebaseReader, RebaseSnapshot } from "./rebase-reader.ts";
 import { verifyRebaseSettlement } from "./rebase-settlement.ts";
+/**
+ * Minimum MEZO base-unit claim and maximum preparation age in blocks; the amount minimum is
+ * client policy.
+ */
 export interface RebaseBounds {
   readonly minAmount: bigint;
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Verified distributor cursor, forecast, bounds and exact claim call owned by its writer
+ * instance.
+ */
 export interface PreparedRebase {
   readonly snapshot: Readonly<RebaseSnapshot>;
   readonly forecast: Readonly<RebaseForecast>;
   readonly bounds: Readonly<RebaseBounds>;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual bounded rebase claim, receipt-block state and gas; cursor progress can occur without a
+ * positive token payout.
+ */
 export interface RebaseOutcome {
   readonly snapshot: Readonly<RebaseSnapshot>;
   readonly forecast: Readonly<RebaseForecast>;
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Confirmed matching rebase claim plus verified cursor, payout and lock/custody accounting.
+ */
 export interface ReconciledRebase {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<RebaseOutcome>;
 }
+/**
+ * One explicit bounded claim lifecycle; additional windows and minter upkeep are separate
+ * operations.
+ */
 export interface RebaseWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly tokenId: bigint;
     readonly bounds: RebaseBounds;
   }): Promise<Readonly<PreparedRebase>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedRebase): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedRebase,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify bounded rebase cursor and
+   * locked/liquid payout. Required evidence mismatches can reject even when the EVM receipt
+   * succeeded.
+   */
   reconcile(prepared: PreparedRebase, record: unknown): Promise<Readonly<ReconciledRebase>>;
 }
 const codec = createAbiCodec();
@@ -65,6 +113,15 @@ function validateBounds(bounds: RebaseBounds) {
   parseUint(bounds.minAmount);
   parseUint(bounds.maxBlockAge);
 }
+/**
+ * Create one bounded veMEZO rebase claim with explicit minimum and freshness bounds.
+ *
+ * @remarks
+ * Simulation verifies the claim return. Submit rechecks the cursor, epoch, ownership
+ * and locked/liquid disposition. Reconciliation checks payout, cursor progression,
+ * lock/custody changes and gas. Additional claim windows require separate operations;
+ * this client neither schedules them nor performs minter upkeep.
+ */
 export function createRebaseWriter(config: {
   readonly reader: RebaseReader;
   readonly execution: ExecutionClient;

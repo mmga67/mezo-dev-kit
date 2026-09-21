@@ -8,6 +8,13 @@ import type { LendingAbiValue, LendingReader, LendingReaderConfig } from "./type
 import { LENDING_MODEL } from "./model.generated.ts";
 import { LendingReadError } from "./errors.ts";
 
+/**
+ * Compose the lending reader with MDK's ABI and Core RPC adapters.
+ *
+ * @param config - Explicit mainnet identity, Contracts registry and RpcTransport.
+ * @returns The same LendingReader contract as createLendingReader; the application
+ * still owns endpoint selection, request policy and the maximum accepted price age.
+ */
 export function createLendingRpcReader(config: {
   readonly networkId: LendingReaderConfig["networkId"];
   readonly registry: ContractRegistry;

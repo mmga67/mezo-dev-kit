@@ -1,126 +1,53 @@
-# MDK Core
+# Core reads and execution
 
-See the [SDK reference](REFERENCE.md) for client methods, transport ports, results, errors, and examples.
+`@mezo-dev-kit/core` coordinates contract reads, explicit transaction execution, and bounded event scans. It checks shared chain and transaction conditions while protocol packages interpret values and outcomes.
 
-`@mezo-dev-kit/core` is the private, provider-neutral read and execution coordination layer
-for the GitHub source alpha. Its built entrypoint exposes an injected read
-transport, exact chain assertion, accepted Contracts resolution, one-block
-multi-read consistency, and typed failure semantics. It is not published to a
-package registry and `0.0.0-private` is not a compatibility promise.
+## Start here
 
-## Supported read boundary
+Build the workspace with the [SDK setup guide](../../docs/guides/SDK_DEVELOPMENT.md), then follow [the Core client example](../../examples/core/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-```ts
-import { getNetwork } from "@mezo-dev-kit/chains";
-import { createContractRegistry } from "@mezo-dev-kit/contracts";
-import { createCoreReadClient } from "@mezo-dev-kit/core";
+## Choose a client
 
-const client = createCoreReadClient({
-  network: getNetwork("mezo-mainnet"),
-  registry: createContractRegistry(),
-  transport: myInjectedTransport,
-});
+| Task                                                         | Start with                                               |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| Read several contracts at one block                          | `createCoreReadClient`                                   |
+| Prepare, simulate, submit, and track an explicit transaction | `createExecutionClient`                                  |
+| Adapt an application-owned RPC request function              | `createRpcTransport` and, for signing, `createRpcSigner` |
+| Scan a bounded event range and resume from a checkpoint      | `createEventScanner`                                     |
 
-const result = await client.readCoherent({
-  calls: [
-    { id: "required", contractId: "musd.savings-rate", data: "0x1234" },
-    {
-      id: "optional",
-      contractId: "musd.token",
-      data: "0xabcd",
-      required: false,
-    },
-  ],
-});
-```
+Applications supply the transport and its timeouts/cancellation policy.
+Execution also requires an explicit signer, confirmation policy, and submission
+store. The [transport contract](REFERENCE.md#implementing-the-transport) explains
+how every request preserves its chain, block number, and hash.
 
-The client asserts the transport's chain ID, obtains or accepts one exact
-`bigint` block number, verifies the returned 32-byte block hash, resolves every
-contract at that coordinate, and sends the same network/block/hash coordinate
-with each transport request. A required transport failure rejects the logical
-read with `PartialReadFailure`. An optional failure returns a discriminated
-`unavailable` item containing a serialized `ProviderFailure`; it never becomes
-zero, `false`, or empty protocol state.
+## Handle results explicitly
 
-`CoreReadError` carries a stable code, stage, retry hint, structured context,
-and preserved cause. Inputs are validated at runtime even though the public
-boundary is typed. The transport result remains `unknown`: an owning protocol
-module must validate and decode its own values and units.
+Required read failures reject the logical read. Optional failures return
+`unavailable`; raw values remain `unknown` until the owning protocol decodes
+and validates them. Never display an unavailable value as zero.
 
-The public codes are `InvalidReadInput`, `InvalidTransportResult`,
-`ChainMismatch`, `ProviderFailure`, and `PartialReadFailure`. Contract
-resolution may also throw the typed `ContractRegistryError` owned by the
-Contracts package; Core does not erase that domain failure.
+A transaction hash starts tracking. Receipt confirmation and protocol
+reconciliation establish the outcome. [Token approvals](../tokens/README.md)
+are separate transactions. Applications retain intent and submission records
+for recovery; an uncertain response is not a reason to repeat a whole workflow.
 
-The read API remains unchanged. The package also exports createExecutionClient,
-createRpcTransport, createRpcSigner, createMemorySubmissionStore,
-parseSubmissionRecord and ExecutionError; see the SDK reference for the complete
-execution contract.
+## Scope
 
-## Injection and network requirements
+Core is a private workspace package. Execution currently supports explicitly
+selected EOAs without delegated code; smart-account integration is outside its
+API. It selects no provider, stores no credentials, and supplies no wallet UI.
+Protocol packages retain their own verification and release boundaries.
 
-Core depends on the public EVM, Chains, and Contracts entrypoints. EVM owns
-shared byte/hash validation; Core retains its read stages and error codes. It does not
-choose an RPC URL, import a provider library, access a wallet, or keep a hidden
-global client. A consumer supplies `CoreReadTransport`, whose four methods are
-`getChainId`, `getBlockNumber`, `getBlock`, and `read`.
+[Event scan coverage](REFERENCE.md#bounded-event-scanning) describes the checked
+query range. Applications own checkpoint persistence; a complete scan does not
+prove a protocol action or cross-chain delivery completed.
 
-The source-alpha development baseline is Node 24 and pnpm 11. From a checkout:
+## Development
+
+From the repository root:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm build
-pnpm --filter @mezo-dev-kit/core test
-pnpm --filter @mezo-dev-kit/core test:shuffle
+pnpm --filter @mezo-dev-kit/core check
 ```
 
-The repository's built-boundary gate imports all four foundational packages
-through their export maps, typechecks and runs the focused example, rejects a
-Core deep import, checks a missing-artifact failure, and verifies that writer
-proof files do not leak into `packages/core/dist`.
-
-## Compatibility with the transaction proof
-
-The original transaction proof remains private with its model tests. The new
-additive execution API uses current Chains, Contracts and EVM types and does
-not expose the proof's old interfaces. ADR-0015 owns the direct borrowing
-implementation scope; qualified release review remains outstanding.
-
-The proof's generated state/error tables still drift-check against stable transaction
-knowledge with:
-
-```sh
-node scripts/generate-core-transaction-model.ts --check
-```
-
-## Limitations
-
-- Core encodes no calldata and validates no protocol return shape; protocol
-  packages own those semantics.
-- Block/hash pinning expresses the requested consistency contract. The injected
-  adapter is responsible for honoring it and applications must select a
-  provider with the required historical-read capability.
-- The application supplies signer requests, storage, timeouts, polling policy
-  and consent. Core selects no RPC URL and stores no credentials.
-- Execution supports explicitly selected EOAs without delegated code.
-  Approval workflows and smart-account integrations are not implemented.
-- Borrowing is a private implementation pending qualified protocol review.
-- A transport success is only an available raw read value, not proof of
-  protocol correctness or current live-chain support.
-
-## Inspect this checkout
-
-Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
-alongside this package's scope and injected-input contract. Build before
-interpreting a missing artifact as an absent API. The [usage example](../../examples/foundational-readonly/README.md)
-exercises the workspace boundary. Reassess these owners after checkout changes;
-private versions alone do not identify capability changes. Follow the
-[capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
-when the public boundary, required inputs, or evidence dependencies change.
-
-Core also exposes `createEventScanner` for bounded registered-contract raw log
-queries. Explicit coverage, source/provider identity, checkpoint candidates and
-reorg anchors are described in the [SDK reference](REFERENCE.md#bounded-event-scanning).
-The caller owns capability evidence, whole-invocation cancellation and atomic
-persistence of rows, coverage and checkpoints. Complete query coverage does not
-prove protocol success or destination delivery.
+See the [contributor guide](../../CONTRIBUTING.md) for workspace setup and review.

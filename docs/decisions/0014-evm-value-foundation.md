@@ -1,5 +1,10 @@
 # ADR-0014 — Shared EVM value foundation
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Composable packages](../manifest#composable-packages).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for implementation
 - Date: 2026-09-08
 

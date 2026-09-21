@@ -110,9 +110,9 @@
     }
   ],
   "checks": [
-    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module troubleshooting"},
-    {"id": "troubleshooting-semantics", "type": "semantic", "command": "node scripts/validate-troubleshooting-knowledge.ts"},
-    {"id": "troubleshooting-reference-drift", "type": "drift", "command": "node scripts/generate-troubleshooting-reference.ts --check"}
+    {"id": "common-structure", "type": "structural", "command": "node scripts/checks/validate-knowledge-structure.ts --module troubleshooting"},
+    {"id": "troubleshooting-semantics", "type": "semantic", "command": "node scripts/checks/validate-troubleshooting-knowledge.ts"},
+    {"id": "troubleshooting-reference-drift", "type": "drift", "command": "node scripts/generate/generate-troubleshooting-reference.ts --check"}
   ],
   "extensions": {
     "catalogStatus": "verified-versioned",

@@ -1,7 +1,7 @@
 # Manifest improvement log
 
 Every material improvement to `docs/manifest` is recorded here. The manifest
-is versioned independently from packages and the v0.4 knowledge-layout
+is versioned independently from packages and the knowledge-layout
 contract.
 
 ## Versioning policy
@@ -16,6 +16,26 @@ contract.
 Every manifest edit must update its version and add a dated entry describing
 the improvement. A task may bump the version more than once when distinct
 reviewable improvements land.
+
+## 1.1.0 — 2026-09-16
+
+- Add the private Native source preparation and current delivery boundary for
+  the two initial routes, retaining separate historical and native execution evidence.
+- Require explicit native authorization, honest destination fee estimates and
+  governance recovery for confirmed failed payouts; preserve qualified release review.
+
+## 1.0.0 — 2026-09-15
+
+- Adopt the manifest as the current project baseline and define its delegated
+  architecture, policy, evidence, and API owners.
+- Consolidate the operative rules from the 27 historical decisions by topic,
+  including private execution, historical observation, current testnet scope,
+  shared branch history, and standalone project tooling.
+- Preserve decision history and scoped acceptance while retiring superseded
+  bootstrap instructions from current policy.
+- Establish human documentation and reference conventions. Package versions,
+  knowledge schema compatibility, evidence dates, and release gates retain
+  their independent owners.
 
 ## 0.6.1 — 2026-09-07
 

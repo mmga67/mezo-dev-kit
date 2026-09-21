@@ -1,35 +1,38 @@
 # Institutional MUSD debt
 
-Private read-only Enclave and institutional debt SDK. The
-[SDK reference](REFERENCE.md) documents every exported method and type.
+`@mezo-dev-kit/musd-institutional-debt` reads institutional MUSD positions and Enclave roles and calculates fees, repayment, and health. Use it to inspect this debt model separately from classic MUSD borrower positions.
 
-`createInstitutionalReader` verifies mainnet debt-manager/Enclave proxy generations,
-veBTC and MUSD dependencies, requested position debt and pledged collateral,
-independent aggregate fees, and receipt-free block/hash coherence. It reads up to
-16 caller-selected position IDs, or up to 32 exact target-selector pairs for one
-Enclave generation. Recorded UTXOs are optional and explicitly bounded.
+## Start here
 
-Pure helpers preserve the deployed year length, basis-point rates, separate fee
-floors, fee-first repayment, aggregate rounding clamp, strict health thresholds
-and zero-debt ratio sentinel. This accounting stays separate from classic troves,
-Recovery Mode, Savings, bridge delivery and gauge rewards.
+Build the workspace with the [SDK setup guide](../../../docs/guides/SDK_DEVELOPMENT.md), then follow [the institutional debt walkthrough](../../../examples/institutional-debt/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-A failed optional protocol price call leaves verified debt/collateral available
-and marks price/health unavailable. Malformed data, required read failures,
-identity changes or accounting disagreement reject the snapshot. A current role
-or allowlisted selector is not execution authorization or simulation. UTXO records
-do not establish Bitcoin unspent-state, off-chain custody or a backing ratio.
+## Read a bounded snapshot
 
-No partner writer or liquidation operation is implemented. The package remains
-private Node source; qualified review and release remain outstanding. Source and
-runtime evidence are owned by the indexed institutional and Contracts modules.
+`createInstitutionalReader` verifies the recorded mainnet contract generations
+and returns selected positions or exact target-selector pairs at one block.
+The [API reference](REFERENCE.md) defines selection limits and optional UTXO data.
+Applications provide a transport and choose the account/position scope.
+
+A failed optional price read preserves available debt and collateral while
+marking health unavailable. Required read, identity, or accounting failures
+reject the snapshot. A selected subset is not a complete institutional inventory.
+
+## Scope
+
+This private Node package provides reads and pure calculations; it implements
+no partner writer or liquidation operation. Qualified review and release remain
+outstanding. Enclave role membership does not authorize execution, and recorded
+UTXOs do not prove Bitcoin custody, unspent state, or a backing ratio.
+
+See [institutional debt knowledge](../../../knowledge/protocols/musd/institutional-debt/README.md)
+for the separate position, fee, and custody evidence boundaries.
+
+## Development
+
+From the repository root:
 
 ```sh
 pnpm --filter @mezo-dev-kit/musd-institutional-debt check
-pnpm build
-node packages/protocols/musd-institutional-debt/test/live.ts "$READ_ONLY_MAINNET_RPC"
 ```
 
-The opt-in probe calls only read methods, verifies positions and both Enclave
-generations at one block, and exercises optional-price failure and runtime
-rejection through explicit transport fixtures. Default tests stay offline.
+See the [contributor guide](../../../CONTRIBUTING.md) for workspace setup and review.

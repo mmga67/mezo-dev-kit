@@ -3,21 +3,47 @@ import { calculateLendingHealth, lendingToAssets, lendingToShares } from "./acco
 import { LENDING_MODEL } from "./model.generated.ts";
 import type { LendingSnapshot, LendingReadValue } from "./types.ts";
 
+/**
+ * Exactly one positive asset amount or share amount. Select the branch intentionally to
+ * determine conversion rounding.
+ */
 export type LendingQuantity =
   Readonly<{ assets: bigint; shares?: never }> | Readonly<{ shares: bigint; assets?: never }>;
+/**
+ * Direct market intent. Loan actions select assets or shares; collateral actions use BTC base
+ * units.
+ */
 export type LendingAction =
   | Readonly<{ kind: "supply" | "withdraw" | "borrow" | "repay"; quantity: LendingQuantity }>
   | Readonly<{ kind: "supply-collateral"; assets: bigint }>
   | Readonly<{ kind: "withdraw-collateral"; assets: bigint }>;
+/**
+ * Asset/share conversion, debt headroom and age policy. Asset bounds follow the selected action
+ * token; timestamps use seconds and ages use blocks.
+ */
 export interface LendingBounds {
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
+  /**
+   * Maximum accepted oracle publication age in seconds, under the owning reader's source
+   * policy.
+   */
   readonly maxPriceAgeSeconds: bigint;
   readonly maxAssets: bigint;
   readonly minAssets: bigint;
   readonly maxShares: bigint;
   readonly minShares: bigint;
+  /**
+   * Minimum remaining borrowing power in loan-asset base units.
+   */
   readonly minBorrowHeadroom: bigint;
 }
+/**
+ * Expected action quantities and resulting shares/collateral. Debt may remain null when the
+ * action does not require its evaluation.
+ */
 export interface LendingForecast {
   readonly assets: bigint;
   readonly shares: bigint;
@@ -38,6 +64,10 @@ export type LendingWriteErrorCode =
   | "ApprovalRequired"
   | "StaleState"
   | "ReconciliationMismatch";
+/**
+ * Typed musdc-lending failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class LendingWriteError extends Error {
   readonly code: LendingWriteErrorCode;
   constructor(code: LendingWriteErrorCode, message: string) {
@@ -60,6 +90,16 @@ export function lendingQuantity(input: LendingQuantity): readonly [bigint, bigin
     throw new LendingWriteError("InvalidInput", "positive quantity required");
   return Object.freeze([assets, shares]);
 }
+/**
+ * Forecast a direct market action from an explicit snapshot and caller bounds.
+ *
+ * @remarks
+ * Select assets or shares exclusively for loan-token operations. Conversion uses
+ * the operation's rounding direction; collateral quantities are BTC base units.
+ * Required unavailable state, inadequate funding/liquidity and health/bound failures
+ * reject. This pure forecast neither refreshes the snapshot nor guarantees execution.
+ * @returns Expected assets/shares, resulting position and approval requirement.
+ */
 export function forecastLending(
   snapshot: LendingSnapshot,
   action: LendingAction,

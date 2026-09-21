@@ -23,7 +23,15 @@ function requireRule(condition: boolean, message: string): void {
   if (!condition) throw new BorrowingError("IneligibleOperation", message);
 }
 
-/** Pure forecast at the snapshot timestamp. It is not an execution-time price or fee guarantee. */
+/**
+ * Forecast an operation at the supplied snapshot timestamp and check caller bounds.
+ *
+ * @remarks
+ * Uses integer base units and operation-specific eligibility, including recovery
+ * mode, minimum debt, stored capacity and fee/rate rules. It performs no RPC and
+ * does not turn preflight price/fee checks into execution-time guarantees.
+ * @throws BorrowingError - Invalid state/input, ineligible operation or exceeded bounds.
+ */
 export function forecastBorrowing(
   snapshot: BorrowingSnapshot,
   action: BorrowingAction,

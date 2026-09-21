@@ -16,7 +16,7 @@
     }
   },
   "scripts": {
-    "build": "node ../../scripts/clean-package-dist.ts swaps && tsc --project tsconfig.build.json",
+    "build": "node ../../scripts/workspace/clean-package-dist.ts swaps && tsc --project tsconfig.build.json",
     "check": "pnpm format:check && pnpm typecheck && pnpm lint && pnpm build && pnpm test",
     "format:check": "prettier --check src test examples vitest.config.ts package.json tsconfig.json tsconfig.build.json",
     "lint": "eslint src test examples vitest.config.ts",
@@ -35,5 +35,11 @@
   },
   "devDependencies": {
     "vitest": "4.1.11"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "REFERENCE.md",
+    "LICENSE"
+  ]
 }

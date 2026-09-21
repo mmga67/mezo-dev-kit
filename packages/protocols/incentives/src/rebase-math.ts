@@ -1,6 +1,10 @@
 import { parseUint } from "@mezo-dev-kit/evm";
 import { incentiveRequire } from "./escrow-errors.ts";
 import { INCENTIVES_MODEL } from "./model.generated.ts";
+/**
+ * Distributor cursor state in Unix seconds. Missing first user point is null; it is not
+ * timestamp zero.
+ */
 export interface RebaseCursorInput {
   readonly startTime: bigint;
   readonly lastTokenTime: bigint;
@@ -8,12 +12,20 @@ export interface RebaseCursorInput {
   /** Null when the escrow has no user point; otherwise its first checkpoint timestamp. */
   readonly firstUserTimestamp: bigint | null;
 }
+/**
+ * One completed protocol week with MEZO allocation and user/total voting power, used in bounded
+ * integer claim accounting.
+ */
 export interface RebasePeriod {
   readonly week: bigint;
   readonly votingPower: bigint;
   readonly totalVotingPower: bigint;
   readonly allocated: bigint;
 }
+/**
+ * One bounded claim amount and next cursor. hasMore means another explicit window remains;
+ * periods is a count, not full-history coverage.
+ */
 export interface RebaseClaim {
   readonly amount: bigint;
   readonly epochStart: bigint;

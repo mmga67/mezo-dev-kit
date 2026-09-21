@@ -1,0 +1,596 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Generated from src/contracts.ts by scripts/generate/generate-cli-schemas.ts; semantic validation belongs to the public parsers.",
+  "$ref": "#/$defs/RecoveryJournal",
+  "$defs": {
+    "ProjectConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formatVersion": {
+          "const": 1
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "skillsDirectory": {
+          "anyOf": [
+            {
+              "const": ".agents/skills"
+            },
+            {
+              "const": ".claude/skills"
+            }
+          ]
+        },
+        "references": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "anyOf": [
+                {
+                  "const": "selected"
+                },
+                {
+                  "const": "all"
+                }
+              ]
+            }
+          },
+          "required": ["mode"]
+        }
+      },
+      "required": ["formatVersion", "domains", "skillsDirectory", "references"]
+    },
+    "FileDigest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 33554432
+        }
+      },
+      "required": ["path", "digest", "size"]
+    },
+    "PackageArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "manifestDigest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "files": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/FileDigest"
+          }
+        }
+      },
+      "required": ["name", "version", "manifestDigest", "files"]
+    },
+    "ReferenceResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 33554432
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "searchTerms": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "sourcePath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "sourceDigest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "requires": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "const": "api"
+            },
+            {
+              "const": "knowledge"
+            },
+            {
+              "const": "guide"
+            }
+          ]
+        },
+        "moduleId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resourceId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recordIds": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "reviewAfter": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        }
+      },
+      "required": [
+        "path",
+        "digest",
+        "size",
+        "id",
+        "title",
+        "searchTerms",
+        "sourcePath",
+        "sourceDigest",
+        "domains",
+        "requires",
+        "kind",
+        "moduleId",
+        "resourceId",
+        "recordIds",
+        "reviewAfter",
+        "limitations"
+      ]
+    },
+    "ConsumerSkill": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "files": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/FileDigest"
+          }
+        }
+      },
+      "required": ["name", "domains", "files"]
+    },
+    "ConsumerDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "packages": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        }
+      },
+      "required": ["id", "packages", "resources"]
+    },
+    "ReferenceBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formatVersion": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "revision": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 16384
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "inputsDigest": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            }
+          },
+          "required": ["revision", "inputsDigest"]
+        },
+        "packages": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/PackageArtifact"
+          }
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ConsumerDomain"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ConsumerSkill"
+          }
+        },
+        "template": {
+          "$ref": "#/$defs/FileDigest"
+        },
+        "starter": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/FileDigest"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/ReferenceResource"
+          }
+        },
+        "exclusions": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              },
+              "sourcePath": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              }
+            },
+            "required": ["id", "sourcePath", "reason"]
+          }
+        },
+        "remoteBase": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 16384
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "formatVersion",
+        "id",
+        "source",
+        "packages",
+        "domains",
+        "skills",
+        "template",
+        "starter",
+        "resources",
+        "exclusions",
+        "remoteBase"
+      ]
+    },
+    "GuidanceLock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formatVersion": {
+          "const": 1
+        },
+        "bundleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "config": {
+          "$ref": "#/$defs/ProjectConfig"
+        },
+        "files": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/FileDigest"
+          }
+        }
+      },
+      "required": ["formatVersion", "bundleId", "config", "files"]
+    },
+    "RecoveryJournal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formatVersion": {
+          "const": 1
+        },
+        "pid": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "changes": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 16384
+              },
+              "before": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 33554432,
+                    "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+                  }
+                ]
+              },
+              "after": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 33554432,
+                    "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+                  }
+                ]
+              }
+            },
+            "required": ["path", "before", "after"]
+          }
+        }
+      },
+      "required": ["formatVersion", "pid", "changes"]
+    },
+    "PackedArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "digest": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 33554432
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        }
+      },
+      "required": ["path", "digest", "size", "name", "version"]
+    },
+    "ArtifactSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "formatVersion": {
+          "const": 1
+        },
+        "bundleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "packages": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/PackedArtifact"
+          }
+        }
+      },
+      "required": ["formatVersion", "bundleId", "packages"]
+    }
+  }
+}

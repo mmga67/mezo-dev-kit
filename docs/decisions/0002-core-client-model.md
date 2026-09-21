@@ -1,5 +1,10 @@
 # ADR-0002 — Core Client Model
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Shared client and transaction lifecycle](../manifest#shared-client-and-transaction-lifecycle).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-18
 

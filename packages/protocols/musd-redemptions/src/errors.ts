@@ -7,6 +7,10 @@ export type RedemptionErrorCode =
   | "SimulationFailed"
   | "BoundExceeded"
   | "ReconciliationMismatch";
+/**
+ * Typed musd-redemptions failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class RedemptionError extends Error {
   readonly code: RedemptionErrorCode;
   constructor(code: RedemptionErrorCode, message: string) {

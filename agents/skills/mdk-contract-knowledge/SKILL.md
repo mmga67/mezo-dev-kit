@@ -11,7 +11,8 @@ description: Resolve or maintain contract IDs, deployments, proxy history, ABIs 
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/contracts/README.md` and `index.json`.
+3. Load missing relevant orientation/index context from `knowledge/contracts/`;
+   reuse unchanged material already retrieved.
 4. Load only the deployment, ABI, artifact, source, evidence, and candidate
    resources needed for the selected contract and network.
 
@@ -22,6 +23,13 @@ records first. Download or reproduce source only for a specific unresolved
 behavior, provenance conflict, or verification task. Reuse an existing indexed
 source capture when it answers that question. Live RPC checks belong to current
 state claims and transaction preparation, not every description of a workflow.
+
+Use `pnpm context find/read/abi` to discover record IDs, select fields and inspect
+the exact canonical ABI before calling a method or deriving a signature. Use
+`links` for logical evidence references and `source` to list/select retained
+source paths. The [command manual](../../../scripts/agents/CONTEXT.md) defines
+coverage and limits. Raw inspection does not verify source/build digests; apply
+the selected owner's verification procedure when the claim requires it.
 
 1. Normalize the requested role to a stable contract ID.
 2. Resolve the network through the Networks module.
@@ -43,15 +51,19 @@ state claims and transaction preparation, not every description of a workflow.
    exact missing behavior before retrieving source; a writer's live preflight
    is not required merely to explain its contract calls. For CL source, resolve
    `pool-source-bundles`, then its contract record and artifact, or use
-   `node scripts/read-pool-contract-source.ts <contract-id> [--file <source-path>]`.
+   `node scripts/evidence/read-pool-contract-source.ts <contract-id> [--file <source-path>]`.
    This checks the recorded source digest and returns one file offline. Match
    capture identity before hashing; a whole explorer-response mismatch does not
    establish a source mismatch. Never turn unrelated temporary-directory
    enumeration into the normal retrieval path. The Contracts README owns the
    digest and retention procedure.
+   For MEZO Gauges voter behavior, resolve `third-party-voter-source` and its
+   artifact/reproduction references. Dynamic gauge captures retain partial
+   verification and verified-twin labels; the linked Incentives observation
+   owns their fixed-block runtime comparison and delivery limitations.
 6. For a fact change, update pinned evidence, sources, catalog records, ABI
    digests, and limitations together. Preserve candidate and release gates.
-7. Declare exactly one ADR-0005 provenance class on every deployment and ABI;
+7. Declare exactly one [provenance class](../../../docs/manifest#contract-identity-and-provenance) on every deployment and ABI;
    validate that class's evidence without fallback. ABI artifact lists must
    exactly cover their declared intended network scope.
 8. Regenerate the human reference and any declared consumers.
@@ -74,19 +86,19 @@ state claims and transaction preparation, not every description of a workflow.
 - Full ABI artifacts are canonical raw inputs; fragments and copied paths are
   not substitutes.
 - Dynamic instances resolve through reviewed roots unless separately approved.
-- ADR-0001 is accepted for bootstrap knowledge ownership; it does not define a
-  public package API. ADR-0005 accepts additional provenance classes, but every
-  deployment still requires class-specific evidence and qualified review.
+- Contracts knowledge owns deployment and ABI facts; package docs and exports
+  own runtime APIs. Every deployment requires class-specific evidence and
+  qualified review under the manifest's contract evidence rules.
 
 ## Verification
 
 Run:
 
 ```sh
-node scripts/validate-knowledge-structure.ts --module contracts
-node scripts/test-contract-provenance.ts
-node scripts/validate-contract-knowledge.ts
-node scripts/generate-contract-reference.ts --check
+node scripts/checks/validate-knowledge-structure.ts --module contracts
+node scripts/tests/test-contract-provenance.ts
+node scripts/checks/validate-contract-knowledge.ts
+node scripts/generate/generate-contract-reference.ts --check
 ```
 
 For new evidence, use fixed-block read-only RPC/explorer checks and record

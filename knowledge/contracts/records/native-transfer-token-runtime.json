@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "0.4",
+  "status": "verified",
+  "supportStatus": "proposed",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": "2026-09-15T19:24:31.257Z",
+  "reviewAfter": null,
+  "kind": "token-runtime-profile-catalog",
+  "id": "native-transfer-token-runtime",
+  "owner": "contracts-registry",
+  "scope": { "networkIds": ["ethereum-mainnet", "mezo-mainnet"] },
+  "records": [
+    {
+      "networkId": "ethereum-mainnet",
+      "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "coordinate": {
+        "networkId": "ethereum-mainnet",
+        "chainId": "1",
+        "blockNumber": "25984897",
+        "blockHash": "0x5bdefc18a2866023496e9ccdb8649b462666c31326d4fef1bc14770742abd65b"
+      },
+      "decimals": 6,
+      "addressCodeSha256": "c1bcd4dc4f30c4dcf6c9fe462abeaf2efefc065dcb4dec74996e471f1ce219b4",
+      "implementationAddress": "0x43506849d7c04f9138d1a2050bbf3a0c054402dd",
+      "implementationSlot": "0x7050c9e0f4ca769c69bd3a8ef740bc37934f8e2c036e5a723fd8ee048ed3f8c3",
+      "implementationCodeSha256": "21a831a7cff1a353b295490f43a66e48e55d1c76c60cd89b24138efd8e8b7c8a"
+    },
+    {
+      "networkId": "ethereum-mainnet",
+      "tokenAddress": "0x18084fba666a33d37592fa2633fd49a74dd93a88",
+      "coordinate": {
+        "networkId": "ethereum-mainnet",
+        "chainId": "1",
+        "blockNumber": "25984897",
+        "blockHash": "0x5bdefc18a2866023496e9ccdb8649b462666c31326d4fef1bc14770742abd65b"
+      },
+      "decimals": 18,
+      "addressCodeSha256": "586b8f5bb9ce01b4ec70bc0adb1ffd3480468f8ffcebcc716bd05942fb8724c0",
+      "implementationAddress": null,
+      "implementationSlot": null,
+      "implementationCodeSha256": null
+    },
+    {
+      "networkId": "mezo-mainnet",
+      "tokenAddress": "0x7b7c000000000000000000000000000000000000",
+      "coordinate": {
+        "networkId": "mezo-mainnet",
+        "chainId": "31612",
+        "blockNumber": "11871314",
+        "blockHash": "0xff4aa50103c364a3f8bad44862e411d2dd7b190879a87a3f406a9bfaa0b8ac5e"
+      },
+      "decimals": 18,
+      "addressCodeSha256": "c83521842d34e82c2bb74f3dd3a61c98e75e337e299aa80b6fa18d64652b1826",
+      "implementationAddress": null,
+      "implementationSlot": null,
+      "implementationCodeSha256": null
+    }
+  ],
+  "musdcRuntimeReference": { "moduleId": "contracts", "resourceId": "musdc-token-runtime" },
+  "artifacts": [
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "native-transfer-current-rpc" },
+      "sha256": "1d231294c38de1456041ec9b21c041a157096c5a651959dc8d443c55292de3b9"
+    },
+    {
+      "reference": { "moduleId": "contracts", "resourceId": "native-transfer-token-sources" },
+      "sha256": "c0383f0634cf353c4cc8d689419de829ee05113dbb8f3fdce437b8bc923d7102"
+    },
+    {
+      "reference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "native-transfer-client-source"
+      },
+      "sha256": "16a77c9c3cfe4f7de2552679b0a2af0e9997294fb0e93549e1f7e534cdf20a1f"
+    }
+  ],
+  "limitations": [
+    "Private two-route Native profile; qualified review remains required. No wider token compatibility is implied.",
+    "RPC fixed-block runtime and proxy identities were captured. USDC/tBTC transfer semantics were inspected in Etherscan verified sources; independent compilation was not performed.",
+    "Mezo BTC wrapper bytes match the pinned official client. Its EVM authorization and burn are native client execution, not Solidity execution of the wrapper.",
+    "The mUSDC profile is referenced from its existing Contracts owner; current RPC code and proxy slot match it."
+  ]
+}

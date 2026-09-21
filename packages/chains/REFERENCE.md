@@ -77,3 +77,19 @@ Public types: `ChainRegistry`, `Network`, `NetworkEnvironment`, `NetworkId`,
 `NetworkProfile`, `ChainRegistryErrorCode`, `ChainRegistryErrorContext`.
 See the [export list](src/index.ts), [type definitions](src/registry.ts), and
 built declarations (`dist/index.d.ts`). Import types through the package root.
+
+## Canonical generation
+
+`scripts/generate/generate-chains-package.ts` resolves every indexed canonical network
+resource through stable `networks:<resource-id>` references. It validates the
+profile/lifecycle shape, records a SHA-256 digest over the module index and
+exact resource bytes, and deterministically emits `src/data.generated.ts`.
+Runtime code imports only that generated TypeScript; it never reads repository
+knowledge files.
+
+```sh
+pnpm --filter @mezo-dev-kit/chains generate:check
+```
+
+Do not edit the generated file. Change and validate the canonical Networks
+owner first, regenerate, and review both sides of the diff.

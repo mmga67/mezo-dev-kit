@@ -48,9 +48,9 @@
     }
   ],
   "checks": [
-    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/borrowing"},
-    {"id": "borrowing-semantics", "type": "semantic", "command": "node scripts/validate-borrowing-knowledge.ts"},
-    {"id": "musd-reference-drift", "type": "drift", "command": "node scripts/generate-musd-reference.ts --check"}
+    {"id": "common-structure", "type": "structural", "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/musd/borrowing"},
+    {"id": "borrowing-semantics", "type": "semantic", "command": "node scripts/checks/validate-borrowing-knowledge.ts"},
+    {"id": "musd-reference-drift", "type": "drift", "command": "node scripts/generate/generate-musd-reference.ts --check"}
   ],
   "extensions": {
     "protocolStatus": "verified-versioned",

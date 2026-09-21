@@ -6,6 +6,10 @@ export type NetworkId = (typeof GENERATED_NETWORK_IDS)[number];
 export type NetworkProfile = "evm" | "cosmos-evm";
 export type NetworkEnvironment = "mainnet" | "testnet";
 
+/**
+ * Generated network identity and evidence metadata. No RPC endpoint is selected and the
+ * evidence timestamps are not live availability checks.
+ */
 export interface Network {
   readonly id: NetworkId;
   readonly environment: NetworkEnvironment;
@@ -36,11 +40,29 @@ export interface Network {
   readonly limitations: readonly string[];
 }
 
+/**
+ * Local accepted-network resolution. Methods perform no RPC; applications own provider
+ * configuration.
+ */
 export interface ChainRegistry {
+  /**
+   * Resolve an accepted network record locally; unknown or unsupported identities throw
+   * ChainRegistryError.
+   */
   getNetwork(networkId: unknown): Readonly<Network>;
+  /**
+   * List accepted generated network records without querying a provider.
+   */
   listNetworks(): readonly Readonly<Network>[];
 }
 
+/**
+ * Create an immutable registry from the generated, accepted network records.
+ *
+ * @remarks
+ * Resolution and listing are local operations. They neither select an RPC endpoint
+ * nor check its availability; applications supply and verify their own transport.
+ */
 export function createChainRegistry(): Readonly<ChainRegistry> {
   return createChainRegistryFromData(GENERATED_CHAINS_DATA.networks);
 }
@@ -83,14 +105,33 @@ export function createChainRegistryFromData(
 
 const defaultRegistry = createChainRegistry();
 
+/**
+ * Resolve a generated network identity in its accepted support state.
+ *
+ * @param networkId - Stable MDK network ID, not a numeric chain ID or RPC URL.
+ * @throws ChainRegistryError - Unknown ID or a record outside the accepted lifecycle.
+ * @returns Network metadata; timestamps describe evidence, not a live provider check.
+ */
 export function getNetwork(networkId: unknown): Readonly<Network> {
   return defaultRegistry.getNetwork(networkId);
 }
 
+/**
+ * List generated networks whose verification, support and review states are accepted.
+ *
+ * @returns An immutable list of metadata records; listing performs no RPC requests.
+ */
 export function listNetworks(): readonly Readonly<Network>[] {
   return defaultRegistry.listNetworks();
 }
 
+/**
+ * Test membership in the generated set of stable network IDs.
+ *
+ * @remarks
+ * Membership alone does not check support or evidence freshness. Use getNetwork
+ * to resolve the record and enforce its supported lifecycle.
+ */
 export function isNetworkId(value: unknown): value is NetworkId {
   return typeof value === "string" && (GENERATED_NETWORK_IDS as readonly string[]).includes(value);
 }

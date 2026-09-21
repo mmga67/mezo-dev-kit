@@ -57,8 +57,11 @@ owner.
 
 1. Match the exact symptom and scope; do not generalize by keyword.
 2. Check the issue review date and reverify volatile provider/deployment state.
-3. Run the minimal read-only diagnostic and its negative/control case twice, or
-   use the cited deterministic source/tests when stronger than live writes.
+3. For a new or reverified maintained issue, run the minimal read-only
+   diagnostic and its negative/control case twice, or use cited deterministic
+   source/tests. For ordinary diagnosis, use the evidence needed to distinguish
+   the cause; repeat network probes when provider variability or an unresolved
+   result warrants it, not as a blanket lookup requirement.
 4. Preserve expected, observed, provider/network/version, block, and evidence
    provenance.
 5. Apply only the bounded safe mitigation. Never hide an unknown result,
@@ -67,12 +70,20 @@ owner.
    first and update the troubleshooting projection.
 7. Reject application-only, stale, speculative, and unverified findings.
 
+Resolve before probing: use the offline context commands to find the matching
+record, ABI method/error and retained evidence. An unknown method must be
+checked against the interface before an RPC call. Preserve the difference
+between transaction pre-state, a parent-block simulation, and current state;
+an earlier block can have a different timestamp or preceding transaction set.
+Use [the retrieval manual](../../../scripts/agents/CONTEXT.md) for commands and
+reported coverage. Online retrieval should resolve a named gap.
+
 ## Verification
 
 Run:
 
 ```sh
-node scripts/validate-troubleshooting-knowledge.ts
+node scripts/checks/validate-troubleshooting-knowledge.ts
 ```
 
 Then run the validator for every linked canonical domain. Live checks are

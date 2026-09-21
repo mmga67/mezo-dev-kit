@@ -5,6 +5,10 @@ export type VaultReadErrorCode =
   | "TopologyMismatch"
   | "ReadUnavailable"
   | "InconsistentCoordinate";
+/**
+ * Typed usdc-lending-vault failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class VaultReadError extends Error {
   readonly code: VaultReadErrorCode;
   readonly field: string;

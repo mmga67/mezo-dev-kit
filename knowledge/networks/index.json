@@ -194,22 +194,22 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module networks"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module networks"
     },
     {
       "id": "network-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-network-knowledge.ts"
+      "command": "node scripts/checks/validate-network-knowledge.ts"
     },
     {
       "id": "network-profile-negative-tests",
       "type": "semantic",
-      "command": "node scripts/test-network-profiles.ts"
+      "command": "node scripts/tests/test-network-profiles.ts"
     },
     {
       "id": "network-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-network-reference.ts --check"
+      "command": "node scripts/generate/generate-network-reference.ts --check"
     }
   ]
 }

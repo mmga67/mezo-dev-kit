@@ -20,7 +20,8 @@ This document does not replace:
   protocol safety, secrets, and release security;
 - domain knowledge and package documentation, which own domain correctness and
   local commands; or
-- ADRs, which own durable decisions and their rationale.
+- the [manifest](../manifest), which owns current project decisions, with
+  rationale retained in historical decision records.
 
 When rules conflict, the more safety-preserving rule applies until the owning
 documents are reconciled. A package-local rule may refine this standard for a
@@ -115,7 +116,7 @@ is genuinely stable and substitutable, not merely to share implementation.
 ### Language and compiler
 
 - Authored product code and tests MUST be TypeScript. Use TSX only for source
-  containing JSX. Narrow tool-required exceptions follow ADR-0007.
+  containing JSX. Narrow tool-required exceptions follow [Engineering and verification](../manifest#engineering-and-verification).
 - Every maintained TypeScript project MUST extend the repository base
   configuration or document an approved incompatible environment.
 - Strict typechecking, unchecked indexed-access protection, exact optional
@@ -274,17 +275,57 @@ Follow [`SECURITY.md`](../../SECURITY.md). At the code level:
 
 ## Style and documentation
 
+- READMEs, guides, and links follow the [documentation standard](documentation.md).
 - Prettier owns mechanical formatting. Contributors MUST NOT create competing
   whitespace rules or use ESLint as a formatter.
 - Use clear domain language. Names communicate units, lifecycle state, and
   ownership; comments explain non-obvious intent, invariants, evidence, and
   tradeoffs rather than restating syntax.
-- Exported behavior SHOULD include documentation when its contract, units,
-  failure modes, side effects, or compatibility are not obvious from types.
+- Public API documentation MUST follow [API and implementation comments](#api-and-implementation-comments).
 - TODO/FIXME comments MUST include a task or owner and a concrete removal or
   decision condition.
 - Generated files MUST identify their generator/canonical input where
   practical and MUST NOT be hand-edited.
+
+### API and implementation comments
+
+Use `/** ... */` declaration comments with [TSDoc](https://tsdoc.org/) syntax
+for authored public APIs. Place documentation on the owning declaration so it
+is available to editors and emitted declarations, including methods on returned
+clients and domain fields whose meaning is not conveyed by their types.
+Re-export barrels point to that owner; they MUST NOT duplicate its contract.
+
+- Public functions, client factories and client methods MUST describe their
+  observable behavior. Public types and properties MUST explain non-obvious
+  units, state variants, ownership and invariants. A short summary is sufficient
+  when the signature and summary express the complete contract.
+- Document applicable input units/scales, valid bounds, rounding, zero/absence
+  semantics, output meaning, errors or promise rejections, side effects and
+  lifecycle requirements. Distinguish a preflight check from an on-chain
+  guarantee and a receipt from a reconciled protocol outcome.
+- Use `@param name - description`, `@returns`, `@throws` and `@remarks` where
+  they add information. TypeScript signatures own types; do not repeat them
+  with JSDoc `{Type}` annotations. A factory's summary describes construction;
+  its method contracts describe when RPC, storage and signing happen.
+- Explain non-obvious internal decisions beside the relevant code: rounding
+  order, evidence checks, concurrency, ownership, recovery and reorg handling.
+  Do not add a comment to every statement or trivial helper. Long comments
+  MUST NOT substitute for separating mixed responsibilities in a function.
+- Link canonical knowledge or the package reference for detailed protocol
+  rules. Comments explain how code uses those rules; they MUST NOT become a
+  second address, parameter, formula or support-status registry. Keep mutable
+  deployment/release status in its documented owner.
+- Include an `@example` only when it resolves a real usage ambiguity. Prefer a
+  link to a maintained executable example for complete workflows. Do not imply
+  that a prose snippet was typechecked or executed.
+- Update comments with the behavior they describe. Review accuracy against
+  implementation, public references and existing tests, and verify that the
+  build retains public declaration comments. Comment counts, mandatory tags
+  and generated restatements of symbol names do not prove documentation quality.
+
+Apply this standard when adding or changing an API and when performing a
+dedicated documentation pass. Generated APIs receive documentation through
+their generator/canonical inputs. No new documentation dependency is required.
 
 ## Suppressions and generated code
 

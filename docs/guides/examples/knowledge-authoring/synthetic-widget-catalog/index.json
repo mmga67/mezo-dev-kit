@@ -89,17 +89,17 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module synthetic/widget-catalog"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module synthetic/widget-catalog"
     },
     {
       "id": "synthetic-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-knowledge-authoring-example.ts"
+      "command": "node scripts/checks/validate-knowledge-authoring-example.ts"
     },
     {
       "id": "synthetic-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-knowledge-authoring-example.ts --check"
+      "command": "node scripts/generate/generate-knowledge-authoring-example.ts --check"
     }
   ]
 }

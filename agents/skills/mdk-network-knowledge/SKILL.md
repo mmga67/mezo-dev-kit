@@ -44,7 +44,7 @@ Read in this order:
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` for maintenance.
 3. `knowledge/networks/README.md` and `knowledge/networks/index.json`.
 4. Only the logically referenced network, endpoint, source, and evidence records.
-5. Accepted architecture/ADRs and `packages/chains` package docs when present.
+5. The manifest, detailed architecture, and current `packages/chains` package docs.
 6. Current official sources identified by resource `network-sources`.
 
 ## Procedure
@@ -77,8 +77,8 @@ records or projections change, not to every ordinary knowledge read.
 
 ## Architecture Rules
 
-- `knowledge/networks/` owns verified source data until an accepted registry ADR
-  transfers canonical structured inputs to `packages/chains`.
+- `knowledge/networks/` owns verified source data. `packages/chains` consumes
+  generated projections; a change of canonical ownership requires a baseline revision.
 - Provider endpoints are not chain identity and may have shorter review windows.
 - A network identity record may exist without an endpoint record; identity does
   not select a provider or imply operational support.
@@ -93,10 +93,10 @@ records or projections change, not to every ordinary knowledge read.
 Run:
 
 ```sh
-node scripts/validate-knowledge-structure.ts --module networks
-node scripts/test-network-profiles.ts
-node scripts/validate-network-knowledge.ts
-node scripts/generate-network-reference.ts --check
+node scripts/checks/validate-knowledge-structure.ts --module networks
+node scripts/tests/test-network-profiles.ts
+node scripts/checks/validate-network-knowledge.ts
+node scripts/generate/generate-network-reference.ts --check
 ```
 
 For endpoint re-verification, use read-only `eth_chainId` plus only the bounded

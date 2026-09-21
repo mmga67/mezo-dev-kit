@@ -1,42 +1,26 @@
-# MUSD borrowing knowledge
+# MUSD borrowing and collateral
 
-This v0.4 module owns the accepted, version-scoped MUSD position model,
-borrowing and liquidation rules, integer formulas, governed-parameter
-observations, and deterministic fixtures. Contract identities and ABIs remain
-owned by Contracts; shared terminology and sources resolve through the parent
-MUSD module.
+Understand classic MUSD positions, collateral requirements, borrowing interest, refinancing, and liquidation rules. This module includes the formulas and observations behind those rules.
 
-Institutional EnclaveDebtManager positions are not troves. Their principal,
-fees, pledged veBTC, and health model resolve through the separate proposed
-`protocols/musd/institutional-debt` module and do not enter classic ICR/TCR,
-Recovery Mode, Stability Pool, liquidation, or redemption formulas here.
+## Start here
 
-## Current status
+- [Borrowing explanation](../../../../docs/reference/musd-borrowing.md): positions, debt, and collateral behavior.
+- [Borrowing reference](generated/reference.md): the recorded model, formulas, and parameters.
+- [Borrowing SDK](../../../../packages/protocols/musd-borrowing/README.md): reads, calculations, hints, and direct borrower workflows.
+- [Institutional debt](../institutional-debt/README.md): the separate Enclave position model.
 
-The knowledge is `supported` / `accepted` for its declared source and deployment
-scope. Mutable and borrower-specific values must still be read at an explicit
-block. Embedded operation capability fields remain separate: accepted knowledge
-does not mean MDK ships a public transaction writer.
+## Scope and evidence
 
-## Human and machine use
+The knowledge is supported and reviewed within its declared scope. Borrower and
+governed values need an explicit block; knowledge acceptance and operation support
+are separate. Package docs record the accepted private borrowing implementation
+and its release limits.
 
-Humans start with [`generated/reference.md`](./generated/reference.md) and the
-maintained explanation in
-[`docs/reference/musd-borrowing.md`](../../../../docs/reference/musd-borrowing.md).
-Machines start at [`index.json`](./index.json) and resolve stable record,
-fixture, evidence, and source references.
+Institutional positions are not troves and do not enter classic ICR/TCR,
+Recovery Mode, Stability Pool, or liquidation accounting. The recorded refinance
+discrepancy is intentional: version-matched source and fixed-block evidence take
+precedence over conflicting descriptive prose.
 
-The recorded refinance discrepancy is intentional: version-matched source and
-fixed-block deployment evidence outrank stale descriptive prose. Consult the
-indexed discrepancy and evidence rather than maintaining another numeric copy
-here.
+## Contributing
 
-## Maintenance
-
-Run:
-
-```bash
-node scripts/validate-knowledge-structure.ts --module protocols/musd/borrowing
-node scripts/validate-borrowing-knowledge.ts
-node scripts/generate-musd-reference.ts --check
-```
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

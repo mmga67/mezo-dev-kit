@@ -1,5 +1,10 @@
 # ADR-0005 — Contract evidence provenance classes
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Contract identity and provenance](../manifest#contract-identity-and-provenance).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-18
 

@@ -1,0 +1,27 @@
+{
+  "formatVersion": 1,
+  "guides": ["docs/guides/MDK_CLI.md"],
+  "knowledgeRoles": ["canonical-record"],
+  "domains": [
+    { "id": "typescript", "packages": [], "resources": ["guide:docs/guides/mdk_cli.md"] },
+    { "id": "applications", "packages": [], "resources": [] },
+    {
+      "id": "foundation",
+      "packages": [
+        "@mezo-dev-kit/evm",
+        "@mezo-dev-kit/chains",
+        "@mezo-dev-kit/contracts",
+        "@mezo-dev-kit/core"
+      ],
+      "resources": [
+        "api:evm",
+        "api:chains",
+        "api:contracts",
+        "api:core",
+        "knowledge:networks:mezo-mainnet",
+        "knowledge:networks:mezo-testnet"
+      ]
+    }
+  ],
+  "exclusionReason": "The consumer corpus distributes canonical record data and public API references. Raw evidence/source artifacts, contributor maintenance, schema, fixture, review and derived duplicates remain outside this corpus. Original scope and support labels apply."
+}

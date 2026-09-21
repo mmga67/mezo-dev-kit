@@ -14,12 +14,30 @@ import { createTokenReader, planApproval, decodeTokenTransfers } from "@mezo-dev
 import type { TokenSnapshot, ApprovalPlan } from "@mezo-dev-kit/tokens";
 import type { SavingsReader, SavingsSnapshot, SavingsReadValue } from "./types.ts";
 
+/**
+ * Direct deposit, withdrawal or claim intent. Principal and yield retain their distinct
+ * MUSD/sMUSD accounting meaning.
+ */
 export type SavingsAction =
   Readonly<{ kind: "deposit" | "withdraw"; amount: bigint }> | Readonly<{ kind: "claim-yield" }>;
+/**
+ * Minimum MUSD yield payout and maximum block age. The yield minimum is client policy,
+ * not an additional on-chain argument.
+ */
 export interface SavingsBounds {
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
+  /**
+   * Minimum MUSD yield base units; deposit requires zero because it does not pay yield.
+   */
   readonly minYield: bigint;
 }
+/**
+ * Verified action state, separate approval plan and exact call. Confirm an approval and prepare
+ * again before simulation.
+ */
 export interface PreparedSavings {
   readonly snapshot: Readonly<SavingsSnapshot>;
   readonly action: SavingsAction;
@@ -28,10 +46,17 @@ export interface PreparedSavings {
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Receipt-block principal/yield settlement and policy result; token units must remain distinct.
+ */
 export interface SavingsOutcome {
   readonly kind: SavingsAction["kind"];
   readonly principal: bigint;
   readonly yieldPaid: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
   readonly snapshot: Readonly<SavingsSnapshot>;
 }
@@ -42,6 +67,10 @@ export type SavingsWriteErrorCode =
   | "ApprovalRequired"
   | "StaleState"
   | "ReconciliationMismatch";
+/**
+ * Typed musd-savings failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class SavingsWriteError extends Error {
   readonly code: SavingsWriteErrorCode;
   constructor(code: SavingsWriteErrorCode, message: string) {
@@ -50,18 +79,39 @@ export class SavingsWriteError extends Error {
     this.code = code;
   }
 }
+/**
+ * Explicit Savings action lifecycle. Approvals and protocol calls are separate transactions
+ * with independent records.
+ */
 export interface SavingsWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly account: `0x${string}`;
     readonly action: SavingsAction;
     readonly bounds: SavingsBounds;
   }): Promise<Readonly<PreparedSavings>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedSavings): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedSavings,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify Savings principal/yield.
+   * Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedSavings,
     record: unknown,
@@ -80,6 +130,16 @@ function required<T>(value: SavingsReadValue<T>): Readonly<T> {
   return value.value;
 }
 const zero = `0x${"0".repeat(40)}` as const;
+/**
+ * Create direct Savings deposit, withdrawal and indexed-yield claim operations.
+ *
+ * @remarks
+ * Preparation reads state and records a separate approval plan where needed.
+ * Confirm approvals and prepare again before simulation. Submit requires a matching
+ * owned preparation/simulation; Core handles the signer and durable intent.
+ * Reconciliation checks actual receipt-block principal/yield settlement. Claim
+ * minimums remain client policy when the contract has no corresponding argument.
+ */
 export function createSavingsWriter(config: {
   readonly reader: SavingsReader;
   readonly registry: ContractRegistry;

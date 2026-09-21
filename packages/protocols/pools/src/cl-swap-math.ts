@@ -8,14 +8,28 @@ const model = POOL_MODEL.cl,
   scale = BigInt(model.swapFeeScale),
   max256 = (1n << 256n) - 1n;
 const ceil = (a: bigint, b: bigint) => parseUint(a / b + (a % b === 0n ? 0n : 1n));
+/**
+ * One exact-input step with Q64.96 prices, uint128 liquidity, remaining input and fee at the
+ * generated CL scale.
+ */
 export interface CLSwapStepInput {
+  /**
+   * Square-root price in Q64.96 fixed point for token1/token0, not a decimal display price.
+   */
   readonly sqrtPriceX96: bigint;
   readonly sqrtTargetX96: bigint;
   readonly liquidity: bigint;
   readonly amountRemaining: bigint;
   readonly fee: bigint;
 }
+/**
+ * One step's next price, net input, output and separate fee in the input token's base units;
+ * not a complete route quote.
+ */
 export interface CLSwapStep {
+  /**
+   * Square-root price in Q64.96 fixed point for token1/token0, not a decimal display price.
+   */
   readonly sqrtPriceX96: bigint;
   readonly amountIn: bigint;
   readonly amountOut: bigint;
@@ -90,12 +104,27 @@ export function calculateCLSwapStep(input: CLSwapStepInput): Readonly<CLSwapStep
   );
   return Object.freeze({ sqrtPriceX96: next, amountIn, amountOut, feeAmount });
 }
+/**
+ * Separate gauge/unstaked fee amounts and Q128 growth, with explicit gauge-accounting overflow
+ * evidence.
+ */
 export interface CLSwapFeeSplit {
   readonly unstakedFeeAmount: bigint;
   readonly gaugeFeeAmount: bigint;
   readonly growthX128: bigint;
   readonly overflowed: boolean;
 }
+/**
+ * Split a step's input-token fee between unstaked liquidity and the gauge.
+ *
+ * @remarks
+ * The staked share and levy on the unstaked share round up independently. GrowthX128
+ * uses only unstaked liquidity. Fully staked liquidity assigns the fee to the gauge.
+ * Inspect overflowed before using the result in a writer.
+ * @param input - Token fee base units, uint128 liquidity and levy at the generated CL fee
+ * scale.
+ * @throws PoolError - Zero total liquidity, excessive staked liquidity or invalid levy.
+ */
 export function calculateCLSwapFeeSplit(input: {
   readonly feeAmount: bigint;
   readonly liquidity: bigint;
@@ -124,11 +153,23 @@ export function calculateCLSwapFeeSplit(input: {
     overflowed: gaugeFeeAmount >= 1n << 128n,
   });
 }
+/**
+ * Directional compressed-tick location in one bitmap word; negative division floors toward
+ * minus infinity.
+ */
 export interface CLBitmapLocation {
   readonly word: number;
   readonly bit: number;
   readonly compressed: number;
 }
+/**
+ * Locate the one bitmap word and bit for a directional initialized-tick search.
+ *
+ * @remarks
+ * Negative tick division floors toward minus infinity. Rightward search starts at
+ * the next compressed tick. This helper computes a location; it performs no RPC.
+ * @param input - Numeric tick/spacing and zeroForOne direction.
+ */
 export function getCLBitmapLocation(input: {
   readonly tick: number;
   readonly tickSpacing: number;

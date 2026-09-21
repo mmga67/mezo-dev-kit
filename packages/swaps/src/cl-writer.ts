@@ -17,43 +17,93 @@ import { swapRequire } from "./reader.ts";
 import { encodeCLSwapPath, validateCLSwapRoute } from "./cl-reader.ts";
 import { verifyCLSwapSettlement } from "./cl-settlement.ts";
 import type { CLSwapQuote, CLSwapQuoteInput, CLSwapReader } from "./cl-types.ts";
+/**
+ * Output-token minimum, deadline and block-age bounds for exact-input CL execution.
+ */
 export interface CLSwapBounds {
   readonly minAmountOut: bigint;
+  /**
+   * Absolute Unix seconds, not a duration.
+   */
   readonly deadline: bigint;
+  /**
+   * Maximum allowed deadline distance from the observed timestamp, in seconds.
+   */
   readonly maxDeadlineSeconds: bigint;
+  /**
+   * Maximum accepted preparation age in blocks, checked by the owning operation.
+   */
   readonly maxBlockAge: bigint;
 }
+/**
+ * Verified route quote, exact router call and separate input approval requirement, owned by its
+ * writer.
+ */
 export interface PreparedCLSwap {
   readonly quote: Readonly<CLSwapQuote>;
   readonly bounds: Readonly<CLSwapBounds>;
   readonly approval: ApprovalPlan;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Actual CL route output, custody/fee result and native gas with caller-policy status.
+ */
 export interface CLSwapOutcome {
   readonly amountIn: bigint;
   readonly amountOut: bigint;
   readonly pools: readonly Readonly<CLPoolSnapshot>[];
+  /**
+   * Native currency base units spent on execution; keep separate from token principal and
+   * protocol fees.
+   */
   readonly gasFee: bigint;
+  /**
+   * Whether actual settlement met caller policy; receipt success alone does not guarantee this
+   * is true.
+   */
   readonly boundsSatisfied: boolean;
 }
+/**
+ * Confirmed matching CL call plus conservative pool/tick/token settlement proof.
+ */
 export interface ReconciledCLSwap {
   readonly state: "reconciled";
   readonly record: SubmissionRecord;
   readonly receipt: ExecutionReceipt;
   readonly outcome: Readonly<CLSwapOutcome>;
 }
+/**
+ * Explicit exact-input CL lifecycle; no automatic basic/CL atomic composition or retry.
+ */
 export interface CLSwapWriter {
+  /**
+   * Read and validate the selected intent, then return its exact prepared call without signing.
+   * Retain the original object for this writer's simulation/submission.
+   */
   prepare(
     input: Omit<CLSwapQuoteInput, "blockNumber"> & {
       readonly operationId: string;
       readonly bounds: CLSwapBounds;
     },
   ): Promise<Readonly<PreparedCLSwap>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedCLSwap): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedCLSwap,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify CL route state, fees and
+   * token custody. Required evidence mismatches can reject even when the EVM receipt succeeded.
+   */
   reconcile(prepared: PreparedCLSwap, record: unknown): Promise<Readonly<ReconciledCLSwap>>;
 }
 const codec = createAbiCodec();
@@ -133,6 +183,15 @@ function quoteInput(q: CLSwapQuote, blockNumber?: bigint): CLSwapQuoteInput {
     ...(blockNumber === undefined ? {} : { blockNumber }),
   };
 }
+/**
+ * Create exact-input CL router swaps with bounded route, output and deadline policy.
+ *
+ * @remarks
+ * Approval is separate from the swap. Simulation checks exact router output and
+ * submission requires matching writer-owned objects. Reconciliation checks crossed
+ * pool state, fees, custody, transfers and gas. This lifecycle is not atomic with a
+ * separate basic-router transaction; mixed-route recovery belongs to the application.
+ */
 export function createCLSwapWriter(config: {
   readonly reader: CLSwapReader;
   readonly pools: CLPoolReader;

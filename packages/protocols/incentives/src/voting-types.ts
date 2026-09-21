@@ -1,6 +1,10 @@
 import type { ContractRegistry, ResolvedContract, VotingDomain } from "@mezo-dev-kit/contracts";
 import type { RpcTransport } from "@mezo-dev-kit/core";
 import type { LockSnapshot } from "./lock-types.ts";
+/**
+ * Per-target reward child and accounting/checkpoint evidence, separate from direct streamed
+ * gauge rewards.
+ */
 export interface VotingRewardState {
   readonly role: "fees" | "bribe";
   readonly address: `0x${string}`;
@@ -11,6 +15,10 @@ export interface VotingRewardState {
   readonly checkpointTimestamp: bigint | null;
   readonly supplyCheckpointTimestamp: bigint | null;
 }
+/**
+ * One verified voter target with liveness, allocated weight and associated reward children at
+ * the snapshot coordinate.
+ */
 export interface VotingTarget {
   /** Pool address for pools; gauge address for boost and validator domains. */
   readonly target: `0x${string}`;
@@ -21,6 +29,10 @@ export interface VotingTarget {
   readonly vote: bigint;
   readonly rewards: readonly Readonly<VotingRewardState>[];
 }
+/**
+ * One voter domain, NFT and the union of requested targets and existing allocations, with
+ * bounded coverage.
+ */
 export interface VotingSnapshot {
   readonly domain: VotingDomain;
   readonly contract: Readonly<ResolvedContract>;
@@ -37,13 +49,25 @@ export interface VotingSnapshot {
   readonly previousTargets: readonly `0x${string}`[];
   readonly targets: readonly Readonly<VotingTarget>[];
 }
+/**
+ * Explicit pools/boost/validator voter domain and registry/RPC inputs; each domain retains its
+ * own target semantics.
+ */
 export interface VotingReaderConfig {
   readonly networkId: "mezo-mainnet";
   readonly domain: VotingDomain;
   readonly registry: Readonly<ContractRegistry>;
   readonly transport: RpcTransport;
 }
+/**
+ * Anchored NFT, target and allocation reads. Existing allocations are included independently of
+ * requested targets.
+ */
 export interface VotingReader {
+  /**
+   * Read one NFT, requested targets and all bounded prior allocations at one block; validate
+   * voter/escrow/reward identity.
+   */
   read(input: {
     readonly account: `0x${string}`;
     readonly tokenId: bigint;

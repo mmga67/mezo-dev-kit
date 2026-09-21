@@ -14,10 +14,28 @@ export type RpcRequest = (input: {
   readonly params: readonly unknown[];
 }) => Promise<unknown>;
 
+/**
+ * Core ports over an injected JSON-RPC request function; the application owns endpoint,
+ * cancellation, timeout and retry policy.
+ */
 export interface RpcTransport extends CoreReadTransport, ExecutionTransport {
+  /**
+   * Read native currency balance in base units at the supplied block coordinate.
+   */
   getBalance(address: `0x${string}`, coordinate: ReadCoordinate): Promise<bigint>;
+  /**
+   * Read Unix seconds and verify the returned block hash matches the supplied coordinate.
+   */
   getBlockTimestamp(coordinate: ReadCoordinate): Promise<bigint>;
+  /**
+   * Read runtime bytecode at the supplied block; domain callers compare it with expected
+   * identity.
+   */
   getCode(address: `0x${string}`, coordinate: ReadCoordinate): Promise<`0x${string}`>;
+  /**
+   * Read one storage slot at the supplied block; the domain owns slot layout and
+   * interpretation.
+   */
   getStorage(
     address: `0x${string}`,
     slot: `0x${string}`,
@@ -42,6 +60,15 @@ export function transactionRpc(call: ExactTransaction): Readonly<Record<string, 
   });
 }
 
+/**
+ * Adapt an injected JSON-RPC request function to Core read and execution ports.
+ *
+ * @param config - Diagnostic transport ID and application-owned request function.
+ * @remarks
+ * The adapter encodes RPC quantities and validates responses. The application owns
+ * endpoint selection, timeouts, cancellation and request retries. Construction
+ * performs no RPC and does not connect a wallet.
+ */
 export function createRpcTransport(config: {
   readonly id: string;
   readonly request: RpcRequest;

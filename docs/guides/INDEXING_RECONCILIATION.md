@@ -2,16 +2,33 @@
 
 ## Status and purpose
 
-This guide defines MDK's reusable requirements for bounded event scans,
-backfills, checkpoints, reorg handling, negative evidence, and protocol
-reconciliation. It received qualified Level 3 acceptance under indexing reconciliation review on
-2026-08-26.
+Use this guide when designing bounded event scans, backfills, checkpoints,
+reorg handling, and protocol reconciliation. It specifies the coverage and
+failure behavior an application must preserve. Core's
+[event scanner reference](../../packages/core/REFERENCE.md#bounded-event-scanning)
+supplies the concrete API and examples for implementing that design.
 
-The guide describes observable behavior, not a hosted architecture or public
-runtime API. An application may implement these requirements with an in-memory
+An application may implement these requirements with an in-memory
 process, files, its own database, a hosted indexer, or another replaceable
 adapter. Materialized rows remain projections of canonical chain and protocol
 evidence.
+
+## Design a scan and recovery path
+
+1. Define the [scan contract](#scan-contract): network, source, range, limits,
+   and evidence coordinate.
+2. Choose how observations and [checkpoint candidates](#checkpoints-and-one-pass-operation)
+   will be committed atomically.
+3. Preserve [coverage](#coverage-and-completeness), including partial and
+   unavailable results.
+4. Define [reorg recovery](#reorg-and-overlap-policy) and
+   [bounded retries](#negative-evidence-and-retry).
+5. Use the owning domain's [reconciliation requirements](#destination-candidates-and-reconciliation)
+   to establish an outcome.
+
+The sections below define those requirements and the failure cases to review.
+The guide received qualified Level 3 acceptance for its recorded indexing and
+reconciliation scope on 2026-08-26; implementation and release remain separate.
 
 ## Authority and ownership
 

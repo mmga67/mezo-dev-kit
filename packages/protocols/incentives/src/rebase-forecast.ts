@@ -4,11 +4,22 @@ import { calculateLockVotingPower, calculateVotingEpoch } from "./math.ts";
 import { calculateRebaseClaim } from "./rebase-math.ts";
 import type { RebaseClaim } from "./rebase-math.ts";
 import type { RebaseSnapshot } from "./rebase-reader.ts";
+/**
+ * Expected locked/liquid/none disposition and resulting lock power from the supplied snapshot.
+ */
 export interface RebaseForecast extends RebaseClaim {
   readonly disposition: "liquid" | "locked" | "none";
   readonly lockedAmount: bigint;
   readonly unboostedPower: bigint;
 }
+/**
+ * Forecast whether a bounded veMEZO rebase becomes locked, liquid or zero payout.
+ *
+ * @remarks
+ * Only ordinary self-owned NFTs are admitted, and the minter period must be current.
+ * Amounts are MEZO base units. Optional atTimestamp projects disposition from supplied
+ * state; it is not a new observation. The owner needs no token approval.
+ */
 export function forecastRebaseClaim(input: {
   readonly snapshot: RebaseSnapshot;
   readonly atTimestamp?: bigint;

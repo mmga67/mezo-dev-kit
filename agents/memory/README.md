@@ -2,7 +2,10 @@
 
 This document defines the **provider-neutral memory architecture and lifecycle** for Mezo Developer Kit (MDK).
 
-Memory exists to preserve useful development context and reduce repeated investigation. It is **not a source of truth**. Verified project facts belong in canonical knowledge, architecture, documentation, code, or ADRs.
+Memory preserves useful development context and reduces repeated investigation.
+Verified project facts belong in canonical knowledge, the manifest, detailed
+architecture, documentation, or code. Historical decisions retain rationale;
+memory remains supporting context.
 
 ## 1. Memory Model
 
@@ -48,7 +51,10 @@ Keep this layer small.
 
 Local and gitignored.
 
-Use for investigation findings, temporary conclusions, unfinished reasoning, and provider synchronization state.
+Use for bounded investigation findings and unresolved evidence questions.
+Task records own progress and next actions; exploratory reasoning and raw logs
+do not belong in memory. Provider synchronization state is separate derived
+storage, not a normalized memory entry.
 
 Local memory must not automatically become shared project knowledge.
 
@@ -107,6 +113,19 @@ select by domain and title, and open only the matching entry files. The
 operational procedure is in
 [`agents/skills/mdk-memory/SKILL.md`](../skills/mdk-memory/SKILL.md).
 
+`pnpm context find` can retrieve canonical knowledge and selected memory in one
+offline query. `memory-read` opens an indexed entry; `memory-check` validates
+the plain-text store. The [command manual](../../scripts/agents/CONTEXT.md)
+documents coverage, limits and explicit local-store selection. The architecture
+diagram above describes responsibilities; it does not imply a separately
+published MemoryService package or an installed provider adapter.
+
+Instructions supply the workflow, memory supplies useful cross-session context,
+and canonical owners supply authority. Use memory when its pointers can shorten
+the task; a known direct canonical lookup needs no memory detour. Detailed
+[writing and retrieval instructions](../../docs/guides/MEMORY_MANAGEMENT.md#write-for-future-retrieval)
+cover capture, discoverability, source verification and retirement.
+
 ## 5. Ingestion and Provider Sync
 
 Repository memory is portable source material. A provider may index it for better search.
@@ -146,7 +165,7 @@ SHARED MEMORY          optional
       ↓
 VERIFICATION
       ↓
-CANONICAL KNOWLEDGE / DOC / ADR / CODE
+CANONICAL KNOWLEDGE / CURRENT DOCS / CODE
       ↓
 MEMORY PROMOTED OR DEPRECATED
 ```
@@ -174,7 +193,7 @@ If a verified finding represents a project fact, architecture decision, protocol
 ```text
 knowledge/        verified Mezo facts
 docs/             maintained explanations/reference
-ADR               architecture decisions
+docs/manifest     current project decisions
 code/tests        executable behavior
 skill             reusable procedure
 ```

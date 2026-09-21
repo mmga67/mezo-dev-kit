@@ -5,18 +5,16 @@
   "owner": "protocols/incentives",
   "status": "verified",
   "supportStatus": "none",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-08T15:14:00.228Z",
   "reviewAfter": "2026-09-23T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet"],
     "evidenceBlockNumber": 11333787,
     "verification": "CLGauge source semantics checked against the retained bundle matching the accepted pool source-reproduction review digest; no fresh chain observation."
   },
   "limitations": [
-    "Additional CL overload semantics await CL explanation qualified Level 3 review. This is explanatory knowledge, not a supported claim writer.",
+    "The maintainer accepted qualified Level 3 review of these source-scoped CL overload semantics on 2026-09-15. Acceptance covers explanatory knowledge and enables no claim writer.",
     "The gauge implementation is an ABI/source template. Calls target the validated dynamic gauge for the pool, not its registry implementation address.",
     "The source checks below describe authorization of these overloads; current identity, claimability and exact-call simulation are separate operation preconditions."
   ],

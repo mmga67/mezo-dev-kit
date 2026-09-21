@@ -1,2 +1,2 @@
-# Generated and drift-checked by ../../scripts/generate-core-transaction-model.ts.
+# Generated and drift-checked by ../../scripts/generate/generate-core-transaction-model.ts.
 src/model.generated.ts

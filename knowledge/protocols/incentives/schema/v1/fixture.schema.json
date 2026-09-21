@@ -1,21 +1,43 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Incentives formula fixtures v1",
-  "allOf": [{ "$ref": "../../../../schema/v0.4/common-envelope.schema.json" }],
+  "allOf": [
+    {
+      "$ref": "../../../../schema/v0.4/common-envelope.schema.json"
+    }
+  ],
   "type": "object",
   "required": ["protocolStatus", "records"],
   "properties": {
     "kind": {
-      "enum": ["mezo-incentives-formula-fixtures", "mezo-validator-allocation-fixtures"]
+      "enum": [
+        "mezo-incentives-formula-fixtures",
+        "mezo-validator-allocation-fixtures",
+        "mezo-third-party-voting-boundary-fixtures"
+      ]
     },
     "id": {
-      "enum": ["incentives-formula-fixtures", "incentives-validator-allocation-fixtures"]
+      "enum": [
+        "incentives-formula-fixtures",
+        "incentives-validator-allocation-fixtures",
+        "incentives-third-party-voting-fixtures"
+      ]
     },
-    "owner": { "const": "protocols/incentives" },
-    "status": { "const": "verified" },
-    "supportStatus": { "const": "none" },
-    "reviewStatus": { "enum": ["accepted", "pending-qualified-review"] },
-    "protocolStatus": { "const": "verified-versioned" },
+    "owner": {
+      "const": "protocols/incentives"
+    },
+    "status": {
+      "const": "verified"
+    },
+    "supportStatus": {
+      "const": "none"
+    },
+    "reviewStatus": {
+      "enum": ["accepted", "pending-qualified-review"]
+    },
+    "protocolStatus": {
+      "const": "verified-versioned"
+    },
     "records": {
       "type": "array",
       "minItems": 1,

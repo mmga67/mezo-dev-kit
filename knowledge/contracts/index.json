@@ -11,12 +11,7 @@
   "verifiedAt": "2026-08-27T14:24:36.881Z",
   "reviewAfter": "2026-09-22T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "mezo-testnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"],
     "contractIds": [
       "musd.active-pool",
       "musd.borrower-operations",
@@ -828,9 +823,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/bridge-v13-contracts-2026-08-24.json",
-      "recordIds": [
-        "observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"
-      ],
+      "recordIds": ["observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -918,11 +911,7 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/savings-dynamic-read-interfaces.json",
-      "recordIds": [
-        "strategy",
-        "converter",
-        "gauge"
-      ],
+      "recordIds": ["strategy", "converter", "gauge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -942,9 +931,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-06.json",
-      "recordIds": [
-        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
-      ],
+      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -958,12 +945,7 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/vault-dynamic-read-interfaces.json",
-      "recordIds": [
-        "vault-v2",
-        "morpho-market-adapter",
-        "receipt-wrapper",
-        "vault-gauge"
-      ],
+      "recordIds": ["vault-v2", "morpho-market-adapter", "receipt-wrapper", "vault-gauge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -995,9 +977,7 @@
       "role": "canonical-record",
       "kind": "protocol-operation-source-catalog",
       "path": "records/protocol-operation-sources.json",
-      "recordIds": [
-        "morpho-events"
-      ],
+      "recordIds": ["morpho-events"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1029,10 +1009,7 @@
       "role": "canonical-record",
       "kind": "basic-pool-interface-catalog",
       "path": "records/basic-pool-interfaces.json",
-      "recordIds": [
-        "pool",
-        "factory-registry"
-      ],
+      "recordIds": ["pool", "factory-registry"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1176,12 +1153,7 @@
       "role": "canonical-record",
       "kind": "voting-interface-catalog",
       "path": "records/voting-interfaces.json",
-      "recordIds": [
-        "pools",
-        "boost",
-        "validator",
-        "rewards-factory"
-      ],
+      "recordIds": ["pools", "boost", "validator", "rewards-factory"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1279,10 +1251,7 @@
       "role": "canonical-record",
       "kind": "historical-contract-evidence-catalog",
       "path": "records/historical-contract-evidence.json",
-      "recordIds": [
-        "native-ethereum-7e994d7f",
-        "native-mezo-v5"
-      ],
+      "recordIds": ["native-ethereum-7e994d7f", "native-mezo-v5"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1296,52 +1265,91 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-13.json",
-      "recordIds": [
-        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
-      ],
+      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"],
       "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "third-party-voter-source",
+      "role": "canonical-record",
+      "kind": "contract-retained-source",
+      "path": "records/third-party-voter-source.json"
+    },
+    {
+      "id": "source.incentives.third-party-voter",
+      "role": "artifact",
+      "kind": "explorer-source-bundle",
+      "path": "artifacts/third-party-voter/source.json"
+    },
+    {
+      "id": "third-party-gauge-explorer-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-gauge-capture",
+      "path": "artifacts/third-party-voter/gauge-explorer.json"
+    },
+    {
+      "id": "native-transfer-current-rpc",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-transfer/current-rpc.json"
+    },
+    {
+      "id": "native-transfer-token-sources",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-transfer/token-sources.json"
+    },
+    {
+      "id": "native-transfer-token-runtime",
+      "role": "canonical-record",
+      "kind": "token-runtime-profile-catalog",
+      "path": "records/native-transfer-token-runtime.json"
     }
   ],
   "checks": [
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module contracts"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module contracts"
     },
     {
       "id": "contract-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-contract-knowledge.ts"
+      "command": "node scripts/checks/validate-contract-knowledge.ts"
     },
     {
       "id": "contract-provenance-negative-tests",
       "type": "semantic",
-      "command": "node scripts/test-contract-provenance.ts"
+      "command": "node scripts/tests/test-contract-provenance.ts"
     },
     {
       "id": "contract-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-contract-reference.ts --check"
+      "command": "node scripts/generate/generate-contract-reference.ts --check"
     },
     {
       "id": "savings-interface-projection",
       "type": "semantic",
-      "command": "node scripts/generate-savings-package.ts --check"
+      "command": "node scripts/generate/generate-savings-package.ts --check"
     },
     {
       "id": "pool-retained-source-integrity",
       "type": "semantic",
-      "command": "node scripts/validate-pool-source-bundles.ts"
+      "command": "node scripts/checks/validate-pool-source-bundles.ts"
     },
     {
       "id": "voting-interface-projection",
       "type": "semantic",
-      "command": "node scripts/generate-protocol-operations.ts --check"
+      "command": "node scripts/generate/generate-protocol-operations.ts --check"
     },
     {
       "id": "historical-contract-evidence",
       "type": "semantic",
-      "command": "node scripts/generate-contracts-package.ts --check"
+      "command": "node scripts/generate/generate-contracts-package.ts --check"
+    },
+    {
+      "id": "third-party-source-integrity",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-third-party-incentives.ts"
     }
   ],
   "extensions": {

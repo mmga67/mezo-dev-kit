@@ -2,6 +2,7 @@ import { BORROWER_OPERATION_ABI, BORROWING_RUNTIME_IDENTITIES } from "./operatio
 import { ContractRegistryError } from "./errors.ts";
 import { resolveContract } from "./registry.ts";
 import { NTT_CONTRACT_INTERFACES } from "./ntt.generated.ts";
+import { NATIVE_CONTRACT_INTERFACES } from "./native.generated.ts";
 import type { ContractAbiEntry, ContractResolutionInput, ResolvedContract } from "./registry.ts";
 import {
   PROTOCOL_OPERATION_ABIS,
@@ -15,6 +16,10 @@ import {
 import type { ContractId } from "./registry.ts";
 
 export type VotingDomain = "pools" | "boost" | "validator";
+/**
+ * Voter-domain identity and curated ABI expectations; actual NFT/target eligibility belongs to
+ * Incentives.
+ */
 export interface VotingInterface {
   readonly contractId: ContractId;
   readonly listGetter: "poolVote" | "gaugeVote";
@@ -31,6 +36,10 @@ export function resolveVotingInterface(input: {
     });
   return Object.freeze(structuredClone(VOTING_INTERFACES[input.domain]));
 }
+/**
+ * Role-specific voting reward ABI and runtime evidence; a reward address must be verified
+ * through its owning voter graph.
+ */
 export interface VotingRewardInterface {
   readonly factoryContractId: ContractId;
   readonly runtimeTemplate: `0x${string}`;
@@ -52,6 +61,9 @@ export function resolveVotingRewardInterface(input: {
   return Object.freeze(structuredClone(VOTING_REWARD_INTERFACES[input.role]));
 }
 
+/**
+ * Generated basic-pool role ABI and runtime expectations; pool discovery belongs to Pools.
+ */
 export interface BasicPoolInterface {
   readonly anchorContractId: ContractId;
   readonly getter: string;
@@ -72,6 +84,10 @@ export function resolveBasicPoolInterface(input: {
 }
 
 export type ProtocolRole = keyof typeof PROTOCOL_ROLE_INTERFACES;
+/**
+ * Expected runtime and ABI for a dynamically discovered role. The owning protocol verifies its
+ * root and reverse mappings.
+ */
 export interface ProtocolRoleInterface {
   readonly role: ProtocolRole;
   readonly anchorContractId: ContractId;
@@ -97,6 +113,10 @@ export function getTokenInterface(): readonly ContractAbiEntry[] {
   return structuredClone(TOKEN_ABI);
 }
 
+/**
+ * Curated operation ABI and resolved contract; availability of this entrypoint does not
+ * authorize an operation.
+ */
 export interface ResolvedOperation {
   readonly contract: Readonly<ResolvedContract>;
   readonly functionAbi: ContractAbiEntry;
@@ -120,17 +140,30 @@ export function resolveEvent(
   return structuredClone(matches[0]);
 }
 
+/**
+ * Expected runtime/proxy hashes and slot from retained evidence, to compare with bytes read at
+ * the same coordinate.
+ */
 export interface ContractRuntimeIdentity {
   readonly addressCodeSha256: string;
   readonly implementationCodeSha256: string | null;
   readonly implementationSlot: `0x${string}` | null;
 }
 
+/**
+ * Resolve projected runtime hashes and proxy-slot expectations for a deployment.
+ *
+ * @remarks
+ * The deployment must first pass current contract resolution. Returned hashes are
+ * expectations to compare with RPC bytes, not proof that the current bytes match.
+ * @throws ContractRegistryError - The deployment has no projected runtime identity.
+ */
 export function resolveRuntimeIdentity(
   input: ContractResolutionInput,
 ): Readonly<ContractRuntimeIdentity> {
-  resolveContract(input);
+  const contract = resolveContract(input);
   const identity =
+    NATIVE_CONTRACT_INTERFACES.find((p) => p.deploymentId === contract.deploymentId)?.runtime ??
     NTT_CONTRACT_INTERFACES.find(
       (p) => p.networkId === input.networkId && p.contractId === input.contractId,
     )?.runtime ??
@@ -156,6 +189,8 @@ export function resolveOperation(
 ): Readonly<ResolvedOperation> {
   const contract = resolveContract(input);
   const abi =
+    NATIVE_CONTRACT_INTERFACES.find((p) => p.deploymentId === contract.deploymentId)
+      ?.operationAbi ??
     NTT_CONTRACT_INTERFACES.find(
       (p) => p.networkId === input.networkId && p.contractId === input.contractId,
     )?.operationAbi ??

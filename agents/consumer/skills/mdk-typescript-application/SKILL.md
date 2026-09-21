@@ -29,6 +29,11 @@ installed release does not support.
 4. Load only the additional version-compatible MDK consumer skill required by
    the task.
 5. Inspect the affected application source and tests before changing them.
+6. When the MDK utility is installed, search its complete local index with
+   `pnpm exec mdk docs search "<topic>" --json`. Read the returned local reference
+   or use `docs show "<id>"`; explicitly use `docs fetch "<id>"` for an uncached
+   resource. Preserve bundle identity and recorded limitations. A private
+   packed artifact must match its bundle even when version strings are equal.
 
 ## Procedure
 

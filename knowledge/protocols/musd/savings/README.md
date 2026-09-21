@@ -1,18 +1,25 @@
-# MUSD Savings knowledge
+# MUSD Savings
 
-This module owns the deployment-scoped accounting and integration model for
-MUSD Savings (`sMUSD`). It is adjacent to the classic MUSD debt system: a
-deposit mints principal receipts one-for-one, while yield is tracked by a
-separate index and paid separately. Savings balances never enter troves, TCR,
-the Stability Pool, or the redemption queue.
+Understand Savings principal receipts, indexed MUSD yield, and the relationship between wallet holdings and gauge stake. Savings accounting is separate from classic MUSD debt.
 
-Start with [`generated/reference.md`](generated/reference.md). Qualified Level
-3 review accepted the bounded knowledge and current Contract identity under
-Savings evidence review; knowledge support remains `proposed`. That knowledge
-review does not authorize runtime APIs. The separately reviewed source-alpha
-reader and its current boundaries are owned by the
-[Savings package documentation](../../../../packages/protocols/musd-savings/README.md)
-and [architecture](../../../../ARCHITECTURE.md); writers remain unsupported.
-Contracts retains all five observed Savings proxy
-implementation generations for coordinate-scoped history and selects the
-latest verified generation for present operations.
+## Start here
+
+- [Savings reference](generated/reference.md): principal, yield, roles, and double-counting guards.
+- [Savings SDK](../../../../packages/protocols/musd-savings/README.md): read, calculate, deposit, withdraw, and claim yield.
+- [Incentives knowledge](../../incentives/README.md): gauge rewards and voting.
+- [Shared MUSD explanation](../../../../docs/reference/musd-system.md): the wider system.
+
+## Scope and evidence
+
+The bounded knowledge review is accepted while support remains proposed.
+Each proxy generation and observation retains its own coordinate and evidence
+limits; package docs describe the separately reviewed reader and private writers.
+
+Deposits create principal receipts one-for-one; yield is indexed and paid
+separately. Savings balances do not enter classic troves, collateral ratios,
+the Stability Pool, or the redemption queue. Gauge stake, custody, and redirected
+yield must not be counted as extra principal.
+
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

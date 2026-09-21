@@ -4,6 +4,8 @@ The maintained provider and route reference is generated from module
 `workflows/bridges`:
 
 - [Bridge evidence reference](../../../knowledge/workflows/bridges/generated/reference.md)
+- [Private Native source qualification](../../../knowledge/workflows/bridges/evidence/native-transfer-2026-09-15.json)
+- [Native SDK preparation and recovery outcomes](../../../packages/bridges/REFERENCE.md#private-native-source-preparation)
 
 Resolve resources `bridge-routes`, `bridge-contract-roles`,
 `bridge-native-lifecycle`, and `bridge-native-evidence` for exact

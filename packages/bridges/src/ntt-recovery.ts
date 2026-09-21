@@ -53,6 +53,10 @@ interface DestinationRecovery {
   readonly sourceTransactionHash: Hash32;
   readonly message: HexData;
 }
+/**
+ * One explicitly selected source-queue or destination-attestation operation. Required evidence
+ * depends on the action and chain.
+ */
 export type NttRecoveryInput = RecoveryBase &
   (
     | (Readonly<{ kind: "complete-outbound" }> & OutboundRecovery)
@@ -61,6 +65,10 @@ export type NttRecoveryInput = RecoveryBase &
     | (Readonly<{ kind: "execute-approved" }> & DestinationRecovery)
     | (Readonly<{ kind: "receive-attestation"; vaa: HexData }> & DestinationRecovery)
   );
+/**
+ * Per-chain execution/read dependencies and evidence policies. Only the execution client needed
+ * for the selected action is required.
+ */
 export interface NttRecoveryConfig {
   readonly routeId: NttRouteId;
   readonly sourceTransport: RpcTransport;
@@ -72,6 +80,10 @@ export interface NttRecoveryConfig {
   readonly maxSourceAgeBlocks: bigint;
   readonly maxDestinationAgeBlocks: bigint;
 }
+/**
+ * Exact selected recovery call and its source/message evidence. A nullable quote/digest
+ * reflects the action, not missing permission to infer one.
+ */
 export interface PreparedNttRecovery {
   readonly input: Readonly<NttRecoveryInput>;
   readonly transaction: Readonly<PreparedTransaction>;
@@ -82,17 +94,43 @@ export interface PreparedNttRecovery {
   readonly recipient: Address;
   readonly quote: Readonly<NttTransferQuote> | null;
 }
+/**
+ * Observed queue/cancellation or destination progress. Progress is not a general cross-chain
+ * completion assertion.
+ */
 export type NttRecoveryOutcome =
   | NttSourceOutcome
   | Readonly<{ state: "source-cancelled"; sequence: bigint; amount: bigint }>
   | Readonly<{ state: "destination-progress"; digest: Hash32; evidence: "queued" | "redeemed" }>;
+/**
+ * Explicit manual recovery lifecycle. No automatic retries, attestation service or background
+ * delivery worker is selected.
+ */
 export interface NttRecoveryWriter {
+  /**
+   * Read only the evidence required for the explicitly selected recovery action and prepare its
+   * source or destination call without signing.
+   */
   prepare(input: NttRecoveryInput): Promise<Readonly<PreparedNttRecovery>>;
+  /**
+   * Simulate this writer's prepared recovery call using the execution client for the selected
+   * chain; do not submit.
+   */
   simulate(prepared: PreparedNttRecovery): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedNttRecovery,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify the selected recovery
+   * action's queue/attestation evidence. Required evidence mismatches can reject even when the
+   * EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedNttRecovery,
     record: unknown,
@@ -194,6 +232,15 @@ function verifyVaa(
   // This binds the body, not guardian validity. The deployed transceiver verifies guardians in exact simulation/execution.
   return { vaa, hash: parseHash32(keccak256(keccak256(parseHexData(`0x${body}`)))) };
 }
+/**
+ * Create explicitly chosen NTT queue and attestation recovery operations.
+ *
+ * @remarks
+ * The selected action determines the chain and evidence required. Preparation does
+ * not schedule retries or acquire attestations. Simulation, submission and source
+ * reconciliation remain separate from observing eventual cross-chain delivery.
+ * See the package reference for each recovery action's prerequisites.
+ */
 export function createNttRecoveryWriter(config: NttRecoveryConfig): Readonly<NttRecoveryWriter> {
   const route = NTT_ROUTES.find((r) => r.id === config.routeId);
   nttRequire(route, "UnknownRoute", "unknown MUSD NTT recovery route");

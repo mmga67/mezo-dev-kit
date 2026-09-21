@@ -1,6 +1,10 @@
 import { isUint } from "@mezo-dev-kit/evm";
 import { VaultReadError } from "./errors.ts";
 import { VAULT_MODEL } from "./model.generated.ts";
+/**
+ * Tagged base units: underlying assets, vault shares and wrapper receipts have distinct
+ * accounting meaning.
+ */
 export interface VaultAmount<U extends string> {
   readonly unit: U;
   readonly baseUnits: bigint;
@@ -30,6 +34,15 @@ export interface VaultPreviewState {
   readonly managementFeeShares: bigint;
   readonly virtualShares: bigint;
 }
+/**
+ * Preview a fee-aware VaultV2 asset/share conversion with operation-specific rounding.
+ *
+ * @param state - One-coordinate totals including the accrueInterestView fee shares.
+ * @param value - Asset base units for deposit/withdraw; vault shares for mint/redeem.
+ * @returns Shares for deposit/withdraw, assets for mint/redeem. Deposit/redeem round
+ * down; mint/withdraw round up. Virtual supply and assets are included.
+ * @throws VaultReadError - Invalid operation, unsigned value, denominator or overflow.
+ */
 export function previewVaultConversion(
   state: VaultPreviewState,
   operation: "deposit" | "mint" | "withdraw" | "redeem",
@@ -53,6 +66,13 @@ export function previewVaultConversion(
       throw new VaultReadError("InvalidValue", "operation");
   }
 }
+/**
+ * Convert vault shares to wrapper receipts, rounding down with the deployed virtual terms.
+ *
+ * @param receiptSupply - Total wrapper receipt supply at the same coordinate.
+ * @param userVaultShares - Wrapper accounting backing its users, not one wallet's balance.
+ * @throws VaultReadError - Invalid unsigned inputs or arithmetic overflow.
+ */
 export function wrapperToReceipts(
   vaultShares: bigint,
   receiptSupply: bigint,
@@ -65,6 +85,14 @@ export function wrapperToReceipts(
     "down",
   );
 }
+/**
+ * Convert wrapper receipts to their backing vault shares, rounding down.
+ *
+ * @param receiptSupply - Total wrapper receipt supply at the same coordinate.
+ * @param userVaultShares - Wrapper accounting backing its users, not one wallet's balance.
+ * @remarks
+ * This conversion does not harvest yield or submit an unwrap.
+ */
 export function wrapperToVaultShares(
   receipts: bigint,
   receiptSupply: bigint,
@@ -77,6 +105,15 @@ export function wrapperToVaultShares(
     "down",
   );
 }
+/**
+ * Calculate wrapper yield shares from appreciation above the last share ratio.
+ *
+ * @remarks
+ * When no gauge is set, yield is zero and the ratio tracks the current value.
+ * With a gauge, a flat/falling ratio retains the prior high-water mark; appreciation
+ * produces floor-rounded yield shares. Inputs must use the same ratio scale.
+ * @returns Yield shares and the next accounting ratio without mutating state.
+ */
 export function calculateVaultHarvest(input: {
   readonly userVaultShares: bigint;
   readonly currentRatio: bigint;

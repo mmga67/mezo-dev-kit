@@ -4,6 +4,7 @@ The maintained human reference is generated from the indexed
 `protocols/incentives` module:
 
 - [Mezo incentives evidence reference](../../../knowledge/protocols/incentives/generated/reference.md)
+- [MEZO Gauges and remote incentives](../../../knowledge/protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives): the added third-party model, its accepted review scope, voting-guide conflict, and delivery gaps.
 
 Use the module README for orientation and its `review/gaps.md` resource for
 current re-verification and public-capability gates. incentives evidence review qualified review

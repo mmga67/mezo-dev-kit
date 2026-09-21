@@ -190,3 +190,22 @@ minimum-debt/capacity violations, and invalid recovery-mode operations fail
 explicitly. A successful receipt with missing/conflicting borrower events or
 later same-block position changes does not become reconciled. No reader
 failure becomes an assumed zero balance or an actionable quote.
+
+## Verification scope
+
+Build the workspace before running the opt-in harness from the repository root.
+
+For the explicit local integration harness, start a fresh Anvil fork using a
+mainnet RPC URL and an exact block number, with chain ID from Chains. Then run:
+
+```sh
+node packages/protocols/musd-borrowing/test/fork.ts http://127.0.0.1:18545 "$MEZO_READ_RPC"
+```
+
+The harness refuses a non-local target or a non-Anvil client. It captures the
+native oracle's two read responses at the fork block and installs a labelled
+response fixture because Anvil cannot execute Mezo's native precompile. It
+uses local account impersonation to fund close fees and create surplus through
+actual pool entrypoints. Borrowing contract code is unchanged; local fixture
+state is reverted afterward. This proves the EVM writer integration with the
+fixture, not Mezo's native oracle implementation or redemption execution.

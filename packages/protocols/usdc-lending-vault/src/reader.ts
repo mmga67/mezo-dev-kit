@@ -16,6 +16,15 @@ import { address, attempt, optional, readValue, same, tuple } from "./reads.ts";
 import { verifyRole } from "./reads.ts";
 import type { VaultReader, VaultReaderConfig, VaultSnapshot } from "./types.ts";
 
+/**
+ * Create the depositor vault reader, composing the lending reader at one coordinate.
+ *
+ * @remarks
+ * Reads reconcile vault shares, fee-aware previews, wrapper yield and gauge custody.
+ * Unavailable optional inputs remain explicit and cannot become executable previews.
+ * The application supplies transport/codec and the maximum accepted oracle age.
+ * Use createVaultRpcReader for the existing Core RPC adapter.
+ */
 export function createVaultReader(config: VaultReaderConfig): Readonly<VaultReader> {
   if (config?.networkId !== MODEL.networkId)
     throw new VaultReadError("UnsupportedNetwork", "networkId");

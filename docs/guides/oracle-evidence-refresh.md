@@ -16,8 +16,8 @@ For a bounded current-state capture, no source clones or temporary input files
 are required. From the repository root, choose a new output filename:
 
 ```sh
-node scripts/capture-current-price-state.ts --network mezo-testnet local/oracle-evidence/current-testnet.json
-node scripts/capture-current-price-state.ts --network mezo-mainnet local/oracle-evidence/current-mainnet.json
+node scripts/evidence/capture-current-price-state.ts --network mezo-testnet local/oracle-evidence/current-testnet.json
+node scripts/evidence/capture-current-price-state.ts --network mezo-mainnet local/oracle-evidence/current-mainnet.json
 ```
 
 These commands resolve the RPC, root identities, and feed IDs from canonical
@@ -45,6 +45,28 @@ archive state is no longer an alpha/current-state blocker. Historical audits
 retain an explicit limitation; no historical request is silently served from
 `latest`. See [price selection and DEX quotes](price-selection-and-dex-quotes.md)
 for the feed status and SDK behavior boundaries.
+
+### Testnet historical archive exception
+
+The original exception is now the standing policy in
+[Network scope](../manifest#network-scope). Long-term testnet
+archive recovery, re-verification, backfills, and historical certification are
+outside MDK's required scope. Use maintained mainnet evidence and recent testnet
+observations within their respective network and implementation scopes.
+
+For testnet maintenance, use the current-state capture above and preserve its
+`current-state-only` coverage. Retain existing historical artifacts, dates, and
+limitations. A historical diagnostic failure or newly available provider does
+not create a recovery prerequisite. Requests needing excluded testnet history
+remain unsupported; adding maintained support requires a revision of [Network scope](../manifest#network-scope).
+
+Testnet/full-history validators retain their existing claims and can report
+expired evidence. They are optional diagnostics for the excluded testnet history,
+not acceptance gates for the included scope. Report their results accurately.
+Use the mainnet acceptance commands below for mainnet work. Current testnet
+identity, runtime/ABI compatibility, price freshness, and the recent evidence
+needed by a current operation still require testnet-specific verification.
+Mainnet evidence and qualified release checks retain their own requirements.
 
 ## Choose the operation
 
@@ -172,7 +194,7 @@ from its pinned tag. Do not install or build these source repositories.
 ## 3. Capture fresh mainnet observations
 
 ```sh
-node scripts/capture-price-knowledge.ts \
+node scripts/evidence/capture-price-knowledge.ts \
   local/oracle-evidence/captures/mainnet.json \
   local/oracle-evidence/sources/documentation \
   local/oracle-evidence/sources/mezod \
@@ -200,13 +222,13 @@ accepted storage response is substituted for a fresh read.
 Import the successful capture within 24 hours:
 
 ```sh
-node scripts/import-mainnet-oracle-refresh.ts local/oracle-evidence/captures/mainnet.json
+node scripts/evidence/import-mainnet-oracle-refresh.ts local/oracle-evidence/captures/mainnet.json
 ```
 
 The importer checks the unchanged accepted generation before writing canonical
 files. It rejects stale captures, changed identity/runtime/ABI/history or feed
 outcomes, and rollback of the current mainnet observation block. The old
-`scripts/refresh-pyth-oracle-knowledge.ts` script is the August 27 upgrade
+`scripts/evidence/refresh-pyth-oracle-knowledge.ts` script is the August 27 upgrade
 migration; **do not use it for this routine refresh**.
 
 Artifact and observation IDs currently use the capture's UTC date. The
@@ -218,12 +240,12 @@ overwrite accepted evidence as a routine retry.
 After a successful import, regenerate:
 
 ```sh
-node scripts/generate-contract-reference.ts
-node scripts/generate-price-reference.ts
-node scripts/generate-contracts-package.ts
-node scripts/generate-savings-package.ts
-node scripts/generate-lending-package.ts
-node scripts/generate-vault-package.ts
+node scripts/generate/generate-contract-reference.ts
+node scripts/generate/generate-price-reference.ts
+node scripts/generate/generate-contracts-package.ts
+node scripts/generate/generate-savings-package.ts
+node scripts/generate/generate-lending-package.ts
+node scripts/generate/generate-vault-package.ts
 git status --short
 git diff --stat
 ```
@@ -246,7 +268,7 @@ without hiding a failing command's exit status:
   set -o pipefail
   pnpm check:readers:mainnet 2>&1 | tee local/oracle-evidence/mainnet-check.log
 )
-node scripts/validate-markdown-links.ts
+node scripts/checks/validate-markdown-links.ts
 git diff --check
 ```
 
@@ -267,8 +289,8 @@ live-price support.
 These default commands retain the full scope:
 
 ```sh
-node scripts/validate-contract-knowledge.ts
-node scripts/validate-price-knowledge.ts
+node scripts/checks/validate-contract-knowledge.ts
+node scripts/checks/validate-price-knowledge.ts
 ```
 
 Historical testnet re-verification remains separate. While that evidence is

@@ -116,3 +116,10 @@ contract: they already verify at the requested coordinate. It removes the
 requirement to recapture old testnet storage before accepting a current-state
 maintenance snapshot. Testnet reader support and full-history registry acceptance
 are not automatically promoted. Full-history validators remain strict.
+
+[Network scope](../manifest#network-scope) makes long-term
+testnet historical maintenance an unsupported project scope. Use recent testnet
+observations for current testnet state and mainnet evidence within its own
+deployment/version scope. Excluded archive diagnostics create no recovery gate;
+the [refresh guide](oracle-evidence-refresh.md#testnet-historical-archive-exception)
+documents the applicable acceptance commands and capture coverage.

@@ -10,6 +10,10 @@ import { createLockReader } from "./lock-reader.ts";
 import type { LockSnapshot } from "./lock-types.ts";
 import { calculateRebaseClaim, rebaseWindow } from "./rebase-math.ts";
 import type { RebaseClaim, RebaseCursorInput, RebasePeriod } from "./rebase-math.ts";
+/**
+ * Verified distributor/minter/escrow state and bounded periods, with locally recomputed claim
+ * compared to on-chain output.
+ */
 export interface RebaseSnapshot extends RebaseCursorInput {
   readonly contract: Readonly<ResolvedContract>;
   readonly minter: Readonly<ResolvedContract>;
@@ -22,13 +26,28 @@ export interface RebaseSnapshot extends RebaseCursorInput {
   readonly periods: readonly Readonly<RebasePeriod>[];
   readonly claim: Readonly<RebaseClaim>;
 }
+/**
+ * Current bounded veMEZO claim inspection; it neither runs minter upkeep nor submits a claim.
+ */
 export interface RebaseReader {
+  /**
+   * Read the bounded distributor claim window and compare local integer accounting with
+   * on-chain claimable at one block.
+   */
   read(input: {
     readonly account: `0x${string}`;
     readonly tokenId: bigint;
     readonly blockNumber?: bigint;
   }): Promise<Readonly<RebaseSnapshot>>;
 }
+/**
+ * Create bounded veMEZO distributor reads with verified escrow and minter identity.
+ *
+ * @remarks
+ * The reader recomputes the contract's claim window and compares claimable output.
+ * A hasMore result means further bounded work remains; it does not imply exhaustive
+ * history. Reads neither claim tokens nor perform minter upkeep.
+ */
 export function createRebaseReader(config: {
   readonly networkId: "mezo-mainnet";
   readonly registry: Readonly<ContractRegistry>;

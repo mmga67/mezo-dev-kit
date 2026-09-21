@@ -8,7 +8,7 @@ templates, examples, and generated application defaults. Solidity and an
 established external application stack may use their owning ecosystem's test
 tool, but must preserve the quality and verification rules below.
 
-[ADR-0010](../decisions/0010-vitest-default-testing.md) selects Vitest as the
+[Engineering and verification](../manifest#engineering-and-verification) selects Vitest as the
 default TypeScript test framework. Package documentation owns exact commands
 and environment-specific configuration.
 

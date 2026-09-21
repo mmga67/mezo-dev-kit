@@ -222,17 +222,17 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module protocols/musd/institutional-debt"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/musd/institutional-debt"
     },
     {
       "id": "institutional-debt-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-institutional-debt-knowledge.ts"
+      "command": "node scripts/checks/validate-institutional-debt-knowledge.ts"
     },
     {
       "id": "institutional-debt-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-institutional-debt-reference.ts --check"
+      "command": "node scripts/generate/generate-institutional-debt-reference.ts --check"
     }
   ],
   "extensions": {

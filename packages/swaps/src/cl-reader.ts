@@ -13,6 +13,13 @@ const zero = `0x${"0".repeat(40)}` as const;
 function array(value: unknown): boolean {
   return Array.isArray(value);
 }
+/**
+ * Normalize one to three contiguous, acyclic CL hops with approved intermediate assets.
+ *
+ * @remarks
+ * Token identities and tick spacing are validated structurally. No RPC, pool discovery
+ * or liquidity check occurs until a reader quotes the route.
+ */
 export function validateCLSwapRoute(
   route: readonly CLSwapHop[],
   intermediateAssets: readonly `0x${string}`[],
@@ -56,6 +63,14 @@ export function validateCLSwapRoute(
   );
   return Object.freeze(result);
 }
+/**
+ * Encode an exact-input CL path as token addresses separated by three-byte tick spacings.
+ *
+ * @remarks
+ * The encoded discriminator is tick spacing, not a fee tier. This function validates
+ * route shape using its own intermediate tokens; apply the application's allowlist
+ * with validateCLSwapRoute before treating the route as eligible.
+ */
 export function encodeCLSwapPath(route: readonly CLSwapHop[]): `0x${string}` {
   const validated = validateCLSwapRoute(
     route,
@@ -63,6 +78,14 @@ export function encodeCLSwapPath(route: readonly CLSwapHop[]): `0x${string}` {
   );
   return `0x${validated[0]!.tokenIn.slice(2)}${validated.map((hop) => hop.tickSpacing.toString(16).padStart(6, "0") + hop.tokenOut.slice(2)).join("")}`;
 }
+/**
+ * Create exact-input CL quotes with explicit step, bitmap and tick-crossing budgets.
+ *
+ * @remarks
+ * Caller-supplied hops are verified through Pools at one coordinate. Incomplete fills
+ * and exhausted budgets reject rather than returning executable partial quotes.
+ * The reader neither chooses routes nor relies on an implicit Quoter.
+ */
 export function createCLSwapReader(config: {
   readonly networkId: "mezo-mainnet";
   readonly registry: ContractRegistry;
@@ -204,6 +227,13 @@ export function createCLSwapReader(config: {
     },
   } satisfies CLSwapReader);
 }
+/**
+ * Resolve verified CL input-token targets for Core's separate approval lifecycle.
+ *
+ * @remarks
+ * The configured route and account are reread at the requested coordinate. Resolution
+ * must match the registered anchor and role; it does not authorize an arbitrary token.
+ */
 export function createCLSwapTargetResolver(config: {
   readonly reader: CLSwapReader;
   readonly input: Omit<CLSwapQuoteInput, "blockNumber">;

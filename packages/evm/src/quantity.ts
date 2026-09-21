@@ -3,6 +3,9 @@ import * as OxHex from "ox/Hex";
 import { EvmValueError } from "./errors.ts";
 import type { RpcQuantity } from "./types.ts";
 
+/**
+ * Check minimal unsigned RPC hex, accepting 0x0 and rejecting redundant leading zeros.
+ */
 export function isRpcQuantity(value: unknown): value is RpcQuantity {
   return (
     typeof value === "string" &&

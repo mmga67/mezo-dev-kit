@@ -1,0 +1,32 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@mezo-dev-kit/evm": ["../packages/evm/src/index.ts"],
+      "@mezo-dev-kit/chains": ["../packages/chains/src/index.ts"],
+      "@mezo-dev-kit/contracts": ["../packages/contracts/src/index.ts"],
+      "@mezo-dev-kit/core": ["../packages/core/src/index.ts"],
+      "@mezo-dev-kit/tokens": ["../packages/tokens/src/index.ts"],
+      "@mezo-dev-kit/musd-borrowing": ["../packages/protocols/musd-borrowing/src/index.ts"],
+      "@mezo-dev-kit/pools": ["../packages/protocols/pools/src/index.ts"],
+      "@mezo-dev-kit/swaps": ["../packages/swaps/src/index.ts"],
+      "@mezo-dev-kit/bridges": ["../packages/bridges/src/index.ts"],
+      "@mezo-dev-kit/musd-savings": ["../packages/protocols/musd-savings/src/index.ts"],
+      "@mezo-dev-kit/musdc-lending": ["../packages/protocols/musdc-lending/src/index.ts"],
+      "@mezo-dev-kit/usdc-lending-vault": ["../packages/protocols/usdc-lending-vault/src/index.ts"],
+      "@mezo-dev-kit/incentives": ["../packages/protocols/incentives/src/index.ts"],
+      "@mezo-dev-kit/musd-redemptions": ["../packages/protocols/musd-redemptions/src/index.ts"],
+      "@mezo-dev-kit/swaps/quotes": ["../packages/swaps/src/quotes.ts"],
+      "@mezo-dev-kit/prices": ["../packages/prices/src/index.ts"],
+      "@mezo-dev-kit/musd-institutional-debt": [
+        "../packages/protocols/musd-institutional-debt/src/index.ts"
+      ],
+      "@mezo-dev-kit/cli": ["../packages/cli/src/index.ts"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["dist", "node_modules", "test/built"]
+}

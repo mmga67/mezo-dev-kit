@@ -1,60 +1,36 @@
-# Bridge knowledge
+# Bridge routes and delivery
 
-This module owns evidence-scoped provider, asset representation, route, and
-cross-chain reconciliation knowledge for MUSD Wormhole NTT and Mezo Native
-Bridge.
+Understand MUSD Wormhole NTT and Mezo Native Bridge routes, asset representations, and the evidence needed to establish cross-chain delivery.
 
-For human use, start with `generated/reference.md`, then open only the selected
-provider lifecycle and evidence resource. `review/gaps.md` is the production
-blocker checklist; `review/candidates.md` records excluded or deferred routes
-and assumptions.
+## Start here
 
-For machine use, resolve module `workflows/bridges` through `index.json` and use
-resource IDs. `bridge-contract-roles` links the bounded provider graph to
-accepted Networks and Contract deployment/ABI records. Addresses
-inside dated evidence remain checked observation coordinates rather than a
-second identity owner.
+- [MUSD NTT guide](../../../docs/reference/bridges/musd-ntt.md): messages, lifecycle, and delivery evidence.
+- [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md): direction-specific settlement rules.
+- [Bridge reference](generated/reference.md): recorded route candidates and provider completion rules.
+- [Bridges SDK](../../../packages/bridges/README.md): private NTT/Native preparation, NTT recovery and bounded delivery observers.
+- [Indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md): scans, checkpoints, and partial evidence.
 
-## Current boundary
+## Scope and evidence
 
-`ntt-transfer-qualification-2026-09-13` retains current manager/transceiver and
-token runtime observations plus the pinned official source for private source
-preparation and manual recovery. It remains proposed/pending-qualified-review.
-The package reference owns implemented call and verification limits; this
-additional evidence creates no route or writer release support.
+The bounded provider/route model has accepted review, but routes remain
+evidence-verified and unsupported; module support is `none`. Additional private
+NTT preparation and Native source/delivery evidence retain their proposed, pending-review
+scope. Contract history and current operation readiness are separate.
 
-The additional `native-delivery-qualification-2026-09-12` evidence supports the
-private Native observer and references Contracts' separate historical profiles.
-It remains proposed/pending-qualified-review. Its consensus block closes the
-EVM-only transaction-count gap for inbound attribution. The package reference
-owns implemented limits; this evidence creates no current writer or route support.
+NTT delivery joins the same digest on both chains. Native delivery joins the
+correct direction-specific tuple and settlement evidence, including recipient
+post-state where required. A source receipt, attestation, successful system
+transaction, or stored indexer status alone does not prove delivery.
 
-- Both provider models and six directions have reproducible completed-transfer
-  evidence.
-- bridge evidence review qualified review accepted the bounded provider, representation,
-  route, lifecycle, evidence, and current-generation Contract model.
-- Every route remains `evidence-verified-not-supported`; module support is
-  `none`, so acceptance exposes no route, relayer, quote, operation, or writer.
-- registry provenance review accepted the bounded Network and Contract registry identities; this
-  does not accept any route, relayer, quote, operation, or writer.
-- The v13 boundary is now verified: wrapper-v6 bytecode is unchanged, execution
-  generation 6 activates at block 11358000, and its generation-6-only chain-set
-  selector returns Ethereum and Bitcoin at activation and latest. bridge evidence review
-  accepted the generation-6 deployment for current behavior while retaining
-  generation 5 as historical provenance.
-- NTT completion joins the same transfer digest across source and destination.
-- Native completion joins a direction-specific sequence tuple; inbound ERC-20
-  additionally requires recipient post-state or equivalent delivery proof.
-- A source receipt, message/attestation, or successful system transaction alone
-  is not terminal delivery.
-- BSC, Solana, MEZO NTT, Bitcoin delivery, other mappings, and untested
-  directions remain outside the module scope.
+The [Native source qualification](evidence/native-transfer-2026-09-15.json) pins
+current token/bridge state and source compatibility for the two initial routes.
+It documents native BTC approval, inbound mint authority and current withdrawal
+fees. A confirmed failed recipient payout requires governance recovery; it has
+no automatic retry. These implementation checks do not promote route support.
 
-Maintainers follow `docs/standards/knowledge-management.md` and the bridge
-skill. Update evidence, pinned source digests, records, generated reference,
-and declared checks together.
+BSC, Solana, MEZO NTT, Bitcoin delivery, other mappings, and untested directions
+remain outside this module's recorded scope.
 
-Provider-neutral scans and destination-candidate projections follow
-`docs/guides/INDEXING_RECONCILIATION.md`. They must preserve the NTT digest and
-Native direction-specific tuple/post-state rules owned here; a stored indexer
-status is not bridge completion.
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

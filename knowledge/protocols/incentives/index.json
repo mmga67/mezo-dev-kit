@@ -11,9 +11,7 @@
   "verifiedAt": "2026-08-24T21:59:22.983Z",
   "reviewAfter": "2026-09-22T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet"],
     "blockNumber": 11366264,
     "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5"
   },
@@ -23,7 +21,8 @@
     "The block-pinned graph is current only for the recorded block; consumers must resolve current proxy implementations again before use.",
     "Gauge instances, weights, voting power, reward balances, governed roles, and allowlists are volatile state and are not protocol constants.",
     "User yield, APY, forecasts, and planner outputs are derived analytics and are outside canonical protocol knowledge.",
-    "The whitepaper locked-supply description conflicts with the active minter's prior-boundary unboosted-voting-power input and is retained as an explicit specification/deployment conflict."
+    "The whitepaper locked-supply description conflicts with the active minter's prior-boundary unboosted-voting-power input and is retained as an explicit specification/deployment conflict.",
+    "Qualified review accepted the third-party voting model and September 15 evidence on 2026-09-15. Earlier module verification coordinates apply to their original resources; inspect each resource's lifecycle and scope. Remote delivery remains unverified."
   ],
   "resources": [
     {
@@ -351,6 +350,14 @@
         {
           "moduleId": "protocols/incentives",
           "resourceId": "incentives-cl-claims"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-mainnet"
         }
       ]
     },
@@ -359,28 +366,117 @@
       "role": "canonical-record",
       "kind": "mezo-cl-gauge-claim-model",
       "path": "records/cl-claims.json"
+    },
+    {
+      "id": "incentives-third-party-voting-rewards",
+      "role": "canonical-record",
+      "kind": "mezo-third-party-voting-reward-model",
+      "path": "records/third-party-voting-rewards.json"
+    },
+    {
+      "id": "incentives-third-party-sources",
+      "role": "source-catalog",
+      "kind": "mezo-incentives-source-catalog",
+      "path": "sources/third-party.json",
+      "recordIds": [
+        "third-party-voter-executable",
+        "third-party-mainnet-snapshot",
+        "official-mezo-gauges-overview",
+        "official-mezo-gauges-how-to-vote",
+        "official-mezo-gauges-where-your-vote-goes",
+        "official-mezo-gauges-claiming-incentives"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-third-party-mainnet",
+      "role": "evidence",
+      "kind": "incentives-third-party-observation",
+      "path": "evidence/third-party-mainnet-2026-09-15.json"
+    },
+    {
+      "id": "third-party-rpc-capture-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-retained-capture",
+      "path": "artifacts/third-party-2026-09-15/rpc.json"
+    },
+    {
+      "id": "third-party-gauge-capture-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-retained-capture",
+      "path": "artifacts/third-party-2026-09-15/gauges.json"
+    },
+    {
+      "id": "third-party-destination-capture-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-retained-capture",
+      "path": "artifacts/third-party-2026-09-15/destinations.json"
+    },
+    {
+      "id": "third-party-beneficiary-code-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-retained-capture",
+      "path": "artifacts/third-party-2026-09-15/beneficiary-code.json"
+    },
+    {
+      "id": "third-party-official-docs-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-retained-capture",
+      "path": "artifacts/third-party-2026-09-15/official-docs.json"
+    },
+    {
+      "id": "incentives-third-party-voting-fixtures",
+      "role": "fixture",
+      "kind": "mezo-third-party-voting-boundary-fixtures",
+      "path": "fixtures/third-party-voting.json",
+      "recordIds": [
+        "third-party-at-epoch-start",
+        "third-party-at-vote-start",
+        "third-party-after-vote-start",
+        "third-party-at-vote-end",
+        "third-party-after-vote-end",
+        "third-party-whitelisted-final-hour",
+        "third-party-whitelisted-first-hour",
+        "third-party-repeat-vote",
+        "third-party-reset-after-vote",
+        "third-party-reset-final-hour",
+        "third-party-reset-first-hour",
+        "third-party-next-epoch-reenables-vote"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "third-party-gauge-code-2026-09-15",
+      "role": "artifact",
+      "kind": "third-party-gauge-capture",
+      "path": "artifacts/third-party-2026-09-15/gauge-code.json"
     }
   ],
   "checks": [
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module protocols/incentives"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/incentives"
     },
     {
       "id": "incentives-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-incentives-evidence.ts"
+      "command": "node scripts/checks/validate-incentives-evidence.ts"
     },
     {
       "id": "incentives-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-incentives-reference.ts --check"
+      "command": "node scripts/generate/generate-incentives-reference.ts --check"
     },
     {
       "id": "cl-call-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-cl-call-knowledge.ts"
+      "command": "node scripts/checks/validate-cl-call-knowledge.ts"
+    },
+    {
+      "id": "third-party-incentives-semantics",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-third-party-incentives.ts"
     }
   ],
   "extensions": {

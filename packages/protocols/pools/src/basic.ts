@@ -25,6 +25,13 @@ export function poolAddress(value: unknown): `0x${string}` {
   poolRequire(address !== `0x${"0".repeat(40)}`, "InvalidInput", "zero pool address input");
   return address;
 }
+/**
+ * Normalize and sort two distinct nonzero token addresses into a basic-pool key.
+ *
+ * @remarks
+ * The stable flag remains part of the key. Sorting does not discover a pool or
+ * verify token runtime, precision or liquidity.
+ */
 export function sortBasicPoolKey(input: {
   readonly tokenA: `0x${string}`;
   readonly tokenB: `0x${string}`;
@@ -63,6 +70,14 @@ export function poolEntry(
   );
   return entries[0];
 }
+/**
+ * Create basic-pool discovery and account/reserve/fee reads at one block.
+ *
+ * @remarks
+ * The factory/token/pool graph and deployed runtimes must agree. LP wallet ownership,
+ * fee custody and reserves are distinct balances. A readable pool does not necessarily
+ * match the narrower writer asset profile; inspect writeCompatible.
+ */
 export function createBasicPoolReader(config: BasicPoolReaderConfig): Readonly<BasicPoolReader> {
   poolRequire(
     config.networkId === "mezo-mainnet",

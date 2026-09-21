@@ -44,7 +44,21 @@ function operation(action: BorrowingAction, hints: BorrowingHints | null) {
   }
 }
 
+/**
+ * Create the direct borrower preparation, simulation, submission and reconciliation API.
+ *
+ * @remarks
+ * Preparation reads current state, forecasts the action and resolves insertion hints.
+ * Simulation/submission require objects produced by this writer instance. Core owns
+ * the signer and durable submission record; this factory sends no transaction.
+ * Bounds are preflight policy and post-receipt reporting, not extra contract arguments.
+ * Reconciliation checks borrower events against receipt-block state; inspect
+ * boundsSatisfied even after a successful receipt. See the package reference for
+ * operation-specific accounting and recovery requirements.
+ */
 export function createBorrowingWriter(config: BorrowingWriterConfig): Readonly<BorrowingWriter> {
+  // Object identity binds the exact forecast/call and simulation to this writer.
+  // Deserializing a prior preparation cannot recreate that submission authority.
   const preparedOperations = new WeakSet<PreparedBorrowing>();
   const simulatedOperations = new WeakMap<SimulatedTransaction, PreparedBorrowing>();
   async function prepare(
@@ -172,6 +186,8 @@ export function createBorrowingWriter(config: BorrowingWriterConfig): Readonly<B
                 post.account,
               )[1],
             );
+      // These borrower entrypoints do not encode all caller policy bounds.
+      // Report actual compliance separately from successful EVM execution.
       const boundsSatisfied =
         fee <= prepared.bounds.maxFee &&
         (kind === "close" || post.position.annualRateBps <= prepared.bounds.maxAnnualRateBps) &&

@@ -1,51 +1,28 @@
-# MUSD protocol knowledge
+# The MUSD system
 
-This v0.4 module is the accepted canonical owner for the shared, version-scoped
-MUSD system model, terminology, component roles, units, and parameter
-ownership. Deployments and ABIs remain owned by Contracts. Borrowing and
-redemptions are separate accepted nested modules because they own distinct
-formulas, fixtures, operations, and evidence lifecycles. Institutional debt is
-a third, proposed nested module so EnclaveDebtManager positions and pledged
-veBTC never contaminate classic trove, ICR/TCR, or Recovery Mode semantics.
-MUSD Savings is another proposed nested owner: it keeps 1:1 sMUSD principal
-receipts and indexed yield separate from classic debt, TCR, Stability Pool, and
-redemptions. The independent BTC/mUSDC market is not a MUSD child and resolves
-through `protocols/lending/musdc`.
-Provider-neutral feed identity and datum/freshness rules are owned by Prices;
-MUSD retains ownership of its configured adapter, freshness, scaling, and
-protocol-price semantics.
+Learn the shared MUSD terminology, component roles, units, and parameter ownership. Start here before exploring a particular borrowing, redemption, Savings, or institutional debt workflow.
 
-## Current status
+## Start here
 
-The indexed shared knowledge is `supported` / `accepted` for the pinned MUSD
-source generation and the declared Mezo deployments. Governed values and
-deployment state are not frozen. Supporting the knowledge does not imply that
-MDK currently ships a public MUSD package or transaction writer.
+- [MUSD explanation](../../../docs/reference/musd-system.md): how the system fits together.
+- [System reference](generated/reference.md): the recorded components and their responsibilities.
+- [Borrowing](borrowing/README.md) and [redemptions](redemptions/README.md): classic collateralized debt and settlement.
+- [Savings](savings/README.md) and [institutional debt](institutional-debt/README.md): separate accounting models.
+- [BTC/mUSDC lending](../lending/musdc/README.md): the independent market for bridged USDC.
 
-## Human use
+## Scope and evidence
 
-Open [`generated/reference.md`](./generated/reference.md) for the deterministic
-system inventory and component view. The maintained explanatory guide remains
-[`docs/reference/musd-system.md`](../../../docs/reference/musd-system.md).
-Neither is an independent fact owner.
+The shared model is supported and reviewed for its declared source and deployment
+scope. Governed values and deployment state still change; follow the recorded
+sources and observation dates.
 
-## Machine use
+Savings principal/yield and institutional positions do not enter classic trove,
+collateral-ratio, Stability Pool, or redemption accounting. mUSDC is a different
+asset from MUSD. Contracts owns deployments and ABIs; Prices owns reusable feed
+semantics, while MUSD owns its configured oracle policy.
 
-Start at [`index.json`](./index.json), resolve a stable resource or record ID,
-and load only the required catalog. Follow the source/evidence resources when a
-protocol-sensitive decision needs proof. Use the nested module indexes for
-borrowing, redemption, institutional Enclave debt, or Savings work.
+For implemented workflows and their release status, use the [SDK reference](../../../docs/reference/sdk.md).
 
-## Maintenance
+## Contributing
 
-Records are under `records/`, pinned provenance under `sources/`, bounded reads
-under `evidence/`, structural schemas under `schema/`, candidates and
-superseded notes under `review/`, and generated output under `generated/`.
-
-Run:
-
-```bash
-node scripts/validate-knowledge-structure.ts --module protocols/musd
-node scripts/validate-musd-knowledge.ts
-node scripts/generate-musd-reference.ts --check
-```
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

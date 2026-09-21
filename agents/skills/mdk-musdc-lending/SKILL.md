@@ -18,8 +18,10 @@ vault's depositor shares, generic Morpho markets, APR forecasts.
 
 Direct supply, withdrawal, collateral, borrow and repay are implemented as private candidates with explicit approvals.
 Inspect `packages/protocols/musdc-lending/README.md`, `REFERENCE.md` and
-`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
-private implementation; canonical support remains proposed/none and qualified
+`src/index.ts` for current methods and required ports. The
+[execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
+defines shared requirements for this private implementation. Canonical support
+remains proposed/none and qualified
 review is required before release. Pair writer work with transaction-execution
 and testing procedures. Knowledge alone never authorizes a transaction.
 

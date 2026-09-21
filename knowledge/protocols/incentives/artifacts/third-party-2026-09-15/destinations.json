@@ -1,0 +1,59 @@
+{
+  "block": {
+    "number": "0xb52006",
+    "hash": "0xc64e0565d64b6b39b340c2d2858650b82631e4b1ef182103793e75c787ffdb66",
+    "timestamp": "0x6aa989a7"
+  },
+  "rows": [
+    {
+      "index": 2,
+      "address": "0x309edc04e8adcb10c6db7d2c28149d89942d4930",
+      "isAlive": true,
+      "weight": "0",
+      "name": "NonStakingGauge",
+      "sourceVerified": true,
+      "beneficiary": "0xbe6fdc9da59cadc157f959b5b28a7e3ea74bdcd4",
+      "metadata": "0x309EDC04E8AdcB10C6db7d2C28149D89942D4930\n\"snf-community\""
+    },
+    {
+      "index": 3,
+      "address": "0xc7e81dd77a4624f0dd14a8bb97bc721b0cee6e26",
+      "isAlive": true,
+      "weight": "8550657546210684821792592",
+      "name": "NonStakingGauge",
+      "sourceVerified": false,
+      "beneficiary": "0x31c72c4e04ecdfe4073e06b553702c1651388eb3",
+      "metadata": "0xC7e81dd77A4624F0DD14A8bB97Bc721b0CEE6e26\n\"remote-gauge-aerodrome-usdc-musd-cl10-ff56d037\""
+    },
+    {
+      "index": 4,
+      "address": "0x4440a9b2954cb98416c0122e2ea996c46555f4b6",
+      "isAlive": true,
+      "weight": "2702232064762403279065698",
+      "name": "NonStakingGauge",
+      "sourceVerified": false,
+      "beneficiary": "0xf07033c58ff054f97d7f9ff8301fad00a2fa32d2",
+      "metadata": "0x4440A9b2954cB98416C0122e2ea996C46555F4B6\n\"remote-gauge-aerodrome-mezo-musd-cl200-ef458a32\""
+    },
+    {
+      "index": 5,
+      "address": "0x2ced96e759ab481210d41c567eee5c42edb59a1d",
+      "isAlive": true,
+      "weight": "6713395892803277378964220",
+      "name": "NonStakingGauge",
+      "sourceVerified": false,
+      "beneficiary": "0x6b57b0ef5594a5820fd473353180442764d8601d",
+      "metadata": "0x2Ced96E759aB481210D41C567eee5C42edB59a1D\n\"remote-gauge-uniswap-v4-usdc-musd-fee100-a9bf5691\""
+    },
+    {
+      "index": 6,
+      "address": "0xc39a294024dca62f579c49d7c83a6c831d4976d0",
+      "isAlive": true,
+      "weight": "6728511992757215892283206",
+      "name": "NonStakingGauge",
+      "sourceVerified": false,
+      "beneficiary": "0x125bc117ecb87a81f3646e79dc2fc218def0debe",
+      "metadata": "0xC39A294024DCA62F579C49D7C83A6C831D4976d0\n\"remote-gauge-curve-musd-2pool-b5571e76\""
+    }
+  ]
+}

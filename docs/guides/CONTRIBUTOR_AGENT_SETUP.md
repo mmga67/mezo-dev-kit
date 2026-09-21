@@ -8,7 +8,7 @@ included in the source snapshot. Package installation does not create it.
 
 External applications use the separate
 [consumer setup](./EXTERNAL_APPLICATIONS.md); do not install contributor
-procedures into an application. [ADR-0008](../decisions/0008-portable-agent-skill-distribution.md)
+procedures into an application. [Human and agent documentation](../manifest#human-and-agent-documentation)
 owns the source, audience, and distribution boundaries.
 
 ## Install in a fresh clone
@@ -22,8 +22,8 @@ build, pnpm install, API key, MCP server, or external memory service.
 git clone https://github.com/mmga67/mezo-dev-kit.git
 cd mezo-dev-kit
 node --version
-node scripts/validate-agent-skills.ts
-node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
+node scripts/agents/validate-agent-skills.ts
+node scripts/agents/materialize-agent-skills.ts --audience contributor --output .agents/skills
 ```
 
 In an existing checkout, run the last two commands from its repository root.
@@ -106,7 +106,7 @@ generates the new set first and retains the entire old set under ignored
 ```sh
 mkdir -p local/agent-skill-backups
 mdk_skill_refresh="$(mktemp -d local/agent-skill-backups/refresh-XXXXXX)"
-node scripts/materialize-agent-skills.ts \
+node scripts/agents/materialize-agent-skills.ts \
   --audience contributor --output "$mdk_skill_refresh/new-skills" &&
   mv .agents/skills "$mdk_skill_refresh/previous-skills" &&
   mv "$mdk_skill_refresh/new-skills" .agents/skills
@@ -147,7 +147,7 @@ sources if they are intended MDK changes.
   workspace packages. Follow the [SDK quickstart](./SDK_DEVELOPMENT.md) for
   the root-pinned pnpm install/build/check workflow.
 
-For materializer regression checks, run `node --test scripts/test-agent-skills.test.ts`.
+For materializer regression checks, run `node --test scripts/tests/test-agent-skills.test.ts`.
 `pnpm test:clean` separately proves package checks without local discovery
 copies, then contributor and consumer CLI materialization in the disposable
 workspace. Neither check starts an agent UI or proves protocol execution.

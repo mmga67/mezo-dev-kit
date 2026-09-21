@@ -1,63 +1,29 @@
-# Prices knowledge
+# Prices and oracle evidence
 
-`prices` is MDK's provider-neutral owner for price-source and feed identity,
-typed price datums, exact scale/confidence handling, explicit freshness, and
-provenance-preserving fallback results. Its architecture boundary is accepted
-in ADR-0009, and oracle evidence review accepted the initial module review and two Contract
-roots. oracle re-verification captured the completed Pyth upgrade boundary and post-upgrade
-state, and qualified review accepted the refreshed Pyth ABI, implementation
-generations, and price evidence. Feed/current support remains proposed because
-both one-hour Pyth reads were stale.
+Understand price sources, feeds, scaling, confidence, and freshness. Use these records to distinguish a protocol’s configured oracle from a market observation or a trade quote.
 
-Use the stable resources in `index.json`. Do not treat physical paths, a stored
-number, bytecode presence, or feed identity as proof of current price liveness.
+## Start here
 
-## Initial scope
+- [Price source reference](generated/reference.md): source classes, feeds, deterministic rules, and recorded observations.
+- [Choosing prices and DEX quotes](../../docs/guides/price-selection-and-dex-quotes.md): select an observation for a particular use.
+- [Refreshing oracle evidence](../../docs/guides/oracle-evidence-refresh.md): capture and verification procedures.
+- [Prices SDK](../../packages/prices/README.md): normalization, freshness checks, and the direct mainnet Skip reader.
 
-- six non-interchangeable source classes;
-- a typed datum/failure envelope and checked decimal-integer scaling;
-- inclusive explicit max-age evaluation and typed fallback attempts;
-- the Mezo Skip BTC/USD PriceOracle precompile;
-- the Mezo Pyth Core proxy plus documented BTC/USD and MUSD/USD feed IDs;
-- bounded mainnet/testnet observations, including stale Pyth results.
+## Scope and evidence
 
-## Ownership boundaries
+The reviewed model includes Skip BTC/USD and Pyth Core/feed evidence. Feed
+identity, deployed code, and an old observation do not prove current liveness.
+Knowledge support remains proposed; inspect the selected observation's date,
+network, source class, and limitations.
 
-- Contracts owns addresses, ABIs, proxy history, runtime identity, and source provenance.
-- Networks owns chain and RPC/provider capability.
-- MUSD owns how its deployed PriceFeed consumes and validates an oracle result.
-- Pools owns reserve, tick, spot, and TWAP math.
-- A future accepted routing owner must own amount-specific execution quotes.
-- Applications/indexers own stored projections and must retain upstream provenance.
+Current-state captures and historical evidence have separate scopes. The full
+module check retains an expired historical testnet evidence window; current-state
+records do not renew it. The refresh guide explains the scoped checks.
 
-No market, DEX, analytics, Skip-direct, or Pyth-direct value may be returned or
-labeled as the MUSD protocol price when its deployed adapter fails.
+MUSD and Lending own their deployed oracle policy, Pools owns DEX math, and
+Swaps owns execution quotes. A direct feed or DEX value must not silently replace
+a failed protocol oracle.
 
-## Validation
+## Contributing
 
-```sh
-node scripts/validate-knowledge-structure.ts --module prices
-node scripts/validate-price-knowledge.ts
-node scripts/generate-price-reference.ts --check
-```
-
-Full-history evidence is selected per network through
-`index.json` → `extensions.currentEvidenceByNetwork`. Mainnet has a fresh
-compatible observation set; testnet still points to the expired August 27 set
-because its original proxy activation storage was unavailable during refresh.
-Retain older sets as immutable historical evidence. The accepted Pyth Contract
-generation has bounded registry-only support; this does not establish feed
-liveness or a public Prices capability.
-
-Use `node scripts/validate-price-knowledge.ts --network mezo-mainnet` for
-mainnet evidence freshness. The default command retains the full-module
-deadline and continues to fail until testnet is refreshed. See the
-[refresh guide](../../docs/guides/oracle-evidence-refresh.md).
-
-`extensions.currentStateEvidenceByNetwork` separately selects the latest indexed
-current-state captures for both networks. These verify runtime identity and feed
-observations at their fixed blocks without recapturing historical storage. That
-narrower scope does not renew full-history evidence or create a historical
-archive prerequisite for the private mainnet reader. See the [selection guide](../../docs/guides/price-selection-and-dex-quotes.md).
-Do not use the current-state references as substitutes for historical evidence
-or as a permanent supported-feed allowlist.
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

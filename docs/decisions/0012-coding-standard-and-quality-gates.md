@@ -1,5 +1,10 @@
 # ADR-0012 — Coding-standard ownership and TypeScript quality gates
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Engineering and verification](../manifest#engineering-and-verification).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-24
 

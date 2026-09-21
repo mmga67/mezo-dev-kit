@@ -10,7 +10,7 @@ description: Resolve veBTC/veMEZO, boosts, voting, epochs, gauges and reward evi
 Savings/Vault gauge reads, stake, unstake and streamed reward claims are implemented
 as private candidates. Ordinary self-owned veBTC/veMEZO create, increase, extend,
 permanent, timed and withdraw operations now have bounded readers, simulation and
-receipt/state reconciliation under ADR-0021. Granted, managed, delegated, voted or
+receipt/state reconciliation under [Protocol execution boundaries](../../../docs/manifest#protocol-execution-boundaries). Granted, managed, delegated, voted or
 boost-gauge-linked NFTs are excluded from this initial lock writer. Keep direct
 escrow custody separate from total locked supply; managed reward paths can custody
 assets elsewhere. Stored checkpoint boost, current boost and ownership-change
@@ -28,8 +28,10 @@ same-timestamp update skip, withdrawal's automatic claim and fee collection,
 and the self-service uint256 claim overload. Gauge fee accounting caps can
 exceed actual transfer; verify wallet/custody and native gas separately.
 Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
-`src/index.ts` for current methods and required ports. ADR-0016 authorizes the
-private implementation; canonical support remains proposed/none and qualified
+`src/index.ts` for current methods and required ports. The
+[execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
+defines shared requirements for this private implementation. Canonical support
+remains proposed/none and qualified
 review is required before release. Pair writer work with transaction-execution
 and testing procedures. Knowledge alone never authorizes a transaction.
 
@@ -47,6 +49,10 @@ and testing procedures. Knowledge alone never authorizes a transaction.
    `incentives-gauges-rewards`; retain the overload record's qualified-review
    gate. An explanation needs no live simulation unless it proposes a current
    executable operation.
+   For MEZO Gauges, Curve, Uniswap, Aerodrome or remote LP incentives, resolve
+   `incentives-third-party-voting-rewards`, `incentives-third-party-sources`
+   and the linked observation. Read the resource-specific review and delivery
+   scope rather than inheriting the earlier module acceptance.
 
 ## Procedure
 
@@ -67,6 +73,11 @@ and testing procedures. Knowledge alone never authorizes a transaction.
    distribution, and claim semantics. Do not reuse PoolsVoter weights or state
    as validator-voting inputs. Use only the unsigned Solidity integer order
    and flooring recorded by the owning resource.
+   Use `incentives-third-party-voting-rewards` for the independent veMEZO
+   domain. Shared arithmetic references do not permit sharing vote weights or
+   escrow state. Keep Mezo voter incentives, gauge beneficiary transfers and
+   documented remote LP rewards separate; follow the retained voting-guide
+   conflict and unresolved delivery evidence.
 5. Use `incentives-formula-fixtures` for deterministic boundaries,
    `incentives-read-integration` for the representative lock/boost read,
    `incentives-emissions-mainnet` for the bounded emission/splitter

@@ -7,21 +7,41 @@ import type { VaultReadErrorCode } from "./errors.ts";
 export type VaultTransportReadRequest = Omit<CoreTransportReadRequest, "contractId"> & {
   readonly contractId?: ContractId;
 };
+/**
+ * Lending-compatible transport extended for dynamically discovered vault roles at an exact
+ * coordinate.
+ */
 export interface VaultTransport extends Omit<LendingTransport, "read"> {
+  /**
+   * Read an exact coordinate and target, including discovered roles without a static contract
+   * ID; return untrusted provider output.
+   */
   read(request: Readonly<VaultTransportReadRequest>): unknown;
 }
+/**
+ * Explicit vault/lending registry, transport and codec ports; no provider URL or signer is
+ * inferred.
+ */
 export interface VaultReaderConfig {
   readonly networkId: NetworkId;
   readonly registry: ContractRegistry;
   readonly transport: VaultTransport;
   readonly codec: LendingCodec;
 }
+/**
+ * Available value or explicit optional failure. Failed previews and missing balances are not
+ * represented by zero.
+ */
 export type VaultReadValue<T> =
   | Readonly<{ status: "available"; value: Readonly<T> }>
   | Readonly<{
       status: "unavailable";
       error: Readonly<{ code: VaultReadErrorCode; field: string }>;
     }>;
+/**
+ * Gauge receipt custody, beneficial stake and separate streamed rewards. Redirected vault-share
+ * revenue is not account principal.
+ */
 export interface VaultGaugeState {
   readonly address: ContractAddress;
   readonly custody: VaultAmount<"vault-wrapper-receipts">;
@@ -31,8 +51,15 @@ export interface VaultGaugeState {
   readonly earnedRewards: VaultReadValue<VaultAmount<"gauge-reward-token">>;
   readonly redirectedRevenue: VaultReadValue<VaultAmount<"VaultV2-shares">>;
 }
+/**
+ * Coherent vault/lending/wrapper/gauge state with availability per component. Keep asset, share
+ * and receipt values separate.
+ */
 export interface VaultSnapshot {
   readonly coordinate: ReadCoordinate;
+  /**
+   * Unix seconds of the selected block, shared with the underlying lending snapshot.
+   */
   readonly asOf: bigint;
   readonly account: ContractAddress;
   readonly vault: ContractAddress;
@@ -73,7 +100,14 @@ export interface VaultSnapshot {
     }>
   >;
 }
+/**
+ * Signer-free vault inspection with explicit preview asset/share inputs and price-age policy.
+ */
 export interface VaultReader {
+  /**
+   * Read vault/lending/wrapper/gauge state and preview the supplied asset/share quantities at
+   * one block under the price-age policy.
+   */
   read(input: {
     readonly account: ContractAddress;
     readonly blockNumber?: bigint;

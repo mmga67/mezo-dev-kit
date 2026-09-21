@@ -1,5 +1,10 @@
 # ADR-0006 — Knowledge module architecture v0.4
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Knowledge structure](../manifest#knowledge-structure).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-20
 
@@ -59,16 +64,16 @@ knowledge instructions and the relevant skill.
 
 Each surface has one responsibility:
 
-| Surface | Responsibility |
-| --- | --- |
-| module `README.md` | Human orientation and domain entry point |
-| `docs/standards/knowledge-management.md` | Human-neutral maintenance policy and workflows |
-| `knowledge/AGENTS.md` | Concise, automatically scoped agent constraints and routing |
-| `agents/skills/mdk-knowledge-maintenance/SKILL.md` | Reusable agent maintenance procedure |
-| domain skill | Additional domain procedure and risk checks |
-| JSON Schema | Machine-readable structural shape |
-| semantic validator | Cross-record, evidence, digest, freshness, and domain invariants |
-| generated reference | Human-readable projection; never an independent authority |
+| Surface                                            | Responsibility                                                   |
+| -------------------------------------------------- | ---------------------------------------------------------------- |
+| module `README.md`                                 | Human orientation and domain entry point                         |
+| `docs/standards/knowledge-management.md`           | Human-neutral maintenance policy and workflows                   |
+| `knowledge/AGENTS.md`                              | Concise, automatically scoped agent constraints and routing      |
+| `agents/skills/mdk-knowledge-maintenance/SKILL.md` | Reusable agent maintenance procedure                             |
+| domain skill                                       | Additional domain procedure and risk checks                      |
+| JSON Schema                                        | Machine-readable structural shape                                |
+| semantic validator                                 | Cross-record, evidence, digest, freshness, and domain invariants |
+| generated reference                                | Human-readable projection; never an independent authority        |
 
 The handbook is not agent-only. Humans and agents follow the same maintenance
 contract; agent files say how an agent should retrieve and apply it.

@@ -9,7 +9,10 @@ description: Maintain, migrate, validate or generate knowledge modules and deriv
 
 1. Read the active task and applicable `AGENTS.md` files.
 2. Read `docs/standards/knowledge-management.md`.
-3. Read the owning module's `README.md` and `index.json`.
+3. Load missing relevant sections of the owning module's `README.md` and
+   `index.json`; reuse unchanged context.
+   For human pages, apply `docs/standards/documentation.md`; agent-only routing
+   stays in instructions and optional guide sections.
 4. Load the relevant domain skill and only the indexed records, schemas,
    evidence, and validators needed by the task.
 
@@ -27,9 +30,15 @@ description: Maintain, migrate, validate or generate knowledge modules and deriv
    update index mappings and inbound superseded paths, and do not reprocess facts
    unless freshness or evidence requires it.
 6. Regenerate declared projections from canonical inputs.
-7. Run `node scripts/validate-knowledge-structure.ts`, all affected module
+7. Run `node scripts/checks/validate-knowledge-structure.ts`, all affected module
    checks, relevant link/drift checks, and `git diff --check`.
 8. Record verification and unresolved review gates in the active task.
+
+Follow [storage for retrieval](../../../docs/standards/knowledge-management.md#store-information-for-retrieval)
+when saving information. Exercise a realistic `pnpm context find` query, read
+the returned record/field and follow its evidence. Store canonical content in
+its owner; retain memory only when a compact source-linked pointer adds value.
+Retrieval success never promotes evidence or support status.
 
 ## Stop conditions
 

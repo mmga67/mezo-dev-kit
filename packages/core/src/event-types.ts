@@ -3,6 +3,10 @@ import type { ContractId, ContractRegistry, ResolvedContract } from "@mezo-dev-k
 import type { RpcRequest } from "./rpc.ts";
 
 export type EventTopics = readonly (null | `0x${string}` | readonly `0x${string}`[])[];
+/**
+ * Explicit finality, chunk and total-work limits for one scan; successful bounded work need not
+ * exhaust the requested range.
+ */
 export interface EventScanPolicy {
   readonly blocksPerPage: number;
   readonly maxPages: number;
@@ -13,6 +17,10 @@ export interface EventScanPolicy {
   readonly confirmations: bigint;
   readonly requestTimeoutMs: number;
 }
+/**
+ * Scanner dependencies and fixed policies. Applications own persistence, scheduling and
+ * continuation of returned checkpoints.
+ */
 export interface EventScannerConfig {
   readonly networkId: NetworkId;
   readonly registry: ContractRegistry;
@@ -22,6 +30,10 @@ export interface EventScannerConfig {
   readonly capabilityEvidenceId: string;
   readonly policy: EventScanPolicy;
 }
+/**
+ * Block number/hash used to detect changed canonical history before trusting a retained scan
+ * result.
+ */
 export interface EventAnchor {
   readonly blockNumber: string;
   readonly blockHash: `0x${string}`;
@@ -34,6 +46,10 @@ export interface EventCheckpoint {
   readonly throughBlock: string;
   readonly anchors: readonly EventAnchor[];
 }
+/**
+ * Explicit event filter, block range and optional checkpoint. Coverage is limited by the
+ * configured work budget.
+ */
 export interface EventScanInput {
   readonly contractId: ContractId;
   readonly topics: EventTopics;
@@ -44,6 +60,10 @@ export interface EventScanInput {
   readonly checkpoint?: unknown;
   readonly signal?: AbortSignal;
 }
+/**
+ * Validated log plus stable block/transaction/log identity; its domain meaning still requires
+ * ABI decoding.
+ */
 export interface ScannedEvent {
   readonly id: string;
   readonly address: `0x${string}`;
@@ -55,6 +75,10 @@ export interface ScannedEvent {
   readonly topics: readonly `0x${string}`[];
   readonly data: `0x${string}`;
 }
+/**
+ * Inclusive block coverage reported by the scanner. A bounded range does not imply
+ * exhaustive history beyond these endpoints.
+ */
 export interface EventRange {
   readonly fromBlock: bigint;
   readonly toBlock: bigint;
@@ -71,6 +95,10 @@ export type EventScanIssue =
   | "chain-mismatch"
   | "source-changed"
   | "reorg";
+/**
+ * Bounded scan results, coverage, issues and continuation evidence. Persisted status alone
+ * cannot prove completeness or current canonicality.
+ */
 export interface EventScanResult {
   readonly status: "complete" | "partial" | "unknown" | "reorged";
   readonly queryId: string;
@@ -93,6 +121,14 @@ export interface EventScanResult {
     invalidatedFrom: bigint;
   }> | null;
 }
+/**
+ * Bounded, reorg-aware event scanning over an injected provider, without automatic persistence
+ * or background backfills.
+ */
 export interface EventScanner {
+  /**
+   * Scan within explicit page/log/block limits and return coverage plus continuation evidence.
+   * Recheck retained anchors; do not infer completeness from a checkpoint.
+   */
   scan(input: EventScanInput): Promise<Readonly<EventScanResult>>;
 }

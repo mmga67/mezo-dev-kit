@@ -257,7 +257,7 @@ if (!checks.some((r) => r.id === "historical-contract-evidence"))
   checks.push({
     id: "historical-contract-evidence",
     type: "semantic",
-    command: "node scripts/generate-contracts-package.ts --check",
+    command: "node scripts/generate/generate-contracts-package.ts --check",
   });
 index.checks = checks;
 await writeFile(indexPath, JSON.stringify(index, null, 2) + "\n");

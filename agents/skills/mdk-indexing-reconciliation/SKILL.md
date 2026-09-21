@@ -71,7 +71,7 @@ package reuse while identifying the missing source or adapter precisely.
 ## Verification
 
 Run the deterministic cases in `agents/evals/indexing-reconciliation.json`
-through `scripts/test-indexing-reconciliation.test.ts`, then validate the
+through `scripts/tests/test-indexing-reconciliation.test.ts`, then validate the
 agent-skill catalog and every referenced transaction, bridge, protocol,
 network, contract, or troubleshooting owner changed by the task. Exercise
 coverage gaps, optional metadata, stale results, checkpoint commits, overlap,

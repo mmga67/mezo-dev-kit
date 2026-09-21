@@ -27,9 +27,9 @@
     {"id": "musdc-lending-reference", "role": "generated", "kind": "human-reference", "path": "generated/reference.md", "generatedFrom": [{"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-market"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-formulas"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-reconciliation"}, {"moduleId": "protocols/lending/musdc", "resourceId": "musdc-lending-fixed-block-state"}]}
   ],
   "checks": [
-    {"id": "common-structure", "type": "structural", "command": "node scripts/validate-knowledge-structure.ts --module protocols/lending/musdc"},
-    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/validate-economic-system-knowledge.ts --module protocols/lending/musdc"},
-    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate-economic-system-reference.ts --module protocols/lending/musdc --check"}
+    {"id": "common-structure", "type": "structural", "command": "node scripts/checks/validate-knowledge-structure.ts --module protocols/lending/musdc"},
+    {"id": "economic-system-semantics", "type": "semantic", "command": "node scripts/checks/validate-economic-system-knowledge.ts --module protocols/lending/musdc"},
+    {"id": "reference-drift", "type": "drift", "command": "node scripts/generate/generate-economic-system-reference.ts --module protocols/lending/musdc --check"}
   ],
   "extensions": {"writerSupport": "none", "classicMusdBoundary": "mUSDC market accounting is independent of MUSD.", "compositionReference": "docs/architecture/mezo-economic-system-composition.md", "blockers": ["fresh same-block reads and exact-operation simulation before any public operation", "separate public API and security review before any reader or writer"]}
 }

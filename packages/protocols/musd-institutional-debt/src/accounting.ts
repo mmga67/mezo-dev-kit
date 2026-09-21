@@ -3,6 +3,10 @@ import { INSTITUTIONAL_MODEL } from "./model.generated.ts";
 
 export type InstitutionalDebtErrorCode =
   "InvalidInput" | "IdentityMismatch" | "AccountingMismatch" | "LimitExceeded";
+/**
+ * Typed musd-institutional-debt failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class InstitutionalDebtError extends Error {
   readonly code: InstitutionalDebtErrorCode;
   constructor(code: InstitutionalDebtErrorCode, message: string) {
@@ -20,6 +24,15 @@ export function requireInstitutional(
 }
 const constants = INSTITUTIONAL_MODEL.constants;
 const denominator = BigInt(constants.basisPoints) * BigInt(constants.secondsInYear);
+/**
+ * Accrue one institutional fee in MUSD base units, rounding down once.
+ *
+ * @param input - Elapsed seconds, MUSD principal and annual rate in uint16 basis points.
+ * @remarks
+ * The denominator uses the generated institutional protocol year. Interest and
+ * originator fees are calculated separately to preserve their independent floors.
+ * @throws EvmValueError - Invalid unsigned values or checked multiplication overflow.
+ */
 export function calculateInstitutionalFee(input: {
   readonly elapsedSeconds: bigint;
   readonly principal: bigint;
@@ -30,6 +43,10 @@ export function calculateInstitutionalFee(input: {
     rate = parseUint(input.rateBps, 16);
   return parseUint(parseUint(elapsed * principal) * rate) / denominator;
 }
+/**
+ * Stored MUSD principal/fees plus uint16 annual basis-point rates and explicit Unix-second
+ * timestamps.
+ */
 export interface InstitutionalDebtInput {
   readonly principal: bigint;
   readonly storedInterest: bigint;
@@ -39,6 +56,10 @@ export interface InstitutionalDebtInput {
   readonly originatorFeeRateBps: bigint;
   readonly asOf: bigint;
 }
+/**
+ * MUSD debt with independently accrued interest and originator fees. A zero-principal position
+ * follows the contract's zero-debt branch.
+ */
 export interface InstitutionalPositionDebt {
   readonly principal: bigint;
   readonly newInterest: bigint;
@@ -85,6 +106,9 @@ export function calculateInstitutionalPositionDebt(
     totalDebt: parseUint(principal + accruedInterest + accruedOriginatorFee),
   });
 }
+/**
+ * 1e18-scaled collateral ratio and thresholds. Equality is allowed; zero debt uses uint256 max.
+ */
 export interface InstitutionalHealth {
   readonly currentCr: bigint;
   readonly warningCr: bigint;
@@ -92,6 +116,14 @@ export interface InstitutionalHealth {
   readonly belowWarning: boolean;
   readonly belowMinimum: boolean;
 }
+/**
+ * Compare an institutional collateral ratio against warning and minimum thresholds.
+ *
+ * @remarks
+ * BTC/MUSD base units, USD/BTC price and ratios use the package's 18-decimal scales.
+ * Threshold equality is not below the threshold. Zero debt yields uint256 max.
+ * This calculation does not verify price provenance or refresh its inputs.
+ */
 export function calculateInstitutionalHealth(input: {
   readonly collateral: bigint;
   readonly price: bigint;
@@ -114,6 +146,10 @@ export function calculateInstitutionalHealth(input: {
     belowMinimum: currentCr < minimumCr,
   });
 }
+/**
+ * Accepted fee-first payment allocation or an explicit rejection reason. Rejected economic
+ * input is a result, not a thrown error.
+ */
 export type InstitutionalRepayment =
   | Readonly<{
       accepted: false;
@@ -125,6 +161,15 @@ export type InstitutionalRepayment =
       principalPayment: bigint;
       remainingPrincipal: bigint;
     }>;
+/**
+ * Classify a MUSD payment and, when accepted, allocate fees before principal.
+ *
+ * @returns An accepted allocation or a rejected result with a reason when payment
+ * is below all fees or exceeds principal plus fees. These rejections do not throw.
+ * @throws EvmValueError - An input is not a valid uint256 bigint.
+ * @remarks
+ * All amounts are MUSD base units. No transaction is prepared or submitted.
+ */
 export function calculateInstitutionalRepayment(input: {
   readonly principal: bigint;
   readonly totalFees: bigint;
@@ -144,6 +189,13 @@ export function calculateInstitutionalRepayment(input: {
     remainingPrincipal: principal - principalPayment,
   });
 }
+/**
+ * Compare the widened sum of two uint16 basis-point rates with an inclusive cap.
+ *
+ * @throws EvmValueError - Any rate or the cap does not fit uint16.
+ * @remarks
+ * The caller supplies the current governed cap; this function performs no read.
+ */
 export function isInstitutionalRateWithinCap(input: {
   readonly interestRateBps: bigint;
   readonly originatorFeeRateBps: bigint;
@@ -154,10 +206,24 @@ export function isInstitutionalRateWithinCap(input: {
     parseUint(input.maxCombinedRateBps, 16)
   );
 }
+/**
+ * Aggregate principal-times-basis-point numerator with its Unix-second update time; retain the
+ * independent aggregate rounding.
+ */
 export interface InstitutionalAccumulator {
   readonly numerator: bigint;
   readonly lastUpdateTime: bigint;
 }
+/**
+ * Accrue an aggregate principal-times-rate numerator to explicit Unix seconds.
+ *
+ * @remarks
+ * The numerator aggregates MUSD principal base units times annual basis-point rates.
+ * Zero numerator returns zero before timestamp-order validation. Nonzero accrual
+ * floors once using the generated denominator.
+ * @throws InstitutionalDebtError - A nonzero accumulator starts after asOf.
+ * @throws EvmValueError - Invalid uint256 values or intermediate overflow.
+ */
 export function calculateInstitutionalAccrual(
   input: InstitutionalAccumulator & { readonly asOf: bigint },
 ): bigint {
@@ -172,6 +238,14 @@ export function calculateInstitutionalAccrual(
   );
   return parseUint((end - start) * numerator) / denominator;
 }
+/**
+ * Combine MUSD principal with unpaid stored and newly accrued aggregate fees.
+ *
+ * @remarks
+ * Fees are clamped to zero when settled fees exceed the aggregate fee total,
+ * matching the independent aggregate/position rounding boundary. Inputs and result
+ * are MUSD base units; the function does not enumerate positions.
+ */
 export function calculateInstitutionalOutstandingDebt(input: {
   readonly totalPrincipal: bigint;
   readonly totalFeesStored: bigint;

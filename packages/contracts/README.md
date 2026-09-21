@@ -1,131 +1,44 @@
-# MDK Contracts
+# Contracts
 
-See the [SDK reference](REFERENCE.md) for functions, registry methods, result fields, and examples.
+`@mezo-dev-kit/contracts` resolves contract identities, deployment generations, and ABI interfaces at an explicit network and block. Use it to select the deployment and interface a reader or protocol workflow needs.
 
-`@mezo-dev-kit/contracts` is the private source-alpha resolver for
-accepted contract IDs, deployment generations, and read-safe ABI projections.
-It is generated from the canonical Contracts module and is not an npm release
-or compatibility promise.
+## Start here
 
-## Supported boundary
+Build the workspace with the [SDK setup guide](../../docs/guides/SDK_DEVELOPMENT.md), then follow [the deployment lookup example](../../examples/contracts/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-Resolve by stable contract ID, accepted Chains network ID, and exact block:
+## Choose a lookup
 
-```ts
-import { resolveContract } from "@mezo-dev-kit/contracts";
+| Need                                            | API                                                                                               |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| A deployment and read-only ABI                  | `resolveContract`                                                                                 |
+| A curated state-changing operation              | `resolveOperation`                                                                                |
+| Expected runtime or a discovered-role interface | Runtime and interface helpers in the [API reference](REFERENCE.md#functions-and-registry-methods) |
+| Decoding at a recorded historical coordinate    | `resolveHistoricalContractEvidence`                                                               |
 
-const savings = resolveContract({
-  contractId: "musd.savings-rate",
-  networkId: "mezo-mainnet",
-  blockNumber: 12_000_000n,
-});
-```
+The package reads generated data and makes no RPC calls. Core and protocol
+packages use the returned identities and interfaces with an explicit transport.
 
-Resolution fails closed on absence, overlapping validity, malformed generated
-data, non-current/non-supported/non-accepted deployment state, missing or
-unsupported ABI state, and historical proxy generations for which the current
-ABI does not apply. Returned values preserve address, deployment and current
-code coordinates, implementation identity, provenance class, ABI digests,
-catalog verification and review-trigger timestamps, and limitations.
-`reviewAfter` remains the canonical trigger to reverify evidence, not an
-automatic lifecycle mutation.
+## Scope
 
-The existing readAbi projection remains read-only: it retains only `view`/`pure`
-functions plus events and errors from each accepted full canonical ABI.
-Constructors, fallback/receive entries, and payable/nonpayable functions are
-excluded. The package exposes no encoding client, provider, signer, approval,
-transaction construction, submission, or writer.
+This is a private workspace package. A resolved ABI establishes its documented
+registry scope; it does not grant permission to send a transaction. Current
+operation resolution and [historical evidence](REFERENCE.md#historical-evidence)
+are separate result types. Historical evidence cannot serve as a current writer target.
 
-Additive `resolveOperation` exposes curated mainnet BorrowerOperations, Savings, Morpho and wrapper
-functions; `resolveRuntimeIdentity` provides generated code hashes and proxy
-slots for the borrowing dependency set. ABI availability does not authorize a
-transaction or promote proposed protocol support.
+Missing, ambiguous, unsupported, or incompatible generations fail explicitly.
+Dynamic pools, gauges, and vault roles must be discovered and verified through
+their protocol roots. An open validity range is not an immutability guarantee.
 
-The public values include `createContractRegistry`, `resolveContract`,
-`listContractIds`, `isContractId`, `resolveOperation`, `resolveRuntimeIdentity`,
-and `ContractRegistryError`, plus their
-documented types.
-
-The public error codes are `InvalidContractInput`, `UnknownContractId`,
-`MissingDeployment`, `UnsupportedDeploymentState`, `OverlappingDeployments`,
-`HistoricalGenerationUnsupported`, `HistoricalEvidenceUnavailable`, `AbiUnavailable`, and
-`MalformedGeneratedContract`. Every failure includes structured context and no
-failure is converted into a fallback address or ABI.
-
-## Dependency and injection boundary
-
-Contracts uses the public Chains entrypoint for network identity and the public
-EVM entrypoint for address validation. Registry addresses remain canonical
-lowercase values. It selects no RPC and performs no network call. `createContractRegistry`
-returns an immutable registry implementing the exported `ContractRegistry`
-interface; Core and protocol modules accept that interface as an injected port
-and can supply deterministic fakes in tests.
-
-## Canonical generation
-
-`scripts/generate-contracts-package.ts` resolves
-`contracts:contract-deployments`, `contracts:contract-abis`, and every indexed
-`contracts:abi.*` artifact. It validates lifecycle fields, IDs, addresses,
-validity/generation ranges, ABI references/counts/file digests, and read-entry
-mutability. It records a SHA-256 digest over the Contracts module index and all
-exact consumed bytes, then emits `src/data.generated.ts` deterministically.
-Runtime code never reads `knowledge/`.
-
-The same generator validates `contracts:historical-contract-evidence` and its
-separate source/build/RPC artifacts, then emits `src/historical.generated.ts`.
-`resolveHistoricalContractEvidence` returns `HistoricalContractEvidence` at
-explicitly observed blocks. Its separate calldata ABI is for observing included
-transactions. It cannot be passed as `ResolvedContract` to current operation or
-runtime helpers. See [ADR-0024](../../docs/decisions/0024-historical-contract-evidence.md).
-These additional profiles remain proposed pending qualified release review.
-Contracts' offline capture tools use its existing EVM workspace dependency;
-build EVM before invoking the generator directly from a fresh checkout.
-
-```sh
-pnpm --filter @mezo-dev-kit/contracts generate:check
-```
-
-Do not edit generated data. Update and validate the canonical Contracts owner,
-regenerate, and review input and output together.
+[Contract knowledge](../../knowledge/contracts/README.md) owns deployments,
+full ABIs, and provenance. See [canonical generation](REFERENCE.md#canonical-generation)
+for updating the runtime projections.
 
 ## Development
 
+From the repository root:
+
 ```sh
-pnpm install --frozen-lockfile
-pnpm build
 pnpm --filter @mezo-dev-kit/contracts check
-pnpm --filter @mezo-dev-kit/contracts test:shuffle
 ```
 
-The source-alpha development baseline is Node 24 or newer and pnpm 11 as pinned
-by the root manifest. Contracts performs no live call; callers choose a
-transport later and must provide a block coordinate covered by the selected
-provider when they execute a read.
-
-The Level 3 repository gate also runs Networks/Contracts structural,
-semantic/provenance, and reference-drift checks, workspace boundaries, built
-entrypoint/declaration smoke tests, root `pnpm check`, and shuffled tests.
-
-## Limitations
-
-- Registry acceptance does not create protocol, route, market, vault, or
-  operation support.
-- An open validity range means no supersession was observed at the evidence
-  coordinate; it is not an immutability guarantee.
-- Historical deployment/generation metadata is retained so it cannot be
-  mistaken for current support, but this alpha does not expose a historical
-  ABI unless the exact generation is canonically available and separately
-  supported.
-- Dynamic instances continue to resolve through their reviewed roots; this
-  package does not fabricate pool, gauge, VaultV2, or VaultGauge identities.
-- Curated operation/event and discovered-role interfaces are available; domain writers own financial checks and Core owns execution.
-
-## Inspect this checkout
-
-Use the [manifest](./package.json) and [exported entrypoint](./src/index.ts)
-alongside this package's scope and injected-input contract. Build before
-interpreting a missing artifact as an absent API. The [usage example](../../examples/foundational-readonly/README.md)
-exercises the workspace boundary. Reassess these owners after checkout changes;
-private versions alone do not identify capability changes. Follow the
-[capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
-when the public boundary, required inputs, or evidence dependencies change.
+See the [contributor guide](../../CONTRIBUTING.md) for workspace setup and review.

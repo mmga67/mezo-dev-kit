@@ -1,5 +1,10 @@
 # ADR-0004 — Capability-profiled external EVM network records
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Network scope](../manifest#network-scope).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-18
 

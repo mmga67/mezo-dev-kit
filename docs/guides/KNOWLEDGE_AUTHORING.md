@@ -1,10 +1,12 @@
 # MDK knowledge authoring
 
-This guide turns the accepted knowledge-module v0.4 contract into a practical
-workflow for human maintainers and coding agents. It applies the normative
-[`knowledge-management standard`](../standards/knowledge-management.md) and
-[`ADR-0006`](../decisions/0006-knowledge-module-architecture.md); it does not
-replace either owner or define new protocol facts.
+Use this guide to add or update Mezo information, preserve its sources, and
+check the result. It covers manual maintenance with a working synthetic example,
+followed by an [optional coding-agent workflow](#request-coding-agent-work).
+
+The [knowledge standard](../standards/knowledge-management.md) owns shared
+maintenance policy. The [documentation standard](../standards/documentation.md)
+explains how to write the human entry points and references.
 
 Use this guide for changes under `knowledge/`, including source catalogs,
 evidence, canonical records, schemas, fixtures, generated projections, review
@@ -27,7 +29,7 @@ Is the information durable and useful to the repository?
     ├── Evidence-backed reusable Mezo fact or deterministic protocol rule?
     │   └── knowledge/, in the existing owning domain
     ├── Accepted architecture, governance, rationale, or public boundary?
-    │   └── ARCHITECTURE.md, an ADR, or the owning standard
+    │   └── manifest, ARCHITECTURE.md, or the owning standard
     ├── Implemented behavior or executable invariant?
     │   └── owning code plus tests
     ├── Human explanation or end-to-end procedure?
@@ -42,15 +44,15 @@ Is the information durable and useful to the repository?
         └── investigate locally, report securely, or do not store it
 ```
 
-| Destination       | Owns                                                                 | Must not become                                                   |
-| ----------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `knowledge/`      | Scoped evidence-backed facts, deterministic rules, stable identities | Procedures, task history, product plans, or unsupported narrative |
-| Docs/ADR/standard | Explanation, decisions, policy, architecture, contributor procedure  | A second address, ABI, parameter, formula, or endpoint database   |
-| Code/tests        | Implemented behavior and executable invariants                       | An unreviewed source of protocol facts                            |
-| Task/review       | Approved scope, progress, decisions, verification, acceptance        | Permanent project or protocol knowledge                           |
-| Skill             | Agent procedure and stop conditions                                  | Embedded volatile protocol data                                   |
-| Memory            | Provider-neutral retrieval context and pointers                      | Proof, authorization, or a canonical fact store                   |
-| Nowhere           | Noise, routine history, secrets, speculation, duplicates             | A tracked artifact added “just in case”                           |
+| Destination   | Owns                                                                        | Must not become                                                   |
+| ------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `knowledge/`  | Scoped evidence-backed facts, deterministic rules, stable identities        | Procedures, task history, product plans, or unsupported narrative |
+| Docs/standard | Explanation, current decisions, policy, architecture, contributor procedure | A second address, ABI, parameter, formula, or endpoint database   |
+| Code/tests    | Implemented behavior and executable invariants                              | An unreviewed source of protocol facts                            |
+| Task/review   | Approved scope, progress, decisions, verification, acceptance               | Permanent project or protocol knowledge                           |
+| Skill         | Agent procedure and stop conditions                                         | Embedded volatile protocol data                                   |
+| Memory        | Provider-neutral retrieval context and pointers                             | Proof, authorization, or a canonical fact store                   |
+| Nowhere       | Noise, routine history, secrets, speculation, duplicates                    | A tracked artifact added “just in case”                           |
 
 Use the domain table in the
 [`knowledge entry point`](../../knowledge/README.md) and the repository
@@ -58,7 +60,7 @@ Use the domain table in the
 new module merely because no convenient directory exists. A new domain owner
 is an architecture decision requiring explicit human-approved scope.
 
-## Understand the v0.4 resource map
+## Understand the resource map
 
 Every maintained module has a human `README.md` and machine `index.json`.
 Create only role directories that contain maintained resources; empty
@@ -119,10 +121,17 @@ cross-domain identities.
 
 ## Discover the owner without loading everything
 
-1. Read the root [`AGENTS.md`](../../AGENTS.md), the active task, and
-   [`knowledge/AGENTS.md`](../../knowledge/AGENTS.md).
-2. Open [`knowledge/index.json`](../../knowledge/index.json) and resolve the
-   stable module ID through its `knowledge-module-catalog` resource.
+Use `pnpm context catalog` to discover modules and `pnpm context find --query
+'<topic>' --module <module-id>` to search their canonical records. Returned
+logical references can be passed to `read` and `links`; source/ABI artifacts
+have explicit inspection commands. The [retrieval manual](../../scripts/agents/CONTEXT.md)
+documents scope, memory selection and bounds. Ordinary retrieval reads current
+files without making network requests or renewing evidence.
+
+1. Confirm the task's scope and use the [knowledge subject list](../../knowledge/README.md)
+   to choose the relevant module.
+2. Open the [root index](../../knowledge/index.json) and resolve that module's
+   stable ID through its `knowledge-module-catalog` resource.
 3. Read only that module's `README.md` and `index.json`.
 4. Resolve the resource ID, then the optional `recordId` and
    `recordCollectionPointer`; do not search by path and treat the first match as
@@ -131,13 +140,6 @@ cross-domain identities.
    review, `verifiedAt`, and `reviewAfter`.
 6. Load the module schema, semantic validator, generator, review material, and
    relevant evidence only when the requested operation needs them.
-7. For agent work, load
-   [`mdk-knowledge-maintenance`](../../agents/skills/mdk-knowledge-maintenance/SKILL.md)
-   plus the owning domain skill. Add the
-   [`testing skill`](../../agents/skills/mdk-testing/SKILL.md) when fixtures,
-   regressions, or test behavior change, and the
-   [`TypeScript skill`](../../agents/skills/mdk-typescript-development/SKILL.md)
-   when authored code or automation changes.
 
 The module index's `checks` array owns the exact first commands. For example,
 Networks and Contracts each declare structural, semantic, negative, and
@@ -172,12 +174,12 @@ cp -R docs/guides/examples/knowledge-authoring/synthetic-widget-catalog \
 Run the three distinct checks:
 
 ```bash
-node scripts/validate-knowledge-structure.ts \
+node scripts/checks/validate-knowledge-structure.ts \
   --repository-root "$fixture_root" \
   --module synthetic/widget-catalog
-node scripts/validate-knowledge-authoring-example.ts \
+node scripts/checks/validate-knowledge-authoring-example.ts \
   --module-root "$fixture_root/knowledge/synthetic/widget-catalog"
-node scripts/generate-knowledge-authoring-example.ts \
+node scripts/generate/generate-knowledge-authoring-example.ts \
   --module-root "$fixture_root/knowledge/synthetic/widget-catalog" \
   --check
 ```
@@ -202,9 +204,9 @@ To rehearse an update, work only in the disposable directory:
 6. Run the semantic validator. If it passes, regenerate and drift-check:
 
    ```bash
-   node scripts/generate-knowledge-authoring-example.ts \
+   node scripts/generate/generate-knowledge-authoring-example.ts \
      --module-root "$fixture_root/knowledge/synthetic/widget-catalog"
-   node scripts/generate-knowledge-authoring-example.ts \
+   node scripts/generate/generate-knowledge-authoring-example.ts \
      --module-root "$fixture_root/knowledge/synthetic/widget-catalog" \
      --check
    ```
@@ -219,7 +221,7 @@ To rehearse an update, work only in the disposable directory:
    ```
 
 The test
-[`test-knowledge-authoring-example.test.ts`](../../scripts/test-knowledge-authoring-example.test.ts)
+[`test-knowledge-authoring-example.test.ts`](../../scripts/tests/test-knowledge-authoring-example.test.ts)
 also proves the clean fixture passes and that record drift or a stale source
 digest fails closed. It uses temporary directories and never writes to
 canonical knowledge.
@@ -273,6 +275,17 @@ truncation, unsupported method, incomplete range, or failed control means
 unknown or failed evidence, not absence.
 
 ### 4. Update the canonical record
+
+Write for future retrieval under the
+[storage standard](../standards/knowledge-management.md#store-information-for-retrieval):
+keep one coherent subject, a stable ID, the actual scope and exact evidence
+locators. Use normal domain terminology and evidenced method/error names in
+fields supported by the schema. Preserve the resource/record index and actual
+collection pointer. After writing, search a plausible question without supplying
+the answer's path, read the selected record/field and follow its evidence.
+This checks discoverability; the normal validators and review establish other
+requirements. Store an optional memory pointer only when it adds useful context;
+follow [memory authoring](MEMORY_MANAGEMENT.md#write-for-future-retrieval).
 
 - Project only claims established by the captured evidence.
 - Preserve units, precision, validity ranges, ordering, and limitations.
@@ -337,7 +350,7 @@ Do not begin with directories. Begin with an approved owner and consumer.
    domain responsibility, facts/rules owned, non-goals, consumers, risk,
    evidence classes, lifecycle gate, and why no existing module owns it. Follow
    the contributor review workflow in `CONTRIBUTING.md`.
-2. **Resolve architecture.** Update architecture or add/accept an ADR when
+2. **Resolve architecture.** Update the manifest and detailed architecture when
    domain ownership, dependency direction, public behavior, or governance
    changes. A proposed task alone does not establish a canonical owner.
 3. **Choose a stable module ID.** Use a semantic ID that survives path changes.
@@ -345,8 +358,8 @@ Do not begin with directories. Begin with an approved owner and consumer.
    the owner and entry point are approved.
 4. **Create human and machine entry points.** Add `README.md` and `index.json`
    at the same module root. The README explains owned scope, current lifecycle,
-   human discovery, limitations, and exact maintenance commands without
-   copying volatile facts.
+   human discovery and relevant limitations, with a link to maintenance guidance.
+   The index owns exact checks; do not copy volatile facts into the README.
 5. **Create only occupied role directories.** Add `records/`, `sources/`,
    `evidence/`, `fixtures/`, `schema/`, `artifacts/`, `generated/`, or `review/`
    only for real maintained resources. Never add `.gitkeep` placeholders.
@@ -449,6 +462,16 @@ If the move changes the canonical owner, public behavior, or identity, stop
 and treat it as an architecture/migration decision rather than a path cleanup.
 
 ## Request coding-agent work
+
+This section is optional. Start with the
+[contributor agent setup](CONTRIBUTOR_AGENT_SETUP.md) if discovery is not installed.
+The agent follows the root and knowledge AGENTS files, then loads
+[knowledge maintenance](../../agents/skills/mdk-knowledge-maintenance/SKILL.md)
+and the owning domain skill. Add the
+[testing skill](../../agents/skills/mdk-testing/SKILL.md) for fixtures or tests,
+and the [TypeScript skill](../../agents/skills/mdk-typescript-development/SKILL.md)
+for authored code or automation. Manual maintenance uses the same shared
+standards without this setup.
 
 Humans and agents follow the same artifact order, evidence standard, lifecycle,
 checks, and review gates. An agent may accelerate discovery and editing; it
@@ -605,12 +628,12 @@ table as a substitute for the current index.
 Common repository commands are:
 
 ```bash
-node scripts/validate-knowledge-structure.ts --module <module-id>
-node scripts/validate-knowledge-structure.ts --require-all-v0.4
-node scripts/validate-knowledge-catalog.ts
-node scripts/validate-knowledge-workflows.ts
-node scripts/validate-agent-skills.ts
-node scripts/validate-markdown-links.ts
+node scripts/checks/validate-knowledge-structure.ts --module <module-id>
+node scripts/checks/validate-knowledge-structure.ts --require-all-v0.4
+node scripts/checks/validate-knowledge-catalog.ts
+node scripts/checks/validate-knowledge-workflows.ts
+node scripts/agents/validate-agent-skills.ts
+node scripts/checks/validate-markdown-links.ts
 pnpm format:check
 pnpm typecheck
 pnpm lint

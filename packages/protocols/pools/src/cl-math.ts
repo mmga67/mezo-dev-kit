@@ -47,6 +47,12 @@ export function getCLTickAtSqrtRatio(input: bigint): number {
   }
   return lower;
 }
+/**
+ * Find the lowest and highest usable ticks for a validated positive tick spacing.
+ *
+ * @returns Numeric tick bounds aligned inward to the canonical TickMath interval.
+ * @throws PoolError - Spacing is outside the accepted integer range.
+ */
 export function getCLUsableTicks(
   tickSpacing: number,
 ): Readonly<{ tickLower: number; tickUpper: number }> {
@@ -60,11 +66,21 @@ export function getCLUsableTicks(
     tickUpper: Math.floor(maxTick / tickSpacing) * tickSpacing,
   });
 }
+/**
+ * Current/lower/upper square-root prices in Q64.96, with ordered canonical range bounds.
+ */
 export interface CLPriceRange {
+  /**
+   * Square-root price in Q64.96 fixed point for token1/token0, not a decimal display price.
+   */
   readonly sqrtPriceX96: bigint;
   readonly sqrtLowerX96: bigint;
   readonly sqrtUpperX96: bigint;
 }
+/**
+ * Separate token0/token1 base-unit amounts for a CL range; they cannot be summed without an
+ * explicit valuation.
+ */
 export interface CLAmounts {
   readonly amount0: bigint;
   readonly amount1: bigint;
@@ -133,6 +149,10 @@ export function calculateCLLiquidity(input: CLPriceRange & CLAmounts): bigint {
   }
   return parseUint(liquidity, 128);
 }
+/**
+ * One-position, one-token Q128 fee growth and stored owed units, with explicit ticks and staked
+ * custody.
+ */
 export interface CLFeeInput {
   readonly liquidity: bigint;
   readonly globalX128: bigint;
@@ -145,6 +165,10 @@ export interface CLFeeInput {
   readonly tickUpper: number;
   readonly staked: boolean;
 }
+/**
+ * Wrapped inside index and accrued/stored fee accounting. Inspect overflowed before a writer
+ * uses uint128-truncated tokensOwed.
+ */
 export interface CLFees {
   readonly insideX128: bigint;
   readonly accrued: bigint;
@@ -152,6 +176,15 @@ export interface CLFees {
   /** Solidity 0.7 truncates uint128 accounting; writers must reject this condition. */
   readonly overflowed: boolean;
 }
+/**
+ * Calculate one asset's CL position fee accounting from Q128 index growth.
+ *
+ * @remarks
+ * Index subtraction wraps as uint256. Unstaked growth rounds down; staked positions
+ * add no wallet growth. The returned tokensOwed mirrors uint128 truncation and
+ * sets overflowed when truncation occurred; writers must reject that condition.
+ * @param input - One-coordinate tick bounds, liquidity, index values and stored owed units.
+ */
 export function calculateCLFees(input: CLFeeInput): Readonly<CLFees> {
   const current = tick(input.tick),
     lower = tick(input.tickLower),

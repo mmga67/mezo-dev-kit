@@ -6,6 +6,10 @@ import { createTokenReader } from "@mezo-dev-kit/tokens";
 import { incentiveRequire } from "./escrow-errors.ts";
 import { calculateVotingEpoch } from "./math.ts";
 import type { VotingReader, VotingRewardState, VotingSnapshot } from "./voting-types.ts";
+/**
+ * Reward token identity and bounded claim accounting; each token keeps its own decimal
+ * precision.
+ */
 export interface VotingRewardToken {
   readonly token: `0x${string}`;
   readonly decimals: bigint;
@@ -16,12 +20,19 @@ export interface VotingRewardToken {
   readonly epochs: bigint;
   readonly earned: bigint;
 }
+/**
+ * Anchored NFT/target/reward-child state for an explicit token set and bounded epoch history.
+ */
 export interface VotingRewardSnapshot {
   readonly voting: Readonly<VotingSnapshot>;
   readonly target: `0x${string}`;
   readonly reward: Readonly<VotingRewardState>;
   readonly tokens: readonly Readonly<VotingRewardToken>[];
 }
+/**
+ * Explicit NFT, voter target, fee/bribe role and reward tokens; no token or epoch history is
+ * inferred.
+ */
 export interface VotingRewardReadInput {
   readonly account: `0x${string}`;
   readonly tokenId: bigint;
@@ -30,7 +41,14 @@ export interface VotingRewardReadInput {
   readonly tokens: readonly `0x${string}`[];
   readonly blockNumber?: bigint;
 }
+/**
+ * Bounded fee/bribe entitlement inspection, separate from principal and streamed gauge rewards.
+ */
 export interface VotingRewardReader {
+  /**
+   * Read bounded fee/bribe claim history for the explicit NFT, target and reward-token set;
+   * incomplete required evidence rejects.
+   */
   read(input: VotingRewardReadInput): Promise<Readonly<VotingRewardSnapshot>>;
 }
 /** Exact factory reward accounting, bounded before calling the on-chain earned loop. */

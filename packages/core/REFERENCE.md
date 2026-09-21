@@ -173,8 +173,10 @@ export async function readCall(
 ```
 
 The caller supplies real encoded calldata in `call.data`. The
-[executable foundation example](../../examples/foundational-readonly/README.md)
-provides a deterministic fake transport; it is not an RPC adapter.
+[workflow examples](../../examples/README.md)
+compose bounded HTTP, public protocol readers and writers, durable submission
+records and settlement checks. Their offline tests retain a deterministic
+foundation fixture.
 
 ## Results and errors
 

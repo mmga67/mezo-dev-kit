@@ -1,21 +1,25 @@
-# Mezo swaps and routing knowledge
+# Swap routes and quotes
 
-This v0.4 module owns the provider-neutral workflow that turns pool discovery
-and bounded quote observations into ranked swap candidates, exact router calls,
-simulation requirements, and post-transaction reconciliation.
+Understand how pool discovery and bounded quotes become ranked swap candidates, router calls, simulation requirements, and reconciled outcomes.
 
-Current Mezo Mainnet has two separately deployed execution families:
+## Start here
 
-- the basic `mezo-earn.router`, whose route is an array of
-  `(from, to, stable, factory)` tuples; and
-- the concentrated-liquidity `mezo-earn.cl-swap-router`, whose exact-input path
-  is packed as `token || int24 tickSpacing || token`.
+- [Routing reference](generated/reference.md): deployed providers, route dispositions, and the execution lifecycle.
+- [Swaps SDK](../../../packages/swaps/README.md): current quote readers and private exact-input workflows.
+- [Pools knowledge](../../protocols/pools/README.md): discovery and pool math.
+- [Price selection guide](../../../docs/guides/price-selection-and-dex-quotes.md): distinguish trade quotes from protocol prices.
 
-There is no evidenced Universal Router or current official Quoter deployment.
-Atomic mixed basic/CL paths, command bytes, unsafe basic swaps, fee-on-transfer
-variants, public readers, and every writer therefore remain unsupported. A
-quote or historical replay is never a guaranteed minimum received.
+## Scope and evidence
 
-Resolve resources through `index.json`. Read `review/gaps.md` before relying on
-an unreviewed route or operation, and do not edit `generated/reference.md`
-manually.
+The reviewed routing model covers separately deployed basic and
+concentrated-liquidity families. Their route encodings and reconciliation differ;
+see the reference before composing them. Module operation support remains absent
+while the SDK documents its implemented private scope.
+
+There is no evidenced Universal Router or current official Quoter. Atomic mixed
+basic/CL execution and fee-on-transfer variants remain outside the current scope.
+A quote or historical replay is not a guaranteed received amount.
+
+## Contributing
+
+Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

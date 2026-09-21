@@ -1,0 +1,141 @@
+import { createHash } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { format } from "prettier";
+import { loadKnowledgeReference } from "../lib/knowledge-reference.ts";
+import { object, objects, text } from "../lib/json.ts";
+import { validateNativeDeliveryEvidence } from "../lib/native-delivery-evidence.ts";
+import { generateNativeTransferModel } from "../lib/native-transfer-generation.ts";
+import { validateNttTransferEvidence } from "../../packages/contracts/tools/ntt-transfer-evidence.ts";
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+if (process.argv.slice(2).some((arg) => arg !== "--check"))
+  throw new Error("usage: generate-bridges-package.ts [--check]");
+const digest = createHash("sha256");
+digest.update(await validateNativeDeliveryEvidence(root));
+const nttEvidence = await validateNttTransferEvidence(root);
+digest.update(nttEvidence.digest);
+async function resource(id: string) {
+  const loaded = await loadKnowledgeReference(root, {
+    moduleId: "workflows/bridges",
+    resourceId: id,
+  });
+  digest.update(await readFile(loaded.path));
+  const record = object(loaded.document, id);
+  if (
+    record.status !== "verified" ||
+    record.reviewStatus !== "accepted" ||
+    record.supportStatus !== "none"
+  )
+    throw new Error("bridge input lifecycle changed; reassess the projection");
+  return record;
+}
+const routes = await resource("bridge-routes"),
+  assets = await resource("bridge-assets"),
+  evidence = await resource("bridge-musd-ntt-evidence"),
+  roles = await resource("bridge-contract-roles");
+const representations = objects(assets.records, "assets").flatMap((a) =>
+  objects(a.representations, "representations"),
+);
+const snapshots = objects(evidence.networkSnapshots, "networks");
+function endpoint(id: unknown) {
+  const representation = representations.find((r) => r.id === id);
+  if (!representation) throw new Error("missing bridge representation");
+  const networkId = text(representation.network, "network"),
+    snapshot = snapshots.find((s) => s.networkId === networkId);
+  const deployment = objects(evidence.deploymentObservations, "observations").find(
+    (d) => d.id === representation.deploymentObservation,
+  );
+  if (
+    !deployment ||
+    typeof representation.decimals !== "number" ||
+    !["locking", "burning"].includes(text(representation.managerMode, "mode"))
+  )
+    throw new Error("NTT token representation unavailable");
+  if (
+    !snapshot ||
+    typeof snapshot.wormholeChainId !== "number" ||
+    !Number.isInteger(snapshot.wormholeChainId) ||
+    snapshot.wormholeChainId <= 0 ||
+    snapshot.wormholeChainId > 65535
+  )
+    throw new Error("missing bounded Wormhole identity");
+  function contract(role: string) {
+    const r = objects(roles.records, "roles").find(
+      (r) => r.networkId === networkId && r.role === role,
+    );
+    if (!r) throw new Error("missing bridge contract role");
+    return text(object(r.abiReference, "ABI reference").recordId, "contract ID");
+  }
+  return {
+    networkId,
+    wormholeChainId: snapshot.wormholeChainId,
+    managerId: contract("ntt-manager"),
+    transceiverId: contract("wormhole-transceiver"),
+    token: text(deployment.tokenAddress, "token"),
+    tokenCodeSha256:
+      nttEvidence.tokens.find(
+        (t) => t.networkId === networkId && t.address === deployment.tokenAddress,
+      )?.codeSha256 ??
+      (() => {
+        throw new Error("missing NTT token runtime");
+      })(),
+    decimals: representation.decimals,
+    mode: representation.managerMode === "locking" ? 0 : 1,
+  };
+}
+const model = objects(routes.records, "routes")
+  .filter((r) => r.providerId === "wormhole-ntt" && r.assetId === "musd")
+  .map((r) => {
+    if (r.status !== "evidence-verified-not-supported")
+      throw new Error("NTT route disposition changed");
+    return {
+      id: text(r.id, "route ID"),
+      source: endpoint(r.sourceRepresentationId),
+      destination: endpoint(r.destinationRepresentationId),
+    };
+  });
+if (model.length !== 4) throw new Error("reassess changed NTT route scope");
+const nativeEvidence = await resource("bridge-native-evidence");
+const native = objects(routes.records, "routes")
+  .filter((r) => r.providerId === "mezo-native-bridge")
+  .map((r) => {
+    if (r.status !== "evidence-verified-not-supported")
+      throw new Error("Native route disposition changed");
+    const transfer = objects(nativeEvidence.completedTransfers, "transfers").find(
+      (t) => t.id === r.completedTransferEvidence,
+    );
+    if (!transfer) throw new Error("missing Native transfer evidence");
+    function nativeEndpoint(networkId: unknown, token: unknown) {
+      const role = objects(roles.records, "roles").find(
+        (r) => r.providerId === "mezo-native-bridge" && r.networkId === networkId,
+      );
+      if (!role) throw new Error("missing Native contract role");
+      return {
+        networkId: text(networkId, "network"),
+        contractId: text(object(role.abiReference, "ABI reference").recordId, "contract"),
+        token: text(token, "token"),
+      };
+    }
+    return {
+      id: text(r.id, "route"),
+      direction: r.direction,
+      source: nativeEndpoint(transfer.sourceNetwork, transfer.sourceToken),
+      destination: nativeEndpoint(transfer.destinationNetwork, transfer.destinationToken),
+      targetChain: transfer.targetChain ?? null,
+    };
+  });
+if (native.length !== 2) throw new Error("reassess changed Native route scope");
+const nativeTransfer = await generateNativeTransferModel(root);
+digest.update(nativeTransfer.digest);
+const output = await format(
+  `// Generated by scripts/generate/generate-bridges-package.ts. Do not edit.\n// sha256:${digest.digest("hex")}\nexport const NTT_ROUTES = ${JSON.stringify(model)} as const;\nexport const NATIVE_ROUTES = ${JSON.stringify(native)} as const;\nexport const NATIVE_CLIENT = ${JSON.stringify(nativeTransfer.client)} as const;\n`,
+  {
+    parser: "typescript",
+    ...object(JSON.parse(await readFile(resolve(root, ".prettierrc.json"), "utf8")), "prettier"),
+  },
+);
+const path = resolve(root, "packages/bridges/src/model.generated.ts");
+if (process.argv.includes("--check")) {
+  if ((await readFile(path, "utf8")) !== output) throw new Error("bridge model drift");
+} else await writeFile(path, output);

@@ -5,16 +5,22 @@ service, index database, or external dependency.
 
 ## Stores
 
-| Scope | Index | Git state | Allowed content |
-| --- | --- | --- | --- |
-| Shared | `agents/memory/seed/index.json` | tracked | reviewed, durable, export-safe context |
-| Local | `.mdk/memory/index.json` | ignored | observations, unfinished investigation, sync state |
+| Scope  | Index                           | Git state | Allowed content                                    |
+| ------ | ------------------------------- | --------- | -------------------------------------------------- |
+| Shared | `agents/memory/seed/index.json` | tracked   | reviewed, durable, export-safe context             |
+| Local  | `.mdk/memory/index.json`        | ignored   | observations, unfinished investigation, sync state |
 
 Each index entry points to one sibling JSON file whose name is
 `<stable-memory-id>.json`. Index metadata duplicates only the fields needed to
 select an entry without loading its summary.
 
 ## Retrieval
+
+Use `pnpm context find --query '<topic>' --memory-domain <domain>` for selected
+shared memory alongside canonical knowledge. Add `--local-memory` only when
+local context is relevant. `pnpm context memory-read --scope shared|local --id
+<id>` reads one indexed entry. See the [command manual](../../../scripts/agents/CONTEXT.md)
+for exact syntax, coverage and bounded output.
 
 1. Classify the task by domain.
 2. Read the two small indexes when they exist.
@@ -38,3 +44,8 @@ metadata. IDs remain stable across lifecycle changes. Shared entries may be
 
 Provider-specific databases, embeddings, hashes, credentials, caches, and
 remote IDs belong below ignored local storage and are derived from these files.
+
+Run `pnpm context memory-check` after shared changes; add `--local-memory` for
+local changes. Schema/index validity is separate from source truth, privacy,
+review and promotion. Follow [memory authoring](../../../docs/guides/MEMORY_MANAGEMENT.md#write-for-future-retrieval)
+to make entries discoverable without duplicating canonical information.

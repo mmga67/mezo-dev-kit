@@ -6,9 +6,10 @@ and selected consumer skills.
 
 ## Authority and ownership
 
-The current human task owns outcome and scope. Root/nested `AGENTS.md` govern
-work; `ARCHITECTURE.md` and accepted ADRs own package boundaries and dependency
-direction. Registry and indexed `knowledge/` own Mezo facts; package docs and
+The current human task owns outcome and scope. The [manifest](docs/manifest)
+owns the project baseline; `ARCHITECTURE.md` owns its detailed package boundaries
+and dependency direction. Root/nested `AGENTS.md` govern scoped agent work.
+Registry and indexed `knowledge/` own Mezo facts; package docs and
 exports own supported APIs; code/tests show implementation reality. Memory is
 supporting context, never proof or authority. Resolve conflicts explicitly.
 
@@ -19,7 +20,7 @@ unrelated human changes, and make the smallest complete change.
 ## Branches and local records
 
 Work on `feat/next`; `main` is the canonical GitHub-synchronized source. Follow
-[the branch workflow](docs/guides/BRANCH_WORKFLOW.md) and ADR-0022. Both branches
+[the branch workflow](docs/guides/BRANCH_WORKFLOW.md). Both branches
 share publishable history and ignore rules. Keep legacy references, individual
 task/plan/review records, diagnostics and recovery archives in the documented
 ignored roots. Never merge archived private history or force-add those paths.
@@ -53,18 +54,33 @@ because a directory is ignored or absent from search results.
    `docs/standards/testing.md`. Add only the domain procedure needed by the task.
 5. For knowledge changes, follow `knowledge/AGENTS.md`,
    `mdk-knowledge-maintenance`, the domain skill, and owning module index.
-   `docs/standards/knowledge-management.md` owns v0.4 knowledge policy.
-6. Retrieve only relevant memory and verify it against current owners.
+   `docs/standards/knowledge-management.md` owns knowledge policy.
+6. Use relevant shared/local memory as retrieval context; follow its pointers
+   to current owners. Use `mdk-memory` for capture or lifecycle changes.
 
-Match research to the requested outcome. For explanations and workflow guidance,
-start with indexed domain records, canonical ABIs, and package references. If
-those answer the question within their stated scope, use them and stop retrieval.
-Before fetching explorer source or reproducing a build, identify the specific
-unresolved fact and check existing indexed evidence or retained source for it.
-An external documentation lookup does not by itself require a source download.
-Current transaction preparation separately requires live identity, mappings,
-liveness, balances, allowances, and exact-call simulation as applicable. Do not
-apply those execution checks to a conceptual explanation or an offline example.
+Follow the [documentation standard](docs/standards/documentation.md) for READMEs,
+guides, and links. Keep human entry points independent of agent setup; current
+policy links use descriptive baseline/standard sections. Historical ADRs retain
+rationale and evidence identities, not competing current instructions.
+
+Resolve before retrieving or calling. Discover paths with indexes or `rg --files`,
+records with their declared IDs/collection pointers, and methods/parameters with
+the matching ABI or package reference. Do not guess paths, JSON collections,
+getters, overloads, commands, or endpoints. `pnpm context --help` exposes offline
+catalog/search, record/field reads, retained-source inspection, ABI inspection,
+and selected memory retrieval; [the retrieval manual](scripts/agents/CONTEXT.md)
+owns commands and coverage. Filter before returning large output; narrow any
+truncated result. Reuse unchanged context and stop once the requested claims
+are supported within their scope.
+
+Follow [knowledge retrieval](docs/standards/knowledge-management.md#read-or-use-knowledge).
+Before an online request, identify the missing fact, why local evidence cannot
+establish it, and the authoritative source/endpoint that can. Retrieve only that
+gap, subject to the current task and higher-priority requirements. Ordinary
+lookup does not run maintenance checks or refresh unrelated evidence. Current
+transaction preparation still requires applicable live identity, mappings,
+liveness, balances, allowances and exact-call simulation; conceptual explanations
+and offline examples do not inherit those execution checks.
 
 Skills: `agents/skills/` owns contributor procedures; `agents/consumer/skills/`
 owns consumer procedures; `agents/catalog.json` inventories both. Names match
@@ -86,7 +102,7 @@ copies. Do not commit `.agents/`.
 - Use TypeScript for packages, automation, tests, examples, templates, and
   generated applications; TSX for JSX. Solidity, JSON, schemas, Markdown, and
   evidence retain their formats. Tool-required language exceptions must be
-  narrow and documented under ADR-0007 and the coding standard.
+  narrow and documented under the coding standard.
 - Use the root-pinned pnpm version and one root `pnpm-lock.yaml`. Do not add
   npm, Yarn, or package-local lockfiles. Vitest is the default test runner;
   retain documented owning-tool/established-application exceptions.
@@ -102,7 +118,7 @@ copies. Do not commit `.agents/`.
 - Generate derived outputs from canonical inputs; never hand-maintain them.
   Do not hide failures, bypass validation, weaken checks, or add broad ignores.
 - Every `docs/manifest` change bumps its semantic version, adds a dated entry
-  to `docs/manifest-changelog.md`, and passes `node scripts/validate-manifest-version.ts`.
+  to `docs/manifest-changelog.md`, and passes `node scripts/checks/validate-manifest-version.ts`.
 
 ## Authorization and security
 

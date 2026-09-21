@@ -5,8 +5,8 @@ with GitHub. `feat/next` is the daily working branch and starts from `main`.
 Completed feature commits merge into `main` together. Both branches use the
 same ignore policy and contain only publishable MDK source history.
 
-[ADR-0022](../decisions/0022-main-and-feature-workflow.md) owns this decision.
-It replaces the separate private `dev` branch and filtered-snapshot process.
+The [source workflow baseline](../manifest#source-workflow-and-governance)
+defines these boundaries. This guide owns the commands and local setup.
 
 ## Source and local material
 

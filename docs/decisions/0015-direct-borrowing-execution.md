@@ -1,12 +1,25 @@
 # ADR-0015 — Direct MUSD borrowing execution
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Protocol execution boundaries](../manifest#protocol-execution-boundaries).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for implementation
 - Date: 2026-09-08
+- Private implementation review: Accepted on 2026-09-15
 
 The maintainer approved moving MDK toward full SDK workflows, starting with
 classic MUSD borrowing. This decision extends ADR-0002/0003 and ADR-0014 for
-private source implementation; publication and qualified protocol review remain
+private source implementation; publication and qualified protocol review are
 separate decisions.
+
+The maintainer accepted qualified review of the delivered private implementation
+on 2026-09-15: borrower reads/calculations, all nine direct borrower operations,
+and their explicit Core execution boundaries. Acceptance retains the recorded
+mainnet identity, pinned local-fork verification and native-oracle, fee-funding
+and surplus fixture limitations. It does not promote canonical public-writer
+support, publish a package, or extend verification to other deployments or runtimes.
 
 Contracts exposes a curated operation ABI resolver alongside the unchanged
 read ABI. ABI availability identifies an entrypoint, not authorization or

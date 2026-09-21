@@ -5,6 +5,10 @@ export type PoolErrorCode =
   | "UnsafeState"
   | "BoundExceeded"
   | "ReconciliationMismatch";
+/**
+ * Typed pools failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class PoolError extends Error {
   readonly code: PoolErrorCode;
   constructor(code: PoolErrorCode, message: string) {

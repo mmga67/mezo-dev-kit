@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-source-catalog",
+  "id": "incentives-third-party-sources",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-15T18:27:38.372Z",
+  "reviewAfter": "2026-09-29T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "evidenceBlockNumber": 11870214
+  },
+  "protocolStatus": "verified-versioned",
+  "limitations": [
+    "Official guides establish published product descriptions, not completed cross-chain delivery or exact executable rules.",
+    "Source code and fixed-block state have separate evidence. Preserve the voting-window conflict and remote source failures."
+  ],
+  "records": [
+    {
+      "id": "third-party-voter-executable",
+      "classification": "retained-executable-source",
+      "sourceReference": {
+        "moduleId": "contracts",
+        "resourceId": "third-party-voter-source"
+      },
+      "establishes": [
+        "source and ABI equality with the accepted ThirdPartyVoter reproduction",
+        "governor-controlled gauge lifecycle, independent voting state and inherited NonStakingVoter accounting"
+      ]
+    },
+    {
+      "id": "third-party-mainnet-snapshot",
+      "classification": "fixed-block-deployed-state",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-mainnet"
+      },
+      "establishes": [
+        "voter graph, seven gauge entries and current allocation weights",
+        "five beneficiary mappings; code presence on four remote beneficiaries"
+      ],
+      "limitations": ["No settled distribution or LP claim"]
+    },
+    {
+      "id": "official-mezo-gauges-overview",
+      "classification": "official-documentation",
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-official-docs-2026-09-15",
+        "pointer": "/docs/0"
+      },
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "0b44bd1f4056592eb26112d0733511b3c5475956",
+      "path": "src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/index.mdx",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/0b44bd1f4056592eb26112d0733511b3c5475956/src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/index.mdx",
+      "retrievedAt": "2026-09-15T18:22:27.906Z",
+      "sha256": "9633dd7cfde3bb227ccce876f35521008dcbf49eced09b5dc357f9306a46cf58",
+      "establishes": [
+        "published MEZO Gauges product description at the pinned documentation commit"
+      ],
+      "limitations": [
+        "Destination distribution and campaign terms are documentation-scoped until separately reconciled."
+      ]
+    },
+    {
+      "id": "official-mezo-gauges-how-to-vote",
+      "classification": "official-documentation",
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-official-docs-2026-09-15",
+        "pointer": "/docs/1"
+      },
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "0b44bd1f4056592eb26112d0733511b3c5475956",
+      "path": "src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/how-to-vote.mdx",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/0b44bd1f4056592eb26112d0733511b3c5475956/src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/how-to-vote.mdx",
+      "retrievedAt": "2026-09-15T18:22:28.390Z",
+      "sha256": "c5b2cebf4a11ff76921576842112e9bc15f31dbc9feed9079f63f9e101feac72",
+      "establishes": [
+        "published MEZO Gauges product description at the pinned documentation commit"
+      ],
+      "limitations": [
+        "Repeated within-epoch voting and full-epoch window prose conflict with the matching deployed source."
+      ]
+    },
+    {
+      "id": "official-mezo-gauges-where-your-vote-goes",
+      "classification": "official-documentation",
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-official-docs-2026-09-15",
+        "pointer": "/docs/2"
+      },
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "0b44bd1f4056592eb26112d0733511b3c5475956",
+      "path": "src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/where-your-vote-goes.mdx",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/0b44bd1f4056592eb26112d0733511b3c5475956/src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/where-your-vote-goes.mdx",
+      "retrievedAt": "2026-09-15T18:22:28.439Z",
+      "sha256": "489823e5b0cda9dabeb0ff6ded19b9b1f308db9ccbf33b1f807c46db5ccc23b5",
+      "establishes": [
+        "published MEZO Gauges product description at the pinned documentation commit"
+      ],
+      "limitations": [
+        "Destination distribution and campaign terms are documentation-scoped until separately reconciled."
+      ]
+    },
+    {
+      "id": "official-mezo-gauges-claiming-incentives",
+      "classification": "official-documentation",
+      "sourceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "third-party-official-docs-2026-09-15",
+        "pointer": "/docs/3"
+      },
+      "repository": "https://github.com/mezo-org/documentation",
+      "commit": "0b44bd1f4056592eb26112d0733511b3c5475956",
+      "path": "src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/claiming-incentives.mdx",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/0b44bd1f4056592eb26112d0733511b3c5475956/src/content/docs/docs/users/mezo-earn/vote/mezo-gauges/claiming-incentives.mdx",
+      "retrievedAt": "2026-09-15T18:22:28.453Z",
+      "sha256": "dd1efed3d8e75c55c8308524a1c60929049d4fdab456c08785521af6538fb123",
+      "establishes": [
+        "published MEZO Gauges product description at the pinned documentation commit"
+      ],
+      "limitations": [
+        "Destination distribution and campaign terms are documentation-scoped until separately reconciled."
+      ]
+    }
+  ]
+}

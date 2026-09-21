@@ -41,8 +41,7 @@ Source availability does not waive protocol release review or transaction consen
 - `knowledge/networks/`
 - `knowledge/contracts/`
 - the relevant `knowledge/protocols/` domain
-- `docs/decisions/0002-core-client-model.md`
-- `docs/decisions/0003-transaction-lifecycle.md`
+- `docs/manifest#shared-client-and-transaction-lifecycle`
 
 ## Required canonical sources
 
@@ -53,10 +52,11 @@ Source availability does not waive protocol release review or transaction consen
 3. Network ID/capability and endpoint evidence from `knowledge/networks/`.
 4. Deployment/ABI/source evidence from `knowledge/contracts/`.
 5. The protocol domain's canonical model and operation requirements.
-6. Accepted ADR-0002/0003 and package docs when relevant. The decisions accept
-   responsibilities and semantics, not a dependency, public API, or writer.
+6. The [execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
+   for shared responsibilities and semantics; current package docs/exports for
+   usable APIs and their independent verification and release boundaries.
 
-ADR-0016 adds protocol-owned target resolvers, explicit token approvals, Savings,
+Private execution includes protocol-owned target resolvers, explicit token approvals, Savings,
 lending, vault and gauge writers. Core verifies role destinations at simulation
 and submission; domains own runtime/topology and actual receipt outcomes.
 Consult each package reference for amount units, required bounds and recovery.
@@ -93,7 +93,7 @@ Apply the following steps only to the operation classes they concern.
 Run:
 
 ```sh
-node scripts/validate-transaction-knowledge.ts
+node scripts/checks/validate-transaction-knowledge.ts
 ```
 
 For implementation work, add model/targeted tests for every reachable state and

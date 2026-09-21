@@ -4,6 +4,10 @@ import { LendingReadError } from "./errors.ts";
 
 const C = LENDING_MODEL.constants;
 const WAD = BigInt(C.WAD);
+/**
+ * Base-unit value with a market accounting tag; supply shares, borrow shares, BTC collateral
+ * and mUSDC assets are not interchangeable.
+ */
 export interface LendingAmount<Unit extends string> {
   readonly unit: Unit;
   readonly baseUnits: bigint;
@@ -26,6 +30,13 @@ function divide(a: bigint, b: bigint, round: "down" | "up"): bigint {
   const result = a / b;
   return uint(result + (round === "up" && a % b !== 0n ? 1n : 0n));
 }
+/**
+ * Convert asset base units to market shares with the deployed virtual assets/shares.
+ *
+ * @param totalAssets - Totals for the same market side and coordinate as totalShares.
+ * @param rounding - Explicit up/down direction selected for the operation.
+ * @throws LendingReadError - Invalid unsigned values, rounding or intermediate overflow.
+ */
 export function lendingToShares(
   assets: bigint,
   totalAssets: bigint,
@@ -40,6 +51,13 @@ export function lendingToShares(
     rounding,
   );
 }
+/**
+ * Convert market shares to asset base units with the deployed virtual assets/shares.
+ *
+ * @param totalShares - Supply or borrow shares matching totalAssets at one coordinate.
+ * @param rounding - Explicit up/down direction; debt estimates commonly require up.
+ * @throws LendingReadError - Invalid unsigned values, rounding or intermediate overflow.
+ */
 export function lendingToAssets(
   shares: bigint,
   totalAssets: bigint,
@@ -54,17 +72,32 @@ export function lendingToAssets(
     rounding,
   );
 }
+/**
+ * Apply the deployed three-term Taylor interest approximation with integer floors.
+ *
+ * @param borrowRate - Per-second rate scaled by 1e18, not an annual percentage.
+ * @param elapsed - Nonnegative seconds since accrual.
+ * @param totalBorrowAssets - Outstanding loan-asset base units.
+ * @returns The 1e18-scaled compound increment and accrued asset-base-unit interest.
+ * @throws LendingReadError - Invalid unsigned input or checked intermediate overflow.
+ */
 export function calculateLendingInterest(
   borrowRate: bigint,
   elapsed: bigint,
   totalBorrowAssets: bigint,
 ): Readonly<{ compound: bigint; interest: bigint }> {
+  // Preserve each Taylor-term floor: combining the powers/divisions changes
+  // debt and fee-share results at one-unit boundaries.
   const first = product(borrowRate, elapsed);
   const second = product(first, first) / (2n * WAD);
   const third = product(second, first) / (3n * WAD);
   const compound = add(add(first, second), third);
   return Object.freeze({ compound, interest: product(totalBorrowAssets, compound) / WAD });
 }
+/**
+ * Stored or projected market totals. Asset/share quantities keep their own units, lastUpdate is
+ * Unix seconds and fee is scaled by 1e18.
+ */
 export interface LendingMarketState {
   readonly totalSupplyAssets: bigint;
   readonly totalSupplyShares: bigint;
@@ -73,6 +106,14 @@ export interface LendingMarketState {
   readonly lastUpdate: bigint;
   readonly fee: bigint;
 }
+/**
+ * Project market totals and fee-share dilution to an explicit Unix timestamp.
+ *
+ * @param borrowRate - Per-second rate scaled by 1e18.
+ * @param asOf - Seconds at or after market.lastUpdate; no clock or RPC is consulted.
+ * @returns Updated totals plus interest and minted fee shares; input is not mutated.
+ * @throws LendingReadError - Invalid market bounds, time regression or arithmetic overflow.
+ */
 export function accrueLendingMarket(
   market: LendingMarketState,
   borrowRate: bigint,
@@ -95,6 +136,8 @@ export function accrueLendingMarket(
   const supply = uint(add(market.totalSupplyAssets, interest), "accruedSupplyAssets", 128);
   const borrow = uint(add(market.totalBorrowAssets, interest), "accruedBorrowAssets", 128);
   const feeAmount = product(interest, market.fee) / WAD;
+  // Fee shares dilute suppliers against assets excluding the fee itself.
+  // Using the full accrued supply here would understate the minted fee shares.
   const feeShares = lendingToShares(
     feeAmount,
     supply - feeAmount,
@@ -111,6 +154,17 @@ export function accrueLendingMarket(
     feeShares,
   });
 }
+/**
+ * Compare BTC-backed market debt with floor-rounded collateral borrowing power.
+ *
+ * @param collateral - BTC collateral base units.
+ * @param price - Market oracle-scaled price, not an ordinary display USD price.
+ * @param lltv - Liquidation loan-to-value ratio scaled by 1e18.
+ * @param borrowed - mUSDC debt base units.
+ * @returns Maximum borrow assets and inclusive health; zero debt is healthy.
+ * @remarks
+ * The caller must establish price identity and freshness before using this arithmetic.
+ */
 export function calculateLendingHealth(
   collateral: bigint,
   price: bigint,

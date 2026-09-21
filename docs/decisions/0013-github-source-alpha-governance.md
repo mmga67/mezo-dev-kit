@@ -1,5 +1,10 @@
 # ADR-0013 — GitHub source-alpha governance
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Source workflow and governance](../manifest#source-workflow-and-governance).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-29
 

@@ -1,10 +1,12 @@
-# MUSD System Reference
+# Understand the MUSD system
 
-Status: derived from supported, accepted canonical knowledge.
+This page explains the classic MUSD debt engine, the state it accounts for,
+and how its component responsibilities fit together. Start here for the mental
+model; use the [borrowing reference](musd-borrowing.md) or
+[SDK package reference](sdk.md) when looking up rules or API calls.
 
-This page is the human reading path for the MUSD system architecture. The
-machine-readable source is `knowledge/protocols/musd/`; deployments and ABIs
-remain in `knowledge/contracts/`.
+The explanation derives from [MUSD knowledge](../../knowledge/protocols/musd/README.md).
+[Contract knowledge](../../knowledge/contracts/README.md) owns deployments and ABIs.
 
 ## Mental Model
 
@@ -55,7 +57,8 @@ acceptance state implies that MDK ships a public transaction writer.
 
 ## Future SDK Shape
 
-The recorded future boundary is intentionally small:
+The canonical system model records a `futureModuleBoundary` design field.
+It describes the separation to preserve:
 
 - pure terminology, typed state, units, and deterministic calculations;
 - separate block-pinned RPC readers that resolve stable contract IDs;
@@ -64,8 +67,9 @@ The recorded future boundary is intentionally small:
 - framework adapters consuming those APIs rather than reimplementing protocol
   behavior.
 
-The complete boundary is `futureModuleBoundary` in the `musd-system-model`
-resource. Accepting the knowledge does not create a package or public API.
+Read that field in the `musd-system-model` resource for its recorded scope.
+For the current implementation, use the [SDK reference](sdk.md#package-selection);
+the design field is not an inventory of today's exports or release status.
 
 ## Evidence And Limitations
 

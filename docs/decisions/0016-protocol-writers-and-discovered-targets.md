@@ -1,5 +1,10 @@
 # ADR-0016 — Protocol writers and discovered destinations
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Shared client and transaction lifecycle](../manifest#shared-client-and-transaction-lifecycle).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted for implementation
 - Date: 2026-09-08
 

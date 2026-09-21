@@ -36,6 +36,18 @@ For Mezo-specific work:
 
 Do not load unrelated MDK skills by default.
 
+### Local references
+
+Read `mdk.config.json` for the chosen domains and discovery root. The installed
+reference index is `.mdk/reference/bundle.json`; it describes the complete
+declared consumer corpus, source identity, limitations, and exclusions.
+
+Use `pnpm exec mdk docs search "<topic>" --json` to find stable IDs. Read cached
+content with `pnpm exec mdk docs show "<id>"`, or open its reported local path.
+If content is indexed but absent, explicitly run `pnpm exec mdk docs fetch "<id>"`
+under the application's network policy. `--offline` uses only local artifacts.
+Fetching references does not update SDK versions or renew protocol evidence.
+
 For explanations, start with version-compatible MDK references and available
 canonical protocol guidance. Use existing evidence when it answers the question.
 Fetch contract source only to resolve a specific remaining detail. Current

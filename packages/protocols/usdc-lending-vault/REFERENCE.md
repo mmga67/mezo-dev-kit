@@ -111,9 +111,12 @@ export const harvest = calculateVaultHarvest({
 }); // { yieldShares: 0n, newLastShareRatio: 10n }
 ```
 
-See the [executable example](../../../examples/usdc-lending-vault-readonly/README.md).
-Previews calculate conversions, not transaction capacity. Execution gates,
-caps, timelocks, penalties, and required deallocation are not implemented here.
+See the [executable example](../../../examples/use-usdc-vault/README.md).
+Previews calculate conversions, not transaction capacity. The reader does not
+qualify execution gates, caps, timelocks, penalties, or required deallocation.
+The recorded generation's zero-returning `max*` getters are not capacity estimates.
+The current reader shape has one adapter, one lending market, and a configured
+gauge. Another queue, market, or absent gauge requires its own evidence.
 
 ## Snapshot fields
 

@@ -1,31 +1,30 @@
 # SDK package reference
 
-The SDK has sixteen implemented private workspace packages. Classic MUSD borrowing,
-Savings, mUSDC lending, USDC Lending Vault and their gauges have explicit writer
-APIs alongside signer-free readers. Tokens owns separate approval workflows;
-Core owns simulation, submission and recovery. Writer support remains proposed
-pending qualified protocol review and release.
+The SDK contains sixteen private runtime packages. Use the table below to
+choose an owner, then open its reference for exact methods, types, inputs,
+errors, and examples. The separate [project utility](../../packages/cli/README.md)
+creates applications and manages matching local guidance.
 
 ## Package selection
 
-| Package                                 | Use it for                                                     | Methods, types, and examples                                                             |
-| --------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `@mezo-dev-kit/musd-borrowing`          | Classic borrower state and direct operations                   | [Borrowing SDK reference](../../packages/protocols/musd-borrowing/REFERENCE.md)          |
-| `@mezo-dev-kit/evm`                     | Typed EVM values, exact units, and bounded ABI codecs          | [EVM reference](../../packages/evm/REFERENCE.md)                                         |
-| `@mezo-dev-kit/chains`                  | Accepted network identities and capability metadata            | [Chains reference](../../packages/chains/REFERENCE.md)                                   |
-| `@mezo-dev-kit/contracts`               | Deployment/runtime identity and read or curated operation ABIs | [Contracts reference](../../packages/contracts/REFERENCE.md)                             |
-| `@mezo-dev-kit/core`                    | Block-consistent reads, event scans and transaction execution  | [Core reference](../../packages/core/REFERENCE.md)                                       |
-| `@mezo-dev-kit/bridges`                 | Private MUSD NTT preparation/recovery and separate bridge delivery observation | [Bridges reference](../../packages/bridges/REFERENCE.md)                                 |
-| `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
-| `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
-| `@mezo-dev-kit/pools`                   | Basic liquidity/fees; CL math, reads and NFT position lifecycle | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
-| `@mezo-dev-kit/swaps`                   | Basic/CL swaps; `/quotes` provides read-only candidate comparison | [Swaps reference](../../packages/swaps/REFERENCE.md)                                   |
-| `@mezo-dev-kit/prices`                  | Explicit scale, freshness and direct Skip observations         | [Prices reference](../../packages/prices/REFERENCE.md)                                   |
-| `@mezo-dev-kit/tokens`                  | Exact balances, allowances and explicit approvals              | [Token reference](../../packages/tokens/REFERENCE.md)                                    |
-| `@mezo-dev-kit/incentives`              | Gauges, locks, voting, fee/bribe and bounded rebase claims     | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)                 |
-| `@mezo-dev-kit/musd-savings`            | sMUSD principal and MUSD indexed yield                         | [Savings reference](../../packages/protocols/musd-savings/REFERENCE.md)                  |
-| `@mezo-dev-kit/musdc-lending`           | BTC/mUSDC Morpho market, debt, shares, interest, and health    | [Lending reference](../../packages/protocols/musdc-lending/REFERENCE.md)                 |
-| `@mezo-dev-kit/usdc-lending-vault`      | Depositor shares, wrapper yield, previews, and gauge ownership | [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)              |
+| Package                                 | Use it for                                                                     | Methods, types, and examples                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `@mezo-dev-kit/musd-borrowing`          | Classic borrower state and direct operations                                   | [Borrowing SDK reference](../../packages/protocols/musd-borrowing/REFERENCE.md)          |
+| `@mezo-dev-kit/evm`                     | Typed EVM values, exact units, and bounded ABI codecs                          | [EVM reference](../../packages/evm/REFERENCE.md)                                         |
+| `@mezo-dev-kit/chains`                  | Accepted network identities and capability metadata                            | [Chains reference](../../packages/chains/REFERENCE.md)                                   |
+| `@mezo-dev-kit/contracts`               | Deployment/runtime identity and read or curated operation ABIs                 | [Contracts reference](../../packages/contracts/REFERENCE.md)                             |
+| `@mezo-dev-kit/core`                    | Block-consistent reads, event scans and transaction execution                  | [Core reference](../../packages/core/REFERENCE.md)                                       |
+| `@mezo-dev-kit/bridges`                 | Private NTT/Native preparation, NTT recovery and separate delivery observation | [Bridges reference](../../packages/bridges/REFERENCE.md)                                 |
+| `@mezo-dev-kit/musd-redemptions`        | Bounded redemption quotes, traced output and direct execution                  | [Redemptions reference](../../packages/protocols/musd-redemptions/REFERENCE.md)          |
+| `@mezo-dev-kit/musd-institutional-debt` | Enclave authority, positions, fees and pledged collateral                      | [Institutional reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md) |
+| `@mezo-dev-kit/pools`                   | Basic liquidity/fees; CL math, reads and NFT position lifecycle                | [Pools reference](../../packages/protocols/pools/REFERENCE.md)                           |
+| `@mezo-dev-kit/swaps`                   | Basic/CL swaps; `/quotes` provides read-only candidate comparison              | [Swaps reference](../../packages/swaps/REFERENCE.md)                                     |
+| `@mezo-dev-kit/prices`                  | Explicit scale, freshness and direct Skip observations                         | [Prices reference](../../packages/prices/REFERENCE.md)                                   |
+| `@mezo-dev-kit/tokens`                  | Exact balances, allowances and explicit approvals                              | [Token reference](../../packages/tokens/REFERENCE.md)                                    |
+| `@mezo-dev-kit/incentives`              | Gauges, locks, voting, fee/bribe and bounded rebase claims                     | [Incentives reference](../../packages/protocols/incentives/REFERENCE.md)                 |
+| `@mezo-dev-kit/musd-savings`            | sMUSD principal and MUSD indexed yield                                         | [Savings reference](../../packages/protocols/musd-savings/REFERENCE.md)                  |
+| `@mezo-dev-kit/musdc-lending`           | BTC/mUSDC Morpho market, debt, shares, interest, and health                    | [Lending reference](../../packages/protocols/musdc-lending/REFERENCE.md)                 |
+| `@mezo-dev-kit/usdc-lending-vault`      | Depositor shares, wrapper yield, previews, and gauge ownership                 | [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)              |
 
 Each package reference inventories its public runtime functions, methods on
 returned objects, exported types, input units, results, errors, required
@@ -33,22 +32,34 @@ integrations, and examples. Package READMEs own support and integration
 contracts; export maps and TypeScript declarations define importable APIs.
 Reference pages explain those owners and do not introduce additional exports.
 
+## Implementation, verification and release
+
+Read package status along four separate dimensions:
+
+| Dimension                      | Evidence to inspect                                                        | What it establishes                                                                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Implementation                 | Package exports, declarations and source                                   | Which APIs exist and what they accept/return.                                                                                            |
+| Verification                   | Tests and recorded integration runs, including fixtures and coordinates    | Which behavior was exercised, in which environment. A test file alone is not a successful run.                                           |
+| Protocol support               | Canonical capability records and the required qualified review disposition | Whether an operation/deployment has been accepted for its stated use. Module-level acceptance does not promote every embedded operation. |
+| Distribution and compatibility | Package metadata, released artifacts and runtime checks                    | How consumers obtain the package and which runtime/version contract is offered.                                                          |
+
+The runtime packages expose documented workspace entrypoints while remaining
+unpublished. For a chosen operation, check the owning package's README for
+support and integration scope and its reference for exact verification limits.
+A source implementation, accepted evidence record, and released capability
+establish different things.
+
 ## Setup
 
-Use a source checkout with Node 24 or newer and the root-pinned pnpm version:
+- **In an MDK checkout:** follow [workspace setup](../guides/SDK_DEVELOPMENT.md#install-and-verify-the-workspace).
+  Declare the selected `workspace:*` dependency in the consumer and import its
+  public package entrypoint.
+- **In an independent application:** follow [private artifact setup](../guides/MDK_CLI.md#start-here)
+  and the [application integration guide](../guides/EXTERNAL_APPLICATIONS.md).
 
-```sh
-pnpm install --frozen-lockfile
-pnpm build
-```
-
-Consume `@mezo-dev-kit/...` package-root imports from a workspace consumer
-declaring the corresponding `workspace:*` dependencies. These packages are
-private and are not available through an npm installation command. Built
-declarations are emitted to each package's `dist/` directory. See the
-[development quickstart](../guides/SDK_DEVELOPMENT.md) for the complete workflow
-and [external application guidance](../guides/EXTERNAL_APPLICATIONS.md) for
-distribution boundaries.
+Built declarations and JavaScript are emitted to package `dist/` directories.
+A missing build is distinct from an unavailable export; inspect the package
+manifest and build instructions before changing an import.
 
 ## Integration sequence
 
@@ -57,70 +68,47 @@ distribution boundaries.
 2. Resolve a network with Chains and create a Contracts registry.
 3. Supply a transport implementing the selected reader's exported port. A
    network identity does not select an RPC URL or certify a provider.
-4. Supply the codec ports required by the Savings, lending, and vault readers.
-   Borrowing uses EVM's scalar codec internally. Core accepts pre-encoded
-   calldata and leaves domain decoding to its consumer.
+4. Use the existing `createSavingsRpcReader`, `createLendingRpcReader` and
+   `createVaultRpcReader` adapters for Core RPC transports, or supply the
+   lower-level reader ports for a different integration. Core leaves domain
+   decoding to the owning package.
 5. Read at an explicit block, or let the reader select one head. Keep the
    returned network/block/hash and timestamp where present.
 6. Inspect each availability discriminant before using a value. Missing debt,
    rewards, or prices must not become zero.
 
-The reference examples use typed injected ports rather than an undeclared
-client dependency. Reader functions can be called once an application supplies
-those ports. The default executable example tests use deterministic fakes; they
-do not certify a production RPC/codec adapter or live state.
+## Runnable workflows
 
-The foundation example also includes an application-owned
-[bounded HTTP transport and opt-in RPC command](../../examples/foundational-readonly/README.md#bounded-http-read).
-It demonstrates a raw block-pinned read using an explicitly supplied endpoint
-and calldata. It is example source, not a reusable SDK adapter export.
+The [examples index](../../examples/README.md) covers borrowing, liquidity,
+swaps, bridging, Savings, lending, vault deposits, CL positions, locks/voting
+and redemptions. Each recipe supplies setup, explicit inputs, commented
+transaction steps, settlement interpretation and failure handling. The shared
+runtime provides bounded HTTP, exact approvals, durable submission records and
+restart inspection. Imports alone never execute a workflow.
 
-| Executable example                                            | Workspace command                                                      |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [Foundations](../../examples/foundational-readonly/README.md) | `pnpm --filter @mezo-dev-kit/example-foundational-readonly test`       |
-| [Savings](../../examples/musd-savings-readonly/README.md)     | `pnpm --filter @mezo-dev-kit/example-musd-savings-readonly test`       |
-| [Lending](../../examples/musdc-lending-readonly/README.md)    | `pnpm --filter @mezo-dev-kit/example-musdc-lending-readonly test`      |
-| [Vault](../../examples/usdc-lending-vault-readonly/README.md) | `pnpm --filter @mezo-dev-kit/example-usdc-lending-vault-readonly test` |
+Build with `pnpm --filter '@mezo-dev-kit/examples...' build`. Offline checks use
+`pnpm --filter @mezo-dev-kit/examples test`; transaction commands require an
+explicit verified local fork. Follow the examples index for Anvil and fixture
+setup. These runs exercise the private writer APIs without changing release
+status or asserting fresh bridge delivery.
 
 ## Transaction boundary
 
-Contracts preserves readAbi and adds curated mainnet operation/event and
-discovered-role interfaces. Core adds exact simulation, explicit signer binding, atomic submission
-intent reservation, receipt observation and domain reconciliation. The old
-transaction proof remains private. A hash is not protocol success.
+Core coordinates simulation, submission intent, receipt observation, and
+reconciliation. The owning protocol defines preparation and the outcome that
+must be verified. A transaction hash alone does not establish success.
 
-Each writer follows `prepare → approval if needed → prepare again → simulate
-→ submit → observe → reconcile`. Applications own consent, wallet gas/fee
-policy, RPC timeouts and durable atomic storage. Approvals and protocol actions
-are separate transactions. Each reference names exact amount units, required
-bounds and which checks are preflight rather than on-chain guarantees.
+Writer workflows follow preparation, any separate approval and re-preparation,
+exact-call simulation, submission, observation, and protocol reconciliation.
+Applications own consent, wallet fee policy, RPC timeouts, and durable atomic
+storage. Each package reference defines required bounds and distinguishes
+preflight checks from on-chain guarantees.
 
-Public-entrypoint fork harnesses are available for
-[Savings](../../packages/protocols/musd-savings/test/fork.ts),
-[Lending](../../packages/protocols/musdc-lending/test/fork.ts) and
-[Vault/gauges](../../packages/protocols/usdc-lending-vault/test/fork.ts).
-They require a fresh local Anvil mainnet fork, never send source-chain writes,
-and revert their snapshots. Anvil cannot execute mezod native dispatch, so
-oracle/native token boundaries use labelled fixtures. Compile the test-only
-native token with an already installed Solidity 0.8.19 compiler:
-
-```sh
-forge build --root /tmp/mdk-native-token-fixture --contracts "$PWD/scripts/fixtures" --use 0.8.19 --offline
-node packages/protocols/musd-savings/test/fork.ts http://127.0.0.1:18545 /tmp/mdk-native-token-fixture/out/NativeTokenFixture.sol/NativeTokenFixture.json
-node packages/protocols/musdc-lending/test/fork.ts http://127.0.0.1:18545 "$SOURCE_RPC_URL" /tmp/mdk-native-token-fixture/out/NativeTokenFixture.sol/NativeTokenFixture.json
-node packages/protocols/usdc-lending-vault/test/fork.ts http://127.0.0.1:18545 "$SOURCE_RPC_URL" /tmp/mdk-native-token-fixture/out/NativeTokenFixture.sol/NativeTokenFixture.json
-```
-
-Run these sequentially against the same fresh fork. Build the workspace first.
-The fixtures verify SDK/EVM protocol composition; native engine behavior and
-qualified release review remain separate evidence requirements.
-
-Use the [borrowing SDK reference](../../packages/protocols/musd-borrowing/REFERENCE.md)
-for implemented methods and examples. The [protocol reference](musd-borrowing.md)
-owns canonical behavior. The local fork harness uses an explicit native-oracle
-response fixture because Anvil cannot execute Mezo precompiles. Private
-implementation does not establish production release support. Protocol readers
-use Node crypto; browser bundling has not been verified.
+Use the [transaction lifecycle](transaction-lifecycle.md) for the shared model
+and [example connections](../../examples/SETUP.md#follow-one-transaction) for
+concrete construction. The [workflow examples](../../examples/README.md#what-executes-locally)
+explain local-fork fixtures and their limits. Package references retain the
+individual harness commands, native-engine assumptions, and compatibility scope.
 
 ## Maintaining the references
 

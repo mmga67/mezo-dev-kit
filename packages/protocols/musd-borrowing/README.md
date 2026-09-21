@@ -1,47 +1,46 @@
-# MUSD borrowing SDK
+# MUSD borrowing
 
-`@mezo-dev-kit/musd-borrowing` implements classic MUSD borrower state,
-integer calculations, sorted insertion hints and direct borrower preparation,
-simulation, submission and reconciliation. See the complete [SDK reference](REFERENCE.md).
+`@mezo-dev-kit/musd-borrowing` reads classic MUSD borrower positions, calculates debt and collateral changes, and executes direct borrower operations. It includes sorted insertion hints and receipt/state reconciliation.
 
-This is a private source implementation for the mainnet deployment identity,
-with local-fork verification. Canonical operation support remains proposed
-pending qualified protocol review; it is not a published or production-approved
-writer. No live transaction is authorized by importing this package.
+## Start here
 
-The borrower methods cover opening, adding/withdrawing native BTC collateral,
-borrowing more MUSD, partial repayment, combined adjustment, refinancing,
-closing and claiming collateral surplus. Core owns the explicit signer,
-submission journal and receipt checks. Applications own connection, consent,
-RPC requests, timeouts, scheduling and durable storage.
+Build the workspace with the [SDK setup guide](../../../docs/guides/SDK_DEVELOPMENT.md), then follow [the borrowing walkthrough](../../../examples/borrow-musd/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-The reader verifies borrower-contract runtime hashes, proxy generations and
-topology at one block, checks PriceFeed's native-oracle identity and signed
-answer, and preserves already-entire position accounting. Native-oracle engine
-behavior remains a chain/provider trust boundary. No legacy package is imported.
+## Available operations
+
+Read a borrower at one block, inspect debt and collateral, or prepare opening,
+adding/withdrawing BTC collateral, borrowing more MUSD, partial repayment,
+combined adjustment, refinancing, closing, and claiming collateral surplus.
+The [reader](REFERENCE.md#reader), [calculations](REFERENCE.md#pure-functions),
+and [writer](REFERENCE.md#writer) sections describe their exact inputs.
+
+Applications provide RPC requests, an explicit signer, consent, timeouts,
+confirmation policy, and durable submission storage. Native BTC collateral and
+protocol MUSD burns do not require token approvals.
+
+## Implementation and release status
+
+All nine direct operations are available through this private workspace package.
+Private implementation review was accepted on 2026-09-15 for the recorded
+mainnet identity and local-fork scope. Canonical public-writer support remains
+proposed, and package publication is separate.
+
+The integration harness models Mezo's native oracle and uses labelled local
+funding/surplus fixtures. It tests the EVM workflow within those limits; see
+[verification scope](REFERENCE.md#verification-scope).
+
+Node is required for runtime hashing. Testnet, smart accounts, relayed
+signatures, liquidation, and emergency close with minting disabled are outside
+this writer. Use the separate [Redemptions package](../musd-redemptions/README.md)
+for redemption workflows and [borrowing knowledge](../../../knowledge/protocols/musd/borrowing/README.md)
+for the underlying model.
+
+## Development
+
+From the repository root:
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm --filter @mezo-dev-kit/musd-borrowing... build
-pnpm --filter @mezo-dev-kit/musd-borrowing test
+pnpm --filter @mezo-dev-kit/musd-borrowing check
 ```
 
-For the explicit local integration harness, start a fresh Anvil fork using a
-mainnet RPC URL and an exact block number, with chain ID from Chains. Then run:
-
-```sh
-node packages/protocols/musd-borrowing/test/fork.ts http://127.0.0.1:18545 "$MEZO_READ_RPC"
-```
-
-The harness refuses a non-local target or a non-Anvil client. It captures the
-native oracle's two read responses at the fork block and installs a labelled
-response fixture because Anvil cannot execute Mezo's native precompile. It
-uses local account impersonation to fund close fees and create surplus through
-actual pool entrypoints. Borrowing contract code is unchanged; local fixture
-state is reverted afterward. This proves the EVM writer integration with the
-fixture, not Mezo's native oracle implementation or redemption execution.
-
-Node 24 is the development baseline. The reader uses Node crypto for runtime
-hashing; browser bundling has not been verified. Testnet, relayed signatures,
-smart accounts, liquidation, redemption and emergency close with minting
-disabled are outside this initial writer slice.
+See the [contributor guide](../../../CONTRIBUTING.md) for workspace setup and review.

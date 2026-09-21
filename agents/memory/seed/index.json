@@ -9,6 +9,13 @@
       "status": "promoted",
       "title": "Route price selection, DEX quotes, and current versus historical evidence",
       "path": "price-selection-evidence-routing.json"
+    },
+    {
+      "id": "testnet-current-state-evidence-policy",
+      "domain": "networks/testnet",
+      "status": "promoted",
+      "title": "Testnet archive history is outside MDK's required scope",
+      "path": "testnet-current-state-evidence-policy.json"
     }
   ]
 }

@@ -62,10 +62,13 @@ describe("explicit historical evidence", () => {
       expect.objectContaining({ code: "MissingDeployment" }),
     );
     const current = resolveContract({ ...mezo, blockNumber: 11358000n });
-    expect(() => resolveOperation({ ...current, functionName: "bridgeOut" })).toThrowError(
+    expect(resolveOperation({ ...current, functionName: "bridgeOut" }).functionAbi.name).toBe(
+      "bridgeOut",
+    );
+    expect(resolveRuntimeIdentity(current).implementationSlot).toBeNull();
+    expect(() => resolveOperation({ ...current, functionName: "bridge" })).toThrowError(
       expect.objectContaining({ code: "AbiUnavailable" }),
     );
-    expect(() => resolveRuntimeIdentity(current)).toThrow();
   });
   test("rejects overlapping coverage and changed lifecycle without choosing a preferred row", () => {
     const row = HISTORICAL_CONTRACT_EVIDENCE[0];

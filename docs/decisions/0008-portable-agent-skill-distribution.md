@@ -1,5 +1,10 @@
 # ADR-0008 — Portable agent-skill distribution
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Human and agent documentation](../manifest#human-and-agent-documentation).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-21
 - Accepted by: human architecture review on 2026-08-23

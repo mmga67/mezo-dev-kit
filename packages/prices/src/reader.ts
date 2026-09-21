@@ -8,6 +8,10 @@ import { evaluatePriceFreshness, normalizePriceAmount, PriceError } from "./amou
 import type { PriceAmountResult, PriceFreshness, PriceRounding } from "./amount.ts";
 import { PRICE_MODEL } from "./model.generated.ts";
 
+/**
+ * Explicit observation time and normalization/freshness policy. Times are Unix seconds; an
+ * omitted block selects a head.
+ */
 export interface SkipPriceReadInput {
   readonly blockNumber?: bigint;
   readonly asOf: bigint;
@@ -17,6 +21,10 @@ export interface SkipPriceReadInput {
   readonly rounding: PriceRounding;
   readonly allowPrecisionLoss: boolean;
 }
+/**
+ * Source-specific price evidence with normalization and freshness results. Confidence is
+ * unavailable; this is not another protocol oracle.
+ */
 export interface SkipPriceObservation {
   readonly status: "valid" | "invalid";
   readonly sourceId: string;
@@ -44,13 +52,32 @@ export interface SkipPriceObservation {
   }>;
   readonly normalization: PriceAmountResult;
   readonly freshness: PriceFreshness;
+  /**
+   * The source exposes no confidence value; null must not be interpreted as zero uncertainty.
+   */
   readonly confidence: null;
   readonly limitations: readonly string[];
 }
+/**
+ * Signer-free direct Skip reads with source/runtime and coordinate checks. Applications inspect
+ * status and choose consumption policy.
+ */
 export interface SkipPriceReader {
+  /**
+   * Read and anchor the Skip round, then apply supplied scaling and Unix-second freshness
+   * policy. Inspect status before consuming the observation.
+   */
   read(input: SkipPriceReadInput): Promise<Readonly<SkipPriceObservation>>;
 }
-/** Direct Skip observation. It cannot replace a consuming protocol's own oracle result. */
+/**
+ * Create direct signer-free Skip observations with runtime and coordinate checks.
+ *
+ * @remarks
+ * The read method applies explicit normalization and Unix-second freshness policy.
+ * An invalid observation remains inspectable and must not become an executable
+ * price. Confidence is unavailable. This source observation cannot replace a
+ * consuming protocol's own oracle result or native-engine trust boundary.
+ */
 export function createSkipPriceReader(config: {
   readonly networkId: Network["id"];
   readonly registry: ContractRegistry;

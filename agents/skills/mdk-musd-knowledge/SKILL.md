@@ -65,7 +65,7 @@ values, or familiar Liquity behavior as current protocol truth.
    `protocols/musd/redemptions`. Fail closed if a capability is blocked.
 8. For a knowledge change, update the candidate disposition, exact pinned
    evidence, canonical record, derived docs, and validation together.
-9. Run `node scripts/validate-musd-knowledge.ts` plus the network and contract
+9. Run `node scripts/checks/validate-musd-knowledge.ts` plus the network and contract
    validators.
 10. Require qualified Level 3 review for a changed protocol fact, support
     boundary, or write-path dependency.

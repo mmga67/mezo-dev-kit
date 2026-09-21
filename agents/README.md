@@ -50,13 +50,13 @@ same selected directories can be copied unchanged to a generic
 This is synchronization, not per-agent prompt compilation.
 
 The accepted architecture and its boundary are recorded in
-[`ADR-0008`](../docs/decisions/0008-portable-agent-skill-distribution.md).
+[Human and agent documentation](../docs/manifest#human-and-agent-documentation).
 
 ## Commands
 
 ```sh
-node scripts/validate-agent-skills.ts
-node scripts/materialize-agent-skills.ts --audience contributor --output .agents/skills
+node scripts/agents/validate-agent-skills.ts
+node scripts/agents/materialize-agent-skills.ts --audience contributor --output .agents/skills
 ```
 
 Materialize only into a new or empty directory. External application setup

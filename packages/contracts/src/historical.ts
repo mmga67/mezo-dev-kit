@@ -76,6 +76,14 @@ export interface HistoricalContractEvidence {
   readonly limitations: readonly string[];
 }
 
+/**
+ * Resolve retained ABI and identity evidence within explicit historical coverage.
+ *
+ * @remarks
+ * Coverage uses half-open block intervals. The historical result is separate from
+ * current operation resolution and cannot authorize a current writer.
+ * @throws ContractRegistryError - Invalid, absent or ambiguous coordinate evidence.
+ */
 export function resolveHistoricalContractEvidence(
   input: ContractResolutionInput,
 ): Readonly<HistoricalContractEvidence> {

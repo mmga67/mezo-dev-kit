@@ -3,6 +3,10 @@
 This package is a disposable, fictional teaching fixture. It contains no Mezo
 address, ABI, deployment, price, financial rule, provider endpoint, or writer.
 
+Start with the [package example walkthrough](../../../README.md) for setup,
+commands, and the consumer that exercises this API. Run it in the disposable
+workspace described there.
+
 Its deliberately small supported surface demonstrates:
 
 - private source-alpha package metadata and an explicit built export map;

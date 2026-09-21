@@ -17,6 +17,10 @@ import {
 } from "@mezo-dev-kit/evm";
 import { redemptionRequire } from "./errors.ts";
 
+/**
+ * Attempted and actual MUSD plus gross, fee and net BTC. Partial fills preserve the distinction
+ * between attempted and actual.
+ */
 export interface RedemptionAmounts {
   readonly attemptedAmount: bigint;
   readonly actualAmount: bigint;
@@ -24,13 +28,29 @@ export interface RedemptionAmounts {
   readonly collateralFee: bigint;
   readonly netCollateral: bigint;
 }
+/**
+ * Exact call and coordinate for output tracing; the caller supplies the verified redemption
+ * contract context.
+ */
 export interface RedemptionTraceInput {
   readonly call: Readonly<ExactTransaction>;
   readonly coordinate: Readonly<ReadCoordinate>;
 }
+/**
+ * Exact-call tracing port that must return validated execution amounts; ordinary eth_call
+ * return data is insufficient.
+ */
 export interface RedemptionOutputSimulator {
+  /**
+   * Trace the exact call at its coordinate and return validated attempted/actual MUSD and
+   * gross/fee/net BTC amounts; do not submit.
+   */
   simulate(input: RedemptionTraceInput): Promise<Readonly<RedemptionAmounts>>;
 }
+/**
+ * Application trace request and capability configuration; provider selection and trace
+ * availability remain explicit.
+ */
 export interface RedemptionTraceConfig {
   readonly request: RpcRequest;
   readonly transport: RpcTransport;
@@ -41,6 +61,10 @@ export interface RedemptionTraceConfig {
   readonly maxDepth: number;
   readonly maxDataBytes: number;
 }
+/**
+ * Trace-derived event fields to decode after the caller establishes successful execution and
+ * emitter provenance.
+ */
 export interface RedemptionLog {
   readonly address: `0x${string}`;
   readonly topics: readonly `0x${string}`[];
@@ -63,6 +87,16 @@ function array(value: unknown, max: number): readonly unknown[] {
   );
   return value as readonly unknown[];
 }
+/**
+ * Decode exactly one canonical Redemption event from supplied execution logs.
+ *
+ * @returns Attempted/actual MUSD and gross/fee/net BTC base units, with positive actual
+ * amount, actual no greater than attempted and fee no greater than gross enforced.
+ * @remarks
+ * The caller establishes receipt success, runtime and log provenance. Decoding an
+ * event alone does not supply those proofs.
+ * @throws RedemptionError - Missing, ambiguous or inconsistent redemption amounts.
+ */
 export function decodeRedemptionAmounts(input: {
   readonly logs: readonly RedemptionLog[];
   readonly contract: `0x${string}`;

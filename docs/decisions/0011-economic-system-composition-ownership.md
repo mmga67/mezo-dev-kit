@@ -1,5 +1,10 @@
 # ADR-0011 — Mezo economic-system composition ownership
 
+> Historical decision, consolidated on 2026-09-15 into
+> [Separate economic owners](../manifest#separate-economic-owners).
+> The original text and acceptance scope below are retained for context;
+> the manifest and its delegated owners define current policy.
+
 - Status: Accepted
 - Date: 2026-08-23
 - Accepted by: human direction to proceed with the economic-system composition review execution set on
@@ -26,22 +31,22 @@ would merge incompatible quantities and evidence lifecycles.
 
 The current economic system is represented by separately maintained modules:
 
-| Domain | Canonical module owner |
-| --- | --- |
-| Classic MUSD model | `protocols/musd` |
-| Classic MUSD borrower positions | `protocols/musd/borrowing` |
-| Classic MUSD redemptions | `protocols/musd/redemptions` |
-| Institutional MUSD debt | `protocols/musd/institutional-debt` |
-| Native MUSD Savings accounting and fee ingress | `protocols/musd/savings` |
-| BTC/mUSDC Morpho market accounting | `protocols/lending/musdc` |
-| USDC Lending Vault, wrapper, and vault-specific gauge boundary | `protocols/vaults/usdc-lending` |
-| ve locks, voting, generic gauges, emissions, and rewards | `protocols/incentives` |
-| AMM and concentrated-liquidity state | `protocols/pools` |
-| Asset representations and cross-chain delivery | `workflows/bridges` |
-| Provider-neutral feed and price-datum semantics | `prices` |
-| Deployments, proxies, source, and ABIs | `contracts` |
-| Network identity and provider capability | `networks` |
-| Transaction execution and reconciliation lifecycle | `workflows/transactions` |
+| Domain                                                         | Canonical module owner              |
+| -------------------------------------------------------------- | ----------------------------------- |
+| Classic MUSD model                                             | `protocols/musd`                    |
+| Classic MUSD borrower positions                                | `protocols/musd/borrowing`          |
+| Classic MUSD redemptions                                       | `protocols/musd/redemptions`        |
+| Institutional MUSD debt                                        | `protocols/musd/institutional-debt` |
+| Native MUSD Savings accounting and fee ingress                 | `protocols/musd/savings`            |
+| BTC/mUSDC Morpho market accounting                             | `protocols/lending/musdc`           |
+| USDC Lending Vault, wrapper, and vault-specific gauge boundary | `protocols/vaults/usdc-lending`     |
+| ve locks, voting, generic gauges, emissions, and rewards       | `protocols/incentives`              |
+| AMM and concentrated-liquidity state                           | `protocols/pools`                   |
+| Asset representations and cross-chain delivery                 | `workflows/bridges`                 |
+| Provider-neutral feed and price-datum semantics                | `prices`                            |
+| Deployments, proxies, source, and ABIs                         | `contracts`                         |
+| Network identity and provider capability                       | `networks`                          |
+| Transaction execution and reconciliation lifecycle             | `workflows/transactions`            |
 
 The three new modules are v0.4 knowledge owners. Their initial support is
 `none` or `proposed`, and their protocol and Contract records remain pending

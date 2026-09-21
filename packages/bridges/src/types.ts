@@ -9,16 +9,28 @@ export type NttObservationTransport = Pick<
   ExecutionTransport,
   "getChainId" | "getBlockNumber" | "getBlock" | "getReceipt"
 >;
+/**
+ * Transaction inclusion identity retained for later reorg checks; number and hash must travel
+ * together.
+ */
 export interface NttReceiptAnchor {
   readonly transactionHash: Hash32;
   readonly blockNumber: bigint;
   readonly blockHash: Hash32;
 }
+/**
+ * Typed evidence failure at an observation stage. Preserve the distinction from a confirmed
+ * on-chain revert.
+ */
 export interface NttObservationIssue {
   readonly code: NttObserverErrorCode;
   readonly stage: string;
   readonly message: string;
 }
+/**
+ * One candidate receipt and its current confirmation/evidence state. Retained digest evidence
+ * on a reorged receipt is not canonical delivery.
+ */
 export interface NttReceiptObservation {
   readonly transactionHash: Hash32;
   readonly state:
@@ -30,6 +42,9 @@ export interface NttReceiptObservation {
   readonly digest: Hash32 | null;
   readonly issue: Readonly<NttObservationIssue> | null;
 }
+/**
+ * Explicit route, per-chain receipt ports and positive confirmation counts; no signer is used.
+ */
 export interface NttObserverConfig {
   readonly routeId: NttRouteId;
   readonly sourceTransport: NttObservationTransport;
@@ -37,6 +52,10 @@ export interface NttObserverConfig {
   readonly sourceConfirmations: bigint;
   readonly destinationConfirmations: bigint;
 }
+/**
+ * One source hash and a bounded candidate destination set, with optional prior anchors for
+ * reorg detection.
+ */
 export interface NttObserveInput {
   readonly sourceTransactionHash: Hash32;
   /** Exhaustive only within the caller's explicit candidate set, at most 32 unique hashes. */
@@ -48,6 +67,10 @@ export interface NttObserveInput {
     readonly destinations?: readonly NttReceiptAnchor[];
   }>;
 }
+/**
+ * Joined evidence within the provided candidate receipts only. Completed requires canonical
+ * confirmed source and matching destination redemption.
+ */
 export interface NttDeliveryObservation {
   readonly routeId: NttRouteId;
   readonly state:
@@ -67,6 +90,14 @@ export interface NttDeliveryObservation {
   readonly issues: readonly Readonly<NttObservationIssue>[];
   readonly coverage: "provided-receipts-only";
 }
+/**
+ * Bounded receipt-only observation. Applications discover candidate hashes and persist/recheck
+ * returned anchors.
+ */
 export interface NttDeliveryObserver {
+  /**
+   * Join the explicit receipt candidates by NTT digest and recheck both chain anchors. Missing
+   * candidates do not prove transfer failure.
+   */
   observe(input: NttObserveInput): Promise<Readonly<NttDeliveryObservation>>;
 }

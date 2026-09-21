@@ -2,16 +2,26 @@ import type { ContractRegistry, ResolvedContract } from "@mezo-dev-kit/contracts
 import type { ReadCoordinate, RpcTransport } from "@mezo-dev-kit/core";
 import type { TokenSnapshot } from "@mezo-dev-kit/tokens";
 import type { CLAmounts, CLFees } from "./cl-math.ts";
+/**
+ * Sorted token addresses and tick spacing; spacing is distinct from a fee tier.
+ */
 export interface CLPoolKey {
   readonly token0: `0x${string}`;
   readonly token1: `0x${string}`;
   readonly tickSpacing: number;
 }
+/**
+ * Explicit registry/RPC inputs for bounded pool, tick and position inspection.
+ */
 export interface CLPoolReaderConfig {
   readonly networkId: "mezo-mainnet";
   readonly registry: Readonly<ContractRegistry>;
   readonly transport: RpcTransport;
 }
+/**
+ * Sorted key/account plus bounded explicit NFT IDs and ticks at one optional block; no
+ * exhaustive discovery is implied.
+ */
 export interface CLPoolReadInput {
   readonly key: CLPoolKey;
   readonly account: `0x${string}`;
@@ -21,6 +31,10 @@ export interface CLPoolReadInput {
   readonly ticks?: readonly number[];
   readonly blockNumber?: bigint;
 }
+/**
+ * Initialized-boundary liquidity and fee growth. Net liquidity values are signed; fee indexes
+ * use Q128.
+ */
 export interface CLTick {
   readonly tick: number;
   readonly liquidityGross: bigint;
@@ -30,6 +44,10 @@ export interface CLTick {
   readonly feeGrowthOutside1X128: bigint;
   readonly initialized: boolean;
 }
+/**
+ * Verified gauge identity/liveness and the supplied account's stake count; it does not by
+ * itself identify an NFT depositor.
+ */
 export interface CLGaugeSnapshot {
   readonly address: `0x${string}`;
   readonly factory: `0x${string}`;
@@ -39,6 +57,10 @@ export interface CLGaugeSnapshot {
   readonly alive: boolean;
   readonly stakeCount: bigint;
 }
+/**
+ * NFT principal/fee state with separate ERC-721 owner and nullable beneficial depositor.
+ * Decrease credits owed balances before collection pays them.
+ */
 export interface CLPosition {
   readonly tokenId: bigint;
   readonly owner: `0x${string}`;
@@ -59,8 +81,15 @@ export interface CLPosition {
   readonly principal: Readonly<CLAmounts>;
   readonly gaugeReward: bigint | null;
 }
+/**
+ * Anchored CL pool graph, Q64.96 price, liquidity, bounded ticks/NFTs and separate
+ * account/custody balances.
+ */
 export interface CLPoolSnapshot {
   readonly coordinate: Readonly<ReadCoordinate>;
+  /**
+   * Unix seconds at the snapshot coordinate; not milliseconds or an ambient clock.
+   */
   readonly timestamp: bigint;
   readonly account: `0x${string}`;
   readonly providerId: string;
@@ -72,6 +101,9 @@ export interface CLPoolSnapshot {
   readonly factoryApproved: boolean;
   readonly pool: `0x${string}`;
   readonly gauge: Readonly<CLGaugeSnapshot> | null;
+  /**
+   * Square-root price in Q64.96 fixed point for token1/token0, not a decimal display price.
+   */
   readonly sqrtPriceX96: bigint;
   readonly tick: number;
   readonly unlocked: boolean;
@@ -94,6 +126,14 @@ export interface CLPoolSnapshot {
   readonly ticks: readonly Readonly<CLTick>[];
   readonly positions: readonly Readonly<CLPosition>[];
 }
+/**
+ * Verified bounded CL reads. Missing pools reject; absent beneficial membership remains unknown
+ * rather than inferred.
+ */
 export interface CLPoolReader {
+  /**
+   * Read the verified pool and bounded supplied ticks/NFTs at one block. Beneficial depositor
+   * requires stake membership evidence.
+   */
   read(input: CLPoolReadInput): Promise<Readonly<CLPoolSnapshot>>;
 }

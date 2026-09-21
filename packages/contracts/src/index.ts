@@ -25,3 +25,5 @@ export type {
 } from "./registry.ts";
 export { resolveVotingInterface, resolveVotingRewardInterface } from "./operations.ts";
 export type { VotingDomain, VotingInterface, VotingRewardInterface } from "./operations.ts";
+export { getNativeTokenProfile, getNativeBridgeCalldataAbi } from "./native.ts";
+export type { NativeTokenProfile } from "./native.ts";

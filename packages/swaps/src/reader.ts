@@ -13,6 +13,10 @@ export type SwapErrorCode =
   | "BoundExceeded"
   | "ApprovalRequired"
   | "ReconciliationMismatch";
+/**
+ * Typed swaps failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class SwapError extends Error {
   readonly code: SwapErrorCode;
   constructor(code: SwapErrorCode, message: string) {
@@ -28,11 +32,19 @@ export function swapRequire(
 ): asserts condition {
   if (!condition) throw new SwapError(code, message);
 }
+/**
+ * Directed basic-pool hop with its stable/volatile discriminator. Continuity and
+ * intermediate-token policy require validation.
+ */
 export interface BasicSwapHop {
   readonly tokenIn: `0x${string}`;
   readonly tokenOut: `0x${string}`;
   readonly stable: boolean;
 }
+/**
+ * Exact input token amount and an explicit bounded route/account/allowlist; no automatic route
+ * discovery.
+ */
 export interface BasicSwapQuoteInput {
   readonly route: readonly BasicSwapHop[];
   readonly intermediateAssets: readonly `0x${string}`[];
@@ -41,10 +53,17 @@ export interface BasicSwapQuoteInput {
   readonly maxAgeBlocks: bigint;
   readonly blockNumber?: bigint;
 }
+/**
+ * Verified one-coordinate exact-input quote with per-hop state. Output is an estimate and
+ * writer compatibility must be checked.
+ */
 export interface BasicSwapQuote {
   readonly sourceClass: "dex-execution-quote";
   readonly providerId: string;
   readonly coordinate: Readonly<ReadCoordinate>;
+  /**
+   * Unix seconds at the snapshot coordinate; not milliseconds or an ambient clock.
+   */
   readonly timestamp: bigint;
   readonly route: readonly Readonly<BasicSwapHop>[];
   readonly intermediateAssets: readonly `0x${string}`[];
@@ -59,12 +78,27 @@ export interface BasicSwapQuote {
   readonly pools: readonly Readonly<BasicPoolSnapshot>[];
   readonly writeCompatible: boolean;
 }
+/**
+ * Signer-free quotes for explicit basic routes; output ranking does not establish an oracle
+ * price.
+ */
 export interface BasicSwapReader {
+  /**
+   * Quote the complete supplied basic route at one block, retaining token units and writer
+   * compatibility; no route search occurs.
+   */
   quote(input: BasicSwapQuoteInput): Promise<Readonly<BasicSwapQuote>>;
 }
 function array(value: unknown): boolean {
   return Array.isArray(value);
 }
+/**
+ * Normalize a bounded contiguous, acyclic basic route with an explicit intermediate allowlist.
+ *
+ * @remarks
+ * This checks route shape, not live pool identity, liquidity or writer compatibility.
+ * The reader verifies those properties at the quote coordinate.
+ */
 export function validateBasicSwapRoute(
   route: readonly BasicSwapHop[],
   intermediateAssets: readonly `0x${string}`[],
@@ -111,6 +145,14 @@ export function basicRouteArguments(
     (hop, index) => [hop.tokenIn, hop.tokenOut, hop.stable, quote.pools[index]!.factory] as const,
   );
 }
+/**
+ * Create bounded exact-input basic-pool quotes for caller-supplied routes.
+ *
+ * @remarks
+ * Each hop is discovered and read at one coordinate. The caller supplies candidate
+ * routes and allowed intermediate assets; the reader does not search every pool.
+ * Quoted output is token base units, not a protocol oracle or a settlement guarantee.
+ */
 export function createBasicSwapReader(config: {
   readonly networkId: "mezo-mainnet";
   readonly registry: ContractRegistry;

@@ -149,49 +149,24 @@
       "kind": "candidate-inventory",
       "path": "review/candidates.md"
     },
-    {
-      "id": "bridge-gaps",
-      "role": "review",
-      "kind": "gap-report",
-      "path": "review/gaps.md"
-    },
+    { "id": "bridge-gaps", "role": "review", "kind": "gap-report", "path": "review/gaps.md" },
     {
       "id": "bridge-reference",
       "role": "generated",
       "kind": "human-reference",
       "path": "generated/reference.md",
       "generatedFrom": [
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-providers" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-assets" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-routes" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-contract-roles" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-ntt-lifecycle" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-native-lifecycle" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-musd-ntt-evidence" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-native-evidence" },
         {
           "moduleId": "workflows/bridges",
-          "resourceId": "bridge-providers"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-assets"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-routes"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-contract-roles"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-ntt-lifecycle"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-native-lifecycle"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-musd-ntt-evidence"
-        },
-        {
-          "moduleId": "workflows/bridges",
-          "resourceId": "bridge-native-evidence"
+          "resourceId": "native-transfer-qualification-2026-09-15"
         }
       ]
     },
@@ -206,45 +181,60 @@
       "role": "artifact",
       "kind": "json-artifact",
       "path": "artifacts/native-consensus-8944561.json"
+    },
+    {
+      "id": "native-transfer-client-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-transfer-client-source.json"
+    },
+    {
+      "id": "native-transfer-ethereum-source",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-transfer-ethereum-source.json"
+    },
+    {
+      "id": "native-transfer-qualification-2026-09-15",
+      "role": "evidence",
+      "kind": "native-transfer-qualification",
+      "path": "evidence/native-transfer-2026-09-15.json"
+    },
+    {
+      "id": "native-transfer-minter-probe",
+      "role": "artifact",
+      "kind": "json-artifact",
+      "path": "artifacts/native-transfer-minter.json"
     }
   ],
   "checks": [
     {
       "id": "private-native-projection",
       "type": "semantic",
-      "command": "node scripts/generate-bridges-package.ts --check"
+      "command": "node scripts/generate/generate-bridges-package.ts --check"
     },
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module workflows/bridges"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module workflows/bridges"
     },
     {
       "id": "bridge-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-bridge-knowledge.ts"
+      "command": "node scripts/checks/validate-bridge-knowledge.ts"
     },
     {
       "id": "bridge-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-bridge-reference.ts --check"
+      "command": "node scripts/generate/generate-bridge-reference.ts --check"
     }
   ],
   "extensions": {
     "workflowStatus": "evidence-verified-promotion-blocked",
     "canonicalNetworkReferences": [
-      {
-        "moduleId": "networks",
-        "resourceId": "mezo-mainnet"
-      },
-      {
-        "moduleId": "networks",
-        "resourceId": "ethereum-mainnet"
-      },
-      {
-        "moduleId": "networks",
-        "resourceId": "base-mainnet"
-      }
+      { "moduleId": "networks", "resourceId": "mezo-mainnet" },
+      { "moduleId": "networks", "resourceId": "ethereum-mainnet" },
+      { "moduleId": "networks", "resourceId": "base-mainnet" }
     ],
     "evidenceLocalNetworkLabels": [],
     "registryBoundary": "Reusable network and bridge contract identities resolve through accepted Networks and Contracts records; dated evidence retains addresses only as checked observation coordinates. Token representation identities remain workflow-owned.",

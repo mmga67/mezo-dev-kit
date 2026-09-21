@@ -165,12 +165,17 @@ Codes: `InvalidAddress`, `InvalidChecksum`, `InvalidHash`, `InvalidHexData`,
 `InvalidRpcQuantity`, `InvalidInteger`, `InvalidBitWidth`, `InvalidDecimals`,
 `InvalidAmount`, `ExcessPrecision`. Raw inputs are omitted.
 
+At an established package boundary, use a predicate to preserve the domain's
+error or catch only `EvmValueError` and translate it. Unexpected errors remain
+visible; Core's stage/source classification and protocol failure codes keep
+their own owners. Field labels must stay under application control.
+
 Public types: `Address`, `Hash32`, `HexData`, `RpcQuantity`,
 `EvmValueErrorCode`. The first four are distinct branded string types.
 
 The [public export list](src/index.ts) and built declarations (`dist/index.d.ts`)
 define the exact callable surface. The package also exports the bounded scalar ABI codec below. No wallet, RPC
-client or writer is exported. See the [foundation example](../../examples/foundational-readonly/README.md)
+client or writer is exported. See the [workflow examples](../../examples/README.md)
 for composition with the other foundational packages.
 
 ## Standard minimal proxy runtime
@@ -196,3 +201,10 @@ import { keccak256 } from "@mezo-dev-kit/evm";
 const emptyDigest = keccak256("0x");
 console.log(emptyDigest);
 ```
+
+## Encoding sources
+
+[RPC value encoding](https://eips.ethereum.org/EIPS/eip-1474#value-encoding),
+[ERC-55](https://eips.ethereum.org/EIPS/eip-55), and [Ox](https://oxlib.sh/)
+describe the underlying representations and implementation. These sources
+do not establish Mezo deployment identity or provider capability.

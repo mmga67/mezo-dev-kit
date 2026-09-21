@@ -56,6 +56,15 @@ function selector(value: unknown): `0x${string}` {
   return result;
 }
 
+/**
+ * Create signer-free Enclave custody, debt and pledge inspection at explicit blocks.
+ *
+ * @remarks
+ * Methods verify registered roots, authority and discovered instances, and reconcile
+ * stored/aggregate debt with bounded supplied or paged identities. A failed optional
+ * price read leaves debt available with health unavailable. The reader does not
+ * claim exhaustive history or expose partner transaction writers.
+ */
 export function createInstitutionalReader(
   config: InstitutionalReaderConfig,
 ): Readonly<InstitutionalReader> {

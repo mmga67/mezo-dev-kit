@@ -33,6 +33,10 @@ export type ExecutionErrorCode =
   | "InvalidTransaction"
   | "NotConfirmed"
   | "ReorgDetected";
+/**
+ * Typed core failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class ExecutionError extends Error {
   readonly code: ExecutionErrorCode;
   readonly record: SubmissionRecord | null;
@@ -54,6 +58,17 @@ function role(value: unknown): string {
   return value;
 }
 
+/**
+ * Validate and normalize a persisted version-1 transaction intent.
+ *
+ * @param value - Untrusted JSON-compatible record with canonical decimal quantities.
+ * @returns A frozen record whose shape and identities are validated, including a
+ * nullable hash for a reservation whose submission result is still unknown.
+ * @remarks
+ * Validation does not prove inclusion or completion. Observe or inspect the record
+ * before recovery; a missing hash is not permission to resubmit.
+ * @throws ExecutionError - Malformed or inconsistent persisted fields.
+ */
 export function parseSubmissionRecord(value: unknown): Readonly<SubmissionRecord> {
   try {
     const record = rpcObject(value);
@@ -135,6 +150,17 @@ export function createMemorySubmissionStore(): Readonly<SubmissionStore> {
   });
 }
 
+/**
+ * Create transaction coordination over an explicit signer, transport and intent store.
+ *
+ * @remarks
+ * Simulation verifies the exact call. Submission revalidates and simulates again,
+ * reserves the operation ID and sender nonce, then invokes the signer. The store
+ * must reserve atomically across consumers and survive restarts for durable use.
+ * Observation checks inclusion and confirmations; domain reconciliation establishes
+ * the protocol outcome. An uncertain submission must be recovered, never blindly retried.
+ * @param config - Network/registry, injected I/O, block-age and confirmation policies.
+ */
 export function createExecutionClient(config: ExecutionClientConfig): Readonly<ExecutionClient> {
   const core = createCoreReadClient(config);
   const network = getNetwork(config.network.id);
@@ -320,6 +346,8 @@ export function createExecutionClient(config: ExecutionClientConfig): Readonly<E
       },
       hash: null,
     });
+    // Reserve durably before the wallet call. A timeout can hide a successful
+    // broadcast, so the reservation must survive even when no hash is returned.
     if (!(await config.store.reserve(record)))
       throw new ExecutionError(
         "DuplicateSubmission",
@@ -333,6 +361,8 @@ export function createExecutionClient(config: ExecutionClientConfig): Readonly<E
       await config.store.attachHash(record.operationId, hash);
       return result;
     } catch (cause) {
+      // This also covers a failed hash attachment after a successful broadcast.
+      // Return the known intent/hash for investigation without releasing its nonce.
       throw new ExecutionError(
         "SubmissionUncertain",
         "submission intent is reserved; investigate before any further submission",

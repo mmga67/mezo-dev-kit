@@ -111,7 +111,7 @@ balances. EVM, Contracts and Core failures may propagate. Public types are
 ## Lock, boost and voting inputs
 
 The private escrow API extends the gauge API above under
-[ADR-0021](../../../docs/decisions/0021-incentives-locks-and-voting.md). Select
+[Protocol execution boundaries](../../../docs/manifest#protocol-execution-boundaries). Select
 `EscrowRole`: `vebtc-current` or `vemezo-current`. Current mainnet veBTC and
 veMEZO generations have different maximum durations. Reads verify the proxy,
 implementation, token/voter/booster graph and the deployment's duration storage.
@@ -317,6 +317,10 @@ and qualified release review remain separate.
 `createVotingReader({networkId, domain, registry, transport}): VotingReader`
 uses `VotingReaderConfig`; `domain` is Contracts' `VotingDomain`: `pools`,
 `boost`, or `validator`. Pools and validators use veBTC; boost uses veMEZO.
+ThirdPartyVoter MEZO Gauges have a separate
+[knowledge model](../../../knowledge/protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives).
+They are outside this reader/writer's domain set; a boost-domain call does not
+represent a MEZO Gauge vote.
 `read({account, tokenId, targets, blockNumber?}): Promise<VotingSnapshot>` reads
 one NFT, up to 32 requested targets, and every existing allocation (up to 32).
 Their union is bounded at 64. A pool target is a pool address; the other domains

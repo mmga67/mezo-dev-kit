@@ -3,6 +3,10 @@ export type ChainRegistryErrorCode =
 
 export type ChainRegistryErrorContext = Readonly<Record<string, unknown>>;
 
+/**
+ * Typed chains failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class ChainRegistryError extends Error {
   readonly code: ChainRegistryErrorCode;
   readonly context: ChainRegistryErrorContext;

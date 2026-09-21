@@ -2,6 +2,10 @@ import { parseAddress, parseUint } from "@mezo-dev-kit/evm";
 import { incentiveRequire } from "./escrow-errors.ts";
 import { allocateVotingPower, calculateLockVotingPower, calculateVotingEpoch } from "./math.ts";
 import type { VotingSnapshot } from "./voting-types.ts";
+/**
+ * A distinct reset or a vote with ordered targets and relative integer weights; empty votes are
+ * not a reset.
+ */
 export type VotingAction =
   | Readonly<{ kind: "reset" }>
   | Readonly<{
@@ -9,6 +13,10 @@ export type VotingAction =
       targets: readonly `0x${string}`[];
       relativeWeights: readonly bigint[];
     }>;
+/**
+ * Ordered target allocations and power at the chosen time. Reset preserves lastVoted;
+ * later-time power is an estimate.
+ */
 export interface VotingForecast {
   readonly targets: readonly `0x${string}`[];
   readonly allocations: readonly bigint[];
@@ -20,6 +28,15 @@ const zero = parseAddress(`0x${"0".repeat(40)}`);
 function bounded(value: unknown): value is readonly unknown[] {
   return Array.isArray(value) && value.length > 0 && value.length <= 32;
 }
+/**
+ * Forecast a vote or reset with explicit ownership, epoch and target eligibility.
+ *
+ * @remarks
+ * Relative weights need no fixed sum; every allocated floor must remain positive.
+ * At the snapshot timestamp, observed same-block power suppression is retained.
+ * A later atTimestamp is an estimate, not fresh evidence. Reset preserves lastVoted
+ * and follows its own window/liveness rules; it is not an empty vote.
+ */
 export function forecastVoting(input: {
   readonly snapshot: VotingSnapshot;
   readonly action: VotingAction;

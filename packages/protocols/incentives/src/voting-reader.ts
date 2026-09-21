@@ -32,6 +32,14 @@ function nonzero(value: unknown) {
 function bounded(value: unknown): value is readonly `0x${string}`[] {
   return Array.isArray(value) && value.length <= 32;
 }
+/**
+ * Create one-domain voting inspection for an explicit NFT and bounded target set.
+ *
+ * @remarks
+ * Select pools, boost or validator voting. Reads include existing allocations and
+ * verify the voter/escrow/reward graph at one block. Partial target lists or RPC
+ * failures cannot stand in for complete existing allocation accounting.
+ */
 export function createVotingReader(config: VotingReaderConfig): Readonly<VotingReader> {
   const { registry, transport } = config,
     profile = resolveVotingInterface(config),

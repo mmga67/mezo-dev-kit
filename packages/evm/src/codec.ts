@@ -6,21 +6,53 @@ import { parseHash32, parseHexData } from "./hex.ts";
 import { parseUint } from "./integer.ts";
 import type { Hash32, HexData } from "./types.ts";
 
+/**
+ * Supported positional ABI value tree. Integers use bigint; arrays/tuples retain ABI order and
+ * are validated against the supplied entry.
+ */
 export type AbiValue = bigint | boolean | `0x${string}` | readonly AbiValue[];
 /** An indexed complex parameter contains only a hash, never a decoded preimage. */
 export interface AbiIndexedHash {
   readonly kind: "indexed-hash";
   readonly hash: Hash32;
 }
+/**
+ * Decoded event value or an explicit hash for an indexed complex value whose original contents
+ * are not recoverable from its topic.
+ */
 export type AbiEventValue = AbiValue | Readonly<AbiIndexedHash>;
+/**
+ * Bounded ABI encoder/decoder over explicit entries. It validates representation, not contract
+ * identity or economic meaning.
+ */
 export interface AbiCodec {
+  /**
+   * Validate the explicit function ABI and positional values, then encode calldata. Unsupported
+   * ABI/value shapes reject.
+   */
   encodeFunction(entry: unknown, args?: readonly AbiValue[]): HexData;
+  /**
+   * Validate selector and exact canonical argument encoding against the supplied ABI, then
+   * return positional inputs.
+   */
   decodeCalldata(entry: unknown, data: unknown): readonly AbiValue[];
+  /**
+   * Decode and validate function return data into positional values; this does not prove the
+   * call target or execution outcome.
+   */
   decodeFunction(entry: unknown, data: unknown): readonly AbiValue[];
+  /**
+   * Decode a matching event or return null for a different signature. Indexed complex values
+   * require the explicit hash-aware method.
+   */
   decodeEvent(
     entry: unknown,
     log: { readonly data: unknown; readonly topics: readonly unknown[] },
   ): readonly AbiValue[] | null;
+  /**
+   * Decode a matching event while preserving indexed complex values as hash variants; their
+   * original contents cannot be reconstructed.
+   */
   decodeEventWithHashes(
     entry: unknown,
     log: { readonly data: unknown; readonly topics: readonly unknown[] },

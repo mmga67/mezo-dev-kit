@@ -10,6 +10,14 @@ function int128(value: unknown): bigint {
   incentiveRequire(amount < 1n << 127n, "InvalidInput", "nonnegative int128 required");
   return amount;
 }
+/**
+ * Round an explicit lock timestamp plus duration down to a protocol week.
+ *
+ * @param input - Unix timestamp, requested duration and deployment maximum, all in seconds.
+ * @returns A future end no later than timestamp plus maxLockSeconds.
+ * @throws IncentiveError - The rounded end is nonfuture or exceeds the maximum.
+ * @throws EvmValueError - Invalid uint256 input or addition overflow.
+ */
 export function calculateLockEnd(input: {
   readonly timestamp: bigint;
   readonly duration: bigint;
@@ -26,6 +34,10 @@ export function calculateLockEnd(input: {
   );
   return end;
 }
+/**
+ * Current lock-based power estimate. Slopes floor before elapsed-time multiplication; estimates
+ * do not include historical checkpoint/ownership suppression.
+ */
 export interface LockVotingPower {
   readonly unboosted: bigint;
   readonly boosted: bigint;
@@ -73,6 +85,14 @@ export function calculateLockVotingPower(input: {
     boostedSlope,
   });
 }
+/**
+ * Calculate the capped 1e18-scaled factor from current BoostVoter weights.
+ *
+ * @remarks
+ * Inputs belong to the boost voter, not PoolsVoter. Each ratio and intermediate
+ * floor is preserved; zero denominators follow the deployed zero-ratio branches.
+ * The function does not read current weights or establish vote eligibility.
+ */
 export function calculateBoostFactor(input: {
   readonly gaugeWeight: bigint;
   readonly votingVeTotalWeight: bigint;
@@ -90,12 +110,24 @@ export function calculateBoostFactor(input: {
     result = parseUint(minimumBoost + fraction);
   return result < maximumBoost ? result : maximumBoost;
 }
+/**
+ * Protocol week/open/close/next boundaries in Unix seconds. Voting opens strictly after
+ * voteStart.
+ */
 export interface VotingEpoch {
   readonly start: bigint;
   readonly voteStart: bigint;
   readonly voteEnd: bigint;
   readonly next: bigint;
 }
+/**
+ * Calculate the protocol week's voting boundaries in Unix seconds.
+ *
+ * @param timestamp - Explicit nonnegative Unix seconds; no clock is read.
+ * @remarks
+ * The result describes boundaries only. Eligibility starts strictly after voteStart;
+ * a new epoch does not itself clear an NFT's existing allocations.
+ */
 export function calculateVotingEpoch(timestamp: bigint): Readonly<VotingEpoch> {
   const at = parseUint(timestamp),
     start = at - (at % week),
@@ -107,6 +139,10 @@ export function calculateVotingEpoch(timestamp: bigint): Readonly<VotingEpoch> {
     next,
   });
 }
+/**
+ * Per-target integer power, used total and unallocated floor dust. Target identity and
+ * eligibility are not established by arithmetic.
+ */
 export interface VoteAllocation {
   readonly allocations: readonly bigint[];
   readonly usedWeight: bigint;
@@ -115,6 +151,15 @@ export interface VoteAllocation {
 function boundedWeights(value: unknown): value is readonly bigint[] {
   return Array.isArray(value) && value.length > 0 && value.length <= 64;
 }
+/**
+ * Allocate integer voting power among one to 64 explicit relative weights.
+ *
+ * @returns Per-target floor-rounded allocations, their sum and unallocated dust.
+ * @throws IncentiveError - Empty/oversized weights, zero total or any zero allocation.
+ * @throws EvmValueError - Invalid unsigned input or checked arithmetic overflow.
+ * @remarks
+ * This arithmetic does not validate target liveness, ownership or epoch eligibility.
+ */
 export function allocateVotingPower(input: {
   readonly votingPower: bigint;
   readonly relativeWeights: readonly bigint[];

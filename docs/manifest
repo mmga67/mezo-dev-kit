@@ -1,979 +1,486 @@
-# Mezo Development Kit — Manifest v0.6.1
+# Mezo Development Kit — Manifest v1.1.0
 
-**Status:** Community architecture discussion
+**Status:** Accepted project baseline
 
-**Released:** 2026-09-07
+**Released:** 2026-09-16
 
-**Improvement log:** [`manifest-changelog.md`](./manifest-changelog.md)
+**Improvement log:** [Manifest changelog](./manifest-changelog.md)
 
-Version 0.6.0 reconciles this design input with accepted ADR-0002 through
-ADR-0011 and adds explicit economic-system composition without merging the
-accounting owners for MUSD, savings, mUSDC lending, vaults, pools, and
-incentives. The ADRs and `ARCHITECTURE.md` remain authoritative where this
-manifest is less specific.
+## Purpose and scope
 
-Manifest versions use semantic intent: major for a constitutional or mission
-break, minor for a new architectural capability or domain boundary, and patch
-for non-architectural clarification. Every edit bumps the version and adds a
-dated improvement-log entry.
+Mezo Developer Kit (MDK) helps developers build on Mezo through composable
+TypeScript packages, evidence-backed protocol knowledge, practical examples,
+and portable coding-agent guidance. Its architecture makes correct behavior
+understandable, testable, and reusable.
 
-## 1. Mission
+The current distribution is an experimental GitHub source alpha with private
+workspace packages and a private packed-artifact tooling pilot. Implemented
+readers, calculations, and private writers have different verification and
+support boundaries, documented by their package owners. This document's
+version establishes a project baseline; package compatibility, publication,
+and production support have their own release decisions.
 
-Build a **trustworthy, composable and agent-friendly development environment for Mezo** that reduces the distance between an idea and a working application.
+Development focuses on EVM workflows. Add packages, integrations, network
+profiles, or services for demonstrated needs. Planned framework adapters,
+hosted services, and ecosystem integrations do not become supported merely
+because the repository describes them.
 
-The kit should allow developers to:
+## Document authority
 
-- understand Mezo-specific development quickly;
-- configure local and testnet environments correctly;
-- deploy and interact with contracts;
-- integrate supported Mezo protocols;
-- reuse verified chain and protocol knowledge;
-- diagnose common problems;
-- work effectively with modern coding agents.
+This manifest consolidates the current project decisions. It owns mission,
+scope, durable architectural constraints, and the delegation below.
 
-The target audience includes experienced Web3 developers, developers new to Mezo, frontend developers and vibecoders.
+| Owner                                                   | Responsibility                                                               |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [Architecture](../ARCHITECTURE.md)                      | Current package map, dependency direction, and detailed technical boundaries |
+| [Contributor guide](../CONTRIBUTING.md)                 | Contribution, dependency review, verification, and completion                |
+| [Documentation standard](standards/documentation.md)    | Human entry points, document roles, writing, and links                       |
+| [Coding standard](standards/coding.md)                  | TypeScript design, public boundaries, toolchain, and engineering quality     |
+| [Testing standard](standards/testing.md)                | Behavior-based tests, fixtures, isolation, and meaningful checks             |
+| [Knowledge standard](standards/knowledge-management.md) | Resource layout, evidence lifecycle, stable references, and maintenance      |
+| Indexed knowledge and registry                          | Maintained Mezo facts, deployments, ABIs, and their evidence                 |
+| Package docs and declared exports                       | Exact usable APIs, injected inputs, compatibility, and support scope         |
+| [Security policy](../SECURITY.md)                       | Vulnerability handling, secrets, and release security                        |
 
-“Universal” describes the long-term direction. Early versions should focus on **EVM development and a small number of high-value Mezo workflows**.
+The human task owns its intended outcome and approved scope. Root and nested
+AGENTS files apply scoped operating instructions and route agents to these
+owners. They do not replace human contributor policy. Code and tests establish
+implementation reality; they do not silently change an accepted design or
+supply missing protocol evidence.
 
----
+Evidence proves only its recorded scope. For deployed behavior, pinned state,
+bytecode, and matching verified source take precedence over a conflicting
+explanation. Preserve the evidence and resolve the maintained interpretation.
+Neither this manifest nor a historical decision can make a protocol claim true.
 
-# 2. Documentation-First Development
+The [historical decisions](decisions/README.md) retain original rationale,
+dates, and acceptance limits. Their current rules are incorporated here and
+in the delegated detailed contracts; their old bootstrap instructions do not
+override this baseline.
 
-The development kit starts with **development rules before development code**.
+## Packages and domain boundaries
 
-Before multiple contributors begin implementing packages, the repository should establish a shared operating environment:
+### Composable packages
+
+Keep packages small and cohesive, with deliberate public TypeScript entrypoints
+and declared dependencies. Dependency direction is acyclic. Framework adapters,
+templates, and applications consume core and protocol APIs; core and protocol
+logic remain independent of frameworks, wallets, UI, and application state.
+
+EVM owns shared value validation, checksum policy, exact unit conversion, and
+bounded ABI codecs beneath Chains, Contracts, Core, and protocol consumers.
+Its existing Ox-backed implementation stays behind MDK types and errors.
+Domains retain zero-address policy, financial bounds, and protocol errors.
+Bootstrap generators may retain validation where importing a built package
+would create a generation/build cycle.
+
+Chains owns network projections. Contracts owns deployment/ABI resolution and
+curated operation/interface projections. Core owns shared transport, coherent
+reads, execution, receipt observation, and bounded event scanning. Tokens owns
+reusable explicit token approval workflows. Protocols own preconditions, quotes,
+accounting, and reconciliation.
+
+Applications choose providers, signers, consent, storage, and time policies.
+Inject those dependencies. Pure calculations take typed values and remain
+separate from RPC, clocks, storage, wallets, and hidden global state.
+
+### Separate economic owners
+
+Keep classic MUSD, borrowing, redemptions, institutional debt, MUSD Savings,
+BTC/mUSDC lending, USDC vaults, pools, incentives, prices, bridges, swaps, and
+transactions under their respective owners. The
+[economic-system map](architecture/mezo-economic-system-composition.md)
+explains their composition through stable references.
+
+Savings principal, indexed yield, and gauge stake do not enter classic MUSD
+trove, collateral-ratio, Stability Pool, or redemption accounting. mUSDC is
+the lending market's bridged USDC representation and is distinct from MUSD.
+Lending owns market shares/debt; vaults own vault shares, wrapper yield, and
+withdrawable liquidity. Incentives owns generic voting, epochs, emissions, and
+rewards. A product owns what its gauge holds and which yield it redirects;
+the same yield cannot also be counted as direct product interest.
+
+Pools owns reserve/tick math, position accounting, liquidity, and pool fees.
+Swaps owns route discovery, amount-specific quotes, router execution, and
+route outcomes. Prices owns reusable source semantics; each consuming protocol
+owns its deployed oracle policy. A composed view does not duplicate these facts.
+
+## Knowledge and evidence
+
+### Knowledge structure
+
+Every module has a human README and a machine index. Add records, sources,
+evidence, fixtures, schemas, review material, artifacts, and generated output
+only when that role has content. Use responsibilities rather than file-type
+buckets; do not require empty directories.
+
+The root catalog resolves stable module IDs, and each module index resolves
+resource IDs and optional record IDs/JSON Pointers. Physical paths are mappings,
+not cross-domain identities. Every maintained resource is indexed by role.
+Moves preserve stable IDs, evidence coordinates, and verification dates.
+
+Records distinguish evidence maturity, support, and review. Their common
+envelope includes identity, owner, schema version, scope, limitations, and
+verification/review dates. A verified record is not automatically supported
+or accepted. The current knowledge layout remains identified by
+`knowledgeVersion: "0.4"`; record `schemaVersion` and schema paths retain
+their own compatibility contract.
+
+JSON Schema checks local shape; semantic validators check relationships,
+provenance, digests, freshness, references, and domain invariants. Neither
+supplies missing evidence or approval. Generated references and runtime data
+derive deterministically from canonical inputs and carry provenance/digests.
+Update inputs and regenerate; never maintain a second fact store in examples,
+guides, skills, memory, or applications.
+
+### Network scope
+
+Networks use declared capability profiles. Mezo's Cosmos/EVM profile includes
+its Cosmos fields; ordinary EVM profiles omit those fields rather than invent
+values. The initial external EVM identity scope is Ethereum and Base mainnet.
+Network identity requires authoritative specifications and chain observations;
+it does not select a provider or establish route support.
+
+Mainnet is the primary maintained deployment and historical evidence scope.
+Testnet is a current-state integration environment. Current testnet operations
+require actual chain, block/hash, deployment, runtime, compatible ABI,
+configuration, and value/time checks as applicable. Reuse mainnet behavior
+evidence only when implementation compatibility is established.
+
+Long-term testnet archives, historical backfills, old-generation replay, and
+full-history certification are outside the maintained project scope. Preserve
+retained artifacts and their original limits; their integrity can still be
+checked. Missing excluded history is not a reason to reopen archive recovery
+or block acceptance of included work. Report excluded-scope diagnostics as
+such, without claiming they passed.
+
+Recent receipts, confirmation/reorg windows, bounded scans, and post-state
+needed for a current operation remain required. “Recent” follows the operation's
+freshness and coverage rules, not a universal age. Mainnet failures, structural
+errors, and current-state evidence gaps remain failures. The
+[oracle refresh guide](guides/oracle-evidence-refresh.md) owns concrete commands.
+
+### Contract identity and provenance
+
+Contracts knowledge owns deployment identities, activation/proxy history,
+full ABI artifacts, and source provenance. Runtime packages consume generated
+projections. Resolve by stable contract/network identity and validity
+coordinate; missing, expired, ambiguous, or unreviewed resolution fails explicitly.
+
+Each deployment and ABI declares one evidence class with its own requirements:
+
+- **Official artifact and fully verified deployment:** pinned official artifact,
+  full ABI match, verified source, deployed bytecode equality, activation history,
+  and fixed-block evidence.
+- **Deployed executable reproduction:** pinned proxy/runtime, exact compiler
+  inputs and executable reproduction, derived full ABI, activation history,
+  and explicit metadata, authorship, audit, and explorer-label limitations.
+- **Official client precompile source:** pinned client release matching the
+  observed generation, fixed-block code/state, version boundaries, and a
+  release-bound interface digest. Node version output alone is insufficient.
+- **Official deployment repository and live configuration:** pinned deployment
+  source/build artifact, runtime/proxy identity, reciprocal configuration,
+  activation history, and fixed-block observations.
+
+Artifact counts follow the declared evidence class and scope; do not invent
+a second network artifact or silently change class. Exact requirements and
+artifacts remain in the Contracts schemas and indexed evidence. New records
+retain proposed support and pending qualified review until their own review
+passes. Provenance does not independently establish workflow support.
+
+Dynamic pools, gauges, and roles resolve through reviewed roots with current
+topology/runtime checks. They do not become invented static Contract IDs.
+Historical contract evidence has a separate type and catalog; it can support
+decoding at qualified coordinates but cannot be used as a current operation
+or writer target. Preserve observed interval coverage without inventing
+activation heights, and reject gaps, ambiguity, incompatible generations,
+and mismatched block/source digests.
+
+### Price meaning
+
+Prices distinguishes protocol oracle state, pushed-feed observations, off-chain
+market references, DEX-derived observations, execution quotes, and stored
+analytics projections. Retain source/feed/instrument identity, base/quote,
+network/deployment scope, exact integer/exponent or rational value, publication
+and observation coordinates, and explicit consumer time/age policy.
+
+Normalization specifies target precision, rounding, and bounds. Confidence
+retains its source-defined meaning or explicit absence. Stale, future-dated,
+missing, negative, invalid zero, incompatible, and failed inputs remain distinct
+results; never turn an unavailable value into zero.
+
+Fallback is an explicit consumer-owned selection with attempted sources,
+validation outcomes, and source-class changes. Preserve disagreements; do not
+silently substitute, average, interpolate, or synthesize observations. A market
+or DEX value cannot be relabeled as the deployed MUSD protocol price. Pools
+retains DEX math; Swaps retains execution quotes; persistence adds no authority.
+
+The Prices package provides deterministic normalization/freshness helpers and
+a direct mainnet Skip reader with caller-owned transport/time inputs. A future
+source-selection implementation, updater, hosted provider, or subscription
+requires its own scope.
+
+## Reads and execution
+
+### Shared client and transaction lifecycle
+
+Core accepts explicit chain, transport, registry, and confirmation policy.
+Assert chain identity before resolving deployments or signing. Preserve one
+block coordinate across logical reads and failover. Distinguish required and
+optional failures; batching failure must not appear as zero or empty data.
+Any weaker consistency mode must be explicit and typed.
+
+State-changing workflows follow:
 
 ```text
-Architecture
-+
-Documentation conventions
-+
-Coding standards
-+
-Agent instructions
-+
-Knowledge structure
-+
-Memory conventions
-+
-Task specifications
-+
-Review requirements
+validate → resolve → read/quote → construct → simulate
+  → approve when needed → revalidate/resimulate → submit
+  → include → confirm → reconcile
 ```
 
-These become the specification against which implementation is written and reviewed.
-
-The initial repository should therefore establish:
-
-```text
-README.md
-ARCHITECTURE.md
-AGENTS.md
-CONTRIBUTING.md
-SECURITY.md
-
-docs/
-knowledge/
-agents/
-
-.github/
-    ISSUE_TEMPLATE/
-    PULL_REQUEST_TEMPLATE.md
-    CODEOWNERS
-```
-
-This is not supporting documentation added after development.
-
-It is part of the development infrastructure.
-
----
-
-# 3. Development Constitution
-
-`ARCHITECTURE.md` should define the rules that contributors and coding agents must follow.
-
-It should establish:
-
-- package boundaries;
-- allowed dependency directions;
-- public API principles;
-- domain ownership;
-- generated-code rules;
-- error conventions;
-- transaction lifecycle;
-- testing expectations;
-- documentation requirements;
-- protocol-sensitive review requirements.
-
-Important architectural decisions should be recorded as ADRs:
-
-```text
-docs/decisions/
-
-ADR-001-package-boundaries.md
-ADR-002-registry-schema.md
-ADR-003-client-model.md
-ADR-004-transaction-lifecycle.md
-ADR-005-agent-knowledge.md
-```
-
-Each ADR should contain:
-
-```text
-Context
-Decision
-Alternatives
-Reasoning
-Consequences
-Status
-```
-
-Important architectural knowledge should never exist only in meetings, chat history or individual contributor context.
-
----
-
-# 4. Agent Instruction Layers
-
-`AGENTS.md` files are concise, automatically scoped operating rules for coding
-agents. The root file owns repository-wide constraints; a nested file adds only
-the rules needed below its directory. More specific applicable instructions
-take precedence without turning every human document into prompt context.
-
-An `AGENTS.md` should primarily answer:
-
-```text
-What is this repository?
-
-How is it structured?
-
-Where should functionality live?
-
-What must never be done?
-
-What commands verify my work?
-
-Where is authoritative Mezo knowledge?
-
-Which skill should I load for this task?
-```
-
-Example routing:
-
-```text
-Network information
-→ knowledge/AGENTS.md
-→ knowledge/networks/
-→ agents/skills/mdk-knowledge-maintenance/
-→ agents/skills/mdk-network-knowledge/
-
-Contract knowledge
-→ knowledge/AGENTS.md
-→ knowledge/contracts/
-→ agents/skills/mdk-knowledge-maintenance/
-→ agents/skills/mdk-contract-knowledge/
-
-Protocol knowledge
-→ knowledge/AGENTS.md
-→ knowledge/protocols/
-→ agents/skills/mdk-knowledge-maintenance/
-→ the cataloged `mdk-*` protocol skill
-
-Foundry
-→ a cataloged Foundry skill when implemented
-
-Hardhat
-→ a cataloged Hardhat skill when implemented
-```
-
-`README.md` remains the human/general entry point. A maintainer standard defines
-shared policy, while skills define reusable agent procedures. Neither
-`AGENTS.md` nor skills own Mezo facts.
-
-The principle is **progressive retrieval**.
-
-Agents should be directed toward relevant knowledge instead of receiving a huge global prompt containing the entire ecosystem.
-
----
-
-# 5. Agent Skills
-
-The repository should contain portable, task-specific development guidance
-with separate contributor and consumer audiences:
-
-```text
-agents/
-├── catalog.json
-├── skills/
-│   ├── mdk-knowledge-maintenance/SKILL.md
-│   ├── mdk-network-knowledge/SKILL.md
-│   ├── mdk-contract-knowledge/SKILL.md
-│   └── mdk-*/SKILL.md
-└── consumer/
-    ├── APP_AGENTS.template.md
-    └── skills/
-        └── mdk-*/SKILL.md
-```
-
-Each directory basename should equal its globally unique frontmatter `name`.
-The text source should use the portable Agent Skills core rather than requiring
-vendor-specific metadata. `agents/catalog.json` supplies audience and domain
-routing without duplicating the procedure.
-
-Each `SKILL.md` should have precise discovery metadata and a small procedural
-body with the relevant subset of this common structure:
-
-```text
-Purpose
-
-When to use this skill
-
-Relevant repository areas
-
-Canonical sources
-
-Architecture rules
-
-Preferred implementation patterns
-
-Forbidden / discouraged patterns
-
-Verification commands
-
-Common mistakes
-
-Examples
-```
-
-Skills should explain **how to work inside this repository**, while policy
-stays in maintained standards and canonical technical facts remain in
-`knowledge/` and package documentation. A knowledge-maintenance skill routes to
-the common standard and selected domain skill; it does not repeat their full
-contents.
-
-Consumer skills explain how to build **with released MDK APIs** and must not
-ship contributor maintenance procedures. Agent-specific discovery roots are
-materialized from the selected audience by copying skill directories unchanged;
-they are not separately authored or recompiled prompt trees. Static text skills
-must remain usable without MCP. MCP is an optional adapter for capabilities
-that are genuinely live, remote, authenticated, or structured.
-
----
-
-# 6. Coding Style and Building Patterns
-
-The repository should define a small number of strong patterns rather than many stylistic preferences.
-
-## TypeScript first
-
-SDK packages, protocol modules, framework adapters, CLI code, tests, templates,
-examples, and generated application source should be authored in TypeScript by
-default. React source should use TSX when JSX is required. Public boundaries
-should preserve useful types and still validate untrusted runtime data.
-
-Solidity remains appropriate for EVM contracts, while canonical JSON, schemas,
-evidence, and Markdown retain their owning formats. Tool-constrained exceptions
-should be narrow and documented; plain JavaScript should not become an equal
-product-code default.
-
-## Dependency direction
-
-```text
-registry / chains
-       ↓
-      core
-       ↓
-   protocols
-       ↓
-    adapters
-       ↓
-templates / applications
-```
-
-Dependencies should not flow upward.
-
-For example:
-
-```text
-core must not depend on React
-protocols must not depend on Scaffold-ETH
-contracts must not depend on an application
-```
-
-## Explicit dependencies
-
-Prefer:
-
-```ts
-createMusdModule({ client });
-```
-
-over implicit global clients or hidden configuration.
-
-## Pure domain logic
-
-Deterministic calculations should be isolated:
-
-```ts
-calculateHealthFactor(...)
-calculateRedemptionFee(...)
-calculateMinimumReceived(...)
-```
-
-These functions should not require RPC access, wallets, React or global state.
-
-## Domain ownership
-
-Avoid generic dumping grounds:
-
-```text
-utils/
-helpers/
-misc/
-common/
-```
-
-Prefer:
-
-```text
-protocols/musd/math.ts
-protocols/redemptions/quote.ts
-core/transactions/simulation.ts
-```
-
-An economic flywheel does not require a monolithic code or knowledge owner.
-Keep classic MUSD, MUSD Savings, mUSDC lending, vault accounting, pools,
-incentives, bridges, prices, and transaction reconciliation separate, then
-compose them through stable typed references. A composition view may describe
-end-to-end value flow but must not copy addresses, ABIs, formulas, governed
-values, or live state from the owning domain.
-
-The initial accepted knowledge owners for the expanded Mezo economic system
-are:
-
-```text
-protocols/musd/savings
-protocols/lending/musdc
-protocols/vaults/usdc-lending
-```
-
-The first owns native MUSD Savings accounting without entering classic trove
-aggregates. The second owns the independent BTC/mUSDC Morpho market. The third
-owns the Vault V2 allocation, share/wrapper accounting, liquidity, and
-vault-specific gauge boundary while consuming generic incentives behavior.
-
-## Generated code
-
-Generated files must never be manually maintained when canonical input exists.
-
----
-
-# 7. Knowledge Architecture
-
-Knowledge is a maintained development asset with separate human, machine,
-agent, evidence, and executable surfaces. The universal v0.4 contract is
-recorded in ADR-0006 and the knowledge-management standard.
-
-```text
-knowledge/
-├── README.md           # human/domain router
-├── AGENTS.md           # concise subtree agent rules
-├── schema/             # shared executable contracts
-├── networks/
-├── contracts/
-├── protocols/
-├── workflows/
-├── troubleshooting/
-└── security/
-```
-
-Each knowledge module has two required entry points:
-
-```text
-README.md               human orientation and domain routing
-index.json               machine routing and physical-path resolution
-```
-
-Other content is grouped by responsibility and created only when needed:
-
-```text
-records/                 canonical machine-readable facts
-sources/                 pinned source catalogs
-evidence/                bounded observations and reproductions
-fixtures/                deterministic validation inputs
-schema/                  domain structural schemas
-review/                  candidates, gaps, conflicts, review packets
-artifacts/               raw canonical inputs such as ABIs
-generated/               colocated derived output
-```
-
-This organization is universal by role, not by file extension or identical
-domain content. The root `index.json` intentionally remains outside the role
-folders. Empty directories are not part of conformance.
-
-Maintained JSON records use a common envelope that identifies:
-
-```text
-schema version
-stable kind and ID
-status
-owner
-support status
-review status
-verification and review-after times
-scope
-limitations
-```
-
-Evidence maturity, MDK support, and human review are independent states. A
-verified observation is not automatically supported or accepted. Domain
-records may extend the envelope without changing these meanings.
-
-Cross-domain identity uses stable module, resource, and optional record IDs.
-The target module index resolves physical paths, so moving a file is not a
-breaking fact change. JSON Pointer may select a value inside a record; relative
-paths must not serve as cross-domain identity.
-
-The intended flow is:
-
-```text
-verified source
-      ↓
-canonical knowledge
-      ↓
-docs / SDK / skills / examples
-```
-
-Documentation, SDK behavior and agent instructions should not develop independent versions of the same protocol facts.
-
-JSON Schema owns local structural shape. Dependency-free semantic validators
-own cross-record resolution, evidence sufficiency, digests, freshness,
-generated drift, and protocol invariants. Passing either layer does not supply
-missing evidence, review, or support.
-
-Canonical knowledge is a maintained, validated projection of evidence. It is
-not self-authenticating and must never outrank the evidence it cites. For a
-claim about what a particular deployment actually does, block-pinned on-chain
-state and bytecode together with version-matched verified source take
-precedence over explanatory or product documentation. Documentation may lag a
-deployment; when it conflicts, retain it as discrepancy evidence, scope the
-deployed fact to its observed version/block, and derive internal docs from that
-fact. Do not rewrite evidence to preserve an older narrative.
-
-Generated human reference exists for readability and declares its canonical
-inputs. Generators are deterministic and drift-checked; generated output is
-never manually maintained as another authority.
-
-Migration to v0.4 was completed one module at a time. Stable IDs and evidence
-were preserved while index mappings and legacy path references changed. Records
-were re-verified only when freshness, conflict, missing evidence, or domain risk
-required it. The root catalog and all-v0.4 validation are now required.
-
----
-
-# 8. Memory Management
-
-Agent memory should optimize repeated development work without becoming authoritative.
-
-Authority and context hierarchy:
-
-```text
-Deployed state / bytecode / version-matched verified source
-        ↓
- factual evidence for deployed behavior
-
-Validated registry / canonical knowledge
-        ↓
- maintained interpretation and retrieval surface
-
-Derived docs / SDK / skills / examples
-        ↓
- consumers; never independent fact owners
-
-Agent memory
-        ↓
-durable development context
-
-Tasks / reviews
-        ↓
-implementation history
-
-Session context
-        ↓
-temporary
-```
-
-Repository support:
-
-```text
-agents/memory/
-├── README.md
-├── schema/
-├── seed/
-└── evals/
-```
-
-Useful memory includes:
-
-- accepted development patterns;
-- verified Mezo-specific behavior;
-- architecture decisions;
-- compatibility findings;
-- confirmed root causes;
-- valuable failed approaches.
-
-Do not use memory for:
-
-- raw logs;
-- duplicated source files;
-- speculation;
-- secrets;
-- routine task completion.
-
-Useful discoveries should eventually follow:
-
-```text
-discovery
-   ↓
-memory
-   ↓
-verification
-   ↓
-knowledge / ADR / documentation
-```
-
-The kit must remain usable without the memory system.
-
----
-
-# 9. Scoped Development
-
-Significant work should have agreed scope and acceptance criteria in an issue
-or pull request. Individual planning records stay outside the public source.
-
-A review should record:
-
-```text
-# Goal
-
-# Developer story
-
-# Scope
-
-Included:
-Excluded:
-
-# Architecture
-
-Affected packages:
-
-# Proposed interface
-
-# Acceptance criteria
-
-[ ] implementation
-[ ] unit tests
-[ ] integration verification
-[ ] documentation
-[ ] example
-[ ] agent guidance
-[ ] knowledge/memory decision
-
-# Sources / evidence
-
-# Risks
-```
-
-This allows multiple contributors to work independently while following the same architectural contract.
-
----
-
-# 10. Review Model
-
-Changes should be classified by risk.
-
-## Level 1 — Low Risk
-
-Examples:
-
-```text
-documentation
-examples
-minor DX changes
-troubleshooting
-```
-
-Requires:
-
-```text
-review
-CI
-```
-
-## Level 2 — Functional
-
-Examples:
-
-```text
-SDK functionality
-CLI
-framework adapters
-templates
-developer tooling
-```
-
-Requires:
-
-```text
-defined task
-tests
-CODEOWNER review
-CI
-```
-
-## Level 3 — Protocol-Sensitive
-
-Examples:
-
-```text
-contract addresses
-ABIs
-financial calculations
-transaction construction
-write paths
-security guidance
-```
-
-Requires:
-
-```text
-verified evidence
-tests
-integration verification
-qualified review
-CODEOWNER approval
-```
-
----
-
-# 11. Definition of Done
-
-Implementation alone does not complete an important feature.
-
-A supported capability should normally include:
-
-```text
-implementation
-+
-tests
-+
-integration verification
-+
-documentation
-+
-example
-+
-agent guidance
-+
-knowledge/memory decision
-```
-
-Protocol-sensitive functionality additionally requires:
-
-```text
-source evidence
-registry verification
-qualified review
-```
-
-The documentation and agent instructions therefore evolve together with the implementation.
-
----
-
-# 12. Technical Architecture
-
-The kit should use a monorepo containing small composable packages.
-
-```text
-mezo-dev-kit/
-│
-├── packages/
-│   ├── chains/
-│   ├── contracts/
-│   │   ├── registry/
-│   │   ├── evidence/
-│   │   └── generated/
-│   │
-│   ├── core/
-│   ├── protocols/
-│   │   ├── musd/
-│   │   └── ...
-│   ├── react/
-│   ├── hardhat/
-│   ├── foundry/
-│   ├── cli/
-│   └── test-utils/
-│
-├── extensions/
-│   └── scaffold-eth/
-│
-├── templates/
-├── examples/
-├── docs/
-├── knowledge/
-├── agents/
-└── scripts/
-```
-
-Do not create packages merely to fill this structure.
-
-A package should exist because it represents a clear responsibility.
-
----
-
-# 13. Canonical Chain & Contract Registry
-
-Network and protocol configuration require one evidence-backed source of truth.
-
-```text
-authoritative source
-        ↓
-     evidence
-        ↓
-validated registry
-        ↓
- ┌──────┼────────┐
- ↓      ↓        ↓
-types   docs   runtime data
-        ↓
-SDK / tooling / agents
-```
-
-Contract records should support:
-
-```text
-stable identifier
-protocol
-chain
-environment
-address
-deployment range
-proxy information
-implementation
-ABI
-ABI digest
-source
-verification date
-support status
-limitations
-owner
-```
-
-CI should reject invalid records and generated-output drift.
-
-Addresses and ABIs must not be independently copied into examples, templates or agent instructions.
-
-Network records use explicit capability profiles. The initial `cosmos-evm`
-profile owns Mezo's EVM and Cosmos fields; the `evm` profile owns the shared EVM
-identity surface and omits rather than fabricates Cosmos-specific values. The
-accepted external scope is initially limited to Ethereum mainnet and Base
-mainnet when required by reviewed workflows. Chain identity does not imply RPC
-provider availability or route support.
-
-Contract deployments and ABI records declare an evidence provenance class.
-Validation applies that class's exact requirements for official artifacts,
-deployed executable reproduction, official-client precompile source, or an
-official deployment repository matched to live configuration. A generic
-`verified` flag, a partial explorer label, or official source without deployed
-identity is not a substitute. Provenance acceptance and protocol support remain
-separate Level 3 decisions.
-
----
-
-# 14. Core Client
-
-The framework-independent core provides shared execution infrastructure.
-
-```ts
-const client = createMezoClient({
-  chain,
-  transport,
-  registry,
-  confirmationPolicy,
-});
-```
-
-Responsibilities:
-
-```text
-transport
-chain validation
-deployment resolution
-block-coherent reads
-typed required / optional read failures
-provider-aware batching and safe failover
-simulation
-units
-errors
-receipt tracking
-debug information
-```
-
-Chain, transport, registry, and confirmation policy are explicit replaceable
-dependencies. Read failover preserves chain identity and the requested block
-coordinate. Write failover may rebroadcast identical signed bytes but must not
-silently create a second nonce-bearing intent. No external client dependency is
-selected by this manifest or ADR-0002.
-
-Protocol packages consume the client:
-
-```ts
-const musd = createMusdModule({ client });
-```
-
-Framework integrations consume public core/protocol APIs rather than implementing protocol behavior themselves.
-
----
-
-# 15. Transaction Standard
-
-State-changing operations should follow a consistent lifecycle:
-
-```text
-validate
-   ↓
-resolve deployment
-   ↓
-read / quote
-   ↓
-build typed request
-   ↓
-simulate
-   ↓
-approve if required
-   ↓
-revalidate / resimulate
-   ↓
-submit
-   ↓
-track
-   ↓
-confirm
-   ↓
-reconcile
-```
-
-The toolkit should distinguish:
-
-```text
-constructed
-simulated
-submitted
-included
-confirmed
-reconciled
-```
-
-A transaction hash is not equivalent to successful protocol execution.
-Only the reconciled state represents protocol success. Approval and action
-hashes remain distinct; timeout is non-terminal, replacement links a separately
-tracked successor, and a reorg returns the action to tracking. Each protocol
-writer owns volatile quote inputs, allowed partial outcomes, receipt events,
-post-state checks, and mismatch behavior. Cross-chain reconciliation continues
-through provider message and destination-delivery evidence.
-
-Shared errors should cover common cases such as:
-
-```text
-UnsupportedNetwork
-MissingDeployment
-ChainMismatch
-InvalidUnits
-StaleQuote
-ProviderError
-ContractRevert
-ApprovalError
-TransactionReplaced
-TransactionFailed
-ReconciliationError
-```
-
----
-
-# 16. Tooling Philosophy
-
-The kit should extend existing ecosystem tools rather than replace them.
-
-Expected integrations:
-
-```text
-Foundry
-Hardhat
-viem
-wagmi
-Scaffold-ETH
-```
-
-Mezo-specific tooling should concentrate on repeated Mezo-specific problems:
-
-```text
-network configuration
-contract metadata
-deployment
-verification
-protocol interactions
-debugging
-testnet workflows
-```
-
-Scaffold-ETH should function as an onboarding layer built on the same underlying packages.
-
----
-
-# 17. Community Development Model
-
-A small group of contributors should be able to work concurrently around clear ownership boundaries.
-
-Typical areas:
-
-```text
-Registry / chain data
-
-Core / protocol SDK
-
-Development tooling
-
-Knowledge / documentation / DX
-```
-
-Ownership does not mean isolation.
-
-Public interfaces, architectural changes and protocol-sensitive functionality remain shared review responsibilities.
-
----
-
-# 18. Guiding Principle
-
-The Mezo Development Kit should not merely contain useful code.
-
-It should contain the **context required to produce correct useful code repeatedly**.
-
-The repository therefore consists of three equally important systems:
-
-```text
-             MEZO DEVELOPMENT KIT
-
-                    │
-        ┌───────────┼───────────┐
-        │           │           │
-      CODE       KNOWLEDGE    PROCESS
-        │           │           │
-     packages       docs       review
-     tooling       skills      reviews
-     templates     memory      standards
-        │           │           │
-        └───────────┼───────────┘
-                    │
-             DEVELOPER EXPERIENCE
-```
-
-Code, knowledge and development process should evolve together.
+Only reconciliation establishes protocol success. Approval and action hashes
+are distinct. Timeout is non-terminal; replacement links a separately tracked
+successor; a reorg returns an included/confirmed action to tracking. Protocols
+define volatile inputs, allowable partial outcomes, receipt events, post-state,
+and mismatch behavior. Cross-chain outcomes also require destination evidence.
+
+Execution requires explicit signer identity and durable intent reservation.
+Read clients remain signer-free. Investigate uncertain submission instead of
+automatically creating another transaction. Failover may rebroadcast identical
+signed bytes but cannot silently create a second nonce-bearing intent.
+
+For discovered destinations, an injected domain resolver verifies the registered
+root, role, runtime/topology, and address at the supplied block. Core rejects
+unresolved roles and persists their identity for restart verification.
+
+Approvals are separate exact transactions. Protocols choose asset, spender,
+and amount; applications execute and reconcile approval, then prepare the action
+again with fresh state. No automatic unlimited allowance or multi-step retry
+is implied.
+
+Simulation uses the exact call. Core retains return bytes and a domain verifier,
+running the same output policy during initial and final simulation. Adapters
+must honor it. Client preflight bounds are distinct from contract-enforced
+limits. Receipt confirmation precedes protocol and wallet reconciliation.
+
+### Protocol execution boundaries
+
+Private implementation approval is scoped to each package and operation.
+The [SDK reference](reference/sdk.md) routes current interfaces and verification.
+
+- **Direct borrowing:** Borrowing owns borrower state, forecasts, sorted hints,
+  preparation, and reconciliation over curated Contract operation ABIs and Core
+  execution. Its nine direct operations received private qualified review on
+  2026-09-15 for the recorded mainnet identity and pinned local-fork scope.
+  Native-oracle, funding, and surplus fixture limits remain. Native collateral
+  and MUSD burns require no token allowance. This review does not promote
+  canonical public-writer support or other deployments.
+- **Savings, lending, and vaults:** Their existing accounting owners implement
+  private writers over explicit approvals and verified discovered roles.
+  Shared execution does not move product accounting into Core or Incentives.
+- **Pools and swaps:** Verify factory mappings, runtime, tokens, and router
+  spenders. Basic mint/burn uses balances as well as reserves; reject unexplained
+  custody differences. Encode applicable token minimums and deadlines; identify
+  LP-output bounds that are preflight-only. Keep broader bounded quotes separate
+  from the current executable token/route profile. No Universal Router, Quoter,
+  mixed-family atomic route, or fee-on-transfer compatibility is assumed.
+  Pool fees, principal, and gauge rewards reconcile separately.
+- **Institutional debt:** Bounded position/selector reads preserve independent
+  aggregates, generation-specific Enclave roles, and explicit optional health
+  failure. A selected subset is not a system inventory. Role membership does
+  not authorize a partner writer; recorded UTXOs do not prove Bitcoin custody.
+- **Redemptions:** Borrowing supplies the underlying state/math; Redemptions owns
+  queue/hints, outputs, and settlement. Require a compatible exact-output simulator
+  because empty successful `eth_call` data cannot prove fill or net BTC. The
+  bounded trace adapter validates call/coordinate and simulated events; missing,
+  malformed, reverted, or inadequate output prevents submission. Preflight
+  minimums do not become on-chain guarantees. Preserve attempted, truncated,
+  and actual amounts, reserves, fees, surplus, and gas-aware wallet outcomes.
+- **Incentives:** Select the escrow generation and verify ownership, voters,
+  grants/managed state, checkpoints, and allocations at one coordinate. Keep
+  timed power, stored boost, current boost, and separate voter domains distinct.
+  Ordinary lock operations do not imply delegated, grant, managed, split/merge,
+  governance, or custody operations. Reset/vote state and rewards require their
+  own reconciliation. A local native-token fixture does not qualify native
+  execution on Mezo.
+
+### Events and bridge outcomes
+
+Core scans bounded provider-neutral event ranges, validates query/log identities,
+reports coverage and checkpoint candidates, and detects changed anchors.
+Applications own providers, workers, storage, and atomic checkpoint commits.
+Protocols own event meaning and joins. Stored status, complete log-query
+coverage, or a negative scan does not establish a completed protocol outcome.
+
+Bridges owns provider-specific cross-chain joins. NTT observation matches the
+source transceiver envelope/digest to bounded destination candidates, confirms
+both sides, and rechecks anchors. A confirmed independent delivery remains valid
+when another candidate fails. Observation alone does not verify current fees,
+capacity, configuration, intent, or transfer readiness.
+
+Native observation separates historical generation evidence from current
+runtime-qualified candidates. Validate the direct source call and direction-specific tuple. Inbound token delivery needs
+mapping, sequence, recipient post-state, and complete relevant consensus-block
+coverage; an EVM-only list or synthetic trace cannot prove the mint. Outbound
+delivery needs the matching confirmed tuple and attributable recipient/fee
+transfers; the current signature-batch path need not emit individual attestations.
+Recheck all contributing state anchors. A confirmed failed payout with matching
+failure evidence requires governance recovery and never authorizes an automatic resend.
+
+Private Native preparation verifies both chain identities, bridge/token runtimes,
+reported Mezo client generation, mappings, mint authority, minima/capacity,
+balances and explicit token/native authorization. Require exact nonpayable source
+simulation and separate source/destination reconciliation. Source-call fee
+estimates cannot enforce a future destination withdrawal fee. Native execution
+qualification remains distinct from EVM-only modeled tests and release review.
+
+Private NTT preparation verifies each chain's runtime, representations, peers,
+threshold, transceiver configuration, pause/capacity, fee, allowance, balance,
+and exact intent. Preserve the deployed distinction between enabled transceiver
+length and registered index/count when quoting and encoding instructions.
+Reject trimming dust and require initial/final exact simulation.
+
+Manual NTT recovery keeps the existing queue sequence, source digest, and custody.
+It never creates a new source transfer to recover already held/burned tokens.
+Source cancellation uses source state; destination recovery binds the confirmed
+source digest. Matching a VAA body does not verify guardian signatures: the
+deployed transceiver verifies it during simulation/execution. Destination
+completion still requires independent observation. These private boundaries
+do not qualify route release, relayer availability, or a delivery SLA.
+
+## Engineering and verification
+
+Author packages, automation, examples, templates, tests, and generated
+applications in TypeScript; use TSX for JSX. Solidity, JSON, schemas, evidence,
+and Markdown retain their formats. Non-TypeScript exceptions must be required
+by the owning tool and narrowly documented.
+
+Use the root-pinned pnpm version, a single root lockfile, ESM, declared exports,
+and the shared strict TypeScript baseline. Node 24 is the minimum development
+runtime; later stable majors require compatibility with all declared tools.
+Package manifests and the lockfile own exact versions. New dependencies require
+explicit approval and the contributor guide's necessity, compatibility,
+maintenance, advisory, license, scripts, transitives, and provenance review.
+
+Vitest is the default TypeScript test framework; retain documented owning-tool
+exceptions. Select tests from behavior and risk, including relevant boundaries,
+failures, ordering, and forbidden side effects. Keep test dependencies out of
+runtime packages, isolate state, and clean up mocks. Coverage and test counts
+do not substitute for assertions.
+
+Formatting, linting, typechecking, dependency checks, builds, tests, and
+integration checks prove different properties. Verify generated drift and
+built public entrypoints where crossed. Shared configuration or multi-package
+changes require the full repository check.
+
+Risk determines review:
+
+- **Level 1:** documentation and low-impact changes need scoped checks and review.
+- **Level 2:** functional changes need defined scope, targeted tests, applicable
+  type/lint/build/integration checks, and functional review.
+- **Level 3:** protocol-sensitive changes additionally need authoritative evidence,
+  failure/compatibility review, and qualified human approval before release.
+
+A capability's completion includes implementation, appropriate verification,
+documentation, examples, agent guidance, and a knowledge/memory decision.
+Report failed, skipped, or unavailable checks accurately. A successful build
+does not renew evidence or publish a package.
+
+## Human and agent documentation
+
+READMEs explain purpose and starting points. Guides teach or walk through tasks.
+References supply exact detail; standards own shared policy. Follow the
+[documentation standard](standards/documentation.md). Humans can contribute
+without reading agent instruction files.
+
+AGENTS files provide concise scoped rules. Contributor skills are authored
+under `agents/skills/`; consumer skills under `agents/consumer/skills/`.
+Names match directory basenames and the catalog records audience and routing.
+Portable skill directories are copied unchanged into tested discovery roots.
+The repository's `.agents/` directory is ignored local setup output; refresh
+it after canonical skill changes. Never edit a discovery copy independently
+or distribute contributor procedures to applications.
+
+Skills load detail for the task rather than duplicating policy and facts.
+MCP and external memory providers are optional. Memory is provider-neutral
+retrieval context; useful verified findings become canonical docs, knowledge,
+or code, with memory reduced to a pointer. Keep secrets, raw logs, speculation,
+maintained-document copies, and routine task history out of memory.
+
+## Contribution and distribution
+
+### Source workflow and governance
+
+Work on `feat/next`; `main` is the GitHub-synchronized canonical branch.
+Both share publishable ancestry and one ignore policy. Promote complete reviewed
+commits and preserve ancestry. Do not reconstruct filtered snapshots or merge
+archived private development history.
+
+Legacy sources, individual tasks/plans/reviews, diagnostics, recovery archives,
+local memory, and agent state remain in their documented ignored roots.
+Ignoring a file does not waive its instructions or lifecycle rules. Local data
+persists across branch switches and needs separate backup.
+
+The [branch workflow](guides/BRANCH_WORKFLOW.md) owns setup, synchronization,
+source/history checks, and promotion commands. Per-clone hooks check staged
+and incoming history, but do not establish server enforcement. Their small
+shell launchers delegate to TypeScript at the Git interoperability boundary.
+
+The project uses the MIT license and manual maintainer review under CODEOWNERS.
+Security reports use the private channels in the security policy. Public
+publication, registry authority, credentials, signing/provenance, releases,
+support/version policy, and CI/CD remain separately approved release work.
+Source availability and private package metadata provide no SLA, bounty,
+deprecation window, or production support promise.
+
+### Standalone project tooling
+
+The private CLI is a project development dependency, separate from runtime SDKs.
+The application owns source, configuration, and AGENTS instructions. Initialization
+creates instructions only when absent; synchronization does not take ownership
+of them. Only selected portable consumer skills are installed.
+
+A generated consumer corpus declares its complete reference index, included
+resources, and exclusions. Pinned deeper retrieval and full declared-corpus
+download remain explicit. Canonical scope, dates, and support labels survive
+distribution; downloading does not renew evidence.
+
+Compatibility verifies target-project package names, versions, and built-file
+inventories. Source revision and content hashes distinguish private snapshots
+sharing a version string. The package-manager lockfile resolves dependencies;
+the guidance lock records bundle identity and managed files.
+
+Updates validate paths/symlinks, ownership, and current hashes; stage verified
+replacements and retain recoverable prior state. Unknown/local edits are
+conflicts. Dry runs make no changes. Recovery does not claim universal
+multi-file atomicity. Select the target project explicitly; do not substitute
+the CLI's dependency set for the application's SDK.
+
+Downloads use the locked credential-free HTTPS origin, bounded resources, and
+matching digests. Redirects cannot change origin/version silently. References
+remain data. Offline mode prohibits requests; local search/show never fetch
+implicitly. Diagnostics distinguish input, compatibility, conflict, availability,
+integrity, and recovery failures without exposing credentials or certifying RPC state.
+
+The [CLI guide](guides/MDK_CLI.md) owns commands. Qualify tooling through private
+packed installation outside the workspace, compatibility/update/recovery tests,
+offline corpus coverage, and observed host discovery. This does not release
+protocol writers or public packages.
+
+## Changing the baseline
+
+Record significant work in an agreed task, issue, or PR. Implement accepted
+scope, update the affected canonical owners together, and perform risk-appropriate
+checks. Individual planning records remain local under the
+[task workflow](guides/TASK_MANAGEMENT.md).
+
+Change current rules directly in this manifest and the delegated detailed owner.
+Update the manifest version, date, and changelog with every edit: major for a
+mission/constitution/authority break, minor for a new architectural capability
+or domain boundary, patch for clarification. Package and schema versions are
+independent.
+
+Preserve a separate decision record when the alternatives and rationale need
+that space. It supplies historical context, not a competing current rule.
+This baseline consolidates the existing decision set without resetting their
+evidence dates, implementation review limits, or remaining release gates.

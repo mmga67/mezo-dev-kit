@@ -54,7 +54,7 @@ record the actual network, method scope, time, and block/hash.
 Prepare actual fictional package snapshots in a new or empty directory:
 
 ```sh
-node scripts/prepare-capability-fixtures.ts /tmp/mdk-capability-cases
+node scripts/agents/prepare-capability-fixtures.ts /tmp/mdk-capability-cases
 pnpm exec tsc --project /tmp/mdk-capability-cases/added/tsconfig.json
 ```
 
@@ -87,6 +87,21 @@ can establish current capability but cannot claim a measured improvement.
 
 ### Context and execution cost
 
+The case set's `retrievalCases` covers record-content discovery, exact interface
+inspection, relevant memory plus stale local context, and a bounded current-state
+gap. Build realistic synthetic inputs under each stated setup and keep all
+expected results out of the evaluated agent's prompt. Use multiple domains in
+held-out runs; do not optimize solely for one transaction or selector.
+
+Compare the baseline, instruction-only changes, and instructions plus the
+offline context tool with the same inputs/runtime. For offline cases, count
+network attempts as well as successful requests. Record guessed path/method
+failures, unrelated artifact reads, truncated output, duplicate retrieval,
+returned bytes, correctness and time. A required bounded live read should not
+be penalized simply for using a network. Tests of the command prove its
+behavior; they do not establish improved autonomous agent decisions. Do not
+claim a speed/token reduction without the fresh-session measurements below.
+
 Compare quality and cost together. Keep source/input snapshots, prompt,
 model/runtime configuration, permissions, and build state fixed when measuring
 an instruction-only change. Compare API improvements separately when package
@@ -110,7 +125,7 @@ that MDK does not own. Record that environment without copying private
 configuration or transcripts into public source. Byte counts are reproducible
 source measurements, not tokenizer counts or promised cost reductions.
 
-Use `node scripts/measure-agent-context.ts [repository-root]` for a compact
+Use `node scripts/agents/measure-agent-context.ts [repository-root]` for a compact
 source inventory. The command reads canonical skills and emits no skill bodies;
 its discovery figures exclude host-specific path rendering. Runtime usage and
 actual selected-file/tool activity must be measured independently.
@@ -155,7 +170,7 @@ that the historical failure was not reproduced rather than inventing a gain.
 
 Run skill validation, materialization comparisons, markdown-link checks, and
 the affected package's real tests independently of the behavioral review.
-Existing `scripts/validate-knowledge-workflows.ts` validates static routing
+Existing `scripts/checks/validate-knowledge-workflows.ts` validates static routing
 contracts; it does not evaluate agent decisions. No static keyword check or
 synthetic arithmetic test substitutes for this guide's agent runs.
 

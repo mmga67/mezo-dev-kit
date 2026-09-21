@@ -41,9 +41,19 @@ Do not load every skill, package, or knowledge module.
    `status`, `supportStatus`, `reviewStatus`, freshness, and limitations. Follow
    bounded authoritative evidence when the decision depends on deployed
    behavior. A knowledge read does not require every maintenance command.
+   For testnet evidence scope, follow
+   [Network scope](../../../docs/manifest#network-scope):
+   route current operations to recent testnet evidence and treat long-term
+   testnet history as unsupported scope, without creating archive-recovery work.
+   Mainnet evidence must not substitute for testnet deployment or state checks.
    Identify the exact unanswered question before escalating to explorer source
    or compiler reproduction. Check retained source/evidence first and retrieve
    only the missing detail; stop once the requested claim is established.
+   Use `pnpm context catalog/find/read/links/source/abi` as documented in the
+   [offline retrieval manual](../../../scripts/agents/CONTEXT.md). Select exact
+   IDs, record pointers and ABI methods from results instead of guessing.
+   Search can include relevant provider-neutral memory; follow its pointers
+   to canonical owners and respect the reported partial search coverage.
 5. Establish the usable API, injected inputs, precise gap, and verification
    boundary for each operation. A few sentences suffice for a small task;
    significant work records this assessment in its task/review before coding.

@@ -271,17 +271,17 @@
     {
       "id": "common-structure",
       "type": "structural",
-      "command": "node scripts/validate-knowledge-structure.ts --module prices"
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module prices"
     },
     {
       "id": "price-semantics",
       "type": "semantic",
-      "command": "node scripts/validate-price-knowledge.ts"
+      "command": "node scripts/checks/validate-price-knowledge.ts"
     },
     {
       "id": "price-reference-drift",
       "type": "drift",
-      "command": "node scripts/generate-price-reference.ts --check"
+      "command": "node scripts/generate/generate-price-reference.ts --check"
     }
   ],
   "extensions": {

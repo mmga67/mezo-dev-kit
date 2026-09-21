@@ -1,74 +1,48 @@
-# Pools
+# Pools and liquidity positions
 
-Private basic-pool and concentrated-liquidity SDK. The
-[SDK reference](REFERENCE.md) documents every exported method/type and examples.
+`@mezo-dev-kit/pools` reads basic and concentrated-liquidity pools, calculates pool math and fees, and manages liquidity positions. Use it for pool and position accounting; Swaps handles route quotes and exchange workflows.
 
-`createBasicPoolReader` verifies the mainnet Router/PoolFactory, their discovered
-FactoryRegistry and implementation, the standard minimal proxy, factory mapping,
-Router prediction, token order and stable flag at one block. It reads reserves,
-live balances, LP supply/custody, token allowances and the account's LP position.
-Dynamic pool addresses are observations, not new static Contract IDs.
+## Start here
 
-`createBasicLiquidityWriter` prepares, simulates, submits and reconciles
-add/remove liquidity for initialized pools among MUSD, mUSDC and mUSDT.
-Each used token generation is checked; a mapped ERC-20 proxy, implementation
-slot/code or precision change invalidates its own writer profile.
-Other basic pools remain readable with `writeCompatible: false`. Native BTC
-needs separate gas-aware wallet reconciliation and is not in this writer slice.
-Fee-on-transfer/rebasing assets and new-pool creation are not implemented.
+Build the workspace with the [SDK setup guide](../../../docs/guides/SDK_DEVELOPMENT.md), then follow [the basic liquidity walkthrough](../../../examples/provide-basic-liquidity/README.md) for a focused walkthrough. The [API reference](REFERENCE.md) covers exact methods, inputs, results, and errors.
 
-Approvals are explicit independent transactions for desired maxima or exact LP
-shares. Reprepare after confirmation. Token minimums and deadlines are on-chain;
-minimum LP output is verified in initial/final simulation but is not an on-chain
-Router argument. Applications own consent, signer, RPC bounds, atomic storage
-and whole-flow recovery. No new external client dependency is needed.
+For concentrated liquidity, use the [position walkthrough](../../../examples/manage-cl-position/README.md).
 
-Qualified protocol review and release remain outstanding. Source/runtime
-provenance is indexed in Contracts; mUSDC and mUSDT fully verified explorer bytes match
-RPC, but independent Solidity 0.8.29 reproduction was not performed. Node crypto
-is used; browser distribution has not been verified.
+## Choose a workflow
+
+| Area                   | Available work                                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------------------- |
+| Basic pools            | Read reserves, live balances and LP holdings; add/remove liquidity; collect wallet LP fees            |
+| Concentrated liquidity | Read bounded NFTs/ticks; mint, increase/decrease, collect, and burn a cleared self-owned unstaked NFT |
+| Calculations           | Exact fee, tick, liquidity, and swap-step helpers                                                     |
+
+Pools are discovered through verified roots and factory mappings. Applications
+supply the account, pool or NFT selection, transport, and explicit execution.
+[Incentives](../incentives/README.md) owns gauge staking and emissions.
+
+## Amounts and scope
+
+The private writer profile covers checked MUSD, mUSDC, and mUSDT generations in
+existing initialized pools. Other pools may be readable without being writable.
+Native BTC, fee-on-transfer/rebasing assets, and new-pool creation are outside
+this writer profile.
+
+Approvals are independent transactions. Token minimums and deadlines can be
+on-chain constraints; minimum LP output and fee-claim minimums are preflight
+checks. Principal, manager accounting, actual wallet transfers, fees, and native
+gas remain separate. See [execution details](REFERENCE.md) before preparing an operation.
+
+The package is private Node source and requires qualified protocol review before
+release. Local-fork examples retain their documented funding/gas fixtures and
+verification limits. [Pool knowledge](../../../knowledge/protocols/pools/README.md)
+owns the models and source evidence.
+
+## Development
+
+From the repository root:
 
 ```sh
 pnpm --filter @mezo-dev-kit/pools check
-pnpm build
-node packages/protocols/pools/test/fork.ts http://127.0.0.1:18545 "$SOURCE_RPC_URL"
 ```
 
-The fork harness checks the source parent read-only, funds only local accounts,
-runs add/partial-remove/final-remove through public imports, and reverts its
-snapshot. It preserves token, Router, factory and pool code and uses no native
-oracle/token fixture. Run it sequentially with other local fork harnesses.
-
-`calculateBasicPoolFees` and `calculateBasicSwapFee` preserve exact fee rounding.
-`createBasicPoolFeeWriter` collects wallet LP fees, including stored claims after
-full LP withdrawal. It uses no approval and reconciles PoolFees payments and
-zero pending credit. Claim minimums are preflight bounds, not contract arguments.
-
-CL math uses source-derived TickMath coefficients, explicit floor/ceil amounts,
-uint128 liquidity limits and modular fee growth. `createCLPoolReader` verifies
-accepted roots, clones, factory and gauge mappings at one block. It reads up to
-16 explicit NFTs and 32 additional ticks, preserves empty-pool state, separates
-active/staked/position liquidity and proves a supplied depositor through the
-gauge stake set. Unknown depositors remain null.
-
-`createCLPositionWriter` handles self-owned unstaked NFTs for the same three-asset profile: mint into
-existing initialized pools, increase/decrease liquidity, collect and burn a
-cleared NFT. Explicit approvals, token/liquidity/price/time bounds and exact
-simulation precede submission. Settlement separates removed principal credit
-from wallet payment, manager collection accounting from actual pool transfers,
-and token amounts from native gas. It checks NFT, tick and pool state as well
-as events. These private operations still require qualified review before release.
-
-The opt-in `test/cl-fork.ts` command takes the same localhost/source RPC arguments
-and checks bounded pool/NFT reads plus wrong-code/mapping/anchor failures.
-Append `positions` to run the twelve-operation NFT lifecycle and range rebalance,
-including recovery from a rejected replacement mint after collection. It uses
-local funding and a 1-wei gas-price fixture. Every mutation is confined to the
-verified local fork and reverted. This does not qualify native engine behavior.
-The reference explains independent transaction checkpoints, retained wallet
-funds, the new NFT ID, and retirement of the empty old NFT.
-
-CL exact-input step, fee-split and bitmap helpers support bounded Swaps quotes.
-They preserve source rounding, signed word traversal and the token0 overflow
-fallback. The fee scale and source digests derive from retained accepted source.
-Quotes, router execution and multi-pool outcomes remain owned by Swaps.
+See the [contributor guide](../../../CONTRIBUTING.md) for workspace setup and review.

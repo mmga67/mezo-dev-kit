@@ -20,6 +20,14 @@ export function root(snapshot: BorrowingSnapshot, id: string): Readonly<Resolved
 function bounded(value: unknown): value is readonly `0x${string}`[] {
   return Array.isArray(value) && value.length <= 64;
 }
+/**
+ * Create borrower-state-backed inspection and bounded sorted redemption quotes.
+ *
+ * @remarks
+ * The caller supplies traversal limits and an explicit account/block. Quotes retain
+ * coverage and partial-fill information; a bounded scan is not the entire queue.
+ * Exact output still requires the trace simulator before writer submission.
+ */
 export function createRedemptionReader(config: RedemptionReaderConfig): Readonly<RedemptionReader> {
   const borrowing = createBorrowingReader(config),
     { transport } = config;

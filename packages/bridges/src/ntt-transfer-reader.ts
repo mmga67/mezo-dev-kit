@@ -21,6 +21,10 @@ import type {
   NttTransferTransport,
 } from "./ntt-transfer-types.ts";
 
+/**
+ * Typed bridges failure. Branch on code rather than parsing the message.
+ * Errors from other injected or foundational boundaries can propagate independently.
+ */
 export class NttTransferError extends Error {
   override readonly name = "NttTransferError";
   readonly code: NttTransferErrorCode;
@@ -388,6 +392,14 @@ export async function nttEndpoint(
   });
   return snapshot;
 }
+/**
+ * Create current-state inspection and quoting for one explicit MUSD NTT route.
+ *
+ * @remarks
+ * Methods verify both endpoints, runtime, peers, token precision, capacity and fees
+ * at separate chain coordinates. Dust that cannot survive NTT trimming is rejected.
+ * No wallet is used. A quote does not prove future destination delivery.
+ */
 export function createNttTransferReader(
   config: NttTransferReaderConfig,
 ): Readonly<NttTransferReader> {

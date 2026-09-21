@@ -31,6 +31,10 @@ import type {
   NttTransferTransport,
 } from "./ntt-transfer-types.ts";
 
+/**
+ * Source transfer quote, separate approval requirement and exact source call. Submission
+ * requires its original writer-owned preparation.
+ */
 export interface PreparedNttTransfer {
   readonly quote: Readonly<NttTransferQuote>;
   /** Execute an explicit token approval separately, confirm it and prepare again. */
@@ -43,19 +47,45 @@ export interface PreparedNttTransfer {
   }>;
   readonly transaction: Readonly<PreparedTransaction>;
 }
+/**
+ * Source-chain sent/queued result. Source reconciliation alone does not establish destination
+ * redemption.
+ */
 export type NttSourceOutcome =
   | Readonly<{ state: "source-queued"; sequence: bigint; digest: null; message: null }>
   | Readonly<{ state: "source-sent"; sequence: bigint; digest: Hash32; message: HexData }>;
+/**
+ * Explicit source transfer lifecycle with separate approval and destination observation
+ * responsibilities.
+ */
 export interface NttTransferWriter {
+  /**
+   * Read a fresh two-chain quote and return the exact source transfer with a separate approval
+   * requirement. This does not send or guarantee destination delivery.
+   */
   prepare(input: {
     readonly operationId: string;
     readonly quote: NttTransferQuoteInput;
   }): Promise<Readonly<PreparedNttTransfer>>;
+  /**
+   * Simulate this writer's prepared call and retain the matching result. Confirm any required
+   * separate approval and prepare again first; no transaction is sent.
+   */
   simulate(prepared: PreparedNttTransfer): Promise<Readonly<SimulatedTransaction>>;
+  /**
+   * Revalidate and submit the matching writer-owned preparation/simulation through Core.
+   * Returns a durable record, not confirmation or protocol completion. Recover an uncertain
+   * send by its existing intent.
+   */
   submit(
     prepared: PreparedNttTransfer,
     simulated: SimulatedTransaction,
   ): Promise<Readonly<SubmissionRecord>>;
+  /**
+   * Match the persisted intent and confirmed receipt, then verify source send/queue evidence,
+   * separately from destination delivery. Required evidence mismatches can reject even when the
+   * EVM receipt succeeded.
+   */
   reconcile(
     prepared: PreparedNttTransfer,
     record: unknown,
@@ -236,6 +266,15 @@ export function reconcileNttSource(
     digest: messageDigest(BigInt(route.source.wormholeChainId), message),
   });
 }
+/**
+ * Create the source-chain NTT transfer lifecycle for an explicitly selected route.
+ *
+ * @remarks
+ * Preparation preserves a separate exact token-approval plan. Simulate and submit
+ * require this writer's matching preparation. Reconciliation establishes the source
+ * result and transfer identity; use the delivery observer for destination evidence.
+ * Applications supply the signer, durable storage and explicit recovery decisions.
+ */
 export function createNttTransferWriter(config: {
   readonly reader: NttTransferReader;
   readonly execution: ExecutionClient;

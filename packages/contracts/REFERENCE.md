@@ -29,6 +29,27 @@ Bridges workflow owns runtime/configuration, consent, fee, simulation and
 reconciliation requirements. The retained TypeChain `TransferSent` discrepancy
 is unchanged; this projection does not correct or rely on that event.
 
+For the current Native Bridge generations, the ordinary source projection exposes
+`bridge.native-mezo-bridge` on Ethereum mainnet:
+`bridgeERC20(address,uint256,address)`, and `bridge.native-assets-precompile` on
+Mezo mainnet: `bridgeOut(address,uint256,uint8,bytes)`. Both are nonpayable calls;
+the bridged amount belongs in calldata. `bridgeOut` returns a boolean and
+`bridgeERC20` has no return value. System injection, validator attestations,
+administration, Bitcoin deposits and triparty operations are excluded. These
+are ABI and runtime lookup capabilities; the Bridges source workflow and its
+release qualification remain separate. Older transfer generations continue to
+require the historical evidence API.
+
+`getNativeBridgeCalldataAbi({ contractId, networkId, blockNumber })` resolves
+current source/system calldata solely for decoding observed transactions. Its
+system `bridge` ABI does not appear in `resolveOperation` and authorizes no writer.
+`getNativeTokenProfile({ networkId, tokenAddress })` returns a private
+`NativeTokenProfile`: decimals, expected token bytecode hash, nullable proxy slot,
+implementation address/hash and narrowly required extra read ABI. The four
+representations come from the indexed Native qualification and existing mUSDC
+runtime owner. Verify these expectations at the actual coordinate; a profile
+lookup alone establishes no live token identity or route support.
+
 `resolveEvent({ contractId, networkId, blockNumber, eventName })` returns a
 curated `ContractAbiEntry` for receipt decoding. This includes compiler-derived
 Morpho library events omitted by its explorer/read ABI. `getTokenInterface()`
@@ -50,8 +71,12 @@ scope includes the mainnet MUSD borrowing roots, Savings, Morpho, the USDC
 Lending Vault wrapper, basic pools/router, escrows, voters, reward factory,
 MEZO rebase distributor/minter,
 CL factory, pool implementation, position manager, swap router and gauge factory/implementation,
-institutional roots and Skip native interface, plus the six registered NTT
-manager/transceiver deployments on Mezo, Ethereum and Base. Consumers
+institutional roots and Skip native interface, the six registered NTT
+manager/transceiver deployments on Mezo, Ethereum and Base, and the two current
+Native Bridge deployments above. Native expectations are selected by resolved
+deployment ID: the Ethereum proxy has code, implementation code and slot checks;
+Mezo has a wrapper code check. A wrapper hash alone does not establish native
+client execution behavior. Consumers
 fetch bytes and slots at their own coordinate and compare them; a catalog hash
 is not a live verification. Both functions retain normal deployment resolution
 failures. Existing `readAbi` is unchanged.
@@ -243,3 +268,37 @@ const evidence = resolveHistoricalContractEvidence({
 });
 console.log(evidence.generationId, evidence.coordinate, evidence.evidence.reviewStatus);
 ```
+
+## Canonical generation
+
+`scripts/generate/generate-contracts-package.ts` resolves
+`contracts:contract-deployments`, `contracts:contract-abis`, and every indexed
+`contracts:abi.*` artifact. It validates lifecycle fields, IDs, addresses,
+validity/generation ranges, ABI references/counts/file digests, and read-entry
+mutability. It records a SHA-256 digest over the Contracts module index and all
+exact consumed bytes, then emits `src/data.generated.ts` deterministically.
+Runtime code never reads `knowledge/`.
+
+It also projects ordinary Native source calls and current deployment runtime
+expectations into `src/native.generated.ts`, checking the accepted deployment
+lifecycle, provenance class and exact source-call signature. Bounded token
+profiles and observation-only calldata come from their indexed owners, with
+artifact digests and runtime/proxy bytes checked during generation. Bridges
+owns source execution; historical observation coverage stays separate.
+
+The same generator validates `contracts:historical-contract-evidence` and its
+separate source/build/RPC artifacts, then emits `src/historical.generated.ts`.
+`resolveHistoricalContractEvidence` returns `HistoricalContractEvidence` at
+explicitly observed blocks. Its separate calldata ABI is for observing included
+transactions. It cannot be passed as `ResolvedContract` to current operation or
+runtime helpers. See [Contract identity and provenance](../../docs/manifest#contract-identity-and-provenance).
+These additional profiles remain proposed pending qualified release review.
+Contracts' offline capture tools use its existing EVM workspace dependency;
+build EVM before invoking the generator directly from a fresh checkout.
+
+```sh
+pnpm --filter @mezo-dev-kit/contracts generate:check
+```
+
+Do not edit generated data. Update and validate the canonical Contracts owner,
+regenerate, and review input and output together.

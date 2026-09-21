@@ -10,15 +10,20 @@ workflow, and treat private workspace package names and versions as
 implementation metadata rather than install or compatibility promises. Source
 is licensed under the root [`MIT License`](./LICENSE).
 
-## Start with the Authority Chain
+## Start here
 
 Before non-trivial work, read:
 
-1. [`AGENTS.md`](./AGENTS.md) for repository-wide operating rules;
-2. applicable sections of [`ARCHITECTURE.md`](./ARCHITECTURE.md) for affected
-   boundaries and dependency direction;
-3. the nearest nested `AGENTS.md`, package docs, and relevant skill;
-4. only the knowledge, task, ADR, code, and tests relevant to the change.
+1. Confirm the task's outcome and scope.
+2. Use the [manifest](./docs/manifest) for the project baseline and
+   [architecture](./ARCHITECTURE.md) for affected boundaries and dependencies.
+3. Read the relevant package docs and shared standard.
+4. Inspect only the knowledge, code, tests, and evidence needed for the change.
+
+For READMEs, guides, and references, follow the
+[documentation standard](./docs/standards/documentation.md). Agent-assisted
+work additionally follows scoped AGENTS files and the relevant skills; manual
+contribution uses the shared policies described here.
 
 [`docs/INDEX.md`](./docs/INDEX.md) routes maintained documentation, and
 [`knowledge/README.md`](./knowledge/README.md) defines the evidence and
@@ -53,8 +58,10 @@ manual and coding-agent workflows, and clean built-consumer proof, use the
 - cross-domain execution observations belong in `knowledge/workflows/`;
 - reproducible diagnosis and bounded mitigation belong in
   `knowledge/troubleshooting/`;
-- architecture belongs in `ARCHITECTURE.md` or an ADR;
-- reusable procedures belong in `agents/skills/`;
+- current project decisions belong in the manifest, with technical detail in
+  `ARCHITECTURE.md` and shared standards;
+- human procedures belong in guides; repeatable agent procedures belong in
+  `agents/skills/`;
 - implementation scope and pending decisions belong in the agreed issue or pull request;
 - durable retrieval context may belong in memory, but facts still require a
   canonical owner.
@@ -167,13 +174,13 @@ internals.
 
 ## Knowledge and Documentation Changes
 
-`docs/manifest` is versioned design input. Every manifest improvement must bump
+`docs/manifest` is the accepted project baseline. Every manifest improvement must bump
 the semantic version in its heading, update its release date, add the newest
 entry to `docs/manifest-changelog.md`, and pass:
 
 ```bash
-node scripts/validate-manifest-version.ts
-node scripts/test-manifest-version.ts
+node scripts/checks/validate-manifest-version.ts
+node scripts/tests/test-manifest-version.ts
 ```
 
 The accepted universal module layout, human and agent responsibilities, common
@@ -207,7 +214,7 @@ change when supported behavior or workflow changes.
 Every meaningful task ends with one of:
 
 - no memory update because the durable result already lives in code,
-  knowledge, docs, an ADR, or a skill;
+  knowledge, docs, a historical decision, or a skill;
 - a concise, reviewed shared-memory entry that points to canonical material;
 - a local-memory finding retained for further verification;
 - a stale memory marked promoted, superseded, or deprecated.
@@ -250,11 +257,18 @@ syntax checking, tests, lint, or formatting as a substitute for typechecking.
 | Level 2 | SDK behavior, CLI/tooling, adapters, templates                                               | Targeted tests plus applicable type, lint, build, and boundary integration checks                                                        |
 | Level 3 | Addresses, ABIs, formulas, transaction construction, write paths, registry/security guidance | Authoritative evidence, deterministic tests, integration verification, explicit failure/compatibility review, and qualified human review |
 
-Current dependency-free knowledge validators can be run with:
+Use the [scripts manual](./scripts/README.md) to select commands and their
+prerequisites. To run all repository validators after installation and build:
 
 ```bash
-for validator in scripts/validate-*.ts; do
-  node "$validator"
+for validator in scripts/checks/validate-*.ts scripts/agents/validate-agent-skills.ts; do
+  if [ "$validator" = scripts/checks/validate-economic-system-knowledge.ts ]; then
+    for module in protocols/musd/savings protocols/lending/musdc protocols/vaults/usdc-lending; do
+      node "$validator" --module "$module" || exit 1
+    done
+  else
+    node "$validator" || exit 1
+  fi
 done
 ```
 
@@ -262,10 +276,10 @@ The common mixed-mode v0.4 conformance check is included in that loop. A module
 migration additionally runs:
 
 ```bash
-node scripts/validate-knowledge-structure.ts --module <module-id>
-node scripts/validate-knowledge-structure.ts --require-all-v0.4
-node scripts/validate-knowledge-catalog.ts
-node scripts/validate-knowledge-workflows.ts
+node scripts/checks/validate-knowledge-structure.ts --module <module-id>
+node scripts/checks/validate-knowledge-structure.ts --require-all-v0.4
+node scripts/checks/validate-knowledge-catalog.ts
+node scripts/checks/validate-knowledge-workflows.ts
 ```
 
 Also run:

@@ -14,7 +14,16 @@ export function isBorrowerStatus(value: unknown): value is BorrowerStatus {
   return typeof value === "string" && (statuses as readonly string[]).includes(value);
 }
 
-/** Decode already-entire amounts without adding pending rewards or interest twice. */
+/**
+ * Normalize and cross-check the stored and already-entire borrower tuples.
+ *
+ * @param input - Nine Troves values, six getEntireDebtAndColl values, Unix seconds
+ * and MUSD gas-compensation base units, all from the same read coordinate.
+ * @remarks
+ * Entire values already include pending rewards and accrued interest. Compare
+ * them with the stored components without adding those components a second time.
+ * @throws BorrowingError - Invalid tuple shape, accounting disagreement or arithmetic bounds.
+ */
 export function normalizeBorrowingPosition(input: {
   readonly stored: readonly unknown[];
   readonly entire: readonly unknown[];
@@ -35,6 +44,8 @@ export function normalizeBorrowingPosition(input: {
   const storedCollateral = uint(stored[0]);
   const storedPrincipal = uint(stored[1]);
   const storedInterest = uint(stored[2]);
+  // getEntireDebtAndColl has already applied redistribution and elapsed interest.
+  // The equality checks below validate those totals; they must not add them again.
   const collateral = uint(entire[0]);
   const principal = uint(entire[1]);
   const interest = uint(entire[2]);

@@ -53,6 +53,14 @@ export function calculateCLGaugeEarned(
       Q128,
   );
 }
+/**
+ * Forecast an ordinary CL NFT stake, unstake or reward claim from supplied state.
+ *
+ * @remarks
+ * Ownership, custody and liveness determine eligibility. Reward amounts retain the
+ * gauge token's base units and are separate from NFT principal and pool fees.
+ * The result does not mutate custody or refresh the snapshot.
+ */
 export function forecastCLGauge(input: {
   readonly snapshot: CLGaugeState;
   readonly action: CLGaugeAction;

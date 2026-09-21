@@ -7,7 +7,12 @@
       "id": "human-discover-module",
       "audience": "human-consumer",
       "intent": "Find the canonical module and human reference without browsing directories by file type.",
-      "route": ["knowledge/README.md", "knowledge/index.json", "knowledge/records/modules.json"],
+      "route": [
+        "knowledge/README.md",
+        "knowledge/networks/README.md",
+        "knowledge/index.json",
+        "knowledge/records/modules.json"
+      ],
       "knowledgeReferences": [
         {
           "moduleId": "knowledge",
@@ -16,7 +21,7 @@
         }
       ],
       "requiredOutcomes": [
-        "Resolve a stable module ID before selecting a physical path.",
+        "Choose a subject from the README; use the index and stable module IDs for structured lookup.",
         "Treat child lifecycle state as authoritative over catalog membership."
       ],
       "prohibitedOutcomes": [
@@ -26,7 +31,11 @@
       "assertions": [
         {
           "path": "knowledge/README.md",
-          "includes": ["knowledge-module-catalog", "not cross-domain identities"]
+          "includes": ["(networks/README.md)", "(index.json)"]
+        },
+        {
+          "path": "knowledge/index.json",
+          "includes": ["knowledge-module-catalog", "Catalog acceptance does not promote"]
         }
       ]
     },
@@ -135,13 +144,13 @@
         "Separate accepted architecture from verified observations and runtime support."
       ],
       "prohibitedOutcomes": [
-        "Claim a public client implementation exists.",
+        "Infer public client availability from architecture acceptance without checking current package exports.",
         "Treat architecture acceptance as protocol evidence or writer support."
       ],
       "assertions": [
         {
           "path": "knowledge/workflows/transactions/generated/reference.md",
-          "includes": ["Fact and proposal boundary", "ADR-0002 and ADR-0003 are accepted"]
+          "includes": ["Fact and proposal boundary", "- Architecture: `accepted`"]
         }
       ]
     },
@@ -282,7 +291,10 @@
       "assertions": [
         {
           "path": "agents/skills/mdk-transaction-execution/SKILL.md",
-          "includes": ["The decisions accept", "never blindly rebuild and resubmit"]
+          "includes": [
+            "docs/manifest#shared-client-and-transaction-lifecycle",
+            "never blindly rebuild and resubmit"
+          ]
         }
       ]
     },
