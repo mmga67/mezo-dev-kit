@@ -164,11 +164,11 @@ These ownership rows do not confer support on an operation or deployment.
 | [Agent guidance](agents/README.md)                                             | Contributor/consumer skills, optional memory adapters, and evaluations                    |
 | [Scripts](scripts/README.md)                                                   | Repository generation, verification, evidence, and workspace automation                   |
 
-React, Hardhat, Foundry, and test-utils package directories are planned areas.
+React, Hardhat, Foundry, and test-utils remain planned capabilities.
 Their intended roles are framework adapters, tool-specific workflows, and
 reusable deterministic test support. They must not duplicate protocol logic
 or canonical facts; production packages must not consume test-only behavior.
-Ecosystem integrations under `extensions/` compose public MDK APIs.
+Future ecosystem integrations belong under `extensions/` and compose public MDK APIs.
 
 Create a package only for a demonstrated responsibility, consumer, and
 verification path. Empty directories are not public architecture commitments.

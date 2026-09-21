@@ -213,8 +213,7 @@ agents/memory/
 ├── README.md          # this architecture/lifecycle contract
 ├── schema/            # provider-neutral schemas
 ├── seed/              # curated shared index and entries
-├── providers/         # provider adapters/config guidance
-└── evals/             # retrieval/lifecycle evaluations
+└── providers/         # provider adapters/config guidance
 ```
 
 Local runtime state:

@@ -24,11 +24,10 @@ call those focused operations and show how to compose additional actions.
 | `@mezo-dev-kit/musd-institutional-debt` | [Inspect a position and allocate repayment](institutional-debt/inspect-position.ts)                     | [Guide](institutional-debt/README.md)                                                                                            |
 | `@mezo-dev-kit/cli`                     | [Validate project configuration](project-tooling/configure.ts)                                          | [Guide](project-tooling/README.md)                                                                                               |
 
-## Package directories without executable APIs
+## Planned capabilities
 
-`packages/react`, `packages/hardhat`, `packages/foundry` and
-`packages/test-utils` are placeholders with no package manifest or exported API
-in this checkout. Their intended responsibilities are in
+React, Hardhat, Foundry, and shared test utilities remain planned capabilities
+with no implemented packages or exported APIs. Their intended responsibilities are in
 [Architecture](../ARCHITECTURE.md#repository-areas). Add executable
 examples alongside their first implemented APIs. The examples above use the
 current public workspace entrypoints; they do not require those adapters.
