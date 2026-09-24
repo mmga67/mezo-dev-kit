@@ -204,6 +204,15 @@ not itself declare a package released or supported.
 
 ## Functions, state, and side effects
 
+SDK runtime modules must work in Node and modern browsers. They must not import
+Node builtins (including bare builtin names), reference Node process/Buffer/module
+globals, or require a DOM at import time. Keep filesystem, terminal and subprocess
+work in CLI/repository tooling. SDK build configurations omit Node ambient types
+and declare the Web APIs they use; tests and tools retain their Node environment.
+Package side-effect metadata must match behavior: importing an unused SDK module
+must not perform required initialization outside that module. Test representative
+consumer bundles when changing module initialization or export composition.
+
 - Keep deterministic domain calculations pure. Separate them from RPC,
   wallets, clocks, randomness, files, storage, UI, process state, and logging.
 - Pass dependencies and configuration explicitly. Hidden mutable singletons,

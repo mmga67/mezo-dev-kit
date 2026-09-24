@@ -1,8 +1,8 @@
-# Mezo Development Kit — Manifest v1.3.0
+# Mezo Development Kit — Manifest v1.4.0
 
 **Status:** Accepted project baseline
 
-**Released:** 2026-09-22
+**Released:** 2026-09-24
 
 **Improvement log:** [Manifest changelog](./manifest-changelog.md)
 
@@ -361,6 +361,16 @@ runtime; later stable majors require compatibility with all declared tools.
 Package manifests and the lockfile own exact versions. New dependencies require
 explicit approval and the contributor guide's necessity, compatibility,
 maintenance, advisory, license, scripts, transitives, and provenance review.
+
+SDK runtime packages target both Node and modern browsers through the same ESM
+implementation. Keep Node builtins and Node-only globals in CLI, repository tools
+and their tests; SDK runtime code uses portable values, Web APIs and injected I/O.
+Package imports must not require a wallet, DOM, filesystem or hidden provider.
+Preserve deterministic results across runtimes, including digest encodings and
+persisted checkpoint identities. Browser support requires built/packed public
+entrypoint verification and actual browser execution; Node or bundler success
+alone is insufficient. The browser integration guide owns the tested runtime
+matrix and frontend setup, while protocol support and release gates stay separate.
 
 Vitest is the default TypeScript test framework; retain documented owning-tool
 exceptions. Select tests from behavior and risk, including relevant boundaries,

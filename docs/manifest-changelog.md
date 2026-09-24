@@ -17,6 +17,15 @@ Every manifest edit must update its version and add a dated entry describing
 the improvement. A task may bump the version more than once when distinct
 reviewable improvements land.
 
+## 1.4.0 — 2026-09-24
+
+- Establish universal Node/browser SDK runtime code, retaining Node-specific CLI
+  and repository tooling.
+- Require portable hashing and checkpoint identity, explicit I/O, runtime import
+  boundaries and browser verification through public package artifacts.
+- Add browser integration and frontend consumer guidance without changing protocol
+  support, transaction authorization or publication gates.
+
 ## 1.3.0 — 2026-09-22
 
 - Add a small default consumer set and explicit optional capability additions

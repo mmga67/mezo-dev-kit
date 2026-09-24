@@ -8,6 +8,7 @@ const strictTypeScriptFiles = [
   "scripts/**/*.ts",
   "scripts/fixtures/coding-gates/*.ts",
   "vitest.quality.config.ts",
+  "vitest.browser.config.ts",
 ];
 
 export default defineConfig(
@@ -59,6 +60,31 @@ export default defineConfig(
       "no-implied-eval": "error",
       "no-new-func": "error",
       "no-throw-literal": "off",
+    },
+  },
+  {
+    files: ["packages/**/src/**/*.{ts,tsx}"],
+    ignores: ["packages/cli/**"],
+    rules: {
+      "no-restricted-globals": [
+        "error",
+        {
+          globals: [
+            "Buffer",
+            "process",
+            "global",
+            "__dirname",
+            "__filename",
+            "require",
+            "module",
+            "exports",
+            "setImmediate",
+            "clearImmediate",
+          ],
+          checkGlobalObject: true,
+          globalObjects: ["globalThis"],
+        },
+      ],
     },
   },
 );

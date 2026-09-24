@@ -236,10 +236,14 @@ pnpm typecheck
 pnpm lint
 pnpm boundaries
 pnpm build
+pnpm test:browser
 pnpm test
 pnpm test:shuffle
 pnpm check
 ```
+
+`pnpm test:browser` and `pnpm check` require the pinned Playwright browsers and
+their host libraries; follow [browser setup](docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration).
 
 `pnpm check` checks code and generated-file consistency; it does not capture
 live evidence or renew knowledge review deadlines. For the mainnet reader

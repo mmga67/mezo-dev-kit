@@ -40,7 +40,9 @@ try {
   assert.equal(bundle.id, repeated.id, "Bundle generation must be deterministic");
   assert.ok(bundle.resources.length > 100);
   assert.ok(bundle.exclusions.length > 0);
-  assert.equal(bundle.skills.length, 17);
+  assert.equal(bundle.skills.length, 18);
+  assert.ok(bundle.skills.some((skill) => skill.name === "mdk-frontend-application"));
+  assert.ok(bundle.sets?.some((set) => set.id === "frontend"));
   for (const resource of bundle.resources.filter((item) => item.kind === "knowledge"))
     assert.deepEqual(
       await readFile(join(source, resource.path)),

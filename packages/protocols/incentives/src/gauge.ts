@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import type { Network } from "@mezo-dev-kit/chains";
 import { getTokenInterface, resolveRoleInterface } from "@mezo-dev-kit/contracts";
@@ -159,11 +159,7 @@ export function createGaugeReader(config: {
         ),
       );
       const code = parseHexData(await transport.getCode(gauge, coordinate));
-      if (
-        createHash("sha256")
-          .update(Buffer.from(code.slice(2), "hex"))
-          .digest("hex") !== profile.runtimeSha256
-      )
+      if (sha256(code).slice(2) !== profile.runtimeSha256)
         throw new GaugeError("IdentityMismatch", "unsupported gauge runtime");
       const g = (name: string, args: readonly AbiValue[] = []) =>
         read(gauge, profile.abi, name, args);

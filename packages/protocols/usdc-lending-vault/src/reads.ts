@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import type { ContractAbiEntry, ContractAddress } from "@mezo-dev-kit/contracts";
 import type { ReadCoordinate } from "@mezo-dev-kit/core";
 import { isAddress, isHexData, parseAddress } from "@mezo-dev-kit/evm";
@@ -86,10 +86,6 @@ export async function verifyRole(
 ): Promise<void> {
   const raw = await config.transport.getCode({ ...coordinate, address: target });
   if (!isHexData(raw) || raw.length === 2) throw new VaultReadError("InvalidValue", "runtimeCode");
-  if (
-    createHash("sha256")
-      .update(Buffer.from(raw.slice(2), "hex"))
-      .digest("hex") !== VAULT_MODEL.profiles[role].runtimeSha256
-  )
+  if (sha256(raw).slice(2) !== VAULT_MODEL.profiles[role].runtimeSha256)
     throw new VaultReadError("UnsupportedRuntime", role);
 }

@@ -21,6 +21,11 @@ tooling. The four unimplemented package directories are recorded there too.
 
 ## Run the offline foundation examples
 
+For a frontend, start with the [offline browser form](browser/README.md), which
+uses public EVM exports for exact amounts and portable hashing without a wallet
+or RPC endpoint. The [browser integration guide](../docs/guides/BROWSER_APPLICATIONS.md)
+covers request adapters, SSR and production verification.
+
 After the build below, this program demonstrates exact amounts, registry
 metadata, price policy, repayment allocation and project configuration:
 

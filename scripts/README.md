@@ -38,11 +38,13 @@ The recipes below name the additional prerequisites.
 | Create/list local work records or clean build output    | [Workspace utilities](workspace/README.md)                                        |
 
 `pnpm check` runs source/task checks, formatting, generated drift, typechecking,
-lint, boundaries, builds, built-package tests, the clean-workspace smoke test,
+lint, boundaries, builds, browser tests, built-package tests, the clean-workspace smoke test,
 and unit tests in sequence. It stops at the first failing command. Builds and
 tests can write build output and temporary files. This command does not collect
 live evidence or run every domain validator; select the owning module's checks
 when knowledge changes.
+
+Browser tests require [Playwright browsers and host libraries](../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration).
 
 ## Folder layout
 

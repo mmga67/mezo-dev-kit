@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { resolveContract, resolveRuntimeIdentity } from "@mezo-dev-kit/contracts";
 import type { ResolvedContract } from "@mezo-dev-kit/contracts";
@@ -39,10 +39,7 @@ export async function verifyContractRuntime(input: {
     networkId: coordinate.networkId,
     blockNumber: coordinate.blockNumber,
   });
-  const hash = (value: unknown) =>
-    createHash("sha256")
-      .update(Buffer.from(parseHexData(value).slice(2), "hex"))
-      .digest("hex");
+  const hash = (value: unknown) => sha256(parseHexData(value)).slice(2);
   if (hash(await transport.getCode(contract.address, coordinate)) !== identity.addressCodeSha256)
     throw new ExecutionError(
       "InvalidTransaction",

@@ -1,6 +1,10 @@
 {
   "formatVersion": 1,
-  "guides": ["docs/guides/MDK_CLI.md", "docs/guides/APPLICATION_MEMORY.md"],
+  "guides": [
+    "docs/guides/MDK_CLI.md",
+    "docs/guides/APPLICATION_MEMORY.md",
+    "docs/guides/BROWSER_APPLICATIONS.md"
+  ],
   "knowledgeRoles": ["canonical-record"],
   "domains": [
     {
@@ -44,6 +48,22 @@
       "id": "history",
       "packages": ["@mezo-dev-kit/core"],
       "resources": ["api:core"]
+    },
+    {
+      "id": "frontend",
+      "packages": [
+        "@mezo-dev-kit/evm",
+        "@mezo-dev-kit/chains",
+        "@mezo-dev-kit/contracts",
+        "@mezo-dev-kit/core"
+      ],
+      "resources": [
+        "guide:docs/guides/browser_applications.md",
+        "api:evm",
+        "api:chains",
+        "api:contracts",
+        "api:core"
+      ]
     }
   ],
   "exclusionReason": "The consumer corpus distributes canonical record data and public API references. Raw evidence/source artifacts, contributor maintenance, schema, fixture, review and derived duplicates remain outside this corpus. Original scope and support labels apply.",
@@ -53,6 +73,12 @@
       "title": "App essentials",
       "description": "Foundation SDKs, TypeScript guidance and local project memory.",
       "domains": ["typescript", "foundation", "memory"]
+    },
+    {
+      "id": "frontend",
+      "title": "Browser applications",
+      "description": "Universal SDK integration, wallet and request ports, frontend state and browser verification.",
+      "domains": ["typescript", "foundation", "frontend"]
     },
     {
       "id": "memory",

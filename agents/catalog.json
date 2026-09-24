@@ -136,6 +136,12 @@
       "domains": ["typescript", "applications"]
     },
     {
+      "name": "mdk-frontend-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-frontend-application",
+      "domains": ["frontend"]
+    },
+    {
       "name": "mdk-typescript-development",
       "audience": "contributor",
       "path": "agents/skills/mdk-typescript-development",

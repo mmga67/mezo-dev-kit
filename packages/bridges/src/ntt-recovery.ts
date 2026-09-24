@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { resolveContract, resolveEvent, resolveOperation } from "@mezo-dev-kit/contracts";
 import { getReceiptLogs, parseSubmissionRecord, verifyContractRuntime } from "@mezo-dev-kit/core";
 import type {
@@ -330,9 +330,7 @@ export function createNttRecoveryWriter(config: NttRecoveryConfig): Readonly<Ntt
       await transport.getCode(parseAddress(endpoint.token), coordinate),
     );
     nttRequire(
-      createHash("sha256")
-        .update(Buffer.from(tokenCode.slice(2), "hex"))
-        .digest("hex") === endpoint.tokenCodeSha256,
+      sha256(tokenCode).slice(2) === endpoint.tokenCodeSha256,
       "RuntimeMismatch",
       "NTT recovery token runtime differs",
     );

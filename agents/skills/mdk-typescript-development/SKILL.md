@@ -54,6 +54,9 @@ not restart capability assessment or require rereading unchanged instructions.
    read its package contract for checksum/precision policy and domain errors.
 6. Keep deterministic calculations pure and use integer base units. Separate
    them from transport, wallet, framework, storage, and global state.
+   SDK runtime source must work in Node and browsers without Node builtins,
+   ambient globals or import-time DOM access. Use the EVM value/hash helpers
+   and follow the [browser boundary guide](../../../docs/guides/BROWSER_APPLICATIONS.md).
 7. Generate TypeScript when generated source is consumed by TypeScript
    packages. Continue to resolve addresses, ABIs, networks, and protocol facts
    from their canonical owners rather than embedding copies in types.
@@ -76,6 +79,8 @@ not restart capability assessment or require rereading unchanged instructions.
    more than one package, templates/examples, or repository-wide behavior.
 4. Verify generated drift and built/packed public entrypoints when those
    surfaces are in scope. Runtime execution is not typechecking.
+   For SDK runtime compatibility, use `pnpm test:browser` after building; a
+   successful bundle or Node test alone does not prove browser behavior.
 
 ## Boundaries
 

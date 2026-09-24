@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import type { ContractAbiEntry, ContractAddress, ResolvedContract } from "@mezo-dev-kit/contracts";
 import type { HexData, ReadCoordinate } from "@mezo-dev-kit/core";
 import { isAddress, isHexData, parseAddress } from "@mezo-dev-kit/evm";
@@ -75,9 +75,7 @@ export function attempt<T>(field: string, read: () => T): LendingReadValue<T> {
 function codeHash(value: unknown): string {
   if (!isHexData(value) || value.length === 2)
     throw new LendingReadError("InvalidValue", "runtimeCode");
-  return createHash("sha256")
-    .update(Buffer.from(value.slice(2), "hex"))
-    .digest("hex");
+  return sha256(value).slice(2);
 }
 export async function verifyRuntime(
   config: LendingReaderConfig,

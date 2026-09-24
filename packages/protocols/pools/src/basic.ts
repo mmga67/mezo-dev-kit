@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { getTokenInterface, resolveBasicPoolInterface } from "@mezo-dev-kit/contracts";
 import type { ContractAbiEntry } from "@mezo-dev-kit/contracts";
@@ -156,9 +156,7 @@ export function createBasicPoolReader(config: BasicPoolReaderConfig): Readonly<B
       async function runtime(address: `0x${string}`, expected: string) {
         const code = parseHexData(await transport.getCode(address, coordinate));
         poolRequire(
-          createHash("sha256")
-            .update(Buffer.from(code.slice(2), "hex"))
-            .digest("hex") === expected,
+          sha256(code).slice(2) === expected,
           "IdentityMismatch",
           "pool dependency runtime differs",
         );

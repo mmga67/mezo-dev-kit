@@ -144,4 +144,64 @@ describe("coding-standard negative gates", () => {
     const contents = await readFile(path.join(fixtureDirectory, "unsafe-unknown.ts"), "utf8");
     expect(contents).toContain("trustedValue: string = untrustedValue");
   });
+
+  test.each([
+    'export { createHash } from "node:crypto";',
+    'import { readFile } from "fs/promises"; export { readFile };',
+    'export const load = () => import("node:fs", { with: { type: "json" } });',
+    'export type Stream = import("stream").Readable;',
+  ])("universal runtime rejects builtin imports: %s", async (code) => {
+    const root = await mkdtemp(path.join(tmpdir(), "mdk-universal-boundary-"));
+    try {
+      const directory = path.join(root, "packages", "portable");
+      await mkdir(path.join(directory, "src"), { recursive: true });
+      await mkdir(path.join(directory, "test"));
+      await writeJson(path.join(directory, "package.json"), {
+        name: "@mezo-dev-kit/portable",
+        exports: "./src/index.ts",
+      });
+      await writeFile(path.join(directory, "src", "index.ts"), code);
+      await writeFile(path.join(directory, "test", "fixture.ts"), code);
+      expect((await validateWorkspaceBoundaries(root)).map(({ code }) => code)).toEqual([
+        "node-runtime-import",
+      ]);
+      await writeJson(path.join(directory, "package.json"), {
+        name: "@mezo-dev-kit/cli",
+        exports: "./src/index.ts",
+      });
+      expect(await validateWorkspaceBoundaries(root)).toEqual([]);
+    } finally {
+      await rm(root, { force: true, recursive: true });
+    }
+  });
+
+  test.each([
+    "export const value = Buffer.from('abc');",
+    "export const value = globalThis.process;",
+    "export const value = require('fs');",
+  ])("SDK lint rejects Node globals: %s", async (code) => {
+    const eslint = new ESLint({ cwd: repositoryRoot });
+    const results = await eslint.lintText(code, {
+      filePath: path.join(repositoryRoot, "packages/evm/src/hash.ts"),
+    });
+    expect(results.flatMap(({ messages }) => messages.map(({ ruleId }) => ruleId))).toContain(
+      "no-restricted-globals",
+    );
+  });
+
+  test("SDK lint permits local identifiers and CLI Node globals", async () => {
+    const eslint = new ESLint({ cwd: repositoryRoot });
+    for (const [file, code] of [
+      [
+        "packages/evm/src/hash.ts",
+        "export function value(global: bigint): bigint { return global; }",
+      ],
+      ["packages/cli/src/index.ts", "export const value = process.version;"],
+    ] as const) {
+      const results = await eslint.lintText(code, { filePath: path.join(repositoryRoot, file) });
+      expect(results.flatMap(({ messages }) => messages.map(({ ruleId }) => ruleId))).not.toContain(
+        "no-restricted-globals",
+      );
+    }
+  });
 });

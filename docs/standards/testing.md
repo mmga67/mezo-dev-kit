@@ -114,6 +114,16 @@ Package needs may refine this config. Record why when disabling isolation or
 cleanup, sharing workers/fixtures, enabling concurrency, changing the runtime
 environment, or adding setup files.
 
+## Universal SDK verification
+
+Keep Node unit tests for deterministic and protocol behavior. SDK compatibility also
+requires `pnpm test:browser` after building: Vitest drives actual Chromium, Firefox
+and WebKit against packed public artifacts. The suite rejects browser externalization
+warnings, verifies declarations without configured Node ambient types and protects
+representative bundle sizes. It is part of `pnpm check`; browser binaries and Linux
+host libraries are explicit setup prerequisites, not silently installed or skipped.
+See the [browser verification guide](../guides/BROWSER_APPLICATIONS.md#verify-an-integration).
+
 ## Test data and fixtures
 
 Keep synthetic fixtures small, named, and obviously non-production. A fixture

@@ -387,6 +387,8 @@ code, expected implementation identity, factory mappings and protocol ownership.
 
 ## Byte hashing
 
+### `keccak256`
+
 `keccak256(value: unknown): Hash32` hashes validated hexadecimal bytes with Ethereum Keccak-256.
 Empty bytes are valid; text, odd-length hex and non-hex characters are rejected with
 `InvalidHexData`. This does not encode text or ABI values, and is distinct from standardized
@@ -405,6 +407,29 @@ console.log(emptyDigest);
 
 `emptyDigest` is a 32-byte Keccak-256 hash. The input `0x` means zero bytes, rather than the two
 text characters “0x”.
+
+### `sha256`
+
+`sha256(value: unknown): Hash32` synchronously hashes validated hexadecimal bytes or a
+`Uint8Array` with SHA-256 in Node and the browser. Empty bytes and leading zero bytes are
+preserved. The result is lowercase hexadecimal with a `0x` prefix. Text, arrays, other typed
+arrays, odd-length hex and non-hex characters are rejected with `InvalidHexData`.
+
+Encode text explicitly as UTF-8 when its digest is required:
+
+```ts
+import { sha256 } from "@mezo-dev-kit/evm";
+
+const codeDigest = sha256("0x616263");
+const textDigest = sha256(new TextEncoder().encode("abc"));
+
+console.log(codeDigest === textDigest); // true: both inputs contain the same bytes
+```
+
+This primitive does not select an identity algorithm or serialize protocol data. Preserve the
+owning format when comparing stored digests: existing runtime-code and event-checkpoint
+SHA-256 strings omit the `0x` prefix, so their callers use `.slice(2)`. SHA-256 and Keccak-256
+are different algorithms and cannot substitute for each other.
 
 ## Encoding sources
 

@@ -11,4 +11,4 @@ export type { AbiValue, AbiCodec, AbiIndexedHash, AbiEventValue } from "./codec.
 export type { EvmValueErrorCode } from "./errors.ts";
 export type { Address, Hash32, HexData, RpcQuantity } from "./types.ts";
 export { parseMinimalProxyImplementation } from "./proxy.ts";
-export { keccak256 } from "./hash.ts";
+export { keccak256, sha256 } from "./hash.ts";

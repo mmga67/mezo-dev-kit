@@ -21,7 +21,7 @@ Fresh clones contain this canonical source tree; the repository-root
 Contributor skills must not be shipped to consumer applications. Consumer
 skills must not depend on repository-internal maintenance workflows.
 
-The consumer catalog includes foundation and TypeScript usage, application
+The consumer catalog includes foundation, TypeScript and frontend usage, application
 memory, protocol integration and domain-specific procedures. The CLI's default
 set stays small; additional capability sets combine selected public packages,
 skills and matching references. `consumer/distribution.json` owns these sets.

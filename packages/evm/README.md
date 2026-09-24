@@ -63,6 +63,11 @@ encoding alone proves neither contract identity nor transaction success.
 This is a private workspace package; MDK keeps its Ox implementation behind
 its own types and errors.
 
+`keccak256` and `sha256` are synchronous byte-hashing primitives that work in Node and the
+browser. `sha256` also accepts `Uint8Array`; callers encode text explicitly with `TextEncoder`.
+Both return lowercase `0x`-prefixed hashes. See [byte hashing](REFERENCE.md#byte-hashing) for
+the input and digest contracts.
+
 ## Development
 
 From the repository root:

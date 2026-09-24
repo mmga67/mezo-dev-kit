@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { normalizePriceAmount } from "@mezo-dev-kit/prices";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { resolveRuntimeIdentity } from "@mezo-dev-kit/contracts";
@@ -49,9 +49,7 @@ function bool(value: unknown): boolean {
   return value;
 }
 function codeHash(value: unknown): string {
-  return createHash("sha256")
-    .update(Buffer.from(parseHexData(value).slice(2), "hex"))
-    .digest("hex");
+  return sha256(parseHexData(value)).slice(2);
 }
 
 /**

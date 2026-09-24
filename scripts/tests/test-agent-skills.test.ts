@@ -88,12 +88,12 @@ async function writeFixtureCatalog(
 
 await test("the maintained catalog validates", async () => {
   const result = await validateAgentSkills(repoRoot);
-  assert.equal(result.catalog.skills.length, 39);
+  assert.equal(result.catalog.skills.length, 40);
   assert.equal(
     result.catalog.skills.filter((skill) => skill.audience === "contributor").length,
     22,
   );
-  assert.equal(result.catalog.skills.filter((skill) => skill.audience === "consumer").length, 17);
+  assert.equal(result.catalog.skills.filter((skill) => skill.audience === "consumer").length, 18);
 });
 
 await test("skills materialize unchanged with strict audience separation", async () => {

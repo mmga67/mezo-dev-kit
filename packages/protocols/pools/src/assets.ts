@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import type { ContractRegistry } from "@mezo-dev-kit/contracts";
 import { verifyContractRuntime } from "@mezo-dev-kit/core";
 import type { ReadCoordinate, RpcTransport } from "@mezo-dev-kit/core";
@@ -34,9 +34,7 @@ export async function verifyPoolWriterAssets(input: {
     ] as const) {
       const code = parseHexData(await transport.getCode(address, coordinate));
       poolRequire(
-        createHash("sha256")
-          .update(Buffer.from(code.slice(2), "hex"))
-          .digest("hex") === expected,
+        sha256(code).slice(2) === expected,
         "IdentityMismatch",
         "mapped ERC20 writer asset runtime changed",
       );

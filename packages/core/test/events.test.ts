@@ -143,6 +143,31 @@ test("resume overlaps idempotently and validates checkpoint query identity", asy
     scanner.scan({ ...input, checkpoint: { ...first.checkpoint, anchors: [] } }),
   ).rejects.toThrow("anchor window");
 });
+
+test("portable hashing resumes a checkpoint created with the previous Node digests", async () => {
+  const { scanner, log, state } = fixture();
+  state.logs = [log()];
+  // Captured from the Node SHA-256 implementation before the universal-runtime migration.
+  const sourceId = "0293999a4aaac44e36c707cb206764e312a8f81637faf1b585d417bd3f88b9be";
+  const queryId = "01a2c8f9da8f59fdf7c310e7faf4f67a855c65f580412f0f6d809a5347eb614b";
+  const result = await scanner.scan({
+    ...input,
+    checkpoint: {
+      schemaVersion: 1,
+      queryId,
+      fromBlock: base.toString(),
+      throughBlock: (base + 1n).toString(),
+      anchors: [base, base + 1n].map((number) => ({
+        blockNumber: number.toString(),
+        blockHash: hash(number),
+      })),
+    },
+  });
+  expect(result.status).toBe("complete");
+  expect(result.queryId).toBe(queryId);
+  expect(result.resumedThrough).toBe(base + 1n);
+  expect(result.events[0]?.id).toContain(sourceId);
+});
 test("changed anchors request rewind to the last matching block", async () => {
   const { scanner, state } = fixture();
   const first = await scanner.scan(input);

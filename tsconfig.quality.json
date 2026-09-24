@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "resolveJsonModule": true,
@@ -10,6 +11,6 @@
     },
     "types": ["node"]
   },
-  "include": ["scripts/**/*.ts", "vitest.quality.config.ts"],
+  "include": ["scripts/**/*.ts", "vitest.quality.config.ts", "vitest.browser.config.ts"],
   "exclude": ["scripts/fixtures/coding-gates/**"]
 }

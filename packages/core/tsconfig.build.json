@@ -14,7 +14,8 @@
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": true,
     "sourceMap": true,
-    "types": ["node"]
+    "types": [],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
   "include": ["src/index.ts", "src/read-client.ts", "src/read-errors.ts", "src/read-validation.ts"],
   "exclude": ["test/**/*.ts", "vitest.config.ts"]

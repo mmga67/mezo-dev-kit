@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import type { ResolvedContract } from "@mezo-dev-kit/contracts";
 import {
@@ -172,10 +172,10 @@ export function createEventScanner(config: EventScannerConfig): Readonly<EventSc
         blockNumber: from,
       });
       const sourceKey = identity(source);
-      const sourceId = createHash("sha256").update(sourceKey).digest("hex");
-      const queryId = createHash("sha256")
-        .update(JSON.stringify([sourceKey, from.toString(), filter]))
-        .digest("hex");
+      const sourceId = sha256(new TextEncoder().encode(sourceKey)).slice(2);
+      const queryId = sha256(
+        new TextEncoder().encode(JSON.stringify([sourceKey, from.toString(), filter])),
+      ).slice(2);
       const previous = checkpoint(input.checkpoint, queryId, from, to, policy.overlapBlocks);
       // Resume from the retained overlap, not just the next unseen block: those
       // hashes must still agree before older checkpoint coverage can be trusted.

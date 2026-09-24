@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { getNativeTokenProfile, resolveContract } from "@mezo-dev-kit/contracts";
 import type { ContractAbiEntry, ContractId } from "@mezo-dev-kit/contracts";
@@ -149,10 +149,7 @@ export async function transferTokenRuntime(
     networkId: endpoint.networkId,
     tokenAddress: parseAddress(endpoint.token),
   });
-  const hash = (code: unknown) =>
-    createHash("sha256")
-      .update(Buffer.from(parseHexData(code).slice(2), "hex"))
-      .digest("hex");
+  const hash = (code: unknown) => sha256(parseHexData(code)).slice(2);
   transferRequire(
     hash(await transport.getCode(profile.tokenAddress, coordinate)) === profile.addressCodeSha256,
     "RuntimeMismatch",

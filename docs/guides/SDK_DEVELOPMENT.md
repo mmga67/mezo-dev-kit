@@ -102,11 +102,14 @@ To verify built entrypoints and clean-checkout behavior:
 
 ```sh
 pnpm build
+pnpm test:browser
 pnpm test:built
 pnpm test:clean
 ```
 
-Built checks exercise package exports without source fallbacks. The clean
+Install the [browser test prerequisites](BROWSER_APPLICATIONS.md#verify-an-integration)
+before `test:browser` or the full `check`. Built checks exercise package exports
+without source fallbacks. The clean
 check creates a disposable source copy, installs the frozen lockfile offline,
 and checks source types plus built imports/runtime. The separate
 [private tooling pilot](MDK_CLI.md) owns packed-artifact and standalone-project
@@ -169,7 +172,7 @@ pnpm test:shuffle
 ```
 
 `pnpm check` combines formatting, generation drift, typechecking, lint,
-boundaries, builds, and tests. `test:shuffle` separately checks seeded test
+boundaries, builds, packed SDK browser checks, and tests. `test:shuffle` separately checks seeded test
 order. Neither command captures live evidence or renews review dates.
 
 [Contributor verification](../../CONTRIBUTING.md#verification) owns the

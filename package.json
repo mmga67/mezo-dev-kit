@@ -14,11 +14,11 @@
     "context": "node scripts/agents/retrieve-context.ts",
     "boundaries": "node scripts/checks/validate-package-boundaries.ts",
     "build": "pnpm --recursive --if-present run build",
-    "check": "pnpm check:source && pnpm check:tasks && pnpm format:check && pnpm generate:check && pnpm typecheck && pnpm lint && pnpm boundaries && pnpm build && pnpm test:built && pnpm test:clean && pnpm test",
-    "format": "prettier --write package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts \"scripts/**/*.ts\" \"scripts/**/*.md\" packages/chains packages/contracts packages/core packages/protocols/musd-savings packages/protocols/musdc-lending packages/protocols/usdc-lending-vault packages/evm packages/protocols/musd-borrowing packages/tokens packages/protocols/incentives packages/prices packages/protocols/pools packages/swaps packages/protocols/musd-institutional-debt packages/protocols/musd-redemptions packages/bridges examples packages/cli templates/typescript",
-    "format:check": "prettier --check package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts \"scripts/**/*.ts\" \"scripts/**/*.md\" packages/chains packages/contracts packages/core packages/protocols/musd-savings packages/protocols/musdc-lending packages/protocols/usdc-lending-vault packages/evm packages/protocols/musd-borrowing packages/tokens packages/protocols/incentives packages/prices packages/protocols/pools packages/swaps packages/protocols/musd-institutional-debt packages/protocols/musd-redemptions packages/bridges examples packages/cli templates/typescript",
+    "check": "pnpm check:source && pnpm check:tasks && pnpm format:check && pnpm generate:check && pnpm typecheck && pnpm lint && pnpm boundaries && pnpm build && pnpm test:browser && pnpm test:built && pnpm test:clean && pnpm test",
+    "format": "prettier --write package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts vitest.browser.config.ts \"scripts/**/*.ts\" \"scripts/**/*.md\" packages/chains packages/contracts packages/core packages/protocols/musd-savings packages/protocols/musdc-lending packages/protocols/usdc-lending-vault packages/evm packages/protocols/musd-borrowing packages/tokens packages/protocols/incentives packages/prices packages/protocols/pools packages/swaps packages/protocols/musd-institutional-debt packages/protocols/musd-redemptions packages/bridges examples packages/cli templates/typescript",
+    "format:check": "prettier --check package.json pnpm-workspace.yaml tsconfig.json tsconfig.base.json tsconfig.quality.json eslint.config.mjs .prettierrc.json vitest.quality.config.ts vitest.browser.config.ts \"scripts/**/*.ts\" \"scripts/**/*.md\" packages/chains packages/contracts packages/core packages/protocols/musd-savings packages/protocols/musdc-lending packages/protocols/usdc-lending-vault packages/evm packages/protocols/musd-borrowing packages/tokens packages/protocols/incentives packages/prices packages/protocols/pools packages/swaps packages/protocols/musd-institutional-debt packages/protocols/musd-redemptions packages/bridges examples packages/cli templates/typescript",
     "generate:check": "pnpm --filter @mezo-dev-kit/evm build && node scripts/generate/generate-core-transaction-model.ts --check && node scripts/generate/generate-chains-package.ts --check && node scripts/generate/generate-contracts-package.ts --check && node scripts/generate/generate-savings-package.ts --check && node scripts/generate/generate-lending-package.ts --check && node scripts/generate/generate-vault-package.ts --check && node scripts/generate/generate-borrowing-package.ts --check && node scripts/generate/generate-protocol-operations.ts --check && node scripts/generate/generate-prices-package.ts --check && node scripts/generate/generate-pools-package.ts --check && node scripts/generate/generate-institutional-package.ts --check && node scripts/generate/generate-redemption-package.ts --check && node scripts/generate/generate-incentives-package.ts --check && node scripts/generate/generate-bridges-package.ts --check && node scripts/generate/generate-cli-schemas.ts --check",
-    "lint": "eslint vitest.quality.config.ts \"scripts/{agents,checks,evidence,generate,lib,tests,workspace}/*.ts\" \"packages/**/*.{ts,tsx}\" \"examples/**/*.{ts,tsx}\"",
+    "lint": "eslint vitest.quality.config.ts vitest.browser.config.ts \"scripts/{agents,checks,evidence,generate,lib,tests,workspace}/*.ts\" \"packages/**/*.{ts,tsx}\" \"examples/**/*.{ts,tsx}\"",
     "test": "pnpm test:quality && pnpm --recursive --if-present run test",
     "test:built": "node scripts/tests/test-foundational-built-packages.ts && node scripts/tests/test-savings-built-package.ts && node scripts/tests/test-lending-built-package.ts && node scripts/tests/test-vault-built-package.ts && node scripts/tests/test-borrowing-built-package.ts && node scripts/tests/test-sdk-references.ts && node scripts/tests/test-writer-built-packages.ts && node scripts/tests/test-native-built-package.ts && pnpm --filter @mezo-dev-kit/examples test:built && node scripts/tests/test-cli-built-package.ts",
     "test:clean": "node scripts/tests/test-clean-workspace.ts",
@@ -34,16 +34,19 @@
     "tasks:list": "node scripts/workspace/tasks.ts list",
     "task:new": "node scripts/workspace/tasks.ts new",
     "cli:bundle": "node scripts/workspace/mdk-distribution.ts bundle",
-    "cli:pack": "node scripts/workspace/mdk-distribution.ts pack"
+    "cli:pack": "node scripts/workspace/mdk-distribution.ts pack",
+    "test:browser": "vitest run --config vitest.browser.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@mezo-dev-kit/cli": "workspace:*",
     "@types/node": "24.13.3",
     "eslint": "10.8.1",
+    "playwright": "1.63.0",
     "prettier": "3.9.6",
     "typescript": "6.0.3",
     "typescript-eslint": "8.67.0",
-    "vitest": "4.1.11",
-    "@mezo-dev-kit/cli": "workspace:*"
+    "vite": "8.2.1",
+    "vitest": "4.1.11"
   }
 }

@@ -8,6 +8,8 @@ Choose a starting point for building with MDK, understanding Mezo, or contributi
   packages, skills, and matching references from its own console.
 - [External application guide](guides/EXTERNAL_APPLICATIONS.md) — application
   ownership, package integration, and optional consumer skills.
+- [Browser integration guide](guides/BROWSER_APPLICATIONS.md) — frontend and
+  SSR boundaries, request adapters, and browser verification.
 - [SDK reference](reference/sdk.md) — package APIs, required inputs, errors,
   compatibility, and verification scope.
 
@@ -15,6 +17,8 @@ Choose a starting point for building with MDK, understanding Mezo, or contributi
 
 - [Run the offline example](../examples/README.md#run-the-offline-foundation-examples) —
   try package calls without an RPC connection or wallet.
+- [Browser amount form](../examples/browser/README.md) — exact conversion and
+  portable hashing through public SDK exports.
 - [Workflow examples](../examples/README.md) — follow complete protocol
   lifecycles, with local-fork setup for transaction demonstrations.
 - [Package examples](../examples/PACKAGES.md) — find focused operations by package.

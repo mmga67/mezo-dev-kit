@@ -37,5 +37,6 @@
     "README.md",
     "REFERENCE.md",
     "LICENSE"
-  ]
+  ],
+  "sideEffects": false
 }

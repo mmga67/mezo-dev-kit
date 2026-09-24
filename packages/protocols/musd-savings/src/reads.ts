@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 
 import type { ContractAbiEntry, ContractAddress } from "@mezo-dev-kit/contracts";
 import type { HexData, ReadCoordinate } from "@mezo-dev-kit/core";
@@ -73,9 +73,7 @@ export function scalar(value: unknown, field: string): bigint {
 export function codeHash(value: unknown): string {
   if (!isHexData(value) || value.length === 2)
     throw new SavingsReadError("InvalidReadValue", "runtimeCode");
-  return createHash("sha256")
-    .update(Buffer.from(value.slice(2), "hex"))
-    .digest("hex");
+  return sha256(value).slice(2);
 }
 export async function implementation(
   config: SavingsReaderConfig,

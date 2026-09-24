@@ -247,6 +247,17 @@ than anticipated reuse.
 
 ### Pure domain logic
 
+SDK runtime packages share one portable ESM implementation across Node and modern
+browsers. EVM owns portable byte hashing; protocol owners retain digest meaning and
+runtime identity checks. Node builtins and process globals belong in the CLI or
+repository tooling, while applications inject request functions, signers and storage.
+SDK modules have no required import-only side effects; their package metadata allows
+bundlers to omit unused modules without retaining unrelated registry data.
+
+The [browser integration guide](docs/guides/BROWSER_APPLICATIONS.md) owns frontend
+setup, compatibility and verification. Framework adapters remain optional consumers
+of the same public APIs, with no protocol logic moved into UI packages.
+
 Financial and deterministic protocol calculations accept typed values and do
 not perform RPC calls, read wallet state, access React, use storage, or depend
 on global configuration. Units, precision, rounding, caps, and invalid states

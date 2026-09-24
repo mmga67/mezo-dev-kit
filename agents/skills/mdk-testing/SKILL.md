@@ -48,6 +48,11 @@ exercise lines, duplicate implementation details, or satisfy a count.
    ordering is a plausible failure mode.
 9. Review whether each test would fail for the intended regression. Remove
    redundant tests that add maintenance cost without distinguishing behavior.
+10. For SDK runtime portability, run the packed-artifact `pnpm test:browser`
+    suite after building. Keep browser behavior, Node/SSR imports, declaration
+    compatibility and representative bundle budgets distinct. Follow the
+    [browser setup guide](../../../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration);
+    missing browsers or host libraries are failures to resolve, not skips.
 
 ## Boundaries
 

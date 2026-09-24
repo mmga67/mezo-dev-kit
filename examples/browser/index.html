@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MDK browser example</title>
+    <style>
+      body {
+        font:
+          1rem/1.6 system-ui,
+          sans-serif;
+        max-width: 42rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      label,
+      output {
+        display: block;
+        margin-top: 1rem;
+      }
+      input,
+      button {
+        font: inherit;
+        padding: 0.5rem;
+      }
+      output {
+        overflow-wrap: anywhere;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Exact amounts in your browser</h1>
+      <p>
+        This offline example converts an amount and hashes its UTF-8 representation. It makes no
+        network requests.
+      </p>
+      <form>
+        <label for="amount">Amount</label>
+        <input id="amount" name="amount" inputmode="decimal" value="1.25" required />
+        <label for="decimals">Decimals (illustrative asset precision)</label>
+        <input id="decimals" name="decimals" type="number" min="0" max="255" value="6" required />
+        <p><button type="submit">Convert amount</button></p>
+      </form>
+      <output aria-live="polite"></output>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

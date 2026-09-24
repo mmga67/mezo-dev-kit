@@ -5,13 +5,14 @@ installed. The filename alone does not determine the test runner.
 
 ## Normal commands
 
-| Command             | Coverage and prerequisites                                                                                                                                            |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm test:quality` | The automation Vitest suites explicitly selected by [vitest.quality.config.ts](../../vitest.quality.config.ts)                                                        |
-| `pnpm test`         | Quality suites, then workspace packages' test commands                                                                                                                |
-| `pnpm test:shuffle` | Quality and package suites with the repository's reproducible shuffle seed                                                                                            |
-| `pnpm test:built`   | Built-package/public-entrypoint checks plus examples; run `pnpm build` first                                                                                          |
-| `pnpm test:clean`   | Copies source to a temporary workspace, installs from the local pnpm store offline, typechecks, builds, tests entrypoints/examples, and verifies both skill audiences |
+| Command             | Coverage and prerequisites                                                                                                                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm test:quality` | The automation Vitest suites explicitly selected by [vitest.quality.config.ts](../../vitest.quality.config.ts)                                                                                          |
+| `pnpm test`         | Quality suites, then workspace packages' test commands                                                                                                                                                  |
+| `pnpm test:shuffle` | Quality and package suites with the repository's reproducible shuffle seed                                                                                                                              |
+| `pnpm test:built`   | Built-package/public-entrypoint checks plus examples; run `pnpm build` first                                                                                                                            |
+| `pnpm test:browser` | Packed SDKs in Chromium, Firefox and WebKit, browser declarations, Node imports and bundle budgets; build and [install browsers](../../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration) first |
+| `pnpm test:clean`   | Copies source to a temporary workspace, installs from the local pnpm store offline, typechecks, builds, tests entrypoints/examples, and verifies both skill audiences                                   |
 
 Target one Vitest suite:
 

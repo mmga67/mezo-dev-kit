@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { isBuiltin } from "node:module";
 
 import ts from "typescript";
 
@@ -39,6 +40,7 @@ export interface BoundaryDiagnostic {
     | "dependency-cycle"
     | "invalid-package-manifest"
     | "missing-export-map"
+    | "node-runtime-import"
     | "undeclared-workspace-dependency"
     | "undeclared-workspace-entrypoint";
   readonly file: string;
@@ -178,13 +180,15 @@ function moduleSpecifiers(sourceFile: ts.SourceFile): readonly string[] {
       specifiers.push(node.moduleSpecifier.text);
     } else if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
       const [argument] = node.arguments;
-      if (
-        node.arguments.length === 1 &&
-        argument !== undefined &&
-        ts.isStringLiteralLike(argument)
-      ) {
+      if (argument !== undefined && ts.isStringLiteralLike(argument)) {
         specifiers.push(argument.text);
       }
+    } else if (
+      ts.isImportTypeNode(node) &&
+      ts.isLiteralTypeNode(node.argument) &&
+      ts.isStringLiteralLike(node.argument.literal)
+    ) {
+      specifiers.push(node.argument.literal.text);
     }
     ts.forEachChild(node, visit);
   }
@@ -218,8 +222,20 @@ function inspectImports(
       true,
     );
     const productionSource = path.relative(consumer.directory, file).startsWith(`src${path.sep}`);
+    const universalRuntime =
+      productionSource &&
+      consumer.manifest.name.startsWith("@mezo-dev-kit/") &&
+      consumer.manifest.name !== "@mezo-dev-kit/cli";
 
     for (const specifier of moduleSpecifiers(source)) {
+      if (universalRuntime && (specifier.startsWith("node:") || isBuiltin(specifier))) {
+        diagnostics.push({
+          code: "node-runtime-import",
+          file,
+          message: `${consumer.manifest.name} runtime imports Node-only module ${specifier}.`,
+        });
+        continue;
+      }
       if (specifier.startsWith(".")) {
         const provider = packageForPath(packages, path.resolve(path.dirname(file), specifier));
         if (provider !== undefined && provider.manifest.name !== consumer.manifest.name) {

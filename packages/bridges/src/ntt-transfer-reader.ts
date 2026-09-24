@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { sha256 } from "@mezo-dev-kit/evm";
 import { getNetwork } from "@mezo-dev-kit/chains";
 import { getTokenInterface, resolveContract } from "@mezo-dev-kit/contracts";
 import type { ContractAbiEntry, ContractId } from "@mezo-dev-kit/contracts";
@@ -140,9 +140,7 @@ export function createNttTokenTargetResolver(
     );
     const code = parseHexData(await transport.getCode(token, coordinate));
     nttRequire(
-      createHash("sha256")
-        .update(Buffer.from(code.slice(2), "hex"))
-        .digest("hex") === endpoint.tokenCodeSha256,
+      sha256(code).slice(2) === endpoint.tokenCodeSha256,
       "RuntimeMismatch",
       "NTT approval token runtime differs",
     );
@@ -246,9 +244,7 @@ export async function nttTokenRuntime(
 ): Promise<void> {
   const code = parseHexData(await transport.getCode(parseAddress(endpoint.token), coordinate));
   nttRequire(
-    createHash("sha256")
-      .update(Buffer.from(code.slice(2), "hex"))
-      .digest("hex") === endpoint.tokenCodeSha256,
+    sha256(code).slice(2) === endpoint.tokenCodeSha256,
     "RuntimeMismatch",
     "NTT token runtime differs",
   );
@@ -285,9 +281,7 @@ export async function nttEndpoint(
   signal?.throwIfAborted();
   const tokenCode = parseHexData(await transport.getCode(token, coordinate));
   nttRequire(
-    createHash("sha256")
-      .update(Buffer.from(tokenCode.slice(2), "hex"))
-      .digest("hex") === endpoint.tokenCodeSha256,
+    sha256(tokenCode).slice(2) === endpoint.tokenCodeSha256,
     "RuntimeMismatch",
     "NTT token runtime differs from the captured representation",
   );

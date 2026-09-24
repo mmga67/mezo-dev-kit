@@ -36,6 +36,10 @@ For Mezo-specific work:
 
 Do not load unrelated MDK skills by default.
 
+For browser or SSR integration, use the installed `mdk-frontend-application` skill
+alongside the relevant public API/domain guidance. It covers wallet/request ports,
+exact amount forms, asynchronous UI state and browser bundle verification.
+
 ### Add capabilities and retain project context
 
 Use `pnpm exec mdk sets` and `pnpm exec mdk skills` to inspect the installed

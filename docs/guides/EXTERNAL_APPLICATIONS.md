@@ -33,6 +33,10 @@ See [capability additions](MDK_CLI.md#add-a-capability-set-or-skill).
 
 ## Application Model
 
+For browser and SSR applications, follow the [browser integration guide](BROWSER_APPLICATIONS.md).
+The optional `frontend` capability set adds foundation packages and a dedicated consumer
+skill; it preserves the application's framework, wallet library and design system.
+
 Normal applications live outside the MDK monorepo. Repository examples and
 templates demonstrate integrations and project generation.
 
