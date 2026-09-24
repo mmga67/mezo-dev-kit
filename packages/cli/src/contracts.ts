@@ -43,6 +43,13 @@ export interface ConsumerDomain {
   readonly packages: readonly string[];
   readonly resources: readonly string[];
 }
+/** A user-facing selection of existing package, skill and reference domains. */
+export interface CapabilitySet {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly domains: readonly string[];
+}
 export interface ReferenceBundle {
   readonly formatVersion: 1;
   readonly id: string;
@@ -50,6 +57,8 @@ export interface ReferenceBundle {
   readonly packages: readonly PackageArtifact[];
   readonly domains: readonly ConsumerDomain[];
   readonly skills: readonly ConsumerSkill[];
+  /** Absent in older v1 bundles, which retain their original digest. */
+  readonly sets?: readonly CapabilitySet[];
   readonly template: FileDigest;
   readonly starter: readonly FileDigest[];
   readonly resources: readonly ReferenceResource[];
@@ -156,9 +165,13 @@ export function safePath(value: unknown): string {
   return path;
 }
 
-function keys(value: Record<string, unknown>, allowed: readonly string[]): void {
+function keys(
+  value: Record<string, unknown>,
+  allowed: readonly string[],
+  optional: readonly string[] = [],
+): void {
   if (
-    Object.keys(value).some((key) => !allowed.includes(key)) ||
+    Object.keys(value).some((key) => !allowed.includes(key) && !optional.includes(key)) ||
     allowed.some((key) => !Object.hasOwn(value, key))
   )
     throw new CliError("InvalidInput", `Expected fields: ${allowed.join(", ")}`);
@@ -229,19 +242,23 @@ export function parseConfig(value: unknown): ProjectConfig {
 }
 export function parseBundle(value: unknown): ReferenceBundle {
   const obj = record(value, "bundle");
-  keys(obj, [
-    "formatVersion",
-    "id",
-    "source",
-    "packages",
-    "domains",
-    "skills",
-    "template",
-    "starter",
-    "resources",
-    "exclusions",
-    "remoteBase",
-  ]);
+  keys(
+    obj,
+    [
+      "formatVersion",
+      "id",
+      "source",
+      "packages",
+      "domains",
+      "skills",
+      "template",
+      "starter",
+      "resources",
+      "exclusions",
+      "remoteBase",
+    ],
+    ["sets"],
+  );
   version(obj.formatVersion);
   const source = record(obj.source, "source");
   keys(source, ["revision", "inputsDigest"]);
@@ -331,6 +348,29 @@ export function parseBundle(value: unknown): ReferenceBundle {
     return { name, domains: strings(item.domains), files };
   });
   unique(skills, (item) => item.name);
+  const sets =
+    obj.sets === undefined
+      ? undefined
+      : arrayValue(obj.sets, "capability sets").map((value) => {
+          const item = record(value, "capability set");
+          keys(item, ["id", "title", "description", "domains"]);
+          const id = identifier(item.id);
+          if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id))
+            throw new CliError("InvalidInput", "Invalid capability set ID");
+          const selected = strings(item.domains);
+          if (
+            !selected.length ||
+            selected.some((id) => !domains.some((domain) => domain.id === id))
+          )
+            throw new CliError("InvalidInput", "Unresolved capability set domain");
+          return {
+            id,
+            title: textValue(item.title, "set title"),
+            description: textValue(item.description, "set description"),
+            domains: selected,
+          };
+        });
+  if (sets) unique(sets, (item) => item.id);
   const exclusions = arrayValue(obj.exclusions, "exclusions").map((value) => {
     const item = record(value, "exclusion");
     keys(item, ["id", "sourcePath", "reason"]);
@@ -389,6 +429,7 @@ export function parseBundle(value: unknown): ReferenceBundle {
     packages,
     domains,
     skills,
+    ...(sets ? { sets } : {}),
     template,
     starter,
     resources,
@@ -419,6 +460,7 @@ export function bundleDigest(bundle: Omit<ReferenceBundle, "id"> | ReferenceBund
       packages,
       domains,
       skills,
+      ...(bundle.sets ? { sets: bundle.sets } : {}),
       template,
       starter,
       resources,

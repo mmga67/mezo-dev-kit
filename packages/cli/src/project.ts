@@ -28,7 +28,7 @@ export function packageManifestDigest(value: unknown): string {
     .digest("hex");
 }
 
-async function findPackage(name: string, from: string, targetRoot: string): Promise<string> {
+async function findPackage(name: string, from: string, targetRoot: string): Promise<string | null> {
   let candidateRoot = from;
   for (let depth = 0; depth < 24; depth++) {
     const candidate = resolve(candidateRoot, "node_modules", name);
@@ -40,13 +40,14 @@ async function findPackage(name: string, from: string, targetRoot: string): Prom
     if (candidateRoot === targetRoot || dirname(candidateRoot) === candidateRoot) break;
     candidateRoot = dirname(candidateRoot);
   }
-  throw new CliError("Incompatible", `Install the qualified artifact for ${name} in this project`);
+  return null;
 }
 
 export async function inspectPackages(
   projectRoot: string,
   bundle: ReferenceBundle,
   config: ProjectConfig,
+  options: { readonly allowMissing?: boolean } = {},
 ): Promise<readonly InstalledPackage[]> {
   const root = resolve(projectRoot);
   const manifest = record(
@@ -69,6 +70,13 @@ export async function inspectPackages(
     const expected = bundle.packages.find((candidate) => candidate.name === item.name);
     if (!expected) throw new CliError("Incompatible", `No matching guidance for ${item.name}`);
     const directory = await findPackage(item.name, item.from, root);
+    if (!directory) {
+      if (options.allowMissing) continue;
+      throw new CliError(
+        "Incompatible",
+        `Install the qualified artifact for ${item.name} in this project`,
+      );
+    }
     if (visited.has(directory)) continue;
     visited.add(directory);
     if (visited.size > 128)
@@ -99,7 +107,7 @@ export async function inspectPackages(
     const domain = bundle.domains.find((item) => item.id === selected);
     if (!domain) throw new CliError("InvalidInput", `Unknown domain: ${selected}`);
     for (const name of domain.packages)
-      if (!installed.some((item) => item.name === name))
+      if (!options.allowMissing && !installed.some((item) => item.name === name))
         throw new CliError(
           "Incompatible",
           `Domain ${selected} requires ${name}; install the qualified artifact first`,

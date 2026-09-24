@@ -14,15 +14,22 @@ APIs, required inputs, verification, and protocol-writer qualification.
 
 Choose the path that matches your starting point:
 
-| Starting point                      | Next step                                                                                                                                                |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| New application                     | [Build the private artifacts](MDK_CLI.md#build-private-artifacts), then [create a TypeScript project](MDK_CLI.md#create-a-standalone-typescript-project) |
-| Existing TypeScript application     | Follow [existing-application setup](MDK_CLI.md#initialize-an-existing-application)                                                                       |
-| Explore APIs before creating an app | Run the [offline source example](../../README.md#try-the-offline-example), then read a [focused package example](../../examples/PACKAGES.md)             |
+| Starting point                      | Next step                                                                                                                                                         |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| New application                     | [Open the guided console](MDK_CLI.md#guided-setup) with `pnpm cli` in MDK, or `node start.ts` in a prebuilt private kit                                           |
+| Existing TypeScript application     | Follow [existing-application setup](MDK_CLI.md#initialize-an-existing-application)                                                                                |
+| Explore APIs before creating an app | Run the [offline source example](../../examples/README.md#run-the-offline-foundation-examples), then read a [focused package example](../../examples/PACKAGES.md) |
 
 The generated starter runs a deterministic fixture without an RPC connection.
 Its setup guide shows how to install the matching artifacts and verify the
 project. Keep MDK package and reference artifacts from the same compatible set.
+
+The starter includes four foundation packages and TypeScript, foundation and
+memory skills. From its `pnpm mdk` menu, choose **Add capabilities or skills**
+to add a domain set such as borrowing, swaps or liquidity. The CLI previews and
+installs the selected packages and matching guidance together. Individual
+skills can be selected separately; their required domains are included.
+See [capability additions](MDK_CLI.md#add-a-capability-set-or-skill).
 
 ## Application Model
 
@@ -108,6 +115,11 @@ Agent assistance is optional. Applications using it have two instruction owners:
 - **MDK consumer skills:** describe supported application-facing usage.
   Install the version-compatible consumer selection into the application's
   chosen discovery root. Contributor maintenance skills belong to MDK itself.
+
+The installed memory skill works with application-owned local observations and
+reviewed team context. Nothing is captured automatically and no memory service
+is required. See [application memory](APPLICATION_MEMORY.md) for a complete
+cross-session example. MDK updates preserve your memory and custom skills.
 
 The ordinary discovery root is `.agents/skills/`; documented compatibility
 roots receive the same portable skill directories. Use

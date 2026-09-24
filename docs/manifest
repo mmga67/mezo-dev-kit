@@ -1,8 +1,8 @@
-# Mezo Development Kit — Manifest v1.1.0
+# Mezo Development Kit — Manifest v1.3.0
 
 **Status:** Accepted project baseline
 
-**Released:** 2026-09-16
+**Released:** 2026-09-22
 
 **Improvement log:** [Manifest changelog](./manifest-changelog.md)
 
@@ -439,6 +439,22 @@ The private CLI is a project development dependency, separate from runtime SDKs.
 The application owns source, configuration, and AGENTS instructions. Initialization
 creates instructions only when absent; synchronization does not take ownership
 of them. Only selected portable consumer skills are installed.
+
+Consumer capability sets compose existing SDK, skill and reference domains.
+The default application set supplies foundation packages, TypeScript guidance
+and optional-use local memory. Explicit additions preview and install matching
+private dependencies and guidance while preserving application-owned content.
+Set selection does not upgrade SDK snapshots, authorize transactions or change
+protocol support. Memory entries belong to the application and remain outside
+the guidance lock; no contributor observations are exported into new apps.
+
+The guided console coordinates private artifact preparation, application setup
+and checks around the noninteractive command engine. The repository launcher
+selects an external application explicitly; consumer setup must not initialize
+the MDK source workspace. Portable private kits include a prebuilt console and
+matching artifacts. Global installation is optional. Interactive choices retain
+the command engine's compatibility, ownership and recovery boundaries; package
+installation is not covered by the guidance recovery journal.
 
 A generated consumer corpus declares its complete reference index, included
 resources, and exclusions. Pinned deeper retrieval and full declared-corpus

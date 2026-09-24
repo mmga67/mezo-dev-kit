@@ -3,24 +3,56 @@
 `@mezo-dev-kit/cli` sets up MDK guidance in an application, checks SDK
 compatibility, and makes the bundled documentation searchable offline. It can
 also create a TypeScript starter from a verified private artifact set.
+The starter includes foundation packages, TypeScript/foundation skills and
+project memory. Add domain capabilities later from the console.
 
 ## Start here
 
-Use the [project setup guide](../../docs/guides/MDK_CLI.md) to build/install the
-private artifacts or create a new application. The CLI runs on Node 24+ as a
-project development dependency. It is not published to a package registry.
+From a prepared MDK checkout, run `pnpm cli` to create a project through guided
+choices. The console handles artifact preparation, installation, guidance and
+checks. A recipient of a prebuilt private kit runs `node start.ts` inside the kit.
+Use the [project setup guide](../../docs/guides/MDK_CLI.md#guided-setup) for prerequisites
+and the complete flow. The CLI runs on Node 24+ and is not published to a registry.
 
-In an application with the CLI installed, preview and apply setup:
+In a generated application, `pnpm mdk` opens the project console. In any project
+with the CLI installed, use `pnpm exec mdk`. Neither requires a global install.
+Use `mdk console --plain` for numbered choices. Explicit commands remain available
+for scripts and AI agents; prompts never open in CI or noninteractive execution.
+
+With matching SDKs already installed, initialize their guidance:
 
 ```sh
-pnpm exec mdk init --domains typescript,foundation --dry-run
-pnpm exec mdk init --domains typescript,foundation
+pnpm exec mdk init --set base --dry-run
+pnpm exec mdk init --set base
 pnpm exec mdk doctor --json
 ```
 
 Initialization installs the selected consumer guidance and references. It creates
 `AGENTS.md` only when absent; the application owns its instructions and source.
 Use `--project` to select another application explicitly.
+
+## Add packages and skills
+
+Choose **Add capabilities or skills** in the console, or use:
+
+```sh
+pnpm exec mdk sets
+pnpm exec mdk add borrowing --dry-run
+pnpm exec mdk add borrowing
+pnpm exec mdk skills
+pnpm exec mdk add --skill mdk-memory-application
+```
+
+Each set combines matching package dependencies, portable skills and references.
+Generated apps retain the private artifact manifest needed for later additions.
+An existing independent app can supply `--artifacts <manifest.json>` explicitly.
+Additions preserve unrelated dependencies, custom skills, memory and existing
+instructions. Existing MDK version/override conflicts require reconciliation;
+the command never chooses an SDK upgrade. A failed package install retains its
+completed work; repeat the same addition after resolving the reported problem.
+
+Local memory commands and the portable skill work without the source checkout
+or an external service. See the [application memory guide](../../docs/guides/APPLICATION_MEMORY.md).
 
 ## Find documentation and update guidance
 

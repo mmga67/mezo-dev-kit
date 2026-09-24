@@ -322,6 +322,38 @@
       },
       "required": ["id", "packages", "resources"]
     },
+    "CapabilitySet": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16384
+        },
+        "domains": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 16384
+          }
+        }
+      },
+      "required": ["id", "title", "description", "domains"]
+    },
     "ReferenceBundle": {
       "type": "object",
       "additionalProperties": false,
@@ -380,6 +412,14 @@
           "uniqueItems": true,
           "items": {
             "$ref": "#/$defs/ConsumerSkill"
+          }
+        },
+        "sets": {
+          "type": "array",
+          "maxItems": 20000,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/CapabilitySet"
           }
         },
         "template": {

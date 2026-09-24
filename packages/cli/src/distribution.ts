@@ -12,6 +12,7 @@ import {
 } from "./contracts.ts";
 import type {
   ConsumerDomain,
+  CapabilitySet,
   ConsumerSkill,
   PackageArtifact,
   ReferenceBundle,
@@ -58,6 +59,15 @@ export async function buildReferenceBundle(input: DistributionInput): Promise<Re
       resources: arrayValue(item.resources, "resources").map((value) =>
         textValue(value, "resource"),
       ),
+    };
+  });
+  const sets: CapabilitySet[] = arrayValue(selection.sets, "sets").map((value) => {
+    const item = record(value, "capability set");
+    return {
+      id: textValue(item.id, "set ID"),
+      title: textValue(item.title, "set title"),
+      description: textValue(item.description, "set description"),
+      domains: arrayValue(item.domains, "set domains").map((value) => textValue(value, "domain")),
     };
   });
   const exclusions: { id: string; sourcePath: string; reason: string }[] = [];
@@ -182,8 +192,11 @@ export async function buildReferenceBundle(input: DistributionInput): Promise<Re
     }
     domains.push({ id: domain, packages: [], resources: selected });
   }
-  for (const path of arrayValue(selection.guides, "guides").map(safePath))
-    await addResource(`guide:${path.toLowerCase()}`, path, "guide", "typescript");
+  for (const path of arrayValue(selection.guides, "guides").map(safePath)) {
+    const id = `guide:${path.toLowerCase()}`;
+    const owner = domains.find((domain) => domain.resources.includes(id));
+    await addResource(id, path, "guide", owner?.id ?? "typescript");
+  }
   const bySource = new Map(resources.map((item) => [item.sourcePath, item]));
   const byLogical = new Map(
     resources
@@ -289,6 +302,7 @@ export async function buildReferenceBundle(input: DistributionInput): Promise<Re
     packages,
     domains,
     skills,
+    sets,
     template: { path: "APP_AGENTS.md", digest: digest(template), size: template.length },
     starter,
     resources,

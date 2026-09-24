@@ -68,6 +68,9 @@ allowable managed paths. Does not recover files or establish that a process has 
 `ProjectConfig` selects `domains`, `skillsDirectory` and `references.mode`. `ReferenceBundle`
 describes source input identity, exact SDK build inventories, consumer domains/skills,
 application/starter templates, indexed resources, exclusions and an optional pinned HTTPS origin.
+Its optional `sets` catalog contains IDs, titles, descriptions and domain selections.
+Older v1 bundles without `sets` retain their original digest and remain readable;
+they cannot offer cataloged set additions. New bundles require a matching CLI.
 `GuidanceLock` records the bundle/configuration and hashes of files MDK manages. `ArtifactSet`
 identifies the private tarballs; `RecoveryJournal` describes a pending filesystem operation.
 
@@ -106,14 +109,33 @@ selected bundle.
 `runCommand(args, context)` returns `Promise<CommandResult>` and implements the same argument
 validation and filesystem behavior as the installed `mdk` binary. `CommandContext.cwd` is the
 explicit application root. Optional `sourceRoot` points to generated bundle assets; `now` controls
-diagnostic review comparisons and `fetch` injects reference retrieval. None is an EVM provider or
+diagnostic review comparisons and `fetch` injects reference retrieval. Optional
+`runPnpm(cwd, args): Promise<void>` and `readPnpm(cwd, args): Promise<string>`
+inject capability installation and bounded package-manager metadata reads.
+Default mutation output goes to stderr, preserving command JSON on stdout.
+None is an EVM provider or
 signer. `CommandResult` contains `exitCode` and `data: unknown`; inspect/narrow the structured
 result for the selected command.
 
-Commands that mutate files are `init`, `create`, `sync`, `docs fetch` and `recover`. Their
+Interactive menus are a binary-only presentation layer. `runCommand` remains noninteractive;
+it never prompts, builds the workspace or runs application scripts. An explicit
+`add` installs qualified private dependencies with pnpm and synchronizes guidance;
+other commands do not implicitly install dependencies. The console previews and
+confirms additions before invoking the same command.
+
+Commands that mutate files are `init`, `create`, `add`, `sync`, `docs fetch`,
+`memory save` and `recover`. Their
 `--dry-run` path does not write or fetch. Local search/show and diagnostics do not implicitly
 download. `sync --locked --check` verifies selected guidance without changing it. Applications own
 AGENTS.md and configuration.
+
+`sets` and `skills` return the catalog and selection status. `add <set>` and
+`add --skill <name>` return selection, expanded domains, packages to install,
+selected skills, changed paths, `dryRun` and `complete`; only an applied and
+verified addition reports `complete: true`. `init --set <id>` selects guidance
+without installing packages. The terminal guide owns exact flags and failure
+recovery. Memory command results include scope and selected entry metadata or
+validation/save results; application entries are never guidance-lock files.
 
 Preview initialization in an explicit project directory using a local bundle-assets directory:
 
@@ -148,7 +170,10 @@ installed by generation.
 
 `packPrivateArtifacts(sourceRoot, outputRoot)` returns `Promise<ArtifactSet>`. It requires built
 SDK/CLI artifacts and a generated CLI bundle, invokes pnpm pack, and writes tarballs plus
-`manifest.json` to an empty directory. This function validates pnpm's actual packed-file report
+`manifest.json` to an empty directory. It also copies the built console and assets into
+`console/` and writes a `start.ts` launcher, module manifest, README and license, so the
+directory is a portable private kit. Keep the complete directory together.
+This function validates pnpm's actual packed-file report
 against built files, license and reference docs (plus CLI schemas/assets). Contributor source and
 tests are excluded. It performs no publication or dependency installation.
 
@@ -157,8 +182,9 @@ tests are excluded. It performs no publication or dependency installation.
 `CliError` extends Error with a readonly `code: CliErrorCode` and optional cause. Codes are
 `InvalidInput`, `Incompatible`, `Conflict`, `Unavailable`, `Integrity` and `RecoveryRequired`.
 Command failures can throw; diagnostic commands can instead return a nonzero
-`CommandResult.exitCode` with structured issues. The binary prints JSON and redacts unexpected
-internal failures.
+`CommandResult.exitCode` with structured issues. The binary prints human summaries in interactive
+terminals, preserves structured output with `--json`, and redacts unexpected internal failures.
+Console cancellation exits with code 130 and preserves completed work.
 
 Compatibility compares installed target SDK metadata and exact built-file inventories. Equal private
 version strings are insufficient. Cached references must match declared sizes/digests. Recovery

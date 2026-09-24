@@ -62,6 +62,15 @@ export async function createProject(
     files.set(path, bytes);
     overrides[item.name] = `file:./${path}`;
   }
+  files.set(
+    ".mdk/artifacts/manifest.json",
+    Buffer.from(
+      jsonText({
+        ...artifacts,
+        packages: artifacts.packages.map((item) => ({ ...item, path: `${digest(item.name)}.tgz` })),
+      }),
+    ),
+  );
   for (const field of ["dependencies", "devDependencies"]) {
     const dependencies = record(manifest[field], field);
     for (const name of Object.keys(dependencies))
@@ -121,12 +130,7 @@ export async function createProject(
   return {
     project: target,
     files: [...files.keys()].sort(),
-    next: [
-      "pnpm install",
-      "pnpm mdk init --domains typescript,foundation",
-      "pnpm start",
-      "pnpm check",
-    ],
+    next: ["pnpm install", "pnpm mdk init --set base", "pnpm start", "pnpm check"],
     dryRun,
   };
 }

@@ -7,8 +7,8 @@ CLI and runtime SDK artifacts.
 
 ## Start here
 
-- **New project:** [build the private artifacts](#build-private-artifacts),
-  then [create and verify a TypeScript starter](#create-a-standalone-typescript-project).
+- **New project:** [open the guided console](#guided-setup) to create and verify
+  a TypeScript starter.
 - **Existing application:** follow [initialization](#initialize-an-existing-application).
 - **Already set up:** [find a reference](#find-a-deeper-reference),
   [prepare for offline work](#prepare-for-offline-work), or
@@ -29,6 +29,96 @@ The starter uses Node 24+, pnpm 11.0.8, TypeScript and Vitest. See
 [verification and boundaries](#verification-and-boundaries) for artifact and
 agent-host checks; their recorded scope is separate from protocol support.
 
+## Guided setup
+
+From an MDK checkout with Node 24+ and the pinned pnpm installed:
+
+```sh
+pnpm install --frozen-lockfile
+pnpm cli
+```
+
+The menu opens directly from TypeScript source, before any package build.
+Choose **Create a project**, enter a new directory outside the MDK checkout,
+and review the setup plan. The console builds and packs matching private
+artifacts, creates the application, installs dependencies, initializes guidance,
+and runs the project checks. Preparation can take a few minutes. It keeps each
+artifact set under ignored `local/cli-kits/`; these are retained private snapshots,
+not an automatically refreshed global installation.
+
+Use arrow keys and Enter, or choose a number and press Enter. Escape returns
+from a selection where a Back action exists; Ctrl+C exits. For numbered prompts
+without menu redrawing, run `pnpm cli --plain`. The launcher selects MDK as the
+source workspace and refuses consumer setup inside that workspace.
+
+Once setup passes, choose **Run the local demo**, or open the displayed project
+folder in your editor. The demo uses sample data and makes no live RPC requests.
+From that application's directory, reopen the console with:
+
+```sh
+pnpm mdk
+```
+
+The project menu checks setup, runs the starter demo, searches documentation,
+adds capability sets or individual skills, searches project memory, previews
+updates, and offers an optional AI-assistant prompt. The starter's **App essentials**
+set includes EVM, Chains, Contracts and Core, with TypeScript, foundation and
+application-memory skills. Memory starts empty and is used selectively by agents.
+Each application uses its own installed CLI version. No global MDK installation
+or PATH edits are needed.
+
+If installation fails, **Retry this step** repeats that step while retaining
+the project. **Finish project setup** resumes a created starter; after guidance
+exists, use **Finish or recheck project setup**. If dependencies have not installed
+yet, select the project from the original console. A new session reruns installation
+and checks; this is not a transactional rollback of package-manager side effects.
+Interrupted guidance updates instead lead to **Review recovery**, which retains
+the existing recovery preconditions and conflict protections.
+
+### Start from a portable private kit
+
+In `pnpm cli`, choose **Prepare a portable private kit** and select a new or empty
+output directory. Share the complete resulting directory through your trusted
+private distribution channel. With Node 24+ and the pinned pnpm installed, a
+recipient runs this inside the kit:
+
+```sh
+node start.ts
+```
+
+The kit contains the prebuilt console, matching references, SDK/CLI tarballs,
+and their manifest. It requires no MDK source checkout or build. It creates an
+independent application whose dependencies and CLI remain project-local.
+`node start.ts --plain` selects numbered prompts. `--offline` forbids reference
+requests and passes `--offline` to dependency installation, which also needs a
+prepared pnpm store.
+
+### Select an existing application
+
+Choose **Choose an existing project** and enter its exact directory. When
+available, the console uses that application's installed CLI reference assets.
+For an application without guidance, choose **Set up guidance here**, then
+**App essentials** to install its matching packages and guidance. The console
+needs retained artifacts or an explicitly supplied private manifest. A
+TypeScript-guidance-only option is also available. Existing `AGENTS.md`, source
+and unrelated dependency settings remain application-owned.
+
+**Add capabilities or skills** previews the complete selection before applying
+it. **Add reference domains (advanced)** only changes guidance and requires
+matching SDKs already installed. Both preserve reference mode and discovery
+directory. If a sync is interrupted, use **Review recovery**; package installation
+is a separate operation and its completed changes are retained.
+
+### Scripts and AI agents
+
+Menus open only in an interactive terminal outside CI. Use the explicit commands
+below with `--json` for automation. No-argument noninteractive invocation prints
+help; explicit `mdk console` fails promptly without a terminal. `--no-input`
+disables the implicit menu. Human terminal output summarizes results, while JSON
+results and exit codes retain the command contract. `mdk console --help` lists
+console options, including `--project`, `--bundle`, and `--artifacts` for a
+separately supplied private artifact set.
+
 ## Project ownership
 
 ```text
@@ -43,6 +133,9 @@ my-mezo-project/
   .mdk/reference/bundle.json   complete declared consumer reference index
   .mdk/reference/references/   selected or explicitly cached documents
   .mdk/artifacts/              private pilot package tarballs
+  .mdk/artifacts/manifest.json matching tarball identities for later additions
+  .mdk/memory/                 local application memory, ignored
+  docs/mdk-memory/             optional reviewed shared application memory
   src/                        application-owned TypeScript
   test/                       application-owned tests
 ```
@@ -122,7 +215,7 @@ node packages/cli/dist/bin.js create /tmp/my-mezo-project --template typescript 
   --artifacts "$MDK_ARTIFACTS/manifest.json"
 cd /tmp/my-mezo-project
 pnpm install
-pnpm exec mdk init --domains typescript,foundation --offline
+pnpm exec mdk init --set base --offline
 pnpm start
 pnpm check
 pnpm exec mdk doctor --json
@@ -149,24 +242,28 @@ development dependency. The CLI has no runtime SDK dependency. If the applicatio
 already uses SDK packages, install the matching complete artifact set first;
 `init` does not change dependency configuration.
 
-For a private application without an artifact mapping, create a temporary
-starter as above. Copy its `.mdk/artifacts/` directory and merge its `file:`
-dependency entries and `pnpm-workspace.yaml` overrides into application-owned
-configuration before `pnpm install`. Preserve existing dependencies and workspace
-settings. The complete mapping prevents unpublished transitive dependencies
-from falling through to a registry.
-
-Then run from the application root:
+For an independent pnpm application, preview and add the base set with the
+matching artifact manifest. This installs foundation packages, preserves
+unrelated dependencies and settings, and initializes guidance:
 
 ```sh
-pnpm exec mdk init --domains typescript,foundation --dry-run
-pnpm exec mdk init --domains typescript,foundation
+pnpm exec mdk add base --artifacts /path/to/kit/manifest.json --dry-run
+pnpm exec mdk add base --artifacts /path/to/kit/manifest.json
 pnpm exec mdk doctor
 ```
 
-For guidance without foundation runtime packages, choose `--domains typescript`.
+Use the bundle's pinned pnpm version. The installer copies verified runtime
+tarballs and records a local manifest, then asks pnpm to merge private overrides
+and add selected dependencies. It disables lifecycle scripts for the addition.
+Conflicting existing MDK overrides or installed SDK snapshots require an explicit
+application migration; the command does not silently replace them. Nested
+applications inside a parent pnpm workspace need application-owned dependency
+integration; automatic addition never writes the parent workspace.
+
+For guidance without runtime installation, use `mdk init --domains typescript`.
+With matching foundation packages already installed, use `mdk init --set base`.
 Available IDs are in the bundle's `domains` array: `typescript`, `applications`,
-`foundation`, SDK package names, and `knowledge-<module-id-with-hyphens>`.
+`foundation`, `memory`, SDK package names, and `knowledge-<module-id-with-hyphens>`.
 
 For an existing `AGENTS.md`, retain its conventions and add this routing section:
 
@@ -189,6 +286,10 @@ layouts resolve from each installed package.
 | Command                                                               | Behavior                                                                 |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | `mdk init`                                                            | Install selected guidance; bootstrap missing instructions/configuration  |
+| `mdk init --set base`                                                 | Initialize base guidance for already installed foundation packages       |
+| `mdk sets` / `mdk skills`                                             | List available selections and current selection status                   |
+| `mdk add <set>`                                                       | Install matching packages, skills and references together                |
+| `mdk add --skill <name>`                                              | Add one portable skill and its domain requirements                       |
 | `mdk create <directory> --template typescript --artifacts <manifest>` | Create starter and verified artifact mapping                             |
 | `mdk sync`                                                            | Update compatible managed guidance and its lock                          |
 | `mdk sync --locked`                                                   | Restore the recorded bundle and configuration                            |
@@ -199,9 +300,11 @@ layouts resolve from each installed package.
 | `mdk docs fetch "<id>"`                                               | Retrieve pinned resource and declared dependencies                       |
 | `mdk docs fetch --all`                                                | Verify/cache every declared consumer resource                            |
 | `mdk recover`                                                         | Roll back interrupted work without replacing later edits                 |
+| `mdk memory search "<query>"` / `show <id>`                           | Search metadata or read one application memory entry                     |
+| `mdk memory save --file <entry.json>` / `check`                       | Save or validate application-owned memory                                |
 
 Common options: `--project`, `--bundle <asset-directory>`, `--offline`, `--json`.
-Initialization accepts `--domains typescript,foundation` and `--skills-dir
+Initialization accepts `--set <id>` or `--domains typescript,foundation`, and `--skills-dir
 .agents/skills` or `.claude/skills`. Mutations accept `--dry-run`. Previews never
 install dependencies, fetch remote content or write files; sync previews require
 local source assets for uncached selected resources.
@@ -212,6 +315,50 @@ and a nonzero exit code. Fatal errors use `{ "ok": false, "error": { "code":
 or operations, 2 invalid input. Typed errors distinguish incompatibility,
 conflict, unavailable data, integrity failure and recovery required. Evidence
 review warnings are advisory.
+
+Memory defaults to `--scope local`; `--scope shared` explicitly selects reviewed
+team context. Search also accepts `--domain`. See the
+[application memory guide](APPLICATION_MEMORY.md) for storage and lifecycle.
+
+## Add a capability set or skill
+
+Use **Add capabilities or skills** in `pnpm mdk`, or:
+
+```sh
+pnpm exec mdk sets
+pnpm exec mdk add borrowing --dry-run
+pnpm exec mdk add borrowing
+pnpm exec mdk skills
+pnpm exec mdk add --skill mdk-memory-application
+pnpm check
+```
+
+Sets cover app essentials (`base`), `memory`, `tokens`, `prices`, `borrowing`,
+`savings`, `lending`, `vaults`, `liquidity`, `swaps`, `incentives`, `bridges`,
+`redemptions`, `institutional-debt` and `history`. `mdk sets` is the installed
+catalog; each entry shows its packages, skills and underlying domains.
+Availability describes distributable integration tools, not protocol release
+approval or transaction authorization.
+
+An addition expands `mdk.config.json` with the selected domains. It checks managed
+file conflicts before installation, verifies private artifacts, installs missing
+direct dependencies, verifies SDK compatibility, and synchronizes guidance.
+Selecting an already complete set is repeatable without another install.
+Existing app instructions, custom skills, source and memory are preserved.
+
+Previews make no changes or network requests. Applying a package addition can
+update `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml` and `node_modules`.
+pnpm owns parsing and preserving unrelated workspace settings through its
+[project configuration commands](https://pnpm.io/cli/config).
+`--offline` also applies to dependency installation, so an existing project's
+other dependencies still need a populated store. SDK tarballs stay local.
+
+Package installation is not rolled back by `mdk recover`. If it fails, resolve
+the reported cause and repeat the same `add`; the domain selection is recorded
+only after compatible packages are installed. A later guidance conflict can
+leave the selection saved; resolve the conflict and retry or run `mdk sync`.
+Run one addition at a time per project. Additions do not remove packages or skills
+or choose upgrades; guidance upgrades retain the workflow below.
 
 ## Find a deeper reference
 

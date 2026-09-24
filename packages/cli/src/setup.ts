@@ -13,6 +13,8 @@ export interface SetupOptions extends RetrievalOptions {
   readonly locked?: boolean;
   readonly check?: boolean;
   readonly config?: ProjectConfig;
+  /** Internal capability-addition preview: validates files before installing packages. */
+  readonly previewConfig?: ProjectConfig;
 }
 export interface SetupResult {
   readonly changed: readonly string[];
@@ -34,14 +36,18 @@ export async function synchronizeProject(
   const previous = lockBytes ? parseLock(parseJson(lockBytes, "guidance lock")) : null;
   if (!options.initialize && (!configBytes || !previous))
     throw new CliError("Unavailable", "Initialize the project before synchronizing guidance");
-  const config = configBytes
-    ? parseConfig(parseJson(configBytes, "project config"))
-    : (options.config ?? {
-        formatVersion: 1,
-        domains: ["typescript"],
-        skillsDirectory: ".agents/skills",
-        references: { mode: "selected" },
-      });
+  const config =
+    options.previewConfig ??
+    (configBytes
+      ? parseConfig(parseJson(configBytes, "project config"))
+      : (options.config ?? {
+          formatVersion: 1,
+          domains: ["typescript"],
+          skillsDirectory: ".agents/skills",
+          references: { mode: "selected" },
+        }));
+  if (options.previewConfig && !options.dryRun)
+    throw new CliError("InvalidInput", "A proposed selection is only valid for a dry-run preview");
   if (options.config && configBytes && jsonText(options.config) !== jsonText(config))
     throw new CliError(
       "Conflict",
@@ -55,7 +61,7 @@ export async function synchronizeProject(
       "Incompatible",
       "Locked restore requires the recorded bundle and configuration; install its matching CLI/artifact",
     );
-  await inspectPackages(project, bundle, config);
+  if (!options.previewConfig) await inspectPackages(project, bundle, config);
   const previousIndex =
     previous && (await readOptional(project, ".mdk/reference/bundle.json"))
       ? await installedBundle(project)

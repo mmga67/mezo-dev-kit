@@ -2,6 +2,7 @@
   "name": "mdk-application",
   "version": "0.1.0",
   "private": true,
+  "mdkStarter": "typescript",
   "type": "module",
   "packageManager": "pnpm@11.0.8",
   "engines": { "node": ">=24" },

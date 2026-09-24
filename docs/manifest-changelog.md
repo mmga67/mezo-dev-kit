@@ -17,6 +17,22 @@ Every manifest edit must update its version and add a dated entry describing
 the improvement. A task may bump the version more than once when distinct
 reviewable improvements land.
 
+## 1.3.0 — 2026-09-22
+
+- Add a small default consumer set and explicit optional capability additions
+  combining compatible private packages, portable skills and references.
+- Establish application-owned memory with reusable consumer guidance and local
+  CLI retrieval/validation, separate from contributor memory and guidance locks.
+- Preserve application configuration ownership, package-installation failure
+  boundaries and separate SDK upgrade, protocol support and release decisions.
+
+## 1.2.0 — 2026-09-22
+
+- Add guided project setup through the root and project-local CLI, with explicit
+  external targets and the existing noninteractive command engine.
+- Include a prebuilt console in portable private kits; retain artifact matching,
+  application ownership, recovery limits, and separate public-release approval.
+
 ## 1.1.0 — 2026-09-16
 
 - Add the private Native source preparation and current delivery boundary for

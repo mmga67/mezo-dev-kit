@@ -36,6 +36,20 @@ For Mezo-specific work:
 
 Do not load unrelated MDK skills by default.
 
+### Add capabilities and retain project context
+
+Use `pnpm exec mdk sets` and `pnpm exec mdk skills` to inspect the installed
+catalog. `pnpm exec mdk add <set> --dry-run` previews matching packages,
+skills and references; `pnpm exec mdk add --skill <name> --dry-run` previews
+an individual skill and its requirements. Apply additions within the current
+task's authorization. Installing guidance never authorizes a transaction.
+
+When prior findings can help the task, use the installed
+`mdk-memory-application` skill. After meaningful work, retain only useful
+context with verified source pointers; otherwise report no memory update.
+Memory belongs to this application and does not establish live Mezo facts.
+Keep custom skills separate from MDK-managed skill directories.
+
 ### Local references
 
 Read `mdk.config.json` for the chosen domains and discovery root. The installed

@@ -42,6 +42,29 @@ describe("configuration and ownership", () => {
   });
 });
 describe("immutable bundle identity", () => {
+  test("optional set catalogs preserve old v1 bundles and validate each selected domain", () => {
+    const old = fixtureBundle();
+    expect(parseBundle(old)).toEqual(old);
+    const next = {
+      ...old,
+      sets: [{ id: "base", title: "Base", description: "Synthetic base", domains: ["typescript"] }],
+    };
+    expect(parseBundle({ ...next, id: bundleDigest(next) }).sets).toEqual(next.sets);
+    expect(bundleDigest(next)).not.toBe(old.id);
+    const invalid = {
+      ...next,
+      sets: [
+        {
+          ...next.sets[0],
+          id: "base",
+          title: "Base",
+          description: "Invalid",
+          domains: ["missing"],
+        },
+      ],
+    };
+    expect(() => parseBundle({ ...invalid, id: bundleDigest(invalid) })).toThrowError("Unresolved");
+  });
   test("verifies contents and preserves limitations", () => {
     expect(parseBundle(fixtureBundle())).toEqual(fixtureBundle());
   });

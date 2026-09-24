@@ -146,6 +146,96 @@
       "audience": "consumer",
       "path": "agents/consumer/skills/mdk-foundation-application",
       "domains": ["foundation"]
+    },
+    {
+      "name": "mdk-tokens-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-tokens-application",
+      "domains": ["tokens"]
+    },
+    {
+      "name": "mdk-prices-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-prices-application",
+      "domains": ["prices"]
+    },
+    {
+      "name": "mdk-musd-borrowing-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-musd-borrowing-application",
+      "domains": ["musd-borrowing"]
+    },
+    {
+      "name": "mdk-musd-savings-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-musd-savings-application",
+      "domains": ["musd-savings"]
+    },
+    {
+      "name": "mdk-musdc-lending-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-musdc-lending-application",
+      "domains": ["musdc-lending"]
+    },
+    {
+      "name": "mdk-usdc-lending-vault-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-usdc-lending-vault-application",
+      "domains": ["usdc-lending-vault"]
+    },
+    {
+      "name": "mdk-pools-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-pools-application",
+      "domains": ["pools"]
+    },
+    {
+      "name": "mdk-swaps-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-swaps-application",
+      "domains": ["swaps"]
+    },
+    {
+      "name": "mdk-incentives-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-incentives-application",
+      "domains": ["incentives"]
+    },
+    {
+      "name": "mdk-bridges-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-bridges-application",
+      "domains": ["bridges"]
+    },
+    {
+      "name": "mdk-musd-redemptions-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-musd-redemptions-application",
+      "domains": ["musd-redemptions"]
+    },
+    {
+      "name": "mdk-musd-institutional-debt-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-musd-institutional-debt-application",
+      "domains": ["musd-institutional-debt"]
+    },
+    {
+      "name": "mdk-memory-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-memory-application",
+      "domains": ["memory"]
+    },
+    {
+      "name": "mdk-protocol-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-protocol-application",
+      "domains": ["protocol-workflows"]
+    },
+    {
+      "name": "mdk-history-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-history-application",
+      "domains": ["history"]
     }
   ]
 }

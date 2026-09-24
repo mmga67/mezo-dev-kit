@@ -55,18 +55,18 @@ duplicate a guide, or fill a planned catalog category.
 
 MDK has two non-interchangeable audiences:
 
-| Concern                      | Contributor skill                                                                | Consumer skill                                                                            |
-| ---------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Canonical root               | `agents/skills/<name>/`                                                          | `agents/consumer/skills/<name>/`                                                          |
-| User                         | Maintainer changing the MDK repository                                           | Developer building an external application with a compatible MDK release                  |
-| May reference                | Repository internals, tasks, standards, canonical knowledge, contributor tooling | Application instructions, installed public MDK APIs, version-compatible consumer guidance |
-| Must not reference as usable | Unapproved external mutation or unsupported capability                           | MDK source-tree internals, contributor tasks/release procedures, unpublished packages     |
-| Instruction authority        | Root/nested repository `AGENTS.md` and current task                              | Application-owned root/nested `AGENTS.md` and current task                                |
-| Distribution                 | Maintainer discovery roots only                                                  | Selected consumer installation into an application discovery root                         |
-| Default materialization      | Never ship to applications                                                       | Copy unchanged when the consumer audience is explicitly selected                          |
+| Concern                      | Contributor skill                                                                | Consumer skill                                                                               |
+| ---------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Canonical root               | `agents/skills/<name>/`                                                          | `agents/consumer/skills/<name>/`                                                             |
+| User                         | Maintainer changing the MDK repository                                           | Developer building an external application with compatible installed MDK artifacts           |
+| May reference                | Repository internals, tasks, standards, canonical knowledge, contributor tooling | Application instructions, installed public MDK APIs, version-compatible consumer guidance    |
+| Must not reference as usable | Unapproved external mutation or unsupported capability                           | MDK source-tree internals, contributor tasks/release procedures, unavailable package exports |
+| Instruction authority        | Root/nested repository `AGENTS.md` and current task                              | Application-owned root/nested `AGENTS.md` and current task                                   |
+| Distribution                 | Maintainer discovery roots only                                                  | Selected consumer installation into an application discovery root                            |
+| Default materialization      | Never ship to applications                                                       | Copy unchanged when the consumer audience is explicitly selected                             |
 
 If one procedure tries to serve both audiences, split it. A consumer skill may
-teach use of a released public API; it must not teach how to maintain the
+teach use of an installed public API, including a matching private artifact; it must not teach how to maintain the
 registry, regenerate internal artifacts, approve a release, or inspect private
 workspace internals.
 

@@ -43,6 +43,13 @@ records, source, the dependency store, or arbitrary paths.
 
 ## Private distribution artifacts
 
+`pnpm cli` opens the guided console directly from CLI TypeScript source; no
+package build is needed to open the menu. It explicitly selects this repository
+as the source workspace. Project creation prepares matching artifacts and targets
+an external application. **Prepare a portable private kit** builds a directory
+whose recipient can run `node start.ts` without a source checkout. See
+[guided setup](../../docs/guides/MDK_CLI.md#guided-setup).
+
 [mdk-distribution.ts](mdk-distribution.ts) backs `pnpm cli:bundle [empty-output]`
 and `pnpm cli:pack <empty-output>`. It uses the built CLI package to write a
 reference bundle or private package archives. Output paths resolve from the

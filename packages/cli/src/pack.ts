@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { mkdir, readdir, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { resolve, dirname } from "node:path";
 import {
   arrayValue,
   digest,
@@ -102,5 +102,36 @@ export async function packPrivateArtifacts(
     packages: packages.sort((a, b) => a.name.localeCompare(b.name, "en")),
   });
   await writeFile(resolve(outputRoot, "manifest.json"), jsonText(result), { flag: "wx" });
+  const workspaceManifest = record(
+    parseJson(await readRequired(sourceRoot, "package.json"), "workspace manifest"),
+    "workspace manifest",
+  );
+  const packageManager = textValue(workspaceManifest.packageManager, "pinned package manager");
+  // The kit runs without unpacking tarballs or installing the CLI globally.
+  const cliRoot = resolve(sourceRoot, "packages/cli");
+  for (const file of await fileInventory(cliRoot, "dist")) {
+    const bytes = await readRequired(cliRoot, file.path);
+    if (digest(bytes) !== file.digest)
+      throw new CliError("Integrity", "CLI changed while preparing the portable kit");
+    const target = await containedPath(outputRoot, `console/${file.path.slice("dist/".length)}`);
+    await mkdir(dirname(target), { recursive: true });
+    await writeFile(target, bytes, { flag: "wx" });
+  }
+  await writeFile(
+    resolve(outputRoot, "package.json"),
+    jsonText({ private: true, type: "module", packageManager }),
+    { flag: "wx" },
+  );
+  await writeFile(resolve(outputRoot, "LICENSE"), await readRequired(cliRoot, "LICENSE"), {
+    flag: "wx",
+  });
+  await writeFile(resolve(outputRoot, "start.ts"), 'import "./console/private-bin.js";\n', {
+    flag: "wx",
+  });
+  await writeFile(
+    resolve(outputRoot, "README.md"),
+    `# MDK private kit\n\nUse Node 24+ and ${packageManager}, also pinned in package.json.\nRun \`node start.ts\` in a terminal to create or choose a project. No MDK checkout\nor global CLI installation is required. Keep this entire directory together.\nUse \`node start.ts --help\` for options, including \`--offline\` and \`--plain\`.\nOffline dependency installation additionally requires a populated pnpm store.\n`,
+    { flag: "wx" },
+  );
   return result;
 }

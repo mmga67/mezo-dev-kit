@@ -12,7 +12,7 @@ Fresh clones contain this canonical source tree; the repository-root
 
 - `skills/` contains contributor procedures for maintaining MDK itself.
 - `consumer/skills/` contains distributable procedures for applications that
-  consume released MDK APIs.
+  consume compatible installed MDK public APIs, including the private artifact pilot.
 - `consumer/APP_AGENTS.template.md` is copied once and then owned by the
   application.
 - `memory/` defines the provider-neutral memory contract. Memory is supporting
@@ -20,6 +20,13 @@ Fresh clones contain this canonical source tree; the repository-root
 
 Contributor skills must not be shipped to consumer applications. Consumer
 skills must not depend on repository-internal maintenance workflows.
+
+The consumer catalog includes foundation and TypeScript usage, application
+memory, protocol integration and domain-specific procedures. The CLI's default
+set stays small; additional capability sets combine selected public packages,
+skills and matching references. `consumer/distribution.json` owns these sets.
+Applications own memory entries; MDK never installs contributor seed memories
+into them. See the [application memory guide](../docs/guides/APPLICATION_MEMORY.md).
 
 Contributors trying package usage follow
 [`mdk-capability-assessment`](./skills/mdk-capability-assessment/SKILL.md):
@@ -62,8 +69,8 @@ node scripts/agents/materialize-agent-skills.ts --audience contributor --output 
 Materialize only into a new or empty directory. External application setup
 selects `--audience consumer` and an application-owned output path instead;
 see the [consumer guide](../docs/guides/EXTERNAL_APPLICATIONS.md).
-A future public CLI may wrap
-this internal contract after its interface and release behavior are approved.
+The private project-local CLI distributes the selected consumer directories and
+manages their integrity. Public registry publication remains separate release work.
 
 MCP is optional. It is appropriate for live, remote, authenticated, or
 structured capabilities, but static skills and canonical knowledge must remain

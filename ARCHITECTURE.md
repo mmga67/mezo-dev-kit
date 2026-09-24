@@ -466,6 +466,36 @@ The [standalone tooling baseline](docs/manifest#standalone-project-tooling) defi
 compatibility, generated consumer corpus, and recoverable updates.
 [The utility guide](docs/guides/MDK_CLI.md) owns executable private-pilot examples.
 
+The CLI owns the terminal menus and setup orchestration as well as the existing
+noninteractive command engine. The root `pnpm cli` script launches its TypeScript
+binary with an explicit source workspace before any build. Workspace preparation
+uses the existing build/bundle/pack commands; consumers use a project-local CLI
+or the copied built console in a portable private kit. Selection of an external
+target precedes setup. Terminal I/O and package-manager execution are injected
+into the console workflow; `runCommand` remains noninteractive. Its explicit
+`add` command also receives injectable pnpm execution/metadata ports. Application
+checks remain an explicit console action.
+
+`agents/consumer/distribution.json` owns user-facing capability sets, which
+compose existing domains. The generated bundle carries their validated catalog;
+configuration continues to record the expanded domain selection. The base set
+installs foundation packages and TypeScript, foundation and memory skills.
+Optional sets add public package entrypoints, portable procedures and matching
+references. Individual skills use the same domain dependency checks. Consumers
+never receive contributor maintenance procedures or source-tree dependencies.
+
+Package additions verify retained tarballs and installed SDK inventories, use
+pnpm to preserve unrelated project settings, then synchronize guidance. Package
+manager changes are retained after failure and retried explicitly; the existing
+guidance journal does not roll back package installation. Additions do not select
+SDK upgrades or write to a parent workspace.
+
+The CLI also owns application memory search, read, save and structural validation.
+Entries reuse the provider-neutral memory shape with flat local/shared stores;
+search metadata is derived from entries. Application memory is independent of
+runtime SDKs, managed guidance and contributor seed memory. Its procedure and
+paths are documented in the [application memory guide](docs/guides/APPLICATION_MEMORY.md).
+
 ## Architecture Changes
 
 Use an agreed task, issue, or PR for architectural, multi-package, migration,

@@ -9,12 +9,17 @@ import { fetchReferences, installedBundle, loadBundle, showReference } from "./r
 import { synchronizeProject } from "./setup.ts";
 import { assertNoOperation, recoverChanges } from "./transactions.ts";
 import { createProject } from "./create.ts";
+import { addCapability, capabilityCatalog, selectionDomains } from "./capabilities.ts";
+import type { ReadPnpm, RunPnpm } from "./console-process.ts";
+import { memoryCommand } from "./memory.ts";
 
 export interface CommandContext {
   readonly cwd: string;
   readonly sourceRoot?: string;
   readonly now?: Date;
   readonly fetch?: typeof globalThis.fetch;
+  readonly runPnpm?: RunPnpm;
+  readonly readPnpm?: ReadPnpm;
 }
 export interface CommandResult {
   readonly exitCode: number;
@@ -22,7 +27,13 @@ export interface CommandResult {
 }
 const help = `MDK standalone project utility (private source alpha)
 
+mdk                         Open the guided console in an interactive terminal
+mdk console                 Explicit console (--plain for numbered prompts)
 mdk init [--domains typescript,foundation] [--skills-dir .agents/skills]
+mdk init --set base          Initialize guidance for already installed packages
+mdk sets | skills           List this bundle's capability sets or portable skills
+mdk add <set>               Install matching packages, skills and references
+mdk add --skill <name>       Add one skill and its required domains
 mdk create <directory> --template typescript --artifacts <manifest.json>
 mdk sync [--locked] [--check]
 mdk doctor
@@ -30,6 +41,8 @@ mdk docs search <query>
 mdk docs show <reference-id>
 mdk docs fetch <reference-id> | --all
 mdk recover
+mdk memory search <query> | show <id> | check
+mdk memory save --file <entry.json> [--scope local|shared]
 
 Common: --project <directory>, --bundle <asset-directory>, --json, --offline
 Mutations: --dry-run. No global installation or signer is required.
@@ -49,7 +62,10 @@ export async function runCommand(
   if (values.help || !positionals.length) return { exitCode: 0, data: help };
   const [command, subcommand, ...rest] = positionals;
   const allowed: Record<string, readonly string[]> = {
-    init: ["domains", "skills-dir", "dry-run"],
+    init: ["domains", "set", "skills-dir", "dry-run"],
+    sets: [],
+    skills: [],
+    add: ["skill", "artifacts", "dry-run"],
     sync: ["locked", "check", "dry-run"],
     doctor: [],
     create: ["template", "artifacts", "dry-run"],
@@ -57,12 +73,17 @@ export async function runCommand(
     "docs search": [],
     "docs show": [],
     "docs fetch": ["all", "dry-run"],
+    "memory search": ["scope", "domain"],
+    "memory show": ["scope"],
+    "memory check": ["scope"],
+    "memory save": ["scope", "file", "dry-run"],
   };
-  const key = command === "docs" ? `docs ${subcommand}` : (command ?? "");
+  const key =
+    command === "docs" || command === "memory" ? `${command} ${subcommand}` : (command ?? "");
   const selected = allowed[key];
   if (!selected) throw new CliError("InvalidInput", "Unknown command; run mdk --help");
   for (const name of Object.keys(values))
-    if (!["project", "bundle", "offline", "json", ...selected].includes(name))
+    if (!["project", "bundle", "offline", "json", "no-input", ...selected].includes(name))
       throw new CliError("InvalidInput", `Option --${name} does not apply to ${key}`);
   const project = resolve(context.cwd, values.project ?? ".");
   const sourceRoot = resolve(
@@ -94,14 +115,42 @@ export async function runCommand(
       ),
     };
   }
+  if (command === "sets" || command === "skills" || command === "add") {
+    const bundle = await loadBundle(sourceRoot);
+    if (command === "add") {
+      if (rest.length || Boolean(subcommand) === Boolean(values.skill))
+        throw new CliError("InvalidInput", "Use add <set> or add --skill <name>");
+      return {
+        exitCode: 0,
+        data: await addCapability(project, sourceRoot, bundle, subcommand ?? values.skill ?? "", {
+          ...retrieval,
+          skill: values.skill !== undefined,
+          ...(values.artifacts ? { artifacts: resolve(context.cwd, values.artifacts) } : {}),
+          ...(context.runPnpm ? { run: context.runPnpm } : {}),
+          ...(context.readPnpm ? { read: context.readPnpm } : {}),
+        }),
+      };
+    }
+    if (subcommand) throw new CliError("InvalidInput", `${command} takes no positional arguments`);
+    const bytes = await readOptional(project, "mdk.config.json");
+    const catalog = capabilityCatalog(
+      bundle,
+      bytes ? parseConfig(parseJson(bytes, "configuration")) : null,
+    );
+    return { exitCode: 0, data: { [command]: catalog[command] } };
+  }
   if (command === "init" || command === "sync") {
     if (subcommand) throw new CliError("InvalidInput", `${command} takes no positional arguments`);
     const bundle = await loadBundle(sourceRoot);
+    if (values.set && values.domains)
+      throw new CliError("InvalidInput", "Choose --set or --domains, not both");
     const config =
-      values.domains || values["skills-dir"]
+      values.domains || values.set || values["skills-dir"]
         ? parseConfig({
             formatVersion: 1,
-            domains: values.domains?.split(",") ?? ["typescript"],
+            domains: values.set
+              ? selectionDomains(bundle, values.set)
+              : (values.domains?.split(",") ?? ["typescript"]),
             skillsDirectory: values["skills-dir"] ?? ".agents/skills",
             references: { mode: "selected" },
           })
@@ -119,6 +168,33 @@ export async function runCommand(
   }
   await assertNoOperation(project);
   const bundle = await installedBundle(project);
+  if (command === "memory") {
+    const config = parseConfig(
+      parseJson(await readRequired(project, "mdk.config.json"), "configuration"),
+    );
+    if (!config.domains.includes("memory"))
+      throw new CliError("Unavailable", "Add project memory first: mdk add memory");
+    const scope = values.scope ?? "local";
+    if (scope !== "local" && scope !== "shared")
+      throw new CliError("InvalidInput", "Memory scope must be local or shared");
+    if (subcommand === "search" || subcommand === "show" ? rest.length !== 1 : rest.length !== 0)
+      throw new CliError(
+        "InvalidInput",
+        "Use one quoted query/ID for memory search/show; save/check take no positional value",
+      );
+    if (subcommand === "save" && !values.file)
+      throw new CliError("InvalidInput", "Use memory save --file <entry.json>");
+    return {
+      exitCode: 0,
+      data: await memoryCommand(project, subcommand ?? "", {
+        scope,
+        dryRun: retrieval.dryRun,
+        ...(rest[0] ? { query: rest[0], id: rest[0] } : {}),
+        ...(values.file ? { file: resolve(context.cwd, values.file) } : {}),
+        ...(values.domain ? { domain: values.domain } : {}),
+      }),
+    };
+  }
   if (command === "doctor") {
     if (subcommand) throw new CliError("InvalidInput", "doctor takes no positional arguments");
     const issues: { code: string; message: string }[] = [];
@@ -225,6 +301,7 @@ function parseCliArguments(args: readonly string[]) {
     options: {
       help: { type: "boolean" },
       json: { type: "boolean" },
+      "no-input": { type: "boolean" },
       offline: { type: "boolean" },
       "dry-run": { type: "boolean" },
       locked: { type: "boolean" },
@@ -233,6 +310,11 @@ function parseCliArguments(args: readonly string[]) {
       project: { type: "string" },
       bundle: { type: "string" },
       domains: { type: "string" },
+      set: { type: "string" },
+      skill: { type: "string" },
+      scope: { type: "string" },
+      domain: { type: "string" },
+      file: { type: "string" },
       "skills-dir": { type: "string" },
       template: { type: "string" },
       artifacts: { type: "string" },

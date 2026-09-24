@@ -1,10 +1,18 @@
 {
   "formatVersion": 1,
-  "guides": ["docs/guides/MDK_CLI.md"],
+  "guides": ["docs/guides/MDK_CLI.md", "docs/guides/APPLICATION_MEMORY.md"],
   "knowledgeRoles": ["canonical-record"],
   "domains": [
-    { "id": "typescript", "packages": [], "resources": ["guide:docs/guides/mdk_cli.md"] },
-    { "id": "applications", "packages": [], "resources": [] },
+    {
+      "id": "typescript",
+      "packages": [],
+      "resources": ["guide:docs/guides/mdk_cli.md"]
+    },
+    {
+      "id": "applications",
+      "packages": [],
+      "resources": []
+    },
     {
       "id": "foundation",
       "packages": [
@@ -21,7 +29,174 @@
         "knowledge:networks:mezo-mainnet",
         "knowledge:networks:mezo-testnet"
       ]
+    },
+    {
+      "id": "memory",
+      "packages": [],
+      "resources": ["guide:docs/guides/application_memory.md"]
+    },
+    {
+      "id": "protocol-workflows",
+      "packages": ["@mezo-dev-kit/core"],
+      "resources": ["api:core"]
+    },
+    {
+      "id": "history",
+      "packages": ["@mezo-dev-kit/core"],
+      "resources": ["api:core"]
     }
   ],
-  "exclusionReason": "The consumer corpus distributes canonical record data and public API references. Raw evidence/source artifacts, contributor maintenance, schema, fixture, review and derived duplicates remain outside this corpus. Original scope and support labels apply."
+  "exclusionReason": "The consumer corpus distributes canonical record data and public API references. Raw evidence/source artifacts, contributor maintenance, schema, fixture, review and derived duplicates remain outside this corpus. Original scope and support labels apply.",
+  "sets": [
+    {
+      "id": "base",
+      "title": "App essentials",
+      "description": "Foundation SDKs, TypeScript guidance and local project memory.",
+      "domains": ["typescript", "foundation", "memory"]
+    },
+    {
+      "id": "memory",
+      "title": "Project memory",
+      "description": "Keep and retrieve useful application context without an external service.",
+      "domains": ["memory"]
+    },
+    {
+      "id": "tokens",
+      "title": "Token balances and allowances",
+      "description": "Read token state and compose explicit approval workflows.",
+      "domains": ["typescript", "foundation", "tokens", "protocol-workflows"]
+    },
+    {
+      "id": "prices",
+      "title": "Prices",
+      "description": "Use typed price sources, scaling and freshness checks.",
+      "domains": ["typescript", "foundation", "prices", "knowledge-prices"]
+    },
+    {
+      "id": "borrowing",
+      "title": "MUSD borrowing",
+      "description": "Integrate borrower positions and direct borrowing workflows.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "musd-borrowing",
+        "protocol-workflows",
+        "knowledge-protocols-musd",
+        "knowledge-protocols-musd-borrowing"
+      ]
+    },
+    {
+      "id": "savings",
+      "title": "MUSD savings",
+      "description": "Integrate savings positions, indexed yield and savings workflows.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "musd-savings",
+        "protocol-workflows",
+        "knowledge-protocols-musd-savings"
+      ]
+    },
+    {
+      "id": "lending",
+      "title": "BTC/mUSDC lending",
+      "description": "Integrate the Mezo BTC/mUSDC lending market.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "musdc-lending",
+        "protocol-workflows",
+        "knowledge-protocols-lending-musdc"
+      ]
+    },
+    {
+      "id": "vaults",
+      "title": "USDC lending vault",
+      "description": "Integrate vault shares, wrapper yield and depositor workflows.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "usdc-lending-vault",
+        "protocol-workflows",
+        "knowledge-protocols-vaults-usdc-lending"
+      ]
+    },
+    {
+      "id": "liquidity",
+      "title": "Pool liquidity",
+      "description": "Integrate basic and concentrated-liquidity pool positions.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "pools",
+        "protocol-workflows",
+        "knowledge-protocols-pools"
+      ]
+    },
+    {
+      "id": "swaps",
+      "title": "Swaps",
+      "description": "Integrate swap discovery, quotes and supported execution paths.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "swaps",
+        "protocol-workflows",
+        "knowledge-workflows-swaps"
+      ]
+    },
+    {
+      "id": "incentives",
+      "title": "Locks, voting and rewards",
+      "description": "Integrate gauges, locks, voting and reward accounting.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "incentives",
+        "protocol-workflows",
+        "knowledge-protocols-incentives"
+      ]
+    },
+    {
+      "id": "bridges",
+      "title": "Bridges",
+      "description": "Integrate bridge preparation, recovery and delivery observation within package scope.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "bridges",
+        "protocol-workflows",
+        "knowledge-workflows-bridges"
+      ]
+    },
+    {
+      "id": "redemptions",
+      "title": "MUSD redemptions",
+      "description": "Integrate bounded redemption planning and settlement workflows.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "musd-redemptions",
+        "protocol-workflows",
+        "knowledge-protocols-musd-redemptions"
+      ]
+    },
+    {
+      "id": "institutional-debt",
+      "title": "Institutional MUSD debt",
+      "description": "Read institutional positions, collateral authority, health and fees.",
+      "domains": [
+        "typescript",
+        "foundation",
+        "musd-institutional-debt",
+        "knowledge-protocols-musd-institutional-debt"
+      ]
+    },
+    {
+      "id": "history",
+      "title": "Event history and reconciliation",
+      "description": "Build bounded event scans and application-owned projections.",
+      "domains": ["typescript", "foundation", "history", "knowledge-workflows-transactions"]
+    }
+  ]
 }

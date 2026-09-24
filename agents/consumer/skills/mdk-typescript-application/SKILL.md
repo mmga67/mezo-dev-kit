@@ -1,6 +1,6 @@
 ---
 name: mdk-typescript-application
-description: Build or review a TypeScript application that consumes released Mezo Developer Kit APIs. Use for application source, tests, configuration, and integrations; do not use for maintaining the MDK repository itself.
+description: Build or review a TypeScript application that consumes installed Mezo Developer Kit public APIs, including compatible private artifacts. Use for application source, tests, configuration, and integrations; do not use for maintaining the MDK repository itself.
 ---
 
 # MDK TypeScript application
@@ -13,11 +13,11 @@ boundaries, runtime validation, and canonical ownership of Mezo facts.
 ## Use when / do not use when
 
 Use this skill when adding or reviewing application code, tests, configuration,
-or framework integration that consumes an installed MDK release.
+or framework integration that consumes installed MDK packages.
 
 Do not use it to maintain the MDK monorepo, infer an unpublished SDK feature,
 copy internal repository source, or approve a protocol-sensitive write that the
-installed release does not support.
+installed artifact does not support.
 
 ## Required context
 
@@ -48,11 +48,11 @@ installed release does not support.
    protocol boundaries.
 5. Keep deterministic calculations separate from RPC, wallet, UI, storage,
    and global state.
-6. Reuse released MDK network, deployment, ABI, and protocol owners. Do not
+6. Reuse installed MDK network, deployment, ABI, and protocol owners. Do not
    create an application-owned duplicate merely for convenience.
-   When the installed release exposes `@mezo-dev-kit/evm`, reuse its value
+   When the installed artifact exposes `@mezo-dev-kit/evm`, reuse its value
    parsers/conversions and check its checksum/precision contract. A workspace
-   implementation does not establish that an external release includes it.
+   implementation does not establish that a different installed artifact includes it.
 7. Model failures explicitly. Do not hide unsupported networks, rejected
    simulations, reverted transactions, stale quotes, or reconciliation errors.
 8. Keep framework adapters thin over public core or protocol APIs.
@@ -68,10 +68,12 @@ installed release does not support.
 
 ## Stop conditions
 
-Stop and ask for direction when the required capability is absent from the
-installed public API, version-compatible guidance conflicts with deployed
-evidence, a new dependency is required, or a protocol-sensitive assumption
-cannot be verified.
+Pause the dependent work when a required public capability or verified protocol
+input is missing, or matching guidance conflicts with deployed evidence.
+Continue independent supported work and report the precise gap. Follow the
+application's dependency policy and existing task authorization; ask only for a
+missing decision. A cataloged set can be previewed with `pnpm exec mdk add
+<set> --dry-run` before an authorized addition.
 
 ## Common failure modes
 

@@ -2,22 +2,22 @@
 
 Choose a starting point for building with MDK, understanding Mezo, or contributing.
 
-## Try MDK
-
-- [Run the offline example](../README.md#try-the-offline-example) — clone,
-  build, and try package calls without an RPC connection or wallet.
-- [Workflow examples](../examples/README.md) — follow complete protocol
-  lifecycles, with local-fork setup for transaction demonstrations.
-- [Package examples](../examples/PACKAGES.md) — find focused operations by package.
-
 ## Build an application
 
-- [Standalone project tooling](guides/MDK_CLI.md) — install the private pilot,
-  create a project, and retrieve matching references.
+- [Guided CLI setup](guides/MDK_CLI.md#guided-setup) — create a project, then add
+  packages, skills, and matching references from its own console.
 - [External application guide](guides/EXTERNAL_APPLICATIONS.md) — application
   ownership, package integration, and optional consumer skills.
 - [SDK reference](reference/sdk.md) — package APIs, required inputs, errors,
   compatibility, and verification scope.
+
+## Explore examples
+
+- [Run the offline example](../examples/README.md#run-the-offline-foundation-examples) —
+  try package calls without an RPC connection or wallet.
+- [Workflow examples](../examples/README.md) — follow complete protocol
+  lifecycles, with local-fork setup for transaction demonstrations.
+- [Package examples](../examples/PACKAGES.md) — find focused operations by package.
 
 ## Understand Mezo
 

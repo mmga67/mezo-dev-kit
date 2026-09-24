@@ -10,6 +10,7 @@
     "pnpm": "11.x"
   },
   "scripts": {
+    "cli": "node packages/cli/src/bin.ts console --workspace .",
     "context": "node scripts/agents/retrieve-context.ts",
     "boundaries": "node scripts/checks/validate-package-boundaries.ts",
     "build": "pnpm --recursive --if-present run build",
