@@ -42,5 +42,5 @@ export const LENDING_MODEL = {
   },
   "verifiedAt": "2026-08-23T20:17:37Z",
   "reviewAfter": "2026-09-23T00:00:00Z",
-  "inputDigest": "44a79aa238ae3eb589d97a6e28bc1db27d01d544199eb43464bea4fa0b08a837"
+  "inputDigest": "6847ef235eb501da3cb1ac8ecf9d416196ad3a48b9f9e42bc9de90420171c164"
 } as const;

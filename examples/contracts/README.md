@@ -1,13 +1,14 @@
-# Resolve a deployment
+# Resolve a contract at a block
 
-[resolve-deployment.ts](resolve-deployment.ts) validates a contract ID and uses
-`createContractRegistry().resolve()` with a network and block number. Inspect
-the returned address, deployment ID, proxy implementation and `readAbi`.
-`abi` contains provenance/digest metadata; `readAbi` is the callable interface.
+[inspectDeployment](resolve-deployment.ts) accepts a contract ID, network ID and
+block number. It validates the ID and returns the registry's deployment and
+read ABI for that coordinate. It is an offline lookup and needs no wallet.
 
-For a historical read or event, pass that operation's block. An unknown identity
-or unavailable generation rejects. Resolution is metadata lookup; protocol
-readers separately verify runtime bytes and live state.
+The block matters: a proxy can use different implementation generations over
+time. Keep historical decoding at the historical coordinate. Registry metadata
+is not a fresh runtime identity check; execution readers perform the applicable
+live checks separately. Use `readAbi` for read encoding and keep ABI digest
+metadata distinct from callable entries.
 
-The offline [foundation program](../foundations.ts) includes a concrete MUSD
-lookup. [Package reference](../../packages/contracts/REFERENCE.md).
+See [coherent reads](../core/README.md) next and the
+[Contracts reference](../../packages/contracts/REFERENCE.md) for resolution errors.

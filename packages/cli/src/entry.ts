@@ -59,7 +59,28 @@ export async function runTerminal(args: readonly string[], cwd: string): Promise
       return 0;
     }
     const commandArgs = args;
-    const result = await runCommand(commandArgs, { cwd });
+    const controller = new AbortController();
+    const cancel = () => {
+      controller.abort();
+    };
+    if (args[0] === "evidence") process.once("SIGINT", cancel);
+    let result;
+    try {
+      result = await runCommand(commandArgs, {
+        cwd,
+        signal: controller.signal,
+        ...(interactive && !json
+          ? {
+              onEvidenceProgress: (event) =>
+                process.stderr.write(
+                  `Evidence: ${event.phase} (${event.collected}/${event.planned})\n`,
+                ),
+            }
+          : {}),
+      });
+    } finally {
+      if (args[0] === "evidence") process.removeListener("SIGINT", cancel);
+    }
     if (json) process.stdout.write(jsonText({ ok: result.exitCode === 0, data: result.data }));
     else if (
       !interactive &&

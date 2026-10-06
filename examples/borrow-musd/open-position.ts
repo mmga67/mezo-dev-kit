@@ -8,7 +8,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Open one position. Collateral is native BTC base units; borrowing and maxFee use MUSD base units. */
 export async function openPosition(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: {
     readonly operationId: string;
     readonly collateral: bigint;
@@ -41,6 +41,8 @@ export async function openPosition(
   // Simulation checks this exact call; it does not sign or submit it.
   const simulated = await writer.simulate(prepared);
   // Submission reserves the operation/nonce in the supplied store before asking the signer.
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   // Fee and risk policy must also be checked against the actual protocol outcome.

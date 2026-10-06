@@ -7,10 +7,12 @@
   "protocolStatus": "verified-versioned",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T21:59:22.983Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11366264
   },
   "limitations": [
@@ -26,7 +28,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-mainnet-topology"
       },
-      "sha256": "774e5a8e5d9767538900022ff074f04121d58bf063a9892db39d2e98842d98a9",
+      "sha256": "dbc54eb19a468c0f43a3f37d3f6347d0943ffa3052b2d444907867394b4d79eb",
       "establishes": [
         "fixed-block proxy implementations",
         "live contract references",
@@ -41,7 +43,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-source-reproduction"
       },
-      "sha256": "46f4ac703e81ec290c156e551459864c5393fd2b9b6e4d92e3199df5f565fc30",
+      "sha256": "636d956ebd9766a5c745880657036eb2d8a089c44aca5526d175a93d177f1bdc",
       "establishes": [
         "exact executable match for current veBTC and veMEZO supplied source",
         "official explorer verification labels",
@@ -55,7 +57,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-read-integration"
       },
-      "sha256": "61dc9dabcfa8be04a7c89497f6ce63d0518ce246803ebd116851c18c5fb00d34",
+      "sha256": "ed081ee5e8d3524d9aa0c6910680e361d38e718fdc1a4c10e28dc3bd4e5dcd74",
       "establishes": [
         "representative veBTC lock-power equality",
         "representative current boost equality",
@@ -70,7 +72,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-writer-integration"
       },
-      "sha256": "1eaf4683a69b071c5c0cd837ffde40aabb54d1e82d67fda3ffe7b52d1456171a",
+      "sha256": "260139a2219c484d105c8a6097bf0d7ca57c12237d2d4eac9e314e602f4a1d3d",
       "establishes": [
         "createLock exact pre-state replay and delivery",
         "vote replacement exact pre-state replay",
@@ -112,7 +114,10 @@
       "contractRole": "pools-voter",
       "implementation": "0xa62060d57e04d6c799b58188dc654b85addd1465",
       "sourceEvidenceId": "incentives-source-reproduction",
-      "primaryLocators": ["Voter.sol", "libraries/ProtocolTimeLibrary.sol"]
+      "primaryLocators": [
+        "Voter.sol",
+        "libraries/ProtocolTimeLibrary.sol"
+      ]
     },
     {
       "id": "source-current-boost-voter",
@@ -142,7 +147,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-emissions-mainnet"
       },
-      "sha256": "1967af1a65a871b1b1bc62759934f1c69f8afb24e19782b3d0a9d35fc67d4f8d",
+      "sha256": "9440b25a9bc8fbaf4a8cf9b087063e5bddff310fdd27e683aaa3565691babd8c",
       "establishes": [
         "current emission graph",
         "one exact epoch reconstruction",
@@ -187,7 +192,7 @@
         "moduleId": "protocols/incentives",
         "resourceId": "incentives-validator-allocation-mainnet"
       },
-      "sha256": "dc25ad6b20ac257e612b8e22a662d2224add505770c1792ca39a7e22e161748f",
+      "sha256": "f35bc9a95efeebfa64ea93a74e35b80b81b3d783b518703ae5e004ddc53336b1",
       "establishes": [
         "current validator gauge cohort and exact weight total",
         "complete bounded validator lifecycle and voter event counts",
@@ -294,5 +299,14 @@
       "sha256": "b53c5305fc965cabf5bfd1a2465488eb82bf47dec310d40583a094b1a828b29f",
       "warning": "Audit publication supports review context but does not replace deployment identity, activation history, or exact executable reproduction."
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-24T21:59:22.983Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

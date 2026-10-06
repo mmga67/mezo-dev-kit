@@ -7,8 +7,8 @@
   "protocolStatus": "verified-versioned",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T18:18:30Z",
-  "reviewAfter": "2026-09-21T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet"
@@ -193,5 +193,14 @@
   "analyticsBoundary": [
     "Future emission projections require future supply and epoch assumptions and are not canonical facts.",
     "APR, APY, token price, user yield, and governance-outcome predictions are excluded."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T18:18:30Z",
+    "previousReviewAfter": "2026-09-21T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

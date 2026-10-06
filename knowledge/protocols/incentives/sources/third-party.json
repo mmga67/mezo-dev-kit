@@ -6,10 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-09-15T18:27:38.372Z",
-  "reviewAfter": "2026-09-29T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11870214
   },
   "protocolStatus": "verified-versioned",
@@ -41,7 +43,9 @@
         "voter graph, seven gauge entries and current allocation weights",
         "five beneficiary mappings; code presence on four remote beneficiaries"
       ],
-      "limitations": ["No settled distribution or LP claim"]
+      "limitations": [
+        "No settled distribution or LP claim"
+      ]
     },
     {
       "id": "official-mezo-gauges-overview",
@@ -127,5 +131,14 @@
         "Destination distribution and campaign terms are documentation-scoped until separately reconciled."
       ]
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-09-15T18:27:38.372Z",
+    "previousReviewAfter": "2026-09-29T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

@@ -110,7 +110,10 @@
         "pyth-evm-api",
         "adr-0009-price-ownership",
         "price-fixed-block-capture-mezo-mainnet-2026-09-06",
-        "price-fixed-block-capture-mezo-mainnet-2026-09-13"
+        "price-fixed-block-capture-mezo-mainnet-2026-09-13",
+        "price-fixed-block-capture-mezo-mainnet-2026-09-27",
+        "price-fixed-block-capture-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+        "price-fixed-block-capture-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
       ],
       "recordCollectionPointer": "/records"
     },
@@ -198,6 +201,18 @@
         {
           "moduleId": "prices",
           "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-27"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912"
+        },
+        {
+          "moduleId": "prices",
+          "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
         }
       ]
     },
@@ -265,6 +280,57 @@
       "role": "artifact",
       "kind": "current-price-state-capture",
       "path": "artifacts/current-state/current-state-mezo-testnet-2026-09-13.json"
+    },
+    {
+      "id": "price-fixed-block-observations-mezo-mainnet-2026-09-27",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-27.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-09-27",
+        "observe-pyth-mezo-mainnet-2026-09-27"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-current-state-mezo-mainnet-2026-09-27",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-mainnet-2026-09-27.json"
+    },
+    {
+      "id": "price-current-state-mezo-testnet-2026-09-27",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-testnet-2026-09-27.json"
+    },
+    {
+      "id": "price-fixed-block-observations-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+        "observe-pyth-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "price-current-state-mezo-mainnet-2026-10-06",
+      "role": "artifact",
+      "kind": "current-price-state-capture",
+      "path": "artifacts/current-state/current-state-mezo-mainnet-2026-10-06.json"
+    },
+    {
+      "id": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+      "role": "evidence",
+      "kind": "price-fixed-block-observation-set",
+      "path": "evidence/fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8.json",
+      "recordIds": [
+        "observe-skip-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+        "observe-pyth-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
+      ],
+      "recordCollectionPointer": "/observations"
     }
   ],
   "checks": [
@@ -310,7 +376,7 @@
     "currentEvidenceByNetwork": {
       "mezo-mainnet": {
         "moduleId": "prices",
-        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13"
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
       },
       "mezo-testnet": {
         "moduleId": "prices",
@@ -320,11 +386,11 @@
     "currentStateEvidenceByNetwork": {
       "mezo-mainnet": {
         "moduleId": "prices",
-        "resourceId": "price-current-state-mezo-mainnet-2026-09-13"
+        "resourceId": "price-current-state-mezo-mainnet-2026-10-06"
       },
       "mezo-testnet": {
         "moduleId": "prices",
-        "resourceId": "price-current-state-mezo-testnet-2026-09-13"
+        "resourceId": "price-current-state-mezo-testnet-2026-09-27"
       }
     }
   }

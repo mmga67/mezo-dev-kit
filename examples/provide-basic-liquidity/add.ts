@@ -17,7 +17,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Add to an existing pool. Desired amounts follow the sorted key's token0/token1 base units. */
 export async function addLiquidity(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: {
     readonly operationId: string;
     readonly key: BasicPoolKey;
@@ -58,7 +58,7 @@ export async function addLiquidity(
     if (!approval) break;
     invariant(attempt < 4, "Pool token allowances changed repeatedly");
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token: approval.token,
@@ -70,6 +70,8 @@ export async function addLiquidity(
     prepared = await writer.prepare(preparation);
   }
   const simulated = await writer.simulate(prepared);
+  // The application asks for consent to this exact call; cancellation stops here.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);

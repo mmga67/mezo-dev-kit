@@ -1,34 +1,15 @@
-# Configure and initialize an MDK project
+# Configure and inspect an MDK application
 
-[configure.ts](configure.ts) calls the current public CLI-package parser with
-unknown input. Its concrete `foundationConfig` selects the foundation domain,
-`.agents/skills` and selected references. Unknown fields, duplicate identities,
-invalid paths and unsupported format versions reject with `CliError`.
+[configure.ts](configure.ts) shows a concrete `foundationConfig` and validates an
+application-supplied configuration value. Start there to understand selected
+features and providers without writing files.
 
-Run the value through the offline [foundation program](../foundations.ts).
-Parsing does not create a project, install dependencies, materialize files or
-prove a selected domain exists in a particular bundle. Those are separate
-project-utility responsibilities.
+[initialize.ts](initialize.ts) shows the actual MDK project CLI API. Its functions
+take an explicit project directory plus a bundle directory or inspection date,
+and construct the CLI command context. Initialization creates
+project artifacts; inspection reports current project state. Invoke initialization
+only for an intended application setup operation, not while importing a recipe.
+This project tooling is Node-based; it does not belong in a browser bundle.
 
-## Initialize and inspect
-
-[initialize.ts](initialize.ts) shows the public `runCommand` API:
-
-- `initializeFoundationProject(projectDirectory, bundleDirectory)` writes the
-  selected foundation/TypeScript guidance to a project with compatible SDK
-  artifacts already installed. The generated bundle directory supplies assets.
-  The command is offline; it does not install dependencies.
-- `inspectProject(projectDirectory, asOf)` runs the doctor against installed
-  state with an explicit review date. Inspect `exitCode` and the structured
-  diagnostics together.
-
-Here `CommandContext` is an SDK type describing the command environment:
-`cwd` selects the application directory, `sourceRoot` supplies the generated
-bundle for initialization, `now` supplies the doctor's review date and an
-optional `fetch` supplies remote retrieval. It is separate from EVM connections
-and the example-owned `ExampleRuntime`. No broad context object is required by
-the parsing example.
-
-See the [CLI guide](../../docs/guides/MDK_CLI.md) for building the bundle and
-installing matching private artifacts, or the
-[package contract](../../packages/cli/README.md) for the other public APIs.
+The [MDK CLI guide](../../docs/guides/MDK_CLI.md) owns command usage and generated
+artifacts. These recipes illustrate those APIs without a separate example runner.

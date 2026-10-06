@@ -15,12 +15,12 @@ Choose a starting point for building with MDK, understanding Mezo, or contributi
 
 ## Explore examples
 
-- [Run the offline example](../examples/README.md#run-the-offline-foundation-examples) —
-  try package calls without an RPC connection or wallet.
+- [Read the cookbook](../examples/README.md#start-here) —
+  start with exact amounts and application connections.
 - [Browser amount form](../examples/browser/README.md) — exact conversion and
   portable hashing through public SDK exports.
 - [Workflow examples](../examples/README.md) — follow complete protocol
-  lifecycles, with local-fork setup for transaction demonstrations.
+  lifecycles with explicit inputs, consent and recovery.
 - [Package examples](../examples/PACKAGES.md) — find focused operations by package.
 
 ## Understand Mezo
@@ -49,6 +49,8 @@ deployments, prices, protocols, and troubleshooting.
 References describe their recorded scope and limitations. The cited evidence
 and package contracts determine which facts and operations can be relied on.
 
+- [Capture current evidence](guides/EVIDENCE_REFRESH.md) — read-only CLI reports and the shared frontend API.
+
 ## Contribute to MDK
 
 - [Contributor guide](../CONTRIBUTING.md) — scope, workflow, review, and dependencies.
@@ -69,6 +71,7 @@ and package contracts determine which facts and operations can be relied on.
 
 ## Standards and project decisions
 
+- [Project changelog](../CHANGELOG.md) — notable source updates and migration notes.
 - [Project manifest](manifest) — current baseline and delegated owners.
 - [Architecture](../ARCHITECTURE.md) — package boundaries and dependencies.
 - [Documentation standard](standards/documentation.md) — landing pages,

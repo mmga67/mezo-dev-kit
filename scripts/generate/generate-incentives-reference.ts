@@ -56,6 +56,7 @@ for (const reference of objects(generated.generatedFrom, "incentives reference i
 }
 
 const locks = required("incentives-locks");
+const configuration = required("incentives-configuration-observations");
 const contractRoles = required("incentives-contract-roles");
 const boost = required("incentives-boost");
 const gauges = required("incentives-gauges-rewards");
@@ -101,6 +102,23 @@ const output = [
   `- Evidence block: \`${display(scope.blockNumber, "evidence block")}\` on \`mezo-mainnet\``,
   `- Input digest: \`sha256:${inputDigest}\``,
   "- Resource-specific scope and review below govern additions beyond the original module acceptance.",
+  "",
+  "## Configuration observation catalog",
+  "",
+  `Catalog review: ${text(configuration.reviewStatus, "configuration review")}; support: ${text(configuration.supportStatus, "configuration support")}. This scope does not inherit the module's earlier acceptance.`,
+  "",
+  ...texts(configuration.limitations, "configuration limitations").map((v) => `- ${v}`),
+  "",
+  table(
+    ["Field", "Role", "Classification", "Unit", "Interpretation"],
+    objects(configuration.records, "configuration fields").map((r) => [
+      r.id,
+      r.roleId,
+      r.classification,
+      r.unit,
+      r.interpretation,
+    ]),
+  ),
   "",
   "## Inventory",
   "",

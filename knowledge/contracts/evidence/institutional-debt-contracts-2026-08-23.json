@@ -6,10 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-23T13:00:11.077Z",
-  "reviewAfter": "2026-09-23T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "deploymentIds": [
       "musd.enclave-v1@mezo-mainnet",
       "musd.enclave-v2@mezo-mainnet",
@@ -354,5 +356,14 @@
       },
       "outcome": "passed"
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-23T13:00:11.077Z",
+    "previousReviewAfter": "2026-09-23T00:00:00Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

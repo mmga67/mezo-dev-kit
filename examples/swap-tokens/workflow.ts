@@ -3,19 +3,20 @@ import { createBasicPoolReader } from "@mezo-dev-kit/pools";
 import { createBasicSwapReader } from "@mezo-dev-kit/swaps";
 import type { BasicSwapOutcome } from "@mezo-dev-kit/swaps";
 import { createSwapQuoteReader } from "@mezo-dev-kit/swaps/quotes";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import { readWalletToken } from "../runtime/token-units.ts";
 
 import { minimumAfterSlippage } from "../runtime/bounds.ts";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 
 import { invariant } from "../runtime/validation.ts";
-import { swapConfig } from "./config.ts";
 
 /** Compare the supplied basic pool candidates, execute one, and verify actual receipt output. */
 export async function swapTokens(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   input: {
+    readonly amountIn: bigint;
+    readonly maxAgeBlocks: bigint;
+    readonly slippageBps: bigint;
+    readonly deadlineSeconds: bigint;
     readonly tokenIn: `0x${string}`;
     readonly tokenOut: `0x${string}`;
     readonly stableOnly?: boolean;
@@ -34,11 +35,7 @@ export async function swapTokens(
     transport: runtime.transport,
     basic: reader,
   });
-  const token = await readWalletToken(runtime, {
-    contractId: "mezo-earn.router",
-    address: input.tokenIn,
-  });
-  const amountIn = parseUnitsExact(swapConfig.amount, Number(token.decimals));
+  const amountIn = input.amountIn;
   // Optional candidates remain visible when their pool is missing. This is a
   // comparison of two supplied routes, not an exhaustive route search.
   const comparison = await comparator.quote({
@@ -46,7 +43,7 @@ export async function swapTokens(
     tokenOut: input.tokenOut,
     account: runtime.account,
     amountIn,
-    maxAgeBlocks: swapConfig.maxAgeBlocks,
+    maxAgeBlocks: input.maxAgeBlocks,
     eligibility: "writer-compatible",
     candidates: (input.stableOnly ? [true] : [true, false]).map((stable) => ({
       id: stable ? "stable" : "volatile",
@@ -56,17 +53,7 @@ export async function swapTokens(
       route: [{ tokenIn: input.tokenIn, tokenOut: input.tokenOut, stable }],
     })),
   });
-  runtime.report("Compared routes", {
-    state: comparison.state,
-    best: comparison.best,
-    coverage: comparison.coverage,
-    candidates: comparison.candidates.map((candidate) => ({
-      id: candidate.id,
-      status: candidate.status,
-    })),
-    gas: comparison.gas,
-    priceImpact: comparison.priceImpact,
-  });
+
   const selected = comparison.candidates.find((candidate) => candidate.id === comparison.best);
   invariant(
     selected?.status === "quoted" && selected.family === "basic",
@@ -77,15 +64,12 @@ export async function swapTokens(
     intermediateAssets: selected.quote.intermediateAssets,
     account: runtime.account,
     amountIn,
-    maxAgeBlocks: swapConfig.maxAgeBlocks,
+    maxAgeBlocks: input.maxAgeBlocks,
   };
   const bounds = {
-    amountOutMinimum: minimumAfterSlippage(
-      selected.quote.estimatedAmountOut,
-      swapConfig.slippageBps,
-    ),
-    deadline: selected.quote.timestamp + swapConfig.deadlineSeconds,
-    maxDeadlineSeconds: swapConfig.deadlineSeconds,
+    amountOutMinimum: minimumAfterSlippage(selected.quote.estimatedAmountOut, input.slippageBps),
+    deadline: selected.quote.timestamp + input.deadlineSeconds,
+    maxDeadlineSeconds: input.deadlineSeconds,
   };
   const outcome = await swapExactInput(
     runtime,
@@ -96,6 +80,6 @@ export async function swapTokens(
     },
     runtime.polling,
   );
-  runtime.report("Swap settled", outcome);
+
   return outcome;
 }

@@ -1,18 +1,16 @@
-# Read units and approve an exact amount
+# Approve an exact token amount
 
-Start with [approve.ts](approve.ts). `approveTokenAmount` constructs the public
-token reader and approval writer, prepares an exact spender/amount, simulates,
-submits, confirms and checks the resulting allowance. A sufficient plan returns
-without a wallet request. A reset is an independent transaction.
+[approveTokenAmount](approve.ts) takes a token snapshot, approval plan, operation
+ID, RPC transport, execution client and application consent callback. The
+snapshot names the account, token, spender and observed allowance. A sufficient
+allowance sends nothing; a reset is its own transaction.
 
-The protocol writer supplies the verified token snapshot and approval plan.
-[Savings deposit](../save-musd/deposit.ts) demonstrates the caller: complete each
-required approval, prepare the deposit again, then simulate its fresh call.
-Keep the same execution client so approvals use the appropriate target resolver
-and shared submission store. Amounts are token base units, not human decimals.
+Approval grants spending permission. Show the exact spender and amount before
+consent, then simulate, submit, confirm and reconcile the resulting allowance.
+After approval, the calling protocol recipe must prepare again against the new
+state. Never replace a missing allowance with zero or default to unlimited
+approval. [readWalletToken](../runtime/token-units.ts) illustrates reading balances
+and precision instead of copying token decimals into a financial calculation.
 
-[token-units.ts](../runtime/token-units.ts) shows `createTokenReader().read()`
-at a concrete block/hash before converting user text. It needs only network,
-transport and account; it has no signer dependency.
-
-[Package reference](../../packages/tokens/REFERENCE.md) · [Connection guide](../SETUP.md).
+See [connection inputs](../SETUP.md) and the
+[Tokens reference](../../packages/tokens/REFERENCE.md) for current contracts.

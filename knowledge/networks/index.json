@@ -8,8 +8,8 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-17T22:21:02Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-09-27T16:22:49.738Z",
+  "reviewAfter": "2026-10-27T16:22:49.738Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
@@ -95,7 +95,8 @@
         "official-ethereum-intro-to-ether",
         "official-base-connecting-to-base",
         "official-base-chain-metadata",
-        "bridge-musd-ntt-network-snapshots"
+        "bridge-musd-ntt-network-snapshots",
+        "network-reverification-2026-09-27"
       ],
       "recordCollectionPointer": "/sources"
     },
@@ -117,7 +118,19 @@
         "mainnet-validation-cloud-wss",
         "mainnet-drpc-wss",
         "mainnet-explorer-https",
-        "testnet-explorer-https"
+        "testnet-explorer-https",
+        "mezo-testnet-official-https-2026-09-27",
+        "mezo-testnet-official-wss-2026-09-27",
+        "mezo-mainnet-boar-https-2026-09-27",
+        "mezo-mainnet-boar-wss-2026-09-27",
+        "mezo-mainnet-imperator-https-2026-09-27",
+        "mezo-mainnet-imperator-wss-2026-09-27",
+        "mezo-mainnet-validation-cloud-https-2026-09-27",
+        "mezo-mainnet-validation-cloud-wss-2026-09-27",
+        "mezo-mainnet-drpc-https-2026-09-27",
+        "mezo-mainnet-drpc-wss-2026-09-27",
+        "ethereum-mainnet-identity-2026-09-27",
+        "base-mainnet-identity-2026-09-27"
       ],
       "recordCollectionPointer": "/observations"
     },
@@ -188,6 +201,12 @@
           "resourceId": "network-sources"
         }
       ]
+    },
+    {
+      "id": "network-reverification-2026-09-27",
+      "role": "artifact",
+      "kind": "network-reverification-capture",
+      "path": "artifacts/reverification-2026-09-27.json"
     }
   ],
   "checks": [

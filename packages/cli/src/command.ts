@@ -13,7 +13,13 @@ import { addCapability, capabilityCatalog, selectionDomains } from "./capabiliti
 import type { ReadPnpm, RunPnpm } from "./console-process.ts";
 import { memoryCommand } from "./memory.ts";
 
+import { evidenceCommand } from "./evidence.ts";
+import type { EvidenceProgressHandler } from "./evidence.ts";
+
 export interface CommandContext {
+  readonly signal?: AbortSignal;
+  readonly environment?: Readonly<Record<string, string | undefined>>;
+  readonly onEvidenceProgress?: EvidenceProgressHandler;
   readonly cwd: string;
   readonly sourceRoot?: string;
   readonly now?: Date;
@@ -41,6 +47,7 @@ mdk docs search <query>
 mdk docs show <reference-id>
 mdk docs fetch <reference-id> | --all
 mdk recover
+mdk evidence capabilities | refresh | inspect | recover
 mdk memory search <query> | show <id> | check
 mdk memory save --file <entry.json> [--scope local|shared]
 
@@ -52,6 +59,7 @@ export async function runCommand(
   args: readonly string[],
   context: CommandContext,
 ): Promise<CommandResult> {
+  if (args[0] === "evidence") return evidenceCommand(args.slice(1), context);
   let parsed: ReturnType<typeof parseCliArguments>;
   try {
     parsed = parseCliArguments(args);

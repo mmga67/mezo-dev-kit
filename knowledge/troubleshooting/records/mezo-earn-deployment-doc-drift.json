@@ -9,8 +9,8 @@
   "issueStatus": "verified-point-in-time",
   "severity": "high",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T09:56:38Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "symptom": "An integration resolves the veBTC address from the official Mezo Pools governance table and reaches a different voter generation than the deployed PoolsVoter uses.",
   "scope": {
     "networkId": "mezo-mainnet",
@@ -37,7 +37,9 @@
   "reproduction": {
     "basis": "fixed-block-deployed-reference-plus-official-explorer-proxy-resolution",
     "deterministicEvidenceIsStrongerThanLiveWrites": true,
-    "evidenceNetworks": ["mezo-mainnet"]
+    "evidenceNetworks": [
+      "mezo-mainnet"
+    ]
   },
   "canonicalLinks": [
     {
@@ -56,5 +58,14 @@
   "limitations": [
     "This is a point-in-time mainnet identity conflict and must be rechecked after upgrades.",
     "The explorer still labels current veBTC and veMEZO source partially verified. Independent builds reproduce the deployed executables exactly, which establishes scoped behavior but not authorship, audit coverage, or proxy activation history."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T09:56:38Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Pinned current documentation comparison, captured live graph and version-scoped Native keeper/delivery proof. Other unexpired diagnoses and excluded historical testnet dates are unchanged.",
+    "evidenceReference": {
+      "moduleId": "troubleshooting",
+      "resourceId": "troubleshooting-maintenance-reverification-2026-10-06"
+    }
+  }
 }

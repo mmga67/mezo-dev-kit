@@ -9,7 +9,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Deposit MUSD base units and return actual principal settlement. Receipt staking is a separate action. */
 export async function depositMusd(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: { readonly operationId: string; readonly amount: bigint; readonly bounds: SavingsBounds },
   polling = confirmationPolicy,
 ): Promise<Readonly<SavingsOutcome>> {
@@ -36,7 +36,7 @@ export async function depositMusd(
   for (let attempt = 0; prepared.approval.kind !== "sufficient"; attempt++) {
     invariant(attempt < 2, "Savings allowance changed repeatedly");
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token: prepared.token,
@@ -48,6 +48,8 @@ export async function depositMusd(
     prepared = await writer.prepare(preparation);
   }
   const simulated = await writer.simulate(prepared);
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   // Reconciliation verifies principal changes at the receipt block; yield remains separate.

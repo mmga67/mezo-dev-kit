@@ -5,14 +5,23 @@ installed. The filename alone does not determine the test runner.
 
 ## Normal commands
 
-| Command             | Coverage and prerequisites                                                                                                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm test:quality` | The automation Vitest suites explicitly selected by [vitest.quality.config.ts](../../vitest.quality.config.ts)                                                                                          |
-| `pnpm test`         | Quality suites, then workspace packages' test commands                                                                                                                                                  |
-| `pnpm test:shuffle` | Quality and package suites with the repository's reproducible shuffle seed                                                                                                                              |
-| `pnpm test:built`   | Built-package/public-entrypoint checks plus examples; run `pnpm build` first                                                                                                                            |
-| `pnpm test:browser` | Packed SDKs in Chromium, Firefox and WebKit, browser declarations, Node imports and bundle budgets; build and [install browsers](../../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration) first |
-| `pnpm test:clean`   | Copies source to a temporary workspace, installs from the local pnpm store offline, typechecks, builds, tests entrypoints/examples, and verifies both skill audiences                                   |
+| Command             | Coverage and prerequisites                                                                                                                                                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm test:quality` | The automation Vitest suites explicitly selected by [vitest.quality.config.ts](../../vitest.quality.config.ts)                                                                                                                           |
+| `pnpm test`         | Quality suites, then workspace packages' test commands                                                                                                                                                                                   |
+| `pnpm test:shuffle` | Quality and package suites with the repository's reproducible shuffle seed                                                                                                                                                               |
+| `pnpm test:built`   | Built-package/public-entrypoint checks plus examples; run `pnpm build` first                                                                                                                                                             |
+| `pnpm test:browser` | Optional packed SDK qualification in Chromium, Firefox and WebKit, browser declarations, Node imports and bundle budgets; build and [provision browsers](../../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification) first |
+| `pnpm test:clean`   | Copies source to a temporary workspace, installs from the local pnpm store offline, typechecks, builds, tests entrypoints/examples, and verifies both skill audiences                                                                    |
+
+`pnpm test:browser:container` runs the same optional suite with browser engines and
+system libraries in Docker; it requires an available local Docker engine and built
+packages, but no native browser installation.
+
+`pnpm check` runs the default checks without browser execution or browser system
+libraries. `pnpm check:browser` opts into the default checks plus the full browser
+suite; `pnpm check:browser:container` selects the container path. Missing
+prerequisites fail the selected qualification rather than skipping tests.
 
 Target one Vitest suite:
 
@@ -22,16 +31,28 @@ pnpm test:quality scripts/tests/test-local-tasks.test.ts
 
 ## Vitest suites
 
+The compiler container suite checks checksum rejection, self-contained inputs,
+Standard JSON error handling and runtime isolation without requiring Docker.
+Run it with `pnpm test:quality scripts/tests/test-solc-container.test.ts`.
+Actual compiler reproduction is an opt-in evidence operation described in the
+[evidence tools manual](../evidence/README.md#source-inspection-and-build-comparison).
+
 | Suites                                                                                                                                                                                                 | Contract under test                                                                                               |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | [test-local-tasks.test.ts](test-local-tasks.test.ts)                                                                                                                                                   | Local task creation, guidance, lifecycle structure, and invalid trees                                             |
+| [test-context-retrieval.test.ts](test-context-retrieval.test.ts)                                                                                                                                       | Bounded offline record, ABI, source and memory retrieval                                                          |
+| [test-browser-container.test.ts](test-browser-container.test.ts)                                                                                                                                       | Container version, loopback exposure and cleanup without requiring Docker                                         |
 | [test-source-boundary.test.ts](test-source-boundary.test.ts)                                                                                                                                           | Source/history boundaries and Git fixtures                                                                        |
 | [test-coding-gates.test.ts](test-coding-gates.test.ts)                                                                                                                                                 | Type/lint/boundary rejection of deliberately invalid fixtures                                                     |
 | [test-capability-fixtures.test.ts](test-capability-fixtures.test.ts)                                                                                                                                   | Synthetic capability-fixture preparation                                                                          |
 | [test-pool-source.test.ts](test-pool-source.test.ts)                                                                                                                                                   | Retained source resolution and digest validation                                                                  |
+| [test-explorer-build.test.ts](test-explorer-build.test.ts)                                                                                                                                             | Explorer and Standard JSON bytecode comparison, immutable handling and RPC response selection                     |
+| [test-evidence-promotion.test.ts](test-evidence-promotion.test.ts)                                                                                                                                     | Evidence proposal, reviewed apply, concurrent edits and recovery                                                  |
 | [test-voting-interfaces.test.ts](test-voting-interfaces.test.ts)                                                                                                                                       | Generated voting interface evidence                                                                               |
 | [test-third-party-incentives.test.ts](test-third-party-incentives.test.ts)                                                                                                                             | Retained source/gauge evidence, direct-vote boundaries, recipient distinctions and unsupported delivery rejection |
 | [test-evidence-scope.test.ts](test-evidence-scope.test.ts)                                                                                                                                             | Network scope, freshness, and import failure boundaries                                                           |
+| [test-incentive-topology-generation.test.ts](test-incentive-topology-generation.test.ts)                                                                                                               | Historical topology after implementation restoration; reject gaps, ambiguity and incompatible generations         |
+| [test-historical-incentive-abi.test.ts](test-historical-incentive-abi.test.ts)                                                                                                                         | Retained ABI acceptance, exact digests, closed generation ranges and source/runtime observation binding           |
 | [test-current-price-state.test.ts](test-current-price-state.test.ts)                                                                                                                                   | Current-price-state evidence parsing/validation                                                                   |
 | [test-indexing-reconciliation.test.ts](test-indexing-reconciliation.test.ts)                                                                                                                           | Bounded indexing and reconciliation cases                                                                         |
 | [test-foundational-package-generation.test.ts](test-foundational-package-generation.test.ts)                                                                                                           | Chains/Contracts generation and malformed input rejection                                                         |

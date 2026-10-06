@@ -1,9 +1,5 @@
-import { setTimeout } from "node:timers/promises";
-
-/** Local-example observation budget. A timeout preserves the submission for inspection. */
+/** Illustrative bounded polling. Applications choose their own delay and cancellation policy. */
 export const confirmationPolicy = {
   attempts: 20,
-  pause: async (): Promise<void> => {
-    await setTimeout(250);
-  },
+  pause: (): Promise<void> => new Promise((resolve) => globalThis.setTimeout(resolve, 250)),
 };

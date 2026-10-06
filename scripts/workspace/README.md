@@ -25,6 +25,25 @@ pnpm check:tasks
 Fill in the created task's scope and acceptance criteria before moving it to
 `tasks/active/`. These records remain ignored and local to the checkout.
 
+## Optional development tools
+
+| Workflow                                                        | Tool placement                                                                                                              |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript development, CLI, code generation and default checks | Root-pinned Node/pnpm and project dependencies; no browser libraries or Docker required                                     |
+| Complete browser qualification                                  | Optional disposable Playwright container through `pnpm check:browser:container`, or explicitly provisioned native browsers  |
+| Exact contract source reproduction                              | Foundry and the recorded compiler/settings for the selected evidence workflow; outside default checks and application setup |
+
+[browser-container.ts](browser-container.ts) backs `pnpm test:browser:container`.
+It starts an official digest-pinned browser image, mounts only the matching installed
+Playwright driver read-only, runs the host browser suite through a loopback endpoint,
+and removes its container. It does not install host packages or mount the workspace,
+home directory or Docker socket. For the complete workflow and native alternative,
+follow [browser qualification](../../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification).
+
+Keep optional tools tied to a demonstrated workflow. Source reproduction can use
+a separately provisioned environment with exact compiler inputs when needed; no
+Foundry container, local chain or all-purpose development stack is required here.
+
 ## Build-output cleanup
 
 [clean-package-dist.ts](clean-package-dist.ts) accepts exactly one approved

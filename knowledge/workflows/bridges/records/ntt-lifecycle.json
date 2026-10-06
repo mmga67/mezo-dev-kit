@@ -8,19 +8,29 @@
   "workflowStatus": "verified-source-model-not-supported",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T14:20:35.823Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
-    "assetIds": ["musd"]
+    "assetIds": [
+      "musd"
+    ]
   },
   "limitations": [
     "This lifecycle applies only to the recorded MUSD NTT generation and must not be applied to Native Bridge.",
     "A successful source receipt is not destination completion."
   ],
   "states": [
-    { "id": "source-submitted", "terminal": false, "evidence": "transaction hash only" },
+    {
+      "id": "source-submitted",
+      "terminal": false,
+      "evidence": "transaction hash only"
+    },
     {
       "id": "source-reverted",
       "terminal": true,
@@ -110,5 +120,14 @@
     "Treat receipt absence and negative scans as unknown unless the selected provider supplies stronger terminal evidence.",
     "Re-read pause, peer, threshold, capacity, recipient, and fee inputs before any future writer call.",
     "Do not collapse Native Bridge states into this NTT model."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T14:20:35.823Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

@@ -28,7 +28,7 @@ if (
   );
 }
 
-const compilerOutput = await loadJson(compilerOutputPath);
+const compilerOutput = object(await loadJson(compilerOutputPath), "compiler output");
 const contracts = object(compilerOutput.contracts, "compiler contracts");
 const sourceContracts = object(contracts[sourceName], `compiler contracts for ${sourceName}`);
 const artifact = object(
@@ -74,8 +74,8 @@ const result = {
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 if (!creation.executableExact || !runtime.executableExact) process.exitCode = 1;
 
-async function loadJson(path: string): Promise<JsonObject> {
-  return object(parseJson(await readFile(path, "utf8"), path), path);
+async function loadJson(path: string): Promise<unknown> {
+  return parseJson(await readFile(path, "utf8"), path);
 }
 
 function findRpcResponse(document: unknown, id: string): JsonObject {

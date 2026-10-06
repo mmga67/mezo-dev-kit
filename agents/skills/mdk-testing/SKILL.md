@@ -48,11 +48,16 @@ exercise lines, duplicate implementation details, or satisfy a count.
    ordering is a plausible failure mode.
 9. Review whether each test would fail for the intended regression. Remove
    redundant tests that add maintenance cost without distinguishing behavior.
-10. For SDK runtime portability, run the packed-artifact `pnpm test:browser`
-    suite after building. Keep browser behavior, Node/SSR imports, declaration
+10. Browser qualification is optional beyond default `pnpm check`. When selected,
+    run `pnpm check:browser:container` for isolated engines/libraries, or
+    `pnpm check:browser` for native browsers. The corresponding `test:browser:container`
+    and `test:browser` commands run only the additional suite after building.
+    Keep browser behavior, Node/SSR imports, declaration
     compatibility and representative bundle budgets distinct. Follow the
-    [browser setup guide](../../../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration);
-    missing browsers or host libraries are failures to resolve, not skips.
+    [complete qualification guide](../../../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification).
+    Do not install browser binaries or host libraries for routine tasks. An
+    explicitly invoked suite must fail on missing prerequisites, not silently skip
+    engines. Report browser qualification as not run when it was not selected.
 
 ## Boundaries
 

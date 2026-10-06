@@ -6,43 +6,35 @@ import {
 } from "@mezo-dev-kit/musd-redemptions";
 import type { RedemptionOutcome } from "@mezo-dev-kit/musd-redemptions";
 import type { RpcRequest } from "@mezo-dev-kit/core";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
-import { readWalletToken } from "../runtime/token-units.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { minimumAfterSlippage } from "../runtime/bounds.ts";
 
 import { invariant } from "../runtime/validation.ts";
 
 /** Exchange MUSD for collateral from the ordered trove queue, with bounded discovery. */
 export async function redeemMusd(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   request: RpcRequest,
+  input: {
+    readonly requestedAmount: bigint;
+    readonly maxRedemptionRate: bigint;
+    readonly slippageBps: bigint;
+  },
 ): Promise<Readonly<RedemptionOutcome>> {
   const reader = createRedemptionReader({
     networkId: "mezo-mainnet",
     registry: runtime.registry,
     transport: runtime.transport,
   });
-  const before = await reader.read({ account: runtime.account });
-  const token = runtime.registry.resolve({
-    contractId: "musd.token",
-    networkId: runtime.network.id,
-    blockNumber: before.borrowing.coordinate.blockNumber,
-  });
-  const wallet = await readWalletToken(runtime, {
-    contractId: token.contractId,
-    address: token.address,
-  });
   const quoteInput = {
     account: runtime.account,
-    requestedAmount: parseUnitsExact("100", Number(wallet.decimals)),
+    requestedAmount: input.requestedAmount,
     amountMode: "truncate" as const,
     maxIterations: 10n,
     maxTailScan: 32,
     trials: 3n,
     seed: 42n,
   };
-  const quote = await reader.quote(quoteInput);
   const execution = runtime.createExecution();
   const simulator = createRedemptionTraceSimulator({
     request,
@@ -68,7 +60,7 @@ export async function redeemMusd(
     bounds: {
       minActualAmount: 1n,
       minNetCollateral: 1n,
-      maxRedemptionRate: parseUnitsExact("0.01", 18),
+      maxRedemptionRate: input.maxRedemptionRate,
       maxBlockAge: 2n,
     },
   });
@@ -82,26 +74,14 @@ export async function redeemMusd(
     quote: quoteInput,
     bounds: {
       ...preliminary.bounds,
-      minActualAmount: minimumAfterSlippage(estimated.actualAmount, 50n),
-      minNetCollateral: minimumAfterSlippage(estimated.netCollateral, 50n),
+      minActualAmount: minimumAfterSlippage(estimated.actualAmount, input.slippageBps),
+      minNetCollateral: minimumAfterSlippage(estimated.netCollateral, input.slippageBps),
     },
   };
-  runtime.report("Redemption quote", {
-    requested: quoteInput.requestedAmount,
-    attempted: quote.attemptedAmount,
-    helperTruncated: quote.helperTruncatedAmount,
-    entriesChecked: quote.tailEntriesChecked,
-    estimated,
-  });
+
   // TroveManager burns MUSD directly; this action has no token approval.
   const outcome = await redeemCollateral(runtime, simulator, redemptionInput, runtime.polling);
-  runtime.report("Redemption settled", {
-    ...outcome.amounts,
-    gasFee: outcome.gasFee,
-    closedBorrowers: outcome.closedBorrowers,
-    partialBorrowers: outcome.partialBorrowers,
-    boundsSatisfied: outcome.boundsSatisfied,
-  });
+
   invariant(
     outcome.boundsSatisfied,
     "Redemption settled outside bounds; do not automatically redeem again",

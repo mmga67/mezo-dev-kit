@@ -8,10 +8,15 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-27T14:24:36.881Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"],
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "contractIds": [
       "musd.active-pool",
       "musd.borrower-operations",
@@ -266,7 +271,8 @@
         "economic-system-explorer-executable-reproductions",
         "incentives-explorer-executable-reproductions",
         "validator-incentives-explorer-executable-reproductions",
-        "pools-retained-source-bundles"
+        "pools-retained-source-bundles",
+        "incentives-escrow-reproductions-2026-10-06"
       ],
       "recordCollectionPointer": "/sources"
     },
@@ -702,6 +708,18 @@
         {
           "moduleId": "contracts",
           "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-27"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912"
+        },
+        {
+          "moduleId": "contracts",
+          "resourceId": "contract-oracle-probes-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
         }
       ]
     },
@@ -823,7 +841,9 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/bridge-v13-contracts-2026-08-24.json",
-      "recordIds": ["observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"],
+      "recordIds": [
+        "observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"
+      ],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -911,7 +931,11 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/savings-dynamic-read-interfaces.json",
-      "recordIds": ["strategy", "converter", "gauge"],
+      "recordIds": [
+        "strategy",
+        "converter",
+        "gauge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -931,7 +955,9 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-06.json",
-      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"],
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
+      ],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -945,7 +971,12 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/vault-dynamic-read-interfaces.json",
-      "recordIds": ["vault-v2", "morpho-market-adapter", "receipt-wrapper", "vault-gauge"],
+      "recordIds": [
+        "vault-v2",
+        "morpho-market-adapter",
+        "receipt-wrapper",
+        "vault-gauge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -977,7 +1008,9 @@
       "role": "canonical-record",
       "kind": "protocol-operation-source-catalog",
       "path": "records/protocol-operation-sources.json",
-      "recordIds": ["morpho-events"],
+      "recordIds": [
+        "morpho-events"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1009,7 +1042,10 @@
       "role": "canonical-record",
       "kind": "basic-pool-interface-catalog",
       "path": "records/basic-pool-interfaces.json",
-      "recordIds": ["pool", "factory-registry"],
+      "recordIds": [
+        "pool",
+        "factory-registry"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1153,7 +1189,12 @@
       "role": "canonical-record",
       "kind": "voting-interface-catalog",
       "path": "records/voting-interfaces.json",
-      "recordIds": ["pools", "boost", "validator", "rewards-factory"],
+      "recordIds": [
+        "pools",
+        "boost",
+        "validator",
+        "rewards-factory"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1251,7 +1292,10 @@
       "role": "canonical-record",
       "kind": "historical-contract-evidence-catalog",
       "path": "records/historical-contract-evidence.json",
-      "recordIds": ["native-ethereum-7e994d7f", "native-mezo-v5"],
+      "recordIds": [
+        "native-ethereum-7e994d7f",
+        "native-mezo-v5"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1265,7 +1309,9 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-13.json",
-      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"],
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
+      ],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -1303,6 +1349,122 @@
       "role": "canonical-record",
       "kind": "token-runtime-profile-catalog",
       "path": "records/native-transfer-token-runtime.json"
+    },
+    {
+      "id": "oracle-capture-mezo-mainnet-2026-09-27",
+      "role": "artifact",
+      "kind": "price-source-capture",
+      "path": "artifacts/oracle-captures/mezo-mainnet-2026-09-27.json"
+    },
+    {
+      "id": "contract-oracle-probes-mezo-mainnet-2026-09-27",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-27.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-27"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "contract-runtime-reverification-2026-09-27",
+      "role": "artifact",
+      "kind": "contract-current-runtime-reverification",
+      "path": "artifacts/current-runtime-identities-2026-09-27.json"
+    },
+    {
+      "id": "musdt-source-reproduction-2026-10-06",
+      "path": "artifacts/musdt-token-runtime/source-reproduction-2026-10-06.json",
+      "kind": "musdt-independent-source-reproduction",
+      "role": "artifact"
+    },
+    {
+      "id": "legacy-swap-candidate-qualification-2026-10-06",
+      "path": "artifacts/legacy-swap-qualification-2026-10-06.json",
+      "kind": "legacy-swap-candidate-qualification",
+      "role": "artifact"
+    },
+    {
+      "id": "contract-maintenance-reverification-2026-10-06",
+      "role": "artifact",
+      "kind": "maintenance-reverification-capture",
+      "path": "artifacts/contract-maintenance-reverification-2026-10-06.json"
+    },
+    {
+      "id": "contract-third-party-history-2026-10-06",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/third-party-history-2026-10-06.json",
+      "recordIds": [
+        "observe-incentives-third-party-voter-mezo-mainnet-2026-10-06"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "oracle-capture-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+      "role": "artifact",
+      "kind": "price-source-capture",
+      "path": "artifacts/oracle-captures/mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912.json"
+    },
+    {
+      "id": "contract-oracle-probes-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "oracle-capture-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+      "role": "artifact",
+      "kind": "price-source-capture",
+      "path": "artifacts/oracle-captures/mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8.json"
+    },
+    {
+      "id": "contract-oracle-probes-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/oracle-contracts-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8.json",
+      "recordIds": [
+        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "abi.incentives.ve-btc.before-2026-10-06",
+      "role": "artifact",
+      "kind": "historical-contract-abi",
+      "path": "artifacts/historical-abis/vebtc-before-2026-10-06.json"
+    },
+    {
+      "id": "abi.incentives.ve-mezo.before-2026-10-06",
+      "role": "artifact",
+      "kind": "historical-contract-abi",
+      "path": "artifacts/historical-abis/vemezo-before-2026-10-06.json"
+    },
+    {
+      "id": "contract-escrow-generations-2026-10-06",
+      "role": "evidence",
+      "kind": "contract-observation-set",
+      "path": "evidence/escrow-generations-2026-10-06.json",
+      "recordIds": [
+        "observe-vebtc-post-resumption",
+        "observe-vemezo-post-resumption"
+      ],
+      "recordCollectionPointer": "/observations"
+    },
+    {
+      "id": "contract-historical-abi-bindings",
+      "role": "canonical-record",
+      "kind": "historical-contract-abi-bindings",
+      "path": "records/historical-abi-bindings.json",
+      "recordIds": [
+        "incentives.ve-btc",
+        "incentives.ve-mezo"
+      ],
+      "recordCollectionPointer": "/records"
     }
   ],
   "checks": [
@@ -1371,6 +1533,15 @@
         "moduleId": "networks",
         "resourceId": "base-mainnet"
       }
-    ]
+    ],
+    "reverification": {
+      "previousVerifiedAt": "2026-08-27T14:24:36.881Z",
+      "previousReviewAfter": "2026-09-22T00:00:00Z",
+      "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+      "evidenceReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-maintenance-reverification-2026-10-06"
+      }
+    }
   }
 }

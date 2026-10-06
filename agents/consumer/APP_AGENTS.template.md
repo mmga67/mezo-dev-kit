@@ -20,6 +20,31 @@ MDK's contributor coding standard does not override this application's own
 standard. Route project-specific quality rules here or to an application-owned
 standard, and use the installed MDK consumer skills for public SDK boundaries.
 
+## Communication and reporting
+
+These are application-owned defaults; adapt them to the user's requested depth
+and the agent host's instructions.
+
+- Lead with the answer or outcome in plain language. Start tool work with one
+  sentence about the intended result and immediate action. Keep progress to
+  one or two sentences about a new finding, consequence or next step; follow
+  the host's update cadence. Avoid tool narration and repeated plans.
+- Ask only for missing decisions or inputs that materially affect the work;
+  give a recommendation and its consequence. Preserve existing authorization
+  and continue independent work within application permissions.
+- Routine closeouts usually fit in 80–150 words; small tasks can use less.
+  This is a soft default, not a minimum or a cap on necessary evidence.
+- State the delivered behavior and purpose, actual checks and outcomes, and
+  material gaps, risks or remaining decisions. Distinguish implementation,
+  verification, review and release. Identify failed or unavailable required
+  checks and why; do not call unfinished required work complete.
+- Combine documentation, knowledge and memory updates or reasons none were
+  needed in one short sentence. Link useful files or evidence once; keep
+  detailed logs in application-owned records. Omit empty optional fields.
+- Make the final answer understandable without progress messages. Research
+  and reviews lead with findings, sources, recommendations and uncertainty.
+  Brevity does not reduce required work, verification or review.
+
 ## MDK Development
 
 For Mezo-specific work:
@@ -50,7 +75,7 @@ task's authorization. Installing guidance never authorizes a transaction.
 
 When prior findings can help the task, use the installed
 `mdk-memory-application` skill. After meaningful work, retain only useful
-context with verified source pointers; otherwise report no memory update.
+context with verified source pointers; use the reporting defaults above.
 Memory belongs to this application and does not establish live Mezo facts.
 Keep custom skills separate from MDK-managed skill directories.
 

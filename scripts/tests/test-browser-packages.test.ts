@@ -15,6 +15,7 @@ import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { gzipSync } from "node:zlib";
 import { chromium, firefox, webkit } from "playwright";
+import type { BrowserType } from "playwright";
 import { build, createLogger } from "vite";
 import { afterAll, beforeAll, expect, test } from "vitest";
 
@@ -23,6 +24,13 @@ const run = promisify(execFile);
 let consumer: string;
 let bundle: string;
 const entrypoints: string[] = [];
+
+async function openBrowser(engine: BrowserType) {
+  const endpoint = process.env.MDK_BROWSER_WS_ENDPOINT;
+  return endpoint === undefined
+    ? engine.launch({ headless: true })
+    : engine.connect(endpoint, { timeout: 30_000 });
+}
 
 function record(value: unknown): Record<string, unknown> {
   if (typeof value !== "object" || value === null || Array.isArray(value))
@@ -172,7 +180,7 @@ test.each([
   { name: "Firefox", engine: firefox },
   { name: "WebKit", engine: webkit },
 ])("packed SDK behavior in $name", async ({ engine }) => {
-  const browser = await engine.launch({ headless: true });
+  const browser = await openBrowser(engine);
   try {
     const page = await browser.newPage();
     const errors: string[] = [];
@@ -187,6 +195,9 @@ test.each([
       return sdk.runBrowserVerification();
     });
     expect(result).toEqual({
+      evidenceStatus: "complete",
+      incentiveRuntimeRejected: true,
+      evidenceCancelled: "cancelled",
       noNodeGlobals: true,
       byteDigest: "0xba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
       utf8Digest: "0xba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
@@ -234,7 +245,7 @@ test("frontend form validates exact amounts using packed EVM exports", async () 
     '<script type="module" src="./main.ts"></script>',
     "",
   );
-  const browser = await chromium.launch({ headless: true });
+  const browser = await openBrowser(chromium);
   try {
     const page = await browser.newPage();
     await page.route("**/*", (route) => route.abort());

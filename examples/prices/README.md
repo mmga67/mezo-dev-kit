@@ -1,19 +1,16 @@
-# Normalize and inspect a price
+# Interpret a price and its freshness
 
-[normalize.ts](normalize.ts) keeps normalization, freshness and confidence as
-separate results. A synthetic raw `12345n` with exponent `-2`, normalized to 6
-decimals, becomes `123450000n`. With `publishedAt: 1000n`, `asOf: 1060n` and
-`maxAgeSeconds: 60n`, freshness is valid; one second later it is stale.
-Missing confidence remains unsupported/null.
+[evaluatePrice](normalize.ts) accepts an identified datum's amount/scale,
+optional confidence, publication timestamp, an explicit evaluation time and
+maximum age. It is a pure calculation: it reads no clock or RPC. Inspect amount,
+freshness and confidence separately. Missing confidence means unknown confidence,
+not zero uncertainty; unavailable prices must never become zero.
 
-Run those inputs through the offline [foundation program](../foundations.ts).
-`validAmountAndTime` describes only those two checks; source selection and
-confidence acceptance remain application decisions.
+[readSkipPrice](read-skip.ts) adds a read transport and registry for the implemented
+mainnet Skip observation. Supply the requested coordinate and freshness policy
+through its typed input; preserve source identity, units, status and limitations
+in the result. This is a direct feed observation, not automatically the oracle
+value used by a particular borrowing or lending protocol. No wallet is required.
 
-[read-skip.ts](read-skip.ts) shows construction of the direct Skip reader from a
-registry and transport. The caller supplies Unix-second observation time,
-evaluation time, maximum age and scaling policy. Keep its source identity,
-coordinate, status and limitations with the result. This observation is separate
-from the oracle state used by Borrowing or Lending.
-
-[Package reference](../../packages/prices/REFERENCE.md).
+See the [Prices reference](../../packages/prices/REFERENCE.md) and
+[price selection guide](../../docs/guides/price-selection-and-dex-quotes.md).

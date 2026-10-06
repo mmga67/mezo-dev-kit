@@ -22,3 +22,9 @@ private reporting process, not in public troubleshooting records.
 ## Contributing
 
 Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.
+
+`node scripts/checks/validate-troubleshooting-knowledge.ts --network mezo-mainnet`
+checks the maintained scope under the [network baseline](../../docs/manifest#network-scope).
+It excludes only the historical testnet archive diagnosis's expiry; all records
+still receive structural and relationship checks. The command without a network
+selection retains the full-module freshness diagnostic.

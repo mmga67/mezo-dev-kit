@@ -136,6 +136,26 @@ Follow `SECURITY.md`; never commit secrets or publish security findings through
 issues, tasks, memory, or ordinary troubleshooting. Knowledge or a skill does
 not authorize a transaction or establish a supported writer.
 
+## Communication
+
+Lead with the answer or outcome in plain language. For tool work, start with
+one sentence naming the intended result and immediate action. Keep progress
+updates to one or two sentences about a new finding, consequence or next step;
+follow the host's required cadence during longer work. Avoid tool narration,
+repeated plans and recaps of unchanged context.
+
+Ask only for a decision or input that materially affects the work. Give the
+recommended option and its consequence; continue independent authorized work.
+Use the authorization rules above without adding a routine green-light step.
+
+Routine closeouts should usually fit in 80–150 words; small tasks may need
+less. This is a soft default, not a minimum or a cap on necessary evidence.
+Use the [completion report](CONTRIBUTING.md#completion-reports) requirements.
+Make the final answer self-contained, link useful detail once, and omit empty
+optional fields. Research and reviews lead with findings and recommendations.
+Adapt to the requested depth; brevity does not reduce execution, verification,
+uncertainty disclosure or review requirements.
+
 ## Verification and completion
 
 `CONTRIBUTING.md` owns task lifecycle and review. Architecture, migrations,
@@ -151,10 +171,10 @@ release. Shared configuration or multi-package changes require `pnpm check`.
 Passing local checks does not publish a package or refresh live evidence.
 
 Update affected canonical docs, examples, skills, and consumer guidance in the
-same change. Report changed behavior, actual checks, docs/knowledge and memory
-decisions, and unresolved risks. Do not mark work complete with required checks
-outstanding. Missing guidance is a gap: create it only from verified task
-information; otherwise continue only where correctness is unaffected.
+same change. Follow the completion-report requirements above. Do not mark work
+complete with required checks outstanding. Missing guidance is a gap: create
+it only from verified task information; otherwise continue only where
+correctness is unaffected.
 
 Memory is provider-neutral and optional: retain only useful, verified pointers,
 never secrets, raw logs, speculation, routine history, or maintained-doc copies.

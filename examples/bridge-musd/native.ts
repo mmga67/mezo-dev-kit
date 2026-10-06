@@ -31,7 +31,7 @@ export interface NativeCheckpoint {
 
 /** Execute one explicitly requested Native source transfer with separate approval and durable identity. */
 export async function sendNative(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   destinationTransport: RpcTransport,
   input: {
     readonly routeId: NativeRouteId;
@@ -82,7 +82,7 @@ export async function sendNative(
     });
     // For BTC this EVM approval updates the native bank authorization.
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token,
@@ -99,7 +99,10 @@ export async function sendNative(
       "Source precision changed during approval",
     );
   }
-  const submitted = await writer.submit(prepared, await writer.simulate(prepared));
+  const simulated = await writer.simulate(prepared);
+  // The application asks for consent to this exact call; cancellation stops here.
+  await review(simulated);
+  const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);
   invariant(confirmed.hash, "Native source reconciliation requires a transaction hash");

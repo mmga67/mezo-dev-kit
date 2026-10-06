@@ -5,8 +5,8 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-27T14:24:36.881Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "records": [
     {
       "id": "musd.active-pool@mezo-mainnet",
@@ -6169,9 +6169,9 @@
         "declaredImplementationAddress": "0x6e7d74fa7d5c90fef9f0512987605a6d546181bb"
       },
       "runtime": {
-        "observedAt": "2026-09-13T16:42:37.789Z",
-        "blockNumber": 11823840,
-        "blockHash": "0xc4a4dccfffd6b8530f33d73577db64007cd39c107de6e872e6fa519774cfd843",
+        "observedAt": "2026-10-06T16:59:00.593Z",
+        "blockNumber": 12332042,
+        "blockHash": "0x0ba59b69c326fb35d40d7ba06ab9e855f314dcf5ee658fea7d7b3be60709d0e3",
         "addressCodeSha256": "9b9df08e62991d3efd287ce27a0019ddc0d74d6a5fb1ea70b52b78ea233435bc",
         "implementationCodeSha256": "ae33514b4e9cc89752e90ab83cbd547072196c67e8646f6be2d28699a7165611",
         "version": "1.4.6"
@@ -6184,18 +6184,18 @@
           "deploymentArtifactSha256": "11e9c65b0c75bb919d5f42f07d6b3982e46c75702608914b319ce6cb6ac5b3f1",
           "configurationReference": {
             "moduleId": "prices",
-            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13",
-            "recordId": "observe-pyth-mezo-mainnet-2026-09-13"
+            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+            "recordId": "observe-pyth-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
           },
           "activationHistoryReference": {
             "moduleId": "contracts",
-            "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13",
-            "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
+            "resourceId": "contract-oracle-probes-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+            "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
           },
           "networkEvidenceReference": {
             "moduleId": "prices",
-            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-13",
-            "recordId": "observe-pyth-mezo-mainnet-2026-09-13"
+            "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+            "recordId": "observe-pyth-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
           },
           "providerUpgradeSource": {
             "repository": "https://github.com/pyth-network/pyth-crosschain",
@@ -6207,8 +6207,8 @@
       },
       "evidenceReference": {
         "moduleId": "contracts",
-        "resourceId": "contract-oracle-probes-mezo-mainnet-2026-09-13",
-        "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
+        "resourceId": "contract-oracle-probes-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+        "recordId": "observe-oracle-pyth-price-feed-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
       },
       "status": "verified-current",
       "supportStatus": "supported",
@@ -7503,12 +7503,12 @@
           "logIndex": 0
         },
         "currentCodeFrom": {
-          "blockNumber": 8199968,
-          "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
-          "blockTimestamp": "2026-04-13T17:01:04.000Z",
-          "blockEvidenceMethod": "eth_getBlockByNumber",
-          "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
-          "logIndex": 0
+          "blockNumber": 12330216,
+          "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+          "blockTimestamp": "2026-10-06T15:01:23.000Z",
+          "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+          "logIndex": 0,
+          "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
         },
         "effectiveUntilExclusive": null
       },
@@ -7517,7 +7517,7 @@
         "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
         "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
         "adminAddress": "0x6afe056221024c189e38ff3cc712ac2e850a8515",
-        "currentImplementationAddress": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+        "currentImplementationAddress": "0x41d0d67648bec455052e17264ce1fc2314b75ae3",
         "implementationHistory": [
           {
             "implementationAddress": "0x4e9db3399c84006f56569746128eb3155ba63390",
@@ -7586,6 +7586,25 @@
               "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
               "logIndex": 0
             },
+            "effectiveUntilExclusive": {
+              "blockNumber": 12330216,
+              "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+              "blockTimestamp": "2026-10-06T15:01:23.000Z",
+              "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+              "logIndex": 0,
+              "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+            }
+          },
+          {
+            "implementationAddress": "0x41d0d67648bec455052e17264ce1fc2314b75ae3",
+            "effectiveFrom": {
+              "blockNumber": 12330216,
+              "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+              "blockTimestamp": "2026-10-06T15:01:23.000Z",
+              "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+              "logIndex": 0,
+              "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+            },
             "effectiveUntilExclusive": null
           }
         ]
@@ -7602,24 +7621,24 @@
         "sourceReference": {
           "moduleId": "contracts",
           "resourceId": "contract-sources",
-          "recordId": "incentives-explorer-executable-reproductions"
+          "recordId": "incentives-escrow-reproductions-2026-10-06"
         },
-        "artifactPath": "api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
-        "declaredImplementationAddress": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c"
+        "artifactPath": "api/v2/smart-contracts/0x41d0d67648bec455052e17264ce1fc2314b75ae3",
+        "declaredImplementationAddress": "0x41d0d67648bec455052e17264ce1fc2314b75ae3"
       },
       "runtime": {
-        "observedAt": "2026-08-24T21:29:20.734Z",
-        "blockNumber": 11291582,
-        "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "observedAt": "2026-10-06T16:58:14.749Z",
+        "blockNumber": 12332012,
+        "blockHash": "0x94b301bd9966b3afc8379207b3f204bb9aff70e7d375ca7d652941ed6baf76e5",
         "addressCodeSha256": "6de90fefbb565fba1c964adc17f34b7963fd7cd4646a1cea212c9a37c218bf0d",
-        "implementationCodeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+        "implementationCodeSha256": "7f871a2ee16631d22128ce81706efacecfa58abed7cdd0f0461d317919574d2d",
         "artifactBytecodeComparison": {
           "creationExecutableExact": true,
           "runtimeExecutableExactAfterImmutableSubstitution": true,
           "immutableSubstitutions": 0,
-          "creationExecutableSha256": "0043eae26f8ce5f1889be837290febed6214dde5fbb8e75684ea951078b74fce",
-          "runtimeExecutableSha256": "2c30b0960ce10cec8022632974abf0d9dbbd6ce3826fab1a3a92878f741f7cfb",
-          "explorerFullRuntimeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+          "creationExecutableSha256": "ca068f409a59595529aaa9b143fad8d71ef29563ea608b5ecd331db3fff17d71",
+          "runtimeExecutableSha256": "efb0e3af3cd15531a3a9d6d3513e60b303f116bc3ac3a84b9efddb957fd19f6f",
+          "explorerFullRuntimeSha256": "7f871a2ee16631d22128ce81706efacecfa58abed7cdd0f0461d317919574d2d",
           "fullExact": false
         }
       },
@@ -7630,10 +7649,10 @@
             "isFullyVerified": false,
             "isPartiallyVerified": true
           },
-          "sourceBundleSha256": "2b58547eed2db904cbe285d993f8aa5c01a9f1f6fac9725cd3380f6a218df767",
+          "sourceBundleSha256": "3bd76899d1a024e83302a2041ad5683dfb7a0cb48f35edbeb57a15d6e6fb5188",
           "compilerVersion": "v0.8.33+commit.64118f21",
-          "compilerSettingsSha256": "88390e2b8a6f87f3c1a33036251abecf38135008115800dffc580b8f9fa18d15",
-          "librariesSha256": "d263f3889b58813e07be5a0febecd11a1dbe81f8e1b9708aa6fc6758e8ec0e81",
+          "compilerSettingsSha256": "4a30a0bfb653bce352f32599518beb54cb423d645a03f2da966f5b8610e41627",
+          "librariesSha256": "73f6a361d4e0df128f39382adbdfb9b64943c70566f2d5622b9f741c451c4084",
           "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
           "creationExecutableMatch": true,
           "runtimeExecutableMatch": true,
@@ -7641,23 +7660,23 @@
           "abiDerivedFromExactBuild": true,
           "activationHistoryReference": {
             "moduleId": "contracts",
-            "resourceId": "contract-incentives-probes-2026-08-21",
-            "recordId": "observe-incentives-ve-btc-mezo-mainnet"
+            "resourceId": "contract-escrow-generations-2026-10-06",
+            "recordId": "observe-vebtc-post-resumption"
           }
         }
       },
       "evidenceReference": {
         "moduleId": "contracts",
-        "resourceId": "contract-incentives-probes-2026-08-21",
-        "recordId": "observe-incentives-ve-btc-mezo-mainnet"
+        "resourceId": "contract-escrow-generations-2026-10-06",
+        "recordId": "observe-vebtc-post-resumption"
       },
       "status": "verified-current",
       "supportStatus": "supported",
       "reviewStatus": "accepted",
       "limitations": [
-        "registry provenance review and emission evidence review qualified review accepted this identity for bounded Contract registry use; it creates no reader, writer, route, protocol, or product support.",
-        "The explorer verification label is preserved exactly; executable reproduction does not prove official authorship, repository history, or audit coverage.",
-        "An open validity range means no later upgrade or replacement was observed through the evidence block, not that the deployment is immutable."
+        "Qualified registry acceptance binds this current generation to its exact source, full ABI, runtime and activation interval.",
+        "Earlier observations retain their original generation and full ABI through the historical ABI binding catalog.",
+        "Partial explorer verification is preserved; exact executable reproduction does not establish source authorship, audit coverage or writer safety."
       ]
     },
     {
@@ -7831,12 +7850,12 @@
           "logIndex": 0
         },
         "currentCodeFrom": {
-          "blockNumber": 8199968,
-          "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
-          "blockTimestamp": "2026-04-13T17:01:04.000Z",
-          "blockEvidenceMethod": "eth_getBlockByNumber",
-          "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
-          "logIndex": 1
+          "blockNumber": 12330216,
+          "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+          "blockTimestamp": "2026-10-06T15:01:23.000Z",
+          "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+          "logIndex": 2,
+          "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
         },
         "effectiveUntilExclusive": null
       },
@@ -7845,7 +7864,7 @@
         "implementationSlot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
         "adminSlot": "0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
         "adminAddress": "0x10ad4cbc4ee5347a5decd7edb1b6bcdcfd96a4cb",
-        "currentImplementationAddress": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+        "currentImplementationAddress": "0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c",
         "implementationHistory": [
           {
             "implementationAddress": "0xb9ee960ad3c70c319cd3253eee40d4de5f25f423",
@@ -7895,6 +7914,25 @@
               "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
               "logIndex": 1
             },
+            "effectiveUntilExclusive": {
+              "blockNumber": 12330216,
+              "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+              "blockTimestamp": "2026-10-06T15:01:23.000Z",
+              "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+              "logIndex": 2,
+              "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+            }
+          },
+          {
+            "implementationAddress": "0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c",
+            "effectiveFrom": {
+              "blockNumber": 12330216,
+              "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+              "blockTimestamp": "2026-10-06T15:01:23.000Z",
+              "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+              "logIndex": 2,
+              "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+            },
             "effectiveUntilExclusive": null
           }
         ]
@@ -7911,24 +7949,24 @@
         "sourceReference": {
           "moduleId": "contracts",
           "resourceId": "contract-sources",
-          "recordId": "incentives-explorer-executable-reproductions"
+          "recordId": "incentives-escrow-reproductions-2026-10-06"
         },
-        "artifactPath": "api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
-        "declaredImplementationAddress": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e"
+        "artifactPath": "api/v2/smart-contracts/0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c",
+        "declaredImplementationAddress": "0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c"
       },
       "runtime": {
-        "observedAt": "2026-08-24T21:29:20.734Z",
-        "blockNumber": 11291582,
-        "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "observedAt": "2026-10-06T16:58:14.749Z",
+        "blockNumber": 12332012,
+        "blockHash": "0x94b301bd9966b3afc8379207b3f204bb9aff70e7d375ca7d652941ed6baf76e5",
         "addressCodeSha256": "8945810c74adaa3c14e9d37ea70a0d0889a98743781c77abea66ec15684fbff4",
-        "implementationCodeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+        "implementationCodeSha256": "15a2c143fa7e726e4d1d1afc99d408b0fc4dc5c73471eb85b4715a0974c19cfe",
         "artifactBytecodeComparison": {
           "creationExecutableExact": true,
           "runtimeExecutableExactAfterImmutableSubstitution": true,
           "immutableSubstitutions": 0,
-          "creationExecutableSha256": "c6a293e6da455b482a250d2ed44b94a453f70abcdc3a0f5146b25df673514a09",
-          "runtimeExecutableSha256": "06160bcb391ecedf7404d1e93061db8fcdb51f71216a2676d1e672a20e735bbf",
-          "explorerFullRuntimeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+          "creationExecutableSha256": "9b401af8328d04097d60c5fe935a11d1136e35e20f24fed4c611b5467ebbccff",
+          "runtimeExecutableSha256": "58f6964ad9d90822ca0cdb121ade56910dc96605a2da9f41db7d5d7212268a4a",
+          "explorerFullRuntimeSha256": "15a2c143fa7e726e4d1d1afc99d408b0fc4dc5c73471eb85b4715a0974c19cfe",
           "fullExact": false
         }
       },
@@ -7939,10 +7977,10 @@
             "isFullyVerified": false,
             "isPartiallyVerified": true
           },
-          "sourceBundleSha256": "41292ec5aeb286b9e0ae175ae67d7cfc9e8a551c4b5e4d3eec9258a2735a672e",
+          "sourceBundleSha256": "7eac9936d6570b03638a1faec619d1e1087b09bea3b818cbb158873b1a309012",
           "compilerVersion": "v0.8.33+commit.64118f21",
-          "compilerSettingsSha256": "88390e2b8a6f87f3c1a33036251abecf38135008115800dffc580b8f9fa18d15",
-          "librariesSha256": "d263f3889b58813e07be5a0febecd11a1dbe81f8e1b9708aa6fc6758e8ec0e81",
+          "compilerSettingsSha256": "4a30a0bfb653bce352f32599518beb54cb423d645a03f2da966f5b8610e41627",
+          "librariesSha256": "73f6a361d4e0df128f39382adbdfb9b64943c70566f2d5622b9f741c451c4084",
           "buildProcedure": "Fetch the recorded explorer source bundle, generate an isolated Foundry project with scripts/reproduce-explorer-contract.ts, run forge build with the exact compiler/settings, then compare creation/runtime executables and ABI semantics with scripts/compare-explorer-build.ts.",
           "creationExecutableMatch": true,
           "runtimeExecutableMatch": true,
@@ -7950,23 +7988,23 @@
           "abiDerivedFromExactBuild": true,
           "activationHistoryReference": {
             "moduleId": "contracts",
-            "resourceId": "contract-incentives-probes-2026-08-21",
-            "recordId": "observe-incentives-ve-mezo-mezo-mainnet"
+            "resourceId": "contract-escrow-generations-2026-10-06",
+            "recordId": "observe-vemezo-post-resumption"
           }
         }
       },
       "evidenceReference": {
         "moduleId": "contracts",
-        "resourceId": "contract-incentives-probes-2026-08-21",
-        "recordId": "observe-incentives-ve-mezo-mezo-mainnet"
+        "resourceId": "contract-escrow-generations-2026-10-06",
+        "recordId": "observe-vemezo-post-resumption"
       },
       "status": "verified-current",
       "supportStatus": "supported",
       "reviewStatus": "accepted",
       "limitations": [
-        "registry provenance review and emission evidence review qualified review accepted this identity for bounded Contract registry use; it creates no reader, writer, route, protocol, or product support.",
-        "The explorer verification label is preserved exactly; executable reproduction does not prove official authorship, repository history, or audit coverage.",
-        "An open validity range means no later upgrade or replacement was observed through the evidence block, not that the deployment is immutable."
+        "Qualified registry acceptance binds this current generation to its exact source, full ABI, runtime and activation interval.",
+        "Earlier observations retain their original generation and full ABI through the historical ABI binding catalog.",
+        "Partial explorer verification is preserved; exact executable reproduction does not establish source authorship, audit coverage or writer safety."
       ]
     },
     {
@@ -8678,12 +8716,12 @@
           "logIndex": 0
         },
         "currentCodeFrom": {
-          "blockNumber": 6265915,
-          "blockHash": "0x3830df4f7450ad2a56aa3056473836e8ab88c4d0df626c3614827369d2a2b582",
-          "blockTimestamp": "2026-01-22T09:43:48.000Z",
-          "blockEvidenceMethod": "eth_getBlockByNumber",
-          "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
-          "logIndex": 4
+          "blockNumber": 11355380,
+          "transactionHash": "0x7def2cd64908d16a09ce6deaeb20d583252104fb4b694e1dd1f5304b5ba30231",
+          "logIndex": 13,
+          "blockHash": "0x37b17f556266549277de3da5078b3ab3ff0da9c9dbcf700854c15b28aa86c03d",
+          "blockTimestamp": "2026-08-24T10:01:37.000Z",
+          "blockEvidenceMethod": "two-provider block/receipt and ordered same-transaction upgrade confirmation"
         },
         "effectiveUntilExclusive": null
       },
@@ -8723,6 +8761,44 @@
               "transactionHash": "0x1b2403f672b59b3083297385e5f9dcd6a8612df12635c960fb7d5e09736721df",
               "logIndex": 4
             },
+            "effectiveUntilExclusive": {
+              "blockNumber": 11355380,
+              "transactionHash": "0x7def2cd64908d16a09ce6deaeb20d583252104fb4b694e1dd1f5304b5ba30231",
+              "logIndex": 4,
+              "blockHash": "0x37b17f556266549277de3da5078b3ab3ff0da9c9dbcf700854c15b28aa86c03d",
+              "blockTimestamp": "2026-08-24T10:01:37.000Z",
+              "blockEvidenceMethod": "two-provider block/receipt and ordered same-transaction upgrade confirmation"
+            }
+          },
+          {
+            "implementationAddress": "0x7d7c9812e27a825dd31747d0814e248a61d183f0",
+            "effectiveFrom": {
+              "blockNumber": 11355380,
+              "transactionHash": "0x7def2cd64908d16a09ce6deaeb20d583252104fb4b694e1dd1f5304b5ba30231",
+              "logIndex": 4,
+              "blockHash": "0x37b17f556266549277de3da5078b3ab3ff0da9c9dbcf700854c15b28aa86c03d",
+              "blockTimestamp": "2026-08-24T10:01:37.000Z",
+              "blockEvidenceMethod": "two-provider block/receipt and ordered same-transaction upgrade confirmation"
+            },
+            "effectiveUntilExclusive": {
+              "blockNumber": 11355380,
+              "transactionHash": "0x7def2cd64908d16a09ce6deaeb20d583252104fb4b694e1dd1f5304b5ba30231",
+              "logIndex": 13,
+              "blockHash": "0x37b17f556266549277de3da5078b3ab3ff0da9c9dbcf700854c15b28aa86c03d",
+              "blockTimestamp": "2026-08-24T10:01:37.000Z",
+              "blockEvidenceMethod": "two-provider block/receipt and ordered same-transaction upgrade confirmation"
+            }
+          },
+          {
+            "implementationAddress": "0x8d696ae943b97ff36449014e4400a9560d1664dc",
+            "effectiveFrom": {
+              "blockNumber": 11355380,
+              "transactionHash": "0x7def2cd64908d16a09ce6deaeb20d583252104fb4b694e1dd1f5304b5ba30231",
+              "logIndex": 13,
+              "blockHash": "0x37b17f556266549277de3da5078b3ab3ff0da9c9dbcf700854c15b28aa86c03d",
+              "blockTimestamp": "2026-08-24T10:01:37.000Z",
+              "blockEvidenceMethod": "two-provider block/receipt and ordered same-transaction upgrade confirmation"
+            },
             "effectiveUntilExclusive": null
           }
         ]
@@ -8745,9 +8821,9 @@
         "declaredImplementationAddress": "0x8d696ae943b97ff36449014e4400a9560d1664dc"
       },
       "runtime": {
-        "observedAt": "2026-08-24T21:29:20.734Z",
-        "blockNumber": 11291582,
-        "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "observedAt": "2026-10-06T13:43:50.064Z",
+        "blockNumber": 12326230,
+        "blockHash": "0x40460784569e2af16e9e3c095ac977de4aa03caeea831a33f625b501322b6ce2",
         "addressCodeSha256": "91f1f6fad07b0bd676f7cf9defc53bf6697da803004369ba2c2d430fabfd121e",
         "implementationCodeSha256": "28cb1826e170088b852928606370599fd9e26605a3fd4c286d7e459a57dd9992",
         "artifactBytecodeComparison": {
@@ -8778,15 +8854,15 @@
           "abiDerivedFromExactBuild": true,
           "activationHistoryReference": {
             "moduleId": "contracts",
-            "resourceId": "contract-incentives-probes-2026-08-21",
-            "recordId": "observe-incentives-third-party-voter-mezo-mainnet"
+            "resourceId": "contract-third-party-history-2026-10-06",
+            "recordId": "observe-incentives-third-party-voter-mezo-mainnet-2026-10-06"
           }
         }
       },
       "evidenceReference": {
         "moduleId": "contracts",
-        "resourceId": "contract-incentives-probes-2026-08-21",
-        "recordId": "observe-incentives-third-party-voter-mezo-mainnet"
+        "resourceId": "contract-third-party-history-2026-10-06",
+        "recordId": "observe-incentives-third-party-voter-mezo-mainnet-2026-10-06"
       },
       "status": "verified-current",
       "supportStatus": "supported",
@@ -9270,5 +9346,14 @@
     "Catalog verification is point-in-time and must be repeated after reviewAfter or before a protocol-sensitive release.",
     "Open deployment ranges mean no supersession was observed at the verification block; they do not assert immutability.",
     "The catalog contains 85 supported current deployments and one superseded historical deployment; record-level lifecycle and provenance govern use."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-27T14:24:36.881Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

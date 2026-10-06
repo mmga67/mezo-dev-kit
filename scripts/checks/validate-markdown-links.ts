@@ -6,6 +6,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const maintainedRoots = [
   "AGENTS.md",
   "ARCHITECTURE.md",
+  "CHANGELOG.md",
   "CONTRIBUTING.md",
   "README.md",
   "SECURITY.md",

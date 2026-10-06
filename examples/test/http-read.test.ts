@@ -8,7 +8,7 @@ import { createHttpRequest } from "../runtime/rpc-request.ts";
 function createHttpReadTransport(options: { readonly url: string; readonly fetch: typeof fetch }) {
   return createRpcTransport({
     id: "example-test",
-    request: createHttpRequest({ ...options, policy: "read-only" }),
+    request: createHttpRequest(options),
   });
 }
 
@@ -174,7 +174,6 @@ describe("the example HTTP read boundary", () => {
     let calls = 0;
     const request = createHttpRequest({
       url: "https://rpc.invalid",
-      policy: "read-only",
       fetch: () => {
         calls++;
         throw new Error("must not call");
@@ -189,7 +188,7 @@ describe("the example HTTP read boundary", () => {
     expect(calls).toBe(0);
   });
 
-  test("refuses mutation policy for a remote endpoint", () => {
-    expect(() => createHttpRequest({ url: "https://rpc.invalid", policy: "local-fork" })).toThrow();
+  test("refuses credentials embedded in the endpoint URL", () => {
+    expect(() => createHttpRequest({ url: "https://user:secret@rpc.invalid" })).toThrow();
   });
 });

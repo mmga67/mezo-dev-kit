@@ -1,35 +1,22 @@
-# Deposit into the USDC Lending Vault
+# Deposit into the USDC lending vault
 
-## Read the focused operation
+Start with [depositIntoVault](deposit.ts). Pass a [write connection](../SETUP.md),
+operation ID, mUSDC asset base units and `VaultBounds`. A deposit exchanges assets
+for vault shares; the return value contains actual reconciled assets and shares.
+Approvals and the deposit each require consent.
 
-Start with [Deposit for vault shares](deposit.ts) beside the [connection guide](../SETUP.md).
-Pass asset base units and VaultBounds: maxInput is an asset cap and minOutput is a share minimum for this action. Follow the explicit vault resolver and approval. The lifecycle below calculates these bounds, calls the focused deposit and optionally wraps/stakes before redeeming.
+[useUsdcVault](workflow.ts) composes deposit and redemption for an initially
+empty account. Set `assets` explicitly. With `wrapAndStake`, the wrapper converts
+vault shares into receipts and stakes them; the recipe then unstakes, unwraps
+and redeems the actual wallet shares. Vault shares, wrapper receipts and gauge
+stake are separate balances.
 
-The function takes the named connections from [setup.ts](../setup.ts); it does
-not require ExampleRuntime or the CLI. The command below runs the composed
-lifecycle, including the focused operation.
+The advanced recipe derives illustrative output minimums from a forecast.
+Preview amounts can change before inclusion. Adapter assets are already
+included in vault total assets; do not count them again. Current `max*` getters
+returning zero are not useful capacity estimates. Reconciliation and
+`boundsSatisfied` describe the real outcome; a failed later action does not
+undo earlier transactions.
 
-## Run the lifecycle
-
-[Setup](../README.md#build-and-run) · [Code](workflow.ts) · [SDK](../../packages/protocols/usdc-lending-vault/REFERENCE.md)
-
-```sh
-MDK_RUN_ID=vault-01 pnpm --filter @mezo-dev-kit/examples use-usdc-vault --mode fork
-# Requires MDK_NATIVE_TOKEN_ARTIFACT for gauge reward dispatch.
-MDK_RUN_ID=vault-wrap-01 pnpm --filter @mezo-dev-kit/examples use-usdc-vault --mode fork --variant wrap
-```
-
-Preview a 100 mUSDC deposit, approve the discovered vault, deposit, then redeem
-the actual wallet shares. The writer models share conversion and market
-allocation; the example checks actual input/output against the forecast with
-0.5% tolerance and explicit rounding. Share price can change between calls.
-
-The `wrap` variant wraps vault shares and stakes receipts in the gauge. To exit,
-read the actual gauge stake, unstake, unwrap the resulting receipts, then
-redeem vault shares. Assets, vault shares, wrapper receipts and gauge stake
-are distinct quantities; never pass one as another merely because both are bigint.
-
-Expected success returns the remaining vault position to zero after redemption
-and prints actual assets/shares at each step. Deposit availability, market
-liquidity, wrapper policy and gauge liveness are checked separately. A positive
-preview does not bypass any of those execution requirements.
+See the [Vault reference](../../packages/protocols/usdc-lending-vault/REFERENCE.md)
+for liquidity, wrapper yield, rounding and private release limits.

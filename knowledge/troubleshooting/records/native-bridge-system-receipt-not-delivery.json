@@ -9,8 +9,8 @@
   "issueStatus": "verified-version-scoped",
   "severity": "high",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T09:56:38Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "symptom": "An Ethereum-to-Mezo Native Bridge tracker marks an ERC-20 transfer completed when the logless Mezo system bridge transaction succeeds or the accepted sequence advances, without proving the recipient received the mapped token.",
   "scope": {
     "provider": "mezo-native-bridge",
@@ -38,7 +38,10 @@
   "reproduction": {
     "basis": "version-matched-active-client-source-plus-fixed-block-system-payload-sequence-mapping-and-recipient-post-state",
     "deterministicEvidenceIsStrongerThanLiveWrites": true,
-    "evidenceNetworks": ["ethereum-mainnet", "mezo-mainnet"]
+    "evidenceNetworks": [
+      "ethereum-mainnet",
+      "mezo-mainnet"
+    ]
   },
   "canonicalLinks": [
     {
@@ -58,5 +61,14 @@
     "This diagnosis is scoped to the recorded active v12 source and must be rechecked after client/keeper upgrades.",
     "The positive representative trace proves the stronger completion method; it does not assert that a skipped mint occurred in that transaction.",
     "This record does not authorize a Native Bridge writer or define a recovery transaction."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T09:56:38Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Pinned current documentation comparison, captured live graph and version-scoped Native keeper/delivery proof. Other unexpired diagnoses and excluded historical testnet dates are unchanged.",
+    "evidenceReference": {
+      "moduleId": "troubleshooting",
+      "resourceId": "troubleshooting-maintenance-reverification-2026-10-06"
+    }
+  }
 }

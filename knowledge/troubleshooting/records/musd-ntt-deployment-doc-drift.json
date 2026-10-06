@@ -9,13 +9,17 @@
   "issueStatus": "verified-point-in-time",
   "severity": "high",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T10:14:37Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "symptom": "An MUSD NTT integration built from the current bridge documentation targets transceiver addresses that are no longer enabled by the deployed managers.",
   "scope": {
     "provider": "wormhole-ntt",
     "asset": "musd",
-    "networks": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "networks": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidence": {
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-musd-ntt-evidence"
@@ -38,7 +42,11 @@
   "reproduction": {
     "basis": "official-deployment-artifact-plus-three-fixed-block-configurations-plus-four-completed-transfer-traces",
     "deterministicEvidenceIsStrongerThanLiveWrites": true,
-    "evidenceNetworks": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"]
+    "evidenceNetworks": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ]
   },
   "canonicalLinks": [
     {
@@ -53,5 +61,14 @@
   "limitations": [
     "This record does not make the evidence-backed routes an MDK support promise.",
     "Peer, pause, capacity, fee, relayer, and implementation state remain volatile."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T10:14:37Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Pinned current documentation comparison, captured live graph and version-scoped Native keeper/delivery proof. Other unexpired diagnoses and excluded historical testnet dates are unchanged.",
+    "evidenceReference": {
+      "moduleId": "troubleshooting",
+      "resourceId": "troubleshooting-maintenance-reverification-2026-10-06"
+    }
+  }
 }

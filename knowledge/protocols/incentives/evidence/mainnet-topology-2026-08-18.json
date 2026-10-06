@@ -7,11 +7,13 @@
   "evidenceStatus": "verified-point-in-time",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T09:56:38Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "observedAt": "2026-08-18T09:56:38Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "blockNumber": 11212253
   },
   "authorityRule": "Deployed block-pinned state and bytecode identity override documentation. Source-derived behavior is accepted only where the source is fully verified or independently reproduces the deployed executable; explorer labels remain recorded verbatim.",
@@ -97,8 +99,8 @@
         "name": "veBTC",
         "symbol": "veBTC",
         "supply": "827402681641648094595",
-        "totalVotingPower": "1158838188523725117214",
-        "unboostedTotalVotingPower": "464234454753711065138",
+        "totalVotingPower": "1158903244246919054174",
+        "unboostedTotalVotingPower": "464299369911610246450",
         "lastMintedTokenId": "6096"
       }
     },
@@ -151,7 +153,7 @@
         "name": "veMEZO",
         "symbol": "veMEZO",
         "supply": "376034813831669054498020563",
-        "totalVotingPower": "96889019777247857468240427",
+        "totalVotingPower": "96889795628895219819764603",
         "lastMintedTokenId": "2759"
       }
     },
@@ -178,6 +180,20 @@
     "Addresses in this observation are evidence coordinates, not promoted registry records; reusable identity remains owned by contract registry review.",
     "Point-in-time getters do not establish activation or upgrade history.",
     "The ve implementation sources reproduce the deployed executables exactly after stripping Solidity metadata, but the official explorer labels remain partially verified and source provenance/audit history is not established by reproduction.",
-    "Observed supply and voting values are volatile snapshots, not protocol constants."
-  ]
+    "Observed supply and voting values are volatile snapshots, not protocol constants.",
+    "2026-09-27: the historical fields identified in incentives-reverification-conflicts-2026-09-27 were corrected to independently matching RPC observations under user direction. Original values remain in that review record; this correction does not renew unrelated evidence or establish a voting-mechanics change."
+  ],
+  "reverificationReviewReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-reverification-conflicts-2026-09-27"
+  },
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T09:56:38Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

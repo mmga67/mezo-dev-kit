@@ -1,25 +1,16 @@
-# Connect and observe execution
+# Read consistent state and observe submissions
 
-Start with [read-balances.ts](read-balances.ts) for a signer-free coherent read:
-it constructs `createCoreReadClient`, encodes two MUSD balance calls with the
-canonical ABI and returns both decoded balances with their shared block/hash.
-Transport failures remain failures; they never become zero balances.
+Start with [readMusdBalances](read-balances.ts). Supply network/registry/transport
+from [createReadConnection](../setup.ts) and two validated addresses. Both calls
+use one block number and hash, so the returned balances describe the same state.
+An unavailable call stops the recipe instead of replacing a missing balance
+with zero. Preserve the returned coordinate when displaying or comparing results.
 
-Read [setup.ts](../setup.ts) to see `createRpcTransport` and `createRpcSigner`
-connected to separate application request ports. Then read
-[observe-submission.ts](observe-submission.ts) for `createExecutionClient`,
-validated saved input and one `execution.observe()` call.
+[observeSubmission](observe-submission.ts) validates an application's saved
+submission record and asks Core to observe it. It uses execution-client wiring
+but never submits another transaction. Retain the updated record and inspect
+uncertain, missing or reorged results. Confirmation alone is insufficient:
+use the owning domain's reconciliation to establish the protocol outcome.
 
-Pass the saved JSON record, explicit confirmation/age policies and the domain
-target resolver when the transaction uses a discovered destination. The returned
-state distinguishes submitted, included, confirmed, uncertain, reverted and
-reorged results. Preserve the returned record's inclusion anchor for the next
-observation. No branch resubmits a transaction.
-
-[open-position.ts](../borrow-musd/open-position.ts) shows the same Core client
-composed with a domain writer. The example
-[confirmation helper](../runtime/wait-for-confirmation.ts) supplies bounded polling;
-Core's observer performs one observation per call. Domain reconciliation remains
-with the protocol writer.
-
-[Connection and lifecycle guide](../SETUP.md) · [Package reference](../../packages/core/REFERENCE.md).
+See [durable storage and recovery](../SETUP.md#compose-actions-and-recover) and
+the [Core reference](../../packages/core/REFERENCE.md) for required ports and states.

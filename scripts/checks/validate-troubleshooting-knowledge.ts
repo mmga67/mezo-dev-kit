@@ -3,8 +3,13 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { object, objects, text, texts, values, type JsonObject } from "../lib/json.ts";
 import { loadKnowledgeModule, loadKnowledgeReference } from "../lib/knowledge-reference.ts";
+import { parseEvidenceArguments } from "../lib/evidence-scope.ts";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
+const { network: selectedNetwork } = parseEvidenceArguments(process.argv.slice(2));
+if (selectedNetwork !== undefined && selectedNetwork !== "mezo-mainnet") {
+  throw new Error("usage: validate-troubleshooting-knowledge.ts [--network mezo-mainnet]");
+}
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -126,7 +131,13 @@ for (const resourceId of issueResourceIds) {
   assert(Number.isFinite(Date.parse(verifiedAt)), `${issueId} verifiedAt is invalid`);
   assert(Number.isFinite(Date.parse(reviewAfter)), `${issueId} reviewAfter is invalid`);
   assert(Date.parse(verifiedAt) <= Date.now(), `${issueId} verification date is in the future`);
-  assert(Date.parse(reviewAfter) > Date.now(), `${issueId} review window expired`);
+  // The manifest excludes long-term testnet archive recovery. Keep its retained
+  // diagnosis structurally checked and the default full-module expiry gate intact.
+  if (!(
+    selectedNetwork === "mezo-mainnet" && issueId === "testnet-rpc-historical-data-gap-2026-08-18"
+  )) {
+    assert(Date.parse(reviewAfter) > Date.now(), `${issueId} review window expired`);
+  }
   assert(
     Date.parse(reviewAfter) > Date.parse(verifiedAt),
     `${issueId} reviewAfter does not follow verification`,

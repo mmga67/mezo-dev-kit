@@ -1,19 +1,16 @@
-# Inspect institutional debt and allocate repayment
+# Inspect an institutional MUSD position
 
-[inspect-position.ts](inspect-position.ts) shows two independent operations:
+[inspect-position.ts](inspect-position.ts) contains a coherent read recipe and
+a separate repayment calculation. Supply the reader's typed registry/transport
+inputs and requested position identity to `inspectInstitutionalPosition`.
+Preserve availability, coordinate and custody information; this is a read, so
+it requires no wallet.
 
-- `inspectInstitutionalPosition(registry, transport, positionId)` constructs the
-  reader and requests one known position. It returns verified debt/collateral
-  and explicit optional-health availability. The requested set is bounded and
-  does not claim a complete inventory.
-- `allocateRepayment({ principal, totalFees, payment })` demonstrates the pure
-  fee-first calculation. For synthetic base-unit values `100n`, `10n`, `50n`,
-  the result pays 10 fees and 40 principal, leaving 60 principal. A payment of
-  9 is rejected with `payment-below-fees`.
+`allocateRepayment` takes principal, total fees and payment in MUSD base units.
+It calculates allocation without submitting a repayment or assuming permission
+to use partner custody. Read the returned allocation rather than subtracting the
+whole payment from principal. Institutional positions and their fee accounting
+are distinct from classic MUSD troves.
 
-Run the calculation through [foundations.ts](../foundations.ts). The read needs
-an application transport and a real position ID; no signer or context object is
-required. This package provides no partner repayment writer. The calculation
-does not mutate the position or prove custody/backing.
-
-[Package reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md).
+See the [Institutional Debt reference](../../packages/protocols/musd-institutional-debt/REFERENCE.md)
+for current fields, calculations and read-only scope.

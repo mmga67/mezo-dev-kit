@@ -4,14 +4,14 @@ import {
   createGaugeWriter,
 } from "@mezo-dev-kit/incentives";
 import type { GaugeAction, GaugeOutcome, GaugeRole } from "@mezo-dev-kit/incentives";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
 
 /** Gauge custody and rewards are owned by Incentives, separately from Savings/vault accounting. */
 export async function gaugeOperation(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   role: GaugeRole,
   step: string,
   action: GaugeAction,
@@ -45,16 +45,11 @@ export async function gaugeOperation(
     prepared = await writer.prepare(input);
   }
   const simulated = await writer.simulate(prepared);
+  await runtime.review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
   const result = await writer.reconcile(prepared, confirmed);
-  runtime.report(`${step}: gauge settlement`, {
-    stake: result.outcome.snapshot.stake,
-    walletReceipts: result.outcome.snapshot.token.balance,
-    rewardToken: result.outcome.rewardToken,
-    rewardPaid: result.outcome.rewardPaid,
-    boundsSatisfied: result.outcome.boundsSatisfied,
-  });
+
   invariant(result.outcome.boundsSatisfied, "Inspect the gauge settlement before continuing");
   return result.outcome;
 }

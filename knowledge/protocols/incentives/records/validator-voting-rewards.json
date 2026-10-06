@@ -7,10 +7,12 @@
   "protocolStatus": "verified-versioned",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T21:59:22.983Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11366264,
     "activeVoterGenerationFromBlock": 10032053
   },
@@ -95,7 +97,10 @@
   "formulas": [
     {
       "id": "validator-vote-allocation",
-      "inputs": ["boostedVotingPowerRaw", "externalWeightRaw[i]"],
+      "inputs": [
+        "boostedVotingPowerRaw",
+        "externalWeightRaw[i]"
+      ],
       "integerOrder": [
         "externalWeightTotal = sum(externalWeightRaw[i])",
         "gaugeVoteRaw[i] = floor(externalWeightRaw[i] * boostedVotingPowerRaw / externalWeightTotal)",
@@ -113,7 +118,10 @@
     },
     {
       "id": "validator-reward-index-notification",
-      "inputs": ["notifiedRewardRaw", "preNotificationTotalWeightRaw"],
+      "inputs": [
+        "notifiedRewardRaw",
+        "preNotificationTotalWeightRaw"
+      ],
       "integerOrder": [
         "indexDelta18 = floor(notifiedRewardRaw * 1e18 / max(preNotificationTotalWeightRaw, 1))",
         "globalIndex increases by indexDelta18 only when indexDelta18 > 0"
@@ -123,7 +131,11 @@
     },
     {
       "id": "validator-gauge-index-accrual",
-      "inputs": ["gaugeWeightRaw", "globalIndex18", "gaugeSupplyIndex18"],
+      "inputs": [
+        "gaugeWeightRaw",
+        "globalIndex18",
+        "gaugeSupplyIndex18"
+      ],
       "integerOrder": [
         "indexDelta18 = globalIndex18 - gaugeSupplyIndex18",
         "gaugeShareRaw = floor(gaugeWeightRaw * indexDelta18 / 1e18)",
@@ -135,7 +147,10 @@
     },
     {
       "id": "validator-gauge-distribution-gate",
-      "inputs": ["updatedClaimableRaw", "gaugeLeftRaw"],
+      "inputs": [
+        "updatedClaimableRaw",
+        "gaugeLeftRaw"
+      ],
       "integerOrder": [
         "Update the gauge's index accrual before reading claimable.",
         "Distribute only when updatedClaimableRaw > gaugeLeftRaw and updatedClaimableRaw > 604800.",
@@ -146,7 +161,12 @@
     },
     {
       "id": "validator-gauge-reward-rate",
-      "inputs": ["distributionAmountRaw", "timestamp", "priorPeriodFinish", "priorRewardRateRaw"],
+      "inputs": [
+        "distributionAmountRaw",
+        "timestamp",
+        "priorPeriodFinish",
+        "priorRewardRateRaw"
+      ],
       "integerOrder": [
         "nextEpoch = timestamp - (timestamp mod 604800) + 604800",
         "timeUntilNext = nextEpoch - timestamp",
@@ -191,5 +211,14 @@
   "analyticsBoundary": [
     "Validator APR, APY, future reward estimates, MEZO price, expected votes, validator opportunity cost, and portfolio recommendations require non-protocol assumptions and are excluded.",
     "Current gauge weights and remaining rewards may be reported as dated observations but must not be presented as future epoch outcomes."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-24T21:59:22.983Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

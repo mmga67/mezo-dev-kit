@@ -7,11 +7,13 @@
   "evidenceStatus": "verified-historical-integration-not-support",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T11:33:29Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "observedAt": "2026-08-18T11:33:29Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "historicalOperations": [
       "vebtc-create-lock-historical-replay",
       "pools-vote-replacement-historical-replay"
@@ -55,7 +57,7 @@
       },
       "receipt": {
         "status": "success",
-        "gasUsed": "550129",
+        "gasUsed": "551153",
         "nftTransfer": {
           "from": "0x0000000000000000000000000000000000000000",
           "to": "0x7dae08563b85de04fb48ac211184718f259458a1",
@@ -101,8 +103,12 @@
         "selector": "0x7ac09bf7",
         "calldata": "0x7ac09bf70000000000000000000000000000000000000000000000000000000000000952000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000010000000000000000000000006688f868e9c81ee671867e77fbc618bbea2e978200000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000064",
         "tokenId": "2386",
-        "pools": ["0x6688f868e9c81ee671867e77fbc618bbea2e9782"],
-        "relativeWeights": ["100"],
+        "pools": [
+          "0x6688f868e9c81ee671867e77fbc618bbea2e9782"
+        ],
+        "relativeWeights": [
+          "100"
+        ],
         "valueRaw": "0"
       },
       "preStateReplay": {
@@ -111,7 +117,10 @@
       "receipt": {
         "status": "success",
         "gasUsed": "304018",
-        "eventOrder": ["Abstained", "Voted"],
+        "eventOrder": [
+          "Abstained",
+          "Voted"
+        ],
         "abstained": {
           "pool": "0x6688f868e9c81ee671867e77fbc618bbea2e9782",
           "tokenId": "2386",
@@ -139,6 +148,20 @@
   "limitations": [
     "Historical replay proves the original calldata was valid against its exact pre-state; it is not a simulation against current state and does not establish current allowance, ownership, epoch eligibility, gauge liveness, or implementation identity.",
     "Only current-generation createLock and one single-pool replacement vote are covered. Reset, poke, permanent-lock, boost-gauge, distribution, and claim writers remain without equivalent integration evidence.",
-    "No transaction was submitted by MDK. Current writer support remains none until current registry identities, fresh preconditions, exact-call simulation, and operation-specific qualified review are complete."
-  ]
+    "No transaction was submitted by MDK. Current writer support remains none until current registry identities, fresh preconditions, exact-call simulation, and operation-specific qualified review are complete.",
+    "2026-09-27: the historical fields identified in incentives-reverification-conflicts-2026-09-27 were corrected to independently matching RPC observations under user direction. Original values remain in that review record; this correction does not renew unrelated evidence or establish a voting-mechanics change."
+  ],
+  "reverificationReviewReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-reverification-conflicts-2026-09-27"
+  },
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T11:33:29Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

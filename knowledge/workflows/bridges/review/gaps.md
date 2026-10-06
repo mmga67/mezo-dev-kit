@@ -66,6 +66,30 @@ relaying mode, yet all four messages were later delivered. Therefore:
 
 ## Native Bridge
 
+The [October 6 configuration capture](../artifacts/current-configuration-2026-10-06.json)
+is supplemental evidence pending qualified review. All ten Mezo mappings remain,
+but Ethereum deposit minima for SolvBTC, xSolvBTC, swBTC and USDe equal
+`uint256.max`; ordinary deposit amounts therefore fail the source minimum check.
+Mapping membership and token count must not be presented as deposit availability.
+The observed Mezo withdrawal mappings, minima and capacity remain separate facts.
+
+[Mezo's September 29 notice](https://x.com/MezoNetwork/status/2104909462599557387)
+names SolvBTC and xSolvBTC for immediate deposit suspension and withdrawal
+suspension after thirty days. Calendar arithmetic gives October 29, but no exact
+execution time is stated. The notice's action paragraph instead names swBTC and
+USDe; its [follow-up](https://x.com/MezoNetwork/status/2104909474813403202) names
+SolvBTC and xSolvBTC. Preserve that inconsistency. No future disable transaction
+or complete withdrawal-readiness claim follows from the announcement or capture.
+The [historical minimum-update capture](../artifacts/native-asset-minimum-history-2026-10-06.json)
+resolves the earlier provider-access gap. Across 36 contiguous queries covering
+Ethereum blocks 25781632–26132696, four events matched successful receipts and
+historical before/after state. swBTC and USDe changed at block 25932893 on
+September 8, 13:17:59 UTC; SolvBTC and xSolvBTC changed at block 26076158 on
+September 28, 13:09:11 UTC. The latter on-chain action precedes the September 29
+notice. Neither change establishes a withdrawal shutdown or resolves the notice's
+inconsistent wording. The supplement remains pending qualified review; existing
+historical evidence, route scope and review dates remain intact.
+
 The previous documentation-only gap is resolved at the evidence layer. The
 historical v12 evidence owns Assets Bridge execution generation 5 and the
 Ethereum binding; fixed-block reads prove the precompile, source tBTC identity,

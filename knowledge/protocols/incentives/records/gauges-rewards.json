@@ -7,10 +7,12 @@
   "protocolStatus": "verified-versioned",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T11:33:29Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11212253
   },
   "limitations": [
@@ -41,13 +43,23 @@
     "gaugeAccrual": "On update: delta = globalIndex - gaugeSupplyIndex; share = floor(poolWeight * delta / 1e18). A live gauge accrues share; a killed gauge returns share to the splitter.",
     "distribution": "Before distribution the voter asks the splitter to update its period, updates the gauge accrual, and notifies the gauge only when claimable > gauge.left() and claimable > 604800 raw reward-token units.",
     "kill": "Emergency council may kill a live gauge; already claimable rewards are returned to the splitter. The council may revive a killed PoolsVoter gauge.",
-    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.notifyRewardAmount, _updateFor, _distribute, killGauge, and reviveGauge"}]
+    "evidence": [
+      {
+        "sourceArtifactId": "source-current-pools-voter",
+        "locator": "Voter.notifyRewardAmount, _updateFor, _distribute, killGauge, and reviveGauge"
+      }
+    ]
   },
   "claims": {
     "stakingRewards": "claimRewards calls each supplied gauge's getReward for the caller.",
     "feeAndBribeRewards": "The veNFT owner or approved caller may invoke claimFees, claimBribes, or claimFeesAndBribes for explicit reward-contract and token arrays.",
     "securityBoundary": "Knowledge does not infer safe reward-contract/token arrays from user input. Future writers must resolve them from the current gauge graph and simulate the exact call.",
-    "evidence": [{"sourceArtifactId": "source-current-pools-voter", "locator": "Voter.claimRewards, claimFees, claimBribes, claimFeesAndBribes, and _claimRewards"}]
+    "evidence": [
+      {
+        "sourceArtifactId": "source-current-pools-voter",
+        "locator": "Voter.claimRewards, claimFees, claimBribes, claimFeesAndBribes, and _claimRewards"
+      }
+    ]
   },
   "analyticsBoundary": [
     "Gauge weight and index allocation are protocol accounting facts.",
@@ -55,7 +67,19 @@
     "A displayed APY must never be used as an input to construct a vote, claim, or distribution transaction."
   ],
   "clPositionBoundary": {
-    "reference": {"moduleId": "protocols/pools", "resourceId": "pools-positions-gauges"},
+    "reference": {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-positions-gauges"
+    },
     "rule": "The pools module owns CL NFT depositor/contract-owner identity and active-versus-staked-versus-position liquidity. This incentives record owns emission allocation and reward claims; neither boundary may substitute its liquidity or owner meaning for the other."
+  },
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T11:33:29Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
   }
 }

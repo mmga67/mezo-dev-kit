@@ -1,38 +1,25 @@
-# Manage a concentrated-liquidity NFT
+# Manage a concentrated-liquidity position
 
-## Read the focused operation
+Start with [mintPosition](mint.ts). Supply a [write connection](../SETUP.md),
+operation ID, verified pool key, tick range, token amounts and explicit bounds.
+A position is an NFT identifying liquidity within a price range. Its `tokenId`
+comes from the reconciled result; never guess it from total NFT supply.
 
-Start with [Mint one CL position](mint.ts) beside the [connection guide](../SETUP.md).
-Pass a sorted CLPoolKey, aligned tick bounds, desired token amounts and CLPositionBounds. The two token minima and square-root price bounds protect different parts of the operation. Use the settled NFT ID. The lifecycle below derives a concrete range and bounds, calls this mint and demonstrates management and exit.
+[manageCLPosition](workflow.ts) composes mint, increase, decrease, collect and
+burn. The application supplies desired token0/token1 amounts in their own base
+units. Its range and slippage policies are illustrative: review them for your
+application and respect tick-spacing and supported tick bounds.
 
-The function takes the named connections from [setup.ts](../setup.ts); it does
-not require ExampleRuntime or the CLI. The command below runs the composed
-lifecycle, including the focused operation.
+Decreasing liquidity credits principal owed to the position. Collection pays
+owed tokens; burning the empty NFT closes it. Those are distinct steps. Optional
+rebalancing exits the old NFT and mints another range in a separate transaction;
+a later failure can leave tokens in the wallet.
 
-## Run the lifecycle
+[clGaugeCycle](gauge.ts) shows approval of one NFT, staking, reward claim and
+unstaking. Gauge custody changes the on-chain owner while the depositor retains
+the beneficial stake. Gauge rewards and LP fees are different quantities. Each
+action asks for consent; claiming may return zero when no reward has accrued.
 
-[Setup](../README.md#build-and-run) · [Code](workflow.ts) · [Gauge code](gauge.ts) · [SDK](../../packages/protocols/pools/REFERENCE.md)
-
-```sh
-MDK_RUN_ID=cl-position-01 pnpm --filter @mezo-dev-kit/examples manage-cl-position --mode fork
-MDK_RUN_ID=cl-rebalance-01 pnpm --filter @mezo-dev-kit/examples manage-cl-position --mode fork --variant rebalance
-# Requires MDK_NATIVE_TOKEN_ARTIFACT.
-MDK_RUN_ID=cl-stake-01 pnpm --filter @mezo-dev-kit/examples manage-cl-position --mode fork --variant stake
-```
-
-Select the initialized MUSD/mUSDC pool with tick spacing 1. Build a range around
-its current tick, aligned to that spacing, and offer up to 50 of each token.
-Mint an NFT, increase its liquidity, remove all liquidity, collect owed tokens,
-then burn the empty NFT. The event-derived token ID identifies every later action.
-
-The position's range determines which assets it needs. A zero amount minimum
-is used only where the forecast requires/owes zero of that token. Price bounds,
-amount minima and liquidity minima protect the chosen operation. Removing
-liquidity credits owed tokens; collection pays the wallet; burning is allowed
-only after clearing both liquidity and owed amounts.
-
-The `stake` variant approves this NFT, stakes it in its verified live gauge,
-claims available rewards and returns it before managing liquidity. The
-`rebalance` variant closes the original NFT and mints a shifted range under a
-new ID, then closes that replacement too. If the new mint fails, the already
-withdrawn assets remain in the wallet. A range change is not an NFT field edit.
+See the [Pools reference](../../packages/protocols/pools/REFERENCE.md) and
+[Incentives reference](../../packages/protocols/incentives/REFERENCE.md) for
+current methods, custody checks and release limits.

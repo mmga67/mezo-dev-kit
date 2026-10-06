@@ -62,19 +62,12 @@ Run from the repository root:
 ```sh
 pnpm install --frozen-lockfile
 pnpm --filter '@mezo-dev-kit/examples...' build
-pnpm --filter @mezo-dev-kit/examples foundations
 ```
 
-The build emits JavaScript and declarations for the examples and their
-dependencies. The final command prints deterministic results for amounts,
-registry metadata, price policy, repayment allocation, and project
-configuration. It needs no RPC or wallet. Read
-[the foundation example](../../examples/foundations.ts) to follow the calls.
-
-You now have a built workspace and a first working example. Choose a focused
-operation from the [package examples](../../examples/PACKAGES.md), or continue
-below to make a change. Transaction demonstrations have their own
-[local-fork prerequisites](../../examples/README.md#build-and-run).
+The build emits JavaScript and declarations through public package exports.
+Read the [cookbook learning path](../../examples/README.md#start-here), then choose
+a [focused operation](../../examples/PACKAGES.md). Recipes explain application
+inputs and outcomes without an example console or financial demonstration run.
 
 `--frozen-lockfile` fails if installation would require a lockfile update.
 For contributor verification, use the checks in
@@ -102,18 +95,23 @@ To verify built entrypoints and clean-checkout behavior:
 
 ```sh
 pnpm build
-pnpm test:browser
 pnpm test:built
 pnpm test:clean
 ```
 
-Install the [browser test prerequisites](BROWSER_APPLICATIONS.md#verify-an-integration)
-before `test:browser` or the full `check`. Built checks exercise package exports
-without source fallbacks. The clean
+Built checks exercise package exports without source fallbacks. The clean
 check creates a disposable source copy, installs the frozen lockfile offline,
 and checks source types plus built imports/runtime. The separate
 [private tooling pilot](MDK_CLI.md) owns packed-artifact and standalone-project
 verification. These checks establish different boundaries from a registry release.
+
+Browser qualification is optional. For complete code and browser verification,
+follow [browser setup](BROWSER_APPLICATIONS.md#complete-browser-qualification)
+and run `pnpm check:browser:container` for containerized browsers, or
+`pnpm check:browser` for native browsers. Ordinary `pnpm check` needs no browser binaries or
+browser system libraries. Run `pnpm test:browser` after building when only the
+additional native browser suite is needed; `pnpm test:browser:container` isolates
+the engines and their libraries instead.
 
 ## Make a first change
 
@@ -172,8 +170,10 @@ pnpm test:shuffle
 ```
 
 `pnpm check` combines formatting, generation drift, typechecking, lint,
-boundaries, builds, packed SDK browser checks, and tests. `test:shuffle` separately checks seeded test
-order. Neither command captures live evidence or renews review dates.
+boundaries, builds, built/packed package checks, clean installation and tests.
+`test:shuffle` separately checks seeded test order. Browser qualification is
+opt-in through `pnpm check:browser`; do not infer browser execution from default
+checks. None of these commands captures live evidence or renews review dates.
 
 [Contributor verification](../../CONTRIBUTING.md#verification) owns the
 risk levels. Protocol-sensitive work additionally needs authoritative evidence,

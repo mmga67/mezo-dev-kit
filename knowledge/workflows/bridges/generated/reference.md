@@ -7,9 +7,9 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Module: `workflows/bridges`
 - Support: `none`
 - Review: `accepted`
-- Verified: `2026-08-24T13:39:35.987Z`
-- Review after: `2026-09-23T13:39:35.987Z`
-- Input digest: `sha256:9fd2ee45bc9a374e3f6dfbaca475c688a79a4767b50394e5278c45af3e25b6dc`
+- Verified: `2026-10-06T14:04:51.613Z`
+- Review after: `2026-11-05T00:00:00Z`
+- Input digest: `sha256:135081a799a7eb22d54206f1e86e5769b5d158084be2040bcff71949bbfd87c2`
 
 ## Inventory
 

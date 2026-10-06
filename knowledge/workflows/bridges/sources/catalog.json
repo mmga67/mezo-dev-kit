@@ -7,10 +7,14 @@
   "workflowStatus": "evidence-verified-promotion-blocked",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T14:20:35.823Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": []
   },
   "limitations": [
@@ -85,7 +89,7 @@
         "moduleId": "workflows/bridges",
         "resourceId": "bridge-musd-ntt-evidence"
       },
-      "sha256": "d23c799ba704d19e1905154bda33fca4eb5c3170ce41024578713ff7c310f93e"
+      "sha256": "afaf1ce6065eeba8cf046ea420459168d21821640fc1306ee64fd673a4d5f1b1"
     },
     {
       "id": "bridge-native-evidence",
@@ -93,7 +97,16 @@
         "moduleId": "workflows/bridges",
         "resourceId": "bridge-native-evidence"
       },
-      "sha256": "f7605382029b84c2e2f5ed6fbe5b2332541728980be8516b89eb510870079899"
+      "sha256": "69b7148fe0cbfb9e7ee0fdf9c7182373b4c29ac1f6c2acad6617d4f02b42f2af"
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T14:20:35.823Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

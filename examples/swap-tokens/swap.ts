@@ -10,7 +10,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Execute one caller-selected route. amountIn and amountOutMinimum use their respective token base units. */
 export async function swapExactInput(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: {
     readonly operationId: string;
     readonly quote: Omit<BasicSwapQuoteInput, "account">;
@@ -47,7 +47,7 @@ export async function swapExactInput(
   for (let attempt = 0; prepared.approval.kind !== "sufficient"; attempt++) {
     invariant(attempt < 2, "Swap allowance changed repeatedly");
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token: prepared.quote.inputToken,
@@ -59,6 +59,8 @@ export async function swapExactInput(
     prepared = await writer.prepare(preparation);
   }
   const simulated = await writer.simulate(prepared);
+  // The application asks for consent to this exact call; cancellation stops here.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   // The writer verifies hop events and actual wallet output, including the requested minimum.

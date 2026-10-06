@@ -128,6 +128,7 @@ own application UI/state, or maintain independent copies of canonical facts.
 | [Contracts](packages/contracts/README.md) | Deployment resolution, ABI projections, runtime identity, historical evidence, digests, and provenance                                         |
 | [Core](packages/core/README.md)           | Block-consistent reads, bounded event scans, RPC/signer adapters, simulation, submission, receipt observation, and reconciliation coordination |
 | [Tokens](packages/tokens/README.md)       | Token balances, allowances, and explicit approval workflows                                                                                    |
+| [Evidence](packages/evidence/README.md)   | Bounded read-only observation recipes, versioned reports and progress shared by CLI and applications                                           |
 | [Prices](packages/prices/README.md)       | Typed price observations, normalization, confidence, freshness, and source policy                                                              |
 
 EVM owns no network, deployment, protocol, provider, signer, or presentation
@@ -194,6 +195,8 @@ from the next view, which shows their additional package imports:
 
 ```mermaid
 flowchart LR
+  CLI --> Evidence
+  Evidence --> Prices
   Swaps --> Pools
   Swaps --> Tokens
   Pools --> Tokens
@@ -209,9 +212,20 @@ flowchart LR
 ```
 
 Bridges, institutional debt, Tokens, and Prices need only the common
-foundations. The CLI currently has no runtime SDK import dependency: its
-distribution tooling packages matching artifacts and generates a reference
-bundle. Artifact inclusion is separate from a runtime import edge.
+foundations. Evidence imports those foundations plus Prices; the CLI imports Evidence.
+The portable Evidence service owns observation orchestration, bounded read-only
+recipes, progress and report validation. Existing packages retain chain identity,
+contract runtime and price semantics. Node filesystem persistence and recovery
+belong to the CLI; frontend state and storage belong to applications. Observation
+capture never promotes canonical evidence or changes review dates. Maintainer
+comparison/promotion remains a separate maintainer workflow: the bounded mainnet
+oracle importer prepares offline field changes and regenerated outputs in a
+disposable workspace, then applies a reviewed digest with recovery journaling.
+Incentives owns the configuration/state claim catalog; Evidence projects it and
+uses public Contracts/EVM/Core APIs without importing the Incentives runtime.
+CLI artifact tooling also
+packages matching SDK artifacts and generates a reference bundle. Its standalone
+private artifact bundles the already installed production dependency closure.
 
 Applications compose Savings/Vault with Incentives for gauge operations.
 Incentives accepts an injected verified position-reader port for concentrated

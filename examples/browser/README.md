@@ -1,24 +1,18 @@
-# Browser amount example
+# Validate an amount in a browser form
 
-Run exact amount conversion and portable SHA-256 through the public EVM package in
-a browser. The form uses illustrative precision and makes no network request or
-wallet connection.
+Read [main.ts](main.ts) beside [index.html](index.html). The application entrypoint
+finds the form, reads amount text on submission, converts it using public EVM
+exports and renders a result or validation error. It makes no RPC or wallet request.
 
-From the repository root, after installing the pinned workspace dependencies:
+For six decimal places, entering `1.25` produces `1250000` base units. Extra
+fractional precision rejects instead of rounding. The precision field is
+illustrative; a financial application obtains precision from the selected asset's
+verified metadata. SHA-256 here hashes the formatted text, not a transaction.
 
-```sh
-pnpm build
-pnpm exec vite examples/browser
-```
+Adapt the event handler to your application's lifecycle and DOM. The entrypoint
+mounts its handler when loaded and needs the matching form elements; SDK imports
+remain independent of the DOM. Browser qualification is maintained separately
+against packed public packages and production bundles.
 
-Open the local URL printed by Vite. Enter `1.25` with precision `6` to see `1250000`
-base units. An amount with more fractional digits than the selected precision
-produces a validation message rather than silently rounding.
-
-Build the same application with `pnpm exec vite build examples/browser`. Development
-and production bundles resolve built public package exports, with no Node polyfills
-or SDK source aliases. Workspace typechecking uses the existing source paths before
-builds; the browser suite also typechecks and executes the form against packed SDK artifacts.
-
-See the [browser integration guide](../../docs/guides/BROWSER_APPLICATIONS.md) for
-RPC/wallet integration, SSR boundaries, compatibility and verification.
+See the [browser integration guide](../../docs/guides/BROWSER_APPLICATIONS.md)
+for RPC/wallet adapters, SSR boundaries and compatibility.

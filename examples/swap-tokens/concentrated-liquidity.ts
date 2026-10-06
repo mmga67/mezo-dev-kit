@@ -5,20 +5,19 @@ import {
   createCLSwapWriter,
 } from "@mezo-dev-kit/swaps";
 import type { CLSwapHop, CLSwapOutcome } from "@mezo-dev-kit/swaps";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
-import { minimumAfterSlippage } from "../runtime/bounds.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
 
 /** One transaction for a bounded CL route; each intermediate asset is explicitly authorized. */
 export async function swapConcentratedLiquidity(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   input: {
     readonly route: readonly CLSwapHop[];
     readonly intermediateAssets: readonly `0x${string}`[];
     readonly amountIn: bigint;
-    readonly minimumOutput?: bigint;
+    readonly minimumOutput: bigint;
     readonly step?: string;
   },
 ): Promise<Readonly<CLSwapOutcome>> {
@@ -47,7 +46,7 @@ export async function swapConcentratedLiquidity(
     ...quoteInput,
     operationId: runtime.operationId(step),
     bounds: {
-      minAmountOut: input.minimumOutput ?? minimumAfterSlippage(quote.estimatedAmountOut, 50n),
+      minAmountOut: input.minimumOutput,
       deadline: quote.timestamp + 300n,
       maxDeadlineSeconds: 300n,
       maxBlockAge: 2n,
@@ -66,25 +65,13 @@ export async function swapConcentratedLiquidity(
     );
     prepared = await writer.prepare(preparation);
   }
-  runtime.report("CL route quote", {
-    path: prepared.quote.path,
-    amountIn: input.amountIn,
-    minimumOutput: prepared.bounds.minAmountOut,
-    hops: quote.pools.map((pool) => ({
-      steps: pool.steps,
-      bitmapWords: pool.bitmapWords,
-      crossedTicks: pool.crossings.length,
-    })),
-  });
+
   const simulation = await writer.simulate(prepared);
+  await runtime.review(simulation);
   const submitted = await writer.submit(prepared, simulation);
   const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);
-  runtime.report("CL swap settled", {
-    amountIn: outcome.amountIn,
-    amountOut: outcome.amountOut,
-    boundsSatisfied: outcome.boundsSatisfied,
-  });
+
   invariant(outcome.boundsSatisfied, "CL output settled outside policy");
   return outcome;
 }

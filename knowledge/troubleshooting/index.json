@@ -8,8 +8,8 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T00:00:00Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
     "issueIds": [
       "testnet-rpc-historical-data-gap-2026-08-18",
@@ -31,49 +31,63 @@
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/testnet-rpc-historical-data-gap.json",
-      "recordIds": ["testnet-rpc-historical-data-gap-2026-08-18"]
+      "recordIds": [
+        "testnet-rpc-historical-data-gap-2026-08-18"
+      ]
     },
     {
       "id": "issue-musd-borrowing-capacity-snapshot",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/musd-borrowing-capacity-snapshot.json",
-      "recordIds": ["musd-borrowing-capacity-snapshot"]
+      "recordIds": [
+        "musd-borrowing-capacity-snapshot"
+      ]
     },
     {
       "id": "issue-musd-refinance-fee-doc-drift",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/musd-refinance-fee-doc-drift.json",
-      "recordIds": ["musd-refinance-fee-doc-drift"]
+      "recordIds": [
+        "musd-refinance-fee-doc-drift"
+      ]
     },
     {
       "id": "issue-musd-redemption-fee-doc-drift",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/musd-redemption-fee-doc-drift.json",
-      "recordIds": ["musd-redemption-fee-doc-drift"]
+      "recordIds": [
+        "musd-redemption-fee-doc-drift"
+      ]
     },
     {
       "id": "issue-mezo-earn-deployment-doc-drift",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/mezo-earn-deployment-doc-drift.json",
-      "recordIds": ["mezo-earn-deployment-doc-drift-2026-08-18"]
+      "recordIds": [
+        "mezo-earn-deployment-doc-drift-2026-08-18"
+      ]
     },
     {
       "id": "issue-musd-ntt-deployment-doc-drift",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/musd-ntt-deployment-doc-drift.json",
-      "recordIds": ["musd-ntt-deployment-doc-drift-2026-08-18"]
+      "recordIds": [
+        "musd-ntt-deployment-doc-drift-2026-08-18"
+      ]
     },
     {
       "id": "issue-native-bridge-system-receipt-not-delivery",
       "role": "canonical-record",
       "kind": "troubleshooting-issue",
       "path": "records/native-bridge-system-receipt-not-delivery.json",
-      "recordIds": ["native-bridge-system-receipt-not-delivery-2026-08-18"]
+      "recordIds": [
+        "native-bridge-system-receipt-not-delivery-2026-08-18"
+      ]
     },
     {
       "id": "troubleshooting-index-schema",
@@ -99,20 +113,64 @@
       "kind": "human-reference",
       "path": "generated/reference.md",
       "generatedFrom": [
-        {"moduleId": "troubleshooting", "resourceId": "issue-testnet-rpc-historical-data-gap"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-musd-borrowing-capacity-snapshot"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-musd-refinance-fee-doc-drift"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-musd-redemption-fee-doc-drift"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-mezo-earn-deployment-doc-drift"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-musd-ntt-deployment-doc-drift"},
-        {"moduleId": "troubleshooting", "resourceId": "issue-native-bridge-system-receipt-not-delivery"}
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-testnet-rpc-historical-data-gap"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-musd-borrowing-capacity-snapshot"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-musd-refinance-fee-doc-drift"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-musd-redemption-fee-doc-drift"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-mezo-earn-deployment-doc-drift"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-musd-ntt-deployment-doc-drift"
+        },
+        {
+          "moduleId": "troubleshooting",
+          "resourceId": "issue-native-bridge-system-receipt-not-delivery"
+        }
       ]
+    },
+    {
+      "id": "troubleshooting-maintenance-reverification-2026-10-06",
+      "role": "artifact",
+      "kind": "maintenance-reverification-capture",
+      "path": "artifacts/troubleshooting-maintenance-reverification-2026-10-06.json"
     }
   ],
   "checks": [
-    {"id": "common-structure", "type": "structural", "command": "node scripts/checks/validate-knowledge-structure.ts --module troubleshooting"},
-    {"id": "troubleshooting-semantics", "type": "semantic", "command": "node scripts/checks/validate-troubleshooting-knowledge.ts"},
-    {"id": "troubleshooting-reference-drift", "type": "drift", "command": "node scripts/generate/generate-troubleshooting-reference.ts --check"}
+    {
+      "id": "common-structure",
+      "type": "structural",
+      "command": "node scripts/checks/validate-knowledge-structure.ts --module troubleshooting"
+    },
+    {
+      "id": "troubleshooting-semantics",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-troubleshooting-knowledge.ts"
+    },
+    {
+      "id": "troubleshooting-mainnet-semantics",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-troubleshooting-knowledge.ts --network mezo-mainnet"
+    },
+    {
+      "id": "troubleshooting-reference-drift",
+      "type": "drift",
+      "command": "node scripts/generate/generate-troubleshooting-reference.ts --check"
+    }
   ],
   "extensions": {
     "catalogStatus": "verified-versioned",
@@ -125,6 +183,15 @@
       "issue-musd-ntt-deployment-doc-drift",
       "issue-native-bridge-system-receipt-not-delivery"
     ],
-    "securityPlaceholderDecision": "removed-empty-placeholder-security-policy-remains-in-SECURITY.md"
+    "securityPlaceholderDecision": "removed-empty-placeholder-security-policy-remains-in-SECURITY.md",
+    "reverification": {
+      "previousVerifiedAt": "2026-08-18T00:00:00Z",
+      "previousReviewAfter": "2026-09-18T00:00:00Z",
+      "basis": "Pinned current documentation comparison, captured live graph and version-scoped Native keeper/delivery proof. Other unexpired diagnoses and excluded historical testnet dates are unchanged.",
+      "evidenceReference": {
+        "moduleId": "troubleshooting",
+        "resourceId": "troubleshooting-maintenance-reverification-2026-10-06"
+      }
+    }
   }
 }

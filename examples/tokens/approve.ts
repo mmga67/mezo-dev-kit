@@ -2,6 +2,7 @@ import { createApprovalWriter, createTokenReader } from "@mezo-dev-kit/tokens";
 import type { ApprovalPlan, TokenSnapshot } from "@mezo-dev-kit/tokens";
 import type { ExecutionClient, RpcTransport } from "@mezo-dev-kit/core";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
+import type { ReviewTransaction } from "../setup.ts";
 import { confirmationPolicy } from "../runtime/confirmation-policy.ts";
 
 /**
@@ -12,7 +13,12 @@ export async function approveTokenAmount(
   {
     transport,
     execution,
-  }: { readonly transport: RpcTransport; readonly execution: ExecutionClient },
+    review,
+  }: {
+    readonly transport: RpcTransport;
+    readonly execution: ExecutionClient;
+    readonly review: ReviewTransaction;
+  },
   input: {
     readonly operationId: string;
     readonly token: TokenSnapshot;
@@ -32,6 +38,8 @@ export async function approveTokenAmount(
   });
   // Pin the observed allowance and the exact spender/amount before requesting a signature.
   const simulated = await writer.simulate(prepared);
+  // Approval grants spending permission and requires its own consent.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   // Receipt success alone does not prove that the resulting allowance is the one requested.

@@ -12,7 +12,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Borrow loan-token base units against an existing collateralized market position. */
 export async function borrowMusdc(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: { readonly operationId: string; readonly assets: bigint; readonly bounds: LendingBounds },
   polling = confirmationPolicy,
 ): Promise<Readonly<LendingOutcome>> {
@@ -46,6 +46,8 @@ export async function borrowMusdc(
     "Borrowing unexpectedly requested a token approval",
   );
   const simulated = await writer.simulate(prepared);
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);

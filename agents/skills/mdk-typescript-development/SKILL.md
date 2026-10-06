@@ -79,8 +79,13 @@ not restart capability assessment or require rereading unchanged instructions.
    more than one package, templates/examples, or repository-wide behavior.
 4. Verify generated drift and built/packed public entrypoints when those
    surfaces are in scope. Runtime execution is not typechecking.
-   For SDK runtime compatibility, use `pnpm test:browser` after building; a
-   successful bundle or Node test alone does not prove browser behavior.
+   Browser qualification is optional: when selected, use `pnpm check:browser`
+   for default checks plus the browser suite, or `pnpm test:browser` after building.
+   The `:container` variants isolate engines/libraries using an available Docker
+   engine and need no native browser installation.
+   Ordinary `pnpm check` needs no browser binaries or host libraries. Do not install
+   them merely to finish a routine task, and do not claim browser execution from
+   bundle or Node test success. Follow the owning browser qualification procedure.
 
 ## Boundaries
 

@@ -7,11 +7,56 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Module: `protocols/incentives`
 - Support: `none`
 - Review: `accepted`
-- Verified: `2026-08-24T21:59:22.983Z`
-- Review after: `2026-09-22T00:00:00Z`
+- Verified: `2026-10-06T14:04:51.613Z`
+- Review after: `2026-11-05T00:00:00Z`
 - Evidence block: `11366264` on `mezo-mainnet`
-- Input digest: `sha256:0119c1805ff9767812b81a8794cca3745c003b1ac5620cfdad0bd2b3f68f9a8b`
+- Input digest: `sha256:b63a5cf26cceea38c83d17cc5b0c73dd61b2bc39c4410e6846a6f65854ebf588`
 - Resource-specific scope and review below govern additions beyond the original module acceptance.
+
+## Configuration observation catalog
+
+Catalog review: pending-qualified-review; support: none. This scope does not inherit the module's earlier acceptance.
+
+- Bounded historical comparison catalog, not universal governance coverage or proof of an authorized governance action.
+- Current values are observations only. Runtime identity must match before interpreting storage or ABI results.
+- Six string metadata getters remain explicitly unsupported; no testnet archive scope is added.
+
+| Field | Role | Classification | Unit | Interpretation |
+| --- | --- | --- | --- | --- |
+| pools-voter-ve | pools-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| pools-voter-splitter | pools-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| pools-voter-factory-registry | pools-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| pools-voter-governor | pools-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-underlying-token | vebtc-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-voter | vebtc-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-distributor | vebtc-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-factory-registry | vebtc-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-booster | vebtc-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vebtc-current-version | vebtc-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vebtc-current-name | vebtc-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vebtc-current-symbol | vebtc-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vebtc-current-supply | vebtc-current | state | base-units | Ordinary state movement; differences alone do not establish a rule change. |
+| vebtc-current-total-voting-power | vebtc-current | state | base-units | Ordinary state movement; differences alone do not establish a rule change. |
+| vebtc-current-unboosted-total-voting-power | vebtc-current | state | base-units | Ordinary state movement; differences alone do not establish a rule change. |
+| vebtc-current-last-minted-token-id | vebtc-current | state | count | Ordinary state movement; differences alone do not establish a rule change. |
+| vebtc-current-max-lock-time | vebtc-current | configuration | seconds | Deployment storage configuration in seconds; a difference does not identify its cause or authorization. |
+| boost-voter-boostable-ve | boost-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| boost-voter-ve | boost-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| boost-voter-factory-registry | boost-voter | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| boost-voter-gauge-count | boost-voter | state | count | Ordinary state movement; differences alone do not establish a rule change. |
+| boost-voter-max-voting-num | boost-voter | configuration | count | Governed maximum voting targets; a difference requires configuration review. |
+| vemezo-current-underlying-token | vemezo-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vemezo-current-voter | vemezo-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vemezo-current-distributor | vemezo-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vemezo-current-factory-registry | vemezo-current | configuration | address | Configured contract or authority reference; a snapshot does not establish who changed it. |
+| vemezo-current-version | vemezo-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vemezo-current-name | vemezo-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vemezo-current-symbol | vemezo-current | metadata | text | String metadata; unavailable through the current bounded EVM codec. |
+| vemezo-current-supply | vemezo-current | state | base-units | Ordinary state movement; differences alone do not establish a rule change. |
+| vemezo-current-total-voting-power | vemezo-current | state | base-units | Ordinary state movement; differences alone do not establish a rule change. |
+| vemezo-current-last-minted-token-id | vemezo-current | state | count | Ordinary state movement; differences alone do not establish a rule change. |
+| vemezo-current-max-lock-time | vemezo-current | configuration | seconds | Deployment storage configuration in seconds; a difference does not identify its cause or authorization. |
+| factory-registry-gauge-factories | factory-registry | configuration | address-list | Configured factory membership; compare as configuration, not a gauge count. |
 
 ## Inventory
 
@@ -77,7 +122,7 @@ The current official Validator Gauge guide agrees with persistent per-validator 
 
 ## MEZO Gauges: veMEZO voting and remote incentives
 
-Review: `accepted`; support: `none`. Source/state verification: `2026-09-15T18:58:39.000Z`; review after: `2026-09-29T00:00:00Z`.
+Review: `accepted`; support: `none`. Source/state verification: `2026-10-06T14:04:51.613Z`; review after: `2026-11-05T00:00:00Z`.
 
 veMEZO votes in ThirdPartyVoter allocate MEZO to non-staking MEZO Gauges. The documented remote destinations are Curve and Uniswap on Ethereum and Aerodrome on Base. Gauge incentives paid to veMEZO voters are separate from the emissions directed toward destination LPs or veAERO voters.
 

@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "type": "module",
-  "description": "Runnable MDK workflows with explicit local execution and settlement.",
+  "description": "Typechecked MDK cookbook recipes with explicit application inputs.",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -18,19 +18,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:shuffle": "vitest run --sequence.shuffle --sequence.seed=78001",
-    "test:built": "tsc --project tsconfig.built.json && node test/foundations.ts && node test/built/index.ts",
-    "borrow-musd": "node dist/cli.js borrow-musd",
-    "provide-basic-liquidity": "node dist/cli.js provide-basic-liquidity",
-    "swap-tokens": "node dist/cli.js swap-tokens",
-    "bridge-musd": "node dist/cli.js bridge-musd",
-    "save-musd": "node dist/cli.js save-musd",
-    "lend-and-borrow-musdc": "node dist/cli.js lend-and-borrow-musdc",
-    "use-usdc-vault": "node dist/cli.js use-usdc-vault",
-    "manage-cl-position": "node dist/cli.js manage-cl-position",
-    "lock-and-vote": "node dist/cli.js lock-and-vote",
-    "redeem-musd": "node dist/cli.js redeem-musd",
-    "resume": "node dist/cli.js resume",
-    "foundations": "node dist/foundations.js"
+    "test:built": "tsc --project tsconfig.built.json && node test/built/index.ts"
   },
   "dependencies": {
     "@mezo-dev-kit/evm": "workspace:*",
@@ -49,7 +37,8 @@
     "@mezo-dev-kit/musd-redemptions": "workspace:*",
     "@mezo-dev-kit/prices": "workspace:*",
     "@mezo-dev-kit/musd-institutional-debt": "workspace:*",
-    "@mezo-dev-kit/cli": "workspace:*"
+    "@mezo-dev-kit/cli": "workspace:*",
+    "@mezo-dev-kit/evidence": "workspace:*"
   },
   "devDependencies": {
     "vitest": "4.1.11"

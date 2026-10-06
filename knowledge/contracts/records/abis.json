@@ -5,7 +5,7 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-27T14:24:36.881Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "records": [
     {
       "id": "musd.active-pool",
@@ -1746,28 +1746,28 @@
         "moduleId": "contracts",
         "resourceId": "abi.incentives.ve-btc"
       },
-      "entryCount": 181,
-      "fileSha256": "8b34d314aaea2c234b9af824c44236966ac79a15636f26d70953acb07cc7ed4b",
-      "abiSha256": "a21767ccc4706ab3ef769ae24e6bd4b2f91b2a2f2fae7de8e64fd2ea4c5dcfd5",
-      "abiSemanticSha256": "de62ca878151fe2a7381246c9ed3157303aa257a7b35205be1f90dcf7f805b33",
+      "entryCount": 182,
+      "fileSha256": "80edb1a4a82c3399cfae9cb95911db2d46cad4252e589b8917257e16b5ba5b05",
+      "abiSha256": "6fb9122f6530345052cf3b0c135bc51cc0c63ace98b56f6d19ae01b6744f89a6",
+      "abiSemanticSha256": "aeef4fec807980582fd5e4aff93038d1bb65d0ca663f3ada7852c2ed033a2572",
       "sourceReference": {
         "moduleId": "contracts",
         "resourceId": "contract-sources",
-        "recordId": "incentives-explorer-executable-reproductions"
+        "recordId": "incentives-escrow-reproductions-2026-10-06"
       },
       "sourceArtifacts": [
         {
           "networkId": "mezo-mainnet",
-          "path": "api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
-          "sha256": "11b64c68da3e6562ce41088466829a829947fc26c43682f2dd41392bc67c39e1"
+          "path": "api/v2/smart-contracts/0x41d0d67648bec455052e17264ce1fc2314b75ae3",
+          "sha256": "195567903070c6e323e11cad549afba76ff18c454e943657052f4fc05ec015cc"
         }
       ],
       "status": "verified",
       "supportStatus": "supported",
       "reviewStatus": "accepted",
       "limitations": [
-        "The full ABI is bound to the exact explorer source/build response, reproduced executable, and Mezo Mainnet implementation generation.",
-        "registry provenance review and emission evidence review qualified review accepted this bounded ABI identity; executable and ABI equality still do not establish source authorship, repository history, audit coverage, writer safety, or protocol support."
+        "The full ABI is bound to the reproduced executable and the implementation generation activated on 2026-10-06.",
+        "Qualified acceptance covers registry identity and provenance; it does not establish source authorship, audit coverage, writer safety or protocol support."
       ]
     },
     {
@@ -1816,28 +1816,28 @@
         "moduleId": "contracts",
         "resourceId": "abi.incentives.ve-mezo"
       },
-      "entryCount": 181,
-      "fileSha256": "237333c78e7eccb342d44fbfd915e14ab26602515722f594467189d3256f2600",
-      "abiSha256": "86a69ad2a421b14e970a9da1d22be1229201f74851ff59114c035a8e7d9a9239",
-      "abiSemanticSha256": "2e437af68b2ce7c1d8a8dfd1aba8601b2625edf3871dc8c2c065f30aa051fc6f",
+      "entryCount": 182,
+      "fileSha256": "0b2e61d855264c09ada8fa8814b65d2d356f54b216c4729dcbf5635925e79589",
+      "abiSha256": "e979497823169ff99d975d6ce44c0c5888ee8b3167b83df9a8e955a3a6d7a6e1",
+      "abiSemanticSha256": "21c8819ae5007adaef6f9abdd1ac3f914806b0452d865a355daf0859de11a26f",
       "sourceReference": {
         "moduleId": "contracts",
         "resourceId": "contract-sources",
-        "recordId": "incentives-explorer-executable-reproductions"
+        "recordId": "incentives-escrow-reproductions-2026-10-06"
       },
       "sourceArtifacts": [
         {
           "networkId": "mezo-mainnet",
-          "path": "api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
-          "sha256": "50f98955b9fc05e777b844c999e9fb6e5536069adeec91145550f880749d4fab"
+          "path": "api/v2/smart-contracts/0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c",
+          "sha256": "f2a16d3af2917e2b6ae6a8e445f989d4214c5c037acc8b7575646a82e502fa2e"
         }
       ],
       "status": "verified",
       "supportStatus": "supported",
       "reviewStatus": "accepted",
       "limitations": [
-        "The full ABI is bound to the exact explorer source/build response, reproduced executable, and Mezo Mainnet implementation generation.",
-        "registry provenance review and emission evidence review qualified review accepted this bounded ABI identity; executable and ABI equality still do not establish source authorship, repository history, audit coverage, writer safety, or protocol support."
+        "The full ABI is bound to the reproduced executable and the implementation generation activated on 2026-10-06.",
+        "Qualified acceptance covers registry identity and provenance; it does not establish source authorship, audit coverage, writer safety or protocol support."
       ]
     },
     {
@@ -2228,7 +2228,7 @@
   ],
   "id": "contract-abis",
   "registryStatus": "verified-current",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
@@ -2283,5 +2283,14 @@
     "Each artifact is the current implementation/deployment ABI for the verified generation, not a historical implementation catalog.",
     "ABI support is limited to accepted records and creates no public reader, writer, route, protocol, or product capability.",
     "The catalog contains 58 supported ABIs; record-level lifecycle and provenance govern use."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-27T14:24:36.881Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

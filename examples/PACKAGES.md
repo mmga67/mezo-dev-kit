@@ -1,7 +1,7 @@
 # Package example coverage
 
 Start with [connections and transaction stages](SETUP.md). Focused files show
-public API construction and one operation. The existing lifecycle demonstrations
+public API construction and one operation. The advanced lifecycle recipes
 call those focused operations and show how to compose additional actions.
 
 | Package                                 | Start with code                                                                                         | Continue with                                                                                                                    |
@@ -11,8 +11,9 @@ call those focused operations and show how to compose additional actions.
 | `@mezo-dev-kit/contracts`               | [Resolve a deployment and read ABI](contracts/resolve-deployment.ts)                                    | [Guide](contracts/README.md)                                                                                                     |
 | `@mezo-dev-kit/core`                    | [Read coherent balances](core/read-balances.ts), [construct connections](setup.ts)                      | [Observe a saved submission](core/observe-submission.ts), [guide](core/README.md)                                                |
 | `@mezo-dev-kit/tokens`                  | [Complete one exact approval](tokens/approve.ts)                                                        | [Guide](tokens/README.md), [read units](runtime/token-units.ts)                                                                  |
+| `@mezo-dev-kit/evidence`                | [Capture and export observations](evidence/refresh.ts)                                                  | [Junior walkthrough](../docs/guides/EVIDENCE_REFRESH.md), [API](../packages/evidence/REFERENCE.md)                               |
 | `@mezo-dev-kit/prices`                  | [Normalize and evaluate a datum](prices/normalize.ts)                                                   | [Skip reader](prices/read-skip.ts), [guide](prices/README.md)                                                                    |
-| `@mezo-dev-kit/musd-borrowing`          | [Open a position](borrow-musd/open-position.ts)                                                         | [Manage, repay and close](borrow-musd/workflow.ts), [guide](borrow-musd/README.md)                                               |
+| `@mezo-dev-kit/musd-borrowing`          | [Preview eligibility](borrow-musd/preview-position.ts), [open a position](borrow-musd/open-position.ts) | [Manage, repay and close](borrow-musd/workflow.ts), [guide](borrow-musd/README.md)                                               |
 | `@mezo-dev-kit/pools`                   | [Add liquidity](provide-basic-liquidity/add.ts), [mint a CL position](manage-cl-position/mint.ts)       | [Fees and exit](provide-basic-liquidity/workflow.ts), [CL lifecycle](manage-cl-position/workflow.ts)                             |
 | `@mezo-dev-kit/swaps`                   | [Swap one explicit route](swap-tokens/swap.ts)                                                          | [Compare routes](swap-tokens/workflow.ts), [CL swap](swap-tokens/concentrated-liquidity.ts), [mixed route](swap-tokens/mixed.ts) |
 | `@mezo-dev-kit/bridges`                 | [Send MUSD and persist source identity](bridge-musd/send.ts), [Native transfers](bridge-musd/native.ts) | [Delivery observation](bridge-musd/observe-delivery.ts), [recovery](bridge-musd/recovery.ts), [guide](bridge-musd/README.md)     |
@@ -28,8 +29,7 @@ call those focused operations and show how to compose additional actions.
 
 React, Hardhat, Foundry, and shared test utilities remain planned capabilities
 with no implemented packages or exported APIs. Their intended responsibilities are in
-[Architecture](../ARCHITECTURE.md#repository-areas). Add executable
-examples alongside their first implemented APIs. The examples above use the
+[Architecture](../ARCHITECTURE.md#repository-areas). Add typechecked cookbook recipes alongside their first implemented APIs. The examples above use the
 current public workspace entrypoints; they do not require those adapters.
 
 The CLI examples include parsing and [project initialization/inspection](project-tooling/initialize.ts).

@@ -17,7 +17,7 @@ import type { BridgeCheckpoint } from "./checkpoint.ts";
 
 /** Send MUSD from Mezo to Ethereum and persist source identity for independent delivery observation. */
 export async function sendMusd(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   destinationTransport: RpcTransport,
   input: {
     readonly operationId: string;
@@ -67,7 +67,7 @@ export async function sendMusd(
       coordinate: prepared.quote.source.coordinate,
     });
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token,
@@ -85,6 +85,8 @@ export async function sendMusd(
     );
   }
   const simulated = await writer.simulate(prepared);
+  // The application asks for consent to this exact call; cancellation stops here.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);

@@ -34,5 +34,8 @@
   },
   "bin": {
     "mdk": "./dist/bin.js"
+  },
+  "dependencies": {
+    "@mezo-dev-kit/evidence": "workspace:*"
   }
 }

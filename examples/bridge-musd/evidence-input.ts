@@ -1,31 +1,6 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
 import { parseHash32, parseUnsignedInteger } from "@mezo-dev-kit/evm";
 import type { NttObserveInput, NttReceiptAnchor } from "@mezo-dev-kit/bridges";
 import { invariant, object } from "../runtime/validation.ts";
-
-/** Select the repository's dated transfer evidence without copying its hashes into example source. */
-export async function historicalInput(repositoryRoot: string, native: boolean): Promise<unknown> {
-  const path = native ? "native-mainnet-2026-08-18.json" : "musd-ntt-mainnet-2026-08-18.json";
-  const catalog = object(
-    JSON.parse(
-      await readFile(resolve(repositoryRoot, "knowledge/workflows/bridges/evidence", path), "utf8"),
-    ) as unknown,
-  );
-  invariant(Array.isArray(catalog.completedTransfers), "Historical transfer catalog unavailable");
-  const transfer = object(
-    catalog.completedTransfers.find(
-      (row: unknown) =>
-        object(row).id ===
-        (native ? "native-btc-mezo-to-ethereum-completed" : "musd-mezo-to-ethereum-completed"),
-    ),
-  );
-  return {
-    sourceTransactionHash: object(transfer.source).transactionHash,
-    destinationTransactionHashes: [object(transfer.destination).transactionHash],
-    ...(native ? {} : { expectedDigest: transfer.transferDigest }),
-  };
-}
 
 function anchor(value: unknown): NttReceiptAnchor {
   const row = object(value);

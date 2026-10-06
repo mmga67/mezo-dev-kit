@@ -4,6 +4,11 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadKnowledgeReference } from "../lib/knowledge-reference.ts";
 import { validateThirdPartyIncentives } from "../lib/third-party-incentives.ts";
+import {
+  topologyGenerationMatches,
+  recordedGenerationMatches,
+} from "../lib/incentive-topology-generation.ts";
+import { validateHistoricalIncentiveAbi } from "../lib/historical-incentive-abi.ts";
 import { object, parseJson, text, texts } from "../lib/json.ts";
 import type abiCatalogShape from "../../knowledge/contracts/records/abis.json";
 import type deploymentCatalogShape from "../../knowledge/contracts/records/deployments.json";
@@ -502,18 +507,30 @@ for (const role of contractRoles.records) {
     abi.intendedNetworkIds.includes(deployment.networkId),
     `${role.id} ABI network scope differs`,
   );
-  assert(
-    deployment.validity.currentCodeFrom.blockNumber <= coordinate.blockNumber &&
-      deployment.validity.effectiveUntilExclusive === null,
-    `${role.id} deployment validity does not cover the topology block`,
-  );
-  if (observed.implementation) {
+  const historicalReference =
+    "historicalAbiReference" in role ? role.historicalAbiReference : undefined;
+  if (historicalReference !== undefined) {
+    assert(observed.implementation, `${role.id} historical proxy implementation is missing`);
+    await validateHistoricalIncentiveAbi(
+      root,
+      historicalReference,
+      deployment,
+      abi,
+      observed.implementation,
+    );
     assert(
-      deployment.proxy?.currentImplementationAddress === observed.implementation,
-      `${role.id} implementation differs from topology evidence`,
+      recordedGenerationMatches(deployment, coordinate.blockNumber, observed.implementation),
+      `${role.id} historical generation does not cover the topology block`,
     );
   } else {
-    assert(deployment.proxy === null, `${role.id} topology says direct but deployment says proxy`);
+    assert(
+      topologyGenerationMatches(
+        deployment,
+        coordinate.blockNumber,
+        observed.implementation ?? null,
+      ),
+      `${role.id} deployment validity does not cover the topology block`,
+    );
   }
 }
 

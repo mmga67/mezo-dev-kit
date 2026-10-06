@@ -3,6 +3,6 @@
   "compilerOptions": {
     "paths": {}
   },
-  "include": ["test/built/index.ts", "test/foundations.ts"],
+  "include": ["test/built/index.ts"],
   "exclude": ["dist", "node_modules"]
 }

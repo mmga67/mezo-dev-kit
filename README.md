@@ -56,7 +56,7 @@ or check your setup.
 | Understand Mezo              | [Mezo knowledge](knowledge/README.md) — networks, deployments, and protocols with their evidence                                  |
 
 Browse the [documentation index](docs/INDEX.md) for the full collection of guides
-and references.
+and references, and the [changelog](CHANGELOG.md) for notable source updates.
 
 ## Contributing
 

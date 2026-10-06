@@ -3,7 +3,8 @@
   "guides": [
     "docs/guides/MDK_CLI.md",
     "docs/guides/APPLICATION_MEMORY.md",
-    "docs/guides/BROWSER_APPLICATIONS.md"
+    "docs/guides/BROWSER_APPLICATIONS.md",
+    "docs/guides/EVIDENCE_REFRESH.md"
   ],
   "knowledgeRoles": ["canonical-record"],
   "domains": [
@@ -55,14 +56,17 @@
         "@mezo-dev-kit/evm",
         "@mezo-dev-kit/chains",
         "@mezo-dev-kit/contracts",
-        "@mezo-dev-kit/core"
+        "@mezo-dev-kit/core",
+        "@mezo-dev-kit/evidence"
       ],
       "resources": [
         "guide:docs/guides/browser_applications.md",
         "api:evm",
         "api:chains",
         "api:contracts",
-        "api:core"
+        "api:core",
+        "api:evidence",
+        "guide:docs/guides/evidence_refresh.md"
       ]
     }
   ],

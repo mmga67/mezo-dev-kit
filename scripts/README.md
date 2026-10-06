@@ -20,31 +20,35 @@ The recipes below name the additional prerequisites.
 
 ## Choose a task
 
-| I want to…                                              | Command or manual                                                                 |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Find/read canonical knowledge or relevant memory        | `pnpm context --help`; [offline retrieval](agents/CONTEXT.md)                     |
-| Verify the whole checkout                               | `pnpm check`                                                                      |
-| Check formatting, types, lint, or package boundaries    | `pnpm format:check`, `pnpm typecheck`, `pnpm lint`, `pnpm boundaries`             |
-| Apply formatting                                        | `pnpm format` writes the configured source surfaces                               |
-| Build packages and examples                             | `pnpm build` writes their build outputs                                           |
-| Detect SDK generated-file drift                         | `pnpm generate:check`; see [generation](generate/README.md) for other projections |
-| Regenerate one derived file                             | [Generation recipes and catalog](generate/README.md)                              |
-| Validate knowledge or documentation                     | [Checks](checks/README.md)                                                        |
-| Check the mainnet reader evidence set                   | `pnpm check:evidence:mainnet`                                                     |
-| Run code checks and mainnet evidence checks             | `pnpm check:readers:mainnet`                                                      |
-| Run tests or reproduce one failure                      | [Tests and their runners](tests/README.md)                                        |
-| Capture evidence, import it, or inspect contract source | [Evidence tools](evidence/README.md)                                              |
-| Install or refresh agent skills                         | [Agent utilities](agents/README.md)                                               |
-| Create/list local work records or clean build output    | [Workspace utilities](workspace/README.md)                                        |
+| I want to…                                              | Command or manual                                                                                                                             |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Find/read canonical knowledge or relevant memory        | `pnpm context --help`; [offline retrieval](agents/CONTEXT.md)                                                                                 |
+| Run default checkout verification                       | `pnpm check`                                                                                                                                  |
+| Opt into complete code and browser qualification        | `pnpm check:browser:container` or native `pnpm check:browser`; [setup](../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification) |
+| Check formatting, types, lint, or package boundaries    | `pnpm format:check`, `pnpm typecheck`, `pnpm lint`, `pnpm boundaries`                                                                         |
+| Apply formatting                                        | `pnpm format` writes the configured source surfaces                                                                                           |
+| Build packages and examples                             | `pnpm build` writes their build outputs                                                                                                       |
+| Detect SDK generated-file drift                         | `pnpm generate:check`; see [generation](generate/README.md) for other projections                                                             |
+| Regenerate one derived file                             | [Generation recipes and catalog](generate/README.md)                                                                                          |
+| Validate knowledge or documentation                     | [Checks](checks/README.md)                                                                                                                    |
+| Check the mainnet reader evidence set                   | `pnpm check:evidence:mainnet`                                                                                                                 |
+| Run code checks and mainnet evidence checks             | `pnpm check:readers:mainnet`                                                                                                                  |
+| Run tests or reproduce one failure                      | [Tests and their runners](tests/README.md)                                                                                                    |
+| Capture evidence, import it, or inspect contract source | [Evidence tools](evidence/README.md)                                                                                                          |
+| Install or refresh agent skills                         | [Agent utilities](agents/README.md)                                                                                                           |
+| Create/list local work records or clean build output    | [Workspace utilities](workspace/README.md)                                                                                                    |
 
 `pnpm check` runs source/task checks, formatting, generated drift, typechecking,
-lint, boundaries, builds, browser tests, built-package tests, the clean-workspace smoke test,
+lint, boundaries, builds, built-package tests, the clean-workspace smoke test,
 and unit tests in sequence. It stops at the first failing command. Builds and
 tests can write build output and temporary files. This command does not collect
 live evidence or run every domain validator; select the owning module's checks
 when knowledge changes.
 
-Browser tests require [Playwright browsers and host libraries](../docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration).
+Browser tests are optional and need no setup for `pnpm check`. To include them,
+use `pnpm check:browser:container` or native `pnpm check:browser` after explicit
+[browser qualification setup](../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification).
+An explicitly invoked browser suite still fails if an engine or library is missing.
 
 ## Folder layout
 

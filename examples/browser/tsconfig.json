@@ -6,6 +6,6 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": []
   },
-  "include": ["main.ts"],
+  "include": ["main.ts", "../evidence/refresh.ts"],
   "exclude": ["dist", "node_modules"]
 }

@@ -1,13 +1,11 @@
-# Select a network
+# Select and verify a network
 
-[select-network.ts](select-network.ts) uses `listNetworks()` for picker values,
-`isNetworkId()` to narrow unknown input and `getNetwork()` to resolve its identity.
-`selectNetwork(selection, request)` then checks `eth_chainId` through the caller's
-RPC port. Selecting Mezo while the endpoint reports Ethereum rejects.
+[selectNetwork](select-network.ts) takes an untrusted network selection and your
+application's `RpcRequest` function. `networkChoices` provides values for a picker.
+The recipe resolves registry metadata, reads the endpoint's chain ID and rejects
+a mismatch before returning the selected network.
 
-The application supplies the request function and endpoint. Chains supplies no
-RPC URL or provider health guarantee. The offline [foundation program](../foundations.ts)
-prints the available network identities; the connection check performs one read
-when invoked with a real request port.
-
-[Connection guide](../SETUP.md) · [Package reference](../../packages/chains/REFERENCE.md).
+Metadata identifies a chain; it does not prove that an endpoint is healthy or
+serves that chain today. URLs, credentials and provider policy come from the
+application. This recipe needs no wallet. Continue with
+[connections](../SETUP.md) or the [Chains reference](../../packages/chains/REFERENCE.md).

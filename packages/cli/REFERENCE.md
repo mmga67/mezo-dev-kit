@@ -9,7 +9,7 @@ the exact guidance files MDK manages. A **recovery journal** records an interrup
 Parsing these objects validates their shape and relationships; the relevant command performs
 filesystem work.
 
-Import from the package root. The CLI has no runtime SDK dependency and supplies no transaction
+Import from the package root. The CLI consumes the portable Evidence service for read-only capture and supplies no transaction
 authorization.
 
 On this page:
@@ -191,3 +191,12 @@ version strings are insufficient. Cached references must match declared sizes/di
 preserves subsequent edits and requires a single recovery process; normal project directories are
 assumed. Individual atomic replacements do not imply universal multi-file or power-loss atomicity.
 File discovery, live protocol evidence and public release approval remain distinct qualifications.
+
+## Evidence commands
+
+`runCommand(["evidence", ...args], context)` supports `capabilities`, `refresh`,
+`inspect` and `recover` without project initialization. See the [evidence walkthrough](../../docs/guides/EVIDENCE_REFRESH.md).
+`CommandContext` additionally accepts `signal`, `environment` (RPC URL variable lookup),
+and `onEvidenceProgress`. Existing `fetch` and `now` injection apply to evidence capture.
+A refresh result's `data` is the same `EvidenceReport` returned by the portable package;
+exit codes distinguish findings, failure and cancellation. Filesystem failures remain CLI errors.

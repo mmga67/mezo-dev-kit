@@ -6,14 +6,14 @@ This deterministic page projects the canonical Contracts module for human review
 Resolve exact records, artifacts, and evidence through `knowledge/contracts/index.json`;
 this page is not an independent address/ABI authority or support promise.
 
-- Input digest: `sha256:97ab2f73843b672f02870b89b81e1f57788d4853abfc8f056c639accc1a6241e`
+- Input digest: `sha256:2e0bd29f2f94b8270fefbc4c06160c11425831c6f8c680a4bdfdd3dcdbbc459c`
 - Module support: `supported`
 - Module review: `accepted`
-- Module review after: `2026-09-22T00:00:00Z`
+- Module review after: `2026-11-05T00:00:00Z`
 - Contracts: 58
 - Deployments: 86
 - Full ABI artifacts: 58
-- Evidence observations: 66
+- Evidence observations: 69
 
 An open validity range means no supersession was observed at the verification block;
 it does not make a deployment immutable. Re-verify after an upgrade, after the review
@@ -84,7 +84,7 @@ date, or before protocol-sensitive use.
 | musd.enclave-v2 | mezo-mainnet | 0x147379a0174780570d07d70a14fb244ee5f2d786 | transparent-proxy | deployed-executable-reproduction | 0x05bd601c3c381fd3d099dbb574cc39ea5d8b4a69 | 9863657 | verified-current | supported | accepted | observe-musd-enclave-v2-mezo-mainnet |
 | musd.enclave-debt-manager | mezo-mainnet | 0x2c5e9afbb670c4a61ac2dcad62c258ee2391389a | transparent-proxy | deployed-executable-reproduction | 0x3ea98a11d349b515e628c1cc74ca999230744c43 | 10032345 | verified-current | supported | accepted | observe-musd-enclave-debt-manager-mezo-mainnet |
 | oracle.skip-btc-usd | mezo-mainnet | 0x7b7c000000000000000000000000000000000015 | precompile | official-client-precompile-source | direct | 1 | verified-current | supported | accepted | observe-oracle-skip-btc-usd-mezo-mainnet |
-| oracle.pyth-price-feed | mezo-mainnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0x6e7d74fa7d5c90fef9f0512987605a6d546181bb | 11408732 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13 |
+| oracle.pyth-price-feed | mezo-mainnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0x6e7d74fa7d5c90fef9f0512987605a6d546181bb | 11408732 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8 |
 | oracle.skip-btc-usd | mezo-testnet | 0x7b7c000000000000000000000000000000000015 | precompile | official-client-precompile-source | direct | 2213000 | verified-current | supported | accepted | observe-oracle-skip-btc-usd-mezo-testnet |
 | oracle.pyth-price-feed | mezo-testnet | 0x2880ab155794e7179c9ee2e38200202908c17b43 | erc1967-proxy | official-deployment-repository-live-configuration | 0xfc6bd9f9f0c6481c6af3a7eb46b296a5b85ed379 | 15131069 | verified-current | supported | accepted | observe-oracle-pyth-price-feed-mezo-testnet-2026-08-27 |
 | bridge.native-assets-precompile | mezo-mainnet | 0x7b7c000000000000000000000000000000000012 | precompile | official-client-precompile-source | direct | 11260864 | verified-current | supported | accepted | observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution |
@@ -95,16 +95,16 @@ date, or before protocol-sensitive use.
 | vaults.usdc-lending-market-adapter | mezo-mainnet | 0xb0ee3a01d9134733155b28289c09f084acca4f61 | direct | deployed-executable-reproduction | direct | 9274357 | verified-current | supported | accepted | observe-vaults-usdc-lending-market-adapter-mezo-mainnet |
 | vaults.usdc-lending-wrapper | mezo-mainnet | 0xd3f6f147662bf2943ca09ee16bedaea28ae28788 | transparent-proxy | deployed-executable-reproduction | 0x80ec90e54e577dac8efca30f96bf21fe4efa885d | 9274615 | verified-current | supported | accepted | observe-vaults-usdc-lending-wrapper-mezo-mainnet |
 | incentives.pools-voter | mezo-mainnet | 0x48233ccc97b87ba93bca212cbee48e3210211f03 | transparent-proxy | deployed-executable-reproduction | 0xa62060d57e04d6c799b58188dc654b85addd1465 | 6265915 | verified-current | supported | accepted | observe-incentives-pools-voter-mezo-mainnet |
-| incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | transparent-proxy | deployed-executable-reproduction | 0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c | 8199968 | verified-current | supported | accepted | observe-incentives-ve-btc-mezo-mainnet |
+| incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | transparent-proxy | deployed-executable-reproduction | 0x41d0d67648bec455052e17264ce1fc2314b75ae3 | 12330216 | verified-current | supported | accepted | observe-vebtc-post-resumption |
 | incentives.boost-voter | mezo-mainnet | 0x2ba614a598cffa5a19d683cdca97bac3a49313d1 | transparent-proxy | deployed-executable-reproduction | 0xa696dc56522e41811d06bbda83c1a6d976637624 | 6276236 | verified-current | supported | accepted | observe-incentives-boost-voter-mezo-mainnet |
-| incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | transparent-proxy | deployed-executable-reproduction | 0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e | 8199968 | verified-current | supported | accepted | observe-incentives-ve-mezo-mezo-mainnet |
+| incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | transparent-proxy | deployed-executable-reproduction | 0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c | 12330216 | verified-current | supported | accepted | observe-vemezo-post-resumption |
 | incentives.factory-registry | mezo-mainnet | 0x04b94f55780682478c8d8329368aaafd320f4d32 | direct | deployed-executable-reproduction | direct | 5043414 | verified-current | supported | accepted | observe-incentives-factory-registry-mezo-mainnet |
 | incentives.mezo-minter | mezo-mainnet | 0x66bff681611553b3204a226b2019ec621f39ffc3 | direct | deployed-executable-reproduction | direct | 7904577 | verified-current | supported | accepted | observe-incentives-mezo-minter-mezo-mainnet |
 | incentives.mezo-rebase-distributor | mezo-mainnet | 0x075108f275ed81c9cfc01065e6e50ceea81d6363 | direct | deployed-executable-reproduction | direct | 7904531 | verified-current | supported | accepted | observe-incentives-mezo-rebase-distributor-mezo-mainnet |
 | incentives.mezo-chain-splitter | mezo-mainnet | 0x5c6ef634e279a77d64e21d24b1a1bb4a5e59c5da | direct | deployed-executable-reproduction | direct | 7904148 | verified-current | supported | accepted | observe-incentives-mezo-chain-splitter-mezo-mainnet |
 | incentives.mezo-ecosystem-splitter | mezo-mainnet | 0xe9e697d49d47c7042e768177f42d5789666d99fa | direct | deployed-executable-reproduction | direct | 7903944 | verified-current | supported | accepted | observe-incentives-mezo-ecosystem-splitter-mezo-mainnet |
 | incentives.validators-voter | mezo-mainnet | 0xe99a9ad5ed26bd30e4db25397f378817e9b9515a | transparent-proxy | deployed-executable-reproduction | 0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157 | 10032053 | verified-current | supported | accepted | observe-incentives-validators-voter-mezo-mainnet |
-| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | transparent-proxy | deployed-executable-reproduction | 0x8d696ae943b97ff36449014e4400a9560d1664dc | 6265915 | verified-current | supported | accepted | observe-incentives-third-party-voter-mezo-mainnet |
+| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | transparent-proxy | deployed-executable-reproduction | 0x8d696ae943b97ff36449014e4400a9560d1664dc | 11355380 | verified-current | supported | accepted | observe-incentives-third-party-voter-mezo-mainnet-2026-10-06 |
 | incentives.chain-splitter-epoch-governor | mezo-mainnet | 0x7f8c3a8877368d6a3c727ca18661ec1d681f4365 | direct | deployed-executable-reproduction | direct | 7904319 | verified-current | supported | accepted | observe-incentives-chain-splitter-epoch-governor-mezo-mainnet |
 | incentives.ecosystem-splitter-epoch-governor | mezo-mainnet | 0xd60f5f641e68a0e2c9bab29e444b22507a0f8ecf | direct | deployed-executable-reproduction | direct | 7904275 | verified-current | supported | accepted | observe-incentives-ecosystem-splitter-epoch-governor-mezo-mainnet |
 | incentives.non-staking-gauge-factory | mezo-mainnet | 0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad | direct | deployed-executable-reproduction | direct | 5042971 | verified-current | supported | accepted | observe-incentives-non-staking-gauge-factory-mezo-mainnet |
@@ -192,17 +192,21 @@ remain coordinate-scoped history and do not inherit the current ABI.
 | incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0x4e9db3399c84006f56569746128eb3155ba63390 | 5043592 | 5231297 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0xdf217efd8f3ecb5e837aedf203c28c1f06854017 | 5231297 | 6265915 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0x6c6571dd02c0f3ff07e7371c3d6202177d994f6b | 6265915 | 8199968 | historical | coordinate-scoped; no current-ABI inheritance |
-| incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c | 8199968 | open | current default | canonical current ABI |
+| incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c | 8199968 | 12330216 | historical | coordinate-scoped; no current-ABI inheritance |
+| incentives.ve-btc | mezo-mainnet | 0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279 | 0x41d0d67648bec455052e17264ce1fc2314b75ae3 | 12330216 | open | current default | canonical current ABI |
 | incentives.boost-voter | mezo-mainnet | 0x2ba614a598cffa5a19d683cdca97bac3a49313d1 | 0x10b4c343f0e992c1ff12f6ec874fadfee36a5438 | 5184186 | 6276236 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.boost-voter | mezo-mainnet | 0x2ba614a598cffa5a19d683cdca97bac3a49313d1 | 0xa696dc56522e41811d06bbda83c1a6d976637624 | 6276236 | open | current default | canonical current ABI |
 | incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | 0xb9ee960ad3c70c319cd3253eee40d4de5f25f423 | 5184093 | 6265915 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | 0x68fd8a69287c905e0d2a5592899994db2f92c455 | 6265915 | 8199968 | historical | coordinate-scoped; no current-ABI inheritance |
-| incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | 0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e | 8199968 | open | current default | canonical current ABI |
+| incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | 0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e | 8199968 | 12330216 | historical | coordinate-scoped; no current-ABI inheritance |
+| incentives.ve-mezo | mezo-mainnet | 0xb90fdad3dfd180458d62cc6acedc983d78e20122 | 0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c | 12330216 | open | current default | canonical current ABI |
 | incentives.validators-voter | mezo-mainnet | 0xe99a9ad5ed26bd30e4db25397f378817e9b9515a | 0xa2437892a5426247a55ade65778f720b923b7a1d | 5185279 | 6265915 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.validators-voter | mezo-mainnet | 0xe99a9ad5ed26bd30e4db25397f378817e9b9515a | 0xc0442b2c52378dcc060bd22d04156b08e1ba4de2 | 6265915 | 10032053 | historical | coordinate-scoped; no current-ABI inheritance |
 | incentives.validators-voter | mezo-mainnet | 0xe99a9ad5ed26bd30e4db25397f378817e9b9515a | 0xd96f2ec7750573bcac3ff49b1ac4f03faee2f157 | 10032053 | open | current default | canonical current ABI |
 | incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | 0xe662e3523baf1d3f578ef38e097d53b484e2962d | 5185433 | 6265915 | historical | coordinate-scoped; no current-ABI inheritance |
-| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | 0x8d696ae943b97ff36449014e4400a9560d1664dc | 6265915 | open | current default | canonical current ABI |
+| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | 0x8d696ae943b97ff36449014e4400a9560d1664dc | 6265915 | 11355380 | historical | coordinate-scoped; no current-ABI inheritance |
+| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | 0x7d7c9812e27a825dd31747d0814e248a61d183f0 | 11355380 | 11355380 | historical | coordinate-scoped; no current-ABI inheritance |
+| incentives.third-party-voter | mezo-mainnet | 0x2e6d2f2cacc1d24f9f9358030674eb307397a6eb | 0x8d696ae943b97ff36449014e4400a9560d1664dc | 11355380 | open | current default | canonical current ABI |
 
 ## Full ABI artifacts
 
@@ -252,9 +256,9 @@ remain coordinate-scoped history and do not inherit the current ABI.
 | vaults.usdc-lending-market-adapter | mezo-mainnet | deployed-executable-reproduction | 55 | contracts:abi.vaults.usdc-lending-market-adapter | 75dd56e616cae1d5c296c71710cab0b16967a2a4b07da37e35e3d57ca6268ab5 | economic-system-explorer-executable-reproductions | supported | accepted |
 | vaults.usdc-lending-wrapper | mezo-mainnet | deployed-executable-reproduction | 46 | contracts:abi.vaults.usdc-lending-wrapper | c1220ba62f9eeecf1b577c274f96c27b093aa4a4d1a646f574f4a2e4b062ee5a | economic-system-explorer-executable-reproductions | supported | accepted |
 | incentives.pools-voter | mezo-mainnet | deployed-executable-reproduction | 94 | contracts:abi.incentives.pools-voter | b6bc7e8b060d0a486aee4d782f3e357fe8a984922f90c2b82ef994abcea01da0 | incentives-explorer-executable-reproductions | supported | accepted |
-| incentives.ve-btc | mezo-mainnet | deployed-executable-reproduction | 181 | contracts:abi.incentives.ve-btc | de62ca878151fe2a7381246c9ed3157303aa257a7b35205be1f90dcf7f805b33 | incentives-explorer-executable-reproductions | supported | accepted |
+| incentives.ve-btc | mezo-mainnet | deployed-executable-reproduction | 182 | contracts:abi.incentives.ve-btc | aeef4fec807980582fd5e4aff93038d1bb65d0ca663f3ada7852c2ed033a2572 | incentives-escrow-reproductions-2026-10-06 | supported | accepted |
 | incentives.boost-voter | mezo-mainnet | deployed-executable-reproduction | 98 | contracts:abi.incentives.boost-voter | 1199dad34c0d3ee9df09881ff89c6f909b8bf55adba213b94efb95b94376aa7b | incentives-explorer-executable-reproductions | supported | accepted |
-| incentives.ve-mezo | mezo-mainnet | deployed-executable-reproduction | 181 | contracts:abi.incentives.ve-mezo | 2e437af68b2ce7c1d8a8dfd1aba8601b2625edf3871dc8c2c065f30aa051fc6f | incentives-explorer-executable-reproductions | supported | accepted |
+| incentives.ve-mezo | mezo-mainnet | deployed-executable-reproduction | 182 | contracts:abi.incentives.ve-mezo | 21c8819ae5007adaef6f9abdd1ac3f914806b0452d865a355daf0859de11a26f | incentives-escrow-reproductions-2026-10-06 | supported | accepted |
 | incentives.factory-registry | mezo-mainnet | deployed-executable-reproduction | 32 | contracts:abi.incentives.factory-registry | 2d6d52adf95fd47590dc768d7ae1fca41c2ea96fd8ff833099bcad6aecc96dbc | incentives-explorer-executable-reproductions | supported | accepted |
 | incentives.mezo-minter | mezo-mainnet | deployed-executable-reproduction | 17 | contracts:abi.incentives.mezo-minter | 5ec9c8e80b1d290a765b68a5435d1224cab06a5ac5fa1ff238e4b69901290982 | incentives-explorer-executable-reproductions | supported | accepted |
 | incentives.mezo-rebase-distributor | mezo-mainnet | deployed-executable-reproduction | 20 | contracts:abi.incentives.mezo-rebase-distributor | b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913 | incentives-explorer-executable-reproductions | supported | accepted |
@@ -291,10 +295,11 @@ remain coordinate-scoped history and do not inherit the current ABI.
 | incentives-explorer-executable-reproductions | on-chain-explorer-executable-reproduction | bounded observation | 2026-08-24T21:31:04.189Z |
 | validator-incentives-explorer-executable-reproductions | on-chain-explorer-executable-reproduction | bounded observation | 2026-08-24T22:04:33.950Z |
 | pools-retained-source-bundles | logical-reference | bounded observation | pinned source |
+| incentives-escrow-reproductions-2026-10-06 | on-chain-explorer-executable-reproduction | bounded observation | 2026-10-06T17:49:24.126Z |
 
 ## Evidence window
 
 - Observed from: `2026-08-17T22:55:21.010Z`
 - Observed through: `2026-08-17T22:56:59.589Z`
-- Review after: `2026-09-16T22:56:59.589Z`
+- Review after: `2026-11-05T00:00:00Z`
 - Network snapshots: mezo-mainnet at block 11201821; mezo-testnet at block 14952836

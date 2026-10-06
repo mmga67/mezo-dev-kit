@@ -1,26 +1,20 @@
-import type { ApprovalPlan, TokenSnapshot } from "@mezo-dev-kit/tokens";
 import type { ExecutionClient } from "@mezo-dev-kit/core";
-import type { ExampleRuntime } from "./example-runtime.ts";
+import type { ApprovalPlan, TokenSnapshot } from "@mezo-dev-kit/tokens";
+import type { WorkflowConnection } from "./workflow-connection.ts";
 import { approveTokenAmount } from "../tokens/approve.ts";
 
-/** Complete one independent exact approval or reset; the recipe must then reprepare. */
+/** The plan names the exact spender and amount; consent is separate from the protocol action. */
 export async function approveToken(
-  runtime: ExampleRuntime,
+  connection: WorkflowConnection,
   execution: ExecutionClient,
   step: string,
   token: TokenSnapshot,
   plan: ApprovalPlan,
 ): Promise<void> {
   if (plan.kind === "sufficient") return;
-  runtime.report(`${step}: ${plan.kind}`, {
-    token: token.target.address,
-    spender: token.spender,
-    amount: plan.amount,
-    previousAllowance: token.allowance,
-  });
   await approveTokenAmount(
-    { transport: runtime.transport, execution },
-    { token, plan, operationId: runtime.operationId(step) },
-    runtime.polling,
+    { transport: connection.transport, execution, review: connection.review },
+    { token, plan, operationId: connection.operationId(step) },
+    connection.polling,
   );
 }

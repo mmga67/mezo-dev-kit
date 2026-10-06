@@ -1,3 +1,4 @@
+import { refreshEvidence } from "@mezo-dev-kit/evidence";
 import { createAbiCodec, parseUint, parseUnitsExact, sha256 } from "@mezo-dev-kit/evm";
 import { createContractRegistry, getTokenInterface } from "@mezo-dev-kit/contracts";
 import {
@@ -22,6 +23,9 @@ export async function runBrowserVerification(): Promise<
     resumedThrough: string | undefined;
     scanStatus: string;
     wrongRuntimeRejected: boolean;
+    evidenceStatus: string;
+    evidenceCancelled: string;
+    incentiveRuntimeRejected: boolean;
   }>
 > {
   const registry = createContractRegistry();
@@ -121,7 +125,53 @@ export async function runBrowserVerification(): Promise<
     supplyYieldIndex: 0n,
     storedClaimableYield: 7n,
   });
+  const evidenceInput = {
+    formatVersion: 1,
+    runId: "browser-fixture",
+    providerId: "synthetic",
+    networkId: "mezo-mainnet",
+    recipe: "network.identity",
+    contractIds: [],
+    policy: {
+      maxRequests: 20,
+      maxAttempts: 1,
+      maxResponseBytes: 65536,
+      timeoutMs: 1000,
+      maxBlockAgeSeconds: "10",
+      maxPriceAgeSeconds: "5",
+    },
+  } as const;
+  const evidence = await refreshEvidence(evidenceInput, { request, now: () => 1000n });
+  const incentive = await refreshEvidence(
+    {
+      ...evidenceInput,
+      recipe: "incentives.configuration",
+      contractIds: ["incentives.boost-voter"],
+    },
+    {
+      now: () => 1000n,
+      request: async (input) => {
+        if (input.method === "eth_getCode") return "0x00";
+        if (input.method === "eth_getStorageAt") return `0x${"00".repeat(32)}`;
+        return request(input);
+      },
+    },
+  );
+  const controller = new AbortController();
+  const cancelled = await refreshEvidence(evidenceInput, {
+    request,
+    now: () => 1000n,
+    signal: controller.signal,
+    onProgress: (event) => {
+      if (event.phase === "claim") controller.abort();
+    },
+  });
   return {
+    evidenceStatus: evidence.status,
+    incentiveRuntimeRejected: incentive.observations
+      .filter((o) => o.id.startsWith("incentive:"))
+      .every((o) => o.observed === null && o.error === "runtime-changed"),
+    evidenceCancelled: cancelled.status,
     noNodeGlobals: !["Buffer", "process", "require"].some((name) => Reflect.has(globalThis, name)),
     byteDigest: sha256("0x616263"),
     utf8Digest: sha256(new TextEncoder().encode("abc")),

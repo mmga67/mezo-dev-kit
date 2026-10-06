@@ -7,12 +7,15 @@
   "evidenceStatus": "verified-evidence-not-support",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T13:39:35.987Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "observedFrom": "2026-05-14T15:16:11Z",
   "observedThrough": "2026-08-18T11:19:47Z",
-  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
     "routeCount": 2
   },
@@ -337,5 +340,14 @@
     "A successful, logless Mezo bridge system transaction and an advanced sequence do not alone prove ERC-20 delivery because version-matched keeper source can skip a blocked recipient, missing mapping, or failed ERC-20 mint. Post-state or equivalent recipient delivery evidence is required.",
     "Outflow limits, capacities, reset height, pause authority, minimum amounts, fees, bridge sequence, owner, and validator state are volatile snapshots and must be read again before any future writer.",
     "No timing SLA is inferred from the 930-second and 336-second sample delivery intervals."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-24T13:39:35.987Z",
+    "previousReviewAfter": "2026-09-23T13:39:35.987Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

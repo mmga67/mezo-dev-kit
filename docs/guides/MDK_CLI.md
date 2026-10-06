@@ -194,7 +194,13 @@ before regeneration. `cli:pack` requires an empty output directory and packs
 the CLI plus all SDK packages using pnpm. `manifest.json` records tarball names,
 versions, sizes, hashes and the matching bundle identity. Packing verifies the
 actual file report: SDK artifacts include built code/types and license/reference
-docs; CLI artifacts additionally include their generated assets and schemas.
+docs; CLI artifacts additionally include their generated assets, schemas, and the locked
+production dependency closure required by Evidence. Packing uses a temporary
+hoisted tree and the existing `tar` tool; it does not change the workspace linker
+or install dependencies. The pinned pnpm 11 packer omits bundled dependency
+files, so the packer appends the validated production closure and checks the
+actual final archive against its exact file inventory. Multiple installed
+dependency versions retain their nested resolution paths.
 
 A base Git revision is recorded when available. Exported source may have no Git
 revision. Input hashes identify the actual snapshot, including uncommitted
@@ -238,7 +244,7 @@ Creation accepts new or empty directories and refuses occupied targets.
 ## Initialize an existing application
 
 Install the CLI tarball named in the trusted artifact manifest as a local
-development dependency. The CLI has no runtime SDK dependency. If the application
+development dependency. The standalone packed CLI bundles its Evidence SDK production dependencies. If the application
 already uses SDK packages, install the matching complete artifact set first;
 `init` does not change dependency configuration.
 
@@ -438,6 +444,36 @@ pnpm exec mdk sync --locked --check --offline
 Retain the matching CLI artifact. `--bundle` can select another retained asset
 directory explicitly. There is no implicit fallback to main or a newer website.
 
+### Adopt communication defaults
+
+New applications receive concise communication and completion-report defaults
+in the generated `AGENTS.md`. Existing applications keep their instructions:
+`sync` updates managed guidance but never merges these defaults into that file.
+After installing matching updated artifacts, review your application's rules
+and add or adapt the following only where equivalent guidance is missing:
+
+```markdown
+## Communication and reporting
+
+Lead with the outcome. Start tool work with one short action update; subsequent
+updates report new findings and next steps at the host's required cadence.
+Ask only for material missing inputs or decisions, with a recommendation.
+Continue independent work within existing authorization.
+
+Keep routine closeouts brief (usually 80–150 words, less for small tasks).
+State delivered behavior, actual checks and outcomes, and material gaps or
+remaining decisions. Combine docs/knowledge/memory decisions in one sentence.
+Link useful detail; omit empty optional fields and repeated plans or logs.
+The final answer must stand alone. Distinguish implementation, verification,
+review and release; never hide failed or unavailable required checks.
+Research reports lead with findings, sources, recommendations and uncertainty.
+User-requested depth and completeness take precedence over length targets.
+```
+
+Review the edited file with the application's usual checks. Instruction delivery
+does not prove agent compliance or token savings; compare representative tasks
+in fresh sessions if measuring those outcomes.
+
 ## Conflicts and recovery
 
 Modified managed skills and colliding unknown files are conflicts. Preserve
@@ -483,3 +519,11 @@ support, deployment freshness or transaction authorization is inferred.
 See [external applications](EXTERNAL_APPLICATIONS.md),
 [Standalone project tooling](../manifest#standalone-project-tooling) and the
 [consumer instructions template](../../agents/consumer/APP_AGENTS.template.md).
+
+## Current evidence reports
+
+Use `mdk evidence capabilities`, `refresh`, `inspect` and `recover` without project
+initialization. The [junior evidence walkthrough](EVIDENCE_REFRESH.md) explains explicit
+network/provider selection, policy, JSON reports, cancellation and frontend integration.
+These commands collect read-only observations and preserve failures; they never
+modify canonical knowledge or renew evidence review dates.

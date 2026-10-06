@@ -1,70 +1,73 @@
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
-import { readWalletToken } from "../runtime/token-units.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
+import type { CLSwapOutcome } from "@mezo-dev-kit/swaps";
+import { parseUint } from "@mezo-dev-kit/evm";
 import { swapTokens } from "./workflow.ts";
 import { swapConcentratedLiquidity } from "./concentrated-liquidity.ts";
 import { invariant } from "../runtime/validation.ts";
 
-/** Deliberately reject the second transaction and show the retained intermediate funds. */
-export async function demonstrateMixedSwap(
-  runtime: ExampleRuntime,
-  input: {
-    readonly tokenIn: `0x${string}`;
-    readonly intermediateToken: `0x${string}`;
-    readonly tickSpacing: number;
-    readonly persist: (checkpoint: {
-      readonly intermediateToken: `0x${string}`;
-      readonly realizedAmount: string;
-    }) => Promise<void>;
-  },
-): Promise<void> {
-  const before = await readWalletToken(runtime, {
-    contractId: "mezo-earn.router",
-    address: input.intermediateToken,
-  });
-  const first = await swapTokens(runtime, {
-    tokenIn: input.tokenIn,
-    tokenOut: input.intermediateToken,
-    step: "mixed-first",
-  });
-  const checkpoint = {
-    intermediateToken: input.intermediateToken,
-    realizedAmount: first.amountOut.toString(),
+export interface MixedSwapCheckpoint {
+  readonly status: "intermediate-held";
+  readonly account: `0x${string}`;
+  readonly firstOperationId: string;
+  readonly intermediateToken: `0x${string}`;
+  /** Decimal string for durable JSON; this is the reconciled output, not the quoted output. */
+  readonly realizedAmount: string;
+}
+
+/** First transaction only. Persist actual custody before the user decides whether to continue. */
+export async function startMixedSwap(
+  connection: WorkflowConnection,
+  input: Omit<Parameters<typeof swapTokens>[1], "step">,
+  persist: (checkpoint: MixedSwapCheckpoint) => Promise<void>,
+): Promise<MixedSwapCheckpoint> {
+  const outcome = await swapTokens(connection, { ...input, step: "mixed-first" });
+  const checkpoint: MixedSwapCheckpoint = {
+    status: "intermediate-held",
+    account: connection.account,
+    firstOperationId: connection.operationId("mixed-first"),
+    intermediateToken: input.tokenOut,
+    realizedAmount: outcome.amountOut.toString(),
   };
-  await input.persist(checkpoint);
-  runtime.report("Separate-transaction checkpoint", checkpoint);
-  try {
-    // This impossible minimum is a deliberate failure demonstration, not a slippage default.
-    await swapConcentratedLiquidity(runtime, {
-      route: [
-        {
-          tokenIn: input.intermediateToken,
-          tokenOut: input.tokenIn,
-          tickSpacing: input.tickSpacing,
-        },
-      ],
-      intermediateAssets: [],
-      amountIn: first.amountOut,
-      minimumOutput: 1n << 255n,
-      step: "mixed-second",
-    });
-    throw new Error("Expected the demonstration minimum to reject the second leg");
-  } catch (error) {
-    invariant(
-      error instanceof Error && "code" in error && error.code === "BoundExceeded",
-      "Unexpected second-leg failure; inspect the saved journal",
-    );
-    const after = await readWalletToken(runtime, {
-      contractId: "mezo-earn.router",
-      address: input.intermediateToken,
-    });
-    invariant(
-      after.balance - before.balance === first.amountOut,
-      "Intermediate custody changed unexpectedly",
-    );
-    runtime.report("Second leg rejected before submission", {
-      retained: first.amountOut,
-      token: input.intermediateToken,
-      next: "Choose a fresh CL quote and minimum explicitly; never repeat the first swap",
-    });
-  }
+  // Persistence failure does not undo the first swap. Recover its saved submission;
+  // do not rerun this function to recreate a checkpoint.
+  await persist(checkpoint);
+  return checkpoint;
+}
+
+/**
+ * A separate CL transaction, with a fresh quote and caller-chosen minimum.
+ * Load a validated checkpoint from application storage. The application must
+ * inspect any existing second-leg submission before invoking this continuation.
+ */
+export async function continueMixedSwap(
+  connection: WorkflowConnection,
+  checkpoint: MixedSwapCheckpoint,
+  input: {
+    readonly tokenOut: `0x${string}`;
+    readonly tickSpacing: number;
+    readonly minimumOutput: bigint;
+  },
+): Promise<Readonly<CLSwapOutcome>> {
+  invariant(checkpoint.account === connection.account, "Checkpoint belongs to another account");
+  invariant(
+    checkpoint.firstOperationId === connection.operationId("mixed-first"),
+    "Use the original persisted intent ID",
+  );
+  const amountIn = parseUint(checkpoint.realizedAmount);
+  invariant(amountIn > 0n, "A reconciled intermediate amount is required");
+  // No catch-and-resend: a timeout can mean submission is uncertain. The first
+  // checkpoint stays available, but current custody must be observed again.
+  return swapConcentratedLiquidity(connection, {
+    route: [
+      {
+        tokenIn: checkpoint.intermediateToken,
+        tokenOut: input.tokenOut,
+        tickSpacing: input.tickSpacing,
+      },
+    ],
+    intermediateAssets: [],
+    amountIn,
+    minimumOutput: input.minimumOutput,
+    step: "mixed-second",
+  });
 }

@@ -12,6 +12,10 @@ Understand MUSD Wormhole NTT and Mezo Native Bridge routes, asset representation
 
 ## Scope and evidence
 
+The [current asset configuration review](review/gaps.md#native-bridge) records
+the SolvBTC/xSolvBTC wind-down notice and the October 6 deposit restrictions.
+Historical mappings do not establish current deposit or withdrawal availability.
+
 The bounded provider/route model has accepted review, but routes remain
 evidence-verified and unsupported; module support is `none`. Additional private
 NTT preparation and Native source/delivery evidence retain their proposed, pending-review

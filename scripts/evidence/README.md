@@ -3,7 +3,7 @@
 [Scripts manual](../README.md) · Run from the repository root. These are
 maintainer tools; several retain inputs, dates, and source revisions from a
 specific evidence procedure. Read the selected source and owning module before
-running an importer. There is no shared dry-run or `--help` contract.
+running an importer. The mainnet oracle importer has the reviewed proposal workflow below; other tools have no shared dry-run contract.
 
 ## Choose the operation
 
@@ -56,19 +56,20 @@ These commands write into the checkout. A refresh accepts only the capture
 shape and source scope implemented by that script; a current-state capture is
 not interchangeable with the full-history capture.
 
-| Script                                                                     | Arguments after the filename                                                     | Written owner / purpose                                                                 |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [import-mainnet-oracle-refresh.ts](import-mainnet-oracle-refresh.ts)       | `<mainnet-capture.json>`                                                         | Mainnet oracle evidence and its Contract/Price references; use the oracle refresh guide |
-| [refresh-pyth-oracle-knowledge.ts](refresh-pyth-oracle-knowledge.ts)       | `<capture.json>`                                                                 | Pinned Pyth ABI, implementation history, and price evidence refresh procedure           |
-| [refresh-bridge-contract-evidence.ts](refresh-bridge-contract-evidence.ts) | `<capture.json>`                                                                 | Bridge upgrade evidence, implementation generations, and associated references          |
-| [import-musdt-token-profile.ts](import-musdt-token-profile.ts)             | `<capture-directory>`                                                            | Retained proxy/implementation/runtime inputs → Contracts token profile                  |
-| [import-ntt-transfer-evidence.ts](import-ntt-transfer-evidence.ts)         | `<capture-directory> <official-source-checkout> <attestation-capture-directory>` | Retained captures and pinned source → NTT transfer/recovery evidence                    |
+| Script                                                                     | Arguments after the filename                                                                           | Written owner / purpose                                                                 |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| [import-mainnet-oracle-refresh.ts](import-mainnet-oracle-refresh.ts)       | `propose <capture> <local/proposal.json>`, `apply <proposal> --reviewed-digest <sha256>`, or `recover` | Mainnet oracle evidence and its Contract/Price references; use the oracle refresh guide |
+| [refresh-pyth-oracle-knowledge.ts](refresh-pyth-oracle-knowledge.ts)       | `<capture.json>`                                                                                       | Pinned Pyth ABI, implementation history, and price evidence refresh procedure           |
+| [refresh-bridge-contract-evidence.ts](refresh-bridge-contract-evidence.ts) | `<capture.json>`                                                                                       | Bridge upgrade evidence, implementation generations, and associated references          |
+| [import-musdt-token-profile.ts](import-musdt-token-profile.ts)             | `<capture-directory>`                                                                                  | Retained proxy/implementation/runtime inputs → Contracts token profile                  |
+| [import-ntt-transfer-evidence.ts](import-ntt-transfer-evidence.ts)         | `<capture-directory> <official-source-checkout> <attestation-capture-directory>`                       | Retained captures and pinned source → NTT transfer/recovery evidence                    |
 
 For example, after producing and reviewing the full mainnet capture using the
 oracle guide:
 
 ```sh
-node scripts/evidence/import-mainnet-oracle-refresh.ts local/evidence/mainnet-oracle-capture.json
+node scripts/evidence/import-mainnet-oracle-refresh.ts propose \
+  local/evidence/mainnet-oracle-capture.json local/evidence/oracle-proposal.json
 ```
 
 This importer is separate from `capture-current-price-state.ts`; use the input
@@ -113,6 +114,34 @@ The bridge-record import's argument order is:
 
 ## Source inspection and build comparison
 
+The optional [compiler container](compile-solidity-container.ts) runs the reviewed
+static Linux amd64 solc 0.8.29+commit.ab55807c without installing a host compiler.
+Download the binary only with the dependency approval required by
+[CONTRIBUTING](../../CONTRIBUTING.md#dependencies). The exact official URL and
+SHA-256 are pinned in [the compiler definition](../lib/solc-container.ts); the
+runner refuses other bytes before invoking Docker. It does not download tools.
+
+```sh
+node scripts/evidence/compile-solidity-container.ts \
+  /tmp/approved-solc-0.8.29 local/evidence/input.json local/evidence/new-build
+```
+
+The input must embed every Solidity source as `content`. The output directory
+must not exist; its parent must exist. The runner builds a compiler-only
+`FROM scratch` image, uses its immutable image ID, and passes Standard JSON over
+stdin. Compilation has no network, host mounts, root user or writable root
+filesystem, and has bounded time, memory, CPU and process counts. Docker must
+support Linux amd64 containers. The temporary build context and run containers
+are cleaned up; the local image/build cache remains available for reuse.
+
+`input.json`, `output.json` and `receipt.json` retain source bytes, compiler
+diagnostics, compiler/image identities and input/output hashes. Compilation
+errors fail the command even when solc exits zero. These receipts establish
+compilation only; compare the result with independently anchored deployment
+evidence. Historical compiler versions are reproduction tools, not a security
+recommendation for new deployments. The older dynamically linked 0.7.6 binary
+is not supported by this compiler-only image.
+
 | Script                                                                   | Arguments after the filename                                                                                                          | Effect                                                                                                               |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | [read-pool-contract-source.ts](read-pool-contract-source.ts)             | `<contract-id> [--file <source-path>]`                                                                                                | Offline: checks the indexed bundle digest and prints its main source or selected embedded file                       |
@@ -133,3 +162,7 @@ the reproduction procedure. Creating a Foundry project does not compile it or
 prove a deployed match. Follow the owning
 [Contract provenance guidance](../../knowledge/contracts/README.md) for source,
 ABI, bytecode, and history verification.
+
+The Standard JSON comparator accepts a single RPC response or an array of
+responses in each RPC input file. It selects the supplied response ID and
+rejects an error response; unrelated entries cannot replace the selected result.

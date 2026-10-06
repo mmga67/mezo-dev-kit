@@ -6,7 +6,15 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "rewriteRelativeImportExtensions": true,
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@mezo-dev-kit/evm": ["../evm/dist/index.d.ts"],
+      "@mezo-dev-kit/chains": ["../chains/dist/index.d.ts"],
+      "@mezo-dev-kit/contracts": ["../contracts/dist/index.d.ts"],
+      "@mezo-dev-kit/core": ["../core/dist/index.d.ts"],
+      "@mezo-dev-kit/prices": ["../prices/dist/index.d.ts"],
+      "@mezo-dev-kit/evidence": ["../evidence/dist/index.d.ts"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["test", "vitest.config.ts"]

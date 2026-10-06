@@ -203,6 +203,39 @@
       "sha256": "0269301f9b0600810c41ee41852540444542ef563d93b10eaff80d161e852edb",
       "retrievedAt": "2026-09-13T16:42:37.789Z",
       "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
+    },
+    {
+      "id": "price-fixed-block-capture-mezo-mainnet-2026-09-27",
+      "kind": "fixed-block-read-only-probes",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-09-27"
+      },
+      "sha256": "bc4def09cd65b11381acd8935b546bf15b980da751608ed7330cd483944e0fe8",
+      "retrievedAt": "2026-09-27T16:13:56.682Z",
+      "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
+    },
+    {
+      "id": "price-fixed-block-capture-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912",
+      "kind": "fixed-block-read-only-probes",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-05-7f60f2fbb1752a5a4f5e8912"
+      },
+      "sha256": "423b76340a1e082831223ec0fc8f4501e341af1f538aae07ce69618b9ce4359f",
+      "retrievedAt": "2026-10-05T23:15:12.810Z",
+      "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
+    },
+    {
+      "id": "price-fixed-block-capture-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8",
+      "kind": "fixed-block-read-only-probes",
+      "reference": {
+        "moduleId": "prices",
+        "resourceId": "price-fixed-block-observations-mezo-mainnet-2026-10-06-32570cffa16c7bbd70da13a8"
+      },
+      "sha256": "06d01b5c0d33b4a9c7fa9b9f5764cb6231df387b2a594e7a959c813d593dab12",
+      "retrievedAt": "2026-10-06T16:59:00.593Z",
+      "establishes": "Mainnet-only full re-verification; testnet freshness is not renewed."
     }
   ]
 }

@@ -6,11 +6,16 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-17T22:21:02Z",
+  "verifiedAt": "2026-09-27T16:22:49.738Z",
   "reviewAfter": null,
   "scope": {
     "moduleId": "networks",
-    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"]
+    "networkIds": [
+      "mezo-mainnet",
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ]
   },
   "limitations": [
     "A source establishes only the claim scope stated in its note and cited locator.",
@@ -65,9 +70,9 @@
       "id": "network-probes-2026-08-18",
       "kind": "on-chain-observation",
       "path": "knowledge/networks/evidence/rpc-probes-2026-08-18.json",
-      "sha256": "f7ced4eb0c37d44babbaae179cb6b7b81ce575c2c9b888ecff214bd2d9049509",
-      "retrievedAt": "2026-08-17T22:21:02Z",
-      "note": "Bounded read-only JSON-RPC, WebSocket, and explorer observations with exact targets, methods, times, blocks, results, and failures."
+      "sha256": "2df37eb5da42c58803752ecc8671f82996cdc8356461fa883200959eda59bd8d",
+      "retrievedAt": "2026-09-27T16:22:49.738Z",
+      "note": "Append-only bounded network observation set. The bootstrap resource identity is retained; individual observation dates and endpoint pointers distinguish historical and current results."
     },
     {
       "id": "official-ethereum-eip-155",
@@ -128,9 +133,17 @@
       "id": "bridge-musd-ntt-network-snapshots",
       "kind": "on-chain-observation",
       "path": "knowledge/workflows/bridges/evidence/musd-ntt-mainnet-2026-08-18.json",
-      "sha256": "d23c799ba704d19e1905154bda33fca4eb5c3170ce41024578713ff7c310f93e",
+      "sha256": "afaf1ce6065eeba8cf046ea420459168d21821640fc1306ee64fd673a4d5f1b1",
       "retrievedAt": "2026-08-21T00:00:00Z",
       "note": "Existing bounded bridge evidence reused by logical source reference for fixed-block Ethereum and Base eth_chainId observations; it does not select or support either RPC endpoint."
+    },
+    {
+      "id": "network-reverification-2026-09-27",
+      "kind": "on-chain-observation",
+      "path": "knowledge/networks/artifacts/reverification-2026-09-27.json",
+      "sha256": "4b9f35dbbbd3d61e491b2e618de96e811fbef4ae79496bb0090102ac358e7655",
+      "retrievedAt": "2026-09-27T16:22:49.738Z",
+      "note": "Periodic unchanged-scope endpoint and Ethereum/Base identity verification, with nine exact source-pin digest checks and raw RPC evidence. No provider or protocol support expansion."
     }
   ]
 }

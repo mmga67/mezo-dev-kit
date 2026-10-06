@@ -13,7 +13,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Redeem with explicit MUSD/BTC output bounds and a provider-backed exact-output simulator. */
 export async function redeemCollateral(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   simulator: RedemptionOutputSimulator,
   input: {
     readonly operationId: string;
@@ -41,6 +41,8 @@ export async function redeemCollateral(
     bounds: input.bounds,
   });
   const simulated = await writer.simulate(prepared);
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   // The queue can produce a partial fill. Inspect actual burned MUSD and net BTC, not requested MUSD alone.

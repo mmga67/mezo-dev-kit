@@ -14,11 +14,11 @@ APIs, required inputs, verification, and protocol-writer qualification.
 
 Choose the path that matches your starting point:
 
-| Starting point                      | Next step                                                                                                                                                         |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| New application                     | [Open the guided console](MDK_CLI.md#guided-setup) with `pnpm cli` in MDK, or `node start.ts` in a prebuilt private kit                                           |
-| Existing TypeScript application     | Follow [existing-application setup](MDK_CLI.md#initialize-an-existing-application)                                                                                |
-| Explore APIs before creating an app | Run the [offline source example](../../examples/README.md#run-the-offline-foundation-examples), then read a [focused package example](../../examples/PACKAGES.md) |
+| Starting point                      | Next step                                                                                                                          |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| New application                     | [Open the guided console](MDK_CLI.md#guided-setup) with `pnpm cli` in MDK, or `node start.ts` in a prebuilt private kit            |
+| Existing TypeScript application     | Follow [existing-application setup](MDK_CLI.md#initialize-an-existing-application)                                                 |
+| Explore APIs before creating an app | Read the [cookbook learning path](../../examples/README.md#start-here), then choose a [focused recipe](../../examples/PACKAGES.md) |
 
 The generated starter runs a deterministic fixture without an RPC connection.
 Its setup guide shows how to install the matching artifacts and verify the
@@ -128,7 +128,10 @@ cross-session example. MDK updates preserve your memory and custom skills.
 The ordinary discovery root is `.agents/skills/`; documented compatibility
 roots receive the same portable skill directories. Use
 [guidance setup and updates](MDK_CLI.md#add-skills-and-update-guidance) for CLI
-commands and conflict handling.
+commands and conflict handling. New applications receive concise communication
+and reporting defaults in their instructions; existing applications can
+[adopt those defaults](MDK_CLI.md#adopt-communication-defaults) without replacing
+application-owned conventions.
 
 Maintainers changing distributable guidance use the
 [skill-authoring guide](SKILL_AUTHORING.md). Its source is

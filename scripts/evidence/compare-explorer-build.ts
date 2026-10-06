@@ -85,7 +85,12 @@ const explorerRuntime = stripMetadata(
 const runtimeWithImmutables = applyImmutableReferences(
   compiledRuntime.executable,
   explorerRuntime.executable,
-  object(deployedBytecode.immutableReferences, "artifact immutable references"),
+  // Forge omits this field for contracts with no immutable variables. An empty
+  // map still requires the entire executable runtime to match without substitutions.
+  object(
+    deployedBytecode.immutableReferences === undefined ? {} : deployedBytecode.immutableReferences,
+    "artifact immutable references",
+  ),
 );
 const implementations = array(explorer.implementations, "explorer implementations");
 const firstImplementation = implementations[0];

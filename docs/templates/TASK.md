@@ -41,7 +41,8 @@ Read only what is relevant:
 ## Verification
 
 - Risk level: `1 | 2 | 3`
-- Checks:
+- Checks: record exact commands/scenarios, scope and pass/fail/skipped/unavailable
+  outcomes; include evidence pointers and reasons for gaps.
   - ...
 
 ## Dependencies / Blockers
@@ -50,7 +51,9 @@ Read only what is relevant:
 
 ## Progress
 
-Keep brief while active.
+Keep brief while active. Finish with the delivered outcome, remaining acceptance
+or review gaps, and docs/knowledge/memory decisions. Refer to Verification and
+Follow-ups for detail instead of copying logs or the chat report.
 
 - ...
 

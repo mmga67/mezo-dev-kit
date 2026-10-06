@@ -13,10 +13,21 @@ execution ranking, route evidence dates or canonical support status.
 
 ## Accepted knowledge and wider requirements
 
+The Contracts-owned [legacy candidate qualification](../../../contracts/artifacts/legacy-swap-qualification-2026-10-06.json)
+reproduces the legacy Universal Router with solc 0.8.29 and Quoter with solc 0.7.6.
+Full ABIs, creation inputs and deployed runtimes match within the recorded scope;
+runtime immutables are independently bound to constructor values. A provider
+trace identifies the Router's internal creation, while the factory source remains
+unverified. Three bounded historical swaps and two Quoter comparisons are retained.
+These are proposed candidates pending qualified review, with no canonical target,
+route or writer admission. Native payment, Permit2 fallback and legacy whole-router
+balance continuation remain unqualified.
+
 - Qualified Level 3 review accepted the bounded knowledge model on 2026-08-25;
   the module still exposes no public reader or writer.
-- No current official Mezo Quoter or Universal Router deployment was
-  established.
+- Current official documentation still supplies no Quoter or Universal Router
+  coordinate. The separately qualified legacy candidates do not establish
+  official application endorsement or supported targets.
 - Atomic mixed basic/CL routing is unsupported because the current routers are
   separate transaction destinations with different encodings and custody
   semantics.
@@ -35,6 +46,10 @@ execution ranking, route evidence dates or canonical support status.
 ## Private wider asset and continuation qualification
 
 The private Swaps/Pools profile now includes the Contracts-owned mUSDT generation.
+Its [independent source reproduction](../../../contracts/artifacts/musdt-token-runtime/source-reproduction-2026-10-06.json)
+now verifies both proxy and implementation creation, full ABI and runtime bytes,
+including the independently read proxy-admin immutable. This resolves the
+original missing-compiler evidence gap; qualified release review remains pending.
 Writer compatibility remains an affirmative per-token check, independent of
 read-only candidate ranking. The maintained Swaps mixed-recovery example models
 separately consented basic/CL transactions with re-reconciled first-leg custody,

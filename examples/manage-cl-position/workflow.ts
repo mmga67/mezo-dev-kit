@@ -7,8 +7,7 @@ import {
   getCLTickSqrtRatio,
 } from "@mezo-dev-kit/pools";
 import type { CLPoolKey, CLPositionAction, CLPositionOutcome } from "@mezo-dev-kit/pools";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
 import { minimumAfterSlippage } from "../runtime/bounds.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
@@ -17,12 +16,15 @@ import { clGaugeCycle } from "./gauge.ts";
 
 /** An LP NFT has a price range and owed tokens; removing liquidity alone does not close it. */
 export async function manageCLPosition(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   key: CLPoolKey,
   options: {
+    /** Amounts follow the sorted pool token0/token1 identities, in their own base units. */
+    readonly amount0Desired: bigint;
+    readonly amount1Desired: bigint;
     readonly stake?: boolean;
     readonly rebalance?: boolean;
-  } = {},
+  },
 ): Promise<Readonly<CLPositionOutcome>> {
   const reader = createCLPoolReader({
     networkId: "mezo-mainnet",
@@ -35,8 +37,7 @@ export async function manageCLPosition(
   const writer = createCLPositionWriter({ reader, execution, transport: runtime.transport });
   const initial = await reader.read({ account: runtime.account, key });
   const center = Math.floor(initial.tick / key.tickSpacing) * key.tickSpacing;
-  const amount0Desired = parseUnitsExact("50", Number(initial.token0.decimals));
-  const amount1Desired = parseUnitsExact("50", Number(initial.token1.decimals));
+  const { amount0Desired, amount1Desired } = options;
 
   async function perform(
     step: string,
@@ -97,19 +98,13 @@ export async function manageCLPosition(
       await approveToken(runtime, execution, `${step}-approval-${attempt}`, item.token, item.plan);
       prepared = await writer.prepare(input);
     }
-    runtime.report(`${step}: position forecast`, prepared.forecast);
+
     const simulation = await writer.simulate(prepared);
+    await runtime.review(simulation);
     const submission = await writer.submit(prepared, simulation);
     const confirmed = await waitForConfirmation(execution, submission, runtime.polling);
     const { outcome } = await writer.reconcile(prepared, confirmed);
-    runtime.report(`${step}: settled NFT`, {
-      tokenId: outcome.tokenId,
-      amount0: outcome.amount0,
-      amount1: outcome.amount1,
-      liquidity: outcome.forecast.liquidityAfter,
-      boundsSatisfied: outcome.boundsSatisfied,
-      hash: confirmed.hash,
-    });
+
     invariant(
       outcome.boundsSatisfied,
       "Settled CL position is outside policy; inspect before continuing",
@@ -149,10 +144,7 @@ export async function manageCLPosition(
   const burned = await perform("burn", { kind: "burn", tokenId });
   if (!options.rebalance) return burned;
   // Rebalancing is a second mint after exiting. Failure leaves tokens in the wallet.
-  runtime.report("Rebalance checkpoint", {
-    closedTokenId: tokenId,
-    next: "Mint a new range; the old NFT cannot be edited",
-  });
+
   const replacement = await mint("replacement-mint", center + 10 * key.tickSpacing);
   await perform("replacement-decrease", {
     kind: "decrease",

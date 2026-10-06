@@ -7,8 +7,8 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T00:00:00Z",
-  "reviewAfter": "2026-09-21T00:00:00Z",
+  "verifiedAt": "2026-09-27T16:22:49.738Z",
+  "reviewAfter": "2026-10-27T16:22:49.738Z",
   "scope": {
     "networkId": "base-mainnet",
     "environment": "mainnet"
@@ -63,6 +63,11 @@
           "sourceId": "bridge-musd-ntt-network-snapshots",
           "locator": "/networkSnapshots/2",
           "note": "The fixed-block Base observation independently recorded eth_chainId 8453."
+        },
+        {
+          "sourceId": "network-reverification-2026-09-27",
+          "locator": "/externalIdentitySnapshots/1",
+          "note": "Fresh chain identity and anchored block reads match the previously accepted network identity; this does not select a supported provider."
         }
       ]
     },
@@ -115,6 +120,11 @@
           "sourceId": "bridge-musd-ntt-network-snapshots",
           "locator": "/networkSnapshots/2",
           "note": "The bounded RPC observation establishes the eth_chainId capability used by the current workflow."
+        },
+        {
+          "sourceId": "network-reverification-2026-09-27",
+          "locator": "/externalIdentitySnapshots/1",
+          "note": "Fresh chain identity and anchored block reads match the previously accepted network identity; this does not select a supported provider."
         }
       ]
     }

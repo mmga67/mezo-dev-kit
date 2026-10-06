@@ -24,7 +24,8 @@
       "@mezo-dev-kit/musd-institutional-debt": [
         "../packages/protocols/musd-institutional-debt/src/index.ts"
       ],
-      "@mezo-dev-kit/cli": ["../packages/cli/src/index.ts"]
+      "@mezo-dev-kit/cli": ["../packages/cli/src/index.ts"],
+      "@mezo-dev-kit/evidence": ["../packages/evidence/src/index.ts"]
     }
   },
   "include": ["**/*.ts"],

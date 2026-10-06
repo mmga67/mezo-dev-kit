@@ -1,5 +1,12 @@
 # Current incentives gaps
 
+The [2026-09-27 historical replay review](reverification-conflicts-2026-09-27.json)
+records five corrected historical fields: three aggregate voting-power values,
+create-lock receipt gas usage, and a validator distribution display timestamp.
+Boar and Validation Cloud agree at the recorded blocks/hashes; user direction
+accepted those observations. Prior values remain in the review record. These
+corrections do not prove a later voting-mechanics change or renew other claims.
+
 - Qualified review of `incentives-cl-claims` and its exact retained CLGauge
   source was accepted on 2026-09-15. Claim writer support remains separate.
 

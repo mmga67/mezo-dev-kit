@@ -8,6 +8,7 @@ Understand veBTC and veMEZO locks, boost, pool and validator voting, gauges, emi
 - [CL gauge claims](generated/reference.md#cl-gauge-claim-overloads): caller, recipient, and overload-specific behavior.
 - [MEZO Gauges and remote incentives](generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives): veMEZO voting, Curve/Uniswap LP rewards, Aerodrome voting incentives, and delivery evidence limits.
 - [Current evidence guide](../../../docs/reference/incentives/current-evidence.md): deployment scope and known conflicts.
+- [Configuration observation catalog](generated/reference.md#configuration-observation-catalog): bounded field classifications and capture limits.
 - [Incentives SDK](../../../packages/protocols/incentives/README.md): private reads, calculations, lock/vote, staking, and claim workflows.
 - [Official Earn whitepaper](artifacts/mezo-earn-whitepaper-2025-12.pdf): retained specification; use the evidence guide for differences from deployment.
 
@@ -19,6 +20,11 @@ The third-party voting model also has qualified review; its reference
 separates deployed rules, published destination descriptions and unverified
 delivery. Dynamic gauges and reward children are observations, not independently
 maintained registry roots.
+
+The current configuration catalog selects the October 6 snapshot. Earlier
+topology and integration fixtures remain bound to the retained full ABIs and
+closed generation intervals in the [Contracts historical ABI catalog](../../contracts/records/historical-abi-bindings.json).
+These historical fixtures do not establish current writer behavior.
 
 Current deployed generations and settled events take precedence over conflicting
 descriptive guides. Historical lock/vote replay proves only those recorded

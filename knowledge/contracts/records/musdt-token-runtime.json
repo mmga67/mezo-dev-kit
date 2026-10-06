@@ -47,7 +47,11 @@
   "limitations": [
     "Private pool/swap writer asset qualification only, pending qualified review; this does not qualify a USDT Native Bridge writer or destination delivery.",
     "Own fully verified explorer source/runtime and fixed-block RPC code/slot/mapping/precision agree. Proxy and implementation hashes differ from mUSDC and must not be substituted.",
-    "Independent Solidity 0.8.29 compilation was not performed; no compiler dependency was installed. Source equivalence and deployed bytes, plus separate fork verification, define this private qualification.",
+    "The original September 13 qualification omitted independent compilation. The separately indexed October 6 source reproduction now verifies both exact creation inputs, full ABIs and full deployed runtimes, with the proxy admin immutable independently bound. Qualified review and intervening upgrade-history review remain pending.",
     "Factory pool lookups are fixed-block discovery candidates, not current liquidity or transaction authorization. Native BTC/MEZO execution remains outside this profile."
-  ]
+  ],
+  "sourceReproductionReference": {
+    "moduleId": "contracts",
+    "resourceId": "musdt-source-reproduction-2026-10-06"
+  }
 }

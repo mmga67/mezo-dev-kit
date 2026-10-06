@@ -209,6 +209,21 @@ narrative.
 Update relevant docs, examples, skills, and consumer guidance in the same
 change when supported behavior or workflow changes.
 
+## Changelog
+
+Maintain the root [changelog](CHANGELOG.md) for notable SDK, CLI, example,
+knowledge, and contributor workflow changes. Add concise entries under
+`Unreleased` in the same change, grouped as Added, Changed, Fixed, or Removed
+when useful. Explain observable effects and migration steps; link detailed
+guidance instead of copying implementation notes or private task records.
+
+When preparing a GitHub source update, move its entries into a dated
+`YYYY-MM-DD` section, newest first, and retain `Unreleased` for the next changes.
+Describe source availability and review limits accurately; a changelog entry
+does not declare a package release or protocol support. Do not reconstruct
+earlier history. Manifest version history remains owned by
+[`docs/manifest-changelog.md`](docs/manifest-changelog.md).
+
 ## Memory Decision
 
 Every meaningful task ends with one of:
@@ -236,14 +251,22 @@ pnpm typecheck
 pnpm lint
 pnpm boundaries
 pnpm build
-pnpm test:browser
 pnpm test
 pnpm test:shuffle
 pnpm check
 ```
 
-`pnpm test:browser` and `pnpm check` require the pinned Playwright browsers and
-their host libraries; follow [browser setup](docs/guides/BROWSER_APPLICATIONS.md#verify-an-integration).
+`pnpm check` does not launch browsers or require Playwright browser binaries or
+their system libraries. Browser qualification is an optional additional step:
+`pnpm check:browser` runs the default checks followed by the complete browser
+suite. `pnpm check:browser:container` runs the same qualification with browser
+engines and system libraries in an optional Docker container. Use
+`pnpm test:browser` or `pnpm test:browser:container` to run only the additional
+suite after building. Follow
+[complete browser qualification](docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification)
+for explicit setup and commands. Ordinary contribution does not require apt
+installation. Report browser qualification as not run when it was not selected;
+passing the default checks alone does not establish browser execution.
 
 `pnpm check` checks code and generated-file consistency; it does not capture
 live evidence or renew knowledge review deadlines. For the mainnet reader
@@ -300,6 +323,44 @@ verification.
 
 Do not report a check as passed if it hung, was skipped, used unavailable
 credentials, or exercised a materially different path. Record the exact gap.
+
+## Completion reports
+
+A completion report gives the reader enough evidence to assess the delivered
+outcome. Start with what changed and why it matters, or the main finding for
+research. Include:
+
+- actual verification scope and outcomes; name failed, skipped or unavailable
+  required checks and the reason;
+- material limitations, unresolved risks and remaining actions or decisions;
+- documentation, knowledge and memory decisions, combined into one short
+  sentence when useful; explain briefly when no update was needed.
+
+Distinguish implementation, verification, review and release when those states
+differ. Do not call unfinished required work complete. Name the needed action
+when blocked; separate optional follow-ups from acceptance gaps.
+
+Use natural prose or a few bullets. The following is a content guide, not a
+mandatory set of headings; omit inapplicable optional lines:
+
+```text
+Implemented [observable outcome and purpose].
+Verified: [actual command or scenario, scope and outcome].
+Remaining: [material gap, risk or required decision, when present].
+Docs/knowledge/memory: [updates, or brief reason none were needed].
+Details: [useful file, evidence or task link, when needed].
+```
+
+The report must stand on its own even when progress updates are hidden. Link
+the few files or evidence records that help review; retain exhaustive file
+lists and command output in the diff or local evidence. Avoid repeating the
+plan, chronology, report or unchanged context. For investigations, give the
+answer, supporting sources, recommendations and uncertainty; do not invent
+implementation or test results to fill the example.
+
+Local records follow [task completion records](docs/guides/TASK_MANAGEMENT.md#completion-records).
+Agent response-length and update defaults live in [agent communication](AGENTS.md#communication);
+required evidence and normal review gates still apply.
 
 ## Pull Request Expectations
 

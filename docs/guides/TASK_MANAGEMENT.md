@@ -92,6 +92,21 @@ current owner. Do not silently mark the original full scope delivered. Keep
 progress brief, with pointers to detailed local receipts rather than repeated
 chronological dumps. Update incoming links when a task moves.
 
+## Completion records
+
+Use the existing template sections when closing or handing off a task.
+Finish `Progress` with a short delivered-outcome summary and the
+docs/knowledge/memory decisions. Keep exact checks, outcomes and evidence
+pointers in `Verification`, unresolved conditions in `Dependencies / Blockers`,
+and separately scoped work in `Follow-ups`. Preserve material decisions and
+historical evidence without copying the chat transcript or repeating logs.
+
+The folder remains the status; do not add a second status field or a separate
+report file. Use `review` while required acceptance or verification remains,
+and `done` only when the lifecycle criteria above are met. The chat closeout
+follows [completion reports](../../CONTRIBUTING.md#completion-reports) and links
+detail where useful; it still states the result and material gaps itself.
+
 ## Commands and checks
 
 ```sh

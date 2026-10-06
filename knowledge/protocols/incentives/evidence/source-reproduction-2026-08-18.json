@@ -7,10 +7,12 @@
   "evidenceStatus": "verified-executable-match",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-18T10:45:00Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11212253
   },
   "limitations": [
@@ -33,8 +35,16 @@
       "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
       "explorerResponseSha256": "cc3f63d81a2dc0e4d745e8af8c52a304a7c34faf844e9d4032468f37ceb437c5",
       "compilerVersion": "v0.8.33+commit.64118f21",
-      "compilerSettings": {"optimizerEnabled": true, "optimizerRuns": 100, "evmVersion": "london"},
-      "explorerVerification": {"fullyVerified": false, "partiallyVerified": true, "changedBytecode": false},
+      "compilerSettings": {
+        "optimizerEnabled": true,
+        "optimizerRuns": 100,
+        "evmVersion": "london"
+      },
+      "explorerVerification": {
+        "fullyVerified": false,
+        "partiallyVerified": true,
+        "changedBytecode": false
+      },
       "creation": {
         "fullExact": false,
         "executableExact": true,
@@ -58,8 +68,16 @@
       "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
       "explorerResponseSha256": "833b09a93d891701913c454f609bac7e3c58d20684ed301455df71b529cffdbd",
       "compilerVersion": "v0.8.33+commit.64118f21",
-      "compilerSettings": {"optimizerEnabled": true, "optimizerRuns": 100, "evmVersion": "london"},
-      "explorerVerification": {"fullyVerified": false, "partiallyVerified": true, "changedBytecode": false},
+      "compilerSettings": {
+        "optimizerEnabled": true,
+        "optimizerRuns": 100,
+        "evmVersion": "london"
+      },
+      "explorerVerification": {
+        "fullyVerified": false,
+        "partiallyVerified": true,
+        "changedBytecode": false
+      },
       "creation": {
         "fullExact": false,
         "executableExact": true,
@@ -83,7 +101,11 @@
       "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa62060d57e04d6c799b58188dc654b85addd1465",
       "explorerResponseSha256": "99fe359335cb2917d2297c8dbd41f2a6f5f6c51364dded5953615359001cca5c",
       "compilerVersion": "v0.8.24+commit.e11b9ed9",
-      "explorerVerification": {"fullyVerified": true, "partiallyVerified": false, "changedBytecode": false},
+      "explorerVerification": {
+        "fullyVerified": true,
+        "partiallyVerified": false,
+        "changedBytecode": false
+      },
       "use": "Version-matched source evidence for PoolsVoter epoch, vote, gauge, allocation, distribution, fee, and claim semantics."
     },
     {
@@ -93,7 +115,11 @@
       "explorerEndpoint": "https://api.explorer.mezo.org/api/v2/smart-contracts/0xa696dc56522e41811d06bbda83c1a6d976637624",
       "explorerResponseSha256": "519e7df3e46baf56ed4b352821e95fe1bc17d455703545ec6df90ab07cc90b0a",
       "compilerVersion": "v0.8.24+commit.e11b9ed9",
-      "explorerVerification": {"fullyVerified": true, "partiallyVerified": false, "changedBytecode": false},
+      "explorerVerification": {
+        "fullyVerified": true,
+        "partiallyVerified": false,
+        "changedBytecode": false
+      },
       "use": "Version-matched source evidence for the veMEZO-to-veBTC boost formula and boost-gauge lifecycle."
     }
   ],
@@ -101,5 +127,14 @@
     "Executable equality establishes that the reproduced Solidity source has the same runtime behavior as the deployed implementation at the recorded block.",
     "It does not establish source authorship, a repository history, audit coverage, proxy activation history, or that a future proxy implementation will remain unchanged.",
     "The explorer's full/partial verification labels are recorded verbatim and are not upgraded by MDK."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-18T10:45:00Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

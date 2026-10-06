@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const packageDirectories = new Map([
+  ["evidence", resolve(repositoryRoot, "packages/evidence")],
   ["cli", resolve(repositoryRoot, "packages/cli")],
   ["examples", resolve(repositoryRoot, "examples")],
   ["bridges", resolve(repositoryRoot, "packages/bridges")],

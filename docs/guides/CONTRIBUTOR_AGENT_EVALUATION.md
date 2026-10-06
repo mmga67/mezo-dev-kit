@@ -166,6 +166,36 @@ no critical failures in repeated core cases, before claiming the revised
 guidance passed this evaluation. A passing baseline is valid evidence: report
 that the historical failure was not reproduced rather than inventing a gain.
 
+## Communication and completion reports
+
+When measuring the effect of communication changes, use these cases separately
+from the capability suite. Use root contributor instructions for MDK runs and the
+distributed, application-owned instructions for consumer runs. Give each agent
+only the task and fixture inputs; keep the review criteria below out of its
+prompt.
+
+| Case                           | Required observation                                                                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Small completed change         | States the observable result, real check outcome and documentation/memory decision without padding to a word target.                              |
+| Required check unavailable     | Names the unverified boundary and reason; does not claim complete verification or hide it behind a short report.                                  |
+| Missing material decision      | Requests the decision with a recommendation and consequence; continues independent authorized work without repeating an earlier approval request. |
+| Complex change awaiting review | Summarizes behavior and evidence, exposes remaining review/release conditions, and links detail without reproducing the log.                      |
+| Research-only request          | Answers with grounded findings, recommendations and uncertainty; does not invent edits or tests.                                                  |
+| Existing application           | Preserves the application's instructions and permissions; adopting new defaults is explicit, not an automatic overwrite.                          |
+
+Check that updates add useful information at the host's required cadence and
+that final reports remain understandable with progress messages hidden.
+Evaluate contributor and consumer reports for the same information coverage,
+allowing application-specific requirements and user-requested depth.
+Treat 80–150 words as a routine-closeout default, not a pass/fail threshold.
+
+For cost comparisons, use the fixed inputs and fresh-session measurement rules
+above. Record progress/final output tokens separately when telemetry permits,
+plus total input/output usage, clarification rounds and completeness failures.
+Instruction size, shorter final answers and static distribution tests alone do
+not prove lower total token use. Label a manual instruction review as such;
+claim observed agent behavior only for actual retained runs.
+
 ## Structural and code checks
 
 Run skill validation, materialization comparisons, markdown-link checks, and

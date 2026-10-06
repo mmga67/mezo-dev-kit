@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "kind": "historical-contract-abi-bindings",
+  "id": "contract-historical-abi-bindings",
+  "owner": "contracts-registry",
+  "status": "verified",
+  "supportStatus": "historical",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-10-06T17:49:24.126Z",
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "contractIds": ["incentives.ve-btc", "incentives.ve-mezo"],
+    "usage": "Historical observation validation only"
+  },
+  "limitations": [
+    "Fixed generation and ABI bindings retain earlier observations without authorizing historical transaction execution or current-generation behavior."
+  ],
+  "records": [
+    {
+      "id": "incentives.ve-btc",
+      "contractId": "incentives.ve-btc",
+      "deploymentId": "incentives.ve-btc@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "status": "verified-historical",
+      "supportStatus": "historical",
+      "reviewStatus": "accepted",
+      "generationRange": {
+        "implementationAddress": "0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+        "effectiveFrom": {
+          "blockNumber": 8199968,
+          "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+          "blockTimestamp": "2026-04-13T17:01:04.000Z",
+          "blockEvidenceMethod": "eth_getBlockByNumber",
+          "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+          "logIndex": 0
+        },
+        "effectiveUntilExclusive": {
+          "blockNumber": 12330216,
+          "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+          "blockTimestamp": "2026-10-06T15:01:23.000Z",
+          "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+          "logIndex": 0,
+          "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+        }
+      },
+      "abi": {
+        "id": "incentives.ve-btc",
+        "contractId": "incentives.ve-btc",
+        "provenanceClass": "deployed-executable-reproduction",
+        "intendedNetworkIds": [
+          "mezo-mainnet"
+        ],
+        "artifactReference": {
+          "moduleId": "contracts",
+          "resourceId": "abi.incentives.ve-btc.before-2026-10-06"
+        },
+        "entryCount": 181,
+        "fileSha256": "8b34d314aaea2c234b9af824c44236966ac79a15636f26d70953acb07cc7ed4b",
+        "abiSha256": "a21767ccc4706ab3ef769ae24e6bd4b2f91b2a2f2fae7de8e64fd2ea4c5dcfd5",
+        "abiSemanticSha256": "de62ca878151fe2a7381246c9ed3157303aa257a7b35205be1f90dcf7f805b33",
+        "sourceReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-sources",
+          "recordId": "incentives-explorer-executable-reproductions"
+        },
+        "sourceArtifacts": [
+          {
+            "networkId": "mezo-mainnet",
+            "path": "api/v2/smart-contracts/0x2a05272b526e3dc2e42b6b4d6e926e83de9be65c",
+            "sha256": "11b64c68da3e6562ce41088466829a829947fc26c43682f2dd41392bc67c39e1"
+          }
+        ],
+        "status": "verified",
+        "supportStatus": "supported",
+        "reviewStatus": "accepted",
+        "limitations": [
+          "The full ABI is bound to the exact explorer source/build response, reproduced executable, and Mezo Mainnet implementation generation.",
+          "registry provenance review and emission evidence review qualified review accepted this bounded ABI identity; executable and ABI equality still do not establish source authorship, repository history, audit coverage, writer safety, or protocol support."
+        ]
+      },
+      "evidenceReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-incentives-probes-2026-08-21",
+        "recordId": "observe-incentives-ve-btc-mezo-mainnet"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T21:29:20.734Z",
+        "blockNumber": 11291582,
+        "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "addressCodeSha256": "6de90fefbb565fba1c964adc17f34b7963fd7cd4646a1cea212c9a37c218bf0d",
+        "implementationCodeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "0043eae26f8ce5f1889be837290febed6214dde5fbb8e75684ea951078b74fce",
+          "runtimeExecutableSha256": "2c30b0960ce10cec8022632974abf0d9dbbd6ce3826fab1a3a92878f741f7cfb",
+          "explorerFullRuntimeSha256": "4324989e6a7866455c62a59e289bf41155a8c9f72ba7845cdbd4c1854d4cd5f7",
+          "fullExact": false
+        }
+      }
+    },
+    {
+      "id": "incentives.ve-mezo",
+      "contractId": "incentives.ve-mezo",
+      "deploymentId": "incentives.ve-mezo@mezo-mainnet",
+      "networkId": "mezo-mainnet",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "status": "verified-historical",
+      "supportStatus": "historical",
+      "reviewStatus": "accepted",
+      "generationRange": {
+        "implementationAddress": "0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+        "effectiveFrom": {
+          "blockNumber": 8199968,
+          "blockHash": "0xdea3ed5aefc6fd73296c5c2e1f8d16ee6c2e8c5673b80a1ac24ab2dfcfbdc194",
+          "blockTimestamp": "2026-04-13T17:01:04.000Z",
+          "blockEvidenceMethod": "eth_getBlockByNumber",
+          "transactionHash": "0x7b532666737fdbfc4bb6db04594fd1108dc170d81ca6b80a8378e4174b915587",
+          "logIndex": 1
+        },
+        "effectiveUntilExclusive": {
+          "blockNumber": 12330216,
+          "blockHash": "0xb9e54530b44b25f378cb4e3aa74591dc84e59605797d71b14dd4d6be73dfebf1",
+          "blockTimestamp": "2026-10-06T15:01:23.000Z",
+          "transactionHash": "0x2b4a2b1ff544232573eef01dcf1dab3504f532cf5cf00b60fccb1c75e60f8086",
+          "logIndex": 2,
+          "blockEvidenceMethod": "Two-provider upgrade logs, receipt and before/at implementation storage"
+        }
+      },
+      "abi": {
+        "id": "incentives.ve-mezo",
+        "contractId": "incentives.ve-mezo",
+        "provenanceClass": "deployed-executable-reproduction",
+        "intendedNetworkIds": [
+          "mezo-mainnet"
+        ],
+        "artifactReference": {
+          "moduleId": "contracts",
+          "resourceId": "abi.incentives.ve-mezo.before-2026-10-06"
+        },
+        "entryCount": 181,
+        "fileSha256": "237333c78e7eccb342d44fbfd915e14ab26602515722f594467189d3256f2600",
+        "abiSha256": "86a69ad2a421b14e970a9da1d22be1229201f74851ff59114c035a8e7d9a9239",
+        "abiSemanticSha256": "2e437af68b2ce7c1d8a8dfd1aba8601b2625edf3871dc8c2c065f30aa051fc6f",
+        "sourceReference": {
+          "moduleId": "contracts",
+          "resourceId": "contract-sources",
+          "recordId": "incentives-explorer-executable-reproductions"
+        },
+        "sourceArtifacts": [
+          {
+            "networkId": "mezo-mainnet",
+            "path": "api/v2/smart-contracts/0xa1acc19aa9f7010c0013d8f043aff63a0527dd5e",
+            "sha256": "50f98955b9fc05e777b844c999e9fb6e5536069adeec91145550f880749d4fab"
+          }
+        ],
+        "status": "verified",
+        "supportStatus": "supported",
+        "reviewStatus": "accepted",
+        "limitations": [
+          "The full ABI is bound to the exact explorer source/build response, reproduced executable, and Mezo Mainnet implementation generation.",
+          "registry provenance review and emission evidence review qualified review accepted this bounded ABI identity; executable and ABI equality still do not establish source authorship, repository history, audit coverage, writer safety, or protocol support."
+        ]
+      },
+      "evidenceReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-incentives-probes-2026-08-21",
+        "recordId": "observe-incentives-ve-mezo-mezo-mainnet"
+      },
+      "runtime": {
+        "observedAt": "2026-08-24T21:29:20.734Z",
+        "blockNumber": 11291582,
+        "blockHash": "0x014b488982ad103b19fd36191ab673027187280739f21c4a06e64d24dc4f5f49",
+        "addressCodeSha256": "8945810c74adaa3c14e9d37ea70a0d0889a98743781c77abea66ec15684fbff4",
+        "implementationCodeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+        "artifactBytecodeComparison": {
+          "creationExecutableExact": true,
+          "runtimeExecutableExactAfterImmutableSubstitution": true,
+          "immutableSubstitutions": 0,
+          "creationExecutableSha256": "c6a293e6da455b482a250d2ed44b94a453f70abcdc3a0f5146b25df673514a09",
+          "runtimeExecutableSha256": "06160bcb391ecedf7404d1e93061db8fcdb51f71216a2676d1e672a20e735bbf",
+          "explorerFullRuntimeSha256": "7966f3b011232a190deb9fb48c8b9a0190818eedfd8b444add50e8f68e90b5e1",
+          "fullExact": false
+        }
+      }
+    }
+  ]
+}

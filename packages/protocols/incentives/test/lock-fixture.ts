@@ -1,15 +1,25 @@
 import { createContractRegistry } from "@mezo-dev-kit/contracts";
+import deployments from "../../../../knowledge/contracts/records/deployments.json" with { type: "json" };
 import type { EscrowLock, LockSnapshot } from "../src/index.ts";
 import { calculateLockVotingPower, calculateVotingEpoch } from "../src/index.ts";
 export const account = `0x${"11".repeat(20)}` as const,
   zero = `0x${"00".repeat(20)}` as const,
   W = 10n ** 18n,
   week = 604800n;
+// Synthetic state and hash: choose a coordinate covered by the current generated
+// registry. Recorded chain fixtures retain their original historical generations.
+const fixtureBlock = BigInt(
+  Math.max(
+    ...deployments.records
+      .filter((row) => row.networkId === "mezo-mainnet" && row.status === "verified-current")
+      .map((row) => row.runtime.blockNumber),
+  ),
+);
 export function lockFixture(): LockSnapshot {
   const coordinate = {
     networkId: "mezo-mainnet",
     chainId: 31612n,
-    blockNumber: 11703359n,
+    blockNumber: fixtureBlock,
     blockHash: `0x${"ab".repeat(32)}`,
   } as const;
   const contract = createContractRegistry().resolve({

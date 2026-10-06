@@ -1700,11 +1700,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_forwarder",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
         "name": "_mezo",
         "type": "address"
       },
@@ -1715,6 +1710,13 @@
       }
     ],
     "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initializeV2",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -7,10 +7,14 @@
   "workflowStatus": "evidence-verified-promotion-blocked",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T14:20:35.823Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": []
   },
   "limitations": [
@@ -106,5 +110,14 @@
         "Token representation addresses remain dated workflow evidence; reusable Native Bridge contract identities resolve through bridge-contract-roles."
       ]
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T14:20:35.823Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

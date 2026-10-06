@@ -71,6 +71,48 @@ test("a mainnet evidence deadline cannot be bypassed by choosing mainnet scope",
     }
   });
 });
+
+test("maintained troubleshooting excludes only testnet archive expiry and preserves mainnet gates", async () => {
+  await scratch(async (directory) => {
+    const index = await read(resolve(directory, "knowledge/troubleshooting/index.json"));
+    const future = new Date(Date.now() + 86_400_000).toISOString();
+    for (const resource of objects(index.resources, "issues")) {
+      if (resource.kind !== "troubleshooting-issue") continue;
+      await mutate(
+        resolve(directory, "knowledge/troubleshooting", String(resource.path)),
+        (issue) => {
+          issue.reviewAfter =
+            resource.id === "issue-testnet-rpc-historical-data-gap"
+              ? "2000-01-01T00:00:00Z"
+              : future;
+          // Maintain a valid interval even for the deliberately expired fixture.
+          if (resource.id === "issue-testnet-rpc-historical-data-gap")
+            issue.verifiedAt = "1999-01-01T00:00:00Z";
+        },
+      );
+    }
+    const script = "validate-troubleshooting-knowledge.ts";
+    const scoped = run(directory, script, ["--network", "mezo-mainnet"]);
+    expect(scoped.status, String(scoped.stderr)).toBe(0);
+    const full = run(directory, script, []);
+    expect(full.status).not.toBe(0);
+    expect(full.stderr).toContain(
+      "testnet-rpc-historical-data-gap-2026-08-18 review window expired",
+    );
+    await mutate(
+      resolve(directory, "knowledge/troubleshooting/records/mezo-earn-deployment-doc-drift.json"),
+      (issue) => {
+        issue.reviewAfter = "2000-01-01T00:00:00Z";
+        issue.verifiedAt = "1999-01-01T00:00:00Z";
+      },
+    );
+    const stale = run(directory, script, ["--network", "mezo-mainnet"]);
+    expect(stale.status).not.toBe(0);
+    expect(stale.stderr).toContain(
+      "mezo-earn-deployment-doc-drift-2026-08-18 review window expired",
+    );
+  });
+});
 test("mapping mainnet to other network or older block evidence fails even when fresh", async () => {
   await scratch(async (directory) => {
     await adjustWindows(directory);
@@ -157,9 +199,27 @@ test.for(["rollback", "historical-storage"] as const)(
       await writeFile(capturePath, JSON.stringify(capture));
       const deploymentPath = resolve(directory, "knowledge/contracts/records/deployments.json");
       const before = await readFile(deploymentPath, "utf8");
-      const result = run(directory, "import-mainnet-oracle-refresh.ts", [capturePath]);
+      const initialized = spawnSync("git", ["init", "--quiet", directory], { encoding: "utf8" });
+      expect(initialized.status, initialized.stderr).toBe(0);
+      const result = run(directory, "import-mainnet-oracle-refresh.ts", [
+        "propose",
+        capturePath,
+        "local/proposal.json",
+      ]);
       expect(result.status).not.toBe(0);
-      expect(result.stderr).toContain(
+      const rejection = object(
+        parseJson(result.stdout.toString(), "proposal rejection"),
+        "proposal rejection",
+      );
+      expect(rejection).toMatchObject({
+        status: "rejected",
+        canonicalMutation: false,
+        disposition:
+          scenario === "rollback"
+            ? "invalid-or-incomplete-capture"
+            : "historical-correction-review",
+      });
+      expect(rejection.reason).toContain(
         scenario === "rollback" ? "cannot roll back" : "historical before-slot drift",
       );
       expect(await readFile(deploymentPath, "utf8")).toBe(before);

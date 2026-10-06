@@ -7,45 +7,59 @@ import type {
   ExecutionSigner,
   RpcRequest,
   RpcTransport,
+  SimulatedTransaction,
   SubmissionStore,
 } from "@mezo-dev-kit/core";
 import { parseAddress } from "@mezo-dev-kit/evm";
 import type { Address } from "@mezo-dev-kit/evm";
 
-/**
- * Application connections used by these examples. This is an example-owned type;
- * MDK factories accept its individual fields and require no context container.
- */
-export interface Connection {
+/** Read-only recipes need a network, contract metadata and an application RPC port. */
+export interface ReadConnection {
   readonly network: Readonly<Network>;
   readonly registry: Readonly<ContractRegistry>;
   readonly transport: RpcTransport;
-  readonly signer: ExecutionSigner;
-  readonly store: SubmissionStore;
-  readonly account: Address;
 }
 
 /**
- * Wire existing application RPC, wallet and storage into MDK. Construction does
- * not send a transaction; execution checks the chain and signer when used.
+ * The application displays the exact call and asks for consent. Resolve only when
+ * accepted; reject on cancellation. The cookbook supplies no automatic approval.
  */
+export type ReviewTransaction = (simulation: Readonly<SimulatedTransaction>) => Promise<void>;
+
+/** Example-owned wiring, not an SDK context container. Pass individual fields to MDK factories. */
+export interface Connection extends ReadConnection {
+  readonly signer: ExecutionSigner;
+  readonly store: SubmissionStore;
+  readonly account: Address;
+  readonly review: ReviewTransaction;
+}
+
+/** Construction does no RPC. Clients check the endpoint's chain when they read. */
+export function createReadConnection(input: {
+  readonly networkId: NetworkId;
+  readonly readRequest: RpcRequest;
+}): ReadConnection {
+  return {
+    network: getNetwork(input.networkId),
+    registry: createContractRegistry(),
+    transport: createRpcTransport({ id: "application-read", request: input.readRequest }),
+  };
+}
+
+/** Add the application's connected wallet, consent UI and durable journal for writes. */
 export function createConnection(input: {
   readonly networkId: NetworkId;
   readonly account: string;
   readonly readRequest: RpcRequest;
   readonly walletRequest: RpcRequest;
   readonly store: SubmissionStore;
+  readonly review: ReviewTransaction;
 }): Connection {
-  // Identity and deployment metadata come from MDK; the application chooses RPC access.
-  const network = getNetwork(input.networkId);
-  const registry = createContractRegistry();
-  const transport = createRpcTransport({ id: "example-connection", request: input.readRequest });
+  const reads = createReadConnection(input);
   const account = parseAddress(input.account);
-
-  // The wallet request port owns signing. A read-only RPC endpoint is insufficient here.
+  // A read-only endpoint cannot sign. The wallet owns keys and signing requests.
   const signer = createRpcSigner({ account, request: input.walletRequest });
-
-  // Share this store across clients using the account so operation/nonce reservations agree.
-  // Use durable storage when submissions must remain recoverable after a restart.
-  return { network, registry, transport, signer, account, store: input.store };
+  // Share durable reservations across clients using the same account. A memory
+  // store loses recovery information on reload and is only suitable for tests.
+  return { ...reads, signer, account, store: input.store, review: input.review };
 }

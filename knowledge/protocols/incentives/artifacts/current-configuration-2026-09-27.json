@@ -1,0 +1,939 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-current-configuration-comparison",
+  "capturedAt": "2026-09-27T18:03:36.286Z",
+  "networkId": "mezo-mainnet",
+  "rpcUrl": "https://mezo-mainnet.boar.network",
+  "coordinate": {
+    "blockNumber": "12136780",
+    "blockHash": "0x6d556e1678879ae75c24bd3a5cd8948d4ec1274c7be18acf4dfe03f31baa06a2",
+    "blockTimestamp": "1790532209"
+  },
+  "baseline": {
+    "networkId": "mezo-mainnet",
+    "evmChainId": 31612,
+    "blockNumber": 11212253,
+    "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+    "blockTimestamp": "2026-08-18T09:56:38Z",
+    "rpcEndpointId": "mezo-mainnet-boar-https",
+    "explorerApi": "https://api.explorer.mezo.org"
+  },
+  "inputDigests": {
+    "contracts:contract-deployments": "516d999d2627d01014086192c591828690f9c7db4606e288a3fcacff390ba179",
+    "contracts:contract-abis": "1ab9b3cb6454e68dc5031df328cf3a37f7687ead704a899589afd446d9fe7bce",
+    "networks:rpc-endpoints": "2646959ef9cf5f4a42b2be77d667a992de62b37f37ef94a429877ce59028de41",
+    "contracts:contract-bridge-probes-2026-08-24": "15f246147648cea738d94038ff7d1e5d3d00929c5a8456892734eb470339fb25",
+    "protocols/incentives:incentives-mainnet-topology": "4d40448b8ed8bf748411d9cc88087294075c22377b1538db13d6bf4101960ec6",
+    "networks:mezo-mainnet": "586ac8115dec2c1e984fe5f232a715130b542fbd4c9998c24f50a049a06035c1"
+  },
+  "observations": [
+    {
+      "role": "pools-voter",
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "kind": "reference",
+      "name": "ve",
+      "signature": "ve()",
+      "prior": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "observed": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "comparison": "matched"
+    },
+    {
+      "role": "pools-voter",
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "kind": "reference",
+      "name": "splitter",
+      "signature": "splitter()",
+      "prior": "0xe9e697d49d47c7042e768177f42d5789666d99fa",
+      "observed": "0xe9e697d49d47c7042e768177f42d5789666d99fa",
+      "comparison": "matched"
+    },
+    {
+      "role": "pools-voter",
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "kind": "reference",
+      "name": "factoryRegistry",
+      "signature": "factoryRegistry()",
+      "prior": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "observed": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "comparison": "matched"
+    },
+    {
+      "role": "pools-voter",
+      "address": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "kind": "reference",
+      "name": "governor",
+      "signature": "governor()",
+      "prior": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "observed": "0x98d8899c3030741925be630c710a98b57f397c7a",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "reference",
+      "name": "underlyingToken",
+      "signature": "token()",
+      "prior": "0x7b7c000000000000000000000000000000000000",
+      "observed": "0x7b7c000000000000000000000000000000000000",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "reference",
+      "name": "voter",
+      "signature": "voter()",
+      "prior": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "observed": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "reference",
+      "name": "distributor",
+      "signature": "distributor()",
+      "prior": "0xb58477e074265bdc7f7ca6100ed0f7de264f74a2",
+      "observed": "0xb58477e074265bdc7f7ca6100ed0f7de264f74a2",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "reference",
+      "name": "factoryRegistry",
+      "signature": "factoryRegistry()",
+      "prior": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "observed": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "reference",
+      "name": "booster",
+      "signature": "booster()",
+      "prior": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "observed": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "comparison": "matched"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "name": "version",
+      "signature": "version()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "name": "name",
+      "signature": "name()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "name": "symbol",
+      "signature": "symbol()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "state",
+      "name": "supply",
+      "signature": "supply()",
+      "prior": "827402681641648094595",
+      "observed": "813513998062247738634",
+      "comparison": "changed"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "state",
+      "name": "totalVotingPower",
+      "signature": "totalVotingPower()",
+      "prior": "1158903244246919054174",
+      "observed": "1404420284995643678093",
+      "comparison": "changed"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "state",
+      "name": "unboostedTotalVotingPower",
+      "signature": "unboostedTotalVotingPower()",
+      "prior": "464299369911610246450",
+      "observed": "488076638780156066746",
+      "comparison": "changed"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "state",
+      "name": "lastMintedTokenId",
+      "signature": "tokenId()",
+      "prior": "6096",
+      "observed": "6138",
+      "comparison": "changed"
+    },
+    {
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "kind": "configuration",
+      "name": "maxLockTime",
+      "slot": "0x52",
+      "prior": "0x000000000000000000000000000000000000000000000000000000000024ea00",
+      "observed": "0x000000000000000000000000000000000000000000000000000000000024ea00",
+      "comparison": "matched"
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "kind": "reference",
+      "name": "boostableVe",
+      "signature": "boostableVe()",
+      "prior": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "observed": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "comparison": "matched"
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "kind": "reference",
+      "name": "ve",
+      "signature": "ve()",
+      "prior": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "observed": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "comparison": "matched"
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "kind": "reference",
+      "name": "factoryRegistry",
+      "signature": "factoryRegistry()",
+      "prior": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "observed": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "comparison": "matched"
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "kind": "state",
+      "name": "gaugeCount",
+      "signature": "length()",
+      "prior": "706",
+      "observed": "718",
+      "comparison": "changed"
+    },
+    {
+      "role": "boost-voter",
+      "address": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "kind": "configuration",
+      "name": "maxVotingNum",
+      "signature": "maxVotingNum()",
+      "prior": "30",
+      "observed": "30",
+      "comparison": "matched"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "reference",
+      "name": "underlyingToken",
+      "signature": "token()",
+      "prior": "0x7b7c000000000000000000000000000000000001",
+      "observed": "0x7b7c000000000000000000000000000000000001",
+      "comparison": "matched"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "reference",
+      "name": "voter",
+      "signature": "voter()",
+      "prior": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "observed": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+      "comparison": "matched"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "reference",
+      "name": "distributor",
+      "signature": "distributor()",
+      "prior": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+      "observed": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+      "comparison": "matched"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "reference",
+      "name": "factoryRegistry",
+      "signature": "factoryRegistry()",
+      "prior": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "observed": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "comparison": "matched"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "name": "version",
+      "signature": "version()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "name": "name",
+      "signature": "name()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "name": "symbol",
+      "signature": "symbol()",
+      "status": "unavailable",
+      "reason": "EvmValueError: unsupported type: InvalidAbi"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "state",
+      "name": "supply",
+      "signature": "supply()",
+      "prior": "376034813831669054498020563",
+      "observed": "279684259406931077133059948",
+      "comparison": "changed"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "state",
+      "name": "totalVotingPower",
+      "signature": "totalVotingPower()",
+      "prior": "96889795628895219819764603",
+      "observed": "97592490322645237767814915",
+      "comparison": "changed"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "state",
+      "name": "lastMintedTokenId",
+      "signature": "tokenId()",
+      "prior": "2759",
+      "observed": "2870",
+      "comparison": "changed"
+    },
+    {
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "kind": "configuration",
+      "name": "maxLockTime",
+      "slot": "0x52",
+      "prior": "0x00000000000000000000000000000000000000000000000000000000077f8800",
+      "observed": "0x00000000000000000000000000000000000000000000000000000000077f8800",
+      "comparison": "matched"
+    },
+    {
+      "role": "factory-registry",
+      "address": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+      "kind": "state",
+      "name": "gaugeFactories",
+      "signature": "gaugeFactories()",
+      "prior": [
+        "0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad",
+        "0xfc41e1aae0e58e8bdc32e85d8c995a902fedeb13"
+      ],
+      "observed": [
+        "0x4150dce1c6d013fa7ebaf4ffcd879d08daa0ccad",
+        "0xfc41e1aae0e58e8bdc32e85d8c995a902fedeb13"
+      ],
+      "comparison": "matched"
+    }
+  ],
+  "requests": [
+    {
+      "id": 1,
+      "observedAt": "2026-09-27T18:03:36.540Z",
+      "method": "eth_chainId",
+      "params": [],
+      "response": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": "0x7b7c"
+      }
+    },
+    {
+      "id": 2,
+      "observedAt": "2026-09-27T18:03:37.388Z",
+      "method": "eth_blockNumber",
+      "params": [],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": "0xb9314c"
+      }
+    },
+    {
+      "id": 3,
+      "observedAt": "2026-09-27T18:03:37.861Z",
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0xb9314c",
+        false
+      ],
+      "response": {
+        "id": 3,
+        "jsonrpc": "2.0",
+        "result": {
+          "totalDifficulty": "0x0",
+          "transactions": [],
+          "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "baseFeePerGas": "0x13d620",
+          "difficulty": "0x0",
+          "extraData": "0x",
+          "gasLimit": "0x989680",
+          "gasUsed": "0x0",
+          "number": "0xb9314c",
+          "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "miner": "0xb74cd21732e72746561bf9ad87ee6cc9649208e5",
+          "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "nonce": "0x0000000000000000",
+          "parentHash": "0x2d41dfa7a4a926d87e219c2ae635394140beb8d5c64e87fe5c8cb0ef7e50c0ab",
+          "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+          "size": "0x11de",
+          "uncles": [],
+          "stateRoot": "0x1b4097894ca76b4a127111328f2c4ddd516dd22b6402553ee4c1fcfabcd3f18f",
+          "hash": "0x6d556e1678879ae75c24bd3a5cd8948d4ec1274c7be18acf4dfe03f31baa06a2",
+          "timestamp": "0x6ab95a71"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "observedAt": "2026-09-27T18:03:38.339Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+          "data": "0x1f850716"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": "0x0000000000000000000000003d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279"
+      }
+    },
+    {
+      "id": 5,
+      "observedAt": "2026-09-27T18:03:38.857Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+          "data": "0x3cd8045e"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": "0x000000000000000000000000e9e697d49d47c7042e768177f42d5789666d99fa"
+      }
+    },
+    {
+      "id": 6,
+      "observedAt": "2026-09-27T18:03:39.328Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+          "data": "0x3bf0c9fb"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "result": "0x00000000000000000000000004b94f55780682478c8d8329368aaafd320f4d32"
+      }
+    },
+    {
+      "id": 7,
+      "observedAt": "2026-09-27T18:03:39.805Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x48233ccc97b87ba93bca212cbee48e3210211f03",
+          "data": "0x0c340a24"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 7,
+        "result": "0x00000000000000000000000098d8899c3030741925be630c710a98b57f397c7a"
+      }
+    },
+    {
+      "id": 8,
+      "observedAt": "2026-09-27T18:03:40.283Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0xfc0c546a"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 8,
+        "result": "0x0000000000000000000000007b7c000000000000000000000000000000000000"
+      }
+    },
+    {
+      "id": 9,
+      "observedAt": "2026-09-27T18:03:40.753Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0x46c96aac"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 9,
+        "result": "0x00000000000000000000000048233ccc97b87ba93bca212cbee48e3210211f03"
+      }
+    },
+    {
+      "id": 10,
+      "observedAt": "2026-09-27T18:03:41.225Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0xbfe10928"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 10,
+        "result": "0x000000000000000000000000b58477e074265bdc7f7ca6100ed0f7de264f74a2"
+      }
+    },
+    {
+      "id": 11,
+      "observedAt": "2026-09-27T18:03:41.700Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0x3bf0c9fb"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 11,
+        "result": "0x00000000000000000000000004b94f55780682478c8d8329368aaafd320f4d32"
+      }
+    },
+    {
+      "id": 12,
+      "observedAt": "2026-09-27T18:03:42.172Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0xc6def076"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 12,
+        "result": "0x0000000000000000000000002ba614a598cffa5a19d683cdca97bac3a49313d1"
+      }
+    },
+    {
+      "id": 13,
+      "observedAt": "2026-09-27T18:03:42.645Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0x047fc9aa"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 13,
+        "result": "0x00000000000000000000000000000000000000000000002c19c64f0e4417fd0a"
+      }
+    },
+    {
+      "id": 14,
+      "observedAt": "2026-09-27T18:03:43.121Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0x671b3793"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 14,
+        "result": "0x00000000000000000000000000000000000000000000004c223f284416349d8d"
+      }
+    },
+    {
+      "id": 15,
+      "observedAt": "2026-09-27T18:03:44.341Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0xdbfeca50"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 15,
+        "result": "0x00000000000000000000000000000000000000000000001a756c8d0799d8bbba"
+      }
+    },
+    {
+      "id": 16,
+      "observedAt": "2026-09-27T18:03:46.005Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+          "data": "0x17d70f7c"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 16,
+        "result": "0x00000000000000000000000000000000000000000000000000000000000017fa"
+      }
+    },
+    {
+      "id": 17,
+      "observedAt": "2026-09-27T18:03:46.477Z",
+      "method": "eth_getStorageAt",
+      "params": [
+        "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+        "0x52",
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 17,
+        "result": "0x000000000000000000000000000000000000000000000000000000000024ea00"
+      }
+    },
+    {
+      "id": 18,
+      "observedAt": "2026-09-27T18:03:46.954Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+          "data": "0x35bbe9eb"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 18,
+        "result": "0x0000000000000000000000003d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279"
+      }
+    },
+    {
+      "id": 19,
+      "observedAt": "2026-09-27T18:03:47.446Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+          "data": "0x1f850716"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 19,
+        "result": "0x000000000000000000000000b90fdad3dfd180458d62cc6acedc983d78e20122"
+      }
+    },
+    {
+      "id": 20,
+      "observedAt": "2026-09-27T18:03:47.926Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+          "data": "0x3bf0c9fb"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 20,
+        "result": "0x00000000000000000000000004b94f55780682478c8d8329368aaafd320f4d32"
+      }
+    },
+    {
+      "id": 21,
+      "observedAt": "2026-09-27T18:03:48.396Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+          "data": "0x1f7b6d32"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 21,
+        "result": "0x00000000000000000000000000000000000000000000000000000000000002ce"
+      }
+    },
+    {
+      "id": 22,
+      "observedAt": "2026-09-27T18:03:48.870Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x2ba614a598cffa5a19d683cdca97bac3a49313d1",
+          "data": "0xe8b3fd57"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 22,
+        "result": "0x000000000000000000000000000000000000000000000000000000000000001e"
+      }
+    },
+    {
+      "id": 23,
+      "observedAt": "2026-09-27T18:03:49.344Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0xfc0c546a"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 23,
+        "result": "0x0000000000000000000000007b7c000000000000000000000000000000000001"
+      }
+    },
+    {
+      "id": 24,
+      "observedAt": "2026-09-27T18:03:49.815Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0x46c96aac"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 24,
+        "result": "0x0000000000000000000000002ba614a598cffa5a19d683cdca97bac3a49313d1"
+      }
+    },
+    {
+      "id": 25,
+      "observedAt": "2026-09-27T18:03:50.283Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0xbfe10928"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 25,
+        "result": "0x000000000000000000000000075108f275ed81c9cfc01065e6e50ceea81d6363"
+      }
+    },
+    {
+      "id": 26,
+      "observedAt": "2026-09-27T18:03:50.751Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0x3bf0c9fb"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 26,
+        "result": "0x00000000000000000000000004b94f55780682478c8d8329368aaafd320f4d32"
+      }
+    },
+    {
+      "id": 27,
+      "observedAt": "2026-09-27T18:03:51.223Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0x047fc9aa"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 27,
+        "result": "0x000000000000000000000000000000000000000000e75972153c31144141476c"
+      }
+    },
+    {
+      "id": 28,
+      "observedAt": "2026-09-27T18:03:51.688Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0x671b3793"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 28,
+        "result": "0x00000000000000000000000000000000000000000050ba038055779d9a073f03"
+      }
+    },
+    {
+      "id": 29,
+      "observedAt": "2026-09-27T18:03:52.160Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+          "data": "0x17d70f7c"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 29,
+        "result": "0x0000000000000000000000000000000000000000000000000000000000000b36"
+      }
+    },
+    {
+      "id": 30,
+      "observedAt": "2026-09-27T18:03:52.632Z",
+      "method": "eth_getStorageAt",
+      "params": [
+        "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+        "0x52",
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 30,
+        "result": "0x00000000000000000000000000000000000000000000000000000000077f8800"
+      }
+    },
+    {
+      "id": 31,
+      "observedAt": "2026-09-27T18:03:53.110Z",
+      "method": "eth_call",
+      "params": [
+        {
+          "to": "0x04b94f55780682478c8d8329368aaafd320f4d32",
+          "data": "0x90e93416"
+        },
+        "0xb9314c"
+      ],
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 31,
+        "result": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020000000000000000000000004150dce1c6d013fa7ebaf4ffcd879d08daa0ccad000000000000000000000000fc41e1aae0e58e8bdc32e85d8c995a902fedeb13"
+      }
+    },
+    {
+      "id": 32,
+      "observedAt": "2026-09-27T18:03:53.585Z",
+      "method": "eth_getBlockByNumber",
+      "params": [
+        "0xb9314c",
+        false
+      ],
+      "response": {
+        "id": 32,
+        "jsonrpc": "2.0",
+        "result": {
+          "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "gasUsed": "0x0",
+          "number": "0xb9314c",
+          "difficulty": "0x0",
+          "extraData": "0x",
+          "transactions": [],
+          "uncles": [],
+          "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "miner": "0xb74cd21732e72746561bf9ad87ee6cc9649208e5",
+          "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "gasLimit": "0x989680",
+          "nonce": "0x0000000000000000",
+          "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+          "timestamp": "0x6ab95a71",
+          "parentHash": "0x2d41dfa7a4a926d87e219c2ae635394140beb8d5c64e87fe5c8cb0ef7e50c0ab",
+          "totalDifficulty": "0x0",
+          "hash": "0x6d556e1678879ae75c24bd3a5cd8948d4ec1274c7be18acf4dfe03f31baa06a2",
+          "baseFeePerGas": "0x13d620",
+          "size": "0x11de",
+          "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+          "stateRoot": "0x1b4097894ca76b4a127111328f2c4ddd516dd22b6402553ee4c1fcfabcd3f18f"
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Compares only listed references, values and two source-layout storage slots.",
+    "Changing supply or voting-power totals is state evolution, not proof of changed voting mechanics.",
+    "Matching implementation hashes and these configuration values does not establish that no other governed parameter changed.",
+    "Does not renew the complete Incentives module or qualify writers."
+  ]
+}

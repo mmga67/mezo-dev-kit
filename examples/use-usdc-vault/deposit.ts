@@ -13,7 +13,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Deposit underlying asset base units. minOutput bounds minted vault shares, not assets. */
 export async function depositIntoVault(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: { readonly operationId: string; readonly assets: bigint; readonly bounds: VaultBounds },
   polling = confirmationPolicy,
 ): Promise<Readonly<VaultOutcome>> {
@@ -44,7 +44,7 @@ export async function depositIntoVault(
   for (let attempt = 0; prepared.approval.kind !== "sufficient"; attempt++) {
     invariant(attempt < 2, "Vault allowance changed repeatedly");
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token: prepared.token,
@@ -56,6 +56,8 @@ export async function depositIntoVault(
     prepared = await writer.prepare(preparation);
   }
   const simulated = await writer.simulate(prepared);
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);

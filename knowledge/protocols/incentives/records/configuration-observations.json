@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "kind": "mezo-incentives-configuration-observation-catalog",
+  "id": "incentives-configuration-observations",
+  "owner": "incentives",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "pending-qualified-review",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "networkIds": [
+      "mezo-mainnet"
+    ]
+  },
+  "limitations": [
+    "Bounded historical comparison catalog, not universal governance coverage or proof of an authorized governance action.",
+    "Current values are observations only. Runtime identity must match before interpreting storage or ABI results.",
+    "Six string metadata getters remain explicitly unsupported; no testnet archive scope is added."
+  ],
+  "baselineReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-current-configuration-2026-10-06"
+  },
+  "roleReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-contract-roles"
+  },
+  "semanticsReferences": [
+    {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-voting"
+    },
+    {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-locks"
+    },
+    {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-mainnet-topology"
+    }
+  ],
+  "records": [
+    {
+      "id": "pools-voter-ve",
+      "roleId": "pools-voter",
+      "baselinePointer": "/observations/0",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "pools-voter-splitter",
+      "roleId": "pools-voter",
+      "baselinePointer": "/observations/1",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "pools-voter-factory-registry",
+      "roleId": "pools-voter",
+      "baselinePointer": "/observations/2",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "pools-voter-governor",
+      "roleId": "pools-voter",
+      "baselinePointer": "/observations/3",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-underlying-token",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/4",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-voter",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/5",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-distributor",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/6",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-factory-registry",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/7",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-booster",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/8",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vebtc-current-version",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/9",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vebtc-current-name",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/10",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vebtc-current-symbol",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/11",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vebtc-current-supply",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/12",
+      "classification": "state",
+      "unit": "base-units",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vebtc-current-total-voting-power",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/13",
+      "classification": "state",
+      "unit": "base-units",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vebtc-current-unboosted-total-voting-power",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/14",
+      "classification": "state",
+      "unit": "base-units",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vebtc-current-last-minted-token-id",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/15",
+      "classification": "state",
+      "unit": "count",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vebtc-current-max-lock-time",
+      "roleId": "vebtc-current",
+      "baselinePointer": "/observations/16",
+      "classification": "configuration",
+      "unit": "seconds",
+      "interpretation": "Deployment storage configuration in seconds; a difference does not identify its cause or authorization."
+    },
+    {
+      "id": "boost-voter-boostable-ve",
+      "roleId": "boost-voter",
+      "baselinePointer": "/observations/17",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "boost-voter-ve",
+      "roleId": "boost-voter",
+      "baselinePointer": "/observations/18",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "boost-voter-factory-registry",
+      "roleId": "boost-voter",
+      "baselinePointer": "/observations/19",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "boost-voter-gauge-count",
+      "roleId": "boost-voter",
+      "baselinePointer": "/observations/20",
+      "classification": "state",
+      "unit": "count",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "boost-voter-max-voting-num",
+      "roleId": "boost-voter",
+      "baselinePointer": "/observations/21",
+      "classification": "configuration",
+      "unit": "count",
+      "interpretation": "Governed maximum voting targets; a difference requires configuration review."
+    },
+    {
+      "id": "vemezo-current-underlying-token",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/22",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vemezo-current-voter",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/23",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vemezo-current-distributor",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/24",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vemezo-current-factory-registry",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/25",
+      "classification": "configuration",
+      "unit": "address",
+      "interpretation": "Configured contract or authority reference; a snapshot does not establish who changed it."
+    },
+    {
+      "id": "vemezo-current-version",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/26",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vemezo-current-name",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/27",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vemezo-current-symbol",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/28",
+      "classification": "metadata",
+      "unit": "text",
+      "interpretation": "String metadata; unavailable through the current bounded EVM codec."
+    },
+    {
+      "id": "vemezo-current-supply",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/29",
+      "classification": "state",
+      "unit": "base-units",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vemezo-current-total-voting-power",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/30",
+      "classification": "state",
+      "unit": "base-units",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vemezo-current-last-minted-token-id",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/31",
+      "classification": "state",
+      "unit": "count",
+      "interpretation": "Ordinary state movement; differences alone do not establish a rule change."
+    },
+    {
+      "id": "vemezo-current-max-lock-time",
+      "roleId": "vemezo-current",
+      "baselinePointer": "/observations/32",
+      "classification": "configuration",
+      "unit": "seconds",
+      "interpretation": "Deployment storage configuration in seconds; a difference does not identify its cause or authorization."
+    },
+    {
+      "id": "factory-registry-gauge-factories",
+      "roleId": "factory-registry",
+      "baselinePointer": "/observations/33",
+      "classification": "configuration",
+      "unit": "address-list",
+      "interpretation": "Configured factory membership; compare as configuration, not a gauge count."
+    }
+  ]
+}

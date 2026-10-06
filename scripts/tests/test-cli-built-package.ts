@@ -1,3 +1,4 @@
+import { createServer } from "node:http";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -149,6 +150,145 @@ try {
     "overrides:\n  unrelated-package: 1.2.3\n",
   );
   await pnpm(existing, ["install", "--offline", "--ignore-scripts"]);
+  // Exercise the installed tarball from an empty directory, before init/add or wallet setup.
+  const evidenceDirectory = join(temporary, "evidence-only");
+  await mkdir(evidenceDirectory);
+  const rpcServer = createServer();
+  const capturedSeconds = Math.floor(Date.now() / 1000);
+  let incentiveFixture = false;
+  rpcServer.on("request", (request, response) => {
+    let body = "";
+    request.on("data", (bytes: Buffer) => {
+      body += bytes.toString("utf8");
+    });
+    request.on("end", () => {
+      const input: unknown = JSON.parse(body);
+      assert.ok(typeof input === "object" && input !== null && "method" in input);
+      assert.ok(
+        [
+          "eth_chainId",
+          "eth_blockNumber",
+          "eth_getBlockByNumber",
+          "eth_getCode",
+          "eth_getStorageAt",
+        ].includes(String(input.method)),
+      );
+      const result =
+        input.method === "eth_chainId"
+          ? incentiveFixture
+            ? "0x7b7c"
+            : "0x1"
+          : input.method === "eth_blockNumber"
+            ? incentiveFixture
+              ? "0xffffff"
+              : "0x64"
+            : input.method === "eth_getCode"
+              ? "0x00"
+              : input.method === "eth_getStorageAt"
+                ? `0x${"00".repeat(32)}`
+                : {
+                    number: incentiveFixture ? "0xffffff" : "0x64",
+                    hash: `0x${"ab".repeat(32)}`,
+                    timestamp: `0x${capturedSeconds.toString(16)}`,
+                  };
+      response.setHeader("content-type", "application/json");
+      response.end(JSON.stringify({ jsonrpc: "2.0", id: 1, result }));
+    });
+  });
+  await new Promise<void>((resolve) => rpcServer.listen(0, "127.0.0.1", resolve));
+  try {
+    const address = rpcServer.address();
+    assert.ok(address && typeof address !== "string");
+    const evidenceArgs = [
+      "evidence",
+      "refresh",
+      "--network",
+      "ethereum-mainnet",
+      "--recipe",
+      "network.identity",
+      "--provider",
+      "packed-fixture",
+      "--rpc-env",
+      "PACKED_EVIDENCE_RPC",
+      "--policy",
+      "current-v1",
+      "--output",
+      "reports",
+      "--json",
+    ];
+    for (const executable of [
+      join(existing, "node_modules/@mezo-dev-kit/cli/dist/bin.js"),
+      join(artifacts, "console/bin.js"),
+    ]) {
+      const captured = await promisify(execFile)(process.execPath, [executable, ...evidenceArgs], {
+        cwd: evidenceDirectory,
+        env: { ...process.env, PACKED_EVIDENCE_RPC: `http://127.0.0.1:${address.port}/SECRET` },
+      });
+      const report = resultData(captured.stdout);
+      assert.equal(report.status, "complete");
+      assert.equal(report.canonicalAcceptance, "unreviewed");
+      assert.ok(!captured.stdout.includes("SECRET"));
+    }
+    incentiveFixture = true;
+    for (const executable of [
+      join(existing, "node_modules/@mezo-dev-kit/cli/dist/bin.js"),
+      join(artifacts, "console/bin.js"),
+    ]) {
+      let report: Record<string, unknown> | undefined;
+      try {
+        await promisify(execFile)(
+          process.execPath,
+          [
+            executable,
+            ...evidenceArgs.map((arg) =>
+              arg === "ethereum-mainnet"
+                ? "mezo-mainnet"
+                : arg === "network.identity"
+                  ? "incentives.configuration"
+                  : arg,
+            ),
+            "--contracts",
+            "incentives.boost-voter",
+          ],
+          {
+            cwd: evidenceDirectory,
+            env: { ...process.env, PACKED_EVIDENCE_RPC: `http://127.0.0.1:${address.port}/SECRET` },
+          },
+        );
+        assert.fail("A runtime conflict must exit with findings");
+      } catch (error) {
+        assert.ok(
+          error instanceof Error &&
+            "code" in error &&
+            error.code === 3 &&
+            "stdout" in error &&
+            typeof error.stdout === "string",
+        );
+        report = resultData(error.stdout);
+      }
+      assert.equal(report.status, "partial");
+      assert.ok(Array.isArray(report.observations));
+      const fields = report.observations.filter(
+        (o: unknown) =>
+          typeof o === "object" && o !== null && "id" in o && String(o.id).startsWith("incentive:"),
+      );
+      assert.equal(fields.length, 5);
+      assert.ok(
+        fields.every(
+          (o: unknown) =>
+            typeof o === "object" && o !== null && "error" in o && o.error === "runtime-changed",
+        ),
+      );
+    }
+    assert.deepEqual(await readdir(evidenceDirectory), ["reports"]);
+  } finally {
+    await new Promise<void>((resolve, reject) =>
+      rpcServer.close((error) => {
+        if (error) reject(error);
+        else resolve();
+      }),
+    );
+  }
   const existingAdd = resultData(
     await pnpm(existing, [
       "exec",

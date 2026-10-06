@@ -12,19 +12,22 @@ import type {
   BasicPoolSnapshot,
   BasicPoolFeeOutcome,
 } from "@mezo-dev-kit/pools";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
 import { minimumAfterSlippage } from "../runtime/bounds.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
-import { swapTokens } from "../swap-tokens/workflow.ts";
-import { liquidityConfig } from "./config.ts";
 
-/** Add LP liquidity, generate a fee with a swap, exit and collect the remaining claim. */
+/** Add LP liquidity, exit, then collect any fees already earned. No fee generation is assumed. */
 export async function provideBasicLiquidity(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   key: BasicPoolKey,
+  input: {
+    readonly amount0: bigint;
+    readonly amount1: bigint;
+    readonly slippageBps: bigint;
+    readonly deadlineSeconds: bigint;
+  },
 ): Promise<Readonly<BasicPoolFeeOutcome>> {
   const reader = createBasicPoolReader({
     networkId: "mezo-mainnet",
@@ -47,8 +50,8 @@ export async function provideBasicLiquidity(
   ): Promise<Readonly<BasicPoolSnapshot>> {
     const snapshot = await reader.read({ key, account: runtime.account });
     const timeBounds = {
-      deadline: snapshot.timestamp + liquidityConfig.deadlineSeconds,
-      maxDeadlineSeconds: liquidityConfig.deadlineSeconds,
+      deadline: snapshot.timestamp + input.deadlineSeconds,
+      maxDeadlineSeconds: input.deadlineSeconds,
       maxBlockAge: 2n,
     };
     // Derive user minimums from the public forecast; the preliminary one-unit
@@ -61,12 +64,10 @@ export async function provideBasicLiquidity(
     });
     const bounds = {
       ...timeBounds,
-      minAmount0: minimumAfterSlippage(estimate.amount0, liquidityConfig.slippageBps),
-      minAmount1: minimumAfterSlippage(estimate.amount1, liquidityConfig.slippageBps),
+      minAmount0: minimumAfterSlippage(estimate.amount0, input.slippageBps),
+      minAmount1: minimumAfterSlippage(estimate.amount1, input.slippageBps),
       minLiquidity:
-        action.kind === "add"
-          ? minimumAfterSlippage(estimate.liquidity, liquidityConfig.slippageBps)
-          : 0n,
+        action.kind === "add" ? minimumAfterSlippage(estimate.liquidity, input.slippageBps) : 0n,
     };
     if (action.kind === "add") {
       const result = await addLiquidity(
@@ -74,11 +75,7 @@ export async function provideBasicLiquidity(
         { operationId: runtime.operationId(step), key, ...action, bounds },
         runtime.polling,
       );
-      runtime.report("Added liquidity", {
-        amount0: result.amount0,
-        amount1: result.amount1,
-        liquidity: result.liquidity,
-      });
+
       return result.snapshot;
     }
     const preparation = {
@@ -102,33 +99,21 @@ export async function provideBasicLiquidity(
       );
       prepared = await writer.prepare(preparation);
     }
-    runtime.report(`${step}: prepared`, { action, forecast: prepared.forecast, bounds });
+
     const simulated = await writer.simulate(prepared);
+    await runtime.review(simulated);
     const submitted = await writer.submit(prepared, simulated);
     const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
     const result = await writer.reconcile(prepared, confirmed);
-    runtime.report(`${step}: settled`, {
-      token0: result.outcome.amount0,
-      token1: result.outcome.amount1,
-      lpChanged: result.outcome.liquidity,
-      lpRemaining: result.outcome.snapshot.lp.balance,
-      token0Allowance: result.outcome.snapshot.token0.allowance,
-      token1Allowance: result.outcome.snapshot.token1.allowance,
-    });
+
     return result.outcome.snapshot;
   }
 
   // Sorting a pair changes token0/token1. Read each precision after discovery.
   const added = await perform("add-liquidity", {
     kind: "add",
-    amount0Desired: parseUnitsExact(liquidityConfig.amountPerToken, Number(before.token0.decimals)),
-    amount1Desired: parseUnitsExact(liquidityConfig.amountPerToken, Number(before.token1.decimals)),
-  });
-  await swapTokens(runtime, {
-    tokenIn: key.token0,
-    tokenOut: key.token1,
-    stableOnly: true,
-    step: "generate-lp-fees",
+    amount0Desired: input.amount0,
+    amount1Desired: input.amount1,
   });
   const partial = await perform("remove-half", {
     kind: "remove",
@@ -146,18 +131,11 @@ export async function provideBasicLiquidity(
     bounds: { minAmount0: 0n, minAmount1: 0n, maxBlockAge: 2n },
   });
   const simulated = await fees.simulate(prepared);
+  await runtime.review(simulated);
   const submitted = await fees.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
   const result = await fees.reconcile(prepared, confirmed);
-  invariant(
-    result.outcome.amount0 > 0n || result.outcome.amount1 > 0n,
-    "Expected a nonempty LP fee payment",
-  );
-  runtime.report("LP fees collected after exit", {
-    amount0: result.outcome.amount0,
-    amount1: result.outcome.amount1,
-    lpRemaining: result.outcome.snapshot.lp.balance,
-    pending: result.outcome.snapshot.fees,
-  });
+  // A zero fee outcome is valid when no fees accrued during ownership.
+
   return result.outcome;
 }

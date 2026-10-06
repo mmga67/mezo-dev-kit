@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "kind": "incentives-evidence-conflict-review",
+  "id": "incentives-reverification-conflicts-2026-09-27",
+  "owner": "protocols/incentives",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": "2026-09-27T16:47:14.015Z",
+  "reviewAfter": null,
+  "scope": {
+    "canonicalNetworkIds": ["mezo-mainnet"],
+    "resourceIds": [
+      "incentives-mainnet-topology",
+      "incentives-writer-integration",
+      "incentives-validator-allocation-mainnet"
+    ],
+    "historicalBlocks": [11212253, 11206448, 11249964]
+  },
+  "limitations": [
+    "The prior values and independent observations remain retained here. The five exact observed corrections are accepted under user direction; this does not renew the entire evidence resources.",
+    "Individual lock reads, replacement-vote replay and lock creation state/events matched. The identified differences do not by themselves establish a contract bug or formula change.",
+    "Qualification and freshness of other Incentives claims remain separate; no release, support or writer scope is promoted."
+  ],
+  "captureReference": {
+    "moduleId": "protocols/incentives",
+    "resourceId": "incentives-reverification-capture-2026-09-27"
+  },
+  "captureSha256": "fa320d78fd725afcdaa7eea7134b15439d803d48a498f80c61559bc014b92ab6",
+  "conflicts": [
+    {
+      "resourceId": "incentives-mainnet-topology",
+      "pointer": "/contracts/1/observedValues/totalVotingPower",
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "method": "totalVotingPower()",
+      "blockNumber": 11212253,
+      "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+      "recorded": "1158838188523725117214",
+      "observed": "1158903244246919054174",
+      "providerAgreement": "Boar and Validation Cloud returned the same value at the recorded block/hash.",
+      "disposition": "accepted-observed-correction"
+    },
+    {
+      "resourceId": "incentives-mainnet-topology",
+      "pointer": "/contracts/1/observedValues/unboostedTotalVotingPower",
+      "role": "vebtc-current",
+      "address": "0x3d4b1b884a7a1e59fe8589a3296ec8f8cbb6f279",
+      "method": "unboostedTotalVotingPower()",
+      "blockNumber": 11212253,
+      "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+      "recorded": "464234454753711065138",
+      "observed": "464299369911610246450",
+      "providerAgreement": "Boar and Validation Cloud returned the same value at the recorded block/hash.",
+      "disposition": "accepted-observed-correction"
+    },
+    {
+      "resourceId": "incentives-mainnet-topology",
+      "pointer": "/contracts/3/observedValues/totalVotingPower",
+      "role": "vemezo-current",
+      "address": "0xb90fdad3dfd180458d62cc6acedc983d78e20122",
+      "method": "totalVotingPower()",
+      "blockNumber": 11212253,
+      "blockHash": "0x4cf45a1329891b20f9ec61a5bf831ceb8411cea777dcc7ff5f05399d551ff9e3",
+      "recorded": "96889019777247857468240427",
+      "observed": "96889795628895219819764603",
+      "providerAgreement": "Boar and Validation Cloud returned the same value at the recorded block/hash.",
+      "disposition": "accepted-observed-correction"
+    },
+    {
+      "resourceId": "incentives-writer-integration",
+      "pointer": "/operations/0/receipt/gasUsed",
+      "transactionHash": "0x12d2845930823ecfb8253e6338640b6dc09576423de5cd61cc3f599c95f24bfd",
+      "blockNumber": 11206448,
+      "blockHash": "0x73080b5b370f1d7b839b8cc99b97e00892ce844888a408aae6193dacd1796166",
+      "recorded": "550129",
+      "observed": "551153",
+      "providerAgreement": "Boar and Validation Cloud returned the same value at the recorded block/hash.",
+      "disposition": "accepted-observed-correction"
+    },
+    {
+      "resourceId": "incentives-validator-allocation-mainnet",
+      "pointer": "/representativeDistribution/blockTimestamp",
+      "blockNumber": 11249964,
+      "blockHash": "0x6836f796947ea2f140639465e1fe906279cb07e148a8d8609d03607ff050d4b0",
+      "recorded": "2026-08-17T00:18:01.000Z",
+      "observed": "2026-08-20T00:18:01.000Z",
+      "rawTimestamp": "1787185081",
+      "providerAgreement": "Boar and Validation Cloud returned the same value at the recorded block/hash.",
+      "disposition": "accepted-observed-correction"
+    }
+  ],
+  "requiredDisposition": "Resolved for these five corrections under user direction. Complete remaining claim-specific refresh and release review separately.",
+  "resolvedAt": "2026-09-27T17:31:58.811Z",
+  "resolution": {
+    "authority": "User direction on 2026-09-27: rely on the observed evidence.",
+    "decision": "Accept the five exact observed historical-field corrections. Retain original values in this review and retain original evidence windows until remaining claims are reverified.",
+    "mechanicsBoundary": "These discrepancies were reproduced at the same historical block/hash; they do not establish a later change in voting mechanics. Changes to source, upgrades or governed configuration require separate evidence."
+  }
+}

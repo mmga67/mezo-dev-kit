@@ -6,8 +6,8 @@
   "status": "verified",
   "supportStatus": "supported",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-17T22:20:49.076Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-09-27T16:22:49.738Z",
+  "reviewAfter": "2026-10-27T16:22:49.738Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
@@ -33,8 +33,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:18:07Z",
-      "evidenceObservationId": "testnet-official-https",
+      "lastVerifiedAt": "2026-09-27T16:22:39.767Z",
+      "evidenceObservationId": "mezo-testnet-official-https-2026-09-27",
       "limitations": [
         "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
       ]
@@ -49,8 +49,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:20:44.660Z",
-      "evidenceObservationId": "testnet-official-wss",
+      "lastVerifiedAt": "2026-09-27T16:22:39.794Z",
+      "evidenceObservationId": "mezo-testnet-official-wss-2026-09-27",
       "limitations": [
         "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
       ]
@@ -65,8 +65,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:18:07Z",
-      "evidenceObservationId": "mainnet-boar-https",
+      "lastVerifiedAt": "2026-09-27T16:22:41.077Z",
+      "evidenceObservationId": "mezo-mainnet-boar-https-2026-09-27",
       "limitations": [
         "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
       ]
@@ -81,8 +81,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:20:45.838Z",
-      "evidenceObservationId": "mainnet-boar-wss",
+      "lastVerifiedAt": "2026-09-27T16:22:42.022Z",
+      "evidenceObservationId": "mezo-mainnet-boar-wss-2026-09-27",
       "limitations": [
         "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
       ]
@@ -97,8 +97,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "docs-only",
       "operationalStatus": "failed-verification",
-      "lastVerifiedAt": "2026-08-17T22:18:34Z",
-      "evidenceObservationId": "mainnet-imperator-https",
+      "lastVerifiedAt": "2026-09-27T16:22:43.153Z",
+      "evidenceObservationId": "mezo-mainnet-imperator-https-2026-09-27",
       "limitations": [
         "The endpoint returned HTTP 405 for JSON-RPC POST during verification; recheck before use.",
         "A failed point-in-time probe is not proof of permanent provider unavailability."
@@ -114,8 +114,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "docs-only",
       "operationalStatus": "failed-verification",
-      "lastVerifiedAt": "2026-08-17T22:20:46.659Z",
-      "evidenceObservationId": "mainnet-imperator-wss",
+      "lastVerifiedAt": "2026-09-27T16:22:43.154Z",
+      "evidenceObservationId": "mezo-mainnet-imperator-wss-2026-09-27",
       "limitations": [
         "The endpoint failed the WebSocket handshake during verification; recheck before use.",
         "A failed point-in-time probe is not proof of permanent provider unavailability."
@@ -131,8 +131,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:18:07Z",
-      "evidenceObservationId": "mainnet-validation-cloud-https",
+      "lastVerifiedAt": "2026-09-27T16:22:43.633Z",
+      "evidenceObservationId": "mezo-mainnet-validation-cloud-https-2026-09-27",
       "limitations": [
         "A successful bounded probe is not an uptime, archive-data, rate-limit, or complete JSON-RPC compatibility guarantee."
       ]
@@ -147,8 +147,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:20:48.087Z",
-      "evidenceObservationId": "mainnet-validation-cloud-wss",
+      "lastVerifiedAt": "2026-09-27T16:22:44.373Z",
+      "evidenceObservationId": "mezo-mainnet-validation-cloud-wss-2026-09-27",
       "limitations": [
         "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
       ]
@@ -163,8 +163,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:18:34Z",
-      "evidenceObservationId": "mainnet-drpc-https",
+      "lastVerifiedAt": "2026-09-27T16:22:44.990Z",
+      "evidenceObservationId": "mezo-mainnet-drpc-https-2026-09-27",
       "limitations": [
         "The unauthenticated free endpoint rejected a JSON-RPC batch larger than three during verification.",
         "A successful bounded probe is not an uptime, archive-data, or complete compatibility guarantee."
@@ -180,8 +180,8 @@
       "publicationSourceId": "official-docs-getting-started",
       "supportStatus": "supported",
       "operationalStatus": "verified",
-      "lastVerifiedAt": "2026-08-17T22:20:49.076Z",
-      "evidenceObservationId": "mainnet-drpc-wss",
+      "lastVerifiedAt": "2026-09-27T16:22:45.548Z",
+      "evidenceObservationId": "mezo-mainnet-drpc-wss-2026-09-27",
       "limitations": [
         "Only eth_chainId was verified over WebSocket; subscription behavior and limits remain unverified."
       ]

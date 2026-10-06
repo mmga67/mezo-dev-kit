@@ -8,10 +8,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T21:59:22.983Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "blockNumber": 11366264,
     "blockHash": "0x55ad6c682f5bc9ffcc9be53e1dedd5149f0c00a3a698c3369463e98ee91028b5"
   },
@@ -358,6 +360,10 @@
         {
           "moduleId": "protocols/incentives",
           "resourceId": "incentives-third-party-mainnet"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-configuration-observations"
         }
       ]
     },
@@ -450,6 +456,85 @@
       "role": "artifact",
       "kind": "third-party-gauge-capture",
       "path": "artifacts/third-party-2026-09-15/gauge-code.json"
+    },
+    {
+      "id": "incentives-reverification-capture-2026-09-27",
+      "role": "artifact",
+      "kind": "incentives-reverification-capture",
+      "path": "artifacts/reverification-2026-09-27.json"
+    },
+    {
+      "id": "incentives-reverification-conflicts-2026-09-27",
+      "role": "review",
+      "kind": "incentives-evidence-conflict-review",
+      "path": "review/reverification-conflicts-2026-09-27.json"
+    },
+    {
+      "id": "incentives-current-configuration-2026-09-27",
+      "role": "artifact",
+      "kind": "incentives-current-configuration-comparison",
+      "path": "artifacts/current-configuration-2026-09-27.json"
+    },
+    {
+      "id": "incentives-source-reproduction-reverification-2026-09-27",
+      "role": "artifact",
+      "kind": "incentives-source-reproduction-reverification",
+      "path": "artifacts/source-reproduction-reverification-2026-09-27.json"
+    },
+    {
+      "id": "incentives-configuration-observations",
+      "role": "canonical-record",
+      "kind": "mezo-incentives-configuration-observation-catalog",
+      "path": "records/configuration-observations.json",
+      "recordIds": [
+        "pools-voter-ve",
+        "pools-voter-splitter",
+        "pools-voter-factory-registry",
+        "pools-voter-governor",
+        "vebtc-current-underlying-token",
+        "vebtc-current-voter",
+        "vebtc-current-distributor",
+        "vebtc-current-factory-registry",
+        "vebtc-current-booster",
+        "vebtc-current-version",
+        "vebtc-current-name",
+        "vebtc-current-symbol",
+        "vebtc-current-supply",
+        "vebtc-current-total-voting-power",
+        "vebtc-current-unboosted-total-voting-power",
+        "vebtc-current-last-minted-token-id",
+        "vebtc-current-max-lock-time",
+        "boost-voter-boostable-ve",
+        "boost-voter-ve",
+        "boost-voter-factory-registry",
+        "boost-voter-gauge-count",
+        "boost-voter-max-voting-num",
+        "vemezo-current-underlying-token",
+        "vemezo-current-voter",
+        "vemezo-current-distributor",
+        "vemezo-current-factory-registry",
+        "vemezo-current-version",
+        "vemezo-current-name",
+        "vemezo-current-symbol",
+        "vemezo-current-supply",
+        "vemezo-current-total-voting-power",
+        "vemezo-current-last-minted-token-id",
+        "vemezo-current-max-lock-time",
+        "factory-registry-gauge-factories"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-maintenance-reverification-2026-10-06",
+      "role": "artifact",
+      "kind": "maintenance-reverification-capture",
+      "path": "artifacts/incentives-maintenance-reverification-2026-10-06.json"
+    },
+    {
+      "id": "incentives-current-configuration-2026-10-06",
+      "role": "artifact",
+      "kind": "incentives-current-configuration-comparison",
+      "path": "artifacts/current-configuration-2026-10-06.json"
     }
   ],
   "checks": [
@@ -492,6 +577,15 @@
     },
     "blockers": [
       "fresh writer precondition and exact-call verification for any future supported operation"
-    ]
+    ],
+    "reverification": {
+      "previousVerifiedAt": "2026-08-24T21:59:22.983Z",
+      "previousReviewAfter": "2026-09-22T00:00:00Z",
+      "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+      "evidenceReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-maintenance-reverification-2026-10-06"
+      }
+    }
   }
 }

@@ -3,7 +3,15 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "types": ["node", "vitest"]
+    "types": ["node", "vitest"],
+    "paths": {
+      "@mezo-dev-kit/evm": ["../evm/src/index.ts"],
+      "@mezo-dev-kit/chains": ["../chains/src/index.ts"],
+      "@mezo-dev-kit/contracts": ["../contracts/src/index.ts"],
+      "@mezo-dev-kit/core": ["../core/src/index.ts"],
+      "@mezo-dev-kit/prices": ["../prices/src/index.ts"],
+      "@mezo-dev-kit/evidence": ["../evidence/src/index.ts"]
+    }
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
 }

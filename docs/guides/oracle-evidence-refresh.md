@@ -222,33 +222,48 @@ accepted storage response is substituted for a fresh read.
 Import the successful capture within 24 hours:
 
 ```sh
-node scripts/evidence/import-mainnet-oracle-refresh.ts local/oracle-evidence/captures/mainnet.json
+node scripts/evidence/import-mainnet-oracle-refresh.ts propose \
+  local/oracle-evidence/captures/mainnet.json local/oracle-evidence/proposal.json
 ```
 
-The importer checks the unchanged accepted generation before writing canonical
-files. It rejects stale captures, changed identity/runtime/ABI/history or feed
-outcomes, and rollback of the current mainnet observation block. The old
-`scripts/evidence/refresh-pyth-oracle-knowledge.ts` script is the August 27 upgrade
-migration; **do not use it for this routine refresh**.
+The proposal performs matching-generation comparisons without network requests or
+canonical writes. It pins capture and workspace input digests, lists JSON-pointer
+field changes, regenerates affected projections in a disposable workspace, and
+records structural and mainnet domain validator results. Failed validation leaves
+a reviewable rejected proposal; it cannot be applied. Unrelated expired evidence
+remains a blocker, and its dates are never advanced to make this check pass.
 
-Artifact and observation IDs currently use the capture's UTC date. The
-importer does not allocate separate IDs for multiple captures on the same
-UTC day. If that day's capture is already reviewed/accepted, preserve it and
-resolve separate evidence IDs before importing a second observation; do not
-overwrite accepted evidence as a routine retry.
+Captures must be under 24 hours old with a block timestamp within five minutes
+of capture. Only the matching oracle claims receive a seven-day review window.
+The recipe excludes testnet archive claims and unrelated envelopes. Historical
+replay discrepancies require a historical-correction review; changed generations,
+configuration, source or ABI require a separate change review. The old
+`refresh-pyth-oracle-knowledge.ts` is an upgrade migration, not this workflow.
 
-After a successful import, regenerate:
+IDs include the capture date and a content-digest suffix. Existing artifacts
+remain immutable, including captures made on the same day. Review the exact
+proposal, its field changes, limitations and validation results. After qualified
+review, apply the SHA-256 printed by the proposal command:
 
 ```sh
-node scripts/generate/generate-contract-reference.ts
-node scripts/generate/generate-price-reference.ts
-node scripts/generate/generate-contracts-package.ts
-node scripts/generate/generate-savings-package.ts
-node scripts/generate/generate-lending-package.ts
-node scripts/generate/generate-vault-package.ts
-git status --short
-git diff --stat
+node scripts/evidence/import-mainnet-oracle-refresh.ts apply \
+  local/oracle-evidence/proposal.json --reviewed-digest <reviewed-sha256>
 ```
+
+Application rechecks current input digests, capture age and reproducible staged
+outputs before writing. It does not infer approval from a successful capture.
+A pending operation blocks another apply. After an interrupted process exits:
+
+```sh
+node scripts/evidence/import-mainnet-oracle-refresh.ts recover
+```
+
+Recovery restores previous canonical bytes and retains interrupted evidence in
+an ignored recovery archive. It refuses to overwrite subsequent edits. Review
+any reported conflict before retrying. Writes are atomic per file and journaled
+across files; filesystem-wide or power-loss atomicity is not promised. A crash
+before journal publication leaves an operation directory for manual inspection.
+Do not remove a live process's operation or recovery lock.
 
 Expect a new capture artifact and evidence under Contracts/Prices, updated
 index/source/current-deployment references, and regenerated references/package

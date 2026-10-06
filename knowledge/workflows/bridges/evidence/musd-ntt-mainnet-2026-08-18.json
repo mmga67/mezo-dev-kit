@@ -9,12 +9,16 @@
   "evidenceStatus": "verified-evidence-not-support",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T14:20:35.823Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "observedFrom": "2026-08-18T09:56:38Z",
   "observedThrough": "2026-08-18T10:14:37Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
     "routeCount": 4
   },
@@ -275,5 +279,14 @@
     "The four completed transfers prove those historical executions, not current availability, timing, limits, relayer SLA, or future completion.",
     "No live value-bearing transfer was submitted.",
     "Native Bridge and MEZO NTT are out of this evidence set."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T14:20:35.823Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

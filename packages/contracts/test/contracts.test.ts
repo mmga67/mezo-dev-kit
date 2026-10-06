@@ -34,13 +34,31 @@ describe("Contracts registry", () => {
     expect(resolved.implementationAddress).toMatch(/^0x[a-f0-9]{40}$/);
     expect(resolved.readAbi.length).toBeGreaterThan(0);
     expect(resolved.abi.readEntryCount).toBe(resolved.readAbi.length);
-    expect(resolved.evidence).toMatchObject({
-      deploymentCatalogVerifiedAt: "2026-08-27T14:24:36.881Z",
-      deploymentCatalogReviewAfter: "2026-09-22T00:00:00Z",
-      abiCatalogVerifiedAt: "2026-08-27T14:24:36.881Z",
-      abiCatalogReviewAfter: "2026-09-22T00:00:00Z",
-    });
+    for (const timestamp of Object.values(resolved.evidence)) {
+      expect(timestamp !== null && Number.isFinite(Date.parse(timestamp))).toBe(true);
+    }
     expect(Object.isFrozen(resolved.readAbi)).toBe(true);
+  });
+
+  test("preserves independent deployment and ABI review windows without pinning live catalog dates", () => {
+    const registry = createContractRegistryFromData(
+      syntheticData({
+        deployment: {
+          catalogVerifiedAt: "2026-01-02T00:00:00Z",
+          catalogReviewAfter: "2026-02-02T00:00:00Z",
+        },
+        abi: {
+          catalogVerifiedAt: "2026-01-03T00:00:00Z",
+          catalogReviewAfter: null,
+        },
+      }),
+    );
+    expect(registry.resolve(syntheticRequest(15n)).evidence).toEqual({
+      deploymentCatalogVerifiedAt: "2026-01-02T00:00:00Z",
+      deploymentCatalogReviewAfter: "2026-02-02T00:00:00Z",
+      abiCatalogVerifiedAt: "2026-01-03T00:00:00Z",
+      abiCatalogReviewAfter: null,
+    });
   });
 
   test("never exposes state-changing function entries from canonical ABIs", () => {

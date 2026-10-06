@@ -51,6 +51,20 @@ the needed compatible update and continue independent UI work.
    feedback. Show relevant network, asset, amount and freshness before an authorized write;
    do not silently prompt a wallet on page load or treat a transaction hash as completion.
 
+## Read-only evidence UI
+
+When the installed artifact exposes `@mezo-dev-kit/evidence`, discover its recipe
+catalog and validate form inputs with `parseEvidenceRequest`. Use the portable
+`refreshEvidence` API with application-owned fetch, clock, cancellation and progress.
+Keep capture completion, freshness, conflicts, block coherence and canonical
+acceptance separate in the UI. Export the versioned report without executing a
+CLI process or writing repository knowledge. Consult the installed Evidence API
+reference and evidence refresh guide; preserve their candidate/coverage limits.
+For `incentives.configuration`, render `incentive-configuration` conflicts and
+`incentive-state` movement distinctly. Show `unsupported-codec` and unavailable
+fields, the retained baseline coordinate and runtime identity failures. A changed
+value does not prove a governance action, and a partial capture is not complete coverage.
+
 ## Verify the frontend boundary
 
 - Typecheck client code without Node ambient globals; check SSR separately without a DOM.

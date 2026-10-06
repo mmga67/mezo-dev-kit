@@ -3,65 +3,37 @@ import type { BridgeCheckpoint } from "./checkpoint.ts";
 import { observeDelivery } from "./observe-delivery.ts";
 import type { NttObserveInput, NttDeliveryObservation } from "@mezo-dev-kit/bridges";
 import type { RpcTransport } from "@mezo-dev-kit/core";
-import { parseUint, parseUnitsExact } from "@mezo-dev-kit/evm";
-
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
-
-import { readWalletToken } from "../runtime/token-units.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
+import type { ReadConnection } from "../setup.ts";
 
 export const routeId = "wormhole-ntt-musd-mezo-to-ethereum";
 export type { BridgeCheckpoint } from "./checkpoint.ts";
 
-/** Send on the source fork. Destination observations are independent of source success. */
+/** Persist source identity first. A source receipt does not prove destination payment. */
 export async function bridgeMusd(
-  runtime: ExampleRuntime,
+  connection: WorkflowConnection,
   destination: RpcTransport,
+  input: Omit<Parameters<typeof sendMusd>[2], "operationId">,
   persist: (checkpoint: BridgeCheckpoint) => Promise<void>,
 ): Promise<BridgeCheckpoint> {
-  const sourceToken = runtime.registry.resolve({
-    contractId: "musd.token",
-    networkId: runtime.network.id,
-    blockNumber: parseUint(await runtime.transport.getBlockNumber()),
-  });
-  const wallet = await readWalletToken(runtime, {
-    contractId: sourceToken.contractId,
-    address: sourceToken.address,
-  });
-  // Parse source units first; NTT then verifies both endpoints and transport precision.
-  const input = {
-    operationId: runtime.operationId("ntt-send"),
-    expectedSourceDecimals: Number(wallet.decimals),
-    quote: {
-      account: runtime.account,
-      recipient: runtime.account,
-      refundRecipient: runtime.account,
-      amount: parseUnitsExact("10", Number(wallet.decimals)),
-      shouldQueue: true,
-      maxNativeFee: parseUnitsExact("0.001", runtime.network.nativeCurrency.decimals),
-      maxSourceAgeBlocks: 2n,
-      maxDestinationAgeBlocks: 4n,
-    },
-  };
-  const checkpoint = await sendMusd(runtime, destination, input, persist, runtime.polling);
-  runtime.report("NTT source checkpoint", checkpoint);
-  await observeNtt(runtime, destination, {
-    sourceTransactionHash: checkpoint.sourceTransactionHash,
-    destinationTransactionHashes: [],
-    ...(checkpoint.outcome.digest === null ? {} : { expectedDigest: checkpoint.outcome.digest }),
-  });
-  return checkpoint;
+  // The application supplies the recipient, source amount/precision, fee and age bounds.
+  return sendMusd(
+    connection,
+    destination,
+    { ...input, operationId: connection.operationId("ntt-send") },
+    persist,
+    connection.polling,
+  );
 }
 
-/** Resume from transaction hashes and optional prior canonical anchors; never initiate again. */
+/** Resume observation from saved hashes. This needs no wallet and never sends a transfer. */
 export async function observeNtt(
-  runtime: ExampleRuntime,
+  connection: ReadConnection,
   destination: RpcTransport,
   input: NttObserveInput,
 ): Promise<Readonly<NttDeliveryObservation>> {
-  const observation = await observeDelivery(runtime.transport, destination, input, {
+  return observeDelivery(connection.transport, destination, input, {
     source: 1n,
     destination: 12n,
   });
-  runtime.report("NTT delivery evidence", observation);
-  return observation;
 }

@@ -6,11 +6,15 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T13:39:35.987Z",
-  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
-    "deploymentIds": ["bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution"]
+    "networkIds": [
+      "mezo-mainnet"
+    ],
+    "deploymentIds": [
+      "bridge.native-assets-precompile@mezo-mainnet#v6-wrapper-v6-execution"
+    ]
   },
   "limitations": [
     "This observation proves the v13 Assets Bridge execution boundary only; it does not create route, quote, relayer, or writer support.",
@@ -77,8 +81,14 @@
         "wrapperInterfaceGeneration": 6,
         "wrapperInstalledAtBlock": 11260864,
         "v13ActivationBlock": 11358000,
-        "enabledBridgeOutChainsAtActivation": [0, 1],
-        "enabledBridgeOutChainsAtObservation": [0, 1],
+        "enabledBridgeOutChainsAtActivation": [
+          0,
+          1
+        ],
+        "enabledBridgeOutChainsAtObservation": [
+          0,
+          1
+        ],
         "selectorBoundaryProof": {
           "selector": "0x8210110d",
           "immediatelyBeforeActivation": {
@@ -88,11 +98,17 @@
           },
           "activation": {
             "blockNumber": 11358000,
-            "decodedResult": [0, 1]
+            "decodedResult": [
+              0,
+              1
+            ]
           },
           "latest": {
             "blockNumber": 11358699,
-            "decodedResult": [0, 1]
+            "decodedResult": [
+              0,
+              1
+            ]
           }
         }
       },
@@ -103,5 +119,14 @@
       },
       "outcome": "passed"
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-24T13:39:35.987Z",
+    "previousReviewAfter": "2026-09-23T13:39:35.987Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

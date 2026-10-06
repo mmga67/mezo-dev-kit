@@ -6,9 +6,7 @@ import {
   forecastVault,
 } from "@mezo-dev-kit/usdc-lending-vault";
 import type { VaultAction, VaultOutcome } from "@mezo-dev-kit/usdc-lending-vault";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
-import { readWalletToken } from "../runtime/token-units.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
 import { minimumAfterSlippage } from "../runtime/bounds.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
@@ -17,9 +15,10 @@ import { gaugeOperation } from "../save-musd/gauge.ts";
 
 /** Deposit and exit the USDC vault; the optional wrapper path demonstrates gauge custody. */
 export async function useUsdcVault(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   input: {
-    readonly loanToken: `0x${string}`;
+    /** mUSDC asset base units, not vault shares or wrapper receipts. */
+    readonly assets: bigint;
     readonly wrapAndStake?: boolean;
   },
 ): Promise<Readonly<VaultOutcome>> {
@@ -37,12 +36,7 @@ export async function useUsdcVault(
     transport: runtime.transport,
     execution,
   });
-  const token = await readWalletToken(runtime, {
-    contractId: "vaults.usdc-lending-wrapper",
-    address: input.loanToken,
-    targetRole: "loan-token",
-  });
-  const assets = parseUnitsExact("100", Number(token.decimals));
+  const assets = input.assets;
   const before = await reader.read({
     account: runtime.account,
     maxPriceAgeSeconds: 300n,
@@ -56,11 +50,6 @@ export async function useUsdcVault(
       before.beneficialReceipts.value.baseUnits === 0n,
     "Use a wallet without existing vault shares or wrapper/gauge receipts for this lifecycle",
   );
-  runtime.report("Vault preview", {
-    previews: before.previews,
-    idle: before.idleLiquidity,
-    allocationReconciled: before.allocationReconciled,
-  });
 
   async function perform(step: string, action: VaultAction): Promise<Readonly<VaultOutcome>> {
     const snapshot = await reader.read({
@@ -108,17 +97,11 @@ export async function useUsdcVault(
       prepared = await writer.prepare(preparation);
     }
     const simulated = await writer.simulate(prepared);
+    await runtime.review(simulated);
     const submitted = await writer.submit(prepared, simulated);
     const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
     const result = await writer.reconcile(prepared, confirmed);
-    runtime.report(`${step}: vault settlement`, {
-      assets: result.outcome.assets,
-      shares: result.outcome.shares,
-      receipts: result.outcome.receipts,
-      walletShares: result.outcome.snapshot.walletVaultShares,
-      walletReceipts: result.outcome.snapshot.walletReceipts,
-      beneficialReceipts: result.outcome.snapshot.beneficialReceipts,
-    });
+
     invariant(result.outcome.boundsSatisfied, "Inspect the vault settlement before continuing");
     return result.outcome;
   }

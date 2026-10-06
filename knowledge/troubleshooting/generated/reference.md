@@ -8,8 +8,8 @@ This is a deterministic human projection of indexed issue records. Underlying ne
 - Knowledge status: `verified`
 - Support: `none`
 - Review: `accepted`
-- Review after: `2026-09-18T00:00:00Z`
-- Input digest: `sha256:becc9e30930447fbef01d07e7062512107205f6ad0c8d2a079a4fee712d7413d`
+- Review after: `2026-11-05T00:00:00Z`
+- Input digest: `sha256:37dd88d390417cc96784be66b2ccc8127086b939adc54ad516e2037b0ebd262b`
 
 ## Issue inventory
 
@@ -19,9 +19,9 @@ This is a deterministic human projection of indexed issue records. Underlying ne
 | musd-borrowing-capacity-snapshot | protocol-integration | medium | verified-versioned | 2027-02-18T00:00:00Z |
 | musd-refinance-fee-doc-drift | documentation-drift | high | verified-versioned | 2026-11-18T00:00:00Z |
 | musd-redemption-fee-doc-drift | documentation-drift | high | verified-versioned | 2026-11-18T00:00:00Z |
-| mezo-earn-deployment-doc-drift-2026-08-18 | documentation-drift | high | verified-point-in-time | 2026-09-18T00:00:00Z |
-| musd-ntt-deployment-doc-drift-2026-08-18 | documentation-drift | high | verified-point-in-time | 2026-09-18T00:00:00Z |
-| native-bridge-system-receipt-not-delivery-2026-08-18 | cross-chain-reconciliation | high | verified-version-scoped | 2026-09-18T00:00:00Z |
+| mezo-earn-deployment-doc-drift-2026-08-18 | documentation-drift | high | verified-point-in-time | 2026-11-05T00:00:00Z |
+| musd-ntt-deployment-doc-drift-2026-08-18 | documentation-drift | high | verified-point-in-time | 2026-11-05T00:00:00Z |
+| native-bridge-system-receipt-not-delivery-2026-08-18 | cross-chain-reconciliation | high | verified-version-scoped | 2026-11-05T00:00:00Z |
 
 ## Safety boundary
 
@@ -280,8 +280,8 @@ Use active deployment/source evidence, current governed reads, canonical actual-
 - Category / severity: `documentation-drift` / `high`
 - Evidence status: `verified-point-in-time`
 - Review: `accepted`
-- Verified: `2026-08-18T09:56:38Z`
-- Review after: `2026-09-18T00:00:00Z`
+- Verified: `2026-10-06T14:04:51.613Z`
+- Review after: `2026-11-05T00:00:00Z`
 - Reproduction basis: `fixed-block-deployed-reference-plus-official-explorer-proxy-resolution`
 
 ### Symptom
@@ -340,8 +340,8 @@ Resolve stable registry IDs once contract registry review promotes the graph. Un
 - Category / severity: `documentation-drift` / `high`
 - Evidence status: `verified-point-in-time`
 - Review: `accepted`
-- Verified: `2026-08-18T10:14:37Z`
-- Review after: `2026-09-18T00:00:00Z`
+- Verified: `2026-10-06T14:04:51.613Z`
+- Review after: `2026-11-05T00:00:00Z`
 - Reproduction basis: `official-deployment-artifact-plus-three-fixed-block-configurations-plus-four-completed-transfer-traces`
 
 ### Symptom
@@ -404,8 +404,8 @@ Do not copy bridge addresses into a writer. Resolve promoted registry identities
 - Category / severity: `cross-chain-reconciliation` / `high`
 - Evidence status: `verified-version-scoped`
 - Review: `accepted`
-- Verified: `2026-08-18T09:56:38Z`
-- Review after: `2026-09-18T00:00:00Z`
+- Verified: `2026-10-06T14:04:51.613Z`
+- Review after: `2026-11-05T00:00:00Z`
 - Reproduction basis: `version-matched-active-client-source-plus-fixed-block-system-payload-sequence-mapping-and-recipient-post-state`
 
 ### Symptom

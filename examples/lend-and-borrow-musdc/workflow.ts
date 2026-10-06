@@ -6,20 +6,20 @@ import {
   createLendingTargetResolver,
 } from "@mezo-dev-kit/musdc-lending";
 import type { LendingAction, LendingOutcome } from "@mezo-dev-kit/musdc-lending";
-import { parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { approveToken } from "../runtime/approval.ts";
-import { readWalletToken } from "../runtime/token-units.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
 
 /** Choose a supplier or borrower lifecycle for the verified BTC/mUSDC market. */
 export async function lendAndBorrowMusdc(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   input: {
     readonly role: "supplier" | "borrower";
-    readonly loanToken: `0x${string}`;
-    readonly collateralToken: `0x${string}`;
+    /** mUSDC loan-token base units. The market reader resolves its token identity. */
+    readonly loanAmount: bigint;
+    /** BTC market collateral-token base units; used only by the borrower path. */
+    readonly collateralAmount: bigint;
   },
 ): Promise<Readonly<LendingOutcome>> {
   const reader = createLendingRpcReader({
@@ -36,21 +36,7 @@ export async function lendAndBorrowMusdc(
     transport: runtime.transport,
     execution,
   });
-  const loan = await readWalletToken(runtime, {
-    contractId: "lending.morpho",
-    address: input.loanToken,
-    targetRole: "loan-token",
-  });
-  const collateral =
-    input.role === "borrower"
-      ? await readWalletToken(runtime, {
-          contractId: "lending.morpho",
-          address: input.collateralToken,
-          targetRole: "collateral-token",
-        })
-      : null;
-  const loanAmount = parseUnitsExact("100", Number(loan.decimals));
-  const collateralAmount = collateral ? parseUnitsExact("0.01", Number(collateral.decimals)) : 0n;
+  const { loanAmount, collateralAmount } = input;
   const before = await reader.read({ account: runtime.account, maxPriceAgeSeconds: 300n });
   invariant(before.position.status === "available", "Position read unavailable");
   invariant(
@@ -100,7 +86,7 @@ export async function lendAndBorrowMusdc(
       bounds,
     };
     let prepared = await writer.prepare(preparation);
-    runtime.report(`${step}: forecast`, prepared.forecast);
+
     for (let attempt = 0; prepared.approval.kind !== "sufficient"; attempt++) {
       invariant(attempt < 2, "Market allowance changed repeatedly");
       await approveToken(
@@ -113,16 +99,11 @@ export async function lendAndBorrowMusdc(
       prepared = await writer.prepare(preparation);
     }
     const simulated = await writer.simulate(prepared);
+    await runtime.review(simulated);
     const submitted = await writer.submit(prepared, simulated);
     const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
     const result = await writer.reconcile(prepared, confirmed);
-    runtime.report(`${step}: market settlement`, {
-      assets: result.outcome.assets,
-      shares: result.outcome.shares,
-      position: result.outcome.snapshot.position,
-      debt: result.outcome.snapshot.debt,
-      health: result.outcome.snapshot.health,
-    });
+
     invariant(
       result.outcome.boundsSatisfied,
       "Inspect market settlement outside the requested bounds",

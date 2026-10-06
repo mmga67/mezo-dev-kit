@@ -25,9 +25,10 @@ becomes zero. See [price knowledge](../../knowledge/prices/README.md) for source
 classes and evidence, and the [selection guide](../../docs/guides/price-selection-and-dex-quotes.md)
 for choosing an appropriate observation.
 
-This private package uses Node crypto through Core. The reader checks native
-interface bytes and block/chain consistency, while Mezo native dispatch and
-browser distribution require separate verification.
+This private package uses portable EVM hashing and injected Core transport ports.
+The reader checks native interface bytes and block/chain consistency. Native
+dispatch evidence and browser qualification remain separate; see the
+[browser guide](../../docs/guides/BROWSER_APPLICATIONS.md).
 
 ## Development
 

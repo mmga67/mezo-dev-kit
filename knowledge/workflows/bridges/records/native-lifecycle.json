@@ -8,12 +8,18 @@
   "workflowStatus": "verified-source-model-not-supported",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-21T14:20:35.823Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
-    "assetIds": ["usdc-native-bridge", "btc-native-bridge"]
+    "assetIds": [
+      "usdc-native-bridge",
+      "btc-native-bridge"
+    ]
   },
   "limitations": [
     "This lifecycle applies only to the recorded Native Bridge v12 evidence and must not be normalized into NTT digest semantics.",
@@ -44,12 +50,30 @@
     }
   ],
   "sharedStates": [
-    { "id": "source-submitted", "terminal": false },
-    { "id": "source-reverted", "terminal": true },
-    { "id": "message-pending", "terminal": false },
-    { "id": "destination-progress", "terminal": false },
-    { "id": "completed", "terminal": true },
-    { "id": "ambiguous", "terminal": false }
+    {
+      "id": "source-submitted",
+      "terminal": false
+    },
+    {
+      "id": "source-reverted",
+      "terminal": true
+    },
+    {
+      "id": "message-pending",
+      "terminal": false
+    },
+    {
+      "id": "destination-progress",
+      "terminal": false
+    },
+    {
+      "id": "completed",
+      "terminal": true
+    },
+    {
+      "id": "ambiguous",
+      "terminal": false
+    }
   ],
   "reconciliationRequirements": [
     "Assert Ethereum and Mezo network identity independently and pin every observation to a block coordinate.",
@@ -58,5 +82,14 @@
     "For inbound ERC-20 delivery, require recipient post-state or equivalent mint/delivery proof beyond the logless system transaction.",
     "For outbound delivery, separate gross amount, withdrawal fee, and recipient net amount and require exact reconciliation.",
     "Re-read active proxy implementation, mappings, minima, capacity, pause/validator state, fee, recipient encoding, and allowance/authorization requirements before future writes."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-21T14:20:35.823Z",
+    "previousReviewAfter": "2026-09-18T00:00:00Z",
+    "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+    "evidenceReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-maintenance-reverification-2026-10-06"
+    }
+  }
 }

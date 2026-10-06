@@ -70,7 +70,7 @@
     {
       "id": "official-explorer-contract-observations",
       "kind": "on-chain-and-verified-explorer-observation",
-      "sha256": "7494eab3a60d6b3100308089e3761249fb5fb85a6b865516d6baef6b819cdc5f",
+      "sha256": "390f21c1027c3b97f9c232b080d97a10bd538290ab7cf7accb523d075ac4f5bb",
       "retrievedAt": "2026-08-17T22:56:59.589Z",
       "endpoints": [
         "https://api.explorer.mezo.org",
@@ -117,7 +117,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-bridge-probes-2026-08-24"
       },
-      "sha256": "15f246147648cea738d94038ff7d1e5d3d00929c5a8456892734eb470339fb25",
+      "sha256": "3b639b9f7f2bb607b9eea97dd5f3b5694e47c678a2e5509da9067f7bb97a1625",
       "retrievedAt": "2026-08-24T13:39:35.987Z",
       "endpoints": [
         "https://etherscan.io"
@@ -131,7 +131,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-pool-probes-2026-08-23"
       },
-      "sha256": "cf24c75a4f75389acd4074d4f9950be0931b33dd25bbfad9943ceec330e51486",
+      "sha256": "d055e38bc028649d30fe319f9b8494d4575bc186dac0905f033f8ee3f6bbb7d1",
       "retrievedAt": "2026-08-23T12:20:13.399Z",
       "endpoints": [
         "https://api.explorer.mezo.org"
@@ -145,7 +145,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-institutional-debt-probes-2026-08-23"
       },
-      "sha256": "ea8349822f14fe930ac066a9ef2e682aaf2a0a04de16c2585eabf708e0b85104",
+      "sha256": "d4e3a575c7a12489ed30c7169380fedcfaae34fe2f3786ac01fbf96c8f52b070",
       "retrievedAt": "2026-08-23T13:00:00.367Z",
       "endpoints": [
         "https://api.explorer.mezo.org"
@@ -185,7 +185,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-economic-system-probes-2026-08-23"
       },
-      "sha256": "69df35483a682714f6ce668c7af66330da6cb5f979d8fc5db84f60bc37b4a5c6",
+      "sha256": "29e0f1e7b5881fda35ad481c45d9d6e327036f53925338dd9c672d1576145cf9",
       "retrievedAt": "2026-08-24T15:30:07Z",
       "endpoints": [
         "https://api.explorer.mezo.org",
@@ -200,7 +200,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-incentives-probes-2026-08-21"
       },
-      "sha256": "0abaef6c75c41917d923a7e7daaaaf55c30cc29ab7720909dabb148709241043",
+      "sha256": "3f34ca5caf63f4b0c024a2ceb09a2521316c5318cf2a01a2c4260ae6f6161c41",
       "retrievedAt": "2026-08-24T21:31:04.189Z",
       "endpoints": [
         "https://api.explorer.mezo.org"
@@ -214,7 +214,7 @@
         "moduleId": "contracts",
         "resourceId": "contract-validator-incentives-probes-2026-08-24"
       },
-      "sha256": "cf1389bd7fbcfae3ac418bb5e2d4a14026a3668928cfc20ffcea64a467d780f9",
+      "sha256": "33728e8bc7d50adbecf13fa00a90ce6eaa8be2e3ddf134f5c60f4121b0ff54c5",
       "retrievedAt": "2026-08-24T22:04:33.950Z",
       "endpoints": [
         "https://api.explorer.mezo.org"
@@ -228,7 +228,22 @@
         "moduleId": "contracts",
         "resourceId": "pool-source-bundles"
       },
-      "note": "Exact source bundles for the seven pool source-reproduction review CL roots; recorded source-digest equality and bounded offline retrieval. Qualified review of the retained mapping was accepted on 2026-09-15; original evidence and writer-support boundaries are unchanged."
+      "note": "Exact source bundles for the seven pool source-reproduction review CL roots; recorded source-digest equality and bounded offline retrieval. Qualified review of the retained mapping was accepted on 2026-09-15; original evidence and writer-support boundaries are unchanged.",
+      "sha256": "c96935056d3b2b31317b11096c2e73e039479a68971d28a4d329de6d2f6331ea"
+    },
+    {
+      "id": "incentives-escrow-reproductions-2026-10-06",
+      "kind": "on-chain-explorer-executable-reproduction",
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-escrow-generations-2026-10-06"
+      },
+      "sha256": "4740a59c68f62421b37b7f49cb2bf87a6b8d49f11116f37067168f48c3487fb5",
+      "retrievedAt": "2026-10-06T17:49:24.126Z",
+      "endpoints": [
+        "https://api.explorer.mezo.org"
+      ],
+      "note": "Exact source/build/ABI and two-provider activation/runtime evidence for the two escrow generations activated on 2026-10-06."
     }
   ],
   "sourceArtifacts": [
@@ -776,14 +791,24 @@
       "sourceId": "oracle-pyth-live-configuration",
       "path": "evidence/oracle-contracts-2026-08-27.json",
       "sha256": "6f4e5921090ff7accc0b5db088e394efdd42d25e6e04989fd64887fc88fb2c27"
+    },
+    {
+      "sourceId": "incentives-escrow-reproductions-2026-10-06",
+      "path": "api/v2/smart-contracts/0x41d0d67648bec455052e17264ce1fc2314b75ae3",
+      "sha256": "195567903070c6e323e11cad549afba76ff18c454e943657052f4fc05ec015cc"
+    },
+    {
+      "sourceId": "incentives-escrow-reproductions-2026-10-06",
+      "path": "api/v2/smart-contracts/0x38fb7e0a3a7f1dd8610fa84c446e924e58d30d9c",
+      "sha256": "f2a16d3af2917e2b6ae6a8e445f989d4214c5c037acc8b7575646a82e502fa2e"
     }
   ],
   "id": "contract-sources",
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-27T14:24:36.881Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
@@ -816,5 +841,14 @@
   "limitations": [
     "Pinned source identity establishes provenance only for the exact commits, paths, artifacts, and observations recorded.",
     "The observation source is bounded by its own review window and does not create an availability or support promise."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-27T14:24:36.881Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

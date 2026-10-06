@@ -54,6 +54,7 @@ describe("focused application boundaries", () => {
       networkId: "mezo-mainnet",
       account,
       store: createMemorySubmissionStore(),
+      review: () => Promise.reject(new Error("This fixture never authorizes a transaction")),
       readRequest: async ({ method }) => {
         reads.push(method);
         if (method === "eth_chainId") return "0x7b7c";

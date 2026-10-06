@@ -8,12 +8,19 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T13:39:35.987Z",
-  "reviewAfter": "2026-09-23T13:39:35.987Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
-    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
+    "providerIds": [
+      "wormhole-ntt",
+      "mezo-native-bridge"
+    ]
   },
   "limitations": [
     "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
@@ -50,7 +57,10 @@
       "role": "canonical-record",
       "kind": "bridge-provider-catalog",
       "path": "records/providers.json",
-      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
+      "recordIds": [
+        "wormhole-ntt",
+        "mezo-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -58,7 +68,11 @@
       "role": "canonical-record",
       "kind": "bridge-asset-catalog",
       "path": "records/assets.json",
-      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
+      "recordIds": [
+        "musd",
+        "usdc-native-bridge",
+        "btc-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -149,21 +163,50 @@
       "kind": "candidate-inventory",
       "path": "review/candidates.md"
     },
-    { "id": "bridge-gaps", "role": "review", "kind": "gap-report", "path": "review/gaps.md" },
+    {
+      "id": "bridge-gaps",
+      "role": "review",
+      "kind": "gap-report",
+      "path": "review/gaps.md"
+    },
     {
       "id": "bridge-reference",
       "role": "generated",
       "kind": "human-reference",
       "path": "generated/reference.md",
       "generatedFrom": [
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-providers" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-assets" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-routes" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-contract-roles" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-ntt-lifecycle" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-native-lifecycle" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-musd-ntt-evidence" },
-        { "moduleId": "workflows/bridges", "resourceId": "bridge-native-evidence" },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-providers"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-contract-roles"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-ntt-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-musd-ntt-evidence"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-evidence"
+        },
         {
           "moduleId": "workflows/bridges",
           "resourceId": "native-transfer-qualification-2026-09-15"
@@ -205,6 +248,30 @@
       "role": "artifact",
       "kind": "json-artifact",
       "path": "artifacts/native-transfer-minter.json"
+    },
+    {
+      "id": "bridge-historical-reverification-2026-09-27",
+      "role": "artifact",
+      "kind": "bridge-historical-reverification",
+      "path": "artifacts/historical-reverification-2026-09-27.json"
+    },
+    {
+      "id": "bridge-current-configuration-2026-10-06",
+      "path": "artifacts/current-configuration-2026-10-06.json",
+      "kind": "bridge-current-configuration-reverification",
+      "role": "artifact"
+    },
+    {
+      "id": "bridge-native-asset-minimum-history-2026-10-06",
+      "path": "artifacts/native-asset-minimum-history-2026-10-06.json",
+      "kind": "native-bridge-asset-minimum-history",
+      "role": "artifact"
+    },
+    {
+      "id": "bridge-maintenance-reverification-2026-10-06",
+      "role": "artifact",
+      "kind": "maintenance-reverification-capture",
+      "path": "artifacts/bridge-maintenance-reverification-2026-10-06.json"
     }
   ],
   "checks": [
@@ -232,9 +299,18 @@
   "extensions": {
     "workflowStatus": "evidence-verified-promotion-blocked",
     "canonicalNetworkReferences": [
-      { "moduleId": "networks", "resourceId": "mezo-mainnet" },
-      { "moduleId": "networks", "resourceId": "ethereum-mainnet" },
-      { "moduleId": "networks", "resourceId": "base-mainnet" }
+      {
+        "moduleId": "networks",
+        "resourceId": "mezo-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "ethereum-mainnet"
+      },
+      {
+        "moduleId": "networks",
+        "resourceId": "base-mainnet"
+      }
     ],
     "evidenceLocalNetworkLabels": [],
     "registryBoundary": "Reusable network and bridge contract identities resolve through accepted Networks and Contracts records; dated evidence retains addresses only as checked observation coordinates. Token representation identities remain workflow-owned.",
@@ -242,10 +318,21 @@
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-contract-roles"
     },
-    "blockers": ["current exact-call writer verification for any future supported route"],
+    "blockers": [
+      "current exact-call writer verification for any future supported route"
+    ],
     "currentContractEvidenceReference": {
       "moduleId": "contracts",
       "resourceId": "contract-bridge-v13-probes-2026-08-24"
+    },
+    "reverification": {
+      "previousVerifiedAt": "2026-08-24T13:39:35.987Z",
+      "previousReviewAfter": "2026-09-23T13:39:35.987Z",
+      "basis": "Six indexed historical transfer replays, pinned lifecycle/keeper source continuity, current reciprocal NTT and Native configuration, token-minimum history and maintained proxy provenance. Original historical values and route/writer exclusions retained.",
+      "evidenceReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-maintenance-reverification-2026-10-06"
+      }
     }
   }
 }

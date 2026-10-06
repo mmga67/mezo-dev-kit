@@ -30,6 +30,13 @@ interfaces are distinct; a historical observation does not establish a current
 writer target. Dynamic pool, gauge, and vault roles are verified through their
 roots rather than assigned invented registry identities.
 
+The [historical ABI bindings](records/historical-abi-bindings.json) retain the
+accepted full escrow ABIs and closed implementation intervals used by earlier
+Incentives fixtures. Their file and semantic digests remain bound to the original
+source/runtime observations. They are validation inputs, not additional current
+SDK interfaces. The current registry follows the generations activated on
+2026-10-06; current configuration collection uses the separately dated snapshot.
+
 Registry acceptance covers the recorded identity and evidence. It does not
 establish protocol, route, or operation support. The [contract evidence rules](../../docs/manifest#contract-identity-and-provenance)
 define provenance requirements; each indexed record retains its own scope and dates.

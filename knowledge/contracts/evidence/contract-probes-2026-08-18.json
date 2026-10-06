@@ -4,7 +4,7 @@
   "id": "contract-probes-2026-08-18",
   "observedFrom": "2026-08-17T22:55:21.010Z",
   "observedThrough": "2026-08-17T22:56:59.589Z",
-  "reviewAfter": "2026-09-16T22:56:59.589Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "methodology": [
     "Resolve one fixed recent block per Mezo network after confirming eth_chainId.",
     "Confirm each official artifact deployment transaction, activation block, and deployed runtime bytecode using read-only JSON-RPC.",
@@ -3844,7 +3844,7 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-17T22:56:59.589Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
@@ -3899,5 +3899,14 @@
     "Observations are bounded to the recorded blocks, explorer responses, methods, and timestamps.",
     "Successful point-in-time checks do not establish future bytecode, proxy, provider, or explorer availability.",
     "Evidence verification supports only the accepted records that cite these bounded observations; it does not establish future deployment or provider state."
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-17T22:56:59.589Z",
+    "previousReviewAfter": "2026-09-16T22:56:59.589Z",
+    "basis": "Exact source/ABI/runtime continuity, 65 historical observation replays with the PCV supplement, complete bounded mainnet proxy scans and explicit migration correction; historical testnet replay excluded.",
+    "evidenceReference": {
+      "moduleId": "contracts",
+      "resourceId": "contract-maintenance-reverification-2026-10-06"
+    }
+  }
 }

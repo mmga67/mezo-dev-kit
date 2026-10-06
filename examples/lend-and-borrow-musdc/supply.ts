@@ -13,7 +13,7 @@ import { invariant } from "../runtime/validation.ts";
 
 /** Supply loan-token base units and return actual assets and supply shares. */
 export async function supplyMusdc(
-  { network, registry, transport, signer, store, account }: Connection,
+  { network, registry, transport, signer, store, account, review }: Connection,
   input: { readonly operationId: string; readonly assets: bigint; readonly bounds: LendingBounds },
   polling = confirmationPolicy,
 ): Promise<Readonly<LendingOutcome>> {
@@ -46,7 +46,7 @@ export async function supplyMusdc(
   for (let attempt = 0; prepared.approval.kind !== "sufficient"; attempt++) {
     invariant(attempt < 2, "Market allowance changed repeatedly");
     await approveTokenAmount(
-      { transport, execution },
+      { transport, execution, review },
       {
         operationId: `${input.operationId}:approval:${attempt}`,
         token: prepared.token,
@@ -58,6 +58,8 @@ export async function supplyMusdc(
     prepared = await writer.prepare(preparation);
   }
   const simulated = await writer.simulate(prepared);
+  // Let the application show this exact transaction and obtain consent. Cancellation rejects.
+  await review(simulated);
   const submitted = await writer.submit(prepared, simulated);
   const confirmed = await waitForConfirmation(execution, submitted, polling);
   const { outcome } = await writer.reconcile(prepared, confirmed);

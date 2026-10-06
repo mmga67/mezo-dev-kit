@@ -32,6 +32,9 @@ integrations, and examples. Package READMEs own support and integration
 contracts; export maps and TypeScript declarations define importable APIs.
 Reference pages explain those owners and do not introduce additional exports.
 
+For current read-only captures shared by CLI and frontends, use the
+[Evidence API](../../packages/evidence/REFERENCE.md) and [junior walkthrough](../guides/EVIDENCE_REFRESH.md).
+
 ## Implementation, verification and release
 
 Read package status along four separate dimensions:
@@ -77,20 +80,17 @@ manifest and build instructions before changing an import.
 6. Inspect each availability discriminant before using a value. Missing debt,
    rewards, or prices must not become zero.
 
-## Runnable workflows
+## Cookbook recipes
 
-The [examples index](../../examples/README.md) covers borrowing, liquidity,
-swaps, bridging, Savings, lending, vault deposits, CL positions, locks/voting
-and redemptions. Each recipe supplies setup, explicit inputs, commented
-transaction steps, settlement interpretation and failure handling. The shared
-runtime provides bounded HTTP, exact approvals, durable submission records and
-restart inspection. Imports alone never execute a workflow.
+The [cookbook](../../examples/README.md) covers foundations, borrowing, liquidity,
+swaps, bridges, Savings, lending, vaults, CL positions, voting and redemptions.
+Start with a focused function, then follow advanced composition. Each recipe
+explains typed application inputs, consent, returned outcomes and recovery.
+There is no example console or requirement to run a financial workflow.
 
-Build with `pnpm --filter '@mezo-dev-kit/examples...' build`. Offline checks use
-`pnpm --filter @mezo-dev-kit/examples test`; transaction commands require an
-explicit verified local fork. Follow the examples index for Anvil and fixture
-setup. These runs exercise the private writer APIs without changing release
-status or asserting fresh bridge delivery.
+Contributors verify TypeScript, lint, build and imports against public exports.
+Helper tests and browser qualification remain independent checks. Compilation
+and import checks do not qualify transaction behavior or refresh evidence.
 
 ## Transaction boundary
 
@@ -106,13 +106,12 @@ preflight checks from on-chain guarantees.
 
 Use the [transaction lifecycle](transaction-lifecycle.md) for the shared model
 and [example connections](../../examples/SETUP.md#follow-one-transaction) for
-concrete construction. The [workflow examples](../../examples/README.md#what-executes-locally)
-explain local-fork fixtures and their limits. Package references retain the
-individual harness commands, native-engine assumptions, and compatibility scope.
+concrete construction. Package references retain protocol verification harnesses,
+native-engine assumptions and compatibility scope.
 
 ## Maintaining the references
 
-Update the owning package's reference, README, and executable example with any
+Update the owning package's reference, README, and typechecked cookbook recipe with any
 public export, input, result, error, unit, or support change. Cover methods on
 returned clients as well as top-level exports. Keep future API proposals out of
 the current method inventory. Validate examples against built public entrypoints

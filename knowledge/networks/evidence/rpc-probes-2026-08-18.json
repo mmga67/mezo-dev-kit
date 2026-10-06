@@ -6,27 +6,30 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-17T22:21:02Z",
-  "reviewAfter": "2026-09-18T00:00:00Z",
+  "verifiedAt": "2026-09-27T16:22:49.738Z",
+  "reviewAfter": "2026-10-27T16:22:49.738Z",
   "scope": {
     "networkIds": [
       "mezo-mainnet",
-      "mezo-testnet"
+      "mezo-testnet",
+      "ethereum-mainnet",
+      "base-mainnet"
     ],
     "observedFrom": "2026-08-17T22:18:07Z",
-    "observedThrough": "2026-08-17T22:21:02Z"
+    "observedThrough": "2026-09-27T16:22:49.738Z"
   },
   "limitations": [
     "Observations establish only the recorded targets, methods, results, failures, and times.",
     "Point-in-time success or failure is not a provider reliability, retention, or complete compatibility claim."
   ],
   "observedFrom": "2026-08-17T22:18:07Z",
-  "observedThrough": "2026-08-17T22:21:02Z",
+  "observedThrough": "2026-09-27T16:22:49.738Z",
   "methodology": [
     "HTTPS endpoints received read-only JSON-RPC requests for eth_chainId, eth_blockNumber, eth_getBlockByNumber(latest,false), web3_clientVersion, and net_version. Provider batch limits required individual requests for dRPC.",
     "WSS endpoints received one read-only eth_chainId request using the platform WebSocket client.",
     "Explorer URLs were followed with HTTPS GET and only final status/content type were retained.",
-    "A successful bounded probe establishes only the recorded methods at that time; it is not a reliability, archive, rate-limit, or complete compatibility claim."
+    "A successful bounded probe establishes only the recorded methods at that time; it is not a reliability, archive, rate-limit, or complete compatibility claim.",
+    "2026-09-27 append-only re-verification: new dated observations supersede endpoint current pointers. Earlier observations and their times are retained unchanged. Raw capture and immutable source-pin checks are indexed as network-reverification-2026-09-27."
   ],
   "observations": [
     {
@@ -265,6 +268,220 @@
       "result": {
         "httpStatus": 200,
         "contentType": "text/html; charset=utf-8"
+      }
+    },
+    {
+      "id": "mezo-testnet-official-https-2026-09-27",
+      "endpointId": "mezo-testnet-official-https",
+      "observedAt": "2026-09-27T16:22:39.767Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7b",
+        "evmChainId": 31611,
+        "netVersion": "31611",
+        "clientVersion": "Mezod/13.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xf13cae",
+          "number": 15809710,
+          "hash": "0xee72a2259c680347729afd438e7247cebeda10fd08d900e48de6d646d4160c55",
+          "timestamp": "2026-09-27T16:22:34.000Z"
+        }
+      }
+    },
+    {
+      "id": "mezo-testnet-official-wss-2026-09-27",
+      "endpointId": "mezo-testnet-official-wss",
+      "observedAt": "2026-09-27T16:22:39.794Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7b",
+        "evmChainId": 31611
+      }
+    },
+    {
+      "id": "mezo-mainnet-boar-https-2026-09-27",
+      "endpointId": "mezo-mainnet-boar-https",
+      "observedAt": "2026-09-27T16:22:41.077Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Mezod/13.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xb92b7f",
+          "number": 12135295,
+          "hash": "0x0176f3f30b2f567633fee33581dd7271b7364d15a006b7e0f57cd51c9cf7147f",
+          "timestamp": "2026-09-27T16:22:34.000Z"
+        }
+      }
+    },
+    {
+      "id": "mezo-mainnet-boar-wss-2026-09-27",
+      "endpointId": "mezo-mainnet-boar-wss",
+      "observedAt": "2026-09-27T16:22:42.022Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "mezo-mainnet-imperator-https-2026-09-27",
+      "endpointId": "mezo-mainnet-imperator-https",
+      "observedAt": "2026-09-27T16:22:43.153Z",
+      "outcome": "failed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "error": {
+        "class": "bounded-rpc-probe-failed",
+        "summary": "Error: HTTP 405"
+      }
+    },
+    {
+      "id": "mezo-mainnet-imperator-wss-2026-09-27",
+      "endpointId": "mezo-mainnet-imperator-wss",
+      "observedAt": "2026-09-27T16:22:43.154Z",
+      "outcome": "failed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "error": {
+        "class": "bounded-rpc-probe-failed",
+        "summary": "Error: WebSocket connection error"
+      }
+    },
+    {
+      "id": "mezo-mainnet-validation-cloud-https-2026-09-27",
+      "endpointId": "mezo-mainnet-validation-cloud-https",
+      "observedAt": "2026-09-27T16:22:43.633Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Mezod/13.0.0/amd64/go1.24.0",
+        "latestBlock": {
+          "numberHex": "0xb92b80",
+          "number": 12135296,
+          "hash": "0x7688416d447d3ce00d39b93177d403c2c893b1f09dbb831369967d092a0f4180",
+          "timestamp": "2026-09-27T16:22:37.000Z"
+        }
+      }
+    },
+    {
+      "id": "mezo-mainnet-validation-cloud-wss-2026-09-27",
+      "endpointId": "mezo-mainnet-validation-cloud-wss",
+      "observedAt": "2026-09-27T16:22:44.373Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "mezo-mainnet-drpc-https-2026-09-27",
+      "endpointId": "mezo-mainnet-drpc-https",
+      "observedAt": "2026-09-27T16:22:44.990Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_blockNumber",
+        "eth_getBlockByNumber",
+        "web3_clientVersion",
+        "net_version"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612,
+        "netVersion": "31612",
+        "clientVersion": "Geth/v10.0.0/drpc",
+        "latestBlock": {
+          "numberHex": "0xb92b80",
+          "number": 12135296,
+          "hash": "0x7688416d447d3ce00d39b93177d403c2c893b1f09dbb831369967d092a0f4180",
+          "timestamp": "2026-09-27T16:22:37.000Z"
+        }
+      }
+    },
+    {
+      "id": "mezo-mainnet-drpc-wss-2026-09-27",
+      "endpointId": "mezo-mainnet-drpc-wss",
+      "observedAt": "2026-09-27T16:22:45.548Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId"
+      ],
+      "result": {
+        "evmChainIdHex": "0x7b7c",
+        "evmChainId": 31612
+      }
+    },
+    {
+      "id": "ethereum-mainnet-identity-2026-09-27",
+      "targetUrl": "https://ethereum-rpc.publicnode.com",
+      "observedAt": "2026-09-27T16:21:23.533Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber"
+      ],
+      "result": {
+        "evmChainId": 1,
+        "latestBlock": {
+          "number": 26069952,
+          "hash": "0xced9220237c1544fd541f7e8dda9e0de1a782b4b512f87dfb1fd6825caf77f8e",
+          "timestamp": "2026-09-27T16:21:35.000Z"
+        }
+      }
+    },
+    {
+      "id": "base-mainnet-identity-2026-09-27",
+      "targetUrl": "https://base-rpc.publicnode.com",
+      "observedAt": "2026-09-27T16:21:23.533Z",
+      "outcome": "passed",
+      "methods": [
+        "eth_chainId",
+        "eth_getBlockByNumber"
+      ],
+      "result": {
+        "evmChainId": 8453,
+        "latestBlock": {
+          "number": 51868378,
+          "hash": "0x8522ec3baca70653522d79027f3c7d49ca38e1494b9e90753ab7f121cde26f67",
+          "timestamp": "2026-09-27T16:21:43.000Z"
+        }
       }
     }
   ]

@@ -18,24 +18,6 @@ const readMethods = new Set([
   "debug_traceCall",
   "web3_clientVersion",
 ]);
-const localMethods = new Set([
-  ...readMethods,
-  "eth_accounts",
-  "eth_sendTransaction",
-  "evm_snapshot",
-  "evm_revert",
-  "evm_setAutomine",
-  "anvil_getAutomine",
-  "evm_setNextBlockTimestamp",
-  "evm_mine",
-  "anvil_setBalance",
-  "anvil_setCode",
-  "anvil_setStorageAt",
-  "anvil_impersonateAccount",
-  "anvil_stopImpersonatingAccount",
-  "anvil_setNextBlockBaseFeePerGas",
-]);
-
 export class RpcRequestError extends Error {
   readonly code:
     "InvalidEndpoint" | "MethodDenied" | "TransportFailure" | "InvalidResponse" | "RpcFailure";
@@ -57,30 +39,16 @@ export class RpcRequestError extends Error {
   }
 }
 
-export function localEndpoint(url: string): URL {
-  const endpoint = new URL(url);
-  if (
-    endpoint.protocol !== "http:" ||
-    !["127.0.0.1", "[::1]"].includes(endpoint.hostname) ||
-    endpoint.username ||
-    endpoint.password ||
-    endpoint.hash
-  )
-    throw new RpcRequestError("InvalidEndpoint", "local-fork");
-  return endpoint;
-}
-
 /** HTTP and method policy are application concerns; Core supplies EVM RPC encoding. */
 export function createHttpRequest(options: {
   readonly url: string;
-  readonly policy: "read-only" | "local-fork";
   readonly fetch?: typeof fetch;
   readonly signal?: AbortSignal;
   readonly timeoutMs?: number;
 }): RpcRequest {
   let endpoint: URL;
   try {
-    endpoint = options.policy === "local-fork" ? localEndpoint(options.url) : new URL(options.url);
+    endpoint = new URL(options.url);
     if (
       !["http:", "https:"].includes(endpoint.protocol) ||
       endpoint.username ||
@@ -95,10 +63,9 @@ export function createHttpRequest(options: {
   const timeoutMs = options.timeoutMs ?? 30_000;
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60_000)
     throw new TypeError("RPC timeout must be 1–60000 milliseconds");
-  const allowed = options.policy === "local-fork" ? localMethods : readMethods;
   let nextId = 0;
   return async ({ method, params }) => {
-    if (!allowed.has(method)) throw new RpcRequestError("MethodDenied", method);
+    if (!readMethods.has(method)) throw new RpcRequestError("MethodDenied", method);
     const id = ++nextId;
     const timeout = AbortSignal.timeout(timeoutMs);
     const signal = options.signal ? AbortSignal.any([options.signal, timeout]) : timeout;

@@ -56,6 +56,9 @@ importers:
       '@mezo-dev-kit/core':
         specifier: workspace:*
         version: link:../packages/core
+      '@mezo-dev-kit/evidence':
+        specifier: workspace:*
+        version: link:../packages/evidence
       '@mezo-dev-kit/evm':
         specifier: workspace:*
         version: link:../packages/evm
@@ -123,6 +126,10 @@ importers:
         version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
 
   packages/cli:
+    dependencies:
+      '@mezo-dev-kit/evidence':
+        specifier: workspace:*
+        version: link:../evidence
     devDependencies:
       vitest:
         specifier: 4.1.11
@@ -152,6 +159,28 @@ importers:
       '@mezo-dev-kit/evm':
         specifier: workspace:*
         version: link:../evm
+    devDependencies:
+      vitest:
+        specifier: 4.1.11
+        version: 4.1.11(@types/node@24.13.3)(vite@8.2.1(@types/node@24.13.3))
+
+  packages/evidence:
+    dependencies:
+      '@mezo-dev-kit/chains':
+        specifier: workspace:*
+        version: link:../chains
+      '@mezo-dev-kit/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@mezo-dev-kit/core':
+        specifier: workspace:*
+        version: link:../core
+      '@mezo-dev-kit/evm':
+        specifier: workspace:*
+        version: link:../evm
+      '@mezo-dev-kit/prices':
+        specifier: workspace:*
+        version: link:../prices
     devDependencies:
       vitest:
         specifier: 4.1.11

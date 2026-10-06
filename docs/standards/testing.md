@@ -116,13 +116,20 @@ environment, or adding setup files.
 
 ## Universal SDK verification
 
-Keep Node unit tests for deterministic and protocol behavior. SDK compatibility also
-requires `pnpm test:browser` after building: Vitest drives actual Chromium, Firefox
-and WebKit against packed public artifacts. The suite rejects browser externalization
-warnings, verifies declarations without configured Node ambient types and protects
-representative bundle sizes. It is part of `pnpm check`; browser binaries and Linux
-host libraries are explicit setup prerequisites, not silently installed or skipped.
-See the [browser verification guide](../guides/BROWSER_APPLICATIONS.md#verify-an-integration).
+Keep Node unit tests for deterministic and protocol behavior. Default `pnpm check`
+does not require browser execution or browser system libraries. Complete browser
+qualification is an optional additional workflow: `pnpm check:browser` runs the
+default checks and then `pnpm test:browser`. `pnpm check:browser:container` provides
+the same qualification with isolated browser engines and system libraries. Either
+browser suite can also run alone after building. Vitest drives actual Chromium, Firefox and WebKit against packed public
+artifacts, rejects browser externalization warnings, verifies declarations without
+configured Node ambient types and protects representative bundle sizes.
+
+Do not install host libraries merely to finish an ordinary contributor task. When
+browser qualification is selected, provision its prerequisites explicitly and keep
+missing browser/library failures visible. The suite must not silently skip engines.
+Report an unselected browser suite as not run; default checks alone cannot establish
+browser support. See the [complete qualification procedure](../guides/BROWSER_APPLICATIONS.md#complete-browser-qualification).
 
 ## Test data and fixtures
 

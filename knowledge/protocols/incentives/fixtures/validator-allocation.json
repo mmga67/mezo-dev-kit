@@ -7,10 +7,12 @@
   "protocolStatus": "verified-versioned",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-24T21:59:22.983Z",
-  "reviewAfter": "2026-09-22T00:00:00Z",
+  "verifiedAt": "2026-10-06T14:04:51.613Z",
+  "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": ["mezo-mainnet"],
+    "networkIds": [
+      "mezo-mainnet"
+    ],
     "evidenceBlockNumber": 11366264
   },
   "limitations": [
@@ -36,7 +38,10 @@
       "formulaId": "validator-vote-allocation",
       "inputs": {
         "boostedVotingPowerRaw": "1",
-        "externalWeights": ["1", "1"]
+        "externalWeights": [
+          "1",
+          "1"
+        ]
       },
       "expected": {
         "firstGaugeVoteRaw": "0",
@@ -48,10 +53,16 @@
       "formulaId": "validator-vote-allocation",
       "inputs": {
         "boostedVotingPowerRaw": "10",
-        "externalWeights": ["1", "2"]
+        "externalWeights": [
+          "1",
+          "2"
+        ]
       },
       "expected": {
-        "gaugeVotesRaw": ["3", "6"],
+        "gaugeVotesRaw": [
+          "3",
+          "6"
+        ],
         "usedWeightRaw": "9",
         "allocationFloorDustRaw": "1"
       }
@@ -61,10 +72,14 @@
       "formulaId": "validator-vote-allocation",
       "inputs": {
         "boostedVotingPowerRaw": "219232366342472010",
-        "externalWeights": ["10000"]
+        "externalWeights": [
+          "10000"
+        ]
       },
       "expected": {
-        "gaugeVotesRaw": ["219232366342472010"],
+        "gaugeVotesRaw": [
+          "219232366342472010"
+        ],
         "usedWeightRaw": "219232366342472010",
         "allocationFloorDustRaw": "0"
       },
@@ -93,11 +108,17 @@
       "inputs": {
         "notifiedRewardRaw": "100",
         "preNotificationTotalWeightRaw": "3",
-        "gaugeWeightsRaw": ["1", "2"]
+        "gaugeWeightsRaw": [
+          "1",
+          "2"
+        ]
       },
       "expected": {
         "indexDelta18": "33333333333333333333",
-        "gaugeSharesRaw": ["33", "66"],
+        "gaugeSharesRaw": [
+          "33",
+          "66"
+        ],
         "gaugeShareSumRaw": "99",
         "floorDustRaw": "1"
       }
@@ -190,5 +211,14 @@
         "syntheticZero": false
       }
     }
-  ]
+  ],
+  "reverification": {
+    "previousVerifiedAt": "2026-08-24T21:59:22.983Z",
+    "previousReviewAfter": "2026-09-22T00:00:00Z",
+    "basis": "Unchanged accepted versioned models/source and deterministic fixtures, indexed September 27 lock/vote/allocation replay and accepted corrections, October 6 emissions/gauge supplement and current configuration; no remote settlement or writer support.",
+    "evidenceReference": {
+      "moduleId": "protocols/incentives",
+      "resourceId": "incentives-maintenance-reverification-2026-10-06"
+    }
+  }
 }

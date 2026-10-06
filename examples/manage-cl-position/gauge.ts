@@ -5,12 +5,12 @@ import {
 } from "@mezo-dev-kit/incentives";
 import type { CLGaugeAction } from "@mezo-dev-kit/incentives";
 import type { CLPoolKey, CLPoolReader } from "@mezo-dev-kit/pools";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
 
 export async function clGaugeCycle(
-  runtime: ExampleRuntime,
+  runtime: WorkflowConnection,
   pools: CLPoolReader,
   key: CLPoolKey,
   tokenId: bigint,
@@ -34,16 +34,11 @@ export async function clGaugeCycle(
       bounds: { minReward: 0n, minFee0: 0n, minFee1: 0n, maxBlockAge: 2n },
     });
     const simulated = await writer.simulate(prepared);
+    await runtime.review(simulated);
     const submitted = await writer.submit(prepared, simulated);
     const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
     const { outcome } = await writer.reconcile(prepared, confirmed);
-    runtime.report(`CL gauge ${action}`, {
-      tokenId,
-      reward: outcome.reward,
-      fee0: outcome.fee0,
-      fee1: outcome.fee1,
-      staked: outcome.snapshot.staked,
-    });
+
     invariant(outcome.boundsSatisfied, "CL gauge outcome exceeds bounds");
   }
   await perform("approve"); // Approve this NFT, not the entire collection.

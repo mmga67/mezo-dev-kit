@@ -1,15 +1,27 @@
 import { openPosition } from "./open-position.ts";
 import { createBorrowingReader, createBorrowingWriter } from "@mezo-dev-kit/musd-borrowing";
-import type { BorrowingAction, BorrowingOutcome } from "@mezo-dev-kit/musd-borrowing";
-import { formatUnitsExact, parseUnitsExact } from "@mezo-dev-kit/evm";
-import type { ExampleRuntime } from "../runtime/example-runtime.ts";
-import { readWalletToken } from "../runtime/token-units.ts";
+import type {
+  BorrowingAction,
+  BorrowingBounds,
+  BorrowingOutcome,
+} from "@mezo-dev-kit/musd-borrowing";
+import type { WorkflowConnection } from "../runtime/workflow-connection.ts";
 import { waitForConfirmation } from "../runtime/wait-for-confirmation.ts";
 import { invariant } from "../runtime/validation.ts";
-import { borrowingConfig } from "./config.ts";
 
-/** Open, manage and close a classic MUSD position. Supply an unused funded account. */
-export async function borrowMusd(runtime: ExampleRuntime): Promise<Readonly<BorrowingOutcome>> {
+/** Advanced composition: open, add collateral, repay and close. Each step requests consent. */
+export async function borrowMusd(
+  runtime: WorkflowConnection,
+  input: {
+    /** Native BTC base units, not a decimal display string. */
+    readonly collateral: bigint;
+    readonly additionalCollateral: bigint;
+    /** MUSD base units. Fees and interest need extra wallet funding before closure. */
+    readonly borrow: bigint;
+    readonly repay: bigint;
+    readonly bounds: BorrowingBounds;
+  },
+): Promise<Readonly<BorrowingOutcome>> {
   const reader = createBorrowingReader({
     networkId: "mezo-mainnet",
     registry: runtime.registry,
@@ -20,91 +32,60 @@ export async function borrowMusd(runtime: ExampleRuntime): Promise<Readonly<Borr
   const before = await reader.read({ account: runtime.account });
   invariant(
     before.position.status === "nonexistent",
-    "Use an account without an existing trove for this lifecycle",
+    "This lifecycle requires an account without an existing trove",
   );
-  const token = runtime.registry.resolve({
-    contractId: "musd.token",
-    networkId: runtime.network.id,
-    blockNumber: before.coordinate.blockNumber,
-  });
-  const wallet = await readWalletToken(runtime, {
-    contractId: token.contractId,
-    address: token.address,
-  });
-  const musd = (amount: string) => parseUnitsExact(amount, Number(wallet.decimals));
-  const btc = (amount: string) => parseUnitsExact(amount, runtime.network.nativeCurrency.decimals);
-  const bounds = {
-    maxFee: musd(borrowingConfig.maxFeeMusd),
-    maxAnnualRateBps: borrowingConfig.maxAnnualRateBps,
-    minCollateralRatio: parseUnitsExact(borrowingConfig.minCollateralRatio, 18),
-    maxBlockAge: 2n,
-  };
 
   async function perform(
     step: string,
     action: BorrowingAction,
   ): Promise<Readonly<BorrowingOutcome>> {
-    // Preparation reads current debt, price and system mode, then finds sorted-list hints.
+    // Current governed parameters, debt, price and mode are read for every action.
     const prepared = await writer.prepare({
       operationId: runtime.operationId(step),
       account: runtime.account,
       action,
-      bounds,
+      bounds: input.bounds,
       trials: 3n,
       seed: 42n,
     });
-    runtime.report(`${step}: forecast`, {
-      collateral: prepared.forecast.collateral,
-      debt: prepared.forecast.debt,
-      feeMusd: formatUnitsExact(prepared.forecast.fee, Number(wallet.decimals)),
-      hints: prepared.hints,
-    });
     const simulated = await writer.simulate(prepared);
+    await runtime.review(simulated);
     const submitted = await writer.submit(prepared, simulated);
     const confirmed = await waitForConfirmation(execution, submitted, runtime.polling);
-    const result = await writer.reconcile(prepared, confirmed);
-    // These fee/risk bounds are preflight policy; the contract has no matching deadline arguments.
-    runtime.report(`${step}: settled`, {
-      status: result.outcome.snapshot.position.status,
-      collateral: result.outcome.snapshot.position.collateral,
-      debt: result.outcome.snapshot.position.debt,
-      boundsSatisfied: result.outcome.boundsSatisfied,
-      hash: confirmed.hash,
-    });
+    const { outcome } = await writer.reconcile(prepared, confirmed);
+    // These policy bounds are checked before and after execution; some have no matching contract argument.
     invariant(
-      result.outcome.boundsSatisfied,
-      "The transaction settled outside the requested bounds; inspect it before continuing",
+      outcome.boundsSatisfied,
+      "Inspect the settled position before continuing outside policy",
     );
-    return result.outcome;
+    return outcome;
   }
 
   await openPosition(
     runtime,
     {
       operationId: runtime.operationId("open"),
-      bounds,
-      collateral: btc(borrowingConfig.collateralBtc),
-      borrow: musd(borrowingConfig.borrowMusd),
+      bounds: input.bounds,
+      collateral: input.collateral,
+      borrow: input.borrow,
     },
     runtime.polling,
   );
   await perform("add-collateral", {
     kind: "add-collateral",
-    collateral: btc(borrowingConfig.addCollateralBtc),
+    collateral: input.additionalCollateral,
   });
-  // Repayment burns MUSD through BorrowerOperations; this operation has no ERC-20 approval.
-  await perform("repay", { kind: "repay", amount: musd(borrowingConfig.repayMusd) });
+  // BorrowerOperations burns MUSD directly: repayment does not need ERC-20 approval.
+  await perform("repay", { kind: "repay", amount: input.repay });
   const closing = await reader.read({ account: runtime.account });
-  runtime.report("Close funding", {
-    walletMusd: closing.musdBalance,
-    outstandingNetDebt: closing.position.netDebt,
-  });
-  // Fees and accrued interest require additional MUSD beyond the originally minted amount.
-  // The local runner pre-funds that buffer explicitly before the example starts.
-  const result = await perform("close", { kind: "close" });
   invariant(
-    result.snapshot.position.status === "closed-by-owner",
-    "Expected a fully closed borrower position",
+    closing.musdBalance >= closing.position.netDebt,
+    "Closing needs enough MUSD for current net debt, including fees and interest",
   );
-  return result;
+  const outcome = await perform("close", { kind: "close" });
+  invariant(
+    outcome.snapshot.position.status === "closed-by-owner",
+    "Expected a fully closed position",
+  );
+  return outcome;
 }
