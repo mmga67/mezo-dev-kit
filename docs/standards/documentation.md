@@ -47,6 +47,13 @@ API inventories in their existing guides and references. Avoid repeated
 directory trees, review histories, maintenance checklists, and lists of files
 without an explanation of why a reader would open them.
 
+When a project serves several audiences, give each a visible starting route.
+Distinguish using the project from contributing to it; readers exploring a
+subject should not have to follow application setup first. A short feature list
+should name concrete outcomes, not just components. Use action headings or
+“I want to…” choices so readers can recognize their task and see what the next
+page will help them do.
+
 A README's quality is determined by whether a reader can use it. There is no
 mandatory word count, section count, badge set, or diagram requirement.
 
@@ -232,6 +239,7 @@ owners rather than carrying forward a dated assessment.
 ## Review a documentation change
 
 - Can the intended reader explain the page's purpose and take its first useful step?
+- Can each named audience find its own starting route, with only the setup its task needs?
 - Does each section serve that reader, with agent-only steps clearly located?
 - Is there one detailed owner, with descriptive working links to it?
 - Are commands, examples, versions, evidence scope, and support claims accurate?
