@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { loadKnowledgeReference } from "./knowledge-reference.ts";
 import { object, objects, parseJson, text, values } from "./json.ts";
+import { validatePrivateBridgeReview } from "./private-bridge-review.ts";
 
 /** Validate the bounded qualification's lifecycle and artifact links before projection. */
 export async function validateNativeDeliveryEvidence(root: string): Promise<string> {
@@ -28,7 +29,7 @@ export async function validateNativeDeliveryEvidence(root: string): Promise<stri
   );
   assert.equal(q.status, "verified");
   assert.equal(q.supportStatus, "proposed");
-  assert.equal(q.reviewStatus, "pending-qualified-review");
+  await validatePrivateBridgeReview(q, load);
   assert.equal(q.reviewAfter, null);
   const catalog = object(await load(q.contractEvidenceReference), "historical catalog");
   assert.equal(catalog.reviewStatus, "pending-qualified-review");

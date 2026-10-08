@@ -29,7 +29,7 @@ The integration harness models Mezo's native oracle and uses labelled local
 funding/surplus fixtures. It tests the EVM workflow within those limits; see
 [verification scope](REFERENCE.md#verification-scope).
 
-Node is required for runtime hashing. Testnet, smart accounts, relayed
+Hashing uses portable EVM helpers; see the [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract). Testnet, smart accounts, relayed
 signatures, liquidation, and emergency close with minting disabled are outside
 this writer. Use the separate [Redemptions package](../musd-redemptions/README.md)
 for redemption workflows and [borrowing knowledge](../../../knowledge/protocols/musd/borrowing/README.md)

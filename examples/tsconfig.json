@@ -29,5 +29,5 @@
     }
   },
   "include": ["**/*.ts"],
-  "exclude": ["dist", "node_modules", "test/built", "browser"]
+  "exclude": ["dist", "node_modules", "test/built", "browser", "browser-workbench"]
 }

@@ -11,6 +11,7 @@ import {
 import type { Address } from "@mezo-dev-kit/evm";
 import { loadKnowledgeReference } from "../../../scripts/lib/knowledge-reference.ts";
 import { object, objects, text, values } from "../../../scripts/lib/json.ts";
+import { validatePrivateBridgeReview } from "../../../scripts/lib/private-bridge-review.ts";
 
 export async function validateNttTransferEvidence(root: string): Promise<{
   digest: string;
@@ -31,7 +32,7 @@ export async function validateNttTransferEvidence(root: string): Promise<{
   });
   assert.equal(evidence.status, "verified");
   assert.equal(evidence.supportStatus, "proposed");
-  assert.equal(evidence.reviewStatus, "pending-qualified-review");
+  await validatePrivateBridgeReview(evidence, load);
   assert.equal(evidence.reviewAfter, null);
   assert(Number.isFinite(Date.parse(text(evidence.verifiedAt, "time"))));
   const source = await load(evidence.sourceReference, evidence.sourceSha256);

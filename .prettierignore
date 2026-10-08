@@ -7,7 +7,7 @@ legacy/
 scripts/fixtures/coding-gates/
 
 # Generated and drift-checked by scripts/generate/generate-core-transaction-model.ts.
-packages/core/src/model.generated.ts
+packages/core/src/internal/proof/model.generated.ts
 
 # Generated and drift-checked by the foundational package generators.
 packages/chains/src/data.generated.ts

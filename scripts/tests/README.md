@@ -61,6 +61,12 @@ Actual compiler reproduction is an opt-in evidence operation described in the
 
 ## Standalone checks
 
+`pnpm check:inventory` assigns every `scripts/tests/*.test.ts` file to exactly
+one of the quality config, optional browser config or documented Node runner.
+Register new suites before running `pnpm check`. The quality suite includes
+regressions for Markdown file/heading targets, dependency direction,
+incentive fixture diagnostics and inventory omissions.
+
 These are separate from the quality Vitest selection. Run them explicitly when
 changing their owning automation or when a module index requires them:
 

@@ -5,7 +5,7 @@
   "owner": "workflows/bridges",
   "status": "verified",
   "supportStatus": "proposed",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-13T10:53:27.470Z",
   "reviewAfter": null,
   "scope": {
@@ -39,5 +39,13 @@
     "The manager view fee quote indexes an enabled-length array by registered index; the retained configurations have one enabled transceiver at index one. The transfer path uses the registered count. Direct enabled-transceiver quotes require exact source-call simulation.",
     "MUSD amounts with trimming dust revert. Outbound queues already custody or burn tokens; recovery must not transfer the source amount again.",
     "Source/built/fork qualification and qualified release review are separate. No route, relayer SLA, writer support or live value-bearing test is accepted by this record."
-  ]
+  ],
+  "review": {
+    "acceptedOn": "2026-10-07",
+    "disposition": "Existing bounded private implementation and evidence accepted as-is by the maintainer; support remains proposed and all retained evidence limits apply.",
+    "continuityReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-private-scope-reverification-2026-10-07"
+    }
+  }
 }

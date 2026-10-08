@@ -6,9 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
-  "scope": { "networkIds": ["mezo-mainnet"], "fixtureCount": 15 },
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "fixtureCount": 15
+  },
   "limitations": [
     "Fixtures test deterministic workflow rules and encodings; they are not current quotes or transaction authorizations.",
     "Addresses and amounts used by historical fixtures remain tied to their recorded evidence coordinates."
@@ -108,12 +111,19 @@
         "slippageBps": 50,
         "formula": "floor(quotedAmountOut * (10000 - slippageBps) / 10000)"
       },
-      "expected": { "amountOutMinimum": "19944787", "rounding": "floor", "nonzero": true }
+      "expected": {
+        "amountOutMinimum": "19944787",
+        "rounding": "floor",
+        "nonzero": true
+      }
     },
     {
       "id": "mixed-route-rejected",
       "case": "unsupported-family",
-      "input": { "families": ["basic", "concentrated-liquidity"], "atomic": true },
+      "input": {
+        "families": ["basic", "concentrated-liquidity"],
+        "atomic": true
+      },
       "expected": {
         "eligible": false,
         "error": "unsupported-atomic-mixed-route",
@@ -123,45 +133,89 @@
     {
       "id": "unsupported-family-rejected",
       "case": "unsupported-family",
-      "input": { "family": "universal-router", "command": "0x08" },
-      "expected": { "eligible": false, "error": "unsupported-route-family", "failClosed": true }
+      "input": {
+        "family": "universal-router",
+        "command": "0x08"
+      },
+      "expected": {
+        "eligible": false,
+        "error": "unsupported-route-family",
+        "failClosed": true
+      }
     },
     {
       "id": "zero-liquidity-rejected",
       "case": "pool-state",
-      "input": { "family": "concentrated-liquidity", "activeLiquidity": "0", "required": true },
-      "expected": { "eligible": false, "error": "zero-liquidity" }
+      "input": {
+        "family": "concentrated-liquidity",
+        "activeLiquidity": "0",
+        "required": true
+      },
+      "expected": {
+        "eligible": false,
+        "error": "zero-liquidity"
+      }
     },
     {
       "id": "stale-quote-rejected",
       "case": "freshness",
-      "input": { "observedAtUnixSeconds": 1000, "nowUnixSeconds": 1061, "maxAgeSeconds": 60 },
-      "expected": { "eligible": false, "error": "stale-quote", "ageSeconds": 61 }
+      "input": {
+        "observedAtUnixSeconds": 1000,
+        "nowUnixSeconds": 1061,
+        "maxAgeSeconds": 60
+      },
+      "expected": {
+        "eligible": false,
+        "error": "stale-quote",
+        "ageSeconds": 61
+      }
     },
     {
       "id": "zero-minimum-rejected",
       "case": "slippage",
-      "input": { "quotedAmountOut": "88989257213168075305", "amountOutMinimum": "0" },
-      "expected": { "eligible": false, "error": "unsafe-zero-minimum" }
+      "input": {
+        "quotedAmountOut": "88989257213168075305",
+        "amountOutMinimum": "0"
+      },
+      "expected": {
+        "eligible": false,
+        "error": "unsafe-zero-minimum"
+      }
     },
     {
       "id": "exact-approval",
       "case": "approval",
-      "input": { "amountIn": "20003366", "allowance": "0", "policy": "exact-operation" },
-      "expected": { "approvalAmount": "20003366", "requiresApprovalTransaction": true }
+      "input": {
+        "amountIn": "20003366",
+        "allowance": "0",
+        "policy": "exact-operation"
+      },
+      "expected": {
+        "approvalAmount": "20003366",
+        "requiresApprovalTransaction": true
+      }
     },
     {
       "id": "unlimited-approval-requires-opt-in",
       "case": "approval",
-      "input": { "policy": "unlimited", "explicitCallerOptIn": false },
-      "expected": { "eligible": false, "error": "unlimited-approval-not-authorized" }
+      "input": {
+        "policy": "unlimited",
+        "explicitCallerOptIn": false
+      },
+      "expected": {
+        "eligible": false,
+        "error": "unlimited-approval-not-authorized"
+      }
     },
     {
       "id": "partial-provider-required-failure",
       "case": "partial-provider",
       "input": {
         "required": ["pool-mapping", "quote"],
-        "results": { "pool-mapping": "ok", "quote": "rpc-error" }
+        "results": {
+          "pool-mapping": "ok",
+          "quote": "rpc-error"
+        }
       },
       "expected": {
         "eligible": false,
@@ -172,8 +226,16 @@
     {
       "id": "simulation-revert",
       "case": "simulation",
-      "input": { "exactCall": true, "result": "revert", "revertData": "0x08c379a0" },
-      "expected": { "eligible": false, "error": "exact-call-reverted", "preserveRevertData": true }
+      "input": {
+        "exactCall": true,
+        "result": "revert",
+        "revertData": "0x08c379a0"
+      },
+      "expected": {
+        "eligible": false,
+        "error": "exact-call-reverted",
+        "preserveRevertData": true
+      }
     },
     {
       "id": "reconciliation-mismatch",
@@ -189,5 +251,9 @@
         "receiptAloneInsufficient": true
       }
     }
-  ]
+  ],
+  "reverification": {
+    "moduleId": "workflows/swaps",
+    "resourceId": "swap-maintenance-reverification-2026-10-07"
+  }
 }

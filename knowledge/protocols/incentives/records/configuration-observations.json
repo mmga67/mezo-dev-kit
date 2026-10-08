@@ -5,13 +5,11 @@
   "owner": "incentives",
   "status": "candidate",
   "supportStatus": "none",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": null,
   "reviewAfter": null,
   "scope": {
-    "networkIds": [
-      "mezo-mainnet"
-    ]
+    "networkIds": ["mezo-mainnet"]
   },
   "limitations": [
     "Bounded historical comparison catalog, not universal governance coverage or proof of an authorized governance action.",
@@ -313,5 +311,9 @@
       "unit": "address-list",
       "interpretation": "Configured factory membership; compare as configuration, not a gauge count."
     }
-  ]
+  ],
+  "review": {
+    "acceptedOn": "2026-10-07",
+    "disposition": "Maintainer accepted TASK-172 as-is: the bounded 34-field catalog/API and its explicit unavailable metadata fields. Observation freshness, governance authority and protocol support remain separate."
+  }
 }

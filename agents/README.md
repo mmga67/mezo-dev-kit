@@ -25,6 +25,9 @@ The consumer catalog includes foundation, TypeScript and frontend usage, applica
 memory, protocol integration and domain-specific procedures. The CLI's default
 set stays small; additional capability sets combine selected public packages,
 skills and matching references. `consumer/distribution.json` owns these sets.
+The separately selectable `mdk-application-architecture` skill offers optional
+feature organization and bounded refactoring guidance. It adds no framework and
+does not require adopting MDK's suggested application layout.
 Applications own memory entries; MDK never installs contributor seed memories
 into them. See the [application memory guide](../docs/guides/APPLICATION_MEMORY.md).
 

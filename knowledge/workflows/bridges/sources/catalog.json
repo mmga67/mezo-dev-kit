@@ -10,11 +10,7 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": [
-      "mezo-mainnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
     "evidenceLocalNetworkLabels": []
   },
   "limitations": [
@@ -98,6 +94,14 @@
         "resourceId": "bridge-native-evidence"
       },
       "sha256": "69b7148fe0cbfb9e7ee0fdf9c7182373b4c29ac1f6c2acad6617d4f02b42f2af"
+    },
+    {
+      "id": "bridge-private-scope-reverification-2026-10-07",
+      "evidenceReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-private-scope-reverification-2026-10-07"
+      },
+      "sha256": "d80b021c20e2c89e6677451f834c25df114e0e811ea74e0d69035d4d56b94771"
     }
   ],
   "reverification": {

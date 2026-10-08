@@ -39,6 +39,34 @@ commit private material on `feat/next` with the intention of filtering it at
 merge time. Do not use force-add, `assume-unchanged`, `skip-worktree`, custom
 merge drivers, or branch-specific ignore files as a privacy mechanism.
 
+## Local artifact order
+
+Use these locations for new material; create folders only when needed.
+
+| Location under `local/`             | Contents                                                | Keep until                                                                |
+| ----------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `task-NNN/`                         | Retained task evidence, receipts and original snapshots | Its owning task no longer requires it as evidence                         |
+| `scratch/<task-or-purpose>/`        | Reproducible builds, caches and experiments             | The run ends; move needed evidence to its owner first                     |
+| `archive/<purpose>/`                | Recovery material or history shared across tasks        | Its documented recovery or retention need ends                            |
+| `cli-kits/`, `agent-skill-backups/` | Existing tool-managed snapshots                         | Consumers no longer need the kit, or a verified replacement backup exists |
+
+1. **One owner.** Link retained artifacts from the task's `Verification` section.
+   Keep artifact paths stable across status changes; task status and progress
+   belong only in `tasks/`.
+2. **One entry point.** `local/README.md` maps directories and links here. Shared
+   archives record purpose, owner and removal condition there or in their own
+   README, once. Skip per-file catalogs and disposable-run inventories.
+3. **Clean at closeout.** Remove owned scratch output; preserve evidence needed
+   to explain or reproduce results, including relevant failures. Age or task
+   completion alone does not expire evidence.
+4. **Check references.** Before removal, check ownership, incoming references
+   and active use, including CLI kit consumers. Keep uncertain material. After
+   moves, repair references and run `pnpm check:tasks`; it does not check every
+   local file or consumer.
+5. **Adopt gradually.** Map existing subject/date folders in the local README.
+   Consolidate when touched and references can be repaired. New task output
+   follows this layout; do not add ad hoc roots.
+
 ## One-time local setup
 
 In an existing checkout, inspect `git status` and preserve unfinished changes

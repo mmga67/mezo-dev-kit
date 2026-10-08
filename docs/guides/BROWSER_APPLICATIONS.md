@@ -32,6 +32,11 @@ Run these in an application with compatible installed MDK tooling/artifacts. The
 adds foundation packages and frontend guidance; it does not install a framework or
 application test runner. Select additional protocol sets for the workflows you need.
 
+For optional application-level ideas, see [feature organization](APPLICATION_ARCHITECTURE.md)
+and [frontend patterns](FRONTEND_PATTERNS.md). Adopt individual recipes or retain
+your own conventions. The [offline workbench](../../examples/browser-workbench/README.md)
+combines exact display, account-scoped reads, detail dialogs and simulated progress.
+
 ## Supply RPC and wallet ports
 
 Core accepts an application-owned JSON-RPC request function. This excerpt adapts a

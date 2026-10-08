@@ -22,6 +22,7 @@ import { fileInventory, parseJson, readRequired } from "./filesystem.ts";
 import { packageManifestDigest } from "./project.ts";
 import { CliError } from "./errors.ts";
 import { lockedDependencyPins } from "./dependency-pins.ts";
+import { rewriteMarkdownLinks } from "./markdown.ts";
 
 export interface DistributionInput {
   readonly sourceRoot: string;
@@ -209,19 +210,17 @@ export async function buildReferenceBundle(input: DistributionInput): Promise<Re
     const requires = new Set<string>();
     let rewritten = bytes;
     if (resource.path.endsWith(".md")) {
-      const markdown = bytes
-        .toString("utf8")
-        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (whole: string, label: string, link: string) => {
-          if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(link)) return whole;
-          const [local, anchor] = link.split("#");
-          if (!local) return whole;
-          const owner = posix.normalize(posix.join(posix.dirname(resource.sourcePath), local));
-          const target = bySource.get(owner);
-          if (!target)
-            return `${label} (source: \`${owner}${anchor ? `#${anchor}` : ""}\`; outside this corpus)`;
-          requires.add(target.id);
-          return `[${label}](${posix.relative(posix.dirname(resource.path), target.path)}${anchor ? `#${anchor}` : ""})`;
-        });
+      const markdown = rewriteMarkdownLinks(bytes.toString("utf8"), (whole, label, link) => {
+        if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(link)) return whole;
+        const [local, anchor] = link.split("#");
+        if (!local) return whole;
+        const owner = posix.normalize(posix.join(posix.dirname(resource.sourcePath), local));
+        const target = bySource.get(owner);
+        if (!target)
+          return `${label} (source: \`${owner}${anchor ? `#${anchor}` : ""}\`; outside this corpus)`;
+        requires.add(target.id);
+        return `[${label}](${posix.relative(posix.dirname(resource.path), target.path)}${anchor ? `#${anchor}` : ""})`;
+      });
       rewritten = Buffer.from(markdown);
     } else {
       function references(value: unknown): void {

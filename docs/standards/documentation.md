@@ -235,6 +235,7 @@ owners rather than carrying forward a dated assessment.
 - Does each section serve that reader, with agent-only steps clearly located?
 - Is there one detailed owner, with descriptive working links to it?
 - Are commands, examples, versions, evidence scope, and support claims accurate?
+- Do generated or distributed versions preserve the context needed to use the source correctly?
 - Have changed links, anchors, formatting, and relevant generated outputs been checked?
 
 Use existing format and link tools; they cannot certify readable prose.
@@ -248,6 +249,32 @@ validate heading anchors, read links inside the extensionless manifest, or scan
 package documentation as a source root. Check affected links in those locations
 explicitly. Preserve useful old anchors when reorganizing a long page, and
 update incoming links when a heading or file must change.
+
+### Preserve meaning in generated and distributed documentation
+
+Keep task-critical labels and their content together through generation,
+link rewriting, extraction, and distribution. Preserve environment/network,
+version, units, prerequisites, warnings, evidence dates, and support limits
+beside the claim or action they qualify. Keep literal code examples unchanged;
+Markdown syntax inside an example is data, not document navigation.
+
+Review intentional omissions against the tasks the output supports. Declare
+excluded resources and retain explicit source pointers where applicable; a
+removed prerequisite or warning must not make an incomplete procedure appear
+usable. If a future renderer uses tabs or other interactive components, retain
+every task-relevant alternative under an explicit label before cleanup.
+
+Test transformations with small synthetic documents that distinguish relevant
+alternatives and contain literal markup in examples. Assert preserved content
+and relationships, then check representative final bundled output. Hashes and
+generation drift checks establish byte identity and reproducibility, not that
+the transformation retained the source's meaning.
+
+Review a few tasks using only the distributed documents: can the reader choose
+the correct network, distinguish historical evidence from current state, and
+tell which operations are available? Report automated content checks separately
+from an observed human or agent task evaluation. Reuse canonical records and
+existing tests instead of maintaining a second copy of protocol facts.
 
 ## Basis
 

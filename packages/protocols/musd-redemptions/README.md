@@ -28,11 +28,13 @@ The contract has no minimum-received argument: inclusion state can change output
 Reconciliation reports actual amounts and `boundsSatisfied`; do not automatically
 retry a confirmed transaction that misses those bounds.
 
-This private mainnet Node package remains proposed for protocol support and
+This private mainnet workspace package remains proposed for protocol support and
 requires qualified review before release. Local-fork verification uses a
 labelled native-oracle fixture and local funding; it does not qualify Mezo's
 native engine. The [redemption model](../../../knowledge/protocols/musd/redemptions/README.md)
 explains protocol semantics and evidence.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

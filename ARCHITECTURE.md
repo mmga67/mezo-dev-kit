@@ -246,6 +246,12 @@ The following rules apply:
 - Applications own persistence, scheduling, provider selection, wallet UI,
   and application state outside the runtime dependency graph.
 
+`pnpm boundaries` enforces the foundation dependency sets above and rejects
+runtime SDK dependencies on CLI, examples, templates or extensions, including
+declared acyclic edges. It also checks dependency declarations, exports, package
+cycles and Node-only runtime imports. Domain-to-domain ownership still requires
+review against this map; passing the validator does not approve a new capability.
+
 ## Domain and Public API Rules
 
 ### Explicit boundaries

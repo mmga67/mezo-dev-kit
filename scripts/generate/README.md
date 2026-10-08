@@ -25,6 +25,11 @@ knowledge references, the knowledge-authoring example, and per-output checks.
 
 ## SDK and CLI projections
 
+Runtime generators use `generate-*-package.ts`; the existing transaction-model,
+protocol-operations and CLI-schema generators retain their established names.
+`pnpm check:inventory` requires every such generator to appear with `--check`
+in root `generate:check`. Human references below retain module-specific checks.
+
 Invoke each filename with `node scripts/generate/<filename> [--check]`.
 The owning package's scripts may provide a `generate` or `generate:check` alias.
 
@@ -45,6 +50,8 @@ The owning package's scripts may provide a `generate` or `generate:check` alias.
 | [generate-lending-package.ts](generate-lending-package.ts)               | Lending model and contract evidence → mUSDC Lending model                              |
 | [generate-vault-package.ts](generate-vault-package.ts)                   | Vault model and contract evidence → USDC Lending Vault model                           |
 | [generate-cli-schemas.ts](generate-cli-schemas.ts)                       | `packages/cli/src/contracts.ts` → `packages/cli/schema/*.schema.json`                  |
+
+[generate-evidence-package.ts](generate-evidence-package.ts) projects the selected Contracts, Prices and Incentives inputs into the Evidence package. It supports `--check`; see the [Evidence package](../../packages/evidence/README.md) for its read-only scope.
 
 ## Human knowledge references
 

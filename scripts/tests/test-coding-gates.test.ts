@@ -24,6 +24,46 @@ async function writeJson(file: string, value: unknown): Promise<void> {
 }
 
 describe("coding-standard negative gates", () => {
+  test.each([
+    ["core", "cli", false],
+    ["evm", "prices", false],
+    ["chains", "core", false],
+    ["contracts", "core", false],
+    ["core", "examples", false],
+    ["core", "contracts", true],
+    ["contracts", "chains", true],
+    ["swaps", "pools", true],
+    ["cli", "evidence", true],
+  ] as const)(
+    "declared acyclic direction %s → %s (allowed=%s)",
+    async (consumer, provider, allowed) => {
+      const root = await mkdtemp(path.join(tmpdir(), "mdk-direction-"));
+      try {
+        for (const name of [consumer, provider]) {
+          const directory = path.join(root, name === "examples" ? "examples" : `packages/${name}`);
+          await mkdir(path.join(directory, "src"), { recursive: true });
+          await writeJson(path.join(directory, "package.json"), {
+            name: `@mezo-dev-kit/${name}`,
+            exports: { ".": "./src/index.ts" },
+            dependencies: name === consumer ? { [`@mezo-dev-kit/${provider}`]: "workspace:*" } : {},
+          });
+          await writeFile(
+            path.join(directory, "src/index.ts"),
+            name === consumer
+              ? `export { value } from "@mezo-dev-kit/${provider}";\n`
+              : "export const value = 1;\n",
+          );
+        }
+        const diagnostics = await validateWorkspaceBoundaries(root);
+        expect(diagnostics.map(({ code }) => code)).toEqual(
+          allowed ? [] : ["forbidden-dependency-direction"],
+        );
+        if (!allowed) expect(diagnostics[0]?.message).toContain("ARCHITECTURE.md");
+      } finally {
+        await rm(root, { recursive: true, force: true });
+      }
+    },
+  );
   test("TypeScript rejects use of unknown before validation", () => {
     const configPath = path.join(fixtureDirectory, "tsconfig.json");
     const configFile = ts.readConfigFile(configPath, (file) => ts.sys.readFile(file));

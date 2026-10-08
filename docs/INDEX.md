@@ -10,6 +10,11 @@ Choose a starting point for building with MDK, understanding Mezo, or contributi
   ownership, package integration, and optional consumer skills.
 - [Browser integration guide](guides/BROWSER_APPLICATIONS.md) — frontend and
   SSR boundaries, request adapters, and browser verification.
+- [Application organization](guides/APPLICATION_ARCHITECTURE.md) and
+  [frontend patterns](guides/FRONTEND_PATTERNS.md) — optional feature, state,
+  presentation and recovery recipes; use with your existing conventions.
+- [Offline browser workbench](../examples/browser-workbench/README.md) — try
+  account races, exact values, accessible detail and simulated transaction progress.
 - [SDK reference](reference/sdk.md) — package APIs, required inputs, errors,
   compatibility, and verification scope.
 

@@ -41,6 +41,13 @@ Registry acceptance covers the recorded identity and evidence. It does not
 establish protocol, route, or operation support. The [contract evidence rules](../../docs/manifest#contract-identity-and-provenance)
 define provenance requirements; each indexed record retains its own scope and dates.
 
+The MUSD NTT manager's [accepted event correction](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
+reconciles both `TransferSent` overloads with pinned Solidity and retained logs.
+The active 120-entry ABI preserves every other entry. The original TypeChain
+export stays indexed for audit; its incorrect event layout is not a historical
+deployment ABI. Imports reproduce the reviewed correction and reject source or
+artifact drift without extending route or writer scope.
+
 ## Contributing
 
 Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.

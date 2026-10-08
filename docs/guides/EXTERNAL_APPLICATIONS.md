@@ -37,6 +37,12 @@ For browser and SSR applications, follow the [browser integration guide](BROWSER
 The optional `frontend` capability set adds foundation packages and a dedicated consumer
 skill; it preserves the application's framework, wallet library and design system.
 
+The [application organization guide](APPLICATION_ARCHITECTURE.md) and
+[frontend recipes](FRONTEND_PATTERNS.md) offer optional approaches to feature/state
+ownership and presentation. Developers can use them without skills, adapt selected
+parts or keep their own conventions. The architecture skill is separately selectable
+and is not installed by the default or frontend capability sets.
+
 Normal applications live outside the MDK monorepo. Repository examples and
 templates demonstrate integrations and project generation.
 

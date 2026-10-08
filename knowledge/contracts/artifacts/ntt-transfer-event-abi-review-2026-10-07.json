@@ -1,0 +1,246 @@
+{
+  "kind": "ntt-transfer-event-abi-compatibility-review",
+  "observedAt": "2026-10-06T22:21:11.935Z",
+  "status": "verified",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "original": {
+    "resourceId": "ntt-manager-typechain-1-1-0-original",
+    "fileSha256": "0c84c959ec5aa44e0bd3a5c803b6efe828bf62140d7713950921c756a59a0e66",
+    "entryCount": 119,
+    "replacedResourceId": "abi.bridge.musd-ntt-manager",
+    "artifactReference": {
+      "moduleId": "contracts",
+      "resourceId": "ntt-manager-typechain-1-1-0-original"
+    },
+    "disposition": "Original export retained for audit; its known incorrect TransferSent metadata is not a historical deployment ABI qualification."
+  },
+  "candidate": {
+    "fileSha256": "b809fd14bbed2d8726140be9ab36e288b8cd43a612aae95ad7a6ee9b451aa0d5",
+    "entryCount": 120,
+    "changes": [
+      "recipient and refundAddress are indexed on the six-field TransferSent",
+      "Add TransferSent(bytes32 indexed digest)"
+    ],
+    "unchangedOtherEntries": 118,
+    "artifactReference": {
+      "moduleId": "contracts",
+      "resourceId": "ntt-manager-abi-candidate-2026-10-07"
+    }
+  },
+  "source": {
+    "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
+    "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
+    "path": "evm/src/interfaces/INttManager.sol",
+    "fileSha256": "27ce9e58cd8c48d361ed58e4670230a3055d0ec798de4a6ba6aff61c223f1891",
+    "bundleSha256": "2cef993403374a17af441e5572244ed45d2bdf244b1973186db74ab9bf7330a5",
+    "declarations": [
+      "bytes32 indexed recipient, bytes32 indexed refundAddress, uint256 amount, uint256 fee, uint16 recipientChain, uint64 msgSequence",
+      "bytes32 indexed digest"
+    ],
+    "bundleReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "ntt-transfer-source"
+    }
+  },
+  "evidence": {
+    "moduleId": "workflows/bridges",
+    "resourceId": "bridge-historical-reverification-2026-09-27",
+    "sha256": "7179132d42a9fecf9068703498c9f127828652aad5f90d3dbcc04616fc68043e"
+  },
+  "positiveLogs": 8,
+  "negativeChecks": 16,
+  "checks": [
+    {
+      "transferId": "musd-mezo-to-ethereum-completed",
+      "sourceNetwork": "mezo-mainnet",
+      "transactionHash": "0x46eba9c2719c4279ed262e3d605e60a1abfbf2c171b1150af802ce0dae237e7a",
+      "blockHash": "0xf422f68a4f4bddd6ff94adca72aff9cf43af4276458049d57c170cab3d284af1",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@mezo-mainnet"
+      },
+      "implementationAddress": "0xd0cbe9be1ab548eb93e5557649b236305874d4d0",
+      "generationFrom": {
+        "blockNumber": 1579320,
+        "transactionHash": "0x417756f53017044576f7d102630be4123bfcf67e363b14873144ae83b2b24269",
+        "logIndex": 0,
+        "blockHash": "0xe1c76c09bda9600a98644450be1e04c454d143585a5c16e278564dc5f19082d5",
+        "blockTimestamp": "2025-07-09T22:30:48.000Z"
+      },
+      "decoded": [
+        {
+          "event": "six-field",
+          "manager": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+          "values": [
+            "0x0000000000000000000000009c7c2b00ea7800fbe32fd50d844645db07c27a74",
+            "0x0000000000000000000000009c7c2b00ea7800fbe32fd50d844645db07c27a74",
+            "1646947251280000000000",
+            "0",
+            "2",
+            "7672"
+          ],
+          "topics": 3,
+          "dataBytes": 128
+        },
+        {
+          "event": "digest",
+          "manager": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+          "values": [
+            "0x7ebc81f92eb4096cd6ca90896c9653bbf65f32979d32d79de56dd12422309392"
+          ],
+          "topics": 2,
+          "dataBytes": 0
+        }
+      ]
+    },
+    {
+      "transferId": "musd-ethereum-to-mezo-completed",
+      "sourceNetwork": "ethereum-mainnet",
+      "transactionHash": "0x7770c22f978ec97fe9af2e2dd9719b0ec10f59a170c05fafe041a51674b7cdab",
+      "blockHash": "0xf7d820acc357482a5e9c8b8b133e985919f5fad8994b33dddf8773420ce5b3f3",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@ethereum-mainnet"
+      },
+      "implementationAddress": "0x075108f275ed81c9cfc01065e6e50ceea81d6363",
+      "generationFrom": {
+        "blockNumber": 22884633,
+        "transactionHash": "0xf863849c0eb9c26bd1ae924aa80c0617db77dd1d1d2f99bca8de6f206546cd77",
+        "logIndex": 512,
+        "blockHash": "0xe410ab84213a01ee8e6595b6c4e29af0cef8701341da0e3d7d99d7b38dcc9096",
+        "blockTimestamp": "2025-07-09T22:35:11.000Z"
+      },
+      "decoded": [
+        {
+          "event": "six-field",
+          "manager": "0x5293158bf7a81ed05418da497a80f7e6dbf4477e",
+          "values": [
+            "0x000000000000000000000000e6223bf350f6d28de96641edbc21503976a0d17e",
+            "0x000000000000000000000000e6223bf350f6d28de96641edbc21503976a0d17e",
+            "3847128989950000000000",
+            "0",
+            "50",
+            "2650"
+          ],
+          "topics": 3,
+          "dataBytes": 128
+        },
+        {
+          "event": "digest",
+          "manager": "0x5293158bf7a81ed05418da497a80f7e6dbf4477e",
+          "values": [
+            "0xe9ca2af75d2529d27fa1b2766014ad6377fbedf36ace7a785227ea9da6aefc8b"
+          ],
+          "topics": 2,
+          "dataBytes": 0
+        }
+      ]
+    },
+    {
+      "transferId": "musd-mezo-to-base-completed",
+      "sourceNetwork": "mezo-mainnet",
+      "transactionHash": "0xdc08ff10cfc9ce73e678e7ad5701091681e6ef3872b64ec1284283d836f1db02",
+      "blockHash": "0x3c570b7cecdc79ede9b9c4144e61220504f8d86766e781ae1201c4ebbb4aad54",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@mezo-mainnet"
+      },
+      "implementationAddress": "0xd0cbe9be1ab548eb93e5557649b236305874d4d0",
+      "generationFrom": {
+        "blockNumber": 1579320,
+        "transactionHash": "0x417756f53017044576f7d102630be4123bfcf67e363b14873144ae83b2b24269",
+        "logIndex": 0,
+        "blockHash": "0xe1c76c09bda9600a98644450be1e04c454d143585a5c16e278564dc5f19082d5",
+        "blockTimestamp": "2025-07-09T22:30:48.000Z"
+      },
+      "decoded": [
+        {
+          "event": "six-field",
+          "manager": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+          "values": [
+            "0x0000000000000000000000003a27adfdde1d917984a9169d25e832eadcb5b996",
+            "0x0000000000000000000000003a27adfdde1d917984a9169d25e832eadcb5b996",
+            "2332130560000000000",
+            "0",
+            "30",
+            "5867"
+          ],
+          "topics": 3,
+          "dataBytes": 128
+        },
+        {
+          "event": "digest",
+          "manager": "0x7efb386675d75280d39aae42964a6776de0ee0bd",
+          "values": [
+            "0xdef2ea14a00b0d67c46b9355d44d820d8f5a4a987b257831d800861ce9f879c8"
+          ],
+          "topics": 2,
+          "dataBytes": 0
+        }
+      ]
+    },
+    {
+      "transferId": "musd-base-to-mezo-completed",
+      "sourceNetwork": "base-mainnet",
+      "transactionHash": "0x48613d8d6ff57ea964d851066db66af3428c3149d2e78f1f4a928969fb2b82e3",
+      "blockHash": "0x947e5dbe486ceb1cc481408a87cc52834d48aaac214d1ca3b7e6e9b7edf0d66b",
+      "deploymentReference": {
+        "moduleId": "contracts",
+        "resourceId": "contract-deployments",
+        "recordId": "bridge.musd-ntt-manager@base-mainnet"
+      },
+      "implementationAddress": "0x7d61512edc44dba19ea9758e9f383547cec38366",
+      "generationFrom": {
+        "blockNumber": 42181281,
+        "transactionHash": "0xff365759a87db9fd9986403436d42cab91a4d39cd838ee080eeab261ceb60212",
+        "logIndex": 642,
+        "blockHash": "0xce89a15bd401ebeffb06d6c71bd44c3f3ba945256920f0419a31ff655630e04c",
+        "blockTimestamp": "2026-02-15T10:38:29.000Z"
+      },
+      "decoded": [
+        {
+          "event": "six-field",
+          "manager": "0x3eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+          "values": [
+            "0x000000000000000000000000a21b23e5f07e5e28cb42d09502227eb75b0b64b5",
+            "0x000000000000000000000000a21b23e5f07e5e28cb42d09502227eb75b0b64b5",
+            "2284484593450000000000",
+            "0",
+            "50",
+            "1362"
+          ],
+          "topics": 3,
+          "dataBytes": 128
+        },
+        {
+          "event": "digest",
+          "manager": "0x3eb418bdbe95b4b9cf465ecfbd8424685acd1bc1",
+          "values": [
+            "0x4c1d2081f968094e5b6e37573408731324139404bb5d3c47ef6c35c0021ea421"
+          ],
+          "topics": 2,
+          "dataBytes": 0
+        }
+      ]
+    }
+  ],
+  "consumerImpact": "Current Bridges observer/writer use SendTransceiverMessage and do not decode TransferSent. This correction is independent of those existing paths.",
+  "limitations": [
+    "The accepted correction changes only two TransferSent event declarations; the other 118 entries remain structurally unchanged.",
+    "Source/log compatibility proves these event declarations at the retained three-network generations, not a full source/build reproduction or new deployment range.",
+    "The original TypeChain ABI remains retained for audit. This correction does not promote a route, writer, administrative operation or new API."
+  ],
+  "acceptance": {
+    "acceptedOn": "2026-10-07",
+    "fileSha256": "b809fd14bbed2d8726140be9ab36e288b8cd43a612aae95ad7a6ee9b451aa0d5",
+    "disposition": "User explicitly approved TASK-179: apply the reviewed 120-entry event-only correction, retain the original TypeChain artifact and keep existing route/writer scope."
+  },
+  "appliedTo": {
+    "moduleId": "contracts",
+    "resourceId": "abi.bridge.musd-ntt-manager"
+  }
+}

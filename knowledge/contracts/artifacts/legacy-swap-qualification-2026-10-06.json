@@ -1,7 +1,7 @@
 {
   "kind": "legacy-swap-candidate-qualification",
   "supportStatus": "none",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "observedAt": "2026-10-06T10:16:24.322Z",
   "router": {
     "source": {
@@ -2711,6 +2711,10 @@
     "Runtime equality includes constructor-bound immutables; an unfilled compiled template is not a full byte match.",
     "The factory's source remains unverified. Provider trace evidence establishes the observed internal creation without asserting audited factory semantics.",
     "Historical replay covers direct CL, basic two-hop and one atomic CL/basic call. It does not qualify native payment, Permit2 fallback, whole-router-balance continuation, arbitrary command batches or additional assets.",
-    "Qualified review is required before implementation or support promotion."
-  ]
+    "Bounded candidate review accepted on 2026-10-07; target admission and implementation/support decisions remain separate."
+  ],
+  "review": {
+    "acceptedOn": "2026-10-07",
+    "disposition": "Maintainer accepted existing TASK-127 as-is, including its bounded evidence and limitations; no canonical executable target or SDK route admission."
+  }
 }

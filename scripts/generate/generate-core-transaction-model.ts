@@ -19,7 +19,15 @@ const [stateResult, errorResult] = await Promise.all([
     resourceId: "transaction-errors",
   }),
 ]);
-const outputPath = resolve(repositoryRoot, "packages", "core", "src", "model.generated.ts");
+const outputPath = resolve(
+  repositoryRoot,
+  "packages",
+  "core",
+  "src",
+  "internal",
+  "proof",
+  "model.generated.ts",
+);
 const packageDirectory = resolve(repositoryRoot, "packages", "core");
 const relation = relative(packageDirectory, outputPath);
 if (relation === "" || relation === ".." || relation.startsWith(`..${sep}`)) {
@@ -79,7 +87,9 @@ if (checkOnly) {
   try {
     current = await readFile(outputPath, "utf8");
   } catch {
-    throw new Error("packages/core/src/model.generated.ts is missing; run the generator");
+    throw new Error(
+      "packages/core/src/internal/proof/model.generated.ts is missing; run the generator",
+    );
   }
   if (current !== output) throw new Error("packages/core generated transaction model drifted");
 } else {

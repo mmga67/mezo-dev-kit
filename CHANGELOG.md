@@ -6,6 +6,37 @@ compatibility promises. Earlier history remains available in Git.
 
 ## Unreleased
 
+## 2026-10-08
+
+### Added
+
+- An offline contributor amount exercise, source-reading guidance, enforced
+  foundation/tooling dependency direction, and documentation/quality-inventory
+  gates. Core's retained proof is now under `src/internal/proof/`; incentives
+  formula validation has explicit stages without changing protocol calculations.
+- Optional [application organization](docs/guides/APPLICATION_ARCHITECTURE.md)
+  and [frontend recipes](docs/guides/FRONTEND_PATTERNS.md), a separately selectable
+  architecture skill, and an [offline browser workbench](examples/browser-workbench/README.md)
+  demonstrating exact display, account races and simulated recovery with existing tooling.
+- Concise [local artifact rules](docs/guides/BRANCH_WORKFLOW.md#local-artifact-order)
+  for placement, ownership, retention and cleanup, with gradual adoption for
+  existing folders.
+
+### Changed
+
+- Renewed bounded bridge and swap evidence and recorded the accepted private
+  workflow review scope. Historical observations, current-route limitations,
+  and public route/writer release boundaries remain explicit.
+
+### Fixed
+
+- Corrected the MUSD NTT manager's `TransferSent` event metadata against its
+  pinned Solidity interface and retained logs, preserving the original ABI
+  artifact and adding source/digest and decoding regressions.
+- Consumer reference bundles preserve literal Markdown links inside code examples
+  without treating them as supporting-resource dependencies. Documentation review
+  and regression checks now cover preservation of task-critical context.
+
 ## 2026-10-07
 
 First changelog entry, covering changes since `fb17070`.

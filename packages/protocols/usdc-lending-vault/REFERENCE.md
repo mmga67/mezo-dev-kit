@@ -371,8 +371,7 @@ Use [Tokens](../../tokens/REFERENCE.md) for separate approvals and [Core](../../
 for durable confirmation/recovery. Do not resubmit uncertain intent blindly. Restored exact
 preparation context can be reconciled; a new simulation requires an owned preparation. The
 [local integration](test/fork.ts) exercises all six paths plus gauge exit, restaking and a nonzero
-reward claim with labelled native-engine fixtures. Node is tested; browser bundles remain
-unverified.
+reward claim with labelled native-engine fixtures. The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) owns portability and browser qualification; this integration proves its recorded execution scope.
 
 ### Writer failures
 

@@ -118,9 +118,7 @@ real EVM calldata. `decodeRead({ ...call, data })` returns one scalar. Integers 
 bigint and addresses to valid strings. Every call, code read, and storage read must honor the same
 coordinate.
 
-Runtime hashing uses Node crypto. No production ABI/RPC adapter, browser bundle certification,
-wallet, retry, timeout, or cancellation policy is provided. The application supplies those
-integrations and I/O policies.
+Runtime hashing uses portable EVM helpers. See the [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) for integration and qualification requirements. Applications supply wallet, retry, timeout and cancellation policies.
 
 ### Runtime and relationship checks
 

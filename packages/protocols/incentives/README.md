@@ -26,7 +26,7 @@ Keep principal, voter-directed revenue, ordinary pool fees, and gauge emissions
 separate. Gauge custody and a user's beneficial stake are different. Withdrawals
 may also settle rewards; reconcile actual transfers rather than accounting caps.
 
-These are private Node implementations with operation support still proposed
+These are private workspace implementations with operation support still proposed
 or absent pending qualified review. Ordinary lock operations exclude managed,
 granted, delegated, and otherwise restricted positions; voting and claims have
 their own checks. Local native-token fixtures do not qualify Mezo's native engine.
@@ -35,6 +35,8 @@ for the underlying lock, vote, and reward models.
 The [MEZO Gauge reference](../../../knowledge/protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives)
 also covers third-party voting and remote incentives; this package's voting
 workflows currently cover the three domains listed above.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

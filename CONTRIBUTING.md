@@ -246,6 +246,8 @@ boundary or risk requires it.
 The deterministic repository-wide code gates are:
 
 ```bash
+pnpm check:docs
+pnpm check:inventory
 pnpm format:check
 pnpm typecheck
 pnpm lint

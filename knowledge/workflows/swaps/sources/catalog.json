@@ -6,9 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
-  "scope": { "networkIds": ["mezo-mainnet"], "retrievalDate": "2026-08-25" },
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "retrievalDate": "2026-10-07"
+  },
   "limitations": [
     "Documentation establishes the published split-router surface but does not replace source, ABI, deployment, or fixed-block evidence.",
     "Explorer/RPC observations are bounded to their recorded coordinates and do not create runtime support."
@@ -18,9 +21,14 @@
       "id": "official-docs-mezo-pools-current",
       "type": "official-documentation",
       "url": "https://mezo.org/docs/developers/features/mezo-pools",
-      "retrievedAt": "2026-08-25T06:45:00.000Z",
+      "retrievedAt": "2026-10-06T21:57:01.298Z",
       "scope": "Current basic Router and CL Swap Router addresses and documented swap entrypoint examples.",
-      "limitations": ["The page publishes no Quoter or Universal Router address."]
+      "limitations": ["The page publishes no Quoter or Universal Router address."],
+      "retainedArtifactReference": {
+        "moduleId": "workflows/swaps",
+        "resourceId": "swap-official-docs-2026-10-07"
+      },
+      "sha256": "9def4bb32c0b8335ebf94f9b43a233d16f300ebe2996d1de4c0840de010f69bd"
     },
     {
       "id": "basic-router-deployment",
@@ -65,7 +73,10 @@
     {
       "id": "pool-architectures",
       "type": "logical-reference",
-      "reference": { "moduleId": "protocols/pools", "resourceId": "pools-architectures" },
+      "reference": {
+        "moduleId": "protocols/pools",
+        "resourceId": "pools-architectures"
+      },
       "scope": "Accepted basic/CL identity, discovery, math, and Quoter boundaries."
     },
     {
@@ -93,6 +104,17 @@
       "path": "evidence/mainnet-routing-2026-08-25.json",
       "sha256": "f5b3e10eb2d4feca6446d44b84a884a29aa4f46b14776deab40031dcaa29a5a7",
       "scope": "Current router relationships and quote plus exact historical basic multi-hop and CL direct replay/reconciliation evidence."
+    },
+    {
+      "id": "swap-maintenance-reverification-2026-10-07",
+      "type": "local-evidence",
+      "path": "artifacts/current-routing-2026-10-07.json",
+      "sha256": "ba3169bf301f171f10c5158b40b67420aef5b8a876e1a71f8b333d69985a2519",
+      "scope": "Current roots, SDK basic quotes, bounded CL pool availability and rechecked historical exact-call/recipient-output evidence."
     }
-  ]
+  ],
+  "reverification": {
+    "moduleId": "workflows/swaps",
+    "resourceId": "swap-maintenance-reverification-2026-10-07"
+  }
 }

@@ -166,6 +166,13 @@ canonical knowledge bytes and skill directories remain unchanged. The pinned pnp
 interprets the existing root lockfile to derive starter dependency resolutions. No dependencies are
 installed by generation.
 
+Markdown navigation links are rewritten for the bundle, while fenced, indented,
+and inline code examples retain their literal text. Links mentioned only inside
+examples do not add supporting-resource dependencies. Other links to excluded
+documents retain explicit source pointers. Labels, warnings, units and evidence
+or support qualifications remain in the document; hashes verify delivery of
+those bytes, not current evidence or protocol support.
+
 ### `packPrivateArtifacts` — create private tarballs
 
 `packPrivateArtifacts(sourceRoot, outputRoot)` returns `Promise<ArtifactSet>`. It requires built

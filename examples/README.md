@@ -19,6 +19,8 @@ need several steps. There is no example console or demonstration command to run.
 For browser applications, the [amount form](browser/README.md) shows input
 validation and rendering; the [browser integration guide](../docs/guides/BROWSER_APPLICATIONS.md)
 explains RPC, wallets, SSR and package compatibility.
+The [offline workbench](browser-workbench/README.md) combines optional application
+patterns with account races, independent source states and simulated progress.
 
 ## Follow one transaction
 

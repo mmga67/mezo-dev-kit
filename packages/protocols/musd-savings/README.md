@@ -28,7 +28,7 @@ optional result before using it; missing data is unavailable, never zero.
 
 This private mainnet package has an accepted bounded reader review. Direct
 writers remain candidates requiring qualified review before release. Runtime
-hashing uses Node crypto; browser integration is unverified. The
+hashing uses portable EVM helpers; see the [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract). The
 [Savings model](../../../knowledge/protocols/musd/savings/README.md) explains
 accounting separately from classic MUSD borrowing.
 

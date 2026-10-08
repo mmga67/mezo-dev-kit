@@ -19,13 +19,15 @@ reject the snapshot. A selected subset is not a complete institutional inventory
 
 ## Scope
 
-This private Node package provides reads and pure calculations; it implements
+This private workspace package provides reads and pure calculations; it implements
 no partner writer or liquidation operation. Qualified review and release remain
 outstanding. Enclave role membership does not authorize execution, and recorded
 UTXOs do not prove Bitcoin custody, unspent state, or a backing ratio.
 
 See [institutional debt knowledge](../../../knowledge/protocols/musd/institutional-debt/README.md)
 for the separate position, fee, and custody evidence boundaries.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

@@ -61,17 +61,76 @@ Run from the repository root:
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm --filter '@mezo-dev-kit/examples...' build
+pnpm --filter @mezo-dev-kit/evm build
 ```
 
 The build emits JavaScript and declarations through public package exports.
-Read the [cookbook learning path](../../examples/README.md#start-here), then choose
-a [focused operation](../../examples/PACKAGES.md). Recipes explain application
-inputs and outcomes without an example console or financial demonstration run.
+Start with EVM alone for the exercise below. It needs no RPC, wallet or agent setup.
 
 `--frozen-lockfile` fails if installation would require a lockfile update.
 For contributor verification, use the checks in
 [Make a first change](#make-a-first-change).
+
+### Run an exact-amount exercise
+
+Run from the repository root. The filter executes inside the EVM package, so the
+named import resolves its freshly built public export:
+
+```sh
+pnpm --filter @mezo-dev-kit/evm exec node --input-type=module-typescript <<'TS'
+import { EvmValueError, parseUnitsExact, formatUnitsExact } from "@mezo-dev-kit/evm";
+
+const amount = parseUnitsExact("1.25", 6);
+console.log(amount.toString());
+console.log(formatUnitsExact(amount, 6));
+try {
+  parseUnitsExact("1.2500001", 6);
+} catch (error) {
+  if (!(error instanceof EvmValueError)) throw error;
+  console.log(error.code);
+}
+TS
+```
+
+Expected output:
+
+```text
+1250000
+1.25
+ExcessPrecision
+```
+
+Six decimal places is an illustrative input, not a claim about an asset.
+The parser preserves exact integer base units and rejects excess precision.
+Follow the export in [EVM's entrypoint](../../packages/evm/src/index.ts) to
+[units.ts](../../packages/evm/src/units.ts), then read the amount cases in
+[values.test.ts](../../packages/evm/test/values.test.ts). Run them with
+`pnpm --filter @mezo-dev-kit/evm test -- test/values.test.ts`.
+
+Continue with the [cookbook learning path](../../examples/README.md#start-here)
+and [application connections](../../examples/SETUP.md) for read-only RPC input.
+Build the full recipe dependencies when you reach that step:
+`pnpm --filter '@mezo-dev-kit/examples...' build`. Recipes accept application
+inputs; this exercise does not introduce a financial demonstration runner.
+
+### Find the file to change
+
+Start with the package README and reference, inspect `package.json#exports`,
+then follow `src/index.ts` to the named implementation and its behavior test.
+For example, Contracts' [registry.ts](../../packages/contracts/src/registry.ts)
+owns lookup logic; its large generated catalog supplies data.
+
+To search authored TypeScript without generated data obscuring the result:
+
+```sh
+rg -n 'createContractRegistry' packages/contracts/src -g '!*.generated.ts'
+```
+
+For a generated value, read the file's generator header, then follow the
+[generator map](../../scripts/generate/README.md#sdk-and-cli-projections)
+and the owning [knowledge index](../../knowledge/index.json). Change canonical
+inputs before regenerating. This search filter changes only the displayed
+results; generated data remains part of drift checks and builds.
 
 ## Work on one workspace package
 
@@ -152,12 +211,12 @@ format the edited files and check links; for example:
 
 ```sh
 pnpm exec prettier --check README.md docs/guides/SDK_DEVELOPMENT.md
-node scripts/checks/validate-markdown-links.ts
+pnpm check:docs
 git diff --check
 ```
 
 Review changed heading anchors and follow the reader's path as well.
-Root `format:check` does not include root Markdown or `docs/`.
+Root `format:check` does not include root Markdown or `docs/`; format edited authored prose explicitly. `pnpm check:docs` checks maintained file/heading targets and manifest versioning, and also runs in `pnpm check`.
 
 For package behavior, start with its documented check and relevant tests.
 Run `pnpm boundaries` when imports, exports, dependencies, or workspace
@@ -169,7 +228,7 @@ pnpm check
 pnpm test:shuffle
 ```
 
-`pnpm check` combines formatting, generation drift, typechecking, lint,
+`pnpm check` combines source/task, documentation and inventory checks, formatting, generation drift, typechecking, lint,
 boundaries, builds, built/packed package checks, clean installation and tests.
 `test:shuffle` separately checks seeded test order. Browser qualification is
 opt-in through `pnpm check:browser`; do not infer browser execution from default

@@ -3,7 +3,7 @@
   "knowledgeVersion": "0.4",
   "status": "verified",
   "supportStatus": "proposed",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-15T19:24:31.257Z",
   "reviewAfter": null,
   "kind": "native-transfer-qualification",
@@ -28,7 +28,10 @@
       "sha256": "5f541681947e411e3a4d0bd63507b54cae3fcfb905be314eabad0eb3e6b5b0ad"
     },
     {
-      "reference": { "moduleId": "contracts", "resourceId": "native-transfer-current-rpc" },
+      "reference": {
+        "moduleId": "contracts",
+        "resourceId": "native-transfer-current-rpc"
+      },
       "sha256": "1d231294c38de1456041ec9b21c041a157096c5a651959dc8d443c55292de3b9"
     },
     {
@@ -55,10 +58,22 @@
     "commit": "42ddabe17f20580d145441d8f607f6306d753311",
     "reportedVersionPrefix": "Mezod/13.0.0/",
     "blockedRecipients": [
-      { "moduleName": "fee_collector", "address": "0xf1829676db577682e944fc3493d451b67ff3e29f" },
-      { "moduleName": "poa", "address": "0x70963e33ab0c3fcd4d195e3545795885f13140c8" },
-      { "moduleName": "evm", "address": "0x603871c2ddd41c26ee77495e2e31e6de7f9957e0" },
-      { "moduleName": "bridge", "address": "0x17f29b073143d8cd97b5bbe492bdeffec1c5fee5" }
+      {
+        "moduleName": "fee_collector",
+        "address": "0xf1829676db577682e944fc3493d451b67ff3e29f"
+      },
+      {
+        "moduleName": "poa",
+        "address": "0x70963e33ab0c3fcd4d195e3545795885f13140c8"
+      },
+      {
+        "moduleName": "evm",
+        "address": "0x603871c2ddd41c26ee77495e2e31e6de7f9957e0"
+      },
+      {
+        "moduleName": "bridge",
+        "address": "0x17f29b073143d8cd97b5bbe492bdeffec1c5fee5"
+      }
     ],
     "mintAuthority": "0x17f29b073143d8cd97b5bbe492bdeffec1c5fee5"
   },
@@ -89,5 +104,13 @@
   "minterReference": {
     "moduleId": "workflows/bridges",
     "resourceId": "native-transfer-minter-probe"
+  },
+  "review": {
+    "acceptedOn": "2026-10-07",
+    "disposition": "Existing bounded private implementation and evidence accepted as-is by the maintainer; support remains proposed and all retained evidence limits apply.",
+    "continuityReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-private-scope-reverification-2026-10-07"
+    }
   }
 }

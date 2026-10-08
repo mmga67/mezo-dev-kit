@@ -13,6 +13,16 @@ They read local source/evidence; they do not capture replacement live evidence.
 | [validate-markdown-links.ts](validate-markdown-links.ts)         | `node scripts/checks/validate-markdown-links.ts` — local links in the maintained documentation roots, including scripts manuals          |
 | [validate-manifest-version.ts](validate-manifest-version.ts)     | `node scripts/checks/validate-manifest-version.ts` — manifest version/changelog consistency                                              |
 
+`pnpm check:docs` composes local link/heading validation and manifest version
+validation. It includes root documents, package/template documentation and the
+extensionless manifest, and skips built/install output. The checker accepts
+inline/reference links, ATX/setext headings, duplicate heading suffixes and
+explicit HTML anchors; external URLs are not fetched. Format edited authored
+prose with Prettier separately; generated prose follows its owning renderer.
+
+`pnpm check:inventory` runs [validate-quality-inventory.ts](validate-quality-inventory.ts)
+to check repository test-runner and runtime-generator registrations.
+
 `pnpm check:tasks` routes to [workspace/tasks.ts](../workspace/tasks.ts), and
 skill validation is in [agents/](../agents/README.md).
 
@@ -55,6 +65,14 @@ node scripts/generate/generate-network-reference.ts --check
 Where no arguments are listed, invoke `node scripts/checks/<filename>`.
 Avoid running every validator with an argument-free shell glob: the economic
 system validator requires a module selection.
+
+### Incentives validator stages
+
+The incentives command keeps formula fixtures in
+[incentive-formula-validation.ts](../lib/incentive-formula-validation.ts).
+Its two stages accept explicit fixture/evidence inputs and identify the resource
+on failure. Calculations remain independent of runtime SDK math; the command
+retains deployment, evidence lifecycle, topology and documentation validation.
 
 ## Mainnet reader evidence
 

@@ -6,14 +6,11 @@
   "owner": "workflows/bridges",
   "status": "verified",
   "supportStatus": "proposed",
-  "reviewStatus": "pending-qualified-review",
+  "reviewStatus": "accepted",
   "verifiedAt": "2026-09-12T15:01:49.467Z",
   "reviewAfter": null,
   "scope": {
-    "networkIds": [
-      "ethereum-mainnet",
-      "mezo-mainnet"
-    ],
+    "networkIds": ["ethereum-mainnet", "mezo-mainnet"],
     "transferIds": [
       "native-usdc-ethereum-to-mezo-completed",
       "native-btc-mezo-to-ethereum-completed"
@@ -46,5 +43,13 @@
   "transferEvidenceReference": {
     "moduleId": "workflows/bridges",
     "resourceId": "bridge-native-evidence"
+  },
+  "review": {
+    "acceptedOn": "2026-10-07",
+    "disposition": "Existing bounded private implementation and evidence accepted as-is by the maintainer; support remains proposed and all retained evidence limits apply.",
+    "continuityReference": {
+      "moduleId": "workflows/bridges",
+      "resourceId": "bridge-private-scope-reverification-2026-10-07"
+    }
   }
 }

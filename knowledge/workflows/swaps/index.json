@@ -8,12 +8,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
   "scope": {
     "networkIds": ["mezo-mainnet"],
-    "evidenceBlockNumber": 11376104,
-    "evidenceBlockHash": "0x358c55c8879f9a6711408df6e4dbc75e4b82d3e7f2f0cbab47fd73bfeaf32bc3"
+    "evidenceBlockNumber": 12336647,
+    "evidenceBlockHash": "0xcd4a686343af0c9ae5a9407828b761a451bd692fc10024a9435052c7c3f740ee"
   },
   "limitations": [
     "This is a qualified-review-accepted knowledge model; it exposes no public reader or writer.",
@@ -121,12 +121,39 @@
       "kind": "human-reference",
       "path": "generated/reference.md",
       "generatedFrom": [
-        { "moduleId": "workflows/swaps", "resourceId": "swap-providers" },
-        { "moduleId": "workflows/swaps", "resourceId": "swap-routes" },
-        { "moduleId": "workflows/swaps", "resourceId": "swap-execution-requirements" },
-        { "moduleId": "workflows/swaps", "resourceId": "swap-route-fixtures" },
-        { "moduleId": "workflows/swaps", "resourceId": "swap-mainnet-routing-evidence" }
+        {
+          "moduleId": "workflows/swaps",
+          "resourceId": "swap-providers"
+        },
+        {
+          "moduleId": "workflows/swaps",
+          "resourceId": "swap-routes"
+        },
+        {
+          "moduleId": "workflows/swaps",
+          "resourceId": "swap-execution-requirements"
+        },
+        {
+          "moduleId": "workflows/swaps",
+          "resourceId": "swap-route-fixtures"
+        },
+        {
+          "moduleId": "workflows/swaps",
+          "resourceId": "swap-mainnet-routing-evidence"
+        }
       ]
+    },
+    {
+      "id": "swap-maintenance-reverification-2026-10-07",
+      "role": "artifact",
+      "kind": "swap-maintenance-reverification",
+      "path": "artifacts/current-routing-2026-10-07.json"
+    },
+    {
+      "id": "swap-official-docs-2026-10-07",
+      "role": "artifact",
+      "kind": "retained-official-documentation",
+      "path": "artifacts/mezo-pools-2026-10-07.html"
     }
   ],
   "checks": [
@@ -149,7 +176,10 @@
   "extensions": {
     "workflowStatus": "verified-model-accepted-not-supported",
     "poolBoundary": "Pool identities, discovery, state, and math remain owned by protocols/pools; this module owns cross-pool route and execution workflow semantics.",
-    "networkReference": { "moduleId": "networks", "resourceId": "mezo-mainnet" },
+    "networkReference": {
+      "moduleId": "networks",
+      "resourceId": "mezo-mainnet"
+    },
     "rpcReference": {
       "moduleId": "networks",
       "resourceId": "rpc-endpoints",
@@ -162,6 +192,10 @@
     "blockers": [
       "separate package task and fresh exact-call verification before any public reader or writer",
       "official deployment evidence before adding a Quoter, Universal Router, or atomic mixed route"
-    ]
+    ],
+    "reverification": {
+      "moduleId": "workflows/swaps",
+      "resourceId": "swap-maintenance-reverification-2026-10-07"
+    }
   }
 }

@@ -16,9 +16,15 @@ concentrated-liquidity families. Their route encodings and reconciliation differ
 see the reference before composing them. Module operation support remains absent
 while the SDK documents its implemented private scope.
 
-There is no evidenced Universal Router or current official Quoter. Atomic mixed
-basic/CL execution and fee-on-transfer variants remain outside the current scope.
+The legacy Router/Quoter candidates have accepted bounded provenance evidence;
+neither is admitted as an SDK target or established as a current official integration.
+Atomic mixed basic/CL execution and fee-on-transfer variants remain outside the current scope.
 A quote or historical replay is not a guaranteed received amount.
+
+The [October 7 renewal](artifacts/current-routing-2026-10-07.json) rechecks the
+existing routers, both basic three-token route directions and historical replay
+outputs. Its CL discovery distinguishes active liquidity, zero active liquidity
+and absent pools. The earlier fork-created mUSDT CL pools do not establish live routes.
 
 ## Contributing
 

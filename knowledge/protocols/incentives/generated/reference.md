@@ -10,12 +10,12 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Verified: `2026-10-06T14:04:51.613Z`
 - Review after: `2026-11-05T00:00:00Z`
 - Evidence block: `11366264` on `mezo-mainnet`
-- Input digest: `sha256:b63a5cf26cceea38c83d17cc5b0c73dd61b2bc39c4410e6846a6f65854ebf588`
+- Input digest: `sha256:486671a37bd346bfb87e61e6bef6185b3d5e319fc6f669baa086d2bd4e4a0dfb`
 - Resource-specific scope and review below govern additions beyond the original module acceptance.
 
 ## Configuration observation catalog
 
-Catalog review: pending-qualified-review; support: none. This scope does not inherit the module's earlier acceptance.
+Catalog review: accepted; support: none. This scope does not inherit the module's earlier acceptance.
 
 - Bounded historical comparison catalog, not universal governance coverage or proof of an authorized governance action.
 - Current values are observations only. Runtime identity must match before interpreting storage or ABI results.

@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { object, objects, parseJson, text, texts, values, type JsonObject } from "../lib/json.ts";
+import { loadReviewedNttManagerAbi } from "../lib/ntt-manager-abi.ts";
 
 interface Coordinate extends JsonObject {
   blockNumber: number;
@@ -253,28 +254,54 @@ for (const definition of contractDefinitions) {
     sha256: definition.factorySha256,
   });
 
-  abiRecords.push(
-    createAbiRecord({
-      contractId: definition.contractId,
-      abi,
-      abiBytes,
-      provenanceClass: definition.provenanceClass,
-      intendedNetworkIds: ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
-      sourceId: nttSourceId,
-      sourceArtifacts: [
-        {
-          networkIds: ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
-          version: "1.1.0",
-          path: definition.factoryPath,
-          sha256: definition.factorySha256,
-        },
-      ],
-      limitations: [
-        "The full ABI is extracted from the pinned official NTT 1.1.0 TypeChain factory and scoped to the three recorded MUSD deployments.",
-        "The ABI and live configuration records are proposed evidence only; they do not establish relayer, quote, route, or writer support.",
-      ],
-    }),
-  );
+  const abiRecord = createAbiRecord({
+    contractId: definition.contractId,
+    abi,
+    abiBytes,
+    provenanceClass: definition.provenanceClass,
+    intendedNetworkIds: ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    sourceId: nttSourceId,
+    sourceArtifacts: [
+      {
+        networkIds: ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+        version: "1.1.0",
+        path: definition.factoryPath,
+        sha256: definition.factorySha256,
+      },
+    ],
+    limitations: [
+      "The full ABI is extracted from the pinned official NTT 1.1.0 TypeChain factory and scoped to the three recorded MUSD deployments.",
+      "The ABI and live configuration records are proposed evidence only; they do not establish relayer, quote, route, or writer support.",
+    ],
+  });
+  if (definition.contractId === "bridge.musd-ntt-manager") {
+    const correction = await loadReviewedNttManagerAbi(repositoryRoot);
+    assert(
+      abiSemanticDigest(abi) === abiSemanticDigest(correction.abi),
+      "NTT manager record requires the approved event correction",
+    );
+    const interfaceBytes = await readFile(join(nttRepository, correction.sourcePath));
+    assert(
+      interfaceBytes.toString("utf8") === correction.source,
+      "NTT manager interface source differs",
+    );
+    const sourceArtifact = { path: correction.sourcePath, sha256: sha256(interfaceBytes) };
+    sourceArtifacts.push({ sourceId: nttSourceId, ...sourceArtifact });
+    abiRecord.sourceArtifacts = [
+      ...objects(abiRecord.sourceArtifacts, "ABI source artifacts"),
+      {
+        networkIds: ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+        version: "1.1.0",
+        ...sourceArtifact,
+      },
+    ];
+    abiRecord.correctionReference = correction.correctionReference;
+    abiRecord.limitations = [
+      "The pinned official NTT 1.1.0 TypeChain full ABI has an accepted event-only correction from the pinned Solidity interface and retained three-network logs; the original export remains indexed for audit.",
+      "ABI correction acceptance does not promote this imported deployment/configuration proposal or establish relayer, quote, route, or writer support.",
+    ];
+  }
+  abiRecords.push(abiRecord);
 
   for (const deployment of definition.deployments) {
     const network =
@@ -1023,7 +1050,7 @@ const sourceRecords = [
     kind: "official-deployment-repository-live-configuration",
     repository: "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
     commit: "8742584991b5f4d1ee63ff10fad8d833a460526c",
-    note: "Pinned official current MUSD NTT 1.1.0 deployment configuration, generated ABI factories, Base manager deployment, and three transceiver deployment broadcasts.",
+    note: "Pinned official current MUSD NTT 1.1.0 deployment configuration, generated ABI factories, manager Solidity interface, Base manager deployment, and three transceiver deployment broadcasts.",
   },
   {
     id: originalNttSourceId,

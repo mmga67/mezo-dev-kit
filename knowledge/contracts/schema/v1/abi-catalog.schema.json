@@ -65,6 +65,9 @@
           "artifactReference": {
             "$ref": "../../../schema/v0.4/logical-reference.schema.json"
           },
+          "correctionReference": {
+            "$ref": "../../../schema/v0.4/logical-reference.schema.json"
+          },
           "entryCount": { "type": "integer", "minimum": 1 },
           "fileSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
           "abiSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },

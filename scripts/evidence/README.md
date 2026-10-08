@@ -103,7 +103,12 @@ after reviewing its inputs and intended writes.
 | [import-bridge-contract-abis.ts](import-bridge-contract-abis.ts)                                   | `<ntt-checkout> <mezod-checkout> <native-bridge-compiler-output>`; writes bridge ABIs                                                                                                                           |
 | [import-bridge-contract-records.ts](import-bridge-contract-records.ts)                             | Nine positional inputs, in the order below; writes original bridge registry records/evidence                                                                                                                    |
 
-The bridge-record import's argument order is:
+The bridge ABI importer verifies the approved NTT manager event correction
+against its preserved TypeChain export and pinned Solidity interface before
+writing the corrected full ABI. Its source checkout must contain both exact
+inputs; a mismatched or unapproved correction fails before any ABI is written.
+
+The bridge-record importer takes:
 
 ```text
 <capture-json> <ntt-repository> <original-ntt-repository> <mezod-repository>

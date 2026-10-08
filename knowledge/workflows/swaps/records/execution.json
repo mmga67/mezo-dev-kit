@@ -6,9 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
-  "scope": { "networkIds": ["mezo-mainnet"], "writerStatus": "requirements-only" },
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "writerStatus": "requirements-only"
+  },
   "limitations": [
     "These requirements do not enable a public quote, route, approval, simulation, or writer API.",
     "Historical evidence does not waive fresh deployment, code, pool, allowance, balance, fee, deadline, slippage, and exact-call checks."
@@ -93,9 +96,25 @@
     "reconciliation token deltas and mismatch"
   ],
   "references": [
-    { "moduleId": "protocols/pools", "resourceId": "pools-architectures" },
-    { "moduleId": "protocols/pools", "resourceId": "pools-operation-requirements" },
-    { "moduleId": "workflows/transactions", "resourceId": "transaction-client-requirements" },
-    { "moduleId": "workflows/transactions", "resourceId": "transaction-state-machine" }
-  ]
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-architectures"
+    },
+    {
+      "moduleId": "protocols/pools",
+      "resourceId": "pools-operation-requirements"
+    },
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-client-requirements"
+    },
+    {
+      "moduleId": "workflows/transactions",
+      "resourceId": "transaction-state-machine"
+    }
+  ],
+  "reverification": {
+    "moduleId": "workflows/swaps",
+    "resourceId": "swap-maintenance-reverification-2026-10-07"
+  }
 }

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { loadKnowledgeReference } from "./knowledge-reference.ts";
 import { object, objects, text } from "./json.ts";
 import { validateNativeMinterProbe } from "../../packages/contracts/tools/native-transfer-evidence.ts";
+import { validatePrivateBridgeReview } from "./private-bridge-review.ts";
 
 /** Validate retained Native qualification and project its bounded token/client expectations. */
 export async function generateNativeTransferModel(root: string): Promise<{
@@ -32,7 +33,7 @@ export async function generateNativeTransferModel(root: string): Promise<{
   for (const record of [qualification, profile]) {
     assert.equal(record.status, "verified");
     assert.equal(record.supportStatus, "proposed");
-    assert.equal(record.reviewStatus, "pending-qualified-review");
+    await validatePrivateBridgeReview(record, load);
     for (const artifact of objects(record.artifacts, "artifacts"))
       await load(artifact.reference, artifact.sha256);
   }

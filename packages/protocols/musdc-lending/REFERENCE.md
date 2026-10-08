@@ -393,8 +393,7 @@ for confirmation, uncertainty and reorg recovery. Do not repeat a whole sequence
 submission response. New simulations require this writer's preparation; restored exact context can
 be reconciled with the durable record. The [local fork integration](test/fork.ts) covers supply,
 withdrawal, collateral, borrow, partial repayment and full repayment by shares. Its native
-BTC/oracle fixtures do not verify mezod native execution. Node is tested; browser bundling remains
-unverified.
+BTC/oracle fixtures do not verify mezod native execution. The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) owns portability and browser qualification; this fork harness proves its recorded execution scope.
 
 ### Writer failures
 

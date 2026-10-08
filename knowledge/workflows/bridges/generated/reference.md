@@ -9,7 +9,7 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Review: `accepted`
 - Verified: `2026-10-06T14:04:51.613Z`
 - Review after: `2026-11-05T00:00:00Z`
-- Input digest: `sha256:135081a799a7eb22d54206f1e86e5769b5d158084be2040bcff71949bbfd87c2`
+- Input digest: `sha256:5c8dc80fafdf4097015303fa07795d27c5bd0c5995222d9419f378b34d2ae77e`
 
 ## Inventory
 
@@ -67,6 +67,6 @@ Remaining blockers:
 
 ## Private Native source and current delivery
 
-The [Native source qualification](../evidence/native-transfer-2026-09-15.json) remains `proposed` / `pending-qualified-review`.
+The [Native source qualification](../evidence/native-transfer-2026-09-15.json) remains `proposed` / `accepted`.
 
 It combines current read-only bridge/token evidence, pinned source and historical transfer compatibility for the two initial routes. The [Bridges SDK](../../../../packages/bridges/REFERENCE.md#private-native-source-preparation) owns the implemented API, exact source simulation and separate destination observation. Confirmed failed payouts require governance recovery; destination fee estimates cannot cap a later settlement fee.

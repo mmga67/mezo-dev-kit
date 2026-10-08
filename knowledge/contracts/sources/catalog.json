@@ -87,7 +87,7 @@
       "kind": "official-deployment-repository-live-configuration",
       "repository": "https://github.com/mezo-org/ntt-bridge-musd-mainnet",
       "commit": "8742584991b5f4d1ee63ff10fad8d833a460526c",
-      "note": "Pinned official current MUSD NTT 1.1.0 deployment configuration, generated ABI factories, Base manager deployment, and three transceiver deployment broadcasts."
+      "note": "Pinned official current MUSD NTT 1.1.0 deployment configuration, generated ABI factories, manager Solidity interface, Base manager deployment, and three transceiver deployment broadcasts."
     },
     {
       "id": "official-ntt-musd-initial-deployments",
@@ -461,6 +461,11 @@
       "sourceId": "official-ntt-musd-live-deployment",
       "path": "evm/ts/src/ethers-contracts/1_1_0/factories/NttManager__factory.ts",
       "sha256": "11ecedfda4242865639467c005fdfdcae2a417947b182fbc4a8e9b3759b33044"
+    },
+    {
+      "sourceId": "official-ntt-musd-live-deployment",
+      "path": "evm/src/interfaces/INttManager.sol",
+      "sha256": "27ce9e58cd8c48d361ed58e4670230a3055d0ec798de4a6ba6aff61c223f1891"
     },
     {
       "sourceId": "official-ntt-musd-live-deployment",

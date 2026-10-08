@@ -53,7 +53,8 @@ existing work to fill a gap. Dates belong in the task's progress/evidence, not
 in place of its ID. Only the two guidance files and status folders belong at
 the root, apart from an applicable `AGENTS.md`. A status folder may also have
 its own `AGENTS.md`; task listing reports these ignored instruction paths.
-Retain large histories and original migration snapshots under local/.
+Retain large histories and original migration snapshots under `local/`, following
+[local artifact order](BRANCH_WORKFLOW.md#local-artifact-order).
 
 The folder is the task status. Do not add a second `Status:` field. Use the
 required template sections; additional task-specific sections are allowed.

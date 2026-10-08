@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { loadKnowledgeReference } from "./knowledge-reference.ts";
 import { object, objects, text, values } from "./json.ts";
+import assert from "node:assert/strict";
+import { loadReviewedNttManagerAbi } from "./ntt-manager-abi.ts";
 
 /** Ordinary NTT functions only. Administrative and transceiver-only entrypoints stay absent. */
 export async function generateNttContractInterfaces(
@@ -20,6 +22,13 @@ export async function generateNttContractInterfaces(
   const records = [];
   for (const contractId of ["bridge.musd-ntt-manager", "bridge.musd-wormhole-transceiver"]) {
     const abi = objects(await load(`abi.${contractId}`), "ABI");
+    if (contractId === "bridge.musd-ntt-manager") {
+      assert.deepEqual(
+        abi,
+        (await loadReviewedNttManagerAbi(root)).abi,
+        "NTT projection requires the accepted event correction",
+      );
+    }
     const names =
       contractId === "bridge.musd-ntt-manager"
         ? [

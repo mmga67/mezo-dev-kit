@@ -6,9 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
-  "scope": { "networkIds": ["mezo-mainnet"], "providerCount": 2 },
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "providerCount": 2
+  },
   "limitations": [
     "Provider verification describes deployed contract capabilities and does not expose an MDK reader or writer.",
     "A router convenience quote and an exact state-changing eth_call have different meanings and must be returned as different result types.",
@@ -111,5 +114,9 @@
         "factoryRule": "Each hop resolves from the immutable CL factory by sorted tokens and int24 tick spacing, and the callback validates the computed pool."
       }
     }
-  ]
+  ],
+  "reverification": {
+    "moduleId": "workflows/swaps",
+    "resourceId": "swap-maintenance-reverification-2026-10-07"
+  }
 }

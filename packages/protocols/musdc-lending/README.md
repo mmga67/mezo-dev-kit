@@ -27,11 +27,13 @@ A zero-debt position needs no price; unknown debt is not zero. Stale, missing,
 future, or conflicting prices stay explicit failures, with no automatic fallback.
 See [results and freshness](REFERENCE.md#results-freshness-and-errors).
 
-This private Node package covers the recorded mainnet market. Its bounded
+This private workspace package covers the recorded mainnet market. Its bounded
 reader review is accepted; direct writers require qualified review before
 release. Liquidation and delegated-account flows are outside the API. The
 [lending knowledge](../../../knowledge/protocols/lending/musdc/README.md)
 contains the market model and evidence.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

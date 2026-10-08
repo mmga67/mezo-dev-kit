@@ -329,6 +329,130 @@ for (const reference of objects(execution.references, "execution.references")) {
   expect(resolved.resource.id === resourceId, `execution reference ${resourceId} drifted`);
 }
 
+const renewalReference = object(
+  object(index.extensions, "index.extensions").reverification,
+  "index renewal",
+);
+const renewalResource = await loadKnowledgeReference(repositoryRoot, renewalReference);
+const renewal = object(renewalResource.document, "swap renewal");
+const renewalResult = object(renewal.result, "swap renewal result");
+expect(renewal.kind === "swap-maintenance-reverification", "swap renewal kind drifted");
+expect(renewalResult.complete === true, "swap renewal is incomplete");
+expect(index.verifiedAt === renewalResult.observedAt, "swap renewal timestamp differs");
+const renewalSource = byId(
+  sourceRecords,
+  text(renewalReference.resourceId, "renewal ID"),
+  "sources",
+);
+expect(
+  sha256(await readFile(renewalResource.path)) === renewalSource.sha256,
+  "swap renewal capture digest drifted",
+);
+const currentCoordinate = object(renewalResult.coordinate, "renewal coordinate");
+expect(currentCoordinate.chainId === "31612", "swap renewal chain differs");
+expect(
+  String(object(index.scope, "index scope").evidenceBlockNumber) ===
+    currentCoordinate.blockNumber &&
+    object(index.scope, "index scope").evidenceBlockHash === currentCoordinate.blockHash,
+  "swap renewal index coordinate differs",
+);
+for (const record of [providers, routes, execution, fixtures, sources]) {
+  expect(record.verifiedAt === index.verifiedAt, "renewed record timestamp differs");
+  expect(record.reviewAfter === index.reviewAfter, "renewed record review window differs");
+}
+const currentIdentities = objects(renewalResult.identities, "current runtime identities");
+const currentDeployments = objects(
+  object(
+    (
+      await loadKnowledgeReference(repositoryRoot, {
+        moduleId: "contracts",
+        resourceId: "contract-deployments",
+      })
+    ).document,
+    "deployments",
+  ).records,
+  "deployments.records",
+);
+for (const identity of currentIdentities) {
+  const deployment = currentDeployments.find(
+    (item) =>
+      item.contractId === identity.contractId &&
+      item.networkId === "mezo-mainnet" &&
+      object(item.validity, "deployment validity").effectiveUntilExclusive === null,
+  );
+  expect(deployment, `renewal deployment missing: ${String(identity.contractId)}`);
+  expect(identity.address === deployment.address, "renewal deployment address differs");
+  expect(
+    identity.codeSha256 === object(deployment.runtime, "runtime").addressCodeSha256,
+    "renewal runtime hash differs",
+  );
+}
+const currentQuotes = objects(renewalResult.basicQuotes, "renewed basic quotes");
+expect(currentQuotes.length === 2, "both basic route directions require renewal");
+for (const quote of currentQuotes) {
+  const coordinate = object(quote.coordinate, "quote coordinate");
+  expect(
+    coordinate.blockNumber === currentCoordinate.blockNumber &&
+      coordinate.blockHash === currentCoordinate.blockHash,
+    "quote coordinate differs",
+  );
+  expect(quote.writeCompatible === true, "renewed quote token profile is unqualified");
+  expect(
+    BigInt(text(quote.estimatedAmountOut, "quote output")) > 0n,
+    "renewed quote has no output",
+  );
+}
+const currentReplays = objects(renewalResult.historicalReplays, "renewed historical replays");
+expect(currentReplays.length === replays.length, "renewal replay coverage differs");
+for (const replay of replays) {
+  const current = byId(currentReplays, text(replay.id, "replay ID"), "renewed replays");
+  expect(
+    current.transactionHash === replay.transactionHash && current.blockHash === replay.blockHash,
+    "renewed replay identity differs",
+  );
+  expect(
+    current.exactCallMatched === true && current.recipientOutputMatched === true,
+    "renewed replay did not reconcile",
+  );
+  expect(
+    current.received === object(replay.receipt, "prior receipt").recipientOutputTransferred,
+    "renewed replay recipient output differs",
+  );
+}
+const currentPools = objects(renewalResult.clPools, "renewed CL discovery");
+expect(currentPools.length === 18, "renewal CL discovery coverage differs");
+for (const pool of currentPools) {
+  if (pool.state === "absent") {
+    expect(
+      pool.address === "0x0000000000000000000000000000000000000000" && !pool.snapshot,
+      "absent CL pool has fabricated state",
+    );
+  } else {
+    const snapshot = object(pool.snapshot, "CL pool snapshot");
+    expect(snapshot.pool === pool.address, "CL pool identity differs");
+    expect(
+      BigInt(text(snapshot.liquidity, "CL liquidity")) > 0n ===
+        (pool.state === "active-liquidity-observed"),
+      "CL liquidity disposition differs",
+    );
+    const coordinate = object(snapshot.coordinate, "CL coordinate");
+    expect(
+      coordinate.blockNumber === currentCoordinate.blockNumber &&
+        coordinate.blockHash === currentCoordinate.blockHash,
+      "CL pool coordinate differs",
+    );
+  }
+}
+const docsSource = byId(sourceRecords, "official-docs-mezo-pools-current", "sources");
+const docsResource = await loadKnowledgeReference(
+  repositoryRoot,
+  object(docsSource.retainedArtifactReference, "retained documentation reference"),
+);
+expect(
+  sha256(await readFile(docsResource.path)) === docsSource.sha256,
+  "retained swap documentation digest differs",
+);
+
 process.stdout.write(
   `Validated swap knowledge: ${providerRecords.length} providers, ${routeRecords.length} route dispositions, ${fixtureRecords.length} fixtures, and ${replays.length} exact historical replays; support remains none.\n`,
 );

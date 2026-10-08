@@ -1755,5 +1755,5 @@ export const VAULT_MODEL = {
   },
   "verifiedAt": "2026-08-23T20:17:37Z",
   "reviewAfter": "2026-09-23T00:00:00Z",
-  "inputDigest": "7996c72394f9f9b340b6b81abfbc5e9d2297b102f840ec66dd3ca4f4aee0097c"
+  "inputDigest": "931be132bee72cf72aa4bf9138bd3b8dec33b01cd2c3d41696328ac3565d16c8"
 } as const;

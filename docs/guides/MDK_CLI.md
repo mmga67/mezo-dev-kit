@@ -168,7 +168,9 @@ The corpus includes public package API references, unchanged indexed canonical
 knowledge records, and this consumer guide. Metadata retains source paths and
 hashes, logical module/resource/record identities, review dates and limitations.
 Relative API-document links resolve to included resources; links outside the
-corpus become explicit source pointers. Raw source/evidence artifacts,
+corpus become explicit source pointers. Literal code examples keep their original
+text, including Markdown-like links; those example links do not select additional
+resources. Raw source/evidence artifacts,
 maintenance procedures, schemas, fixtures, review records and derived duplicates
 have indexed exclusions. **Complete** means this declared corpus.
 

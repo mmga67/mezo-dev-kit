@@ -32,10 +32,12 @@ on-chain constraints; minimum LP output and fee-claim minimums are preflight
 checks. Principal, manager accounting, actual wallet transfers, fees, and native
 gas remain separate. See [execution details](REFERENCE.md) before preparing an operation.
 
-The package is private Node source and requires qualified protocol review before
+The package is private workspace source and requires qualified protocol review before
 release. Local-fork examples retain their documented funding/gas fixtures and
 verification limits. [Pool knowledge](../../../knowledge/protocols/pools/README.md)
 owns the models and source evidence.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

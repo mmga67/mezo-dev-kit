@@ -168,9 +168,9 @@ record a digest of the exact input bytes, and support a drift-only `--check`
 mode. Change the canonical input and generator first; regenerate and review the
 input/output diff together. Never patch generated output by hand.
 
-Core demonstrates the real repository boundary with
+Core's retained internal proof demonstrates the generation boundary with
 `scripts/generate/generate-core-transaction-model.ts`: it resolves stable transaction
-resources, produces `packages/core/src/model.generated.ts`, records a SHA-256
+resources, produces `packages/core/src/internal/proof/model.generated.ts`, records a SHA-256
 input digest, and supports:
 
 ```sh

@@ -37,6 +37,9 @@ repository-wide searches may omit them. Follow
 run `pnpm check:tasks` after updating them. Never invent a parallel note format
 because a directory is ignored or absent from search results.
 
+For `local/` artifacts, follow [local artifact order](docs/guides/BRANCH_WORKFLOW.md#local-artifact-order);
+read its README, then only the relevant owner and files.
+
 ## Route the task once
 
 1. Identify the outcome, affected owners, risk, and nearest nested `AGENTS.md`.

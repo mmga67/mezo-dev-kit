@@ -881,10 +881,10 @@
         "moduleId": "contracts",
         "resourceId": "abi.bridge.musd-ntt-manager"
       },
-      "entryCount": 119,
-      "fileSha256": "0c84c959ec5aa44e0bd3a5c803b6efe828bf62140d7713950921c756a59a0e66",
-      "abiSha256": "992e4b5140806b758f4bd6dc5762d3b699272d2c5fd9f99f2000b7220d3f8dbd",
-      "abiSemanticSha256": "a028c6ec7a73987bf447c8dde7ec4cd9c469cd28a8c8eb2d9bd8250210dea7ff",
+      "entryCount": 120,
+      "fileSha256": "b809fd14bbed2d8726140be9ab36e288b8cd43a612aae95ad7a6ee9b451aa0d5",
+      "abiSha256": "86cabbfe3d7669bc64755d2cdbcdfb95d218df8125bd60c15c667abcb29ac977",
+      "abiSemanticSha256": "78fa27e57ee9e4bdd0b7b107dd5899324a943f7821d2a47e2a9e00bf8d95a1a1",
       "sourceReference": {
         "moduleId": "contracts",
         "resourceId": "contract-sources",
@@ -900,15 +900,29 @@
           "version": "1.1.0",
           "path": "evm/ts/src/ethers-contracts/1_1_0/factories/NttManager__factory.ts",
           "sha256": "11ecedfda4242865639467c005fdfdcae2a417947b182fbc4a8e9b3759b33044"
+        },
+        {
+          "networkIds": [
+            "mezo-mainnet",
+            "ethereum-mainnet",
+            "base-mainnet"
+          ],
+          "version": "1.1.0",
+          "path": "evm/src/interfaces/INttManager.sol",
+          "sha256": "27ce9e58cd8c48d361ed58e4670230a3055d0ec798de4a6ba6aff61c223f1891"
         }
       ],
       "status": "verified",
       "supportStatus": "supported",
       "reviewStatus": "accepted",
       "limitations": [
-        "The full ABI is extracted from the pinned official NTT 1.1.0 TypeChain factory and scoped to the three recorded MUSD deployments.",
+        "The pinned official NTT 1.1.0 TypeChain full ABI has an accepted event-only correction from the pinned Solidity interface and retained three-network logs; the original export remains indexed for audit.",
         "The ABI and live configuration records received qualified registry acceptance; they do not establish relayer, quote, route, or writer support."
-      ]
+      ],
+      "correctionReference": {
+        "moduleId": "contracts",
+        "resourceId": "ntt-transfer-event-abi-review-2026-10-07"
+      }
     },
     {
       "id": "bridge.musd-wormhole-transceiver",

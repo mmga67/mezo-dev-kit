@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { describe, expect, test } from "vitest";
 
-import { createCoreClient } from "../src/client.ts";
-import { CoreError, getErrorDefinitions } from "../src/errors.ts";
+import { createCoreClient } from "../src/internal/proof/client.ts";
+import { CoreError, getErrorDefinitions } from "../src/internal/proof/errors.ts";
 import {
   TRANSACTION_STATES,
   TRANSACTION_TRANSITIONS,
@@ -11,7 +11,7 @@ import {
   isProtocolSuccess,
   nextLifecycleEvents,
   transitionLifecycle,
-} from "../src/lifecycle.ts";
+} from "../src/internal/proof/lifecycle.ts";
 import {
   assertBaseUnits,
   callsEqual,
@@ -22,7 +22,7 @@ import {
   normalizeChainId,
   normalizeTransactionHash,
   parseDisplayUnits,
-} from "../src/validation.ts";
+} from "../src/internal/proof/validation.ts";
 import type {
   CoreSigner,
   CoreTransport,
@@ -31,9 +31,9 @@ import type {
   ReceiptLike,
   TrackedTransaction,
   TransportContext,
-} from "../src/client.ts";
-import type { Lifecycle } from "../src/lifecycle.ts";
-import type { Call, TransactionHash } from "../src/validation.ts";
+} from "../src/internal/proof/client.ts";
+import type { Lifecycle } from "../src/internal/proof/lifecycle.ts";
+import type { Call, TransactionHash } from "../src/internal/proof/validation.ts";
 
 const HASH_1 = normalizeTransactionHash(`0x${"11".repeat(32)}`);
 const HASH_2 = normalizeTransactionHash(`0x${"22".repeat(32)}`);

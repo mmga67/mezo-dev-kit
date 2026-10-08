@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { globSync } from "node:fs";
 import {
   copyFile,
+  cp,
   mkdir,
   mkdtemp,
   readFile,
@@ -24,6 +25,7 @@ const run = promisify(execFile);
 let consumer: string;
 let bundle: string;
 const entrypoints: string[] = [];
+const workbenchAssets = new Map<string, { body: string | Buffer; contentType: string }>();
 
 async function openBrowser(engine: BrowserType) {
   const endpoint = process.env.MDK_BROWSER_WS_ENDPOINT;
@@ -117,6 +119,49 @@ beforeAll(async () => {
   );
   await copyFile(join(root, "examples/test/browser/fixture.ts"), join(consumer, "fixture.ts"));
   await copyFile(join(root, "examples/browser/main.ts"), join(consumer, "frontend-example.ts"));
+  await cp(join(root, "examples/browser-workbench"), join(consumer, "workbench"), {
+    recursive: true,
+    filter: (path) => !path.split(/[\\/]/).includes("dist"),
+  });
+  const workbenchConfig = record(
+    JSON.parse(await readFile(join(consumer, "workbench/tsconfig.json"), "utf8")),
+  );
+  await writeFile(
+    join(consumer, "workbench/tsconfig.json"),
+    JSON.stringify({
+      ...workbenchConfig,
+      extends: join(root, "tsconfig.base.json"),
+    }),
+  );
+  const logger = createLogger("silent");
+  logger.warn = (message) => {
+    throw new Error(`Workbench bundle warning: ${message}`);
+  };
+  const production = await build({
+    configFile: false,
+    root: join(consumer, "workbench"),
+    logLevel: "silent",
+    customLogger: logger,
+    build: { target: "es2022", write: false },
+  });
+  for (const output of Array.isArray(production) ? production : [production]) {
+    if (!("output" in output)) throw new Error("Unexpected workbench watcher");
+    for (const item of output.output) {
+      workbenchAssets.set(`/${item.fileName}`, {
+        body:
+          item.type === "chunk"
+            ? item.code
+            : typeof item.source === "string"
+              ? item.source
+              : Buffer.from(item.source),
+        contentType: item.fileName.endsWith(".html")
+          ? "text/html"
+          : item.fileName.endsWith(".css")
+            ? "text/css"
+            : "text/javascript",
+      });
+    }
+  }
   bundle = await bundleSource(
     "all-sdk",
     [
@@ -164,8 +209,9 @@ test("packed declarations typecheck for a browser consumer without Node ambient 
         lib: ["ES2022", "DOM", "DOM.Iterable"],
         types: [],
         noEmit: true,
+        allowImportingTsExtensions: true,
       },
-      include: ["declarations.ts", "fixture.ts", "frontend-example.ts"],
+      include: ["declarations.ts", "fixture.ts", "frontend-example.ts", "workbench/*.ts"],
     }),
   );
   await run(process.execPath, [
@@ -256,6 +302,121 @@ test("frontend form validates exact amounts using packed EVM exports", async () 
     await page.getByLabel("Amount", { exact: true }).fill("0.0000001");
     await page.getByRole("button", { name: "Convert amount" }).click();
     expect(await page.locator("output").textContent()).toContain("ExcessPrecision");
+  } finally {
+    await browser.close();
+  }
+});
+
+test.each([
+  { name: "Chromium", engine: chromium },
+  { name: "Firefox", engine: firefox },
+  { name: "WebKit", engine: webkit },
+])("workbench production UI preserves account and recovery state in $name", async ({ engine }) => {
+  const browser = await openBrowser(engine);
+  try {
+    const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+    const errors: string[] = [];
+    const external: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.route("**/*", async (route) => {
+      const url = new URL(route.request().url());
+      const asset = workbenchAssets.get(url.pathname === "/" ? "/index.html" : url.pathname);
+      if (url.origin !== "http://workbench.test" || !asset) {
+        external.push(url.href);
+        await route.abort();
+        return;
+      }
+      await route.fulfill(asset);
+    });
+    await page.goto("http://workbench.test/");
+    expect(await page.locator("#exact").inputValue()).toBe("9007199254740993.000001");
+    expect(await page.locator("#read-count").textContent()).toContain(": 0");
+    await page.getByRole("link", { name: "Account overview", exact: true }).click();
+    await expect
+      .poll(() => page.locator("#account-status").textContent())
+      .toContain("Partial data");
+    await page.getByLabel("Hold account reads", { exact: true }).check();
+    await page.getByRole("button", { name: "Refresh account", exact: true }).click();
+    expect(await page.locator("#balance-value").textContent()).toContain("9,007,199,254,740,993");
+    await page.getByLabel("Fixture account", { exact: true }).selectOption("bob");
+    expect(await page.locator("#balance-value").textContent()).toBe("—");
+    await page
+      .getByRole("button", { name: "Release held reads (newest first)", exact: true })
+      .click();
+    await expect.poll(() => page.locator("#balance-value").textContent()).toBe("<0.0001 DEMO");
+    expect(await page.locator("#account-status").textContent()).toContain("bob / demo-a");
+    await page.getByRole("button", { name: "Balance details", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    expect(
+      await page.locator("#detail-title").evaluate((node) => node === document.activeElement),
+    ).toBe(true);
+    await page.keyboard.press("Tab");
+    expect(
+      await page
+        .getByRole("button", { name: "Close details", exact: true })
+        .evaluate((node) => node === document.activeElement),
+    ).toBe(true);
+    await page.keyboard.press("Tab");
+    expect(
+      await page
+        .locator("#detail-dialog")
+        .evaluate((node) => node.contains(document.activeElement)),
+    ).toBe(true);
+    await page.keyboard.press("Shift+Tab");
+    expect(
+      await page
+        .locator("#detail-dialog")
+        .evaluate((node) => node.contains(document.activeElement)),
+    ).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect.poll(() => page.locator("#detail-dialog").isVisible()).toBe(false);
+    expect(await page.locator("#details").evaluate((node) => node === document.activeElement)).toBe(
+      true,
+    );
+    await page.setViewportSize({ width: 375, height: 812 });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await page.getByRole("link", { name: "Exact amounts", exact: true }).click();
+    const calls = await page.locator("#read-count").textContent();
+    await page.getByLabel("Amount in DEMO units", { exact: true }).fill("0.000001");
+    await page.getByRole("button", { name: "Convert amount", exact: true }).click();
+    expect(await page.locator("#amount-result").textContent()).toContain("<0.0001 DEMO");
+    await page.getByLabel("Illustrative asset decimals", { exact: true }).fill("");
+    await page.getByLabel("Display separators", { exact: true }).selectOption("de-DE");
+    expect(await page.locator("#amount-result").textContent()).toContain("InvalidDecimals");
+    expect(await page.locator("#exact").inputValue()).toBe("");
+    expect(await page.locator("#read-count").textContent()).toBe(calls);
+    await page.goBack();
+    expect(await page.locator("#account").isVisible()).toBe(true);
+    await page.goForward();
+    expect(await page.locator("#amount").isVisible()).toBe(true);
+    await page.getByRole("link", { name: "Transaction progress", exact: true }).click();
+    await page.getByLabel("Fixture scenario", { exact: true }).selectOption("refresh-failed");
+    await page.getByRole("button", { name: "Start simulation", exact: true }).click();
+    expect(await page.locator("#start-demo").isDisabled()).toBe(true);
+    await page.getByRole("button", { name: "Advance fixture", exact: true }).click();
+    const identity = await page.locator("#transaction-identity").textContent();
+    await page.reload();
+    expect(await page.locator("#transaction").isVisible()).toBe(true);
+    expect(await page.locator("#scenario").inputValue()).toBe("refresh-failed");
+    expect(await page.locator("#transaction-identity").textContent()).toBe(identity);
+    expect(await page.locator("#start-demo").isDisabled()).toBe(true);
+    for (let step = 0; step < 3; step++)
+      await page.getByRole("button", { name: "Advance fixture", exact: true }).click();
+    expect(await page.locator("#transaction-status").textContent()).toContain(
+      "Receipt confirmed — follow-up read failed",
+    );
+    await page.getByRole("button", { name: "Retry fixture read", exact: true }).click();
+    expect(await page.locator("#transaction-status").textContent()).toContain(
+      "Protocol outcome reconciled",
+    );
+    expect(await page.locator("#transaction-identity").textContent()).toBe(identity);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    expect(external).toEqual([]);
+    expect(errors).toEqual([]);
   } finally {
     await browser.close();
   }

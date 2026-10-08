@@ -18,8 +18,10 @@ Historical mappings do not establish current deposit or withdrawal availability.
 
 The bounded provider/route model has accepted review, but routes remain
 evidence-verified and unsupported; module support is `none`. Additional private
-NTT preparation and Native source/delivery evidence retain their proposed, pending-review
-scope. Contract history and current operation readiness are separate.
+NTT preparation and Native source/delivery evidence received maintainer acceptance
+as-is on October 7; support remains proposed. The [continuity capture](artifacts/private-scope-reverification-2026-10-07.json)
+checks current Native minimums and NTT configuration. Contract history and current
+operation readiness are separate.
 
 NTT delivery joins the same digest on both chains. Native delivery joins the
 correct direction-specific tuple and settlement evidence, including recipient

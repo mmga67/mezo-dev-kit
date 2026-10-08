@@ -44,6 +44,18 @@ prove a protocol action or cross-chain delivery completed.
 
 ## Development
 
+Start reading source at [the public entrypoint](src/index.ts). Follow
+[read-client.ts](src/read-client.ts) for coherent reads,
+[execution.ts](src/execution.ts) and [its types](src/execution-types.ts) for
+submission and observation, [rpc.ts](src/rpc.ts) for adapters, and
+[events.ts](src/events.ts) for bounded scans. Matching behavior tests live in
+[`test/`](test/).
+
+[`src/internal/proof/`](src/internal/proof/) retains the original combined
+client and knowledge-derived lifecycle model for `test/core.test.ts`.
+It is not a public client or part of the built entrypoint. Its generator and
+tests remain maintained independently of the current read/execution API.
+
 From the repository root:
 
 ```sh

@@ -19,6 +19,7 @@ test("NTT source and fixed-block observations bind all three token runtimes", as
   ]);
 });
 test.for([
+  "unchanged",
   "artifact bytes",
   "lifecycle",
   "chain",
@@ -27,7 +28,7 @@ test.for([
   "slot",
   "token",
   "attestation message",
-] as const)("rejects NTT provenance drift: %s", async (kind) => {
+] as const)("checks the isolated NTT provenance fixture: %s", async (kind) => {
   const scratch = await mkdtemp(join(tmpdir(), "mdk-ntt-negative-"));
   try {
     const envelope = await loadKnowledgeReference(root, {
@@ -40,6 +41,7 @@ test.for([
       evidence.sourceReference,
       evidence.captureReference,
       evidence.attestationReference,
+      object(evidence.review, "review").continuityReference,
       { moduleId: "workflows/bridges", resourceId: "bridge-sources" },
       { moduleId: "workflows/bridges", resourceId: "bridge-musd-ntt-evidence" },
       { moduleId: "contracts", resourceId: "contract-deployments" },
@@ -59,7 +61,7 @@ test.for([
       capture = object(captured.document, "capture");
     if (kind === "artifact bytes")
       await writeFile(captured.path, (await readFile(captured.path, "utf8")) + "\n");
-    else if (kind === "lifecycle") evidence.reviewStatus = "accepted";
+    else if (kind === "lifecycle") evidence.reviewStatus = "unreviewed";
     else if (kind === "attestation message") {
       const loaded = await loadKnowledgeReference(scratch, evidence.attestationReference),
         document = object(loaded.document, "attestations");
@@ -69,7 +71,7 @@ test.for([
       const bytes = JSON.stringify(document);
       await writeFile(loaded.path, bytes);
       evidence.attestationSha256 = createHash("sha256").update(bytes).digest("hex");
-    } else {
+    } else if (kind !== "unchanged") {
       const requests = objects(capture.requests, "requests"),
         row = objects(capture.records, "records")[0];
       assert(row);
@@ -94,7 +96,9 @@ test.for([
       evidence.captureSha256 = createHash("sha256").update(bytes).digest("hex");
     }
     await writeFile(join(scratch, relative(root, envelope.path)), JSON.stringify(evidence));
-    await expect(validateNttTransferEvidence(scratch)).rejects.toThrow();
+    if (kind === "unchanged")
+      await expect(validateNttTransferEvidence(scratch)).resolves.toBeDefined();
+    else await expect(validateNttTransferEvidence(scratch)).rejects.toThrow();
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }

@@ -11,12 +11,7 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "mezo-testnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"],
     "contractIds": [
       "musd.active-pool",
       "musd.borrower-operations",
@@ -841,9 +836,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/bridge-v13-contracts-2026-08-24.json",
-      "recordIds": [
-        "observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"
-      ],
+      "recordIds": ["observe-bridge-native-assets-precompile-mezo-mainnet-v6-execution"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -931,11 +924,7 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/savings-dynamic-read-interfaces.json",
-      "recordIds": [
-        "strategy",
-        "converter",
-        "gauge"
-      ],
+      "recordIds": ["strategy", "converter", "gauge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -955,9 +944,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-06.json",
-      "recordIds": [
-        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"
-      ],
+      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-06"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -971,12 +958,7 @@
       "role": "canonical-record",
       "kind": "dynamic-contract-read-interface-catalog",
       "path": "records/vault-dynamic-read-interfaces.json",
-      "recordIds": [
-        "vault-v2",
-        "morpho-market-adapter",
-        "receipt-wrapper",
-        "vault-gauge"
-      ],
+      "recordIds": ["vault-v2", "morpho-market-adapter", "receipt-wrapper", "vault-gauge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1008,9 +990,7 @@
       "role": "canonical-record",
       "kind": "protocol-operation-source-catalog",
       "path": "records/protocol-operation-sources.json",
-      "recordIds": [
-        "morpho-events"
-      ],
+      "recordIds": ["morpho-events"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1042,10 +1022,7 @@
       "role": "canonical-record",
       "kind": "basic-pool-interface-catalog",
       "path": "records/basic-pool-interfaces.json",
-      "recordIds": [
-        "pool",
-        "factory-registry"
-      ],
+      "recordIds": ["pool", "factory-registry"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1189,12 +1166,7 @@
       "role": "canonical-record",
       "kind": "voting-interface-catalog",
       "path": "records/voting-interfaces.json",
-      "recordIds": [
-        "pools",
-        "boost",
-        "validator",
-        "rewards-factory"
-      ],
+      "recordIds": ["pools", "boost", "validator", "rewards-factory"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1292,10 +1264,7 @@
       "role": "canonical-record",
       "kind": "historical-contract-evidence-catalog",
       "path": "records/historical-contract-evidence.json",
-      "recordIds": [
-        "native-ethereum-7e994d7f",
-        "native-mezo-v5"
-      ],
+      "recordIds": ["native-ethereum-7e994d7f", "native-mezo-v5"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -1309,9 +1278,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-13.json",
-      "recordIds": [
-        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"
-      ],
+      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-13"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -1361,9 +1328,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/oracle-contracts-mezo-mainnet-2026-09-27.json",
-      "recordIds": [
-        "observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-27"
-      ],
+      "recordIds": ["observe-oracle-pyth-price-feed-mezo-mainnet-2026-09-27"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -1395,9 +1360,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/third-party-history-2026-10-06.json",
-      "recordIds": [
-        "observe-incentives-third-party-voter-mezo-mainnet-2026-10-06"
-      ],
+      "recordIds": ["observe-incentives-third-party-voter-mezo-mainnet-2026-10-06"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -1449,10 +1412,7 @@
       "role": "evidence",
       "kind": "contract-observation-set",
       "path": "evidence/escrow-generations-2026-10-06.json",
-      "recordIds": [
-        "observe-vebtc-post-resumption",
-        "observe-vemezo-post-resumption"
-      ],
+      "recordIds": ["observe-vebtc-post-resumption", "observe-vemezo-post-resumption"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -1460,11 +1420,26 @@
       "role": "canonical-record",
       "kind": "historical-contract-abi-bindings",
       "path": "records/historical-abi-bindings.json",
-      "recordIds": [
-        "incentives.ve-btc",
-        "incentives.ve-mezo"
-      ],
+      "recordIds": ["incentives.ve-btc", "incentives.ve-mezo"],
       "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "ntt-transfer-event-abi-review-2026-10-07",
+      "role": "artifact",
+      "kind": "ntt-transfer-event-abi-compatibility-review",
+      "path": "artifacts/ntt-transfer-event-abi-review-2026-10-07.json"
+    },
+    {
+      "id": "ntt-manager-abi-candidate-2026-10-07",
+      "role": "artifact",
+      "kind": "source-reconciled-abi-candidate",
+      "path": "artifacts/ntt-manager-abi-candidate-2026-10-07.json"
+    },
+    {
+      "id": "ntt-manager-typechain-1-1-0-original",
+      "role": "artifact",
+      "kind": "original-typechain-abi",
+      "path": "artifacts/ntt-manager-typechain-1-1-0-original.json"
     }
   ],
   "checks": [

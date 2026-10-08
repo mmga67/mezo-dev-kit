@@ -38,6 +38,7 @@ export interface BoundaryDiagnostic {
   readonly code:
     | "cross-package-relative-import"
     | "dependency-cycle"
+    | "forbidden-dependency-direction"
     | "invalid-package-manifest"
     | "missing-export-map"
     | "node-runtime-import"
@@ -333,6 +334,49 @@ function dependencyCycleDiagnostics(
   return diagnostics;
 }
 
+// Executable foundation/tooling constraints from ARCHITECTURE.md#dependency-direction.
+// Domain-to-domain ownership still needs review; acyclicity alone does not approve a new edge.
+const FOUNDATION_DEPENDENCIES: ReadonlyMap<string, ReadonlySet<string>> = new Map([
+  ["@mezo-dev-kit/evm", new Set<string>()],
+  ["@mezo-dev-kit/chains", new Set<string>()],
+  ["@mezo-dev-kit/contracts", new Set(["@mezo-dev-kit/evm", "@mezo-dev-kit/chains"])],
+  [
+    "@mezo-dev-kit/core",
+    new Set(["@mezo-dev-kit/evm", "@mezo-dev-kit/chains", "@mezo-dev-kit/contracts"]),
+  ],
+]);
+
+function directionDiagnostics(
+  packages: readonly WorkspacePackage[],
+  rootDirectory: string,
+): readonly BoundaryDiagnostic[] {
+  const byName = new Map(packages.map((entry) => [entry.manifest.name, entry]));
+  const isRuntime = (entry: WorkspacePackage): boolean =>
+    path.relative(rootDirectory, entry.directory).split(path.sep)[0] === "packages" &&
+    entry.manifest.name.startsWith("@mezo-dev-kit/") &&
+    entry.manifest.name !== "@mezo-dev-kit/cli";
+  const diagnostics: BoundaryDiagnostic[] = [];
+  for (const consumer of packages) {
+    if (!isRuntime(consumer)) continue;
+    const allowed = FOUNDATION_DEPENDENCIES.get(consumer.manifest.name);
+    const dependencies = new Set(
+      RUNTIME_DEPENDENCY_FIELDS.flatMap((field) => [...consumer.manifest.dependencies[field]]),
+    );
+    for (const dependency of dependencies) {
+      const provider = byName.get(dependency);
+      if (provider === undefined) continue;
+      if (!isRuntime(provider) || (allowed !== undefined && !allowed.has(dependency))) {
+        diagnostics.push({
+          code: "forbidden-dependency-direction",
+          file: consumer.manifestPath,
+          message: `${consumer.manifest.name} cannot depend on ${dependency}: ARCHITECTURE.md#dependency-direction keeps foundations below domains and runtime SDKs below tooling, examples and applications.`,
+        });
+      }
+    }
+  }
+  return diagnostics;
+}
+
 export async function validateWorkspaceBoundaries(
   rootDirectory: string,
 ): Promise<readonly BoundaryDiagnostic[]> {
@@ -361,6 +405,7 @@ export async function validateWorkspaceBoundaries(
     diagnostics.push(...inspectImports(packages, workspacePackage));
   }
   diagnostics.push(...dependencyCycleDiagnostics(packages));
+  diagnostics.push(...directionDiagnostics(packages, rootDirectory));
 
   return diagnostics.sort((left, right) =>
     `${left.file}:${left.code}:${left.message}`.localeCompare(

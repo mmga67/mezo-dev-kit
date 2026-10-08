@@ -6,9 +6,12 @@
   "status": "verified",
   "supportStatus": "none",
   "reviewStatus": "accepted",
-  "verifiedAt": "2026-08-25T07:27:59.000Z",
-  "reviewAfter": "2026-09-25T00:00:00Z",
-  "scope": { "networkIds": ["mezo-mainnet"], "maxModeledHops": 3 },
+  "verifiedAt": "2026-10-06T21:55:35.476Z",
+  "reviewAfter": "2026-11-06T00:00:00Z",
+  "scope": {
+    "networkIds": ["mezo-mainnet"],
+    "maxModeledHops": 3
+  },
   "limitations": [
     "The three-hop planner bound is a proposed safety/complexity bound, not a deployed-router limit.",
     "Route ranking is deterministic policy over comparable fresh candidates; it is not a trading recommendation or price oracle.",
@@ -85,5 +88,9 @@
     ],
     "partialFailure": "Keep optional provider errors as typed diagnostics, but fail the workflow if no eligible candidate remains or a selected candidate lacks any required observation.",
     "noGuarantee": "Estimated or quoted amountOut is ranking data. Only the caller-authorized amountOutMinimum is an execution bound, and even it requires exact-call simulation and reconciliation."
+  },
+  "reverification": {
+    "moduleId": "workflows/swaps",
+    "resourceId": "swap-maintenance-reverification-2026-10-07"
   }
 }

@@ -4,10 +4,17 @@
     "docs/guides/MDK_CLI.md",
     "docs/guides/APPLICATION_MEMORY.md",
     "docs/guides/BROWSER_APPLICATIONS.md",
+    "docs/guides/APPLICATION_ARCHITECTURE.md",
+    "docs/guides/FRONTEND_PATTERNS.md",
     "docs/guides/EVIDENCE_REFRESH.md"
   ],
   "knowledgeRoles": ["canonical-record"],
   "domains": [
+    {
+      "id": "application-architecture",
+      "packages": [],
+      "resources": ["guide:docs/guides/application_architecture.md"]
+    },
     {
       "id": "typescript",
       "packages": [],
@@ -61,6 +68,7 @@
       ],
       "resources": [
         "guide:docs/guides/browser_applications.md",
+        "guide:docs/guides/frontend_patterns.md",
         "api:evm",
         "api:chains",
         "api:contracts",

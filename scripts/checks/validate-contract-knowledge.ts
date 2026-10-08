@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { loadKnowledgeReference, resolveKnowledgeResource } from "../lib/knowledge-reference.ts";
 import { assertAbiProvenance, assertDeploymentProvenance } from "../lib/contract-provenance.ts";
 import { object, objects, parseJson, type JsonObject } from "../lib/json.ts";
+import { loadReviewedNttManagerAbi } from "../lib/ntt-manager-abi.ts";
 
 import { parseEvidenceArguments, requiresEvidenceFreshness } from "../lib/evidence-scope.ts";
 const { network: selectedNetwork } = parseEvidenceArguments(process.argv.slice(2));
@@ -656,6 +657,13 @@ for (const record of abiCatalog.records) {
     `${record.contractId} ABI file digest drifted`,
   );
   const abi = objects(await loadJson<unknown>(path), `${record.contractId} ABI`);
+  if (record.contractId === "bridge.musd-ntt-manager") {
+    const corrected = await loadReviewedNttManagerAbi(repositoryRoot);
+    assert(
+      JSON.stringify(canonicalize(abi)) === JSON.stringify(canonicalize(corrected.abi)),
+      "NTT manager ABI differs from the approved event correction",
+    );
+  }
   assert(
     Array.isArray(abi) && abi.length > 0,
     `${record.contractId} ABI must be a non-empty full array`,

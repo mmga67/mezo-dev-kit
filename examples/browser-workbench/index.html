@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MDK · Browser workbench</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header>
+      <p class="eyebrow">MDK / OPTIONAL APPLICATION RECIPES</p>
+      <h1>Browser workbench</h1>
+      <p>Explore precise values, independent data sources and recoverable progress.</p>
+      <p class="notice">Offline fixtures only. No wallet, RPC requests or real transactions.</p>
+    </header>
+    <nav aria-label="Workbench views">
+      <a href="#amount" data-view="amount">Exact amounts</a>
+      <a href="#account" data-view="account">Account overview</a>
+      <a href="#transaction" data-view="transaction">Transaction progress</a>
+    </nav>
+    <main id="content" tabindex="-1">
+      <section id="amount" aria-labelledby="amount-title">
+        <p class="eyebrow">01 / VALUES</p>
+        <h2 id="amount-title">Keep the exact amount</h2>
+        <p>A shortened display is useful for scanning. The exact value stays available.</p>
+        <form id="amount-form">
+          <label for="amount-input">Amount in DEMO units</label>
+          <input
+            id="amount-input"
+            name="amount"
+            inputmode="decimal"
+            value="9007199254740993.000001"
+            required
+          />
+          <label for="precision">Illustrative asset decimals</label>
+          <input
+            id="precision"
+            name="precision"
+            type="number"
+            min="0"
+            max="255"
+            value="6"
+            required
+          />
+          <label for="locale">Display separators</label>
+          <select id="locale">
+            <option value="en-US">English (US)</option>
+            <option value="de-DE">German (Germany)</option>
+          </select>
+          <button type="submit">Convert amount</button>
+        </form>
+        <p id="amount-result" role="status"></p>
+        <label for="exact">Exact decimal · select to copy</label>
+        <textarea id="exact" readonly rows="2"></textarea>
+        <p id="base-units" class="mono"></p>
+        <p id="preference-status" class="muted" role="status"></p>
+      </section>
+      <section id="account" aria-labelledby="account-title" hidden>
+        <p class="eyebrow">02 / INDEPENDENT SOURCES</p>
+        <h2 id="account-title">Account overview</h2>
+        <div class="controls">
+          <label for="account-select">Fixture account</label>
+          <select id="account-select">
+            <option value="alice">Alice</option>
+            <option value="bob">Bob</option>
+            <option value="">Disconnected</option>
+          </select>
+          <label for="chain-select">Fixture chain</label>
+          <select id="chain-select">
+            <option value="demo-a">Demo A</option>
+            <option value="demo-b">Demo B</option>
+          </select>
+          <label class="check"><input id="hold" type="checkbox" /> Hold account reads</label>
+          <label class="check"
+            ><input id="fail-valuation" type="checkbox" checked /> Valuation source
+            unavailable</label
+          >
+          <button id="refresh" type="button">Refresh account</button>
+          <button id="release" type="button">Release held reads (newest first)</button>
+        </div>
+        <p id="account-status" role="status">Choose this view to load its sources.</p>
+        <div class="table-scroll" role="region" aria-label="Account data" tabindex="0">
+          <table>
+            <caption>
+              Independent fixture sources · DEMO units, valuation in demo USD
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Value</th>
+                <th scope="col">Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Balance</th>
+                <td id="balance-value">—</td>
+                <td id="balance-status">Not loaded</td>
+              </tr>
+              <tr>
+                <th scope="row">Valuation</th>
+                <td id="valuation-value">—</td>
+                <td id="valuation-status">Not loaded</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button id="details" type="button" disabled>Balance details</button>
+        <p id="read-count" class="muted">Fixture source calls: 0</p>
+      </section>
+      <section id="transaction" aria-labelledby="transaction-title" hidden>
+        <p class="eyebrow">03 / RECOVERY</p>
+        <h2 id="transaction-title">Transaction progress</h2>
+        <p>
+          Step through synthetic outcomes. Reload or change views to retain the demo checkpoint.
+        </p>
+        <label for="scenario">Fixture scenario</label>
+        <select id="scenario">
+          <option value="success">Successful reconciliation</option>
+          <option value="uncertain">Uncertain submission</option>
+          <option value="wallet-rejected">Wallet send rejection</option>
+          <option value="simulation-failed">Simulation failure</option>
+          <option value="replacement">Replacement detected</option>
+          <option value="refresh-failed">Confirmed, follow-up read fails</option>
+          <option value="reorg">Receipt reorg</option>
+          <option value="reverted">Execution reverted</option>
+        </select>
+        <div class="actions">
+          <button id="start-demo" type="button">Start simulation</button
+          ><button id="advance-demo" type="button" disabled>Advance fixture</button
+          ><button id="reset-demo" type="button">Reset demo</button>
+        </div>
+        <p id="transaction-status" role="status">No demo started.</p>
+        <p id="transaction-identity" class="mono"></p>
+        <p id="recovery-status" class="muted" role="status"></p>
+        <p class="notice">
+          Demo storage is not a durable submission store. A real application supplies Core's atomic
+          intent storage and protocol verifier.
+        </p>
+      </section>
+      <p id="application-error" role="alert"></p>
+    </main>
+    <dialog id="detail-dialog" aria-labelledby="detail-title">
+      <h2 id="detail-title" tabindex="-1">Balance details</h2>
+      <p id="detail-content" class="mono"></p>
+      <button id="close-detail" type="button">Close details</button>
+    </dialog>
+    <footer>One possible application structure. Adapt the recipes to your own conventions.</footer>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

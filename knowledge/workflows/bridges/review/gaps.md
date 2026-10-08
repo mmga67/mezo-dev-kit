@@ -4,18 +4,18 @@
 
 The current official deployment repository, three fixed-block manager and
 transceiver snapshots, and four direction-specific completed transfers now
-establish much more than the previous documentation-only leads. Promotion is
-still blocked because registry provenance review has accepted the Ethereum/Base Network identities
-and bounded manager/transceiver Contract records, but registry acceptance does
-not accept routes or writers:
+establish the bounded deployment graph and historical delivery evidence.
+The registry provenance review accepts the Ethereum/Base Network identities and manager/transceiver
+Contract records. Existing private workflow review is also accepted; public route
+and writer release remain outside that scope:
 
-- bridge evidence review qualified review accepted the bounded knowledge surface, but the
+- Qualified review accepted the bounded knowledge surface, but the
   route surface and writer surface were not promoted to support.
 - The private transfer/recovery implementation now covers recipient/instruction
   encoding, current quote construction, explicit token approval composition,
   source custody and ordinary manual recovery. The indexed
   `ntt-transfer-qualification-2026-09-13` record retains pinned source and fresh
-  fixed-block observations with proposed support and pending qualified review.
+  fixed-block observations with proposed support and October 7 maintainer acceptance as-is.
   Package tests and local forks qualify their stated private scope; they do not
   promote routes or writers to supported release status.
 
@@ -27,13 +27,14 @@ is required, not a timeless fee or “bridge unavailable” conclusion.
 
 The private [Bridges reference](../../../../packages/bridges/REFERENCE.md) defines
 a bounded source/destination receipt join. It does not promote route or writer
-support. Qualified release review remains pending.
+support. The maintainer accepted the existing bounded private review scope as-is on October 7.
 
 At pinned source commit `8742584991b5f4d1ee63ff10fad8d833a460526c`,
 `evm/src/interfaces/INttManager.sol` declares both TransferSent overloads. The
-retained 1.1.0 TypeChain manager artifact omits the digest-only event and differs
-from Solidity on the six-field event's indexed parameters. This is a concrete
-ABI compatibility gap; accepted ABI bytes are not silently corrected here.
+original 1.1.0 TypeChain manager artifact omitted the digest-only event and differed
+from Solidity on the six-field event's indexed parameters. The maintainer approved
+the bounded correction on October 7; the canonical full manager ABI now includes
+both source-matched declarations. The original export remains indexed for audit.
 
 The observer uses the correctly represented SendTransceiverMessage event.
 `evm/src/libraries/TransceiverStructs.sol` defines its strict manager envelope
@@ -42,8 +43,14 @@ digest and redeems it in the successful destination mint/unlock transaction.
 The four existing completed-transfer records retain their original identities;
 private runtime verification does not renew canonical provider/configuration
 evidence. The private writer also uses the transceiver envelope and verifies
-token custody. It does not depend on either discrepant TransferSent overload.
-An ABI correction still needs separate source-matched validation and review.
+token custody. Its behavior does not depend on the corrected TransferSent overloads.
+The October 7 compatibility review decoded both source-matched overloads in eight
+retained logs across Mezo, Ethereum and Base, with 16 negative checks. The concrete
+[120-entry ABI correction](../../../contracts/artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
+is accepted and applied. All other 118 entries remain unchanged. The canonical
+import recipe and validators bind the correction to its pinned source, original
+artifact, exact approved digest and retained logs. This is an ABI metadata
+correction within the existing generations, not a deployment upgrade.
 
 The manual recovery surface bounds and matches VAA bytes before exact simulation;
 guardian validity is established by the deployed transceiver. Historical VAA
@@ -67,7 +74,8 @@ relaying mode, yet all four messages were later delivered. Therefore:
 ## Native Bridge
 
 The [October 6 configuration capture](../artifacts/current-configuration-2026-10-06.json)
-is supplemental evidence pending qualified review. All ten Mezo mappings remain,
+retains its original supplemental disposition. The [October 7 continuity capture](../artifacts/private-scope-reverification-2026-10-07.json)
+rechecks the minimum policy for all ten mappings under the accepted private review scope. All ten Mezo mappings remain,
 but Ethereum deposit minima for SolvBTC, xSolvBTC, swBTC and USDe equal
 `uint256.max`; ordinary deposit amounts therefore fail the source minimum check.
 Mapping membership and token count must not be presented as deposit availability.
@@ -87,8 +95,8 @@ historical before/after state. swBTC and USDe changed at block 25932893 on
 September 8, 13:17:59 UTC; SolvBTC and xSolvBTC changed at block 26076158 on
 September 28, 13:09:11 UTC. The latter on-chain action precedes the September 29
 notice. Neither change establishes a withdrawal shutdown or resolves the notice's
-inconsistent wording. The supplement remains pending qualified review; existing
-historical evidence, route scope and review dates remain intact.
+inconsistent wording. The maintained renewal and October 7 acceptance retain those
+limits; original historical coordinates and route scope remain intact.
 
 The previous documentation-only gap is resolved at the evidence layer. The
 historical v12 evidence owns Assets Bridge execution generation 5 and the
@@ -101,10 +109,10 @@ The Ethereum proxy history identifies the exact implementation active for the
 sampled transfers and the newer current implementation. One inbound USDC trace
 and one outbound BTC trace establish direction-specific completion rules.
 
-Promotion is still blocked because registry provenance review accepted the Ethereum Network
-identity and bounded stable Contract records, ABI snapshots, and activation
-histories, but token representations and untested mappings are not promoted by
-those roots:
+Registry review accepts the Ethereum Network identity, bounded stable Contract
+records, ABI snapshots and activation histories. The accepted private workflow
+scope covers the two selected directions; other token representations and
+untested mappings require their own evidence:
 
 - The v13 evidence blocker is resolved. The separate generation-6 Contract
   deployment record is accepted for bounded registry use; route and writer
@@ -134,21 +142,22 @@ source reconciliation for the two initial routes. Token runtime/proxy checks,
 Mezo client reporting, mint authority, current limits and fee estimates are
 verified separately from historical completion. Current `WithdrawalFailed`
 evidence produces a governance-recovery handoff; no retry is implemented.
-The source call cannot enforce a future destination fee. Qualified release
-review, wider routes and independent mint attribution for confounded batches
-remain open. This does not promote route support or claim a new live transfer.
+The source call cannot enforce a future destination fee. The maintainer accepted
+the bounded private scope as-is on October 7; wider routes and independent mint
+attribution for confounded batches remain excluded. This does not promote route
+support or claim a new live transfer.
 
 The private Native observer now joins both saved directions through the explicit
 historical Contracts API. Additional source/runtime and consensus-block evidence
 is indexed as `native-delivery-qualification-2026-09-12`, with proposed support
-and pending qualified review. Ethereum RPC omits non-EVM Cosmos transactions;
+and October 7 maintainer acceptance as-is. Ethereum RPC omits non-EVM Cosmos transactions;
 its count alone cannot attribute an inbound balance delta. The retained consensus
 block has the same hash and one injected transaction. The observer also requires
 one bridge entry, stable mapping and exact sequence/recipient state transition.
 Pseudo traces are synthesized by the client and do not report actual mint success.
 
-Release review must assess the historical profiles, current source workflow and
-attribution limits. Wider/multi-entry attribution, separate attestation receipts
+The accepted private review covers the historical profiles, current source
+workflow and stated attribution limits. Wider/multi-entry attribution, separate attestation receipts
 and other assets remain gaps. Confirmed failed-payout recovery ends at the
 governance handoff. The saved replay does not refresh current transaction
 preconditions.

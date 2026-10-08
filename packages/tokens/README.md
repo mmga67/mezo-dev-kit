@@ -18,12 +18,14 @@ identities and recovery records in the application-owned Core submission store.
 
 ## Scope
 
-This private Node package uses Core's injected RPC and signer ports. The
+This private workspace package uses Core's injected RPC and signer ports. The
 protocol supplies verified token/spender identities and a target resolver for
 discovered roles. Tokens selects no spender, grants no automatic unlimited
 allowance, and does not execute the subsequent protocol action.
 Qualified review remains required before release; browser and native-token
 integration have their own verification needs.
+
+The [runtime and browser contract](../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

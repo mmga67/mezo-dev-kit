@@ -10,6 +10,11 @@ Pair with the installed TypeScript/foundation guidance and only the protocol con
 skill needed by the feature. This skill adds frontend decisions; it does not establish
 protocol support or authorize transactions.
 
+Developers may use this skill and the companion guides as optional assistance.
+The application architecture and frontend pattern guides offer possible recipes,
+not required folder layouts, design tokens or workflows. Locate them through the
+installed reference catalog when useful; preserve the application's chosen approach.
+
 ## Establish the installed boundary
 
 Inspect the application instructions, installed MDK exports, matching package references
@@ -50,6 +55,36 @@ the needed compatible update and continue independent UI work.
 7. Use labeled controls, keyboard-operable actions and accessible pending/error/result
    feedback. Show relevant network, asset, amount and freshness before an authorized write;
    do not silently prompt a wallet on page load or treat a transaction hash as completion.
+
+## Adapt presentation and recovery
+
+Use only the recipes needed by the feature. For shortened numeric display,
+keep an exact selectable/copy value and explicit units; handle tiny nonzero values,
+unknown values and amounts above safe-number precision without converting financial
+values to `number`. Keep locale/rounding decisions out of transaction inputs.
+
+Preserve previous data only within the same account/chain/query context, labeled
+with its source/time. Clear it on context change, reject obsolete errors as well as
+results, and isolate partial sources. Validate versioned preferences and explicit
+bigint codecs; report denied storage instead of promising persistence. A preference
+fallback is not an atomic durable submission store.
+
+Map the installed Core observation and error variants explicitly. In particular,
+`SubmissionUncertain` retains the reserved record even after a wallet send rejection;
+do not offer blind resubmission. Preserve confirmed receipt state when a later read
+fails. Verify replacement/cancellation through the installed recovery API. Use polite
+announcements for ordinary progress and urgent alerts sparingly.
+
+For mobile handoff, inspect provider state on resume without assuming visibility
+means connected. Coalesce overlapping inspections, invalidate pending work on account,
+chain or disconnect events, and remove listeners/timers on disposal. Check connector
+details against the application's selected version; synthetic adapter tests do not
+prove a real mobile-wallet integration.
+
+For data/detail UI, test narrow layouts, long identifiers and exact values, labeled
+controls, visible focus, dialog focus containment, Escape and focus return. For URL
+views, verify Back/Forward/refresh and avoid loading unrelated sources. Tracking an
+already-submitted operation has a separate lifetime from the visible view.
 
 ## Read-only evidence UI
 

@@ -33,8 +33,10 @@ intent and inclusion evidence; the helper never approves or submits for you.
 Private mainnet writers cover checked MUSD, mUSDC, and mUSDT generations.
 A broader readable route is not automatically writable. Atomic mixed-family
 routes, Universal Router, native value, and fee-on-transfer variants are outside
-this API. These Node implementations require qualified review before release.
+this API. These private implementations require qualified review before release.
 [Swap knowledge](../../knowledge/workflows/swaps/README.md) owns routing semantics.
+
+The [runtime and browser contract](../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

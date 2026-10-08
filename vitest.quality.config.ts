@@ -3,6 +3,9 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: [
+      "scripts/tests/test-quality-inventory.test.ts",
+      "scripts/tests/test-incentive-formula-validation.test.ts",
+      "scripts/tests/test-markdown-links.test.ts",
       "scripts/tests/test-context-retrieval.test.ts",
       "scripts/tests/test-local-tasks.test.ts",
       "scripts/tests/test-browser-container.test.ts",
@@ -15,6 +18,8 @@ export default defineConfig({
       "scripts/tests/test-source-boundary.test.ts",
       "scripts/tests/test-coding-gates.test.ts",
       "scripts/tests/test-evidence-scope.test.ts",
+      "scripts/tests/test-private-bridge-review.test.ts",
+      "scripts/tests/test-ntt-manager-abi.test.ts",
       "scripts/tests/test-incentive-topology-generation.test.ts",
       "scripts/tests/test-historical-incentive-abi.test.ts",
       "scripts/tests/test-current-price-state.test.ts",

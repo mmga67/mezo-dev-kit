@@ -10,5 +10,13 @@
     "outDir": "dist",
     "paths": {}
   },
-  "exclude": ["dist", "node_modules", "test", "**/*.test.ts", "vitest.config.ts", "browser"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test",
+    "**/*.test.ts",
+    "vitest.config.ts",
+    "browser",
+    "browser-workbench"
+  ]
 }

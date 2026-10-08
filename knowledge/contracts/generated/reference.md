@@ -6,7 +6,7 @@ This deterministic page projects the canonical Contracts module for human review
 Resolve exact records, artifacts, and evidence through `knowledge/contracts/index.json`;
 this page is not an independent address/ABI authority or support promise.
 
-- Input digest: `sha256:2e0bd29f2f94b8270fefbc4c06160c11425831c6f8c680a4bdfdd3dcdbbc459c`
+- Input digest: `sha256:ff1ce39c7ef0376087c8c61ff349d744ca9464e8b8115ae9e9fe0ae432b8d317`
 - Module support: `supported`
 - Module review: `accepted`
 - Module review after: `2026-11-05T00:00:00Z`
@@ -233,7 +233,7 @@ remain coordinate-scoped history and do not inherit the current ABI.
 | mezo-earn.ve-btc-rewards-distributor | mezo-mainnet, mezo-testnet | official-artifact-fully-verified-deployment | 20 | contracts:abi.mezo-earn.ve-btc-rewards-distributor | b3913e196d46821bf65e07d5ce52407aab60e69a44fff43049f2b99a88c7a913 | official-source-tigris | supported | accepted |
 | mezo-earn.ve-btc-epoch-governor | mezo-mainnet, mezo-testnet | official-artifact-fully-verified-deployment | 45 | contracts:abi.mezo-earn.ve-btc-epoch-governor | b8d23f21ba7cdd537c046625e0d2e96cbe859450f8a0b715e4220c5211041a9d | official-source-tigris | supported | accepted |
 | mezo-earn.chain-fee-splitter | mezo-mainnet, mezo-testnet | official-artifact-fully-verified-deployment | 17 | contracts:abi.mezo-earn.chain-fee-splitter | 848b64e16d89d8b0503e1907062470bca4472ad28d35c3613aecdb7e808fc4f9 | official-source-tigris | supported | accepted |
-| bridge.musd-ntt-manager | mezo-mainnet, ethereum-mainnet, base-mainnet | official-deployment-repository-live-configuration | 119 | contracts:abi.bridge.musd-ntt-manager | a028c6ec7a73987bf447c8dde7ec4cd9c469cd28a8c8eb2d9bd8250210dea7ff | official-ntt-musd-live-deployment | supported | accepted |
+| bridge.musd-ntt-manager | mezo-mainnet, ethereum-mainnet, base-mainnet | official-deployment-repository-live-configuration | 120 | contracts:abi.bridge.musd-ntt-manager | 78fa27e57ee9e4bdd0b7b107dd5899324a943f7821d2a47e2a9e00bf8d95a1a1 | official-ntt-musd-live-deployment | supported | accepted |
 | bridge.musd-wormhole-transceiver | mezo-mainnet, ethereum-mainnet, base-mainnet | official-deployment-repository-live-configuration | 82 | contracts:abi.bridge.musd-wormhole-transceiver | 7a62c18f7b5c47cb2f4059bb7c006a453e3ba951fbc103d693faf06ddb096743 | official-ntt-musd-live-deployment | supported | accepted |
 | bridge.native-assets-precompile | mezo-mainnet | official-client-precompile-source | 42 | contracts:abi.bridge.native-assets-precompile | d641576a375a201fa5329aa13d09d00ebbcfdecdab1e35c40ed072876041709d | official-mezod-assets-bridge-current | supported | accepted |
 | bridge.native-mezo-bridge | ethereum-mainnet | deployed-executable-reproduction | 136 | contracts:abi.bridge.native-mezo-bridge | 2fb0503c0ed4ac5b2c1b872b8d8cdabd8c0992674d835ad742621b88a0921b66 | native-bridge-etherscan-executable-reproduction | supported | accepted |

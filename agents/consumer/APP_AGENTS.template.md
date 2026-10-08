@@ -65,6 +65,11 @@ For browser or SSR integration, use the installed `mdk-frontend-application` ski
 alongside the relevant public API/domain guidance. It covers wallet/request ports,
 exact amount forms, asynchronous UI state and browser bundle verification.
 
+Application organization and frontend presentation recipes are optional. Use the
+separately selected `mdk-application-architecture` skill when it helps a requested
+feature-organization or refactor task; retain this application's own conventions.
+Installing a skill does not require adopting its suggested layout or visual style.
+
 ### Add capabilities and retain project context
 
 Use `pnpm exec mdk sets` and `pnpm exec mdk skills` to inspect the installed

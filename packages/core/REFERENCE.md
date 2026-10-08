@@ -326,7 +326,7 @@ recovery; the SDK does not silently rewrite its provenance or resubmit the opera
 `verifyContractRuntime({ contract, transport, coordinate }) → Promise<void>` checks the resolved
 canonical address, chain and coordinate, full address-code SHA-256, and the ERC-1967 implementation
 slot/code where applicable. It uses Contracts' curated runtime identities; unavailable identities
-reject. It does not establish dynamic role topology or support status. Hashing uses Node crypto. Its
+reject. It does not establish dynamic role topology or support status. Hashing uses the portable EVM SHA-256 helper. Its
 transport parameter requires only `getChainId`, `getCode` and `getStorage` from `RpcTransport`;
 callers need not supply unrelated execution methods.
 

@@ -11,16 +11,9 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": [
-      "mezo-mainnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
     "evidenceLocalNetworkLabels": [],
-    "providerIds": [
-      "wormhole-ntt",
-      "mezo-native-bridge"
-    ]
+    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
   },
   "limitations": [
     "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
@@ -57,10 +50,7 @@
       "role": "canonical-record",
       "kind": "bridge-provider-catalog",
       "path": "records/providers.json",
-      "recordIds": [
-        "wormhole-ntt",
-        "mezo-native-bridge"
-      ],
+      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -68,11 +58,7 @@
       "role": "canonical-record",
       "kind": "bridge-asset-catalog",
       "path": "records/assets.json",
-      "recordIds": [
-        "musd",
-        "usdc-native-bridge",
-        "btc-native-bridge"
-      ],
+      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -272,6 +258,12 @@
       "role": "artifact",
       "kind": "maintenance-reverification-capture",
       "path": "artifacts/bridge-maintenance-reverification-2026-10-06.json"
+    },
+    {
+      "id": "bridge-private-scope-reverification-2026-10-07",
+      "role": "artifact",
+      "kind": "bridge-private-scope-reverification",
+      "path": "artifacts/private-scope-reverification-2026-10-07.json"
     }
   ],
   "checks": [
@@ -318,9 +310,7 @@
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-contract-roles"
     },
-    "blockers": [
-      "current exact-call writer verification for any future supported route"
-    ],
+    "blockers": ["current exact-call writer verification for any future supported route"],
     "currentContractEvidenceReference": {
       "moduleId": "contracts",
       "resourceId": "contract-bridge-v13-probes-2026-08-24"

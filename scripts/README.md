@@ -38,7 +38,7 @@ The recipes below name the additional prerequisites.
 | Install or refresh agent skills                         | [Agent utilities](agents/README.md)                                                                                                           |
 | Create/list local work records or clean build output    | [Workspace utilities](workspace/README.md)                                                                                                    |
 
-`pnpm check` runs source/task checks, formatting, generated drift, typechecking,
+`pnpm check` runs source/task, documentation and inventory checks, formatting, generated drift, typechecking,
 lint, boundaries, builds, built-package tests, the clean-workspace smoke test,
 and unit tests in sequence. It stops at the first failing command. Builds and
 tests can write build output and temporary files. This command does not collect
@@ -49,6 +49,25 @@ Browser tests are optional and need no setup for `pnpm check`. To include them,
 use `pnpm check:browser:container` or native `pnpm check:browser` after explicit
 [browser qualification setup](../docs/guides/BROWSER_APPLICATIONS.md#complete-browser-qualification).
 An explicitly invoked browser suite still fails if an engine or library is missing.
+
+## Choose the verification boundary
+
+| Change or question                       | Command                                              | Prerequisites and proof                                                                                                               |
+| ---------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Maintained documentation                 | `pnpm check:docs`                                    | Installed workspace; checks local file/heading targets and manifest versioning. Format edited authored prose separately.              |
+| One package's behavior                   | `pnpm --filter <package> check`                      | Build its workspace dependencies first; package formatting, types, lint, build and tests. Inspect its scripts for the exact contract. |
+| Package imports or dependency direction  | `pnpm boundaries`                                    | Installed TypeScript; no built output needed.                                                                                         |
+| New repository test or runtime generator | `pnpm check:inventory`                               | Installed workspace; catches missing, stale or duplicate runner/drift registrations.                                                  |
+| Shared or multi-package changes          | `pnpm check`                                         | Locked dependencies installed; builds and checks integration locally.                                                                 |
+| Consumption through built exports        | `pnpm test:built`                                    | Run `pnpm build` first; verifies built declarations/imports and the private artifact pilot.                                           |
+| Clean source consumption                 | `pnpm test:clean`                                    | Populated pnpm store for an offline frozen install; repeats types/builds/imports in a disposable source copy.                         |
+| Browser execution                        | `pnpm test:browser` or `pnpm test:browser:container` | Built packages plus the selected browser/container setup; opt-in execution.                                                           |
+| Canonical evidence                       | Owning module's indexed checks                       | Follow that module's evidence prerequisites; code tests do not renew evidence.                                                        |
+
+Keep the clean-copy stage even when earlier builds pass: it detects reliance on
+local source, discovery or installed artifacts that a fresh consumer lacks.
+Measure stage durations before changing caching or execution order. Hosted CI
+and release automation retain their separate scope under the contributor guide.
 
 ## Folder layout
 

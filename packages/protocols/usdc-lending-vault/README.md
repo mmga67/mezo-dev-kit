@@ -28,11 +28,13 @@ Previews use fee-aware state and explicit rounding. Liquidity observations and
 preview values do not guarantee transaction capacity. Unknown root runtime,
 conflicting role links, or a changed block invalidate the snapshot.
 
-This private Node package covers the recorded mainnet vault configuration.
+This private workspace package covers the recorded mainnet vault configuration.
 Its bounded reader/interface review is accepted; writers require qualified
 review before release. Curator allocation and other vault configurations are
 outside the API. See [vault knowledge](../../../knowledge/protocols/vaults/usdc-lending/README.md)
 for the accounting model and evidence.
+
+The [runtime and browser contract](../../../docs/guides/BROWSER_APPLICATIONS.md#runtime-and-bundle-contract) describes portable SDK requirements and separate browser qualification.
 
 ## Development
 

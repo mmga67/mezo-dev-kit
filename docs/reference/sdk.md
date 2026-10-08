@@ -1,6 +1,6 @@
 # SDK package reference
 
-The SDK contains sixteen private runtime packages. Use the table below to
+The SDK contains private runtime packages. Use the table below to
 choose an owner, then open its reference for exact methods, types, inputs,
 errors, and examples. The separate [project utility](../../packages/cli/README.md)
 creates applications and manages matching local guidance.

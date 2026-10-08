@@ -41,15 +41,38 @@ try {
   assert.equal(bundle.id, repeated.id, "Bundle generation must be deterministic");
   assert.ok(bundle.resources.length > 100);
   assert.ok(bundle.exclusions.length > 0);
-  assert.equal(bundle.skills.length, 18);
+  assert.equal(bundle.skills.length, 19);
   assert.ok(bundle.skills.some((skill) => skill.name === "mdk-frontend-application"));
   assert.ok(bundle.sets?.some((set) => set.id === "frontend"));
+  const architectureSkill = bundle.skills.find(
+    (skill) => skill.name === "mdk-application-architecture",
+  );
+  assert.ok(architectureSkill);
+  for (const setId of ["base", "frontend"]) {
+    const set = bundle.sets?.find((item) => item.id === setId);
+    assert.ok(set);
+    assert.ok(!architectureSkill.domains.some((domain) => set.domains.includes(domain)));
+  }
+  for (const guide of ["application_architecture", "frontend_patterns"]) {
+    assert.ok(bundle.resources.some((resource) => resource.id === `guide:docs/guides/${guide}.md`));
+  }
   for (const resource of bundle.resources.filter((item) => item.kind === "knowledge"))
     assert.deepEqual(
       await readFile(join(source, resource.path)),
       await readFile(join(root, resource.sourcePath)),
       "Knowledge records retain original bytes and evidence envelope",
     );
+  for (const resource of bundle.resources.filter((item) => item.kind !== "knowledge")) {
+    const original = await readFile(join(root, resource.sourcePath), "utf8");
+    const distributed = await readFile(join(source, resource.path), "utf8");
+    // The maintained corpus uses top-level backtick fences. Compare their exact
+    // bytes independently of the production link scanner, including example labels.
+    for (const example of original.matchAll(/^(`{3,})[^`\r\n]*\r?\n[\s\S]*?^\1[ \t]*(?=\r?$)/gm))
+      assert.ok(
+        distributed.includes(example[0]),
+        `${resource.sourcePath}: distribution changed or omitted a fenced example`,
+      );
+  }
   for (const skill of bundle.skills)
     for (const file of skill.files)
       assert.deepEqual(
@@ -327,6 +350,29 @@ try {
     );
     assert.equal(added.complete, true, `Set ${set.id} must finish installation and guidance`);
   }
+  assert.ok(
+    !(await readdir(join(project, ".agents/skills"))).includes("mdk-application-architecture"),
+  );
+  const appInstructions = await readFile(join(project, "AGENTS.md"));
+  const appManifest = await readFile(join(project, "package.json"));
+  const architectureAdd = resultData(
+    await pnpm(project, [
+      "exec",
+      "mdk",
+      "add",
+      "--skill",
+      "mdk-application-architecture",
+      "--offline",
+      "--json",
+    ]),
+  );
+  assert.equal(architectureAdd.complete, true);
+  assert.deepEqual(await readFile(join(project, "AGENTS.md")), appInstructions);
+  assert.deepEqual(await readFile(join(project, "package.json")), appManifest);
+  assert.deepEqual(
+    await readFile(join(project, ".agents/skills/mdk-application-architecture/SKILL.md")),
+    await readFile(join(root, "agents/consumer/skills/mdk-application-architecture/SKILL.md")),
+  );
   const installed = resultData(await pnpm(project, ["exec", "mdk", "skills", "--json"]));
   assert.ok(Array.isArray(installed.skills) && installed.skills.length === bundle.skills.length);
   const approval = await promisify(execFile)(
@@ -391,7 +437,22 @@ try {
     "--offline",
     "--json",
   ]);
-  await pnpm(project, ["exec", "mdk", "docs", "show", "api:musd-borrowing", "--offline", "--json"]);
+  const shown = resultData(
+    await pnpm(project, [
+      "exec",
+      "mdk",
+      "docs",
+      "show",
+      "api:musd-borrowing",
+      "--offline",
+      "--json",
+    ]),
+  );
+  const borrowingReference = bundle.resources.find(
+    (resource) => resource.id === "api:musd-borrowing",
+  );
+  assert.ok(borrowingReference);
+  assert.equal(shown.content, await readFile(join(source, borrowingReference.path), "utf8"));
   const all = resultData(
     await pnpm(project, ["exec", "mdk", "docs", "fetch", "--all", "--offline", "--json"]),
   );

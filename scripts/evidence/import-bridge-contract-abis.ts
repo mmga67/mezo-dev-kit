@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import assert from "node:assert/strict";
+import { loadReviewedNttManagerAbi } from "../lib/ntt-manager-abi.ts";
 
 const [nttRepository, mezodRepository, nativeBridgeCompilerOutput] = process.argv.slice(2);
 if (!nttRepository || !mezodRepository || !nativeBridgeCompilerOutput) {
@@ -37,7 +39,18 @@ assertSha256(
   "c15603a88afba883e395fed535a654973c35dbccbefc1783de66be27740421a4",
   transceiverFactoryPath,
 );
-const managerAbi = extractTypechainAbi(managerFactory, managerFactoryPath);
+const reviewedManager = await loadReviewedNttManagerAbi(repositoryRoot);
+assert.deepEqual(
+  extractTypechainAbi(managerFactory, managerFactoryPath),
+  reviewedManager.original,
+  "TypeChain manager differs from the preserved original ABI",
+);
+assert.equal(
+  await readFile(join(nttRepository, reviewedManager.sourcePath), "utf8"),
+  reviewedManager.source,
+  "NTT interface differs from the approved pinned source",
+);
+const managerAbi = reviewedManager.abi;
 const transceiverAbi = extractTypechainAbi(transceiverFactory, transceiverFactoryPath);
 const precompileAbiBytes = await readFile(
   join(mezodRepository, "precompile", "assetsbridge", "abi.json"),
