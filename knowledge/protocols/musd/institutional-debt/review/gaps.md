@@ -4,8 +4,10 @@
   Contract identities and ABIs; protocol support remains proposed.
 - Current roles, allowlists, UTXOs, positions, prices, rates, caps, and totals
   require a fresh block-pinned read before use.
-- No public read facade, event indexer, monitoring adapter, simulator, or
-  transaction writer is implemented.
+- The [private SDK](../../../../../packages/protocols/musd-institutional-debt/README.md)
+  implements bounded position reads and calculations. It has no partner
+  transaction writer, event indexer or monitoring service; its qualified
+  implementation review and release remain outstanding.
 - No deployed liquidation operation was found; the enum member is not a
   supported capability.
 - No cross-system product backing, collateralization, solvency, or exposure

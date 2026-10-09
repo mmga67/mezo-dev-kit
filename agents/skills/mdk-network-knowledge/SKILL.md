@@ -33,7 +33,7 @@ sources of truth.
 - `knowledge/networks/`
 - `packages/chains/`
 - `docs/manifest`
-- `docs/reference/` for future generated reference output
+- `knowledge/networks/generated/reference.md` for the generated human reference
 
 ## Canonical Sources
 

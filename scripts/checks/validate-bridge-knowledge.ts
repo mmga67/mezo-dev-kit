@@ -766,16 +766,11 @@ for (const transferId of [
   );
 }
 
-const [readme, candidates, gaps, generated] = await Promise.all([
-  readFile(join(base, "README.md"), "utf8"),
+const [candidates, gaps, generated] = await Promise.all([
   load<string>("bridge-candidates"),
   load<string>("bridge-gaps"),
   load<string>("bridge-reference"),
 ]);
-assert(
-  readme.includes("module support is") && readme.includes("`none`"),
-  "bridge README omits support boundary",
-);
 assert(
   candidates.includes("Candidate") &&
     gaps.includes("registry provenance review") &&

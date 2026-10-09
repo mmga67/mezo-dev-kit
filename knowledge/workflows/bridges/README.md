@@ -1,45 +1,56 @@
 # Bridge routes and delivery
 
-Understand MUSD Wormhole NTT and Mezo Native Bridge routes, asset representations, and the evidence needed to establish cross-chain delivery.
+A bridge transfer has work to complete on both its source and destination
+chains. Confirming the source transaction is only one step: delivery requires
+matching evidence that the intended transfer reached the destination.
 
-## Start here
+This directory explains MUSD transfers through Wormhole Native Token Transfers
+(NTT) and routes through the Mezo Native Bridge. Each route identifies its asset,
+direction, and representation on the receiving chain. The two bridge systems
+use different rules to match source activity to delivery.
 
-- [Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md): BTC/Threshold custody, Bitcoin and Ethereum entry, other assets, and token-specific Wormhole destinations.
-- [MUSD NTT guide](../../../docs/reference/bridges/musd-ntt.md): messages, lifecycle, and delivery evidence.
-- [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md): direction-specific settlement rules.
-- [Bridge reference](generated/reference.md): recorded route candidates and provider completion rules.
-- [Bridges SDK](../../../packages/bridges/README.md): private NTT/Native preparation, NTT recovery and bounded delivery observers.
-- [Indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md): scans, checkpoints, and partial evidence.
+## Follow a transfer
 
-## Scope and evidence
+- **Understand MUSD NTT:** the [NTT guide](../../../docs/reference/bridges/musd-ntt.md)
+  follows messages and matches the same transfer digest on both chains.
+- **Understand Native Bridge delivery:** the [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md)
+  explains the identifiers and settlement evidence required in each direction,
+  including recipient state where needed.
+- **Look up a recorded route:** the [bridge reference](generated/reference.md)
+  identifies the assets, providers, route candidates, and completion rules covered
+  by the retained evidence.
+- **Investigate an incomplete transfer:** [indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md)
+  explains partial scans and uncertain outcomes. Missing evidence alone is not a
+  reason to send the funds again.
+- **Understand BTC custody and other entry routes:** [Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md)
+  describes the wider published architecture and token-specific destinations.
+
+## Check the route's limits
 
 The [current asset configuration review](review/gaps.md#native-bridge) records
 the SolvBTC/xSolvBTC wind-down notice and the October 6 deposit restrictions.
 Historical mappings do not establish current deposit or withdrawal availability.
 
-The bounded provider/route model has accepted review, but routes remain
-evidence-verified and unsupported; module support is `none`. Additional private
-NTT preparation and Native source/delivery evidence received maintainer acceptance
-as-is on October 7; support remains proposed. The [continuity capture](artifacts/private-scope-reverification-2026-10-07.json)
-checks current Native minimums and NTT configuration. Contract history and current
-operation readiness are separate.
-
-NTT delivery joins the same digest on both chains. Native delivery joins the
-correct direction-specific tuple and settlement evidence, including recipient
-post-state where required. A source receipt, attestation, successful system
-transaction, or stored indexer status alone does not prove delivery.
-
-The [Native source qualification](evidence/native-transfer-2026-09-15.json) pins
-current token/bridge state and source compatibility for the two initial routes.
-It documents native BTC approval, inbound mint authority and current withdrawal
-fees. A confirmed failed recipient payout requires governance recovery; it has
-no automatic retry. These implementation checks do not promote route support.
+A source receipt, attestation, successful system transaction, or stored indexer
+status alone does not prove delivery. A confirmed Native withdrawal with a failed
+recipient payout requires governance recovery; it has no automatic retry.
 
 BSC, Solana, MEZO NTT, Bitcoin delivery, other mappings, and untested directions
-remain outside this module's qualified route scope. This is a coverage limit,
+remain outside the routes verified by this module. This is a coverage limit,
 not a statement that Mezo lacks these bridges. Use the sourced economic-system
 explanation for the wider published architecture; do not generalize the MUSD
 NTT network set to MEZO or treat a documented destination as a verified SDK route.
+
+## Use bridges in an application
+
+The [Bridges SDK](../../../packages/bridges/README.md) documents private transfer
+preparation, NTT recovery, and delivery observers, with their asset and direction
+limits. These implementations do not provide supported public routes, a relayer,
+or an automatic retry service. Review of recorded transfers does not establish
+that a new transfer is ready to send; configuration, fees, and transfer checks
+must apply to that operation. See the shared
+[evidence and support guide](../../README.md#evidence-review-and-support)
+for the meaning of review and support labels in the reference.
 
 ## Contributing
 

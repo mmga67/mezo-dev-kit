@@ -1,22 +1,28 @@
 # Mezo troubleshooting
 
-Find reproduced symptoms, diagnostic steps, and bounded mitigations for Mezo RPC, protocol, documentation, and bridge problems.
+A symptom is the starting point for a diagnosis. An empty RPC result, for example,
+can leave a transaction's outcome unknown; it does not establish that the
+transaction never happened. A source-chain receipt likewise cannot establish
+bridge delivery on the destination.
 
-## Start here
+This directory collects reproduced problems and the steps used to distinguish
+their causes. Match the network, provider, contract version, and observed symptom
+before applying a recorded mitigation.
+
+## Find the matching problem
 
 - [Issue reference](generated/reference.md#issue-inventory): choose the symptom and follow its prerequisites, diagnosis, and limitations.
 - [Indexing and reconciliation guide](../../docs/guides/INDEXING_RECONCILIATION.md): investigate partial scans, archive gaps, and uncertain outcomes.
 - [Security reporting](../../SECURITY.md): report vulnerabilities through the private reporting process.
 
-## Scope and evidence
+## Use a diagnosis within its limits
 
-The recorded issues received qualified review, but issue support remains absent
-and each diagnosis applies only to its documented scope. Reproduce the symptom
-and follow its source evidence before applying a mitigation.
+Each diagnosis applies only to the conditions and evidence recorded with it.
+The collected cases do not provide a supported general recovery service.
+Reproduce the symptom and inspect the source evidence before applying a mitigation.
 
-A missing RPC result does not prove a missing transaction. A source receipt does
-not prove bridge delivery. Conflicting documentation must be checked against
-version-matched source and observed state. Security findings belong in the
+Conflicting documentation must be checked against source for the same contract
+version and the observed state. Security findings belong in the
 private reporting process, not in public troubleshooting records.
 
 ## Contributing

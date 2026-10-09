@@ -1,8 +1,15 @@
 # The MUSD system
 
-Learn the shared MUSD terminology, component roles, units, and parameter ownership. Start here before exploring a particular borrowing, redemption, Savings, or institutional debt workflow.
+MUSD connects several activities with different accounting rules: borrowing
+against collateral, redeeming MUSD through borrower positions, earning Savings
+yield, and managing institutional debt. Understanding one activity does not mean
+its balances or rules apply to the others.
 
-## Start here
+This directory explains the shared terms, components, and units, then routes you
+to the activity you need. MUSD and mUSDC are different assets; the BTC/mUSDC
+lending market has its own model.
+
+## Choose an activity
 
 - [MUSD explanation](../../../docs/reference/musd-system.md): how the system fits together.
 - [System reference](generated/reference.md): the recorded components and their responsibilities.
@@ -10,16 +17,14 @@ Learn the shared MUSD terminology, component roles, units, and parameter ownersh
 - [Savings](savings/README.md) and [institutional debt](institutional-debt/README.md): separate accounting models.
 - [BTC/mUSDC lending](../lending/musdc/README.md): the independent market for bridged USDC.
 
-## Scope and evidence
-
-The shared model is supported and reviewed for its declared source and deployment
-scope. Governed values and deployment state still change; follow the recorded
-sources and observation dates.
+## Keep the accounting separate
 
 Savings principal/yield and institutional positions do not enter classic trove,
 collateral-ratio, Stability Pool, or redemption accounting. mUSDC is a different
 asset from MUSD. Contracts owns deployments and ABIs; Prices owns reusable feed
-semantics, while MUSD owns its configured oracle policy.
+semantics, while MUSD owns its configured oracle policy. Governed parameters and
+deployments can change; use the source and observation date attached to the
+selected rule.
 
 For implemented workflows and their release status, use the [SDK reference](../../../docs/reference/sdk.md).
 

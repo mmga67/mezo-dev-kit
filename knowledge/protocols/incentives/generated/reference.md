@@ -2,7 +2,11 @@
 
 # Mezo incentives evidence reference
 
-This is a deterministic projection of indexed canonical knowledge, not an independent authority.
+Use this reference to trace lock power, voting allocations and reward accounting to their recorded evidence. For an introduction, start with the [incentives overview](../README.md). To implement an operation, use the [Incentives SDK reference](../../../../packages/protocols/incentives/REFERENCE.md), which describes the private readers and writers available in this checkout.
+
+## Evidence coordinates
+
+This page is generated from indexed records. [Evidence, review and support](../../../README.md#evidence-review-and-support) explains the metadata below. Each section's contract version, block and review scope govern its claims; the module date does not make every observation current.
 
 - Module: `protocols/incentives`
 - Support: `none`
@@ -224,7 +228,9 @@ The matching current source enforces onlyNewEpoch for vote/reset and its first/f
 
 ## CL gauge claim overloads
 
-Review: `accepted`; support: `none`. Additional explanatory scope under CL explanation; no claim writer is enabled.
+A concentrated-liquidity (CL) gauge tracks rewards for staked position NFTs. Its two `getReward` overloads share a name but take different argument types, so they have different caller permissions and recipients:
+
+The source-semantics review is `accepted`; operation support remains `none`. The private SDK's [CL gauge workflow](../../../../packages/protocols/incentives/REFERENCE.md#cl-gauge-positions-and-rewards) implements the per-NFT claim. That implementation and this source review do not establish approval for a current transaction or a package release.
 
 | Signature | Caller | Recipient | Coverage |
 | --- | --- | --- | --- |
@@ -235,9 +241,9 @@ Both overloads use _getReward: update position rewards, clear a positive stored 
 
 ## Deployment and writer boundary
 
-Fifteen deployed roles resolve through accepted Contracts deployment and ABI records with activation histories. validator evidence review accepted the two reusable validator factory roots; their dynamic children remain evidence-scoped instances rather than static registry identities. Registry and protocol review acceptance create no incentives-operation, reader, or writer support.
+The contract-role records link to reviewed deployments, ABIs and activation histories in Contracts. Validator factories have stable registry identities; the gauges they create are captured at specific blocks and are not each maintained as a permanent registry entry.
 
-All twelve operation records describe verified state-machine behavior, but module support is `none`. Historical create-lock and replacement-vote replay proves only those calls at their exact historical pre-states.
+The operation records explain contract behavior and transaction preconditions. The [Incentives package](../../../../packages/protocols/incentives/README.md) separately provides private lock, vote, stake and claim implementations. Evidence acceptance does not approve those implementations for release. Historical create-lock and replacement-vote replays establish only the calls and pre-states recorded in that evidence.
 
 Remaining public-capability blockers:
 

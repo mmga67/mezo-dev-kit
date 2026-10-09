@@ -24,7 +24,8 @@ route or writer admission. Native payment, Permit2 fallback and legacy whole-rou
 balance continuation remain unqualified.
 
 - Qualified Level 3 review accepted the bounded knowledge model on 2026-08-25;
-  the module still exposes no public reader or writer.
+  the private SDK now implements readers and writers under the separate scope
+  described below. That model review does not establish supported public release.
 - Current official documentation still supplies no Quoter or Universal Router
   coordinate. The separately qualified legacy candidates do not establish
   official application endorsement or supported targets.
@@ -36,9 +37,10 @@ balance continuation remain unqualified.
 - Basic fee-on-transfer variants, the unsafe caller-supplied-amount method, CL
   exact-output variants, broad sweep/refund methods, multicall, self-permit,
   native-value paths, and Permit2-style flows remain disabled.
-- A future public implementation must choose and approve an EVM client
-  dependency, define typed route/quote/simulation interfaces, prove provider
-  capabilities, add integration tests, and pass a separate qualified review.
+- The SDK uses the workspace EVM helpers and typed Core transport/execution
+  ports. Public release still needs qualified review of those implementations,
+  provider capabilities, simulations and integration evidence; the older
+  knowledge acceptance alone does not satisfy that review.
 - Current use must refresh router/factory code, deployment validity, dynamic
   pool mappings, fees/liquidity, allowances/balances, quote freshness,
   deadline, exact calldata simulation, and reconciliation evidence.

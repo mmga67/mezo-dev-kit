@@ -17,7 +17,8 @@
   },
   "providerReference": {
     "moduleId": "networks",
-    "resourceId": "mezo-mainnet-boar-https"
+    "resourceId": "rpc-endpoints",
+    "recordId": "mezo-mainnet-boar-https"
   },
   "block": {
     "blockNumber": 11333787,

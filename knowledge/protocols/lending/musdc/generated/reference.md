@@ -2,11 +2,13 @@
 
 > Generated from canonical `protocols/lending/musdc` records and evidence. Do not edit manually.
 
+This reference explains the recorded BTC/mUSDC market's shares, debt and interest. The balances below are a fixed-block observation, not current borrowing or withdrawal capacity. The [Lending SDK](../../../../../packages/protocols/musdc-lending/README.md) documents private readers, calculations and direct supply, collateral, borrowing and repayment workflows, with their review limits.
+
 ## Lifecycle
 
 - Status: `verified`; support: `proposed`; review: `accepted`
 - Evidence block: `11341710` (`0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0`)
-- Writers: none
+- Evidence reviewed: `2026-08-24T14:34:51Z`; review due: `2026-09-23T00:00:00Z`
 
 ## Market
 

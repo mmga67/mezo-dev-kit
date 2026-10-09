@@ -2,14 +2,14 @@
 
 > Generated from canonical `prices` records and evidence. Do not edit manually.
 
+Use source class, units and observation time to decide what a price can tell you. The [Prices SDK](../../../packages/prices/README.md) implements normalization, freshness checks and a private mainnet Skip BTC/USD reader. It implements no updater or automatic fallback; each protocol retains its own oracle policy.
+
 ## Lifecycle
 
 - Status: `verified`
 - Support: `proposed`
 - Review: `accepted`
 - Review boundary: `2026-09-03T14:24:36.881Z`
-- Public readers: none
-- Writers/updaters: none
 
 ## Source classes
 
@@ -62,7 +62,7 @@
 | `partial-read` | `aggregate` |
 | `total-failure` | `aggregate` |
 
-## Current post-upgrade fixed-block observations
+## Selected source and history observations
 
 | Observation | Network | Result |
 | --- | --- | --- |
@@ -73,4 +73,4 @@
 | `observe-skip-mezo-testnet-2026-08-27` | `mezo-testnet` | `valid-bounded-observation` |
 | `observe-pyth-mezo-testnet-2026-08-27` | `mezo-testnet` | `stale-at-3600-seconds` |
 
-Older observations remain immutable historical evidence. Current evidence is selected independently by network; the full-module deadline remains expired until the testnet refresh succeeds (current-state oracle verification). Pyth diagnostic payloads are stale evidence, not current prices. See `review/gaps.md` before relying on any proposed identity or rule.
+These are the selected full source/history observations for each network. Separate [current-state captures](../README.md#check-the-source-and-observation-time) inspect recent runtimes and feed values without renewing historical evidence. The full-module historical testnet deadline remains expired; the [network policy](../../../docs/guides/oracle-evidence-refresh.md#testnet-historical-archive-exception) excludes long-term testnet archive recovery from required scope. Pyth diagnostic payloads are stale evidence, not current prices. Read the [evidence gaps](../review/gaps.md) before relying on a proposed identity or rule.

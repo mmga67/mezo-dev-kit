@@ -566,7 +566,7 @@ Object.assign(pythApiSource, {
 priceIndex.limitations = [
   "oracle re-verification post-upgrade evidence is pending qualified Level 3 review; feed/current support remains proposed.",
   "Pyth one-hour reads remained stale at both post-upgrade evidence blocks; no live Pyth price support is claimed.",
-  "No public price reader, feed updater, provider credential, subscription, route, trading path, or writer is implemented.",
+  "The private Prices package implements a mainnet Skip reader and normalization/freshness helpers. Public release remains separate; no feed updater, provider credential, subscription, route, trading path or writer is implemented.",
   "Price source selection never substitutes a market, DEX, analytics, Skip-direct, or Pyth-direct result for the MUSD protocol price.",
 ];
 upsertResource(priceIndex, {
@@ -586,7 +586,7 @@ appendGeneratedFrom(priceIndex, "price-reference", {
 const extensions = object(priceIndex.extensions, "price index extensions");
 extensions.blockers = [
   "qualified Level 3 acceptance of the oracle re-verification post-upgrade Pyth implementation, ABI, and feed evidence",
-  "separate public API and transaction review before any reader or updater implementation",
+  "separate release review for private readers and operation review before any updater",
 ];
 extensions.gaps = [
   "qualified Level 3 acceptance of the oracle re-verification post-upgrade Pyth implementation, ABI, and feed evidence",

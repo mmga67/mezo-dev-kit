@@ -16,7 +16,7 @@
     "evidenceBlockHash": "0xcd4a686343af0c9ae5a9407828b761a451bd692fc10024a9435052c7c3f740ee"
   },
   "limitations": [
-    "This is a qualified-review-accepted knowledge model; it exposes no public reader or writer.",
+    "Knowledge review covers the recorded routing model. The private Swaps package implements quote readers and writers; supported public release requires separate review.",
     "No current official Quoter or Universal Router deployment was established.",
     "The current routers are separate transaction destinations, so atomic mixed basic/CL routing is unsupported.",
     "Historical exact-call replay proves only the recorded sender, calldata, value, destination, and pre-state block; current submission requires a fresh exact-call simulation."

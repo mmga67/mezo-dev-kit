@@ -1,24 +1,32 @@
 # Institutional MUSD debt
 
-Understand Enclave roles and custody boundaries, institutional debt positions, pledged collateral, fees, repayment, and health on Mezo Mainnet.
+Institutional MUSD debt connects assets held through Enclave custody with debt
+positions and collateral pledges. Custody activity and debt accounting are
+separate: an asset movement alone does not establish that a position's debt or
+pledge changed.
 
-## Start here
+This directory explains the roles, positions, fees, repayment, and health
+calculations on Mezo Mainnet. It helps you trace a position change through the
+matching debt-manager call, event, and resulting state.
+
+## Trace a position
 
 - [Institutional debt reference](generated/reference.md): roles, positions, formulas, and aggregate boundaries.
-- [Institutional debt SDK](../../../../packages/protocols/musd-institutional-debt/README.md): bounded reads and pure calculations.
+- [Institutional debt SDK](../../../../packages/protocols/musd-institutional-debt/README.md): read selected positions and calculate debt and health.
 - [Classic borrowing](../borrowing/README.md): the separate trove model.
 - [Contract deployments](../../../contracts/README.md): Enclave and debt-manager generations.
 
-## Scope and evidence
+## What a position record establishes
 
-The module's review is accepted and knowledge support remains proposed. Roles,
-allowlists, UTXOs, positions, rates, and totals describe their recorded block.
-The SDK provides private reads; no partner writer is implemented.
+Roles, allowed accounts, Bitcoin transaction outputs (UTXOs), positions, rates,
+and totals describe their recorded block. Recorded UTXOs do not establish that
+the Bitcoin outputs remain unspent, confirm off-chain custody, or prove a product's
+backing ratio.
 
-Institutional positions do not enter classic trove or Stability Pool accounting.
-Enclave asset movement alone does not prove a debt-position change: the matching
-debt-manager call/event and post-state matter. Recorded UTXOs do not prove
-Bitcoin unspent state, off-chain custody, or a product backing ratio.
+Institutional positions do not enter classic borrower-position or Stability Pool
+accounting. The SDK provides private reads and calculations; no partner
+transaction writer is implemented. Use its documentation for exact inputs and
+availability limits.
 
 ## Contributing
 

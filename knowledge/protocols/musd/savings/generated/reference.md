@@ -2,11 +2,13 @@
 
 > Generated from canonical `protocols/musd/savings` records and evidence. Do not edit manually.
 
+This reference describes principal receipts and separately indexed yield for the recorded Savings generation. The official product description differs; read the [source conflict and candidate generation check](../review/source-conflicts.md) before treating this historical accounting as a current product claim. The [Savings SDK](../../../../../packages/protocols/musd-savings/README.md) documents private reads, calculations and direct workflows for its recorded scope.
+
 ## Lifecycle
 
 - Status: `verified`; support: `proposed`; review: `accepted`
 - Evidence block: `11341710` (`0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0`)
-- Writers: none
+- Evidence reviewed: `2026-08-24T15:30:07Z`; review due: `2026-09-24T00:00:00Z`
 
 ## Accounting boundary
 
@@ -16,7 +18,7 @@
 - sMUSD principal, claimable MUSD yield, gauge stake, and MEZO rewards are separate values.
 - Savings state does not enter troves, TCR, Stability Pool, or redemptions.
 
-## Current topology
+## Topology at the evidence block
 
 - Savings proxy: `0xb4D498029af77680cD1eF828b967f010d06C51CC`
 - Strategy: `0x0C0944713c185ea3e64F5609ECee3fB3C054a295` (resolved through the Savings root)

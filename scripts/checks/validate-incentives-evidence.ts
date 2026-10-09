@@ -1246,13 +1246,11 @@ validateIncentiveFormulaFixtures(fixtures);
 
 validateValidatorAllocationFixtures(validatorFixtures, validatorNotification);
 
-const [readme, gaps, candidates, generated] = await Promise.all([
-  readFile(join(base, "README.md"), "utf8"),
+const [gaps, candidates, generated] = await Promise.all([
   load<string>("incentives-gaps"),
   load<string>("incentives-candidates"),
   load<string>("incentives-reference"),
 ]);
-assert(readme.includes("support is `none`"), "incentives README omits the support boundary");
 assert(
   gaps.includes("registry provenance review") &&
     gaps.includes("accepted Contracts records") &&

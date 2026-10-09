@@ -19,7 +19,7 @@
   "limitations": [
     "oracle re-verification qualified Level 3 review accepted the post-upgrade evidence; feed/current support remains proposed.",
     "Pyth one-hour reads remained stale at both post-upgrade evidence blocks; no live Pyth price support is claimed.",
-    "No public price reader, feed updater, provider credential, subscription, route, trading path, or writer is implemented.",
+    "The private Prices package implements a mainnet Skip reader and normalization/freshness helpers. Public release remains separate; no feed updater, provider credential, subscription, route, trading path or writer is implemented.",
     "Price source selection never substitutes a market, DEX, analytics, Skip-direct, or Pyth-direct result for the MUSD protocol price."
   ],
   "resources": [
@@ -339,7 +339,7 @@
     "consumerReferences": ["protocols/musd", "protocols/pools", "workflows/transactions"],
     "ownershipBoundary": "Prices owns provider-neutral source/feed identity and datum, scaling, confidence, freshness, disagreement, and fallback-result semantics. Protocol consumption, pool math, routing, analytics, Contracts, Networks, and transaction lifecycle remain with their accepted owners.",
     "blockers": [
-      "separate public API and transaction review before any reader or updater implementation"
+      "separate release review for private readers and operation review before any updater"
     ],
     "gaps": [
       "supported public reader/freshness policy",

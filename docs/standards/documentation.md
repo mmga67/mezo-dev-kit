@@ -70,6 +70,58 @@ For maintenance, a short link to the
 [knowledge authoring guide](../guides/KNOWLEDGE_AUTHORING.md) supplies the next
 step without repeating its procedure.
 
+### Knowledge READMEs
+
+A knowledge README helps a person understand a subject and choose what to read
+next. Start with a short explanation before the link inventory: what the subject
+does, how its main parts relate, and a distinction that prevents a likely
+misunderstanding. Use maintained models as the basis and link their detailed
+owners; a summary does not become another authority for formulas, deployments,
+parameters, or evidence.
+
+Adapt the explanation to the subject. A protocol page might trace a deposit,
+debt, vote, or reward. Networks should distinguish chain identity from access
+through a provider. Troubleshooting should explain how to select a diagnosis.
+Use a small example or diagram only when it helps. There is no required set of
+headings, word count, or diagram for every module.
+
+Organize links around reader questions or tasks. Separate learning the mechanism,
+looking up exact facts, and using an SDK. Give each destination enough context
+that the reader can choose without opening it. Keep contribution instructions
+brief and at the end; the index owns resource inventories and exact checks.
+
+State limits as consequences near the affected use: for example, a historical
+observation cannot establish current delivery or available liquidity. Explain
+the subject before SDK availability, and derive any operation claim from its
+package owner. A module status cannot establish the status of every SDK method.
+
+Use the shared [evidence, review, and support explanation](../../knowledge/README.md#evidence-review-and-support)
+when those terms matter. Do not repeat a general disclaimer or a status-field
+inventory on every page. Define an unavoidable term briefly in context, and keep
+the applicable limitation on the page so a reader arriving directly can use it.
+Review history, capture logs, and individual corrections belong in their existing
+evidence or review owners; link them when they explain a current limitation.
+
+Review a knowledge README by asking whether a newcomer can:
+
+- explain the subject and its main relationships after reading the opening;
+- choose a useful next page for learning, lookup, or integration;
+- understand the relevant limit without interpreting repository status fields.
+
+Automated checks validate structured lifecycle fields, source references,
+generated consistency, and working links. They must not require a particular
+sentence in authored prose as proof of review or support. Retain those underlying
+checks when removing wording assertions, and review the prose against its owners.
+Report this editorial review separately from automated validation.
+
+Follow the README's main links during that review: generated references,
+explanations, package APIs and examples must agree about what exists and what
+still needs review. Fix generated prose in its generator. Avoid hard-coded
+capability inventories such as “Writers: none” in a knowledge projection; the
+package owns implemented APIs. Label balances and topology by their observation
+scope, and expose a material source conflict beside the affected explanation.
+A clear entry page does not compensate for a contradictory destination.
+
 ## Choose a structure for the reader's task
 
 These outlines adapt the shared writing rules to different reader needs. Use
@@ -252,10 +304,10 @@ or examples. Check the affected files explicitly with Prettier: the root
 `format:check` script does not include root Markdown or `docs/`.
 
 The [Markdown link checker](../../scripts/checks/validate-markdown-links.ts)
-checks local destination existence in its declared Markdown roots. It does not
-validate heading anchors, read links inside the extensionless manifest, or scan
-package documentation as a source root. Check affected links in those locations
-explicitly. Preserve useful old anchors when reorganizing a long page, and
+checks local destinations and heading anchors in its declared documentation
+roots, including package documentation and the extensionless manifest. It does
+not establish that a destination explains the linked subject or that an external
+page is current. Preserve useful old anchors when reorganizing a long page, and
 update incoming links when a heading or file must change.
 
 ### Preserve meaning in generated and distributed documentation

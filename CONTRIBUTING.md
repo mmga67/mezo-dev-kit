@@ -414,6 +414,26 @@ should identify their canonical inputs.
 No document, directory, passing schema check, or successful transaction alone
 creates a support promise.
 
+### Qualified human review
+
+Qualified review is human acceptance of protocol-sensitive work by a reviewer
+able to evaluate the affected contracts, evidence, calculations, and failure
+behavior. Relevant expertise must match the change; a general code review or
+passing automated checks alone does not establish that qualification. The
+maintainer identifies the appropriate reviewer under the existing review process.
+
+Record who reviewed the work, the relevant expertise or responsibility, the
+evidence and exact scope reviewed, the decision, and any remaining limits in
+the owning task or review packet. Keep private identities and sensitive evidence
+in their permitted locations. A public summary must not imply credentials,
+independence, certification, or an audit that the record does not establish.
+
+Acceptance applies only to the reviewed scope. Reviewing a protocol explanation,
+deployment identity, or historical observation does not approve every reader,
+writer, current transaction, or future contract version. Support and release
+decisions retain their own requirements. New review records follow these
+expectations; wording changes do not retroactively expand earlier acceptance.
+
 ## Security
 
 Follow [`SECURITY.md`](./SECURITY.md). Do not place vulnerability details in a

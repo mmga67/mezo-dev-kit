@@ -44,9 +44,11 @@ amount should normally drive the request. A state change can cancel the final
 partial.
 
 The deployed entrypoint has no minimum-BTC-received or minimum-actual-fill
-argument. A future writer therefore needs a fresh block-pinned quote, exact-call
-simulation, explicit user fill/slippage policy, receipt-event parsing, and
-post-state reconciliation. A transaction hash alone is not success evidence.
+argument. The private [Redemption SDK](../../packages/protocols/musd-redemptions/README.md)
+therefore requires a fresh block-pinned quote, exact-output simulation, explicit
+user output policy, receipt-event parsing, and post-state reconciliation.
+These preflight checks cannot guarantee the output at inclusion. A transaction
+hash alone is not success evidence.
 
 ## Fee documentation discrepancy
 
@@ -59,6 +61,6 @@ deployment blocks. Deployed state and version-matched source are canonical for
 what executes; this page and the canonical records are evidence-backed
 interpretations, not substitutes for that evidence.
 
-The redemption knowledge is supported and accepted. A public redemption writer
-remains outside this module and needs its own capability review because the
-deployed entrypoint does not enforce a minimum received amount.
+Acceptance of this version-scoped explanation is separate from review of the
+private writer. Its protocol support remains proposed and qualified release
+review remains required.

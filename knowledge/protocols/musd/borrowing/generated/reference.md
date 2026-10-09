@@ -35,16 +35,16 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 | net-debt-on-open | requestedDebt + borrowingFee | musd-token-amount |
 | composite-debt | netDebt + gasCompensation | musd-token-amount |
 | max-borrowing-capacity | floor(collateral * price / minimumCollateralRatio) | musd-token-amount |
-| debt-payment-split | interestAdjustment = min(payment, interestOwed); principalAdjustment = payment - interestAdjustment | undefined |
+| debt-payment-split | interestAdjustment = min(payment, interestOwed); principalAdjustment = payment - interestAdjustment | See the formula's named result variables |
 | collateral-gas-compensation | floor(entireCollateral / percentDivisor) | native-btc-amount |
-| liquidation-offset | interestToOffset=min(interest,deposits); principalToOffset=min(principal,deposits-interestToOffset); collateralToStabilityPool=floor(liquidatableCollateral*(interestToOffset+principalToOffset)/(principal+interest)); each redistribution output is its input remainder | undefined |
+| liquidation-offset | interestToOffset=min(interest,deposits); principalToOffset=min(principal,deposits-interestToOffset); collateralToStabilityPool=floor(liquidatableCollateral*(interestToOffset+principalToOffset)/(principal+interest)); each redistribution output is its input remainder | See the formula's named result variables |
 | pending-reward | floor(stake * (cumulativePerUnit - snapshotPerUnit) / decimalPrecision) | amount |
-| redistribution-per-unit | numerator = amount * decimalPrecision + previousError; perUnit = floor(numerator / totalStakes); nextError = numerator - perUnit * totalStakes | undefined |
+| redistribution-per-unit | numerator = amount * decimalPrecision + previousError; perUnit = floor(numerator / totalStakes); nextError = numerator - perUnit * totalStakes | See the formula's named result variables |
 | reciprocal-ltv-display | collateralRatio == 0 ? undefined : floor(decimalPrecision * decimalPrecision / collateralRatio) | decimal-fixed-point |
 
 ## Operation capability state
 
-The knowledge describing these operations is accepted. The embedded capability state below remains separate and does not imply that MDK ships a transaction writer.
+The table records the knowledge model's operation capability states. For the private direct-borrower readers and writers implemented in this checkout, use the [Borrowing SDK](../../../../../packages/protocols/musd-borrowing/README.md). Acceptance of the model does not approve those implementations for release.
 
 | Operation | Capability support |
 | --- | --- |

@@ -2,11 +2,13 @@
 
 > Generated from canonical `protocols/vaults/usdc-lending` records and evidence. Do not edit manually.
 
+Vault shares, wrapper receipts and gauge rewards represent different claims on the same deposit flow. This reference explains those layers and their recorded accounting. The [Vault SDK](../../../../../packages/protocols/usdc-lending-vault/README.md) documents private reads, previews and direct vault/wrapper workflows, with their review limits. A preview or historical balance does not guarantee present withdrawal capacity.
+
 ## Lifecycle
 
 - Status: `verified`; support: `proposed`; review: `accepted`
 - Evidence block: `11341710` (`0xcca3b133bbb5282b84fd383d3b73440169a50155cea3288d91067a2ff76c61d0`)
-- Writers: none
+- Evidence reviewed: `2026-08-23T20:42:59Z`; review due: `2026-09-23T00:00:00Z`
 
 ## Layers
 
@@ -15,7 +17,7 @@
 - `receipt-wrapper`: the wrapper custodies VaultV2 shares, mints receipts, and earmarks high-water-mark vault-share yield.
 - `vault-gauge`: the gauge custodies wrapper receipts for beneficial stakers and accounts incentives-owned rewards.
 
-## Current state
+## State at the evidence block
 
 - Vault total assets / shares: `214046510838` / `213533948745915965719373`
 - Adapter real assets: `214046510838` (included in vault total assets)

@@ -19,6 +19,12 @@ compatibility promises. Earlier history remains available in Git.
 
 ### Changed
 
+- Established a [knowledge README standard](docs/standards/documentation.md#knowledge-readmes)
+  and revised knowledge entry points to explain their subjects, guide useful
+  next steps, and state practical limits. Shared review terminology lives in the
+  knowledge overview; contributor policy defines qualified human review.
+- Knowledge validators check structured review/support evidence without fixing
+  the wording of authored README sentences.
 - Added a contributor economic-system skill for explanations and architecture
   checks spanning custody, credit, products, revenue, voting, and emissions.
   Shared entry points now route whole-system questions to that procedure while
@@ -35,6 +41,17 @@ compatibility promises. Earlier history remains available in Git.
 - Consolidated project decisions and rationale into the [manifest](docs/manifest)
   and its detailed owners. Removed the separate decision collection and updated
   documentation, knowledge source pointers, and importers to use the baseline.
+
+### Fixed
+
+- Corrected generated knowledge references and review notes that described
+  implemented private SDK readers or writers as absent. References now route
+  implementation questions to package APIs and preserve separate evidence and
+  release-review scopes. Savings entry points expose the recorded product/source
+  conflict, and historical pool, vault and feed observations retain their dates.
+- Repaired the Pools topology evidence's RPC endpoint reference and its capture
+  output. Pool validation now checks endpoint resolution, network, and transport;
+  historical observations and review dates are preserved.
 
 ## 2026-10-08
 

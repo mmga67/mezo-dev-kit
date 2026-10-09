@@ -307,7 +307,11 @@ const output = {
   verifiedAt: capturedAt,
   reviewAfter: "2026-09-23T00:00:00Z",
   scope: { networkIds: ["mezo-mainnet"], blockNumber, blockHash },
-  providerReference: { moduleId: "networks", resourceId: "mezo-mainnet-boar-https" },
+  providerReference: {
+    moduleId: "networks",
+    resourceId: "rpc-endpoints",
+    recordId: "mezo-mainnet-boar-https",
+  },
   block: { blockNumber, blockHash, blockTimestamp },
   roots: rootEvidence,
   relationships,

@@ -11,7 +11,8 @@
 - Runtime implementation and support review remain separate from knowledge
   acceptance. The current bounded source-alpha reader is described by the
   [Savings package owner](../../../../../packages/protocols/musd-savings/README.md).
-  Wider reader scope and writers still require their own implementation and review.
+  Wider reader scope requires separate evidence. Private deposit, withdrawal
+  and yield-claim writers exist; their release review remains outstanding.
 
 Savings evidence review qualified review accepted the first two evidence gaps as explicit
 limitations of the bounded knowledge packet. They remain requirements only if

@@ -6,7 +6,9 @@
   implementation, ABI, and bounded feed evidence without promoting liveness.
 - Both post-upgrade one-hour Pyth reads remained stale, so the evidence does
   not establish live feed support.
-- No supported public reader API has been designed or implemented.
+- The [private Prices SDK](../../../packages/prices/README.md) implements a
+  mainnet Skip reader and deterministic normalization/freshness helpers.
+  Public release and wider reader support remain separate review decisions.
 - No updater, pusher, credential, subscription, route, trading path, or writer is in scope.
 - Off-chain market providers have a source class but no provider instance in the bounded bootstrap.
 - DEX observations and quotes require their owning Pools/routing modules and are not produced here.
@@ -28,5 +30,8 @@ is available; that partial history does not satisfy the complete historical
 refresh. Other assessed public endpoints failed availability checks. Testnet
 full-history evidence remains expired, and unscoped Contracts/Prices checks
 continue to reject it. An archive source covering the original creation boundary
-is required to finish that separate scope. Current-state captures cannot replace
-those requests or qualify testnet reader support.
+would be required to finish that separate historical scope. The current
+[network policy](../../../docs/guides/oracle-evidence-refresh.md#testnet-historical-archive-exception)
+excludes long-term testnet archive recovery from required maintenance.
+Current-state captures cannot replace those historical requests or qualify
+testnet reader support.

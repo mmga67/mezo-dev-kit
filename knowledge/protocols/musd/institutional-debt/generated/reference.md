@@ -2,14 +2,15 @@
 
 > Generated from canonical `protocols/musd/institutional-debt` records and evidence. Do not edit manually.
 
+Enclave custody, collateral pledges and institutional debt positions are separate records. This reference explains their relationships and the state observed at the block below. The [Institutional Debt SDK](../../../../../packages/protocols/musd-institutional-debt/README.md) implements private position reads and calculations; it has no partner transaction writer. Recorded Bitcoin outputs do not establish present custody or unspent state.
+
 ## Lifecycle
 
 - Status: `verified`
 - Support: `proposed`
 - Review: `accepted`
 - Evidence block: Mezo Mainnet `11334441` (`0xf71561f21fcb92e0c58b41afc214c30d647c74acb2ca311824fe4f701344192c`) at `2026-08-23T13:00:04.000Z`
-- Writers: none
-- Readers: no public facade implemented
+- Evidence reviewed: `2026-08-23T13:00:11.077Z`; review due: `2026-09-23T00:00:00Z`
 
 ## Ownership boundary
 

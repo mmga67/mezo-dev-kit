@@ -88,7 +88,7 @@ function borrowingBody(byId: ReadonlyMap<string, JsonObject>): string[] {
     "",
     "## Operation capability state",
     "",
-    "The knowledge describing these operations is accepted. The embedded capability state below remains separate and does not imply that MDK ships a transaction writer.",
+    "The table records the knowledge model's operation capability states. For the private direct-borrower readers and writers implemented in this checkout, use the [Borrowing SDK](../../../../../packages/protocols/musd-borrowing/README.md). Acceptance of the model does not approve those implementations for release.",
     "",
     table(
       ["Operation", "Capability support"],
@@ -120,7 +120,7 @@ function redemptionBody(byId: ReadonlyMap<string, JsonObject>): string[] {
     "",
     formulaTable(formulas.records),
     "",
-    "A public writer remains outside this knowledge module. The deployed entrypoint has no minimum-received parameter, so a future writer must enforce quote freshness, simulation, and user output policy externally.",
+    "The [Redemption SDK](../../../../../packages/protocols/musd-redemptions/README.md) provides private queue readers, hint preparation, an exact-output simulation adapter and a writer. The recorded contract entrypoint has no minimum-received parameter. The writer checks output policy before submission and reports the actual settled result; it cannot guarantee that inclusion-time output meets a preflight minimum. These implementations still require release review.",
   ];
 }
 
@@ -232,7 +232,9 @@ function formulaTable(value: unknown): string {
     objects(value, "formulas").map((record) => [
       scalar(record.id, "formula ID"),
       scalar(record.expression, "formula expression"),
-      record.output === undefined ? "undefined" : scalar(record.output, "formula output"),
+      record.output === undefined
+        ? "See the formula's named result variables"
+        : scalar(record.output, "formula output"),
     ]),
   );
 }

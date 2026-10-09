@@ -6,11 +6,11 @@ The maintained human reference is generated from the indexed
 - [Mezo incentives evidence reference](../../../knowledge/protocols/incentives/generated/reference.md)
 - [MEZO Gauges and remote incentives](../../../knowledge/protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives): the added third-party model, its accepted review scope, voting-guide conflict, and delivery gaps.
 
-Use the module README for orientation and its `review/gaps.md` resource for
-current re-verification and public-capability gates. incentives evidence review qualified review
-accepted the bounded knowledge model, but it remains deployment scoped to its
-recorded Mezo mainnet block with `supportStatus: none`. Stable role references
-resolve to accepted Contract-module records; evidence-local addresses remain
-dated observation coordinates.
+Start with the [incentives overview](../../../knowledge/protocols/incentives/README.md)
+for an explanation of what has been reviewed and what that means for SDK use.
+The [evidence gaps](../../../knowledge/protocols/incentives/review/gaps.md)
+describe unresolved questions and checks still needed before operations can be
+supported. Each reference identifies the contract versions, dates, and blocks
+its evidence covers.
 
 This page is a router only. It owns no independent protocol fact.

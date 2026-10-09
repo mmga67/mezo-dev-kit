@@ -2,13 +2,15 @@
 
 > Generated from canonical `protocols/pools` records and evidence. Do not edit manually.
 
+Basic pools issue fungible liquidity shares; concentrated-liquidity (CL) pools use position NFTs with chosen price ranges. This reference explains their accounting and recorded contract behavior. The [Pools SDK](../../../../packages/protocols/pools/README.md) documents private readers and liquidity writers; [Incentives](../../../../packages/protocols/incentives/README.md) owns gauge staking and reward claims.
+
 ## Lifecycle
 
 - Status: `verified`
 - Support: `supported`
 - Review: `accepted`
+- Evidence reviewed: `2026-08-23T12:20:55.991Z`; review due: `2026-09-23T00:00:00Z`
 - Evidence block: Mezo Mainnet `11333787` (`0xac14bc00fe3e1ecc7d01e134439593572339773681146ce25dac88889e1648f1`)
-- Writers: none
 - Quoter: no current official deployment identity established
 
 ## Architectures
@@ -43,12 +45,12 @@
 
 ## CL mint call semantics
 
-- Review: `accepted`; support: `none`. Additional explanatory scope under CL explanation; no writer is enabled.
+- Source-semantics review: `accepted`; operation support: `none`. The [private position writer](../../../../packages/protocols/pools/README.md#amounts-and-scope) implements a narrower profile in existing initialized pools. Its release review is separate from acceptance of these contract rules.
 - When mint.params.sqrtPriceX96 is zero, mint skips the factory.createPool branch and computes the existing pool address before adding liquidity. Zero does not initialize a missing pool.
 - A nonzero mint.params.sqrtPriceX96 calls factory.createPool with the token pair, tick spacing and initial square-root price before adding liquidity.
 - CLFactory.createPool requires the pool mapping to be zero. Passing the current pool price as a nonzero mint.params.sqrtPriceX96 for an existing pool therefore reverts; this parameter is not a slippage limit.
 - Use the complete canonical MintParams tuple, including tickSpacing and sqrtPriceX96. Resolve token ordering, aligned bounds, desired/minimum amounts, recipient and deadline through the owning pool math and operation requirements.
-- For reward overloads resolve `protocols/incentives:incentives-cl-claims`. Staking ownership remains owned by `pools-positions-gauges`.
+- See [CL gauge claims](../../incentives/generated/reference.md#cl-gauge-claim-overloads) for caller and recipient rules. The liquidity and ownership section above explains gauge custody and the depositor's entitlement.
 
 ## Deterministic math
 

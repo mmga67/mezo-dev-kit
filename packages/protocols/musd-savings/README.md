@@ -32,6 +32,11 @@ hashing uses portable EVM helpers; see the [runtime and browser contract](../../
 [Savings model](../../../knowledge/protocols/musd/savings/README.md) explains
 accounting separately from classic MUSD borrowing.
 
+The [source conflict review](../../../knowledge/protocols/musd/savings/review/source-conflicts.md)
+records a different receipt-value description in the official product page.
+This package implements the recorded principal/indexed-yield model; the newer
+generation capture remains a candidate and does not renew its review scope.
+
 ## Development
 
 From the repository root:

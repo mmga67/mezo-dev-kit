@@ -1,11 +1,11 @@
 # MUSD Borrowing And Liquidation Reference
 
-Status: derived from supported, accepted canonical knowledge.
-
-The machine-readable source is
-`knowledge/protocols/musd/borrowing/`. Contract identities and ABIs remain in
-`knowledge/contracts/`; this page intentionally contains no addresses or call
-signatures.
+This page explains classic borrower positions, debt and liquidation for the
+contract version covered by [borrowing knowledge](../../knowledge/protocols/musd/borrowing/README.md).
+The [generated reference](../../knowledge/protocols/musd/borrowing/generated/reference.md)
+identifies the source scope and review dates. For the private reader and direct
+borrower workflows implemented in this checkout, use the
+[Borrowing SDK](../../packages/protocols/musd-borrowing/README.md).
 
 ## Position and debt model
 
@@ -48,7 +48,7 @@ system TCR threshold. Recovery Mode permits top-ups and repayments, forbids
 collateral withdrawal, and admits new/increased debt only under stricter
 position-improvement rules. Borrowing fees are waived in Recovery Mode.
 
-Current source also has several easy-to-miss behaviors:
+The recorded source also has several easy-to-miss behaviors:
 
 - adding collateral does not increase the stored maximum borrowing capacity;
 - withdrawing collateral can only reduce that stored capacity;

@@ -135,6 +135,22 @@ expect(
   "index/topology block number mismatch",
 );
 expect(indexScope.blockHash === topologyScope.blockHash, "index/topology block hash mismatch");
+const providerReference = object(topology.providerReference, "topology.providerReference");
+const provider = await loadKnowledgeReference(repositoryRoot, providerReference);
+const endpoint = object(provider.value, "topology RPC endpoint");
+expect(
+  providerReference.moduleId === "networks" &&
+    provider.resource.id === "rpc-endpoints" &&
+    typeof providerReference.recordId === "string" &&
+    endpoint.id === providerReference.recordId,
+  "topology provider must resolve to a Networks RPC endpoint record",
+);
+expect(
+  Array.isArray(topologyScope.networkIds) &&
+    topologyScope.networkIds.includes(endpoint.networkId) &&
+    endpoint.transport === "https",
+  "topology RPC endpoint must use HTTPS on the observed network",
+);
 expect(architectures.supportStatus === "supported", "architectures must be supported");
 expect(positions.supportStatus === "supported", "position model must be supported");
 expect(operations.supportStatus === "none", "operation requirements must not enable writers");

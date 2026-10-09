@@ -1,20 +1,28 @@
 # Prices and oracle evidence
 
-Understand price sources, feeds, scaling, confidence, and freshness. Use these records to distinguish a protocol’s configured oracle from a market observation or a trade quote.
+A protocol oracle, a market observation, and a swap quote answer different
+questions. The oracle supplies a value under a protocol's configured rules;
+a market observation describes a source at a particular time; a quote estimates
+the result of a particular trade.
 
-## Start here
+Use this directory to identify the source, units, timestamp, and confidence
+information behind a price. Those details determine whether two values can be
+compared and whether a value is suitable for the intended use.
+
+## Choose and interpret a price
 
 - [Price source reference](generated/reference.md): source classes, feeds, deterministic rules, and recorded observations.
 - [Choosing prices and DEX quotes](../../docs/guides/price-selection-and-dex-quotes.md): select an observation for a particular use.
 - [Refreshing oracle evidence](../../docs/guides/oracle-evidence-refresh.md): capture and verification procedures.
 - [Prices SDK](../../packages/prices/README.md): normalization, freshness checks, and the direct mainnet Skip reader.
 
-## Scope and evidence
+## Check the source and observation time
 
-The reviewed model includes Skip BTC/USD and Pyth Core/feed evidence. Feed
+The reference includes Skip BTC/USD and Pyth Core/feed evidence. Feed
 identity, deployed code, and an old observation do not prove current liveness.
-Knowledge support remains proposed; inspect the selected observation's date,
-network, source class, and limitations.
+Inspect the selected observation's date, network, source class, and limitations;
+the SDK documentation identifies which readers and calculations it implements
+and their support limits.
 
 Current-state captures and historical evidence have separate scopes. The full
 module check retains an expired historical testnet evidence window; current-state

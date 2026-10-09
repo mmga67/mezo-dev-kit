@@ -39,9 +39,31 @@ methods, integration requirements, and examples, use the
 
 Records identify the network, deployment, source, and observation they
 describe. Check their dates, scope, and limitations before relying on them;
-a recorded observation may not describe current state. Evidence, review,
-and SDK support are separate, and the cited sources establish what a record
-can prove.
+a recorded observation may not describe current state.
+
+### Evidence, review, and support
+
+These labels answer different questions:
+
+| Term              | What it tells you                                                                                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Verified evidence | A claim was checked against identified sources for a stated network, version, block, or time. The cited evidence shows what was checked.                                    |
+| Accepted review   | The required review approved the particular work and its stated scope.                                                                                                      |
+| Qualified review  | A human with relevant expertise reviewed protocol-sensitive evidence and behavior. The [review policy](../CONTRIBUTING.md#qualified-human-review) defines the expectations. |
+| Supported         | MDK makes a support commitment for the use identified by that record or package. Check the named operation and its limits.                                                  |
+
+The structured fields `status`, `reviewStatus`, and `supportStatus` record these
+separate decisions. A support value of `none` records no support commitment for
+that scope; `proposed` means support is awaiting acceptance. Neither value tells
+you whether code exists or whether Mezo itself provides the feature. Use the
+package documentation for implemented SDK methods and their support limits.
+
+For example, checking an RPC endpoint at a recorded block establishes what that
+request returned. Accepting the observation does not promise that the endpoint
+will answer a new request today. Review dates help identify when evidence needs
+another check; editing documentation does not refresh it.
+
+### Find exact records
 
 For structured lookup, start with the [machine-readable index](index.json).
 Its module catalog resolves the subject and resource identifiers.

@@ -42,7 +42,7 @@
       "id": "pools-mainnet-topology",
       "type": "local-evidence",
       "path": "evidence/mainnet-topology-2026-08-23.json",
-      "sha256": "d9d20b3e008e389468a524bcc1b57d5c730ef36d3b82db1d2a8a2825fa7eadad",
+      "sha256": "19f999e4adb90fa3b5208cbe96e3b37dd8b8bdce8be68475dfde38569a4c48bf",
       "scope": "Fixed-block root code, creation provenance, relationships, and factory-enumerated instance observations."
     },
     {

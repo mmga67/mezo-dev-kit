@@ -1,21 +1,32 @@
 # Mezo networks and connections
 
-Find chain identities, network capabilities, published Mezo RPC endpoints, and the observations used to check them.
+Connecting to a chain involves two choices: which network to use, and which
+provider will answer requests. A chain ID identifies the network; an RPC endpoint
+is a provider's connection to it. Knowing the chain ID does not establish which
+requests a provider can answer.
 
-## Start here
+This directory records chain identities, published Mezo endpoints, and the
+requests used to check them. It covers Mezo Mainnet, Mezo Testnet, Ethereum
+Mainnet, and Base Mainnet; the Ethereum and Base identities do not select an RPC
+provider for you.
 
-- [Network reference](generated/reference.md#networks): chain identifiers, currency metadata, and capability profiles.
-- [RPC endpoint observations](generated/reference.md#published-rpc-endpoints): recorded endpoint status and review dates.
-- [Chains SDK](../../packages/chains/README.md): use typed network identities in code.
-- [Connection setup](../../examples/SETUP.md): supply an explicit provider to an SDK example.
+## Choose a network and connection
 
-## Scope and evidence
+- **Identify the chain:** the [network reference](generated/reference.md#networks)
+  lists identifiers, native currency units, and recorded network capabilities.
+- **Choose a Mezo provider:** [endpoint observations](generated/reference.md#published-rpc-endpoints)
+  show which connections were checked, when, and with what limits.
+- **Configure an application:** use the [Chains SDK](../../packages/chains/README.md)
+  for typed identities and [connection setup](../../examples/SETUP.md) to supply
+  your selected provider.
 
-The reviewed identity scope covers Mezo Mainnet, Mezo Testnet, Ethereum Mainnet,
-and Base Mainnet. External identities select no provider. Endpoint observations
-are more volatile than chain identity: check their date and limitations before use.
-A known network does not establish uptime, archive access, subscriptions,
-batching, or untested RPC methods.
+## What an endpoint check tells you
+
+A successful request establishes the result for that provider at the recorded
+time. It does not establish continuous availability, historical-data access,
+subscriptions, batching, or methods that were not tested. Read the selected
+observation's date and limitations before relying on it; provider behavior can
+change more quickly than chain identity.
 
 ## Contributing
 

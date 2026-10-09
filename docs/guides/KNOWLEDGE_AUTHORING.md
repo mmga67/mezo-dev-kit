@@ -357,9 +357,11 @@ Do not begin with directories. Begin with an approved owner and consumer.
    Record it in the new `index.json`, then add it to the root catalog only when
    the owner and entry point are approved.
 4. **Create human and machine entry points.** Add `README.md` and `index.json`
-   at the same module root. The README explains owned scope, current lifecycle,
-   human discovery and relevant limitations, with a link to maintenance guidance.
-   The index owns exact checks; do not copy volatile facts into the README.
+   at the same module root. Follow the [knowledge README standard](../standards/documentation.md#knowledge-readmes):
+   explain the subject and its relationships, offer useful next steps, and state
+   practical limits. Link shared review terminology and maintenance guidance.
+   The index owns lifecycle fields and exact checks; do not copy volatile facts
+   into the README.
 5. **Create only occupied role directories.** Add `records/`, `sources/`,
    `evidence/`, `fixtures/`, `schema/`, `artifacts/`, `generated/`, or `review/`
    only for real maintained resources. Never add `.gitkeep` placeholders.

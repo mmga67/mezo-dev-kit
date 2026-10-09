@@ -1,8 +1,15 @@
 # Mezo contracts and deployments
 
-Look up contract deployments, ABI interfaces, proxy generations, and the source evidence behind them. This is the source of the Contracts SDK’s generated registry data.
+A contract address identifies a deployment on a particular network. Its ABI
+describes the interface used to call it and decode events. For upgradeable
+contracts, the implementation and matching interface can change while the proxy
+address stays the same, so the block or version matters too.
 
-## Start here
+This directory connects deployment identities, interface files, implementation
+history, and the evidence behind them. The Contracts SDK derives its registry
+data from these records.
+
+## Resolve a deployment or interface
 
 - [Deployment reference](generated/reference.md#deployments): addresses, networks, validity, and review scope.
 - [Proxy history](generated/reference.md#proxy-implementation-history): implementation generations and their coordinates.
@@ -23,30 +30,29 @@ links its full explorer capture to the existing deployment, canonical ABI and
 accepted reproduction. The [incentives reference](../protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives)
 owns its voting and reward explanation.
 
-## Scope and evidence
+## Match the interface to the operation
 
-Select the network and block when resolving a deployment. Current and historical
-interfaces are distinct; a historical observation does not establish a current
-writer target. Dynamic pool, gauge, and vault roles are verified through their
-roots rather than assigned invented registry identities.
+Select the network and block when resolving a deployment. A historical interface
+helps decode activity from its recorded period; it may not describe the contract
+you would call today. Pools, gauges, and vaults created or selected dynamically
+must be checked through their factory or contract relationships.
 
-The [historical ABI bindings](records/historical-abi-bindings.json) retain the
-accepted full escrow ABIs and closed implementation intervals used by earlier
-Incentives fixtures. Their file and semantic digests remain bound to the original
-source/runtime observations. They are validation inputs, not additional current
-SDK interfaces. The current registry follows the generations activated on
-2026-10-06; current configuration collection uses the separately dated snapshot.
+The [historical interface catalog](records/historical-abi-bindings.json) records
+the escrow interfaces and implementation periods used to check earlier
+incentives observations. These retained interfaces do not become additional
+current SDK interfaces. Use the deployment reference for the applicable
+implementation history and observation dates.
 
-Registry acceptance covers the recorded identity and evidence. It does not
-establish protocol, route, or operation support. The [contract evidence rules](../../docs/manifest#contract-identity-and-provenance)
-define provenance requirements; each indexed record retains its own scope and dates.
+Checking a contract's identity and source does not establish that a protocol
+operation or bridge route is supported. The SDK documentation above describes
+registry use; the relevant protocol package owns operation availability. The
+[contract evidence rules](../../docs/manifest#contract-identity-and-provenance)
+explain how identities and sources are established.
 
-The MUSD NTT manager's [accepted event correction](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
-reconciles both `TransferSent` overloads with pinned Solidity and retained logs.
-The active 120-entry ABI preserves every other entry. The original TypeChain
-export stays indexed for audit; its incorrect event layout is not a historical
-deployment ABI. Imports reproduce the reviewed correction and reject source or
-artifact drift without extending route or writer scope.
+For MUSD NTT event decoding, use the corrected manager interface. The retained
+[event correction](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
+explains why the original TypeChain export's `TransferSent` layout is incorrect;
+that export must not be selected as a historical deployment interface.
 
 ## Contributing
 

@@ -2,7 +2,8 @@
 
 - Qualified review of retained CL source and `pools-cl-position-calls` was
   accepted on 2026-09-15. This explanatory scope preserves the original
-  evidence coordinates and enables no writer.
+  evidence coordinates; private writer implementation and release review are
+  documented separately by the Pools package.
 
 - pool evidence review qualified Level 3 review accepted the module and seven CL Contract
   identities/ABIs.
@@ -21,5 +22,7 @@ The private [Pools reference](../../../../packages/protocols/pools/REFERENCE.md)
 now includes mUSDT beside MUSD/mUSDC. Its own indexed Contracts source, runtime,
 slot, mapping and precision evidence define the proposed profile. Only tokens
 present in a pool are checked. This private implementation does not change
-canonical writer support or qualify native engine/bridge execution; independent
-Solidity 0.8.29 compilation and qualified release review remain outstanding.
+canonical writer support or qualify native engine/bridge execution. The
+[October 6 source reproduction](../../../contracts/artifacts/musdt-token-runtime/source-reproduction-2026-10-06.json)
+resolved the independent Solidity compilation gap for that token generation;
+qualified release review remains separate.

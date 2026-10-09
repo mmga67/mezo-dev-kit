@@ -11,14 +11,11 @@
   "verifiedAt": "2026-08-18T00:37:00Z",
   "reviewAfter": "2026-09-17T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "mezo-testnet"
-    ],
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
     "protocolSourceCommit": "43ef44123753fa3e28425beffde42c86693fd03c"
   },
   "limitations": [
-    "The deployed entrypoint has no minimum-received argument; a future writer requires quote, simulation, freshness, and explicit user output policy.",
+    "The deployed entrypoint has no minimum-received argument; the private writer applies quote, simulation, freshness and explicit user output policy before submission without an on-chain received-amount guarantee.",
     "SortedTroves is nominal-ratio ordered and does not continuously re-sort by current ICR after interest accrual.",
     "Accepted redemption knowledge does not imply an implemented public transaction writer."
   ],
@@ -63,9 +60,7 @@
       "role": "canonical-record",
       "kind": "musd-redemption-parameter-catalog",
       "path": "records/parameters.json",
-      "recordIds": [
-        "redemption-rate"
-      ],
+      "recordIds": ["redemption-rate"],
       "recordCollectionPointer": "/records"
     },
     {
@@ -92,10 +87,7 @@
       "role": "evidence",
       "kind": "musd-redemption-parameter-observations",
       "path": "evidence/parameter-reads-2026-08-18.json",
-      "recordIds": [
-        "redemption-rate-mezo-mainnet",
-        "redemption-rate-mezo-testnet"
-      ],
+      "recordIds": ["redemption-rate-mezo-mainnet", "redemption-rate-mezo-testnet"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -151,10 +143,7 @@
       "role": "canonical-record",
       "kind": "economic-relationship-collection",
       "path": "records/economic-relationships.json",
-      "recordIds": [
-        "musd-redemption",
-        "redemption-collateral-settlement"
-      ],
+      "recordIds": ["musd-redemption", "redemption-collateral-settlement"],
       "recordCollectionPointer": "/records"
     }
   ],
@@ -187,10 +176,7 @@
       "commit": "43ef44123753fa3e28425beffde42c86693fd03c"
     },
     "deploymentScope": {
-      "networkIds": [
-        "mezo-mainnet",
-        "mezo-testnet"
-      ],
+      "networkIds": ["mezo-mainnet", "mezo-testnet"],
       "contractModuleId": "contracts",
       "networkModuleId": "networks",
       "registryReviewStatus": "accepted"

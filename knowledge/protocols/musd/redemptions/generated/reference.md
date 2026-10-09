@@ -9,7 +9,7 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Review: `accepted`
 - Verified: `2026-08-18T00:37:00Z`
 - Review after: `2026-09-17T00:00:00Z`
-- Input digest: `sha256:e351a08209fada90cd135ce012129d9b499e37ee139c7ad1e8a84c94c1cb745b`
+- Input digest: `sha256:af8eaf131d1dc59d6d389c87b8d76e48301f70b1c07ef70c100b441cefa4e398`
 
 ## Inventory
 
@@ -32,4 +32,4 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 | hint-truncated-partial-lot | netDebt <= minNetDebt ? 0 : min(remainingRequested, netDebt - minNetDebt) | musd-token-amount |
 | actual-redeemed-amount | attemptedAmount - unfilledAmount | musd-token-amount |
 
-A public writer remains outside this knowledge module. The deployed entrypoint has no minimum-received parameter, so a future writer must enforce quote freshness, simulation, and user output policy externally.
+The [Redemption SDK](../../../../../packages/protocols/musd-redemptions/README.md) provides private queue readers, hint preparation, an exact-output simulation adapter and a writer. The recorded contract entrypoint has no minimum-received parameter. The writer checks output policy before submission and reports the actual settled result; it cannot guarantee that inclusion-time output meets a preflight minimum. These implementations still require release review.

@@ -8,6 +8,13 @@ receipt; an account’s stored index lets the SDK calculate yield earned since i
 Principal and claimable MUSD yield remain separate values. A **gauge** holds staked receipts and has
 its own reward accounting.
 
+This is the accounting model for the recorded Savings generation. The
+[source conflict review](../../../knowledge/protocols/musd/savings/review/source-conflicts.md)
+documents a different receipt-value description in the official product page
+and a newer generation capture awaiting review. Use the recorded principal and
+indexed-yield rules within their generation scope; the capture does not renew
+the package's evidence or qualify its writers.
+
 Use `createSavingsRpcReader` when you have Core’s `RpcTransport`. Use `createSavingsReader` when
 supplying your own transport and ABI codec. A codec translates contract calls to bytes and responses
 to typed values. Both reader paths expose the same snapshot model.

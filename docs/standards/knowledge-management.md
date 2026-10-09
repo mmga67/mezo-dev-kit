@@ -27,7 +27,7 @@ Humans and agents use the same facts and lifecycle:
 | Check record shape              | JSON Schema                 | Local structural contract                          |
 | Check meaning and relationships | semantic validator          | Cross-record and domain invariants                 |
 
-Follow the [documentation standard](documentation.md) for README structure,
+Follow the [knowledge README standard](documentation.md#knowledge-readmes) for explanation, navigation,
 human/agent separation, and references. Human maintenance follows the
 [authoring guide](../guides/KNOWLEDGE_AUTHORING.md). Skills route agents through
 this policy without copying it or the protocol facts.
@@ -123,6 +123,12 @@ mean `supported`, and `accepted` review does not waive a future freshness
 check. A semantic validator must reject impossible combinations, such as
 `status: verified` with no `verifiedAt`, when the domain contract requires a
 timestamp.
+
+The [reader's guide to evidence, review, and support](../../knowledge/README.md#evidence-review-and-support)
+explains these distinctions in plain language. [Qualified human review](../../CONTRIBUTING.md#qualified-human-review)
+defines reviewer expectations. Keep these shared explanations in their owners;
+module READMEs describe the consequences for their subject and route exact
+operation availability to package documentation.
 
 `schemaVersion` versions a record kind. The module index separately declares
 `knowledgeVersion: "0.4"`, which identifies this repository-wide layout and
@@ -468,7 +474,12 @@ into instruction files.
 
 Before declaring a module v0.4-conformant, verify:
 
-- [ ] `README.md` identifies purpose, scope, owner, state, and normal checks.
+- [ ] `README.md` explains the subject and its main relationships, routes learning,
+      lookup and integration, and states relevant limits in plain language under
+      the [knowledge README standard](documentation.md#knowledge-readmes).
+- [ ] The module index identifies the owner, lifecycle fields, resources and
+      exact checks; README prose agrees with those owners without copying their
+      inventories or becoming a second status store.
 - [ ] `index.json` conforms to the v0.4 schema and has stable module/resource
       IDs.
 - [ ] Every maintained content resource is indexed once with the correct

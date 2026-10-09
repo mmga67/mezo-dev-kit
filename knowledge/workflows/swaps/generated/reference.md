@@ -2,15 +2,15 @@
 
 > Generated from canonical `workflows/swaps` records and evidence. Do not edit manually.
 
+Use this reference to understand route encoding, approvals and settlement for basic and concentrated-liquidity (CL) swaps. For implementation, the [Swaps SDK](../../../../packages/swaps/README.md) provides private quote readers and exact-input writers. Its `/quotes` entry point contains the read-only surface.
+
 ## Lifecycle
 
 - Status: `verified`
 - Support: `none`
 - Review: `accepted`
 - Evidence block: Mezo Mainnet `11376104` (`0x358c55c8879f9a6711408df6e4dbc75e4b82d3e7f2f0cbab47fd73bfeaf32bc3`)
-- Public readers: none
-- Writers: none
-- Input digest: `ae71690e2164d1392fb233ea97c0c6c3c04db34f177ed1efd2f124426e658363`
+- Input digest: `3015bf0f7edc450adfb8eddd87ff4e816e43b8aee9a41e82741d88267038180d`
 
 ## Deployed providers
 
@@ -88,4 +88,4 @@ The basic router's `getAmountsOut` is a block-scoped convenience quote. The CL r
 - Basic evidence includes a successful exact two-hop replay whose returned amounts match receipt transfers.
 - CL evidence includes a successful exact direct replay, but its historical zero minimum is negative evidence and must not be copied.
 
-See `review/gaps.md` before relying on a route or operation. No public reader or writer is enabled.
+Read the [route gaps](../review/gaps.md) and the [SDK's asset and execution limits](../../../../packages/swaps/README.md#scope) before using a route. The private implementations still require release review. A successful historical replay does not establish that the same route is available now.
