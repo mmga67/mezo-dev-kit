@@ -244,11 +244,22 @@ node scripts/tests/test-knowledge-structure.ts
 
 ### Read or use knowledge
 
-1. Start at `knowledge/README.md` and choose the owning domain.
-2. Read the module README for scope and current status.
-3. Resolve resources through `index.json`; load only what the task needs.
+1. Choose the owning domain. For human orientation, start at `knowledge/README.md`.
+   For a focused lookup, use the known module or discover it through the catalog.
+2. Resolve resources through the module index. Agents use the relevant skill
+   and `pnpm context` catalog/search to select resources without loading entire
+   indexes or references.
+3. Read only the records, fields, and evidence needed for the question. Include
+   the selected resource's scope and limitations when interpreting a field.
 4. Check status, support, review, freshness, scope, and limitations before use.
 5. Follow the cited evidence for any protocol-sensitive decision.
+
+Knowledge READMEs explain subjects for humans; they are optional context for a
+routine agent lookup. Read them when editing or reviewing the page, when their
+explanation helps answer the task, or when the selected sources leave essential
+context unclear. Agent instructions route retrieval; they do not replace the
+facts and evidence in the selected resources. This distinction applies to
+knowledge READMEs, not package documentation that defines supported APIs.
 
 For whole-system questions, start with
 [how Mezo's Bitcoin economy fits together](../architecture/mezo-economic-system-composition.md),
@@ -309,8 +320,9 @@ not required for every knowledge read.
 ### Add or update a fact
 
 1. Identify the single owning module and stable record ID.
-2. Inspect the module README, index, schema, semantic validator, and active
-   task if the change is significant.
+2. Inspect the relevant module index entries, schema, semantic validator, and
+   active task if the change is significant. Review the README or other
+   explanations when the changed fact affects their meaning or guidance.
 3. Locate and pin authoritative evidence. State exactly what it establishes.
 4. Update evidence/source metadata before or with the canonical record.
 5. Preserve explicit scope, limitations, lifecycle fields, and review gate.
@@ -463,12 +475,14 @@ Use these documentation roles:
 
 ## Agent maintenance workflow
 
-An agent working anywhere under `knowledge/` follows `knowledge/AGENTS.md`,
-then loads `agents/skills/mdk-knowledge-maintenance/SKILL.md` and the relevant
-domain skill. The agent uses the same workflows above, loads only indexed
-resources needed for the task, and stops at evidence, architecture, scope,
-dependency, or qualified-review gates. Agent output must not introduce facts
-into instruction files.
+An agent working under `knowledge/` follows `knowledge/AGENTS.md` and the relevant
+domain skill. Maintenance also uses
+`agents/skills/mdk-knowledge-maintenance/SKILL.md`; an ordinary lookup does not
+load a maintenance procedure. Follow the selective
+[retrieval workflow](#read-or-use-knowledge) above and stop at evidence,
+architecture, scope, dependency, or qualified-review gates. Keep reusable
+routing in existing instructions and skills; do not maintain condensed agent
+copies of human READMEs or introduce protocol facts into instruction files.
 
 ## Module conformance checklist
 

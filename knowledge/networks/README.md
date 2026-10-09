@@ -1,9 +1,10 @@
 # Mezo networks and connections
 
 Connecting to a chain involves two choices: which network to use, and which
-provider will answer requests. A chain ID identifies the network; an RPC endpoint
-is a provider's connection to it. Knowing the chain ID does not establish which
-requests a provider can answer.
+provider will answer requests. A chain ID identifies the network. An RPC
+(remote procedure call) endpoint is the address an application uses to ask a
+provider for chain data or submit a transaction. Knowing the chain ID does not
+establish which requests that provider can answer.
 
 This directory records chain identities, published Mezo endpoints, and the
 requests used to check them. It covers Mezo Mainnet, Mezo Testnet, Ethereum
@@ -12,13 +13,21 @@ provider for you.
 
 ## Choose a network and connection
 
-- **Identify the chain:** the [network reference](generated/reference.md#networks)
-  lists identifiers, native currency units, and recorded network capabilities.
-- **Choose a Mezo provider:** [endpoint observations](generated/reference.md#published-rpc-endpoints)
-  show which connections were checked, when, and with what limits.
-- **Configure an application:** use the [Chains SDK](../../packages/chains/README.md)
-  for typed identities and [connection setup](../../examples/SETUP.md) to supply
-  your selected provider.
+Start with the [network reference](generated/reference.md#networks) to identify
+the chain, its native currency and the capabilities recorded for it. Mezo has
+both EVM and Cosmos identifiers; use the identifier required by the interface
+you are calling rather than treating them as interchangeable.
+
+Next, choose a provider for that network. The
+[endpoint observations](generated/reference.md#published-rpc-endpoints) show
+which Mezo connections were checked and which requests succeeded. An application
+that needs old state or subscriptions should check those specific capabilities,
+as well as whether the provider is available now.
+
+The [Chains SDK](../../packages/chains/README.md) supplies typed network
+identities. It makes no network requests and does not choose a provider.
+[Connection setup](../../examples/SETUP.md) shows how to supply your selected
+connection when using the SDK.
 
 ## What an endpoint check tells you
 
@@ -27,6 +36,16 @@ time. It does not establish continuous availability, historical-data access,
 subscriptions, batching, or methods that were not tested. Read the selected
 observation's date and limitations before relying on it; provider behavior can
 change more quickly than chain identity.
+
+## Quick links
+
+| Link                                                                    | What you will find                                              |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [Network identities](generated/reference.md#networks)                   | Chain identifiers, native currencies and recorded capabilities. |
+| [Provider observations](generated/reference.md#published-rpc-endpoints) | Published Mezo endpoints, check dates and observed limitations. |
+| [Chains SDK](../../packages/chains/README.md)                           | Network lookup and typed identity results.                      |
+| [Connection setup](../../examples/SETUP.md)                             | Supply a provider to an application or example.                 |
+| [Module index](index.json)                                              | Exact network, endpoint, source and evidence records.           |
 
 ## Contributing
 

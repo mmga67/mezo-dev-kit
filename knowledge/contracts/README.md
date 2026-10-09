@@ -1,59 +1,101 @@
 # Mezo contracts and deployments
 
-A contract address identifies a deployment on a particular network. Its ABI
-describes the interface used to call it and decode events. For upgradeable
-contracts, the implementation and matching interface can change while the proxy
-address stays the same, so the block or version matters too.
+This directory helps you find Mezo contract addresses, choose the interfaces
+needed to use them, and check the sources behind that information. Start with
+the network and the contract you need. If you are investigating an earlier
+transaction, you will also need its block number.
 
-This directory connects deployment identities, interface files, implementation
-history, and the evidence behind them. The Contracts SDK derives its registry
-data from these records.
+## Find a contract and its interface
 
-## Resolve a deployment or interface
+A **deployment** is a contract at a particular address on a particular network.
+The [deployment reference](generated/reference.md#deployments) lists these
+addresses, the periods they apply to, and what has been checked for each one.
 
-- [Deployment reference](generated/reference.md#deployments): addresses, networks, validity, and review scope.
-- [Proxy history](generated/reference.md#proxy-implementation-history): implementation generations and their coordinates.
-- [Full ABI artifacts](generated/reference.md#full-abi-artifacts): interfaces and provenance.
-- [Contracts SDK](../../packages/contracts/README.md): resolve deployments and interfaces in code.
-- [Oracle evidence refresh](../../docs/guides/oracle-evidence-refresh.md): current commands and the distinction between mainnet, current testnet state, and historical evidence.
+For pools, gauges, and vaults created or selected by other contracts, also check
+the factory that created them or the contract relationships that identify them.
+The registry alone does not establish those relationships for every instance.
 
-## Retained CL source
+Once you have the deployment, you need its **ABI** (Application Binary
+Interface): the file that tells software how to call the contract's functions
+and read the events it emits. The [ABI reference](generated/reference.md#full-abi-artifacts)
+links these files and explains where they came from.
 
-For an implementation detail missing from the call references, use the
-[offline source tools](../../scripts/evidence/README.md#source-inspection-and-build-comparison).
-The [retained source catalog](sources/pool-source-bundles.json)
-links exact bundles and their reproduction evidence. Inspection verifies the
-recorded source digest; it does not recapture deployments or renew review dates.
+To look up a deployment and its interface in code, use the
+[Contracts SDK](../../packages/contracts/README.md). Its registry data is generated
+from the records in this directory. For operations such as swaps or borrowing,
+check the relevant protocol package's documentation as well: a contract's
+presence in the registry does not by itself mean the SDK supports that operation.
 
-For MEZO Gauge voting, the [retained ThirdPartyVoter source](records/third-party-voter-source.json)
-links its full explorer capture to the existing deployment, canonical ABI and
-accepted reproduction. The [incentives reference](../protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives)
-owns its voting and reward explanation.
+## Choose the right contract version
 
-## Match the interface to the operation
+An address alone may not tell you which code was running. Some contracts use a
+**proxy**, which keeps the same address while forwarding calls to an
+implementation that can be upgraded. An upgrade can change the interface too.
+Use the [proxy history](generated/reference.md#proxy-implementation-history)
+to match the implementation and ABI to the block you are working with.
 
-Select the network and block when resolving a deployment. A historical interface
-helps decode activity from its recorded period; it may not describe the contract
-you would call today. Pools, gauges, and vaults created or selected dynamically
-must be checked through their factory or contract relationships.
+This matters when reading older activity. For example, the
+[historical interface catalog](records/historical-abi-bindings.json) preserves
+earlier interfaces for the incentive lock contracts. They help interpret
+activity from their recorded periods; they are not additional current SDK
+interfaces.
 
-The [historical interface catalog](records/historical-abi-bindings.json) records
-the escrow interfaces and implementation periods used to check earlier
-incentives observations. These retained interfaces do not become additional
-current SDK interfaces. Use the deployment reference for the applicable
-implementation history and observation dates.
+For MUSD bridge events, there is also a known interface correction. The original
+TypeChain export for the Native Token Transfers (NTT) manager describes the
+`TransferSent` event incorrectly. Use the corrected manager ABI for decoding;
+the original export is not a valid historical alternative. The
+[event correction record](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
+explains the difference.
 
-Checking a contract's identity and source does not establish that a protocol
-operation or bridge route is supported. The SDK documentation above describes
-registry use; the relevant protocol package owns operation availability. The
-[contract evidence rules](../../docs/manifest#contract-identity-and-provenance)
-explain how identities and sources are established.
+<a id="retained-cl-source"></a>
 
-For MUSD NTT event decoding, use the corrected manager interface. The retained
-[event correction](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)
-explains why the original TypeChain export's `TransferSent` layout is incorrect;
-that export must not be selected as a historical deployment interface.
+## Read the saved contract source code
+
+The ABI describes how to interact with a contract. If you need to understand
+an implementation detail that the references do not explain, you may need its
+source code. This repository keeps copies of selected contract sources so you
+can inspect them offline; these saved copies are called **retained source**.
+
+For [concentrated liquidity (CL) pools](../protocols/pools/README.md) and their
+related contracts, the
+[source catalog](sources/pool-source-bundles.json) links the saved code and the
+checks connecting it to the recorded deployments. The
+[offline source tools](../../scripts/evidence/README.md#source-inspection-and-build-comparison)
+let you open a selected file and check that the saved source has not changed
+since it was recorded. That check confirms the saved copy; it does not check
+the current deployment or renew its review date.
+
+Source is also saved for `ThirdPartyVoter`, the contract used for MEZO Gauge
+voting. Its [source record](records/third-party-voter-source.json) connects the
+saved code to its deployment, ABI, and build verification. To understand the
+voting and rewards themselves, start with the
+[incentives explanation](../protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives).
+
+## Quick links
+
+Use these shortcuts to return to the contract references and related explanations
+introduced above.
+
+| Resource                                                                                                                        | What you will find                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [Deployments](generated/reference.md#deployments)                                                                               | Contract addresses by network, the periods they apply to, and their verification scope. |
+| [ABI files](generated/reference.md#full-abi-artifacts)                                                                          | Contract interfaces and the sources used to establish them.                             |
+| [Contracts SDK](../../packages/contracts/README.md)                                                                             | How to look up deployments and interfaces in code.                                      |
+| [Proxy history](generated/reference.md#proxy-implementation-history)                                                            | Implementation changes and the blocks where they apply.                                 |
+| [Historical interfaces](records/historical-abi-bindings.json)                                                                   | Earlier incentive lock interfaces for interpreting past activity.                       |
+| [MUSD bridge event correction](artifacts/ntt-transfer-event-abi-review-2026-10-07.json)                                         | Why the original NTT manager export cannot correctly decode `TransferSent`.             |
+| [Pools and liquidity](../protocols/pools/README.md)                                                                             | How basic and concentrated liquidity pools represent positions.                         |
+| [Pool source catalog](sources/pool-source-bundles.json)                                                                         | Saved concentrated liquidity contract code and its verification records.                |
+| [Source inspection tools](../../scripts/evidence/README.md#source-inspection-and-build-comparison)                              | How to read saved source files and compare compiled code with deployment evidence.      |
+| [ThirdPartyVoter source](records/third-party-voter-source.json)                                                                 | Saved voting contract code, its deployment, ABI, and build verification.                |
+| [MEZO Gauge voting and rewards](../protocols/incentives/generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives) | How votes and rewards relate to the ThirdPartyVoter contract.                           |
 
 ## Contributing
 
-Use the [module index](index.json) for structured records, sources, and exact checks. Follow the [knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) to update this information and regenerate its reference.
+To update these records, follow the
+[knowledge authoring guide](../../docs/guides/KNOWLEDGE_AUTHORING.md) and the
+[contract evidence rules](../../docs/manifest#contract-identity-and-provenance).
+The [module index](index.json) lists the structured records and required checks.
+For oracle-specific updates, the
+[oracle evidence refresh guide](../../docs/guides/oracle-evidence-refresh.md)
+explains how to check mainnet, current testnet state, and historical evidence.

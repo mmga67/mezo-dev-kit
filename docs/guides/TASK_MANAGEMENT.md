@@ -63,6 +63,30 @@ outcomes without duplicating their implementation logs. `Parent: TASK-NNN`
 links a child to one existing parent; use `Parent: none` or omit the declaration
 for an independent task. The parent must remain open while a child is unfinished.
 
+## Writing and handoff
+
+Follow [task writing](../standards/documentation.md#write-actionable-task-records)
+and use the tracked template. New tasks and updated open tasks begin with
+**What needs your attention**: the delivered work, the remaining work, who acts
+next, and any specific decision needed from the person. Keep completed historical
+records intact unless correcting a demonstrated error.
+
+Before handing work to a reviewer, prepare the proposed change and a short
+explanation of its evidence. Link the exact material in the owning task, describe
+what to inspect, and state the effect of accepting it. Where the repository
+requires specialist review, explain the needed expertise and follow
+[CONTRIBUTING](../../CONTRIBUTING.md#qualified-human-review). Do not invent human
+acceptance or make the person assemble the proposal from logs. If agent
+preparation remains, record it as the next action and continue when that work is
+in scope; a vague request for review does not make an unfinished deliverable done.
+
+Keep completed verification results separate from future checks. Name the owner
+and resolution of a blocker. Link separately scoped follow-ups and explain their
+purpose. Keep commands, dates, evidence identities and meaningful decisions in
+the same task or its linked evidence; avoid duplicating the opening throughout
+the record. These writing requirements do not add an approval gate or replace
+the existing lifecycle and review rules.
+
 ## Lifecycle and evidence
 
 | Folder  | Meaning                                                                                    | Required next step                                          |

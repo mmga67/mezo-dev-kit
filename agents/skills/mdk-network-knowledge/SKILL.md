@@ -42,7 +42,7 @@ Read in this order:
 1. Root `AGENTS.md` and the active task.
 2. `knowledge/AGENTS.md` and
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` for maintenance.
-3. `knowledge/networks/README.md` and `knowledge/networks/index.json`.
+3. Resolve module `networks` with `pnpm context`; select the required resources.
 4. Only the logically referenced network, endpoint, source, and evidence records.
 5. The manifest, detailed architecture, and current `packages/chains` package docs.
 6. Current official sources identified by resource `network-sources`.

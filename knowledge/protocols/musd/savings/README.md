@@ -19,15 +19,24 @@ not been renewed by that check.
 
 ## Follow the money
 
-- **How are principal and yield recorded?** The [Savings reference](generated/reference.md)
-  explains receipt balances, yield calculations, and how to avoid counting the
-  same principal twice.
-- **What changes when I stake?** [Incentives](../../incentives/README.md) explains
-  gauge rewards and voting; principal, redirected yield, and MEZO rewards remain
-  separate quantities.
-- **Where does Savings fit?** The [MUSD explanation](../../../../docs/reference/musd-system.md)
-  connects Savings to the wider system. Savings does not enter borrower collateral
-  ratios, the Stability Pool, or the redemption queue.
+Start with a deposit. In the recorded model it creates sMUSD, a receipt for
+the deposited MUSD principal. Yield is accounted for separately through an
+index that tracks distributions. A receipt balance and claimable yield therefore
+answer different questions: how much principal the receipt represents, and how
+much yield is available to claim. The [Savings reference](generated/reference.md)
+shows the accounting and its evidence scope.
+
+Staking moves the receipt into a gauge, the rewards contract. The user still
+has a beneficial stake in that principal; adding the staked amount to the same
+receipt's former wallet balance would count it twice. Staking also affects
+where yield goes, while MEZO rewards remain a separate asset and calculation.
+[Incentives](../../incentives/README.md) explains those reward and voting rules.
+
+To withdraw principal through the SDK, first unstake any receipts held in the
+gauge. Claiming yield is a separate workflow from withdrawing principal.
+These balances do not enter classic borrower collateral ratios, the Stability
+Pool or the redemption queue; the
+[MUSD explanation](../../../../docs/reference/musd-system.md) shows that wider boundary.
 
 ## Use Savings in an application
 
@@ -41,6 +50,17 @@ scope before using a formula or balance with another version; a past observation
 does not establish today's available state. The shared
 [evidence and support guide](../../../README.md#evidence-review-and-support)
 explains how to read those qualifications.
+
+## Quick links
+
+| Link                                                                 | What you will find                                                                               |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [Savings reference](generated/reference.md)                          | Principal receipts, yield accounting and recorded observations.                                  |
+| [Source disagreement](review/source-conflicts.md)                    | Published receipt-value claims, historical contract evidence and the candidate generation check. |
+| [Savings SDK](../../../../packages/protocols/musd-savings/README.md) | Reads, calculations, deposit, withdrawal and yield-claim workflows.                              |
+| [Incentives](../../incentives/README.md)                             | Gauge custody, rewards and voting.                                                               |
+| [MUSD explanation](../../../../docs/reference/musd-system.md)        | How Savings relates to the other MUSD activities.                                                |
+| [Module index](index.json)                                           | Exact accounting, role, evidence and review records.                                             |
 
 ## Contributing
 

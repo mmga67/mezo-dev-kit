@@ -6,14 +6,28 @@ question: did the intended operation produce the expected changes? Cross-chain
 operations also need evidence from the destination.
 
 This directory explains those states, the client behavior needed to follow them,
-and what recorded RPC requests establish about a provider.
+and what recorded remote procedure call (RPC) requests establish about a
+provider. RPC is the interface an application uses to read chain data and submit
+transactions.
 
 ## Determine what happened
 
-- [Transaction lifecycle guide](../../../docs/reference/transaction-lifecycle.md): follow an action from preparation through reconciliation.
-- [Lifecycle and RPC reference](generated/reference.md): state distinctions, recorded observations, and protocol requirements.
-- [Indexing and reconciliation guide](../../../docs/guides/INDEXING_RECONCILIATION.md): scan event history, handle chain reorganizations, and recognize incomplete results.
-- [Core SDK](../../../packages/core/README.md): current read, execution, and event-scanning APIs.
+Before submission, prepare and simulate the intended call against the relevant
+chain state. Token approval, when needed, is a separate transaction. Its result
+must be taken into account when preparing the operation that spends the tokens.
+
+After submission, track the transaction through inclusion and the application's
+chosen confirmation policy. Then compare the resulting events and state with
+the protocol's expected outcome. This last step is reconciliation. The
+[transaction lifecycle guide](../../../docs/reference/transaction-lifecycle.md)
+connects these stages; the [Core SDK](../../../packages/core/README.md) documents
+the implemented read, execution, and event-scanning APIs.
+
+An unavailable receipt or interrupted request can leave the outcome unknown.
+Keep the submission record and investigate the existing transaction before
+considering another attempt. The
+[indexing and reconciliation guide](../../../docs/guides/INDEXING_RECONCILIATION.md)
+explains how incomplete history and chain reorganizations affect that investigation.
 
 ## Interpret provider observations
 
@@ -28,6 +42,16 @@ policy, and protocol-specific reconciliation must agree. Cross-chain delivery
 also needs destination evidence. The [execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
 owns shared rules. Use the Core SDK documentation above for implemented APIs and
 their operation requirements.
+
+## Quick links
+
+| Link                                                                                 | What you will find                                                   |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| [Transaction lifecycle guide](../../../docs/reference/transaction-lifecycle.md)      | The path from preparation to a reconciled protocol outcome.          |
+| [Lifecycle and RPC reference](generated/reference.md)                                | State definitions, provider observations, and protocol requirements. |
+| [Core SDK](../../../packages/core/README.md)                                         | Current read, execution, tracking, and event-scanning APIs.          |
+| [Indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md)       | Scan coverage, chain reorganizations, and uncertain outcomes.        |
+| [Execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle) | Shared responsibilities for applications and protocol packages.      |
 
 ## Contributing
 

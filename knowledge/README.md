@@ -77,6 +77,18 @@ files or interfaces using IDs from the results. See the
 [retrieval manual](../scripts/agents/CONTEXT.md) for commands, coverage and
 supporting memory lookup.
 
+## Quick links
+
+| Link                                                                               | What you will find                                                             |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [Mezo's Bitcoin economy](../docs/architecture/mezo-economic-system-composition.md) | How custody, credit, products, revenue and voting connect.                     |
+| [Subject directory](#find-a-subject)                                               | Choose a network, protocol or workflow to learn about.                         |
+| [Relationship inventory](generated/economic-relationships.md)                      | Follow a relationship to its owning records, evidence and known gaps.          |
+| [Module index](index.json)                                                         | Resolve exact modules and resources for structured lookup.                     |
+| [SDK reference](../docs/reference/sdk.md)                                          | Find implemented methods, required inputs and integration examples.            |
+| [Evidence, review and support](#evidence-review-and-support)                       | Understand what a recorded check or approval establishes.                      |
+| [Retrieval manual](../scripts/agents/CONTEXT.md)                                   | Look up selected records, fields, interfaces and saved source from a checkout. |
+
 ## Contributing knowledge
 
 Use the [knowledge authoring guide](../docs/guides/KNOWLEDGE_AUTHORING.md) to

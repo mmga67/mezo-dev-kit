@@ -22,8 +22,7 @@ liquidity, or infer transaction authorization.
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/protocols/pools/README.md` and resolve the module through
-   `index.json`.
+3. Resolve module `protocols/pools` with `pnpm context`.
 4. Load only the architecture, math, position/gauge, operation,
    classification, fixture, source, evidence, or review resources needed.
    For a CL contract walkthrough, include `pools-cl-position-calls` for mint

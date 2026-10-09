@@ -11,8 +11,8 @@ description: Resolve or maintain contract IDs, deployments, proxy history, ABIs 
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Load missing relevant orientation/index context from `knowledge/contracts/`;
-   reuse unchanged material already retrieved.
+3. Resolve module `contracts` with `pnpm context`; reuse unchanged context
+   and select only the resources needed for the task.
 4. Load only the deployment, ABI, artifact, source, evidence, and candidate
    resources needed for the selected contract and network.
 
@@ -55,8 +55,10 @@ the selected owner's verification procedure when the claim requires it.
    This checks the recorded source digest and returns one file offline. Match
    capture identity before hashing; a whole explorer-response mismatch does not
    establish a source mismatch. Never turn unrelated temporary-directory
-   enumeration into the normal retrieval path. The Contracts README owns the
-   digest and retention procedure.
+   enumeration into the normal retrieval path. The `pool-source-bundles`
+   catalog owns the digest definition; the
+   [source inspection tools](../../../scripts/evidence/README.md#source-inspection-and-build-comparison)
+   document offline reading and build comparison.
    For MEZO Gauges voter behavior, resolve `third-party-voter-source` and its
    artifact/reproduction references. Dynamic gauge captures retain partial
    verification and verified-twin labels; the linked Incentives observation

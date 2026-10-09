@@ -23,8 +23,7 @@ route, or infer transaction authorization.
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/workflows/swaps/README.md` and resolve the module through
-   `index.json`.
+3. Resolve module `workflows/swaps` with `pnpm context`.
 4. Load only the provider, route, execution, fixture, source, evidence, or
    review resources needed.
 5. Load `mdk-pool-liquidity-knowledge` for pool identity/discovery/math,

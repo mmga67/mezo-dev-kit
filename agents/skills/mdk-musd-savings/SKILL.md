@@ -26,9 +26,9 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 ## Required context
 
 1. Reuse current task/instructions. Read owning package docs for code work;
-   read the module README/index for protocol evidence. Load knowledge-maintenance
+   use `pnpm context` to select protocol evidence. Load knowledge-maintenance
    only when changing knowledge or generated projections.
-2. Resolve the module through its `index.json`; load only the required model,
+2. Resolve module `protocols/musd/savings`; load only the required model,
    roles, reconciliation, fixture, evidence, or review resource.
    When product prose and accounting differ, resolve `musd-savings-source-conflicts`;
    preserve its published, historical and candidate-current scopes before

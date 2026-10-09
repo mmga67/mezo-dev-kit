@@ -21,6 +21,7 @@ take a useful next step, and find detail without learning MDK's development hist
 | SKILL.md                   | Provide an on-demand procedure for a repeatable agent task.                               |
 | Machine index or schema    | Resolve structured resources or validate their shape.                                     |
 | Changelog                  | Explain what changed and preserve the reasons for earlier choices.                        |
+| Task record                | Explain the outcome, remaining work, and any decision needed from a person.               |
 
 Keep security reporting, license terms, and review ownership in the existing
 SECURITY, LICENSE, and CODEOWNERS files. Create a new document only when it has
@@ -73,11 +74,24 @@ step without repeating its procedure.
 ### Knowledge READMEs
 
 A knowledge README helps a person understand a subject and choose what to read
-next. Start with a short explanation before the link inventory: what the subject
-does, how its main parts relate, and a distinction that prevents a likely
-misunderstanding. Use maintained models as the basis and link their detailed
-owners; a summary does not become another authority for formulas, deployments,
-parameters, or evidence.
+next. Write for a developer who is new to this part of Mezo. Start with what the
+directory helps them do, then explain the subject and how its main parts relate
+before presenting a link inventory. Use maintained models as the basis and link
+their detailed owners; a summary does not become another authority for formulas,
+deployments, parameters, or evidence.
+
+Build a connected explanation. Introduce a concept before using it to explain
+the next choice, and make clear why one paragraph or section follows another.
+For contracts, finding a deployment leads to choosing its interface, checking
+the version, and inspecting source when more detail is needed. Avoid assembling
+independent facts, caveats, or maintenance notes into a page without that flow.
+
+Use familiar words and concrete verbs. Expand unfamiliar abbreviations at first
+use and explain necessary terms where they appear; spelling out an acronym alone
+may not explain the concept. Prefer headings such as “Read the saved contract
+source code” to “Retained CL source.” Explain what a check establishes and why
+the reader needs it instead of relying on internal process labels. The
+[contracts README](../../knowledge/contracts/README.md) illustrates this approach.
 
 Adapt the explanation to the subject. A protocol page might trace a deposit,
 debt, vote, or reward. Networks should distinguish chain identity from access
@@ -85,10 +99,20 @@ through a provider. Troubleshooting should explain how to select a diagnosis.
 Use a small example or diagram only when it helps. There is no required set of
 headings, word count, or diagram for every module.
 
-Organize links around reader questions or tasks. Separate learning the mechanism,
-looking up exact facts, and using an SDK. Give each destination enough context
-that the reader can choose without opening it. Keep contribution instructions
-brief and at the end; the index owns resource inventories and exact checks.
+Link useful detail beside the explanation it supports. For pages with several
+destinations, include a compact **Quick links** section after the explanation
+and before contribution guidance. Use descriptive link labels and a short
+description of what each destination offers, preferably a two-column table.
+Include the subject-specific references, source records, SDK documentation, and
+related explanations already introduced on the page. Repeating those inline
+links here is intentional: it gives returning readers a place to find them.
+Keep the selection useful rather than reproducing the full module index.
+
+Distinguish learning the mechanism, looking up exact facts, and using an SDK.
+Keep contribution instructions brief and at the end; the index owns resource
+inventories and exact checks. Keep agent routing in AGENTS files and skills,
+following [knowledge retrieval](knowledge-management.md#read-or-use-knowledge).
+The human page needs neither agent setup nor instructions telling agents to skip it.
 
 State limits as consequences near the affected use: for example, a historical
 observation cannot establish current delivery or available liquidity. Explain
@@ -105,7 +129,9 @@ evidence or review owners; link them when they explain a current limitation.
 Review a knowledge README by asking whether a newcomer can:
 
 - explain the subject and its main relationships after reading the opening;
+- follow the reasoning between sections without already knowing the terminology;
 - choose a useful next page for learning, lookup, or integration;
+- use the quick links and their descriptions without rereading the explanation;
 - understand the relevant limit without interpreting repository status fields.
 
 Automated checks validate structured lifecycle fields, source references,
@@ -121,6 +147,62 @@ capability inventories such as “Writers: none” in a knowledge projection; th
 package owns implemented APIs. Label balances and topology by their observation
 scope, and expose a material source conflict beside the affected explanation.
 A clear entry page does not compensate for a contradictory destination.
+
+## Write actionable task records
+
+Task records serve people coordinating work as well as agents continuing it.
+Use the same plain language and connected explanation as a human README. Keep
+one task file: a short introduction for the person, followed by the exact detail
+needed to carry out or verify the work. Save tokens by removing repetition and
+linking evidence, not by compressing an action into unexplained process terms.
+The [task guide](../guides/TASK_MANAGEMENT.md) owns lifecycle and the
+[task template](../templates/TASK.md) supplies the structure.
+
+Start with **What needs your attention**. Explain what is finished, what remains,
+and the next action's owner. State the specific human decision when one is
+needed; otherwise say that no human action is needed now and name the agent's
+next step. A backlog task can say that work is queued. Do not turn this opening
+into a second status field or repeat the full goal and evidence below it.
+
+For a review request, name the question to decide, link the exact change or
+material to inspect, and explain what accepting it would allow. Add a short
+description beside each link. Link to a section or specific comparison when a
+whole file would make the reviewer search again. Summarize what raw evidence
+shows and its relevant limits; a log or JSON file alone is not a review request.
+Prepare the comparison and proposed change before asking a person to approve it.
+If preparation remains, name that work instead of saying only “awaiting review.”
+Follow the existing [review responsibilities](../../CONTRIBUTING.md#qualified-human-review)
+when specialist judgment is required; do not invent a reviewer or imply acceptance.
+
+Give each task section a concrete job:
+
+| Section                      | Reader's question                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| Verification                 | What was checked, what passed or failed, and where is the result?              |
+| Dependencies / Blockers      | What cannot proceed, why, and who can resolve it?                              |
+| Review findings, when useful | What was wrong, what changed, and what still needs a decision?                 |
+| Follow-ups                   | What separate work was discovered, why does it matter, and which task owns it? |
+
+Separate completed checks from planned checks. Give failures their practical
+consequence, and distinguish unrelated failures from checks required for this
+task. Put commands and evidence identities below the explanation. Preserve
+dates and scope so an earlier passing result cannot look like a new run.
+
+Use observable acceptance criteria. Replace labels such as “disposition of the
+overdue model review” with the action: “Review the listed borrowing rules and
+decide which can be marked as checked again.” Say who does this and link the
+rules and proposed changes. Keep necessary limits next to that decision instead
+of repeating a general release disclaimer in every section.
+
+Update the opening as work progresses. Keep useful historical decisions dated
+below it; remove obsolete instructions to begin work that is already complete.
+Use “None” for an empty blocker or follow-up section. Do not leave template
+instructions or speculative future work in a completed task.
+
+Review a task by reading its opening and following its links: can a person tell
+whether they need to act, what to inspect, what to decide, and what happens next?
+Automated checks validate structure and links; they cannot prove that the request
+is understandable or that a reviewer accepted it.
 
 ## Choose a structure for the reader's task
 

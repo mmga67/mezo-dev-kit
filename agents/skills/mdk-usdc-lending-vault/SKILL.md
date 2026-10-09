@@ -25,8 +25,9 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 
-Reuse current task/instructions. Read owning package docs for code work and
-module README/index for protocol evidence. Load knowledge-maintenance only
+Reuse current task/instructions. Read owning package docs for code work; use
+`pnpm context` to select protocol evidence from module `protocols/vaults/usdc-lending`.
+Load knowledge-maintenance only
 when changing knowledge or generated projections. Load `mdk-musdc-lending` for the underlying market,
 bridge knowledge for mUSDC identity, incentives knowledge for gauge rewards,
 contract knowledge for generations, and transaction execution for

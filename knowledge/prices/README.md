@@ -11,10 +11,26 @@ compared and whether a value is suitable for the intended use.
 
 ## Choose and interpret a price
 
-- [Price source reference](generated/reference.md): source classes, feeds, deterministic rules, and recorded observations.
-- [Choosing prices and DEX quotes](../../docs/guides/price-selection-and-dex-quotes.md): select an observation for a particular use.
-- [Refreshing oracle evidence](../../docs/guides/oracle-evidence-refresh.md): capture and verification procedures.
-- [Prices SDK](../../packages/prices/README.md): normalization, freshness checks, and the direct mainnet Skip reader.
+Begin with the decision the price will inform. A borrowing calculation needs
+the price selected by that protocol's oracle rules. A swap estimate needs a
+quote for the particular trade. The
+[price-selection guide](../../docs/guides/price-selection-and-dex-quotes.md)
+explains these choices and how to keep their sources distinct. A DEX is a
+decentralized exchange; its quote includes trade-specific conditions that a
+standalone price observation does not describe.
+
+Once the source is clear, check how its value is represented. A raw integer
+needs its decimal scale to become a price, and confidence information must be
+interpreted using that source's definition. The
+[price reference](generated/reference.md) records source classes, feeds, units
+and calculation rules. Missing confidence information does not mean that the
+source has zero uncertainty.
+
+Finally, decide whether the observation is recent enough for the intended use.
+The [Prices SDK](../../packages/prices/README.md) provides normalization and
+freshness checks, plus a direct mainnet Skip reader. The application supplies
+the relevant time and maximum age; the package does not choose a universal
+age limit or automatically select a fallback source.
 
 ## Check the source and observation time
 
@@ -31,6 +47,16 @@ records do not renew it. The refresh guide explains the scoped checks.
 MUSD and Lending own their deployed oracle policy, Pools owns DEX math, and
 Swaps owns execution quotes. A direct feed or DEX value must not silently replace
 a failed protocol oracle.
+
+## Quick links
+
+| Link                                                                         | What you will find                                                      |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Price reference](generated/reference.md)                                    | Source classes, feeds, units, rules and recorded observations.          |
+| [Price-selection guide](../../docs/guides/price-selection-and-dex-quotes.md) | Choose between a protocol price, source observation and trade quote.    |
+| [Prices SDK](../../packages/prices/README.md)                                | Normalization, confidence and freshness helpers, and the Skip reader.   |
+| [Oracle evidence refresh](../../docs/guides/oracle-evidence-refresh.md)      | How to check current observations while preserving historical evidence. |
+| [Module index](index.json)                                                   | Exact source, feed, evidence and review records.                        |
 
 ## Contributing
 

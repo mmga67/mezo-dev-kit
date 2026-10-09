@@ -25,8 +25,9 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
 
-Reuse current task/instructions. Read owning package docs for code work and
-module README/index for protocol evidence. Load knowledge-maintenance only
+Reuse current task/instructions. Read owning package docs for code work; use
+`pnpm context` to select protocol evidence from module `protocols/lending/musdc`.
+Load knowledge-maintenance only
 when changing knowledge or generated projections. Load bridge knowledge for mUSDC representation identity,
 price knowledge for the oracle datum, contract knowledge for deployed
 generations, transaction execution for operation gates, and TypeScript/testing

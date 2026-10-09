@@ -8,11 +8,11 @@ description: Maintain, migrate, validate or generate knowledge modules and deriv
 ## Required context
 
 1. Read the active task and applicable `AGENTS.md` files.
-2. Read `docs/standards/knowledge-management.md`.
-3. Load missing relevant sections of the owning module's `README.md` and
-   `index.json`; reuse unchanged context.
-   For human pages, apply `docs/standards/documentation.md`; agent-only routing
-   stays in instructions and optional guide sections.
+2. Load the relevant workflow in `docs/standards/knowledge-management.md`.
+3. Use `pnpm context` to select the owning module's resources and checks;
+   reuse unchanged context. Apply the standard's
+   [conditional README reading](../../../docs/standards/knowledge-management.md#read-or-use-knowledge).
+   For human pages, apply `docs/standards/documentation.md`.
 4. Load the relevant domain skill and only the indexed records, schemas,
    evidence, and validators needed by the task.
 

@@ -19,7 +19,7 @@ for a conceptual flywheel question.
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/protocols/incentives/README.md` and `index.json`.
+3. Resolve module `protocols/incentives` with `pnpm context`.
 4. Load only the lock, boost, pool-voting, validator-voting, gauge/reward,
    emission/splitter, operation, fixture, source, evidence, or review resources
    needed.

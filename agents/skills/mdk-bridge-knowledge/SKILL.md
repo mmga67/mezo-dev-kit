@@ -11,7 +11,7 @@ description: Verify BTC custody, asset representations and Mezo bridge routes. S
 2. Read the transaction skill for cross-chain lifecycle work and the indexing
    skill for scan, backfill, or materialized reconciliation projections.
 3. For maintenance, read the knowledge skill and management standard.
-4. Read `knowledge/workflows/bridges/README.md` and `index.json`.
+4. Resolve module `workflows/bridges` with `pnpm context`.
 5. Load only the provider, asset, route, lifecycle, source, evidence, or review
    resources required.
 

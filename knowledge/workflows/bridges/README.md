@@ -11,19 +11,22 @@ use different rules to match source activity to delivery.
 
 ## Follow a transfer
 
-- **Understand MUSD NTT:** the [NTT guide](../../../docs/reference/bridges/musd-ntt.md)
-  follows messages and matches the same transfer digest on both chains.
-- **Understand Native Bridge delivery:** the [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md)
-  explains the identifiers and settlement evidence required in each direction,
-  including recipient state where needed.
-- **Look up a recorded route:** the [bridge reference](generated/reference.md)
-  identifies the assets, providers, route candidates, and completion rules covered
-  by the retained evidence.
-- **Investigate an incomplete transfer:** [indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md)
-  explains partial scans and uncertain outcomes. Missing evidence alone is not a
-  reason to send the funds again.
-- **Understand BTC custody and other entry routes:** [Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md)
-  describes the wider published architecture and token-specific destinations.
+Start with the asset and direction in the [bridge reference](generated/reference.md).
+These determine which bridge handles the transfer, which token the recipient
+receives, and what evidence is needed to establish delivery.
+
+For MUSD NTT, the [NTT guide](../../../docs/reference/bridges/musd-ntt.md)
+follows a message from its source transaction to the destination. Matching the
+message digest, its unique identifier, connects the two sides. The
+[Native Bridge guide](../../../docs/reference/bridges/native-bridge.md)
+uses identifiers specific to each direction and, where required, checks the
+recipient's resulting state.
+
+If the destination evidence is missing, first establish what was actually
+observed. An incomplete scan or unavailable history can leave the outcome
+unknown. The [indexing and reconciliation guide](../../../docs/guides/INDEXING_RECONCILIATION.md)
+explains how to investigate that gap; missing evidence alone is not a reason to
+send the funds again.
 
 ## Check the route's limits
 
@@ -51,6 +54,18 @@ that a new transfer is ready to send; configuration, fees, and transfer checks
 must apply to that operation. See the shared
 [evidence and support guide](../../README.md#evidence-review-and-support)
 for the meaning of review and support labels in the reference.
+
+## Quick links
+
+| Link                                                                                     | What you will find                                                               |
+| ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [MUSD NTT guide](../../../docs/reference/bridges/musd-ntt.md)                            | Transfer messages, matching identifiers, and recovery rules.                     |
+| [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md)                  | Direction-specific transfers and recipient settlement.                           |
+| [Bridge reference](generated/reference.md)                                               | Recorded assets, route candidates, and delivery requirements.                    |
+| [Current asset review](review/gaps.md#native-bridge)                                     | SolvBTC/xSolvBTC restrictions and unresolved configuration questions.            |
+| [Bridges SDK](../../../packages/bridges/README.md)                                       | Implemented transfer, recovery, and observation APIs with their limits.          |
+| [Indexing and reconciliation](../../../docs/guides/INDEXING_RECONCILIATION.md)           | Investigating missing history and uncertain outcomes.                            |
+| [Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md) | BTC custody, asset representations, and the wider published bridge architecture. |
 
 ## Contributing
 

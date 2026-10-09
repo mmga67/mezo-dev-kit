@@ -174,15 +174,18 @@
       "route": [
         "knowledge/README.md",
         "knowledge/protocols/musd/borrowing/README.md",
-        "knowledge/protocols/musd/borrowing/generated/reference.md"
+        "knowledge/protocols/musd/borrowing/generated/reference.md",
+        "packages/protocols/musd-borrowing/README.md"
       ],
       "knowledgeReferences": [
         { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-reference" },
-        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas" }
+        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-formulas" },
+        { "moduleId": "protocols/musd/borrowing", "resourceId": "borrowing-operations" }
       ],
       "requiredOutcomes": [
         "Read formulas with units, scope, evidence, and fixtures.",
-        "Keep accepted knowledge separate from proposed writer capabilities."
+        "Use the SDK documentation to identify implemented operations and their release limits.",
+        "Keep accepted operation knowledge separate from proposed public-writer support."
       ],
       "prohibitedOutcomes": [
         "Infer that a writer ships because operation knowledge is accepted.",
@@ -193,7 +196,7 @@
           "path": "knowledge/protocols/musd/borrowing/generated/reference.md",
           "includes": [
             "Operation capability state",
-            "does not imply that MDK ships a transaction writer"
+            "(../../../../../packages/protocols/musd-borrowing/README.md)"
           ]
         }
       ]

@@ -358,8 +358,9 @@ Do not begin with directories. Begin with an approved owner and consumer.
    the owner and entry point are approved.
 4. **Create human and machine entry points.** Add `README.md` and `index.json`
    at the same module root. Follow the [knowledge README standard](../standards/documentation.md#knowledge-readmes):
-   explain the subject and its relationships, offer useful next steps, and state
-   practical limits. Link shared review terminology and maintenance guidance.
+   explain the subject in connected, plain-language steps, define terms where
+   needed, and offer described quick links. Keep practical limits beside the
+   affected use. Link shared review terminology and maintenance guidance.
    The index owns lifecycle fields and exact checks; do not copy volatile facts
    into the README.
 5. **Create only occupied role directories.** Add `records/`, `sources/`,

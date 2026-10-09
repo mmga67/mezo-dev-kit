@@ -11,12 +11,30 @@ issued MEZO rewards, so they can be followed without counting the same value twi
 
 ## Understand voting power and rewards
 
-- [Incentives reference](generated/reference.md): locks, formulas, emissions, and validator allocation.
-- [Concentrated-liquidity gauge claims](generated/reference.md#cl-gauge-claim-overloads): why the two `getReward` signatures allow different callers and pay different recipients.
-- [MEZO Gauges and remote incentives](generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives): veMEZO voting, Curve/Uniswap LP rewards, Aerodrome voting incentives, and delivery evidence limits.
-- [Current evidence guide](../../../docs/reference/incentives/current-evidence.md): deployment scope and known conflicts.
-- [Recorded configuration](generated/reference.md#configuration-observation-catalog): which settings can change, what was observed, and when it was captured.
-- [Official Earn whitepaper](artifacts/mezo-earn-whitepaper-2025-12.pdf): retained specification; use the evidence guide for differences from deployment.
+Begin with the lock. The names veBTC and veMEZO refer to voting positions
+associated with locked BTC and MEZO. Their voting power is different from the
+amount locked. A veMEZO boost can change effective veBTC voting power without
+adding BTC principal. The [incentives reference](generated/reference.md)
+contains the recorded lock and boost formulas.
+
+Next choose the voting system. Pool voting and validator voting maintain
+independent allocations; a vote in one is not a vote in the other. The
+[MEZO Gauges system](generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives)
+uses a separate veMEZO voting model for third-party incentives. Its reference
+distinguishes behavior checked on Mezo from reward destinations described in
+published guides.
+
+Finally, follow the reward from allocation to payment. A gauge is the rewards
+contract that tracks distribution and claims. An allocated weight, an amount
+available for distribution, a user's earned reward and a completed payment are
+different stages. Fees and other payments to voters also need to stay separate
+from newly issued MEZO rewards, called emissions.
+
+Claiming depends on the particular gauge and caller. For concentrated-liquidity
+(CL) positions, the [claim reference](generated/reference.md#cl-gauge-claim-overloads)
+explains why two methods named `getReward` have different inputs, permitted
+callers and recipients. Use the exact method's rules rather than assuming
+all reward claims work alike.
 
 ## Limits to keep in mind
 
@@ -53,6 +71,19 @@ current chain checks and simulation of the exact call. The
 [evidence and support guide](../../README.md#evidence-review-and-support)
 explains what review labels mean; each reference identifies the contract versions
 and observations covered by its acceptance.
+
+## Quick links
+
+| Link                                                                                  | What you will find                                                   |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Incentives reference](generated/reference.md)                                        | Locks, boosts, voting, emissions and reward calculations.            |
+| [CL gauge claims](generated/reference.md#cl-gauge-claim-overloads)                    | Caller and recipient rules for the two claim methods.                |
+| [MEZO Gauges](generated/reference.md#mezo-gauges-vemezo-voting-and-remote-incentives) | Third-party voting, remote incentives and delivery evidence limits.  |
+| [Recorded configuration](generated/reference.md#configuration-observation-catalog)    | Changeable settings, observed values and capture dates.              |
+| [Evidence guide](../../../docs/reference/incentives/current-evidence.md)              | Deployment scope, source disagreements and known gaps.               |
+| [Earn whitepaper](artifacts/mezo-earn-whitepaper-2025-12.pdf)                         | The saved design specification; compare it with deployment evidence. |
+| [Incentives SDK](../../../packages/protocols/incentives/README.md)                    | Reads, calculations, locks, votes, staking and claims.               |
+| [Module index](index.json)                                                            | Exact model, source, configuration and evidence records.             |
 
 ## Contributing
 

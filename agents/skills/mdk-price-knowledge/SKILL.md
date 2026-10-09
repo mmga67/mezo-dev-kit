@@ -21,8 +21,7 @@ provider fallback order, or enable an updater/writer.
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/prices/README.md` and resolve the module through
-   `knowledge/prices/index.json`.
+3. Resolve module `prices` with `pnpm context`.
 4. Load only the source/feed, datum, freshness/fallback, fixture, evidence, or
    review resources needed.
 5. Resolve network/provider capability through Networks and executable

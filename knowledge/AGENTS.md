@@ -2,11 +2,14 @@
 
 These rules apply to all work under `knowledge/`.
 
-- Load only the resources needed for the task, including missing relevant
-  sections of `docs/standards/knowledge-management.md`
-  and the selected module's orientation/index; reuse unchanged context.
-  Use `pnpm context` to resolve/search/read indexed records and fields before
-  opening large catalogs. Its manual is `scripts/agents/CONTEXT.md`.
+- Load only the resources needed for the task. Follow
+  [knowledge retrieval](../docs/standards/knowledge-management.md#read-or-use-knowledge):
+  use the relevant skill and `pnpm context` to select records, fields, and
+  evidence; reuse unchanged context and avoid reading entire indexes.
+  Knowledge READMEs are human orientation. Read them for edits, reviews, useful
+  explanations, or missing context, rather than as a routine lookup prerequisite.
+  Package documentation still owns supported APIs. The retrieval command manual
+  is `scripts/agents/CONTEXT.md`.
 - Follow `docs/standards/documentation.md` for human pages. Keep README
   orientation separate from agent routing and detailed maintenance procedures.
 - Load `agents/skills/mdk-knowledge-maintenance/SKILL.md` for maintenance work,

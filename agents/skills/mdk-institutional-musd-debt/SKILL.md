@@ -22,8 +22,7 @@ liquidation claims, or transaction writers.
 2. For maintenance, read
    `agents/skills/mdk-knowledge-maintenance/SKILL.md` and
    `docs/standards/knowledge-management.md`.
-3. Read `knowledge/protocols/musd/institutional-debt/README.md` and resolve the
-   module through `index.json`.
+3. Resolve module `protocols/musd/institutional-debt` with `pnpm context`.
 4. Load only the architecture, vault, accounting, formula, operation,
    aggregate, fixture, source, evidence, or review resources needed.
 5. Load `mdk-musd-knowledge` for shared MUSD terms, `mdk-musd-borrowing` only
