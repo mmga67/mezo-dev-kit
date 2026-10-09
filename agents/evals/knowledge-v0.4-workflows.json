@@ -4,6 +4,78 @@
   "id": "knowledge-v0.4-workflows",
   "cases": [
     {
+      "id": "agent-explain-economic-system",
+      "audience": "agent",
+      "intent": "Explain how BTC enters Mezo and connects borrowing, products, voting and MEZO emissions; assess whether SDK boundaries describe the whole economy.",
+      "route": [
+        "knowledge/AGENTS.md",
+        "agents/skills/mdk-economic-system/SKILL.md",
+        "knowledge/README.md",
+        "docs/architecture/mezo-economic-system-composition.md",
+        "agents/skills/mdk-bridge-knowledge/SKILL.md",
+        "agents/skills/mdk-incentives-knowledge/SKILL.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-assets" },
+        { "moduleId": "workflows/bridges", "resourceId": "bridge-gaps" },
+        { "moduleId": "protocols/incentives", "resourceId": "incentives-emissions" },
+        { "moduleId": "protocols/incentives", "resourceId": "official-mezo-earn-whitepaper-pdf" }
+      ],
+      "requiredOutcomes": [
+        "Start from BTC custody and borrowing, then connect product revenue, veBTC, complementary veMEZO boosts, voting and a single partitioned MEZO emission budget.",
+        "Distinguish Threshold/tBTC custody, Ethereum bridge custody and native BTC on Mezo; explain Bitcoin and Ethereum entry from the sourced map.",
+        "Keep separate veMEZO external-gauge voting and deployed rebase evidence; the whitepaper is design authority, not proof of a deployed formula.",
+        "Describe the wider asset/bridge picture while explicitly identifying missing indexed qualification and SDK coverage."
+      ],
+      "prohibitedOutcomes": [
+        "Use package inventory or MUSD-versus-mUSDC terminology as the organizing model for the whole economy.",
+        "Infer that MEZO shares every MUSD NTT destination, or that both assets support BSC because the bridge UI does.",
+        "Treat unsupported routes as nonexistent Mezo features, or published design as current execution readiness.",
+        "Require a wallet, live transaction simulation or every module maintenance validator for a conceptual explanation."
+      ],
+      "assertions": [
+        {
+          "path": "agents/skills/mdk-economic-system/SKILL.md",
+          "includes": ["../../../docs/architecture/mezo-economic-system-composition.md"]
+        },
+        {
+          "path": "knowledge/workflows/bridges/review/gaps.md",
+          "includes": ["## Whole-system coverage"]
+        }
+      ]
+    },
+    {
+      "id": "agent-explain-product-without-preparation",
+      "audience": "agent",
+      "intent": "Explain why Savings receipts, a gauge position and classic MUSD trove collateral are different without preparing any transaction.",
+      "route": [
+        "knowledge/AGENTS.md",
+        "agents/skills/mdk-musd-savings/SKILL.md",
+        "docs/standards/knowledge-management.md",
+        "knowledge/protocols/musd/savings/README.md"
+      ],
+      "knowledgeReferences": [
+        { "moduleId": "protocols/incentives", "resourceId": "incentives-gauges-rewards" },
+        { "moduleId": "protocols/musd", "resourceId": "musd-system-model" }
+      ],
+      "requiredOutcomes": [
+        "Explain 1:1 Savings principal separately from indexed yield, gauge custody, redirected voter revenue and MEZO rewards.",
+        "Keep Savings outside classic trove, TCR, Stability Pool and redemption accounting.",
+        "Use scoped records for the explanation and reserve live-state, simulation and maintenance checks for the operations that require them."
+      ],
+      "prohibitedOutcomes": [
+        "Count gauge-held receipts again as wallet principal or count redirected yield as direct interest as well.",
+        "Block an explanation solely because a writer has no supported release.",
+        "Fetch current balances or simulate a deposit that the user did not request."
+      ],
+      "assertions": [
+        {
+          "path": "agents/skills/mdk-musd-savings/SKILL.md",
+          "includes": ["../../../docs/standards/knowledge-management.md#read-or-use-knowledge"]
+        }
+      ]
+    },
+    {
       "id": "human-discover-module",
       "audience": "human-consumer",
       "intent": "Find the canonical module and human reference without browsing directories by file type.",
@@ -285,7 +357,7 @@
         "Keep accepted architecture separate from public runtime and writer support."
       ],
       "prohibitedOutcomes": [
-        "Infer a dependency or public API from ADR acceptance.",
+        "Infer a dependency or public API from baseline architecture acceptance.",
         "Treat a receipt as protocol success."
       ],
       "assertions": [

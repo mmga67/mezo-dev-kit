@@ -1,0 +1,459 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "protocols/incentives",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "btc-lock-custody",
+      "name": "Separate BTC voting lock",
+      "kind": "value-flow",
+      "quantity": "collateral",
+      "from": {
+        "label": "Native BTC allocated to a lock",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets",
+          "recordId": "btc-native-bridge"
+        }
+      },
+      "to": {
+        "label": "veBTC lock custody",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-locks"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "mezo-lock-custody",
+      "name": "MEZO lock custody",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "MEZO allocated to a lock",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "to": {
+        "label": "veMEZO lock custody",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-locks"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vemezo-vebtc-boost",
+      "name": "veMEZO boosts veBTC influence",
+      "kind": "voting-influence",
+      "quantity": "voting-power",
+      "from": {
+        "label": "veMEZO boost allocation",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-boost"
+        }
+      },
+      "to": {
+        "label": "veBTC voting power",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-boost"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-boost"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vebtc-product-votes",
+      "name": "veBTC product allocation votes",
+      "kind": "voting-influence",
+      "quantity": "voting-power",
+      "from": {
+        "label": "veBTC voting power",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "to": {
+        "label": "Product gauge allocation",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gauges-rewards"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-voting"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-voting"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vebtc-validator-votes",
+      "name": "Independent validator allocation votes",
+      "kind": "voting-influence",
+      "quantity": "voting-power",
+      "from": {
+        "label": "veBTC voting power",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "to": {
+        "label": "Validator gauge allocation",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-validator-voting-rewards"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-validator-voting-rewards"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-validator-voting-rewards"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vemezo-external-votes",
+      "name": "Independent veMEZO external allocation",
+      "kind": "voting-influence",
+      "quantity": "voting-power",
+      "from": {
+        "label": "veMEZO voting power",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "to": {
+        "label": "External MEZO Gauge allocation",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-voting-rewards"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "mezo-rebase-partition",
+      "name": "Rebase share of one emission budget",
+      "kind": "value-flow",
+      "quantity": "emissions",
+      "from": {
+        "label": "Epoch MEZO emission budget",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        }
+      },
+      "to": {
+        "label": "veMEZO rebase allocation",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-emissions"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "mezo-reward-partition",
+      "name": "Reward allocation in the Mezo Earn flywheel",
+      "kind": "value-flow",
+      "quantity": "emissions",
+      "from": {
+        "label": "Epoch MEZO emission budget",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        }
+      },
+      "to": {
+        "label": "Validator and ecosystem reward allocations",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-emissions"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "product-staker-emissions",
+      "name": "Product-gauge MEZO rewards",
+      "kind": "value-flow",
+      "quantity": "emissions",
+      "from": {
+        "label": "Allocated product-gauge rewards",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gauges-rewards"
+        }
+      },
+      "to": {
+        "label": "Eligible product stakers",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gauges-rewards"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-gauges-rewards"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gauges-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "passive-btc-fee-revenue",
+      "name": "Published passive chain and bridge revenue",
+      "kind": "value-flow",
+      "quantity": "fees",
+      "from": {
+        "label": "Chain and bridge activity",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "Eligible veBTC revenue claim",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-gaps"
+      },
+      "qualification": "unqualified",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-gaps"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        },
+        {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-revenue-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "Complete splitter/distributor, fee-origin, beneficiary and settlement qualification remains open."
+      ]
+    },
+    {
+      "id": "external-incentive-delivery",
+      "name": "External pool incentive delivery",
+      "kind": "value-flow",
+      "quantity": "emissions",
+      "from": {
+        "label": "MEZO Gauge allocation on Mezo",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        }
+      },
+      "to": {
+        "label": "Destination pool beneficiaries",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-third-party-voting-rewards"
+      },
+      "qualification": "unqualified",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-third-party-voting-rewards"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-revenue-flows"
+        }
+      ],
+      "limitations": [
+        "Source allocation and published destination behavior do not establish observed remote delivery."
+      ]
+    },
+    {
+      "id": "protocol-parameter-authority",
+      "name": "Current splitter and protocol parameter authority",
+      "kind": "authority",
+      "quantity": "control",
+      "from": {
+        "label": "Authorized protocol controller",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-source-conflicts"
+        }
+      },
+      "to": {
+        "label": "Governed splitter parameters",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-emissions"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/incentives",
+        "resourceId": "incentives-source-conflicts"
+      },
+      "qualification": "unqualified",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-source-conflicts"
+        }
+      ],
+      "limitations": [
+        "Published descriptions disagree on current adjustability; a setter or allocation vote does not establish live user-governance authority."
+      ]
+    }
+  ]
+}

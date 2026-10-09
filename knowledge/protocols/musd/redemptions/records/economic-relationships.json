@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "protocols/musd/redemptions",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "musd-redemption",
+      "name": "MUSD redemption against eligible debt",
+      "kind": "value-flow",
+      "quantity": "debt",
+      "from": {
+        "label": "Redeemer MUSD",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-system-model"
+        }
+      },
+      "to": {
+        "label": "Eligible classic position debt",
+        "reference": {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "redemption-model"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/redemptions",
+        "resourceId": "redemption-model"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "redemption-model"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "redemption-collateral-settlement",
+      "name": "Redemption collateral settlement",
+      "kind": "value-flow",
+      "quantity": "collateral",
+      "from": {
+        "label": "Eligible position collateral",
+        "reference": {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "redemption-model"
+        }
+      },
+      "to": {
+        "label": "Redeemer BTC settlement",
+        "reference": {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "redemption-model"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/redemptions",
+        "resourceId": "redemption-model"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "redemption-model"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    }
+  ]
+}

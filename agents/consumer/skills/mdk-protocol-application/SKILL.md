@@ -10,6 +10,15 @@ choosing a workflow. Use `pnpm exec mdk docs search "topic" --json`, then
 `docs show` and explicit `docs fetch <id> --offline` through that same CLI.
 The owning protocol reference and `api:core` define inputs and lifecycle.
 
+For whole-system questions, search the installed corpus for Mezo's economic
+system and follow the available domain/source references. Explain BTC entry and
+custody, borrowing, product revenue, voting and emissions as relevant before
+describing API coverage. Distinguish published design, observed deployments and
+SDK support. If the installed corpus lacks a relationship, report that coverage
+gap and consult the relevant official Mezo documentation or retained whitepaper
+under the application's retrieval policy. Missing APIs do not establish that
+Mezo lacks a feature; published design does not establish executable readiness.
+
 1. Classify explanation, deterministic calculation, read, preparation,
    simulation, submission and reconciliation separately. Explanations and local
    fixtures do not need the live inputs required for an actual transaction.

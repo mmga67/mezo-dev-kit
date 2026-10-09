@@ -63,7 +63,7 @@ route, or infer transaction authorization.
    evidenced. Preserve revert data; any call mutation invalidates simulation.
 9. Follow transaction tracking and reconcile actual recipient token deltas and
    architecture-specific events/state. Receipt success alone is insufficient.
-10. Inspect `packages/swaps/README.md` and `REFERENCE.md` for current private APIs. Basic quotes accept up to three hops; private writer assets are MUSD/mUSDC/mUSDT. Use explicit approvals, final simulation output verification, and event/balance reconciliation. Canonical support remains proposed pending qualified review.
+10. Inspect `packages/swaps/README.md` and `REFERENCE.md` for current private APIs. Retrieve the hop budget and eligible writer assets from the selected API. Use explicit approvals, final simulation output verification, and event/balance reconciliation. Resolve support and qualified-review status from the selected owners.
 11. On maintenance, update evidence digest, source catalog, canonical records,
     fixtures, generated reference, candidate/gap disposition, validator, and
     qualified-review packet together.
@@ -72,8 +72,8 @@ The current private CL reader calculates exact-input estimates through bounded
 bitmap/tick traversal and Pools step/fee math, without an assumed Quoter. Inspect
 the current Swaps reference for step/word/crossing budgets, source overflow and
 rounding, empty-range versus partial-fill behavior, router native refund custody,
-and exact simulation/state reconciliation. MUSD/mUSDC/mUSDT is the private writer
-asset profile; wider quotable paths do not establish writer compatibility.
+and exact simulation/state reconciliation. Retrieve the writer asset profile from the current package reference; wider
+quotable paths do not establish writer compatibility.
 For separate basic/CL operations, inspect the maintained Swaps mixed-recovery
 example. Reconcile and persist realized first-leg custody before fresh second-leg
 preparation. Keep stable IDs and uncertain Core reservations; never repeat the

@@ -81,11 +81,13 @@ verification, and stale dynamic mappings.
 
 ## Invariants and common failure modes
 
-- The module and seven CL registry roots received qualified Level 3 acceptance;
-  canonical writer support remains proposed. The private Pools package now implements basic MUSD/mUSDC/mUSDT liquidity and fee writers; inspect its current README/REFERENCE.
+- Resolve accepted deployments and operation support through the module and
+  current Pools package README/reference; registry acceptance does not qualify
+  every asset, position type or writer.
 - No current official Quoter identity is known.
 - The private Pools package also has exact CL tick/liquidity/fee calculations
-  and a bounded pool/NFT reader plus an ordinary unstaked MUSD/mUSDC/mUSDT NFT writer.
+  and pool/NFT operations; resolve eligible assets and custody classes from
+  the current package reference.
   Mint uses the existing-pool zero-price sentinel. Decrease credits principal;
   collection reconciles actual payment separately from manager accounting.
   Check current method references: distinguish

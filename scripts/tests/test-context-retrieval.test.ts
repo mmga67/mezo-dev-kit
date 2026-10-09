@@ -14,6 +14,8 @@ import {
 } from "../lib/context-retrieval.ts";
 import { checkMemory, memoryIndex, readMemory } from "../lib/memory-store.ts";
 import { readContextFile } from "../lib/context-files.ts";
+import { contextImpact } from "../lib/context-impact.ts";
+import { object, objects, parseJson } from "../lib/json.ts";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const roots: string[] = [];
@@ -102,6 +104,109 @@ async function fixture() {
   });
   return root;
 }
+test("impact follows source digests through indirect consumers and separates prose review", async () => {
+  const root = await fixture();
+  await mkdir(resolve(root, "docs"));
+  await writeFile(resolve(root, "docs/manifest"), "Synthetic baseline\n");
+  await writeFile(
+    resolve(root, "docs/guide.md"),
+    "Use [the model](../knowledge/widgets/records/model.json).\n",
+  );
+  await writeFile(resolve(root, "docs/navigation.md"), "See [the guide](guide.md).\n");
+  const indexPath = resolve(root, "knowledge/widgets/index.json");
+  const original = object(
+    parseJson(await readFile(indexPath, "utf8"), "fixture index"),
+    "fixture index",
+  );
+  await put(root, "knowledge/widgets/index.json", {
+    ...original,
+    resources: [
+      ...objects(original.resources, "fixture resources"),
+      { id: "sources", path: "sources/catalog.json", role: "source-catalog" },
+      { id: "model", path: "records/model.json", role: "canonical-record" },
+      { id: "review", path: "review/conflict.md", role: "review" },
+      {
+        id: "projection",
+        path: "generated/reference.md",
+        role: "generated",
+        generatedFrom: [{ moduleId: "widgets", resourceId: "model" }],
+      },
+    ],
+  });
+  await put(root, "knowledge/widgets/sources/catalog.json", {
+    records: [
+      { kind: "accepted-project-baseline", path: "../../docs/manifest", sha256: "synthetic" },
+      { kind: "official-source", path: "upstream/absent.sol", sha256: "upstream" },
+    ],
+  });
+  await put(root, "knowledge/widgets/records/model.json", {
+    source: { moduleId: "widgets", resourceId: "sources" },
+    cycle: { moduleId: "widgets", resourceId: "projection" },
+  });
+  await mkdir(resolve(root, "knowledge/widgets/generated"));
+  await writeFile(resolve(root, "knowledge/widgets/generated/reference.md"), "Derived\n");
+  await mkdir(resolve(root, "knowledge/widgets/review"));
+  await writeFile(
+    resolve(root, "knowledge/widgets/review/conflict.md"),
+    "Review the sources and widgets:model conflict.\n",
+  );
+  const result = await contextImpact(root, { path: "docs/manifest" });
+  expect(result.dependents.map(({ path }) => path)).toEqual([
+    "knowledge/widgets/generated/reference.md",
+    "knowledge/widgets/records/model.json",
+    "knowledge/widgets/sources/catalog.json",
+  ]);
+  expect(result.reviewCandidates.map(({ path }) => path)).toEqual([
+    "docs/guide.md",
+    "knowledge/widgets/review/conflict.md",
+  ]);
+  expect(result.reviewCandidates[0]?.mentions).toContain("knowledge/widgets/records/model.json");
+  expect(result.unresolvedReferences).toEqual([]);
+  expect(result.coverage.allDeclaredReferencesResolved).toBe(true);
+  expect(result.networkRequests).toBe(0);
+  expect(result.writes).toBe(0);
+  expect(await readFile(resolve(root, "docs/manifest"), "utf8")).toBe("Synthetic baseline\n");
+});
+
+test("impact exposes unresolved dependencies without claiming an empty graph is complete", async () => {
+  const root = await fixture();
+  await put(root, "knowledge/widgets/records/observations.json", {
+    related: { moduleId: "widgets", resourceId: "missing" },
+  });
+  const result = await contextImpact(root, { path: "knowledge/widgets/records/observations.json" });
+  expect(result.unresolvedReferences).toEqual([
+    {
+      consumer: "knowledge/widgets/records/observations.json",
+      reference: "widgets:missing",
+    },
+  ]);
+  expect(result.coverage.allDeclaredReferencesResolved).toBe(false);
+  expect(result.requiredReview).toContainEqual(
+    expect.stringContaining("even when text matching finds none"),
+  );
+});
+
+test("impact validates record selection and keeps private paths and symlinks outside its input", async () => {
+  const root = await fixture();
+  const selected = await contextImpact(root, { reference });
+  expect(selected.seed).toBe("knowledge/widgets/records/observations.json");
+  expect(selected.coverage.granularity).toContain("entire resource");
+  await expect(
+    contextImpact(root, { reference: { ...reference, recordId: "absent" } }),
+  ).rejects.toThrow();
+  await expect(contextImpact(root, { path: "local/private.json" })).rejects.toThrow(
+    "maintained repository source",
+  );
+  await expect(contextImpact(root, { path: "../outside.json" })).rejects.toThrow(
+    "maintained repository source",
+  );
+  await symlink(
+    resolve(root, "knowledge/widgets/records/observations.json"),
+    resolve(root, "linked.json"),
+  );
+  await expect(contextImpact(root, { path: "linked.json" })).rejects.toThrow("symlink");
+});
+
 async function memory(root: string, scope: "shared" | "local", status = "verified") {
   const directory = scope === "shared" ? "agents/memory/seed" : ".mdk/memory";
   const metadata = {
@@ -338,6 +443,23 @@ test("the contributor command runs from a fresh fixture and reports usable struc
     ),
   );
   expect(result).toMatchObject({ ok: true, data: { content: "yellow rotary assembly" } });
+  expect(
+    JSON.parse(run("impact", "--path", "knowledge/widgets/artifacts/source.json", "--limit", "1")),
+  ).toMatchObject({
+    ok: true,
+    data: {
+      seed: "knowledge/widgets/artifacts/source.json",
+      totals: { dependents: 1 },
+      networkRequests: 0,
+      writes: 0,
+    },
+  });
+  expect(() =>
+    run("impact", "--path", "knowledge/widgets/artifacts/source.json", "--module", "widgets"),
+  ).toThrow();
+  expect(() =>
+    run("impact", "--path", "knowledge/widgets/artifacts/source.json", "--limit", "0"),
+  ).toThrow();
   expect(() => run("find", "--query", "yellow", "--file", "guess")).toThrow();
   const oversized = spawnSync(
     process.execPath,

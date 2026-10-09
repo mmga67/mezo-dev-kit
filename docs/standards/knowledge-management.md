@@ -176,6 +176,32 @@ When moving a file, keep its stable IDs, update its index mapping, repair
 legacy path-based references, and run reference checks. A move is not a reason
 to change the fact or silently refresh its verification timestamp.
 
+### Economic relationship collections
+
+Economic relationships belong to the domain that owns their accounting or
+authority rule. Index them as `economic-relationship-collection` canonical
+records with stable per-domain record IDs and `/records` as the collection
+pointer. The common [relationship schema](../../knowledge/schema/v0.4/economic-relationships.schema.json)
+defines endpoints, quantity categories, accounting ownership, basis references
+and qualification. Endpoint labels name economic actors or positions; their
+logical references point to the model that explains them. Labels do not create
+another deployment or token registry.
+
+Keep asset movements, receipt claims, voting influence and authority distinct.
+Reference formulas, units, addresses, rates and detailed conditions in their
+existing owners. Classify a relationship as a recorded model, published
+description or unqualified gap; this classification does not override its
+collection's review state or the cited evidence's generation and freshness.
+An unqualified relationship needs an explicit owned limitation, not an invented
+deployment. Candidate collections stay candidates until their required review.
+
+The root generated relationship reference composes these owners without owning
+their economic facts. Its table is a coverage and retrieval surface; the human
+economic explanation supplies context. Economic cycles are valid and have no
+effect on package dependency rules. Semantic validation checks references,
+ownership and quantity categories; it does not prove source truth, conservation
+of a live balance, completeness of the whole economy or current SDK support.
+
 ## Structural and semantic validation
 
 Validation has two deliberately separate layers:
@@ -217,6 +243,16 @@ node scripts/tests/test-knowledge-structure.ts
 3. Resolve resources through `index.json`; load only what the task needs.
 4. Check status, support, review, freshness, scope, and limitations before use.
 5. Follow the cited evidence for any protocol-sensitive decision.
+
+For whole-system questions, start with
+[how Mezo's Bitcoin economy fits together](../architecture/mezo-economic-system-composition.md),
+then follow the relevant domain owners. Explain the economic relationships before
+the SDK coverage limits. The map is a sourced explanation, not a second fact
+registry. Keep published design, observed deployment behavior, and supported
+operations distinct. Module/catalog completeness describes maintained resources;
+it does not prove that every Mezo asset, bridge route, or economic relationship
+has been indexed. Report and resolve the specific coverage gap instead of
+treating missing records or unsupported APIs as absent protocol functionality.
 
 Classify each requested claim as a recorded fact/explanation, historical fact,
 current observation, or execution prerequisite. Resolve its owner and as-of
@@ -311,6 +347,67 @@ For a new or revised knowledge record:
 6. Apply the normal review/promotion process. Retrieval success is not evidence
    acceptance. Keep unresolved gaps explicit and retire superseded records
    through their lifecycle rather than silently replacing history.
+
+### React to an observed change
+
+An observation can arrive during any task: a user correction, changed official
+page or source release, chain read, failed test, troubleshooting investigation,
+or memory pointer. Route it to the affected fact or procedure owner. A signal
+does not become accepted knowledge merely because it is new or official.
+
+1. **Capture and classify.** In the owning task and existing evidence/review
+   stores, identify the expected claim, observed difference, source, retrieval
+   date, and applicable network/deployment/version/block. Distinguish new
+   information, changed behavior, a corrected interpretation, conflicting
+   sources, expiry and a presentation-only edit. Preserve historical evidence.
+2. **Verify the claim.** Follow the domain's bounded capture and review
+   procedure. A changed page can establish a published claim without proving
+   deployed behavior. A failed request establishes an unavailable observation,
+   not a protocol failure. Hold back dependent claims whose evidence cannot be
+   resolved; continue independent work. Do not renew dates on unrelated records.
+3. **Trace impact.** Use `pnpm context impact` for declared reverse dependencies
+   and explicit guidance references, then review unmodeled semantic consumers.
+   Inspect unresolved references and coverage limits. Review the economic
+   relationships and human explanation, package behavior, examples, contributor
+   and consumer skills, evaluations and distribution as relevant. A new asset,
+   product or authority can require ownership review even when existing
+   references remain valid. The [retrieval manual](../../scripts/agents/CONTEXT.md#trace-change-impact)
+   owns the tool's exact coverage.
+4. **Record dispositions.** For each affected owner, record `updated`,
+   `reviewed-unaffected` with a reason, or `unresolved` with the affected claim
+   held back and a next action. Use the task's existing Deliverables,
+   Verification and Dependencies sections; do not create another status store.
+   Update canonical facts before derived consumers. Change the economic map
+   when relationships change; change the manifest or package architecture only
+   when their governed decisions change. Skills change when retrieval, routing,
+   assumptions or procedures change, not merely to repeat a new parameter.
+5. **Verify and distribute together.** Regenerate declared outputs, run impacted
+   domain checks and meaningful behavior scenarios, then refresh contributor
+   discovery and the affected versioned consumer corpus. Installed applications
+   retain their selected version until their supported update workflow runs;
+   a repository edit does not update those installations. Preserve application
+   ownership and distinguish source, packaged, installed and verified states.
+
+Do not call a change coherent while a known affected consumer has no disposition.
+An explicitly unresolved consumer cannot continue making the invalidated claim.
+Structural checks, an empty impact report and agreement between agents are not
+proof that every semantic dependency has been discovered. Reuse current user
+authorization; existing scope, qualified-review and release gates still apply.
+
+Detection coverage is separate from propagation:
+
+| Signal                                                          | Existing detection boundary                                              |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Changed maintained bytes, broken references or generated output | Explicit local checks; passing them does not inspect external sources    |
+| Review deadline                                                 | Owning domain freshness check when invoked; the date is a review trigger |
+| Chain/source/provider behavior                                  | A named read-only capture or investigation with its recorded scope       |
+| Official documentation or new ecosystem feature                 | Targeted source review; no repository-wide external watcher is provided  |
+| User report, failed workflow or memory observation              | Task-time triage and authoritative verification                          |
+
+For any maintained source without a detector or capture recipe, record the
+coverage gap in its existing review owner. Adding scheduled monitoring,
+notifications or CI/CD is separately scoped work; do not imply that the local
+impact command runs in the background or notices every external change.
 
 ### Reverify stale knowledge
 

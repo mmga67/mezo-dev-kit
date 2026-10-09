@@ -14,7 +14,7 @@
       "id": "example-source-alpha-governance-pointer",
       "domain": "governance/alpha",
       "status": "promoted",
-      "title": "Source-alpha governance moved to ADR-0013",
+      "title": "Source-alpha governance is maintained in the manifest",
       "path": "example-promoted-pointer.json"
     },
     {

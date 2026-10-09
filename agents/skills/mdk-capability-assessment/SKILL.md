@@ -26,8 +26,11 @@ Do not load every skill, package, or knowledge module.
    `@mezo-dev-kit/evm` contract in `packages/evm/README.md`. Pure representation
    work needs no deployment, RPC, or protocol knowledge unless the task adds
    those semantics. It does not require a new skill.
-   An explanation normally needs the relevant indexed records, canonical ABI
-   and package reference. It does not require trying a wallet, fetching live
+   For a whole-system explanation or cross-domain economic assumptions, use
+   [economic-system reasoning](../mdk-economic-system/SKILL.md) and follow its
+   selected domain evidence. For a narrower explanation, read the relevant indexed semantics;
+   inspect ABI/package references only when interface behavior matters.
+   An explanation does not require trying a wallet, fetching live
    state, downloading source, or reproducing a deployment merely because those
    steps would be necessary to execute the described operation.
 2. Inspect the relevant package README, `package.json` export map, exported
@@ -83,6 +86,10 @@ assessment. Load each relevant procedure once and revisit only changed inputs.
 - **Evidence or configuration gap:** identify the missing source, coverage,
   endpoint capability, or signer input. Do not assume unlocked accounts, infer
   complete history from a partial scan, or fabricate a provider capability.
+- **Architecture coverage gap:** follow the composition guide's authoritative
+  sources for a relationship outside indexed coverage. Report the gap without
+  inventing deployment evidence, promoting SDK support, or declaring the Mezo
+  feature absent. Maintain new facts through their existing domain owner.
 - **Conflicting owners:** report the code/docs/architecture/evidence conflict
   and resolve it through the owning procedure before the dependent decision.
 
@@ -91,6 +98,11 @@ effective; ask only for missing information or decisions required by the
 applicable policy. This procedure adds no blanket permission gate.
 
 ## Reassess an evolving checkout
+
+When changed evidence or behavior affects maintained guidance, follow
+[observed-change maintenance](../../../docs/standards/knowledge-management.md#react-to-an-observed-change).
+Use `pnpm context impact` to find declared consumers, then inspect semantic
+assumptions beyond its coverage; record affected-owner dispositions in the task.
 
 Record `git rev-parse HEAD` and relevant `git status`/diff context for material
 capability claims. Private package versions alone do not identify a revision.

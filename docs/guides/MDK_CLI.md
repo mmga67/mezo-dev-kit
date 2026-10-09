@@ -343,10 +343,16 @@ pnpm check
 
 Sets cover app essentials (`base`), `memory`, `tokens`, `prices`, `borrowing`,
 `savings`, `lending`, `vaults`, `liquidity`, `swaps`, `incentives`, `bridges`,
-`redemptions`, `institutional-debt` and `history`. `mdk sets` is the installed
+`redemptions`, `institutional-debt`, `history` and `economy`. `mdk sets` is the installed
 catalog; each entry shows its packages, skills and underlying domains.
 Availability describes distributable integration tools, not protocol release
 approval or transaction authorization.
+
+The optional `economy` set installs the economic-system consumer skill and
+offline composition, relationship and selected conflict references. It adds no
+runtime packages and leaves the default selection unchanged. Use it to explore
+Mezo or check assumptions spanning domains; candidate records and unresolved
+evidence retain their original qualifications.
 
 An addition expands `mdk.config.json` with the selected domains. It checks managed
 file conflicts before installation, verifies private artifacts, installs missing

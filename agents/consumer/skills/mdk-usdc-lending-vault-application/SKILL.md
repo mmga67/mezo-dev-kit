@@ -16,6 +16,9 @@ matching local corpus for only the knowledge needed by the task.
 1. Resolve the current vault, adapter, receipt wrapper and gauge topology from the reference and current reads. Preserve generation differences.
 2. Use SDK previews with their exact rounding and availability rules. Do not infer capacity from a getter name, add adapter assets twice, or combine vault shares with underlying assets.
 3. Count wallet receipts and beneficial gauge stake once. Keep redirected yield, emissions and claimable rewards separated by asset and owner; route borrower health to the lending package.
+   Resolve the wrapper's harvest condition separately from receipt staking.
+   Unstaked wrapper receipts need not have the same yield entitlement as
+   unwrapped vault shares; use the installed accounting reference.
 4. Inspect the actual installed public exports and required application ports.
    Keep app transport, wallet, storage and policy explicit. Preserve the
    reference's implementation and release limitations.

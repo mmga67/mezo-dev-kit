@@ -19,7 +19,7 @@
       "pool-price-mechanics",
       "transaction-boundary",
       "pyth-evm-api",
-      "adr-0009-price-ownership"
+      "manifest-price-ownership"
     ]
   },
   "limitations": [
@@ -176,10 +176,10 @@
       ]
     },
     {
-      "id": "adr-0009-price-ownership",
-      "kind": "accepted-architecture-decision",
-      "path": "../../docs/decisions/0009-oracle-price-source-ownership.md",
-      "sha256": "e034f6130ee91dd54ec9f1fd3119e442f252e066412635f5058f8ce410568fb3",
+      "id": "manifest-price-ownership",
+      "kind": "accepted-project-baseline",
+      "path": "../../docs/manifest",
+      "sha256": "ec4aa6c9e6723b4b353a2a7f993ab1faf2ee445764cf1500d846a5dab589d4be",
       "establishes": "Accepted Prices ownership, taxonomy, dependency, datum, freshness, and no-substitution boundaries."
     },
     {

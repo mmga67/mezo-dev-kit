@@ -72,10 +72,7 @@
       "kind": "on-chain-and-verified-explorer-observation",
       "sha256": "390f21c1027c3b97f9c232b080d97a10bd538290ab7cf7accb523d075ac4f5bb",
       "retrievedAt": "2026-08-17T22:56:59.589Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org",
-        "https://api.explorer.test.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org", "https://api.explorer.test.mezo.org"],
       "note": "Bounded current code, receipt, ERC-1967 slot, upgrade-event, full-ABI, and verified-source observations.",
       "reference": {
         "moduleId": "contracts",
@@ -117,11 +114,9 @@
         "moduleId": "contracts",
         "resourceId": "contract-bridge-probes-2026-08-24"
       },
-      "sha256": "3b639b9f7f2bb607b9eea97dd5f3b5694e47c678a2e5509da9067f7bb97a1625",
+      "sha256": "0b2eefac0f63c52b31b1db0feca958256df07e807f1e8550202af68d7bce5b98",
       "retrievedAt": "2026-08-24T13:39:35.987Z",
-      "endpoints": [
-        "https://etherscan.io"
-      ],
+      "endpoints": ["https://etherscan.io"],
       "note": "Etherscan Exact Match proxy/current-implementation pages, full five-generation activation history, exact Standard JSON build, and fixed-block Ethereum code/slot observations."
     },
     {
@@ -133,9 +128,7 @@
       },
       "sha256": "d055e38bc028649d30fe319f9b8494d4575bc186dac0905f033f8ee3f6bbb7d1",
       "retrievedAt": "2026-08-23T12:20:13.399Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org"],
       "note": "Official explorer creation/source/ABI captures, fixed-block runtime relationships, and exact isolated executable reproductions for the seven documented Mezo Mainnet CL roots."
     },
     {
@@ -147,9 +140,7 @@
       },
       "sha256": "d4e3a575c7a12489ed30c7169380fedcfaae34fe2f3786ac01fbf96c8f52b070",
       "retrievedAt": "2026-08-23T13:00:00.367Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org"],
       "note": "Official explorer proxy/source/ABI captures, full activation histories, fixed-block state, and exact isolated executable reproductions for institutional Enclaves and EnclaveDebtManager."
     },
     {
@@ -168,10 +159,7 @@
       },
       "sha256": "6f4e5921090ff7accc0b5db088e394efdd42d25e6e04989fd64887fc88fb2c27",
       "retrievedAt": "2026-08-27T14:24:36.881Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org",
-        "https://api.explorer.test.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org", "https://api.explorer.test.mezo.org"],
       "note": "Official Mezo integration address plus official Pyth 1.4.6 source/deployment metadata and complete post-upgrade runtime/slot/ABI observations for the in-place proxy generation.",
       "repositories": [
         "https://github.com/mezo-org/documentation",
@@ -187,10 +175,7 @@
       },
       "sha256": "29e0f1e7b5881fda35ad481c45d9d6e327036f53925338dd9c672d1576145cf9",
       "retrievedAt": "2026-08-24T15:30:07Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org",
-        "https://mezo-mainnet.boar.network"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org", "https://mezo-mainnet.boar.network"],
       "note": "Official explorer activation/source/ABI captures, complete proxy upgrade histories with historical ERC-1967 slot boundaries, fixed-block code/proxy evidence, and exact isolated executable reproductions for the six current Savings/mUSDC-lending/USDC-vault roots."
     },
     {
@@ -202,9 +187,7 @@
       },
       "sha256": "3f34ca5caf63f4b0c024a2ceb09a2521316c5318cf2a01a2c4260ae6f6161c41",
       "retrievedAt": "2026-08-24T21:31:04.189Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org"],
       "note": "Bounded official-explorer source/ABI responses, fixed-block runtime identity, activation histories, and exact isolated executable reproductions for the current incentives and emissions graph."
     },
     {
@@ -216,9 +199,7 @@
       },
       "sha256": "33728e8bc7d50adbecf13fa00a90ce6eaa8be2e3ddf134f5c60f4121b0ff54c5",
       "retrievedAt": "2026-08-24T22:04:33.950Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org"],
       "note": "Bounded official-explorer source/ABI responses, fixed-block runtime identity, direct activation, and exact isolated executable reproductions for the validator gauge and voting-rewards factory roots."
     },
     {
@@ -240,9 +221,7 @@
       },
       "sha256": "4740a59c68f62421b37b7f49cb2bf87a6b8d49f11116f37067168f48c3487fb5",
       "retrievedAt": "2026-10-06T17:49:24.126Z",
-      "endpoints": [
-        "https://api.explorer.mezo.org"
-      ],
+      "endpoints": ["https://api.explorer.mezo.org"],
       "note": "Exact source/build/ABI and two-provider activation/runtime evidence for the two escrow generations activated on 2026-10-06."
     }
   ],
@@ -815,12 +794,7 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "mezo-testnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet", "mezo-testnet", "ethereum-mainnet", "base-mainnet"],
     "sourceIds": [
       "official-source-musd",
       "official-source-tigris",

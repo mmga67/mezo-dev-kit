@@ -17,6 +17,21 @@ Every manifest edit must update its version and add a dated entry describing
 the improvement. A task may bump the version more than once when distinct
 reviewable improvements land.
 
+## 1.4.2 — 2026-10-08
+
+- Clarify that Mezo's whole-system economic explanation must cover relationships
+  beyond MDK's current package and qualified operation scope, using the existing
+  composition map and canonical domain evidence.
+- Distinguish published design, observed deployments, and SDK support; catalog
+  completeness and missing coverage do not establish ecosystem completeness.
+
+## 1.4.1 — 2026-10-08
+
+- Consolidate project decisions and useful rationale directly in the manifest
+  and delegated detailed owners; remove the separate decision collection.
+- Route documentation, knowledge metadata, generators and memory examples to
+  the current baseline, preserving protocol evidence dates and release limits.
+
 ## 1.4.0 — 2026-09-24
 
 - Establish universal Node/browser SDK runtime code, retaining Node-specific CLI
@@ -53,10 +68,10 @@ reviewable improvements land.
 
 - Adopt the manifest as the current project baseline and define its delegated
   architecture, policy, evidence, and API owners.
-- Consolidate the operative rules from the 27 historical decisions by topic,
+- Consolidate the operative project rules by topic,
   including private execution, historical observation, current testnet scope,
   shared branch history, and standalone project tooling.
-- Preserve decision history and scoped acceptance while retiring superseded
+- Preserve scoped acceptance while retiring superseded
   bootstrap instructions from current policy.
 - Establish human documentation and reference conventions. Package versions,
   knowledge schema compatibility, evidence dates, and release gates retain
@@ -76,7 +91,8 @@ Package architecture, protocol support, and evidence requirements are unchanged.
   accounting owners connected through stable logical references.
 - Added the MUSD Savings, mUSDC lending-market, and USDC Lending Vault domains
   without merging them into classic MUSD or incentives.
-- Reconciled the manifest with ADR-0006 through ADR-0011.
+- Reconciled knowledge structure, TypeScript, portable skills, prices, testing,
+  and economic-system ownership with the accepted baseline.
 
 ## 0.5.0 — 2026-08-21
 
@@ -86,5 +102,4 @@ Package architecture, protocol support, and evidence requirements are unchanged.
 
 ## 0.4.0 — 2026-08-20
 
-- Introduced the universal v0.4 knowledge-module architecture later accepted
-  by ADR-0006.
+- Introduced the universal v0.4 knowledge-module architecture.

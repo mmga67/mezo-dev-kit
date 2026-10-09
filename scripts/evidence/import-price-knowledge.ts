@@ -162,7 +162,7 @@ const evidence = {
 const evidencePath = join(moduleDirectory, "evidence", "fixed-block-observations-2026-08-23.json");
 await writeJson(evidencePath, evidence);
 const evidenceDigest = sha256(await readFile(evidencePath));
-const adrPath = join(repositoryRoot, "docs", "decisions", "0009-oracle-price-source-ownership.md");
+const manifestPath = join(repositoryRoot, "docs", "manifest");
 
 const sourceCatalog = {
   schemaVersion: 1,
@@ -185,7 +185,7 @@ const sourceCatalog = {
       "pool-price-mechanics",
       "transaction-boundary",
       "pyth-evm-api",
-      "adr-0009-price-ownership",
+      "manifest-price-ownership",
     ],
   },
   limitations: [
@@ -269,10 +269,10 @@ const sourceCatalog = {
         "Freshness-gated read semantics and the announced 2026-08-26 16:00 UTC upgrade boundary.",
     },
     {
-      id: "adr-0009-price-ownership",
-      kind: "accepted-architecture-decision",
-      path: "../../docs/decisions/0009-oracle-price-source-ownership.md",
-      sha256: sha256(await readFile(adrPath)),
+      id: "manifest-price-ownership",
+      kind: "accepted-project-baseline",
+      path: "../../docs/manifest",
+      sha256: sha256(await readFile(manifestPath)),
       establishes:
         "Accepted Prices ownership, taxonomy, dependency, datum, freshness, and no-substitution boundaries.",
     },

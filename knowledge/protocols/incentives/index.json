@@ -535,6 +535,45 @@
       "role": "artifact",
       "kind": "incentives-current-configuration-comparison",
       "path": "artifacts/current-configuration-2026-10-06.json"
+    },
+    {
+      "id": "incentives-official-docs-2026-10-08",
+      "role": "artifact",
+      "kind": "official-documentation-snapshot",
+      "path": "artifacts/official-docs-2026-10-08.json"
+    },
+    {
+      "id": "incentives-source-conflicts",
+      "role": "review",
+      "kind": "source-conflict-review",
+      "path": "review/source-conflicts.md"
+    },
+    {
+      "id": "economic-relationships",
+      "role": "canonical-record",
+      "kind": "economic-relationship-collection",
+      "path": "records/economic-relationships.json",
+      "recordIds": [
+        "btc-lock-custody",
+        "mezo-lock-custody",
+        "vemezo-vebtc-boost",
+        "vebtc-product-votes",
+        "vebtc-validator-votes",
+        "vemezo-external-votes",
+        "mezo-rebase-partition",
+        "mezo-reward-partition",
+        "product-staker-emissions",
+        "passive-btc-fee-revenue",
+        "external-incentive-delivery",
+        "protocol-parameter-authority"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "incentives-revenue-flows",
+      "role": "review",
+      "kind": "revenue-flow-review",
+      "path": "review/revenue-flows.md"
     }
   ],
   "checks": [
@@ -562,6 +601,11 @@
       "id": "third-party-incentives-semantics",
       "type": "semantic",
       "command": "node scripts/checks/validate-third-party-incentives.ts"
+    },
+    {
+      "id": "economic-relationships",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-economic-relationships.ts --module protocols/incentives"
     }
   ],
   "extensions": {

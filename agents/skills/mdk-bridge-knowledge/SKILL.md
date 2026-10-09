@@ -1,6 +1,6 @@
 ---
 name: mdk-bridge-knowledge
-description: Verify MUSD NTT and Native Bridge evidence. Inspect private source preparation, NTT recovery and separate delivery observers; route and writer release remain unsupported.
+description: Verify BTC custody, asset representations and Mezo bridge routes. Select Native or token-specific NTT evidence for explanations, preparation, recovery and delivery observation.
 ---
 
 # Mezo bridge knowledge
@@ -18,43 +18,29 @@ description: Verify MUSD NTT and Native Bridge evidence. Inspect private source 
 Tracker/UI status, negative scans, and documentation address tables are not
 protocol authority.
 
-For private NTT receipt observation, assess `packages/bridges/README.md`, its
-reference and current exports. Supply independent source/destination transports,
-confirmation policies and bounded receipt candidates. Preserve prior anchors
-and all candidate outcomes; a later failed candidate does not erase another
-canonical completion. This API proves a digest join at observed blocks, not
-current configuration, intended recipient/amount, attestation validity or writer
-readiness. For private Native observation, inspect the separate Native API in the
-same package. Resolve historical generations explicitly through Contracts;
-never backdate the current resolver or infer delivery from system success.
-Use the indexed Native qualification for consensus-block attribution limits;
-an EVM-only block list or synthetic pseudo trace does not prove a mint.
-For private Native source work, inspect the Native reader/writer, token target
-resolver and current delivery observer separately from historical observation.
-Apply `native-transfer-qualification-2026-09-15`: current runtime/proxy identity,
-reported Mezo client version, mappings, mint authority, minima, capacity and fee
-estimates are required. BTC EVM approval creates native bank authorization;
-compose Tokens explicitly and prepare again after confirmation. The source call
-cannot enforce a future destination fee. `WithdrawalFailed` with the complete
-confirmed tuple and consistent settlement yields `governance-recovery-required`;
-do not invent an automatic retry or governance writer. A Mezo wrapper hash or
-reported version is not cryptographic proof of its native execution engine.
+For whole-system economic architecture, use
+[economic-system reasoning](../mdk-economic-system/SKILL.md). For asset-entry
+explanations, use the bridge sections of
+[Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md)
+and their authoritative sources. The qualified route catalog is a subset:
+preserve custody versus token representation, provider, direction and
+asset-specific destination sets. Missing MEZO NTT or Bitcoin-delivery records
+are coverage gaps; MUSD NTT records cannot establish their absence or readiness.
 
-For private MUSD NTT source work, inspect the transfer reader/writer and recovery
-reference separately from the observer. Apply the indexed NTT qualification:
-registered transceiver indices matter for instruction/fee construction; amounts
-with trimming dust revert; queued funds are already held or burned. Compose
-Tokens approvals through Core's explicit target role, confirm them and prepare
-again. Source submission/reconciliation never establishes destination completion.
-Manual recovery must bind an existing source queue or the same confirmed source
-digest; VAA body matching does not verify guardian signatures. Preserve Core
-submission uncertainty and use the actual transceiver's exact simulation.
+For operation review, load only [Native procedures](references/native.md) or
+[NTT procedures](references/ntt.md) for the selected provider. For custody and
+published route explanations, resolve `bridge-economic-routes` and the owning
+`economic-relationships`; preserve their candidate review state.
 
 ## Procedure
 
-1. Select provider and route record; fail if route status is not explicitly
-   usable for the requested purpose. Current module support is `none`.
-2. Resolve all three network identities through the Networks module and the
+1. Classify explanation, historical observation, current preparation, or
+   maintenance. Select the provider and route evidence needed for that claim;
+   enforce support gates for the requested operation. An explanation may describe
+   published routes with their evidence limits. Resolve support from the selected
+   resource and current package reference.
+2. Resolve the network identities needed by the selected provider and route
+   through the Networks module and the
    bounded provider contract graph through `bridge-contract-roles`. Treat
    proposed Contract records as unaccepted and dated evidence addresses as
    checked coordinates. Token representations remain workflow-scoped unless a
@@ -70,13 +56,14 @@ submission uncertainty and use the actual transceiver's exact simulation.
 6. Keep submitted, source-included, message-progress, destination-progress,
    completed, reverted, and ambiguous states distinct. Absence is not failure.
 7. Never retry or resubmit value from missing destination evidence alone.
-8. Before any future writer, validate assets/representations, user bounds,
+8. For writer preparation, validate assets/representations, user bounds,
    approvals/authorization, exact calldata/value, simulation, and recovery;
    define source plus destination reconciliation.
 9. On changes, update candidate/gap disposition, pinned sources, evidence
    digests, canonical projections, generated reference, and validators together.
-10. Run bridge, transaction, troubleshooting, network, contract, structural,
-    and drift checks.
+10. For maintenance, run the affected bridge, transaction, troubleshooting,
+    network, contract, structural, and drift checks. Ordinary explanation does
+    not require maintenance checks or current transfer simulation.
 
 ## Invariants
 
@@ -84,7 +71,7 @@ submission uncertainty and use the actual transceiver's exact simulation.
   distinct and must not be normalized into one proof rule.
 - Dated evidence coordinates do not override canonical Network or Contract
   references.
-- Six completed traces do not imply additional assets, directions, providers,
+- Completed traces do not imply additional assets, directions, providers,
   delivery SLAs, or writer support.
 - A successful source transaction never proves cross-chain completion.
 

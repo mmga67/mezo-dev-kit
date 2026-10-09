@@ -35,7 +35,7 @@ deployments, prices, protocols, and troubleshooting.
 
 | Subject             | Explanation or detailed reference                                                                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Economic system     | [How the separate domains fit together](architecture/mezo-economic-system-composition.md)                                                              |
+| Economic system     | [How Mezo's Bitcoin economy fits together](architecture/mezo-economic-system-composition.md) — BTC custody, bridges, borrowing, and Mezo Earn          |
 | MUSD                | [System model](reference/musd-system.md), [borrowing](reference/musd-borrowing.md), [redemptions](reference/musd-redemptions.md)                       |
 | Networks            | [Network reference](../knowledge/networks/generated/reference.md)                                                                                      |
 | Contracts           | [Deployment and ABI reference](../knowledge/contracts/generated/reference.md)                                                                          |
@@ -86,8 +86,8 @@ and package contracts determine which facts and operations can be relied on.
 - [Knowledge standard](standards/knowledge-management.md) — structure and maintenance policy.
 - [Security policy](../SECURITY.md), [license](../LICENSE), and
   [review ownership](../.github/CODEOWNERS).
-- [Manifest changelog](manifest-changelog.md) and
-  [historical decisions](decisions/README.md) — changes and their rationale.
+- [Manifest changelog](manifest-changelog.md) — baseline changes; the
+  [manifest](manifest) keeps current decisions and their rationale.
 
 ## Work with coding agents
 

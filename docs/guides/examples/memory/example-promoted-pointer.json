@@ -3,9 +3,9 @@
   "id": "example-source-alpha-governance-pointer",
   "domain": "governance/alpha",
   "status": "promoted",
-  "title": "Source-alpha governance moved to ADR-0013",
-  "summary": "The authoritative GitHub source-alpha, MIT license, manual review, and branch-promotion decision is maintained in ADR-0013; consult that ADR rather than this retrieval pointer.",
-  "sources": ["docs/decisions/0013-github-source-alpha-governance.md"],
+  "title": "Source-alpha governance is maintained in the manifest",
+  "summary": "The manifest owns GitHub source-alpha, MIT license, manual review, and branch-promotion policy; consult its source workflow and governance section.",
+  "sources": ["docs/manifest"],
   "related": ["README.md", "SECURITY.md"],
-  "updated": "2026-08-29"
+  "updated": "2026-10-08"
 }

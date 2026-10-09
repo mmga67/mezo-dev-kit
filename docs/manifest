@@ -1,8 +1,8 @@
-# Mezo Development Kit — Manifest v1.4.0
+# Mezo Development Kit — Manifest v1.4.2
 
 **Status:** Accepted project baseline
 
-**Released:** 2026-09-24
+**Released:** 2026-10-08
 
 **Improvement log:** [Manifest changelog](./manifest-changelog.md)
 
@@ -51,12 +51,12 @@ supply missing protocol evidence.
 Evidence proves only its recorded scope. For deployed behavior, pinned state,
 bytecode, and matching verified source take precedence over a conflicting
 explanation. Preserve the evidence and resolve the maintained interpretation.
-Neither this manifest nor a historical decision can make a protocol claim true.
+Project policy cannot make a protocol claim true.
 
-The [historical decisions](decisions/README.md) retain original rationale,
-dates, and acceptance limits. Their current rules are incorporated here and
-in the delegated detailed contracts; their old bootstrap instructions do not
-override this baseline.
+Maintain project decisions and their useful rationale directly in this manifest,
+with technical detail in the delegated owners. The changelog records baseline
+changes; Git history retains earlier text. Consolidating documentation does not
+renew evidence dates, broaden an implementation review, or satisfy release gates.
 
 ## Packages and domain boundaries
 
@@ -73,6 +73,10 @@ Its existing Ox-backed implementation stays behind MDK types and errors.
 Domains retain zero-address policy, financial bounds, and protocol errors.
 Bootstrap generators may retain validation where importing a built package
 would create a generation/build cycle.
+
+This shared value layer prevents lower-level packages from depending upward on
+Core. MDK wrappers keep checksum validation, canonical RPC quantities, and exact
+amount precision explicit instead of inheriting an upstream library's defaults.
 
 Chains owns network projections. Contracts owns deployment/ABI resolution and
 curated operation/interface projections. Core owns shared transport, coherent
@@ -91,6 +95,14 @@ BTC/mUSDC lending, USDC vaults, pools, incentives, prices, bridges, swaps, and
 transactions under their respective owners. The
 [economic-system map](architecture/mezo-economic-system-composition.md)
 explains their composition through stable references.
+
+Explain Mezo from its BTC-centered economy: BTC-backed borrowing creates MUSD
+liquidity, and products, fees, voting, and emissions connect through Mezo Earn.
+The map routes those relationships to their domain evidence, including asset
+custody and bridges. Package boundaries and the current SDK subset must not
+define the limits of that explanation. Distinguish published economic design,
+observed deployment behavior, and supported MDK operations. Missing indexed
+coverage is a knowledge gap, not evidence that a Mezo relationship is absent.
 
 Savings principal, indexed yield, and gauge stake do not enter classic MUSD
 trove, collateral-ratio, Stability Pool, or redemption accounting. mUSDC is
@@ -118,6 +130,10 @@ The root catalog resolves stable module IDs, and each module index resolves
 resource IDs and optional record IDs/JSON Pointers. Physical paths are mappings,
 not cross-domain identities. Every maintained resource is indexed by role.
 Moves preserve stable IDs, evidence coordinates, and verification dates.
+
+The common layout makes authority and lifecycle visible across domains. Stable
+logical references allow file moves without changing the identity of a fact;
+shared standards keep maintenance procedures from diverging between modules.
 
 Records distinguish evidence maturity, support, and review. Their common
 envelope includes identity, owner, schema version, scope, limitations, and
@@ -230,6 +246,9 @@ block coordinate across logical reads and failover. Distinguish required and
 optional failures; batching failure must not appear as zero or empty data.
 Any weaker consistency mode must be explicit and typed.
 
+Explicit dependencies keep protocol logic independently testable and prevent
+application-specific services or wallet state from becoming SDK authority.
+
 State-changing workflows follow:
 
 ```text
@@ -243,6 +262,11 @@ are distinct. Timeout is non-terminal; replacement links a separately tracked
 successor; a reorg returns an included/confirmed action to tracking. Protocols
 define volatile inputs, allowable partial outcomes, receipt events, post-state,
 and mismatch behavior. Cross-chain outcomes also require destination evidence.
+
+A returned hash identifies a submission; it proves neither successful inclusion
+nor the requested economic outcome. Lifecycle verification must exercise failed
+validation, simulation and approval, replacement, cancellation, timeout, reorg,
+failed receipts and reconciliation mismatch as well as successful execution.
 
 Execution requires explicit signer identity and durable intent reservation.
 Read clients remain signer-free. Investigate uncertain submission instead of
@@ -411,6 +435,10 @@ The repository's `.agents/` directory is ignored local setup output; refresh
 it after canonical skill changes. Never edit a discovery copy independently
 or distribute contributor procedures to applications.
 
+One portable skill source avoids diverging instructions for each agent vendor.
+Any necessary vendor wrapper remains thin and points to the same owner; supported
+integrations document their tested discovery root and host version.
+
 Skills load detail for the task rather than duplicating policy and facts.
 MCP and external memory providers are optional. Memory is provider-neutral
 retrieval context; useful verified findings become canonical docs, knowledge,
@@ -442,6 +470,10 @@ publication, registry authority, credentials, signing/provenance, releases,
 support/version policy, and CI/CD remain separately approved release work.
 Source availability and private package metadata provide no SLA, bounty,
 deprecation window, or production support promise.
+
+Source distribution keeps registry credentials, signing and release automation
+out of the alpha's prerequisites. Private package versions identify workspace
+metadata; they do not establish a public compatibility contract.
 
 ### Standalone project tooling
 
@@ -506,7 +538,8 @@ mission/constitution/authority break, minor for a new architectural capability
 or domain boundary, patch for clarification. Package and schema versions are
 independent.
 
-Preserve a separate decision record when the alternatives and rationale need
-that space. It supplies historical context, not a competing current rule.
-This baseline consolidates the existing decision set without resetting their
-evidence dates, implementation review limits, or remaining release gates.
+Keep the reasons for a rule beside that rule, at the level needed to understand
+its tradeoffs. Update existing sections instead of adding a parallel decision
+collection. Record task-specific implementation and verification in the task;
+preserve evidence dates, implementation review limits, and release gates in
+their existing owners.

@@ -6,7 +6,14 @@
     "docs/guides/BROWSER_APPLICATIONS.md",
     "docs/guides/APPLICATION_ARCHITECTURE.md",
     "docs/guides/FRONTEND_PATTERNS.md",
-    "docs/guides/EVIDENCE_REFRESH.md"
+    "docs/guides/EVIDENCE_REFRESH.md",
+    "docs/architecture/mezo-economic-system-composition.md",
+    "knowledge/generated/economic-relationships.md",
+    "knowledge/workflows/bridges/review/economic-routes.md",
+    "knowledge/protocols/musd/review/revenue-flows.md",
+    "knowledge/protocols/musd/savings/review/source-conflicts.md",
+    "knowledge/protocols/incentives/review/source-conflicts.md",
+    "knowledge/protocols/incentives/review/revenue-flows.md"
   ],
   "knowledgeRoles": ["canonical-record"],
   "domains": [
@@ -76,9 +83,22 @@
         "api:evidence",
         "guide:docs/guides/evidence_refresh.md"
       ]
+    },
+    {
+      "id": "economic-system",
+      "packages": [],
+      "resources": [
+        "guide:docs/architecture/mezo-economic-system-composition.md",
+        "guide:knowledge/generated/economic-relationships.md",
+        "guide:knowledge/workflows/bridges/review/economic-routes.md",
+        "guide:knowledge/protocols/musd/review/revenue-flows.md",
+        "guide:knowledge/protocols/musd/savings/review/source-conflicts.md",
+        "guide:knowledge/protocols/incentives/review/source-conflicts.md",
+        "guide:knowledge/protocols/incentives/review/revenue-flows.md"
+      ]
     }
   ],
-  "exclusionReason": "The consumer corpus distributes canonical record data and public API references. Raw evidence/source artifacts, contributor maintenance, schema, fixture, review and derived duplicates remain outside this corpus. Original scope and support labels apply.",
+  "exclusionReason": "Canonical records, public API references and explicitly selected guides are distributed. Economic composition and selected conflict reviews are included as guides with their original qualifications. Raw evidence/source artifacts, contributor maintenance, schemas, fixtures and other review or generated resources remain outside this corpus; scope, support and review labels still apply.",
   "sets": [
     {
       "id": "base",
@@ -235,6 +255,12 @@
       "title": "Event history and reconciliation",
       "description": "Build bounded event scans and application-owned projections.",
       "domains": ["typescript", "foundation", "history", "knowledge-workflows-transactions"]
+    },
+    {
+      "id": "economy",
+      "title": "Mezo economic system",
+      "description": "Explore custody, credit, products, revenue, votes and emissions from scoped offline references.",
+      "domains": ["economic-system"]
     }
   ]
 }

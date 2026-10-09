@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Domain-owned economic relationships v1",
+  "allOf": [
+    {
+      "$ref": "./common-envelope.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": ["records"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "economic-relationship-collection"
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "quantity",
+          "from",
+          "to",
+          "accountingReference",
+          "qualification",
+          "basisReferences",
+          "limitations"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": ["value-flow", "position-claim", "voting-influence", "authority"]
+          },
+          "quantity": {
+            "enum": [
+              "asset",
+              "collateral",
+              "debt",
+              "principal",
+              "receipt",
+              "collateral-pledge",
+              "yield",
+              "fees",
+              "emissions",
+              "voting-power",
+              "control"
+            ]
+          },
+          "from": {
+            "type": "object",
+            "required": ["label", "reference"],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reference": {
+                "$ref": "./logical-reference.schema.json"
+              }
+            },
+            "additionalProperties": false
+          },
+          "to": {
+            "type": "object",
+            "required": ["label", "reference"],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reference": {
+                "$ref": "./logical-reference.schema.json"
+              }
+            },
+            "additionalProperties": false
+          },
+          "accountingReference": {
+            "$ref": "./logical-reference.schema.json"
+          },
+          "qualification": {
+            "enum": ["recorded-model", "published-description", "unqualified"]
+          },
+          "basisReferences": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "./logical-reference.schema.json"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

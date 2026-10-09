@@ -20,5 +20,5 @@ gauge histories remain outside this bounded packet and any future operation.
 Qualified Level 3 review accepted the adapter and wrapper Contract roots and
 accepted VaultV2/VaultGauge as runtime-verified protocol role candidates rather
 than Contract roots. This disposition preserves the missing-creation-input
-boundary without inventing an ADR-0005 provenance class. Protocol support
+boundary without inventing a contract provenance class. Protocol support
 remains proposed and operation support remains none.

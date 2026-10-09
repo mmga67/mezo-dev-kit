@@ -14,6 +14,10 @@ matching local corpus for only the knowledge needed by the task.
 ## Procedure
 
 1. Select the voting and escrow domain before interpreting a lock or vote. Keep pool, validator and third-party voting state distinct even where arithmetic resembles another domain.
+   Keep allocation voting separate from protocol parameter authority. For
+   conflicting governance or rebase descriptions, read
+   `guide:knowledge/protocols/incentives/review/source-conflicts.md` through
+   `mdk docs show`, or `mdk docs fetch <id> --offline` if uncached.
 2. Preserve epoch and block coordinates, reward-token identity, beneficiary and custody. Separate accrued estimates from settled claims and missing historical inputs.
 3. Use the installed API for the supported lock/gauge workflow. Recheck ownership, approval, epoch windows and current mappings before preparing a mutation; reference coverage alone does not establish a writer.
 4. Inspect the actual installed public exports and required application ports.

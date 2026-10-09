@@ -9,7 +9,7 @@
   "verifiedAt": null,
   "reviewAfter": null,
   "scope": {
-    "architectureDecisionIds": ["ADR-0002", "ADR-0003"],
+    "projectBaseline": "docs/manifest#shared-client-and-transaction-lifecycle",
     "runtimeFamily": "EVM"
   },
   "limitations": [

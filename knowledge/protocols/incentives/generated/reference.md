@@ -10,7 +10,7 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Verified: `2026-10-06T14:04:51.613Z`
 - Review after: `2026-11-05T00:00:00Z`
 - Evidence block: `11366264` on `mezo-mainnet`
-- Input digest: `sha256:486671a37bd346bfb87e61e6bef6185b3d5e319fc6f669baa086d2bd4e4a0dfb`
+- Input digest: `sha256:6583e70fbaf40dc0ad7890f858c3c2c5aaf6a3497c3ba919f0bf2b86281399a4`
 - Resource-specific scope and review below govern additions beyond the original module acceptance.
 
 ## Configuration observation catalog

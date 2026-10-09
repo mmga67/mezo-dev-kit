@@ -388,7 +388,7 @@ for (const definition of contractDefinitions) {
       proxy,
       explorer: {
         primaryEvidence: false,
-        note: "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels.",
+        note: "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels.",
       },
       outcome: "passed",
     });
@@ -1324,7 +1324,7 @@ async function updateCatalogs({
     "MDK support covers only the accepted 21-contract, 42-deployment bootstrap scope; incentives and bridge registry records remain proposed pending qualified review.",
     "Open deployment validity ranges and current implementation ABIs require re-verification after upgrades or the review window.",
     "The Assets Bridge wrapper changed after the prior workflow snapshot and has a scheduled v13 generation boundary at block 11358000; no precompile writer support is implied.",
-    "Accepted ADR-0005 provenance classes do not create route, relayer, quote, writer, or product support; accepted ADR-0001 does not define a public package API.",
+    "The manifest's contract provenance classes do not create route, relayer, quote, writer, or product support; registry ownership does not define a public package API.",
   ];
   const indexExtensions = object(index.extensions, "Contracts index extensions");
   index.extensions = indexExtensions;

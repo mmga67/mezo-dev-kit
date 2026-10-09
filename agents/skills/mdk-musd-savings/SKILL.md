@@ -14,15 +14,13 @@ stake, or maintenance of `knowledge/protocols/musd/savings`.
 Do not use it for classic troves/TCR, MUSD redemptions, ERC-4626 exchange-rate
 math, mUSDC lending, portfolio yield projections.
 
-## Current workspace capability
+## Implementation work
 
-Direct deposit, withdraw and yield claims are implemented as private candidates; Incentives owns gauge staking and reward claims.
 Inspect `packages/protocols/musd-savings/README.md`, `REFERENCE.md` and
 `src/index.ts` for current methods and required ports. The
 [execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
-defines shared requirements for this private implementation. Canonical support
-remains proposed/none and qualified
-review is required before release. Pair writer work with transaction-execution
+defines shared requirements. Resolve current support and review status from
+the package and selected knowledge resources. Pair writer work with transaction-execution
 and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
@@ -32,15 +30,22 @@ and testing procedures. Knowledge alone never authorizes a transaction.
    only when changing knowledge or generated projections.
 2. Resolve the module through its `index.json`; load only the required model,
    roles, reconciliation, fixture, evidence, or review resource.
+   When product prose and accounting differ, resolve `musd-savings-source-conflicts`;
+   preserve its published, historical and candidate-current scopes before
+   choosing a calculation model.
 3. Load `mdk-musd-knowledge` for classic boundaries,
    `mdk-incentives-knowledge` for gauge/reward semantics, and
-   `mdk-transaction-execution` only for future-operation gates.
+   `mdk-transaction-execution` for operation preparation and execution.
 4. For authored scripts, also load `mdk-typescript-development` and
    `mdk-testing`.
 
 ## Procedure and invariants
 
-1. Pin the network, Savings proxy generation, roles, PoolsVoter gauge mapping,
+Apply [knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+explanations use scoped records; current operations require coherent live inputs.
+Do not turn a conceptual question into transaction preparation or maintenance.
+
+1. For current reads or preparation, pin the network, Savings proxy generation, roles, PoolsVoter gauge mapping,
    PCV recipients, and reverse links at one block.
 2. Treat deposit and withdrawal principal as 1:1 MUSD/sMUSD. Savings is not
    ERC-4626.
@@ -58,7 +63,7 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Verification and stop conditions
 
-Run the three module checks plus relevant MUSD, incentives, Contracts,
+For maintenance, run the three module checks plus relevant MUSD, incentives, Contracts,
 transactions, root-catalog, link, JSON/type, and whitespace checks. Stop when
 proxy/source/role evidence conflicts, the PCV/gauge reverse link fails,
 principal and yield would be merged, ERC-4626 math would be imported, proposed

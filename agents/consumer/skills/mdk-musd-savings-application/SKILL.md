@@ -14,6 +14,10 @@ matching local corpus for only the knowledge needed by the task.
 ## Procedure
 
 1. Identify the Savings generation and relevant gauge mapping before composing a position. Follow the Savings API rather than substituting a generic vault integration.
+   If published prose and accounting disagree, read
+   `guide:knowledge/protocols/musd/savings/review/source-conflicts.md` through
+   `mdk docs show`, or `mdk docs fetch <id> --offline` if uncached. Preserve its
+   historical, published and candidate scopes before choosing calculations.
 2. Keep principal receipts, pending yield, paid yield and gauge custody in separate application fields. Count a receipt once even when its beneficial owner differs from its custodian.
 3. Use SDK calculations for index updates and rounding. Preserve the reader coordinate and missing optional inputs; do not fold savings into borrower debt totals.
 4. Inspect the actual installed public exports and required application ports.

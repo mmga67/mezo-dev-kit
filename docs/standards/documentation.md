@@ -1,26 +1,26 @@
 # Documentation standard
 
 Write for the person using the page. A reader should understand what it offers,
-take a useful next step, and find detail without learning MDK's decision history.
+take a useful next step, and find detail without learning MDK's development history.
 
 ## Give each document a job
 
-| Document                         | Purpose                                                                                   |
-| -------------------------------- | ----------------------------------------------------------------------------------------- |
-| README                           | Explain a project or directory, help someone start, and point to useful next reading.     |
-| Documentation landing page       | Help readers choose a task, subject, or reference from the maintained collection.         |
-| Tutorial or quickstart           | Teach through a guided example with an achievable outcome and visible results.            |
-| Guide                            | Help someone complete a task: prerequisites, steps, expected result, and troubleshooting. |
-| Reference                        | Describe exact APIs, fields, units, errors, compatibility, or evidence-backed data.       |
-| Explanation                      | Build understanding of a concept, its relationships, and the reasons for its boundaries.  |
-| Manifest                         | State the current project baseline and the responsibilities of its detailed owners.       |
-| ARCHITECTURE                     | Describe the package map, dependencies, and technical boundaries under that baseline.     |
-| CONTRIBUTING                     | Explain human setup, contribution, verification, and review.                              |
-| Standard                         | Define shared rules for one subject.                                                      |
-| AGENTS.md                        | Give coding agents concise instructions that apply within a directory.                    |
-| SKILL.md                         | Provide an on-demand procedure for a repeatable agent task.                               |
-| Machine index or schema          | Resolve structured resources or validate their shape.                                     |
-| Changelog or historical decision | Explain what changed and preserve the reasons for earlier choices.                        |
+| Document                   | Purpose                                                                                   |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| README                     | Explain a project or directory, help someone start, and point to useful next reading.     |
+| Documentation landing page | Help readers choose a task, subject, or reference from the maintained collection.         |
+| Tutorial or quickstart     | Teach through a guided example with an achievable outcome and visible results.            |
+| Guide                      | Help someone complete a task: prerequisites, steps, expected result, and troubleshooting. |
+| Reference                  | Describe exact APIs, fields, units, errors, compatibility, or evidence-backed data.       |
+| Explanation                | Build understanding of a concept, its relationships, and the reasons for its boundaries.  |
+| Manifest                   | State the current project baseline and the responsibilities of its detailed owners.       |
+| ARCHITECTURE               | Describe the package map, dependencies, and technical boundaries under that baseline.     |
+| CONTRIBUTING               | Explain human setup, contribution, verification, and review.                              |
+| Standard                   | Define shared rules for one subject.                                                      |
+| AGENTS.md                  | Give coding agents concise instructions that apply within a directory.                    |
+| SKILL.md                   | Provide an on-demand procedure for a repeatable agent task.                               |
+| Machine index or schema    | Resolve structured resources or validate their shape.                                     |
+| Changelog                  | Explain what changed and preserve the reasons for earlier choices.                        |
 
 Keep security reporting, license terms, and review ownership in the existing
 SECURITY, LICENSE, and CODEOWNERS files. Create a new document only when it has
@@ -59,7 +59,7 @@ mandatory word count, section count, badge set, or diagram requirement.
 
 ### Example
 
-An introduction such as “This accepted v0.4 module follows ADR-0006” tells a
+An introduction such as “This module follows the accepted v0.4 baseline” tells a
 new reader little about the directory.
 
 Prefer: “This directory collects Mezo network, contract, and protocol
@@ -181,8 +181,8 @@ composition.
 
 Architecture owns the current package map and technical boundaries. Distinguish
 implemented packages from planned areas. Link procedures, exact APIs, and
-qualification details to their owners; historical decisions retain the fuller
-record of alternatives and original acceptance.
+qualification details to their owners. Keep useful rationale and tradeoffs
+beside the rule in the manifest or its delegated owner.
 
 ## Separate human and agent workflows
 
@@ -212,10 +212,10 @@ in that section; do not make them prerequisites for a manual task.
 - Include a link once where it is most useful. Repeat it only for a distinct
   entry point or a distant section in a long guide.
 - Use versions in compatibility instructions, schema definitions, migrations,
-  releases, and historical evidence. Omit decorative version and ADR numbers
+  releases, and historical evidence. Omit decorative version numbers
   from introductions and ordinary navigation.
-- Current instructions link the current rule. Historical decisions and pinned
-  source references may retain exact ADR identities when their history matters.
+- Current instructions link the current rule. Pinned source references retain
+  the exact identities needed to establish their evidence scope.
 - Use headings, lists, and tables when they improve scanning. Keep commands
   copyable and state their working directory or prerequisites when ambiguous.
 

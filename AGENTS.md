@@ -46,6 +46,9 @@ read its README, then only the relevant owner and files.
 2. Reuse instructions and sources already in context; reread only missing,
    stale, or changed inputs. Search relevant sections rather than loading
    whole manuals, catalogs, logs, knowledge modules, or all skills.
+   For whole-system economic explanations or cross-domain architecture checks,
+   use `agents/skills/mdk-economic-system/SKILL.md`; skip it for isolated
+   calculations, lookups, and single-domain operations.
 3. For non-trivial contributor capability work, including trying workspace
    packages, use `agents/skills/mdk-capability-assessment/SKILL.md`. Inspect
    current public APIs and injected inputs; reassess after checkout changes.
@@ -58,13 +61,15 @@ read its README, then only the relevant owner and files.
 5. For knowledge changes, follow `knowledge/AGENTS.md`,
    `mdk-knowledge-maintenance`, the domain skill, and owning module index.
    `docs/standards/knowledge-management.md` owns knowledge policy.
+   An observation from any task that may invalidate maintained guidance follows
+   its observed-change workflow; review affected owners before closing the change.
 6. Use relevant shared/local memory as retrieval context; follow its pointers
    to current owners. Use `mdk-memory` for capture or lifecycle changes.
 
 Follow the [documentation standard](docs/standards/documentation.md) for READMEs,
 guides, and links. Keep human entry points independent of agent setup; current
-policy links use descriptive baseline/standard sections. Historical ADRs retain
-rationale and evidence identities, not competing current instructions.
+policy links use descriptive baseline/standard sections. Keep project decisions
+and useful rationale in the manifest and its delegated owners.
 
 Resolve before retrieving or calling. Discover paths with indexes or `rg --files`,
 records with their declared IDs/collection pointers, and methods/parameters with

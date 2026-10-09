@@ -67,6 +67,36 @@ For installed consumer applications, use their `mdk docs search/show/fetch`
 commands and declared corpus. This contributor tool does not expand consumer
 distribution to include private records or retained raw evidence.
 
+## Trace change impact
+
+```sh
+pnpm context impact --path docs/manifest --limit 10
+pnpm context impact --module protocols/musd/savings --resource musd-savings-model
+```
+
+Use either a discovered maintained path or a logical reference. The report
+follows reverse indexed logical references, `generatedFrom` dependencies and
+explicitly local source-catalog digests transitively. It reports direct
+path/ID/owning-module/Markdown-link matches in maintained guidance and indexed
+Markdown reviews as review candidates.
+Navigation links do not make every linked document a semantic dependency.
+Upstream repository source paths are not interpreted as local files.
+
+`--limit` (1–30, default 10) and `--offset` page each of the dependent, candidate
+and unresolved-reference lists; their totals and `nextOffset` remain explicit.
+Record/field selection is validated, but impact conservatively covers the whole
+resource. Cycles terminate. Missing references are reported as coverage gaps,
+not silently repaired or treated as proof of no impact.
+
+The command does not infer unmentioned prose assumptions, TypeScript imports,
+runtime consumers, external installations or new domains. Raw artifacts are
+inputs only when indexed consumers declare dependencies on them; their contents
+are not searched for arbitrary dependency-like strings. Review the uncovered
+areas under [observed-change maintenance](../../docs/standards/knowledge-management.md#react-to-an-observed-change).
+No network requests, canonical writes, deadline refreshes or automatic
+installation updates occur. The report guides review; it does not accept a fact
+or certify a complete architecture.
+
 ## Inspect exact interfaces and retained source
 
 ```sh

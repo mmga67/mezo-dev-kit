@@ -452,6 +452,6 @@ The complete synthetic fixture set is documented in
 
 - `discovered` — an unverified local timeout observation;
 - `verified` — a reviewed pointer to current tooling owners;
-- `promoted` — a historical pointer after governance moved into a decision record; and
+- `promoted` — a retrieval pointer to governance in the manifest; and
 - `deprecated` — a stale package-publication assumption retained only to route
   readers to the accepted source-alpha decision.

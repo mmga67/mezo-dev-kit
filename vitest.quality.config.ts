@@ -7,6 +7,7 @@ export default defineConfig({
       "scripts/tests/test-incentive-formula-validation.test.ts",
       "scripts/tests/test-markdown-links.test.ts",
       "scripts/tests/test-context-retrieval.test.ts",
+      "scripts/tests/test-economic-relationships.test.ts",
       "scripts/tests/test-local-tasks.test.ts",
       "scripts/tests/test-browser-container.test.ts",
       "scripts/tests/test-solc-container.test.ts",

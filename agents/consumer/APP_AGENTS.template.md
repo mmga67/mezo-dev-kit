@@ -61,6 +61,11 @@ For Mezo-specific work:
 
 Do not load unrelated MDK skills by default.
 
+For whole-system economic questions, select the optional
+`mdk-economic-system-application` skill and its matching references. Keep the
+economic explanation separate from installed API support; conceptual questions
+do not require transaction preparation.
+
 For browser or SSR integration, use the installed `mdk-frontend-application` skill
 alongside the relevant public API/domain guidance. It covers wallet/request ports,
 exact amount forms, asynchronous UI state and browser bundle verification.
@@ -95,6 +100,13 @@ content with `pnpm exec mdk docs show "<id>"`, or open its reported local path.
 If content is indexed but absent, explicitly run `pnpm exec mdk docs fetch "<id>"`
 under the application's network policy. `--offline` uses only local artifacts.
 Fetching references does not update SDK versions or renew protocol evidence.
+
+When new evidence changes an assumption, verify its scope and review the
+affected application behavior and guidance. Update them, document why they are
+unaffected, or hold the dependent behavior pending resolution. Managed
+references and skills change through an explicit compatible MDK update; do not
+silently alter their lock or overwrite application-owned instructions. There is
+no automatic external-change watcher implied by local retrieval.
 
 For explanations, start with version-compatible MDK references and available
 canonical protocol guidance. Use existing evidence when it answers the question.

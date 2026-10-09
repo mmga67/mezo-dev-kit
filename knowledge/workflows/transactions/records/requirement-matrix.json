@@ -9,10 +9,7 @@
   "verifiedAt": null,
   "reviewAfter": null,
   "scope": {
-    "architectureDecisionIds": [
-      "ADR-0002",
-      "ADR-0003"
-    ]
+    "projectBaseline": "docs/manifest#shared-client-and-transaction-lifecycle"
   },
   "limitations": [
     "This matrix routes accepted shared execution requirements to domain-owned knowledge; it does not create writer support.",

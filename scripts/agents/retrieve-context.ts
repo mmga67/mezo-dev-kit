@@ -11,6 +11,7 @@ import {
   readContext,
 } from "../lib/context-retrieval.ts";
 import { contextDigest, readContextFile } from "../lib/context-files.ts";
+import { contextImpact } from "../lib/context-impact.ts";
 import { checkMemory, readMemory } from "../lib/memory-store.ts";
 import type { KnowledgeReference } from "../lib/knowledge-reference.ts";
 
@@ -19,6 +20,7 @@ const help = `Offline contributor context (run from the repository root):
   pnpm context find --query TEXT [--module ID] [--memory-domain DOMAIN] [--local-memory]
   pnpm context read --module ID --resource ID [--record ID] [--pointer /field]
   pnpm context links --module ID --resource ID [--record ID]
+  pnpm context impact --path PATH | --module ID --resource ID [--record ID] [--pointer /field]
   pnpm context source --module ID --resource ID [--file EXACT_SOURCE_PATH]
   pnpm context abi --module contracts --resource ID [--name NAME | --selector 0x12345678]
   pnpm context read-file --path RELATIVE_PATH [--start N] [--lines N]
@@ -101,6 +103,7 @@ try {
       ],
       read: ["module", "resource", "record", "pointer", "start", "lines", "max-chars"],
       links: ["module", "resource", "record", "pointer"],
+      impact: ["path", "module", "resource", "record", "pointer", "limit", "offset"],
       source: ["module", "resource", "record", "pointer", "file", "start", "lines", "max-chars"],
       abi: ["module", "resource", "record", "pointer", "name", "selector"],
       "read-file": ["path", "start", "lines", "max-chars"],
@@ -158,6 +161,43 @@ try {
       case "links":
         result = await contextLinks(root, reference());
         break;
+      case "impact": {
+        if (values.path && (values.module || values.resource || values.record || values.pointer))
+          throw new Error("Choose --path or a logical reference, not both");
+        const report = await contextImpact(
+          root,
+          values.path ? { path: values.path } : { reference: reference() },
+        );
+        const offset = number(values.offset, 0),
+          limit = number(values.limit, 10);
+        if (
+          !Number.isSafeInteger(offset) ||
+          offset < 0 ||
+          !Number.isSafeInteger(limit) ||
+          limit < 1 ||
+          limit > 30
+        )
+          throw new Error("Use offset >= 0 and limit 1..30");
+        const total = Math.max(
+          report.dependents.length,
+          report.reviewCandidates.length,
+          report.unresolvedReferences.length,
+        );
+        result = {
+          ...report,
+          dependents: report.dependents.slice(offset, offset + limit),
+          reviewCandidates: report.reviewCandidates.slice(offset, offset + limit),
+          unresolvedReferences: report.unresolvedReferences.slice(offset, offset + limit),
+          totals: {
+            dependents: report.dependents.length,
+            reviewCandidates: report.reviewCandidates.length,
+            unresolvedReferences: report.unresolvedReferences.length,
+          },
+          complete: offset === 0 && total <= limit,
+          nextOffset: offset + limit < total ? offset + limit : null,
+        };
+        break;
+      }
       case "source":
         result = await contextSource(root, reference(), values.file, window);
         break;

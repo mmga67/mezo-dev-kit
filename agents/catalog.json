@@ -4,6 +4,12 @@
   "profile": "portable-agent-skills-v1",
   "skills": [
     {
+      "name": "mdk-economic-system",
+      "audience": "contributor",
+      "path": "agents/skills/mdk-economic-system",
+      "domains": ["knowledge", "economic-system"]
+    },
+    {
       "name": "mdk-capability-assessment",
       "audience": "contributor",
       "path": "agents/skills/mdk-capability-assessment",
@@ -248,6 +254,12 @@
       "audience": "consumer",
       "path": "agents/consumer/skills/mdk-history-application",
       "domains": ["history"]
+    },
+    {
+      "name": "mdk-economic-system-application",
+      "audience": "consumer",
+      "path": "agents/consumer/skills/mdk-economic-system-application",
+      "domains": ["economic-system"]
     }
   ]
 }

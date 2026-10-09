@@ -9,7 +9,7 @@ This is a deterministic projection of indexed knowledge, not an independent auth
 - Support: `none`
 - Review: `accepted`
 - Architecture: `accepted`
-- Input digest: `sha256:c51b7613f2fe7508988d9ac47d5e536d3206c1b2c6f4d318a7283e32930232b9`
+- Input digest: `sha256:89faa59e23439ba297ce8314118e5856e587e9a538121f483a0ead2f193b4e2b`
 
 ## Fact and proposal boundary
 

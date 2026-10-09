@@ -9,7 +9,7 @@ This is a deterministic projection of indexed canonical knowledge, not an indepe
 - Review: `accepted`
 - Verified: `2026-08-17T23:08:06Z`
 - Review after: `change-triggered`
-- Input digest: `sha256:5ffb37e65f0d96412698faa802e731d9d3e9e2744ad646f6cc43e3e4801a2bf5`
+- Input digest: `sha256:f821d684738c54bc550aa717fd836706297c86dadb0bc209a2ce1efaa6d32b40`
 
 ## Inventory
 

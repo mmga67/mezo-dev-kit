@@ -4,6 +4,7 @@ Understand MUSD Wormhole NTT and Mezo Native Bridge routes, asset representation
 
 ## Start here
 
+- [Mezo's economic system](../../../docs/architecture/mezo-economic-system-composition.md): BTC/Threshold custody, Bitcoin and Ethereum entry, other assets, and token-specific Wormhole destinations.
 - [MUSD NTT guide](../../../docs/reference/bridges/musd-ntt.md): messages, lifecycle, and delivery evidence.
 - [Native Bridge guide](../../../docs/reference/bridges/native-bridge.md): direction-specific settlement rules.
 - [Bridge reference](generated/reference.md): recorded route candidates and provider completion rules.
@@ -35,7 +36,10 @@ fees. A confirmed failed recipient payout requires governance recovery; it has
 no automatic retry. These implementation checks do not promote route support.
 
 BSC, Solana, MEZO NTT, Bitcoin delivery, other mappings, and untested directions
-remain outside this module's recorded scope.
+remain outside this module's qualified route scope. This is a coverage limit,
+not a statement that Mezo lacks these bridges. Use the sourced economic-system
+explanation for the wider published architecture; do not generalize the MUSD
+NTT network set to MEZO or treat a documented destination as a verified SDK route.
 
 ## Contributing
 

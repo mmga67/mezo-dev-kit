@@ -4,7 +4,7 @@ This document defines the **provider-neutral memory architecture and lifecycle**
 
 Memory preserves useful development context and reduces repeated investigation.
 Verified project facts belong in canonical knowledge, the manifest, detailed
-architecture, documentation, or code. Historical decisions retain rationale;
+architecture, documentation, or code. Keep rationale beside its canonical rule;
 memory remains supporting context.
 
 ## 1. Memory Model

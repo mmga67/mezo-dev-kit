@@ -49,10 +49,16 @@ balances; inclusion can violate preflight minimums, reported as `boundsSatisfied
 
 ## Procedure
 
+Apply [knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+explain recorded mechanisms from scoped evidence. Live reads, simulation and
+reconciliation below apply to current quotes or operations that require them;
+maintenance checks apply when changing or reverifying knowledge.
+
 1. Resolve network and contracts through registry IDs.
 2. Give block-pinned deployment state and version-matched source precedence over
    descriptive docs; retain conflicts as discrepancies.
-3. At one explicit block where practical, read price, TCR, redemption rate,
+3. For a current quote or operation, at one explicit block where practical,
+   read price, TCR, redemption rate,
    min debt, redeemer balance, queue state, and entire position amounts.
 4. Compute hints and truncated amount from that state. Preserve NICR ordering
    versus current-ICR filtering as separate concepts.
@@ -64,7 +70,7 @@ balances; inclusion can violate preflight minimums, reported as `boundsSatisfied
 7. Reconcile receipt success, `Redemption` attempted/actual/gross/fee values,
    redeemer balances, pool/PCV movements, affected troves, and surplus.
 8. Never retry a stale or failed write blindly.
-9. Run redemption, borrowing, MUSD, contract, and network validators.
+9. For maintenance, run redemption, borrowing, MUSD, contract, and network validators.
 
 ## Stop Conditions
 

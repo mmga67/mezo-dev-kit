@@ -10,10 +10,15 @@ description: Explain or maintain shared MUSD concepts, components, units and par
 Use the canonical MUSD system model without treating product copy, governed
 values, or familiar Liquity behavior as current protocol truth.
 
+For Mezo's overall economy, use
+[economic-system reasoning](../mdk-economic-system/SKILL.md),
+then follow the relevant MUSD and other domain owners. Shared MUSD knowledge
+covers one part of that system; it does not define the full economic architecture.
+
 ## Use When
 
 - Explaining MUSD terminology or component responsibilities.
-- Designing a future framework-independent MUSD protocol module.
+- Designing or reviewing framework-independent MUSD protocol logic.
 - Reading classic trove/system state or choosing the correct aggregate.
 - Determining whether a MUSD value is a constant, governed state, deployment
   binding, or derived calculation.
@@ -48,6 +53,11 @@ values, or familiar Liquity behavior as current protocol truth.
 
 ## Procedure
 
+Apply [knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+explanations use scoped evidence; current operations need their live inputs;
+maintenance checks apply when changing or reverifying knowledge. Support gates
+block the dependent operation, not a sourced explanation of the mechanism.
+
 1. Classify the request as shared system knowledge, borrowing, redemption, or
    another MUSD-adjacent domain.
 2. Normalize user terms through resource `musd-terminology`; preserve
@@ -56,7 +66,7 @@ values, or familiar Liquity behavior as current protocol truth.
    through the Contracts module for the intended network/block.
 4. Read `musd-system-model` for the relevant atomic claim, unit, and parameter
    owner.
-5. If a value is governed or deployment state, perform a block-pinned read;
+5. If a current value is governed or deployment state, perform a block-pinned read;
    never reuse an initializer, product screenshot, or stale copied constant.
 6. Keep deterministic calculations free of RPC, wallet, UI, cache, database,
    and global-state dependencies.
@@ -65,7 +75,7 @@ values, or familiar Liquity behavior as current protocol truth.
    `protocols/musd/redemptions`. Fail closed if a capability is blocked.
 8. For a knowledge change, update the candidate disposition, exact pinned
    evidence, canonical record, derived docs, and validation together.
-9. Run `node scripts/checks/validate-musd-knowledge.ts` plus the network and contract
+9. For maintenance, run `node scripts/checks/validate-musd-knowledge.ts` plus the network and contract
    validators.
 10. Require qualified Level 3 review for a changed protocol fact, support
     boundary, or write-path dependency.
@@ -86,7 +96,7 @@ Stop for qualified direction when:
 
 - official docs and version-matched deployed source disagree materially;
 - the active implementation or network identity is unresolved or stale;
-- a workflow depends on an unreviewed implementation review/implementation review rule;
+- a workflow depends on an unreviewed implementation rule;
 - an external debt domain must be combined with classic TCR;
 - a public package/API decision is required without accepted architecture;
 - a new dependency or unverified executable artifact would be required.

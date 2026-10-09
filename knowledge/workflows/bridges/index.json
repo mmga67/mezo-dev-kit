@@ -11,9 +11,16 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "canonicalNetworkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
+    "canonicalNetworkIds": [
+      "mezo-mainnet",
+      "ethereum-mainnet",
+      "base-mainnet"
+    ],
     "evidenceLocalNetworkLabels": [],
-    "providerIds": ["wormhole-ntt", "mezo-native-bridge"]
+    "providerIds": [
+      "wormhole-ntt",
+      "mezo-native-bridge"
+    ]
   },
   "limitations": [
     "bridge evidence review and registry provenance review accepted the bounded bridge knowledge and canonical provider graph, including the current generation-6 Assets Bridge deployment; acceptance creates no route, relayer, quote, or writer support.",
@@ -50,7 +57,10 @@
       "role": "canonical-record",
       "kind": "bridge-provider-catalog",
       "path": "records/providers.json",
-      "recordIds": ["wormhole-ntt", "mezo-native-bridge"],
+      "recordIds": [
+        "wormhole-ntt",
+        "mezo-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -58,7 +68,11 @@
       "role": "canonical-record",
       "kind": "bridge-asset-catalog",
       "path": "records/assets.json",
-      "recordIds": ["musd", "usdc-native-bridge", "btc-native-bridge"],
+      "recordIds": [
+        "musd",
+        "usdc-native-bridge",
+        "btc-native-bridge"
+      ],
       "recordCollectionPointer": "/records"
     },
     {
@@ -264,6 +278,36 @@
       "role": "artifact",
       "kind": "bridge-private-scope-reverification",
       "path": "artifacts/private-scope-reverification-2026-10-07.json"
+    },
+    {
+      "id": "economic-relationships",
+      "role": "canonical-record",
+      "kind": "economic-relationship-collection",
+      "path": "records/economic-relationships.json",
+      "recordIds": [
+        "bitcoin-threshold-custody",
+        "threshold-tbtc-backing",
+        "ethereum-tbtc-mezo-entry",
+        "mezo-btc-ethereum-exit",
+        "tbtc-bitcoin-exit",
+        "ethereum-usdc-mezo-mapping",
+        "wider-native-asset-mappings",
+        "musd-remote-circulation",
+        "mezo-remote-circulation"
+      ],
+      "recordCollectionPointer": "/records"
+    },
+    {
+      "id": "bridge-economic-docs-2026-10-08",
+      "role": "artifact",
+      "kind": "official-documentation-snapshot",
+      "path": "artifacts/economic-docs-2026-10-08.json"
+    },
+    {
+      "id": "bridge-economic-routes",
+      "role": "review",
+      "kind": "economic-route-review",
+      "path": "review/economic-routes.md"
     }
   ],
   "checks": [
@@ -286,6 +330,11 @@
       "id": "bridge-reference-drift",
       "type": "drift",
       "command": "node scripts/generate/generate-bridge-reference.ts --check"
+    },
+    {
+      "id": "economic-relationships",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-economic-relationships.ts --module workflows/bridges"
     }
   ],
   "extensions": {
@@ -310,7 +359,9 @@
       "moduleId": "workflows/bridges",
       "resourceId": "bridge-contract-roles"
     },
-    "blockers": ["current exact-call writer verification for any future supported route"],
+    "blockers": [
+      "current exact-call writer verification for any future supported route"
+    ],
     "currentContractEvidenceReference": {
       "moduleId": "contracts",
       "resourceId": "contract-bridge-v13-probes-2026-08-24"

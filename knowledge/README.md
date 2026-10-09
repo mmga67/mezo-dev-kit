@@ -4,6 +4,14 @@ This directory collects Mezo network, contract, and protocol information with
 the sources used to check it. Use it to understand how Mezo works, look up a
 deployment, or find the rules behind an SDK workflow.
 
+For the whole picture, start with
+[how Mezo's Bitcoin economy fits together](../docs/architecture/mezo-economic-system-composition.md):
+BTC custody and entry routes, borrowing, products, fees, voting, and emissions.
+Follow its domain references for the evidence behind each relationship.
+The [generated relationship inventory](generated/economic-relationships.md)
+provides a structured route to each owner, including candidate records and
+explicit evidence gaps.
+
 ## Find a subject
 
 | Subject                             | Start here                                                                                                                  |
@@ -37,6 +45,9 @@ can prove.
 
 For structured lookup, start with the [machine-readable index](index.json).
 Its module catalog resolves the subject and resource identifiers.
+Catalog completeness describes the maintained modules, not complete coverage of
+Mezo. Published design, recorded deployments, and supported SDK operations have
+different scopes; a missing route or API does not mean Mezo lacks that function.
 
 From an MDK checkout, `pnpm context catalog` and `pnpm context find --query
 '<topic>'` provide offline discovery. Read individual records, fields, source

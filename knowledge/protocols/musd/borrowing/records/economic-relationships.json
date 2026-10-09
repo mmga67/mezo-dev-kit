@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "protocols/musd/borrowing",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "btc-loan-collateral",
+      "name": "BTC secures classic MUSD borrowing",
+      "kind": "value-flow",
+      "quantity": "collateral",
+      "from": {
+        "label": "Native BTC on Mezo",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets",
+          "recordId": "btc-native-bridge"
+        }
+      },
+      "to": {
+        "label": "Classic loan collateral",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-position"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "musd-credit-creation",
+      "name": "Classic MUSD issuance",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "BTC-backed borrowing position",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      },
+      "to": {
+        "label": "Borrower MUSD balance",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-system-model"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-position"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "borrower-debt-obligation",
+      "name": "Borrower MUSD debt",
+      "kind": "value-flow",
+      "quantity": "debt",
+      "from": {
+        "label": "Classic loan position",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      },
+      "to": {
+        "label": "Borrower repayment obligation",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-position"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "classic-loan-repayment",
+      "name": "Classic MUSD debt repayment",
+      "kind": "value-flow",
+      "quantity": "debt",
+      "from": {
+        "label": "Borrower MUSD repayment",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-system-model"
+        }
+      },
+      "to": {
+        "label": "Reduced classic loan debt",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-operations"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-operations"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-operations"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution.",
+        "Partial repayment does not itself establish collateral release; collateral withdrawal and close use their own operation preconditions."
+      ]
+    },
+    {
+      "id": "classic-liquidation",
+      "name": "Classic liquidation settlement",
+      "kind": "value-flow",
+      "quantity": "collateral",
+      "from": {
+        "label": "Undercollateralized classic position",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-position"
+        }
+      },
+      "to": {
+        "label": "Protocol liquidation settlement",
+        "reference": {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-liquidations"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/borrowing",
+        "resourceId": "borrowing-liquidations"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "borrowing-liquidations"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    }
+  ]
+}

@@ -33,7 +33,8 @@
   },
   "limitations": [
     "The root catalog establishes module discovery and physical resolution only; each module owns its facts, lifecycle, evidence, support, and review state.",
-    "Catalog acceptance does not promote a candidate, unsupported, blocked, stale, or pending-review child resource."
+    "Catalog acceptance does not promote a candidate, unsupported, blocked, stale, or pending-review child resource.",
+    "Catalog completeness covers maintained modules, not every Mezo asset, bridge route, or economic relationship; whole-system orientation starts in knowledge/README.md and its sourced economic-system explanation."
   ],
   "resources": [
     {
@@ -85,6 +86,60 @@
       "role": "schema",
       "kind": "json-schema",
       "path": "schema/v0.4/module-catalog.schema.json"
+    },
+    {
+      "id": "economic-relationships-schema",
+      "role": "schema",
+      "kind": "json-schema",
+      "path": "schema/v0.4/economic-relationships.schema.json"
+    },
+    {
+      "id": "economic-relationships-reference",
+      "role": "generated",
+      "kind": "economic-composition-reference",
+      "path": "generated/economic-relationships.md",
+      "generatedFrom": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/musd/borrowing",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/musd/redemptions",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/musd",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/lending/musdc",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/pools",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/incentives",
+          "resourceId": "economic-relationships"
+        },
+        {
+          "moduleId": "protocols/musd/institutional-debt",
+          "resourceId": "economic-relationships"
+        }
+      ]
     }
   ],
   "checks": [
@@ -107,6 +162,16 @@
       "id": "maintained-markdown-links",
       "type": "semantic",
       "command": "node scripts/checks/validate-markdown-links.ts"
+    },
+    {
+      "id": "economic-relationships",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-economic-relationships.ts"
+    },
+    {
+      "id": "economic-relationships-reference",
+      "type": "drift",
+      "command": "node scripts/generate/generate-economic-relationships.ts --check"
     }
   ],
   "extensions": {

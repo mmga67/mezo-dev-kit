@@ -11,10 +11,7 @@
   "verifiedAt": null,
   "reviewAfter": null,
   "scope": {
-    "architectureDecisionIds": [
-      "ADR-0002",
-      "ADR-0003"
-    ],
+    "projectBaseline": "docs/manifest#shared-client-and-transaction-lifecycle",
     "runtimeFamily": "EVM"
   },
   "limitations": [
@@ -28,45 +25,35 @@
       "role": "canonical-record",
       "kind": "transaction-state-machine",
       "path": "records/state-machine.json",
-      "recordIds": [
-        "evm-action-lifecycle-v1"
-      ]
+      "recordIds": ["evm-action-lifecycle-v1"]
     },
     {
       "id": "transaction-client-requirements",
       "role": "canonical-record",
       "kind": "core-client-requirements",
       "path": "records/client-requirements.json",
-      "recordIds": [
-        "core-client-proposal-v1"
-      ]
+      "recordIds": ["core-client-proposal-v1"]
     },
     {
       "id": "transaction-errors",
       "role": "canonical-record",
       "kind": "transaction-error-taxonomy",
       "path": "records/errors.json",
-      "recordIds": [
-        "core-transaction-errors-v1"
-      ]
+      "recordIds": ["core-transaction-errors-v1"]
     },
     {
       "id": "transaction-requirement-matrix",
       "role": "canonical-record",
       "kind": "protocol-transaction-requirement-matrix",
       "path": "records/requirement-matrix.json",
-      "recordIds": [
-        "protocol-workflow-requirements-v1"
-      ]
+      "recordIds": ["protocol-workflow-requirements-v1"]
     },
     {
       "id": "transaction-mezo-observations",
       "role": "evidence",
       "kind": "mezo-transaction-observation-index",
       "path": "evidence/mezo-observations.json",
-      "recordIds": [
-        "mezo-execution-observations-2026-08-18"
-      ]
+      "recordIds": ["mezo-execution-observations-2026-08-18"]
     },
     {
       "id": "transaction-proposal-schema",
@@ -141,9 +128,6 @@
   "extensions": {
     "architectureStatus": "accepted",
     "factProposalBoundary": "The project baseline accepts the state machine, client requirements, error taxonomy, and domain-routing semantics. Transaction-mezo-observations is the sole evidence-backed resource in this module. Generic architecture requirements are not Mezo facts; current package docs and exports own implementation interfaces. Architecture acceptance alone does not establish protocol evidence, writer qualification, or runtime support.",
-    "owningDecisionIds": [
-      "ADR-0002",
-      "ADR-0003"
-    ]
+    "projectBaseline": "docs/manifest#shared-client-and-transaction-lifecycle"
   }
 }

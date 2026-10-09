@@ -14,15 +14,13 @@ interest accrual, health, liquidation, bad debt, liquidity, or maintenance of
 Do not use it for MUSD troves/redemptions, bridge execution, the supplier
 vault's depositor shares, generic Morpho markets, APR forecasts.
 
-## Current workspace capability
+## Implementation work
 
-Direct supply, withdrawal, collateral, borrow and repay are implemented as private candidates with explicit approvals.
 Inspect `packages/protocols/musdc-lending/README.md`, `REFERENCE.md` and
 `src/index.ts` for current methods and required ports. The
 [execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
-defines shared requirements for this private implementation. Canonical support
-remains proposed/none and qualified
-review is required before release. Pair writer work with transaction-execution
+defines shared requirements. Resolve current support and review status from
+the package and selected knowledge resources. Pair writer work with transaction-execution
 and testing procedures. Knowledge alone never authorizes a transaction.
 
 ## Required context
@@ -31,12 +29,16 @@ Reuse current task/instructions. Read owning package docs for code work and
 module README/index for protocol evidence. Load knowledge-maintenance only
 when changing knowledge or generated projections. Load bridge knowledge for mUSDC representation identity,
 price knowledge for the oracle datum, contract knowledge for deployed
-generations, transaction execution for future gates, and TypeScript/testing
+generations, transaction execution for operation gates, and TypeScript/testing
 skills when changing scripts or tests.
 
 ## Procedure and invariants
 
-1. Resolve the exact market ID back to its loan token, collateral token,
+Apply [knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+explanations use scoped records; current operations require coherent live inputs.
+Do not turn a conceptual question into transaction preparation or maintenance.
+
+1. For current reads or preparation, resolve the exact market ID back to its loan token, collateral token,
    oracle, IRM, and LLTV at one block.
 2. Resolve mUSDC through `workflows/bridges:bridge-assets:usdc-native-bridge`;
    never classify it as MUSD.
@@ -55,7 +57,7 @@ skills when changing scripts or tests.
 
 ## Verification and stop conditions
 
-Run the module checks plus bridge, prices, Contracts, Networks, transactions,
+For maintenance, run the module checks plus bridge, prices, Contracts, Networks, transactions,
 troubleshooting, root-catalog, link, JSON/type, and whitespace checks. Stop
 when tuple/source/oracle/IRM identity conflicts, a datum is stale or
 unclassified, rounding is ambiguous, bridge/vault/classic-MUSD values would be

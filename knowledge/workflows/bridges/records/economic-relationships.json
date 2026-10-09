@@ -1,0 +1,396 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "workflows/bridges",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "bitcoin-threshold-custody",
+      "name": "Bitcoin entry and Threshold custody",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "BTC on Bitcoin",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "Threshold tBTC wallets",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "Published architecture is described in the human map; indexed custody, representation and inbound stage qualification remains open.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    },
+    {
+      "id": "threshold-tbtc-backing",
+      "name": "tBTC backing on Ethereum",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "Threshold tBTC wallets",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "tBTC on Ethereum",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "Backing and mint/redemption stages require scoped Threshold source qualification; a Mezo bridge receipt alone does not prove Bitcoin custody.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    },
+    {
+      "id": "ethereum-tbtc-mezo-entry",
+      "name": "Ethereum tBTC entry to Mezo native BTC",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "tBTC on Ethereum",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "Native BTC on Mezo",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets",
+          "recordId": "btc-native-bridge"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "The recorded native bridge historical slice does not qualify inbound BTC delivery.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    },
+    {
+      "id": "mezo-btc-ethereum-exit",
+      "name": "Native BTC exit to Ethereum tBTC",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "Native BTC on Mezo",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-assets",
+          "recordId": "btc-native-bridge"
+        }
+      },
+      "to": {
+        "label": "tBTC recipient on Ethereum",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-native-lifecycle"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "tbtc-bitcoin-exit",
+      "name": "tBTC redemption to Bitcoin",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "tBTC on Ethereum",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "Recipient BTC on Bitcoin",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "Bitcoin redemption and payout require their own evidence; Ethereum release is not Bitcoin delivery.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    },
+    {
+      "id": "ethereum-usdc-mezo-mapping",
+      "name": "Ethereum USDC mapped representation",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "USDC on Ethereum",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        }
+      },
+      "to": {
+        "label": "mUSDC on Mezo",
+        "reference": {
+          "moduleId": "protocols/lending/musdc",
+          "resourceId": "musdc-lending-market"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-native-lifecycle"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-native-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "wider-native-asset-mappings",
+      "name": "Wider Native Bridge assets",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "Eligible Ethereum tokens",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "to": {
+        "label": "Mapped representations on Mezo",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "Token-specific mapping, restrictions and directional availability need qualification beyond the existing BTC/USDC slice.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    },
+    {
+      "id": "musd-remote-circulation",
+      "name": "MUSD NTT circulation",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "MUSD on Mezo",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-system-model"
+        }
+      },
+      "to": {
+        "label": "MUSD on Ethereum and Base",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-ntt-lifecycle"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-ntt-lifecycle"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-ntt-lifecycle"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "mezo-remote-circulation",
+      "name": "MEZO Wormhole circulation",
+      "kind": "value-flow",
+      "quantity": "asset",
+      "from": {
+        "label": "MEZO on Mezo",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-locks"
+        }
+      },
+      "to": {
+        "label": "MEZO on Ethereum, Base, BSC and Solana",
+        "reference": {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "workflows/bridges",
+        "resourceId": "bridge-economic-routes"
+      },
+      "qualification": "published-description",
+      "basisReferences": [
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-gaps"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-routes"
+        },
+        {
+          "moduleId": "workflows/bridges",
+          "resourceId": "bridge-economic-docs-2026-10-08"
+        }
+      ],
+      "limitations": [
+        "MEZO routes, including published BSC/Solana scope, cannot inherit MUSD NTT qualification.",
+        "Published architecture only; complete stage-specific deployment and delivery qualification is pending."
+      ]
+    }
+  ]
+}

@@ -1147,7 +1147,7 @@ async function main(): Promise<void> {
     limitations: [
       "The registry is evidence-verified bootstrap input and does not create a released MDK support promise.",
       "Open deployment validity ranges and current implementation ABIs require re-verification after upgrades or the review window.",
-      "Candidate deployments remain outside promoted resources; accepted ADR-0001 and ADR-0005 govern ownership and provenance classification.",
+      "Candidate deployments remain outside promoted resources; the manifest's contract identity and provenance boundary governs ownership and provenance classification.",
     ],
     resources: [
       {

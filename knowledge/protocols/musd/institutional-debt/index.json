@@ -216,6 +216,17 @@
           "resourceId": "institutional-debt-source-reproduction"
         }
       ]
+    },
+    {
+      "id": "economic-relationships",
+      "role": "canonical-record",
+      "kind": "economic-relationship-collection",
+      "path": "records/economic-relationships.json",
+      "recordIds": [
+        "institutional-explicit-pledge",
+        "institutional-musd-debt"
+      ],
+      "recordCollectionPointer": "/records"
     }
   ],
   "checks": [
@@ -233,6 +244,11 @@
       "id": "institutional-debt-reference-drift",
       "type": "drift",
       "command": "node scripts/generate/generate-institutional-debt-reference.ts --check"
+    },
+    {
+      "id": "economic-relationships",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-economic-relationships.ts --module protocols/musd/institutional-debt"
     }
   ],
   "extensions": {

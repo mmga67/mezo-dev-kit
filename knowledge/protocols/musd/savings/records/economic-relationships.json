@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "protocols/musd/savings",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "savings-principal-receipt",
+      "name": "Savings principal claim",
+      "kind": "position-claim",
+      "quantity": "receipt",
+      "from": {
+        "label": "Deposited MUSD principal",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-system-model"
+        }
+      },
+      "to": {
+        "label": "sMUSD holder",
+        "reference": {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-model"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/savings",
+        "resourceId": "musd-savings-model"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-model"
+        },
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-source-conflicts"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "pcv-savings-yield",
+      "name": "Protocol-fund conversion and Savings yield",
+      "kind": "value-flow",
+      "quantity": "yield",
+      "from": {
+        "label": "Protocol funds and conversion",
+        "reference": {
+          "moduleId": "protocols/musd",
+          "resourceId": "musd-components"
+        }
+      },
+      "to": {
+        "label": "Savings yield accounting",
+        "reference": {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-roles"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/savings",
+        "resourceId": "musd-savings-roles"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-roles"
+        },
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-source-conflicts"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "direct-savings-yield",
+      "name": "Unstaked Savings yield",
+      "kind": "value-flow",
+      "quantity": "yield",
+      "from": {
+        "label": "Savings yield accounting",
+        "reference": {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-model"
+        }
+      },
+      "to": {
+        "label": "Direct receipt holder",
+        "reference": {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-model"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/savings",
+        "resourceId": "musd-savings-model"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-model"
+        },
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-source-conflicts"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "savings-gauge-yield-redirection",
+      "name": "Staked Savings yield to voters",
+      "kind": "value-flow",
+      "quantity": "yield",
+      "from": {
+        "label": "Gauge-custodied Savings receipts",
+        "reference": {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-roles"
+        }
+      },
+      "to": {
+        "label": "Associated veBTC voters",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-voting"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/musd/savings",
+        "resourceId": "musd-savings-roles"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-roles"
+        },
+        {
+          "moduleId": "protocols/musd/savings",
+          "resourceId": "musd-savings-source-conflicts"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    }
+  ]
+}

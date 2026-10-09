@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "kind": "economic-relationship-collection",
+  "id": "economic-relationships",
+  "owner": "protocols/vaults/usdc-lending",
+  "status": "candidate",
+  "supportStatus": "none",
+  "reviewStatus": "accepted",
+  "verifiedAt": null,
+  "reviewAfter": null,
+  "scope": {
+    "purpose": "economic composition; source scope is inherited separately from each basis reference",
+    "reviewAcceptedOn": "2026-10-09",
+    "reviewAcceptance": "Human approval of composition boundaries, relationship classifications and evidence dispositions; underlying claims retain their individual qualification and source scope."
+  },
+  "limitations": [
+    "Review accepts this composition inventory and its explicit gaps. Evidence maturity remains candidate; acceptance does not independently verify the referenced models, published descriptions or unqualified claims.",
+    "No addresses, formulas, rates or supported operations are defined here. Current execution and source conflicts retain their domain evidence requirements."
+  ],
+  "records": [
+    {
+      "id": "usdc-vault-share-claim",
+      "name": "USDC vault depositor claim",
+      "kind": "position-claim",
+      "quantity": "receipt",
+      "from": {
+        "label": "Deposited mUSDC",
+        "reference": {
+          "moduleId": "protocols/lending/musdc",
+          "resourceId": "musdc-lending-market"
+        }
+      },
+      "to": {
+        "label": "Vault depositor shares",
+        "reference": {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/vaults/usdc-lending",
+        "resourceId": "usdc-lending-vault-accounting"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vault-market-allocation",
+      "name": "Vault allocates mUSDC to the market",
+      "kind": "value-flow",
+      "quantity": "principal",
+      "from": {
+        "label": "Vault assets",
+        "reference": {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      },
+      "to": {
+        "label": "Morpho market supply",
+        "reference": {
+          "moduleId": "protocols/lending/musdc",
+          "resourceId": "musdc-lending-market"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/vaults/usdc-lending",
+        "resourceId": "usdc-lending-vault-architecture"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-architecture"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vault-wrapper-claim",
+      "name": "Vault wrapper claim for gauge custody",
+      "kind": "position-claim",
+      "quantity": "receipt",
+      "from": {
+        "label": "Vault shares",
+        "reference": {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      },
+      "to": {
+        "label": "Wrapped vault receipt",
+        "reference": {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/vaults/usdc-lending",
+        "resourceId": "usdc-lending-vault-accounting"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution."
+      ]
+    },
+    {
+      "id": "vault-gauge-yield-redirection",
+      "name": "Configured wrapper yield through the gauge to voters",
+      "kind": "value-flow",
+      "quantity": "yield",
+      "from": {
+        "label": "Wrapper-held vault shares with a configured gauge",
+        "reference": {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting",
+          "pointer": "/wrapper/harvest"
+        }
+      },
+      "to": {
+        "label": "Associated veBTC voters",
+        "reference": {
+          "moduleId": "protocols/incentives",
+          "resourceId": "incentives-voting"
+        }
+      },
+      "accountingReference": {
+        "moduleId": "protocols/vaults/usdc-lending",
+        "resourceId": "usdc-lending-vault-accounting"
+      },
+      "qualification": "recorded-model",
+      "basisReferences": [
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-architecture"
+        },
+        {
+          "moduleId": "protocols/vaults/usdc-lending",
+          "resourceId": "usdc-lending-vault-accounting",
+          "pointer": "/wrapper/harvest"
+        }
+      ],
+      "limitations": [
+        "Applies only to the referenced model and its source/generation scope; this relationship is not independently qualified for current execution.",
+        "Harvest eligibility belongs to wrapper accounting and is separate from individual receipt staking; unstaked wrapper receipts are not equivalent to unwrapped VaultV2 shares."
+      ]
+    }
+  ]
+}

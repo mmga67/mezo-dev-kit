@@ -161,7 +161,7 @@ These ownership rows do not confer support on an operation or deployment.
 | [CLI](packages/cli/README.md)                                                  | Project creation, compatibility checks, guidance updates, and bundled reference retrieval |
 | [Examples](examples/README.md) and [templates](templates/typescript/README.md) | Tested starting points using public APIs                                                  |
 | [Knowledge](knowledge/README.md)                                               | Validated, evidence-linked Mezo facts and canonical registry inputs                       |
-| [Documentation](docs/INDEX.md)                                                 | Architecture, guides, references, standards, troubleshooting, and historical decisions    |
+| [Documentation](docs/INDEX.md)                                                 | Architecture, guides, references, standards, and troubleshooting                          |
 | [Agent guidance](agents/README.md)                                             | Contributor/consumer skills, optional memory adapters, and evaluations                    |
 | [Scripts](scripts/README.md)                                                   | Repository generation, verification, evidence, and workspace automation                   |
 
@@ -535,5 +535,5 @@ section and this detailed map when accepted ownership or dependency rules change
 Existing standards and package contracts change together where affected.
 
 Follow [Changing the baseline](docs/manifest#changing-the-baseline) for versioning
-and review. Retain a separate historical decision when its alternatives and
-rationale warrant one; it does not become a second current-policy owner.
+and review. Keep useful rationale beside the current rule in the manifest or
+its delegated detailed owner.

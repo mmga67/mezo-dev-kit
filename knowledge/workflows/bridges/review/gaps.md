@@ -1,5 +1,22 @@
 # Bridge promotion gaps
 
+## Whole-system coverage
+
+The [sourced economic-system explanation](../../../../docs/architecture/mezo-economic-system-composition.md)
+covers more of Mezo's published architecture than this module's qualified asset
+and route records. The remaining indexing work includes Threshold/tBTC custody,
+Bitcoin and Ethereum BTC entry, the wider ERC-20 mapping set, and MEZO Wormhole
+NTT destinations including BSC and Solana. These relationships need their own
+asset/provider/direction evidence; the MUSD NTT network set cannot stand in for
+MEZO's network set. The source links in that explanation are the starting point
+for the gaps, not a route-readiness certificate.
+
+Preserve this distinction in retrieval and explanations: a complete catalog of
+the maintained routes is not a complete bridge map. Adding published-design
+coverage must not silently promote historical observations, contract/network
+identities, current preparation, delivery proof, or SDK support. This gap does
+not invalidate the narrower recorded route evidence.
+
 ## MUSD NTT
 
 The current official deployment repository, three fixed-block manager and

@@ -38,6 +38,24 @@ knowledge before implementing or declaring a gap. Reassess those owners as the
 checkout evolves. The [behavioral evaluation guide](../docs/guides/CONTRIBUTOR_AGENT_EVALUATION.md)
 explains how to test actual decisions separately from structural validation.
 
+For Mezo's economic architecture across domains, use
+[`mdk-economic-system`](./skills/mdk-economic-system/SKILL.md). It follows
+custody, credit, products, revenue and incentive relationships through their
+owners. Narrow operations go directly to the relevant domain skill.
+Applications can select
+[`mdk-economic-system-application`](./consumer/skills/mdk-economic-system-application/SKILL.md)
+through the optional `economy` set. It includes the composition guide, owned
+relationship records and selected conflict reviews for offline explanation;
+it adds no runtime package or transaction capability.
+
+Skills are task procedures, not a one-to-one map of economic contexts. Product
+skills preserve their accounting boundaries; bridge and swap skills cover
+workflows; network, contract, price and transaction skills supply shared
+technical procedures. The economic-system skill connects only the owners needed
+by the question. Human readers start with the
+[economic explanation](../docs/architecture/mezo-economic-system-composition.md)
+without installing agent guidance.
+
 ## Portable Skill Contract
 
 Each maintained skill is a directory named exactly like its frontmatter

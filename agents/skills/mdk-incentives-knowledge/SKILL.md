@@ -1,39 +1,17 @@
 ---
 name: mdk-incentives-knowledge
-description: Resolve veBTC/veMEZO, boosts, voting, epochs, gauges and reward evidence or calculations. Gauge and ordinary lock reader/writer review; wider incentives evidence.
+description: Resolve locks, boosts, independent voting domains, revenue, emissions and claims. Use for incentive evidence, calculations and operation review.
 ---
 
 # Mezo incentives knowledge
 
-## Current workspace capability
+## Select the mode
 
-Savings/Vault gauge reads, stake, unstake and streamed reward claims are implemented
-as private candidates. Ordinary self-owned veBTC/veMEZO create, increase, extend,
-permanent, timed and withdraw operations now have bounded readers, simulation and
-receipt/state reconciliation under [Protocol execution boundaries](../../../docs/manifest#protocol-execution-boundaries). Granted, managed, delegated, voted or
-boost-gauge-linked NFTs are excluded from this initial lock writer. Keep direct
-escrow custody separate from total locked supply; managed reward paths can custody
-assets elsewhere. Stored checkpoint boost, current boost and ownership-change
-suppressed voting power are distinct. Pool/validator/boost vote-reset and bounded fee/bribe claims now have private
-readers and writers. Verify current reward child code/immutables, epoch bounds,
-owner recipient, checkpoint history budgets and exact payout reconciliation.
-Ordinary veMEZO rebase claims have a separate bounded reader and writer: preserve
-the 50-week cursor limit, current minter period, zero-claim cursor advancement,
-and active-lock deposit versus expired-lock owner payout. Voted ordinary NFTs
-remain eligible for this claim; managed, granted and delegated claims retain
-separate boundaries. Native-token fork fixtures do not qualify mezod execution.
-CL gauge NFT approval/stake/unstake/claim methods reuse an injected verified
-Pools position reader. Preserve stored versus newly earned rewards, the
-same-timestamp update skip, withdrawal's automatic claim and fee collection,
-and the self-service uint256 claim overload. Gauge fee accounting caps can
-exceed actual transfer; verify wallet/custody and native gas separately.
-Inspect `packages/protocols/incentives/README.md`, `REFERENCE.md` and
-`src/index.ts` for current methods and required ports. The
-[execution baseline](../../../docs/manifest#shared-client-and-transaction-lifecycle)
-defines shared requirements for this private implementation. Canonical support
-remains proposed/none and qualified
-review is required before release. Pair writer work with transaction-execution
-and testing procedures. Knowledge alone never authorizes a transaction.
+For explanations, calculations or revenue tracing, use the indexed owners below.
+For lock, vote, stake or claim implementation/preparation, load
+[operation procedures](references/operations.md) and inspect the current
+Incentives package README, reference and exports. Do not load operation details
+for a conceptual flywheel question.
 
 ## Required context
 
@@ -53,8 +31,19 @@ and testing procedures. Knowledge alone never authorizes a transaction.
    `incentives-third-party-voting-rewards`, `incentives-third-party-sources`
    and the linked observation. Read the resource-specific review and delivery
    scope rather than inheriting the earlier module acceptance.
+   For governance, splitter adjustability or rebase-source disagreements,
+   resolve `incentives-source-conflicts` and retain its scoped dispositions.
+   For passive fees or source-to-recipient revenue, resolve
+   `incentives-revenue-flows`; fee origin stays with the producing domain.
 
 ## Procedure
+
+For the economic flywheel, use
+[economic-system reasoning](../mdk-economic-system/SKILL.md),
+then use the voting and emission owners below together. Preserve published-design
+versus deployed-formula conflicts. Apply
+[knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+explanations need scoped evidence; current operations need their live checks.
 
 1. Resolve network identity through the Networks module.
 2. Resolve bounded reusable roles through `incentives-contract-roles`. Treat
@@ -95,14 +84,13 @@ and testing procedures. Knowledge alone never authorizes a transaction.
 8. On a knowledge change, update candidate/gap disposition, pinned evidence,
    source digest/reference, canonical record, fixture, generated reference, and
    validator together.
-9. Run the module's structural, semantic, and drift checks plus network,
+9. For maintenance, run the module's structural, semantic, and drift checks plus network,
    contract, transaction, and troubleshooting consumers.
 
 ## Invariants
 
-- Module support remains `none`. incentives evidence review, emission evidence review, and validator evidence review accepted their
-  bounded protocol, emission, and validator-allocation scopes plus the two
-  reusable validator factory roots; acceptance enables no public capability.
+- Resolve support and review from the selected resources and package exports;
+  acceptance of one evidence slice does not qualify every operation.
 - Exact executable reproduction does not prove authorship, audit coverage, or
   proxy activation history.
 - Epoch rollover does not itself erase stored vote allocations.

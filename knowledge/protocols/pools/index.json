@@ -200,6 +200,18 @@
       "role": "canonical-record",
       "kind": "mezo-cl-position-call-model",
       "path": "records/cl-position-calls.json"
+    },
+    {
+      "id": "economic-relationships",
+      "role": "canonical-record",
+      "kind": "economic-relationship-collection",
+      "path": "records/economic-relationships.json",
+      "recordIds": [
+        "pool-liquidity-principal",
+        "pool-position-claim",
+        "pool-gauge-fees"
+      ],
+      "recordCollectionPointer": "/records"
     }
   ],
   "checks": [
@@ -222,6 +234,11 @@
       "id": "cl-call-semantics",
       "type": "semantic",
       "command": "node scripts/checks/validate-cl-call-knowledge.ts"
+    },
+    {
+      "id": "economic-relationships",
+      "type": "semantic",
+      "command": "node scripts/checks/validate-economic-relationships.ts --module protocols/pools"
     }
   ],
   "extensions": {

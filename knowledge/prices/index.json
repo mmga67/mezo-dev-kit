@@ -11,20 +11,10 @@
   "verifiedAt": "2026-08-27T14:24:36.881Z",
   "reviewAfter": "2026-09-03T14:24:36.881Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "mezo-testnet"
-    ],
+    "networkIds": ["mezo-mainnet", "mezo-testnet"],
     "sourceClasses": 6,
-    "sourceIds": [
-      "source.skip-price-oracle-v1",
-      "source.pyth-core-v1"
-    ],
-    "feedIds": [
-      "feed.skip-btc-usd",
-      "feed.pyth-btc-usd",
-      "feed.pyth-musd-usd"
-    ]
+    "sourceIds": ["source.skip-price-oracle-v1", "source.pyth-core-v1"],
+    "feedIds": ["feed.skip-btc-usd", "feed.pyth-btc-usd", "feed.pyth-musd-usd"]
   },
   "limitations": [
     "oracle re-verification qualified Level 3 review accepted the post-upgrade evidence; feed/current support remains proposed.",
@@ -108,7 +98,7 @@
         "pool-price-mechanics",
         "transaction-boundary",
         "pyth-evm-api",
-        "adr-0009-price-ownership",
+        "manifest-price-ownership",
         "price-fixed-block-capture-mezo-mainnet-2026-09-06",
         "price-fixed-block-capture-mezo-mainnet-2026-09-13",
         "price-fixed-block-capture-mezo-mainnet-2026-09-27",
@@ -234,10 +224,7 @@
       "role": "evidence",
       "kind": "price-fixed-block-observation-set",
       "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-06.json",
-      "recordIds": [
-        "observe-skip-mezo-mainnet-2026-09-06",
-        "observe-pyth-mezo-mainnet-2026-09-06"
-      ],
+      "recordIds": ["observe-skip-mezo-mainnet-2026-09-06", "observe-pyth-mezo-mainnet-2026-09-06"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -263,10 +250,7 @@
       "role": "evidence",
       "kind": "price-fixed-block-observation-set",
       "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-13.json",
-      "recordIds": [
-        "observe-skip-mezo-mainnet-2026-09-13",
-        "observe-pyth-mezo-mainnet-2026-09-13"
-      ],
+      "recordIds": ["observe-skip-mezo-mainnet-2026-09-13", "observe-pyth-mezo-mainnet-2026-09-13"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -286,10 +270,7 @@
       "role": "evidence",
       "kind": "price-fixed-block-observation-set",
       "path": "evidence/fixed-block-observations-mezo-mainnet-2026-09-27.json",
-      "recordIds": [
-        "observe-skip-mezo-mainnet-2026-09-27",
-        "observe-pyth-mezo-mainnet-2026-09-27"
-      ],
+      "recordIds": ["observe-skip-mezo-mainnet-2026-09-27", "observe-pyth-mezo-mainnet-2026-09-27"],
       "recordCollectionPointer": "/observations"
     },
     {
@@ -351,18 +332,11 @@
     }
   ],
   "extensions": {
-    "architectureDecision": "ADR-0009",
+    "projectBaseline": "docs/manifest#price-meaning",
     "writerSupport": "none",
     "publicReaderSupport": "none",
-    "dependencies": [
-      "networks",
-      "contracts"
-    ],
-    "consumerReferences": [
-      "protocols/musd",
-      "protocols/pools",
-      "workflows/transactions"
-    ],
+    "dependencies": ["networks", "contracts"],
+    "consumerReferences": ["protocols/musd", "protocols/pools", "workflows/transactions"],
     "ownershipBoundary": "Prices owns provider-neutral source/feed identity and datum, scaling, confidence, freshness, disagreement, and fallback-result semantics. Protocol consumption, pool math, routing, analytics, Contracts, Networks, and transaction lifecycle remain with their accepted owners.",
     "blockers": [
       "separate public API and transaction review before any reader or updater implementation"

@@ -55,8 +55,8 @@ liquidation claims, or transaction writers.
    Stability Pool, redemption, and liquidation outside institutional totals.
 9. Inspect `packages/protocols/musd-institutional-debt/README.md` and `REFERENCE.md` for the private reader and calculations. Requested position/target subsets are not a full inventory; recorded UTXOs are not current Bitcoin unspent-state. Optional price failures must preserve an explicit unknown health result.
 10. Treat operation records as future gates only. Current writer support is
-   `none`; exact fresh simulation and transaction reconciliation remain
-   mandatory for any separately approved implementation.
+    `none`; exact fresh simulation and transaction reconciliation remain
+    mandatory for any separately approved implementation.
 11. On maintenance, update evidence digests, source catalog, canonical record,
     fixtures, generated reference, review files, and validator together.
 
@@ -72,8 +72,9 @@ separation.
 
 ## Invariants and common failure modes
 
-- institutional debt evidence review accepted the module review and three Contract registry identities;
-  protocol support remains proposed and all writers remain unsupported.
+- Resolve accepted generations and operation support from the selected records
+  and current package reference. Acceptance of a registry identity is not
+  authorization or complete institutional workflow qualification.
 - Roles, allowlists, UTXOs, parameters, positions, and totals are block-scoped.
 - ABI presence is not executable authorization.
 - The second Enclave's AssetsBridge/veBTC generic-target exclusion and separate

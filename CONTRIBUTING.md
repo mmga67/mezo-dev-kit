@@ -183,6 +183,10 @@ node scripts/checks/validate-manifest-version.ts
 node scripts/tests/test-manifest-version.ts
 ```
 
+Knowledge may pin a project document as a source. When changing a pinned
+document, update its source-catalog digest and affected generated projections;
+preserve protocol evidence dates, support labels, and review states.
+
 The accepted universal module layout, human and agent responsibilities, common
 record envelope, stable-reference rules, and maintenance workflows live in the
 [`knowledge-management standard`](./docs/standards/knowledge-management.md).
@@ -208,6 +212,11 @@ narrative.
 
 Update relevant docs, examples, skills, and consumer guidance in the same
 change when supported behavior or workflow changes.
+For observations from any task, follow
+[observed-change maintenance](docs/standards/knowledge-management.md#react-to-an-observed-change)
+and record affected-owner dispositions, including justified non-changes and
+unresolved dependencies. The offline impact report assists this review but
+cannot infer every semantic consequence.
 
 ## Changelog
 
@@ -229,7 +238,7 @@ earlier history. Manifest version history remains owned by
 Every meaningful task ends with one of:
 
 - no memory update because the durable result already lives in code,
-  knowledge, docs, a historical decision, or a skill;
+  knowledge, docs, or a skill;
 - a concise, reviewed shared-memory entry that points to canonical material;
 - a local-memory finding retained for further verification;
 - a stale memory marked promoted, superseded, or deprecated.

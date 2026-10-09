@@ -6,6 +6,36 @@ compatibility promises. Earlier history remains available in Git.
 
 ## Unreleased
 
+- Added offline `context impact` reports and coordinated observed-change
+  maintenance across knowledge, human guidance and skills. Reports distinguish
+  declared dependencies, review candidates and unresolved coverage.
+- Retained scoped Savings and incentives source-conflict reviews with pinned
+  official documentation and a candidate Savings generation comparison.
+- Added domain-owned economic relationships with accepted composition reviews
+  and explicit evidence limits, a generated inventory, bridge/revenue review
+  coverage and an optional consumer `economy`
+  set. Bridge and incentive skills now load operation details selectively and
+  retrieve parameters and capability state from their owners.
+
+### Changed
+
+- Added a contributor economic-system skill for explanations and architecture
+  checks spanning custody, credit, products, revenue, voting, and emissions.
+  Shared entry points now route whole-system questions to that procedure while
+  retaining direct domain routes for narrow operations.
+- Rebuilt the [Mezo economic system explanation](docs/architecture/mezo-economic-system-composition.md)
+  around BTC custody, borrowing, and the Mezo Earn flywheel. The expanded map
+  connects Native and Wormhole bridges, products, voting, and MEZO emissions;
+  source links distinguish published architecture, dated asset restrictions,
+  and MDK's narrower implementation coverage.
+- Clarified the economic composition boundary in manifest v1.4.2, knowledge
+  entry points, and contributor/consumer skills. Whole-system explanations now
+  route to the sourced map; limited SDK coverage does not define Mezo's features,
+  and conceptual questions do not inherit transaction-preparation checks.
+- Consolidated project decisions and rationale into the [manifest](docs/manifest)
+  and its detailed owners. Removed the separate decision collection and updated
+  documentation, knowledge source pointers, and importers to use the baseline.
+
 ## 2026-10-08
 
 ### Added

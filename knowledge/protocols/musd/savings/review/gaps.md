@@ -1,5 +1,9 @@
 # MUSD Savings review gaps
 
+- [Official receipt/yield description conflict](source-conflicts.md): retained
+  deployed accounting and the product page differ. The October 8 generation
+  comparison is a candidate pending qualified review, not a deadline refresh.
+
 - Complete gauge stake/claim event reconciliation and any broader Savings
   history required by a separately scoped reader; the current packet includes
   a representative protocol-yield, user-yield, and withdrawal trace.

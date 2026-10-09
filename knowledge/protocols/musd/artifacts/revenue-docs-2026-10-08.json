@@ -1,0 +1,51 @@
+{
+  "repository": "https://github.com/mezo-org/documentation",
+  "commit": "ddbca2cd013092a4c637be69356695945e20bf8b",
+  "docs": [
+    {
+      "path": "src/content/docs/docs/users/borrow/architecture-and-terminology.md",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/ddbca2cd013092a4c637be69356695945e20bf8b/src/content/docs/docs/users/borrow/architecture-and-terminology.md",
+      "retrievedAt": "2026-10-08T19:59:02.780Z",
+      "sha256": "4f1fa4ff19e7abffe677f6cc075857d211f4eacad65e24075972b029cdcf0801",
+      "excerpts": [
+        {
+          "firstLine": 45,
+          "lastLine": 70,
+          "content": "* Maintaining Interest Rates: Once a loan is opened, it retains the interest rate at which it was created, even if the global rate changes. The interest rate on a loan can only be updated by the user through the refinance function.\n\n:::note\nInterest rates are **fixed for the life of the loan**. The rate you lock in at loan creation never changes unless you choose to refinance.\n:::\n* Refinance Function: The refinance function allows users to adjust their loan’s debt to the new global interest rate. This process incurs a refinancing fee, which is a configurable percentage of the issuance fee. Refinancing offers users the advantage of avoiding collateral movement while incurring lower fees compared to closing and reopening a loan at the updated rate. You can also refinance to extend your line of credit if BTC has appreciated in value.\n* Simple Interest: Interest is calculated using a simple interest model rather than a compounding one.\n* Interest Payments: Interest payments are directed to the PCV (Protocol Controlled Value). The allocation of these payments is governed and can be split between an arbitrary recipient and repayment of the bootstrap loan.\n\n## Additional Governance\n\n* Governance Control: The interest rate and other critical parameters are controlled by governance. Changes to these parameters require a governance proposal and a minimum delay before they can be enacted.\n* Interest Rate Proposals: New interest rates can be proposed by governance. These proposals must be approved after a minimum delay to ensure stability and predictability.\n\n## Protocol Controlled Value (PCV)\n\nThe Protocol Controlled Value (PCV) contract is a key component of the system, responsible for managing fees collected from borrowing and refinancing. Below is an overview of how the PCV operates:\n\n* Fee Collection: Borrowing fees and refinancing fees are directed to the PCV contract.\n* Fee Allocation: Fees collected by the PCV are allocated to paying down the bootstrap loan or sending funds to the gauge system.\n* Governable Split: The allocation of fees between paying down the debt and the gauge system is governable. However, until the bootstrap loan is fully repaid, no more than 50% of the fees can be sent to the gauge system.\n* Post-Debt Repayment: Once the bootstrap loan is fully repaid, fees accrue as Protocol-Owned Liquidity in the StabilityPool.\n\n### Protocol Bootstrap Loan\n\nThe Stability Pool is bootstrapped with a protocol loan against future fees and interest. The MUSD minted from this protocol loan is restricted to use in the Stability Pool. While the protocol loan is in place, a minimum of 50% of the interest and fees charged by the protocol are used to pay down the loan."
+        }
+      ]
+    },
+    {
+      "path": "src/content/docs/docs/users/borrow/fees.md",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/ddbca2cd013092a4c637be69356695945e20bf8b/src/content/docs/docs/users/borrow/fees.md",
+      "retrievedAt": "2026-10-08T19:59:03.042Z",
+      "sha256": "085c1b314fabb46c3bb9313e9c44cbc04a88fe927ec6291fe62c1c27ce63ec30",
+      "excerpts": [
+        {
+          "firstLine": 7,
+          "lastLine": 51,
+          "content": "## Fee Summary\n\n| Fee | Amount | When Charged |\n| --- | --- | --- |\n| **Issuance fee** | 0.1% of borrowed MUSD | Opening or increasing a loan |\n| **Interest** | 1–5% APR (fixed at open) | Accrues on outstanding debt |\n| **Redemption fee** | 0.75% | Exchanging MUSD for BTC collateral |\n| **Refinance fee** | 0.02% of debt | Refinancing a loan to a new rate |\n| **Gas deposit** | 200 MUSD (flat) | Opening a loan (returned on close) |\n\n## Fee Distribution\n\n:::note\nFees are split between two destinations: **(1)** repaying the protocol bootstrap loan and **(2)** the MUSD Savings Vault. The initial split is 50/50 and is governable via the MUSD splitter. A minimum of 50% of fees must go toward loan repayment until the bootstrap loan is fully repaid. After repayment, all fees flow to the Savings Vault.\n:::\n\n![](/docs/images/musd/musd-economy.webp)\n\n## Interest Fees (1–5% APR)\n\nInterest on [MUSD](https://mezo.org/feature/musd) loans is fixed for the life of the loan. When credit is increased, the new credit will be added at the current interest rate.\n\nAt launch, interest fees fund the MUSD treasury stability pool, which covers liquidations and bad debt.\n\n## Redemption Fees (0.75%)\n\nA 0.75% fee withheld from the BTC a redeemer receives when they exchange MUSD for collateral during [redemption](/docs/users/borrow/liquidation-mechanics#redemptions-%EF%B8%8F). It is paid by the redeemer, not by the borrower whose loan is redeemed against.\n\nAt launch, redemption fees fund the MUSD treasury stability pool, which covers liquidations and bad debt.\n\n## Issuance Fee (0.1%)\n\nThe issuance fee is paid when an MUSD loan is opened or when a loan holder borrows more MUSD. The fee is 0.1% of borrowed amount and is paid in MUSD. A \\$10,000 MUSD loan would pay a \\$10 issuance fee in MUSD. If you increase your loan, you pay the issuance fee on the newly borrowed MUSD.\n\n## Refinance Fee (0.02% of debt)\n\nThe refinance fee is incurred when a MUSD loan holder requests to update the loan's interest rate. The borrower may want to refinance their loan if the interest rate offered for new loans is better than the fixed interest rate on the user's loan. Refinancing allows to update the loan's rate to the new rate. Each refinance request incurs a refinance fee of 0.02% of the debt and is paid in MUSD.  \n\n## Gas Deposit (`200 MUSD` flat fee)\n\nA 200 MUSD deposit ensures that liquidations are viable. It is returned when the loan is closed. The gas deposit is minted as extra debt in the loan and held in escrow until the loan is closed. This debt counts towards calculating the collateralization ratio.\n\n## Other Gas & Transaction Fees\n\nUsers interacting with the MUSD system will have to pay transaction fees for each transaction broadcasted to Mezo Network. This includes actions such as minting, redeeming, staking, and claiming."
+        }
+      ]
+    },
+    {
+      "path": "src/content/docs/docs/users/mezo-earn/overview/index.mdx",
+      "url": "https://raw.githubusercontent.com/mezo-org/documentation/ddbca2cd013092a4c637be69356695945e20bf8b/src/content/docs/docs/users/mezo-earn/overview/index.mdx",
+      "retrievedAt": "2026-10-08T19:59:03.756Z",
+      "sha256": "c4e757064b3df3734d124a15a6a97098961f4bff4fb12222cdfd2d249a471670",
+      "excerpts": [
+        {
+          "firstLine": 10,
+          "lastLine": 36,
+          "content": "Mezo Earn is the economic engine powering the Mezo network. It enables bitcoin holders to earn yield on their BTC while participating in governance decisions that shape how the network allocates resources and rewards.\n\nBy locking BTC into the system, users gain voting power, earn passive income from network activity, and help direct liquidity across the Mezo ecosystem.\n\n[Download the Mezo Earn Whitepaper (PDF)](/docs/Mezo_Earn_Whitepaper.pdf)\n\n<YouTube id=\"6rthu_iub7E\" title=\"Mezo Earn Overview\" />\n\n![Mezo Earn Overview](/docs/images/mezo-token/EARN%20Chart%2012.png)\n\n---\n\n## Where does yield come from?\n\nMezo Earn generates yield from real economic activity on the network. There are three primary sources:\n\n### 1. Swap Fees\n\nWhen users trade assets on Mezo's DEX, each swap incurs a fee. These fees accumulate in liquidity pools and are distributed to participants who vote for those pools.\n\n### 2. MUSD Lending Revenue\n\nMezo allows users to borrow MUSD (a bitcoin-backed stablecoin) against their BTC collateral. The interest, origination fees, and refinancing fees generated from these loans flow back into the system and are distributed to active participants.\n\n### 3. Bridging & Transaction Fees\n\nMoving assets onto Mezo, executing transactions, and other on-chain activity all generate fees. These fees are distributed directly to veBTC holders as passive yield—**no voting required**."
+        },
+        {
+          "firstLine": 126,
+          "lastLine": 146,
+          "content": "This turns boost into a tradable service. BTC holders who want higher multipliers can either acquire MEZO themselves or pay incentives to attract veMEZO votes. MEZO holders can earn yield by directing their votes to gauges with attractive incentives.\n\n---\n\n## How Rewards Flow\n\n**Passive yield:** All veBTC holders receive a share of bridging and chain fees proportional to their boosted voting weight—no action required beyond locking.\n\n**Active yield:** By voting for specific gauges, you can earn additional fees and incentives from the pools and protocols you support.\n\n**veMEZO yield:** veMEZO holders earn incentives posted on veBTC gauges they vote for, plus rebase distributions that protect against dilution.\n\n---\n\n## Getting Started\n\n<Steps>\n1. **Lock BTC** → Receive a veBTC NFT with base voting power\n2. **Vote for gauges** → Direct where emissions flow and earn fees\n3. **Claim rewards** → Collect fees and incentives each epoch\n4. **(Optional) Lock MEZO** → Create veMEZO to boost your veBTC or earn by voting on others' boost gauges"
+        }
+      ]
+    }
+  ],
+  "captureKind": "source-excerpts"
+}

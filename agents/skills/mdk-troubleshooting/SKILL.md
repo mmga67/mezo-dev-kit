@@ -67,7 +67,10 @@ owner.
 5. Apply only the bounded safe mitigation. Never hide an unknown result,
    disable validation, or blindly retry a write.
 6. If evidence disproves maintained knowledge, correct the canonical owner
-   first and update the troubleshooting projection.
+   first and update the troubleshooting projection. Follow
+   [observed-change maintenance](../../../docs/standards/knowledge-management.md#react-to-an-observed-change)
+   for affected architecture, documentation, skills and consumers; a successful
+   local mitigation does not close their unresolved claims.
 7. Reject application-only, stale, speculative, and unverified findings.
 
 Resolve before probing: use the offline context commands to find the matching

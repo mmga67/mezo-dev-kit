@@ -11,6 +11,13 @@ Read the application's AGENTS.md and existing integration first. Run
 `pnpm exec mdk docs fetch api:bridges --offline`. Search the
 matching local corpus for only the knowledge needed by the task.
 
+For architecture explanations, use the available economic-system and bridge
+references, then authoritative sources for uncovered claims. Keep BTC custody
+and token representation, provider, direction and each asset's destination set
+distinct. The installed MUSD NTT/Native subset does not define all Mezo bridges;
+do not infer MEZO destinations from MUSD routes or promote a published route to
+supported preparation. Apply live checks to operations that require them.
+
 ## Procedure
 
 1. Select the provider, direction and token representation first. Check the reference for the exact implemented preparation, recovery and observer boundaries.

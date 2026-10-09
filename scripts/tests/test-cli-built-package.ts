@@ -41,7 +41,7 @@ try {
   assert.equal(bundle.id, repeated.id, "Bundle generation must be deterministic");
   assert.ok(bundle.resources.length > 100);
   assert.ok(bundle.exclusions.length > 0);
-  assert.equal(bundle.skills.length, 19);
+  assert.equal(bundle.skills.length, 20);
   assert.ok(bundle.skills.some((skill) => skill.name === "mdk-frontend-application"));
   assert.ok(bundle.sets?.some((set) => set.id === "frontend"));
   const architectureSkill = bundle.skills.find(
@@ -140,6 +140,42 @@ try {
   ]);
   const catalog = resultData(await pnpm(project, ["exec", "mdk", "sets", "--json"]));
   assert.ok(Array.isArray(catalog.sets) && catalog.sets.length === bundle.sets?.length);
+  const beforeEconomy = await readFile(join(project, "package.json"));
+  const beforeEconomyInstructions = await readFile(join(project, "AGENTS.md"));
+  const economy = resultData(
+    await pnpm(project, ["exec", "mdk", "add", "economy", "--offline", "--json"]),
+  );
+  assert.equal(economy.complete, true);
+  assert.deepEqual(await readFile(join(project, "package.json")), beforeEconomy);
+  assert.deepEqual(await readFile(join(project, "AGENTS.md")), beforeEconomyInstructions);
+  assert.deepEqual(
+    await readFile(join(project, ".agents/skills/mdk-economic-system-application/SKILL.md")),
+    await readFile(join(root, "agents/consumer/skills/mdk-economic-system-application/SKILL.md")),
+  );
+  for (const id of [
+    "guide:docs/architecture/mezo-economic-system-composition.md",
+    "guide:knowledge/protocols/musd/savings/review/source-conflicts.md",
+    "knowledge:protocols/vaults/usdc-lending:economic-relationships",
+  ]) {
+    const shown = resultData(
+      await pnpm(project, ["exec", "mdk", "docs", "show", id, "--offline", "--json"]),
+    );
+    assert.ok(typeof shown.content === "string" && shown.content.length > 0);
+    if (id.startsWith("knowledge:")) {
+      const retained: unknown = JSON.parse(shown.content);
+      const expected: unknown = JSON.parse(
+        await readFile(
+          join(root, "knowledge/protocols/vaults/usdc-lending/records/economic-relationships.json"),
+          "utf8",
+        ),
+      );
+      assert.deepEqual(
+        retained,
+        expected,
+        "Offline retrieval must preserve the complete evidence envelope",
+      );
+    }
+  }
   const beforeAdd = await readFile(join(project, "package.json"));
   // An existing independent app can bootstrap the base set without a generated starter.
   const existing = join(temporary, "existing-app");

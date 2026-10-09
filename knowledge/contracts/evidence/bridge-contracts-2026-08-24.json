@@ -9,11 +9,7 @@
   "verifiedAt": "2026-10-06T14:04:51.613Z",
   "reviewAfter": "2026-11-05T00:00:00Z",
   "scope": {
-    "networkIds": [
-      "mezo-mainnet",
-      "ethereum-mainnet",
-      "base-mainnet"
-    ],
+    "networkIds": ["mezo-mainnet", "ethereum-mainnet", "base-mainnet"],
     "deploymentIds": [
       "bridge.musd-ntt-manager@mezo-mainnet",
       "bridge.musd-ntt-manager@ethereum-mainnet",
@@ -131,7 +127,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },
@@ -189,7 +185,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },
@@ -247,7 +243,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },
@@ -305,7 +301,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },
@@ -363,7 +359,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },
@@ -421,7 +417,7 @@
       },
       "explorer": {
         "primaryEvidence": false,
-        "note": "ADR-0005 class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
+        "note": "The official-deployment-repository-live-configuration class uses the official deployment repository, successful broadcast receipt, live fixed-block slots/code, and workflow configuration rather than explorer source labels."
       },
       "outcome": "passed"
     },

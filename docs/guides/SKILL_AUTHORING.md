@@ -339,6 +339,11 @@ its authorities; retain only a useful pointer under the
 
 ## Update an existing skill
 
+An observation in any domain can invalidate a skill assumption. Follow
+[observed-change maintenance](../standards/knowledge-management.md#react-to-an-observed-change)
+to identify affected procedures. Keep fact changes in their knowledge owners;
+update skill retrieval, routing or reasoning only where the procedure changes.
+
 For package capability or contributor routing changes, follow the
 [capability guidance maintenance rule](../../CONTRIBUTING.md#keep-capability-guidance-current)
 and run the impacted [behavioral cases](./CONTRIBUTOR_AGENT_EVALUATION.md).

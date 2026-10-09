@@ -16,7 +16,7 @@ Liquity behavior into MDK code.
 - Reading or explaining a classic MUSD trove.
 - Computing collateral/debt ratios, interest, fees, capacity, repayment, or
   liquidation splits.
-- Designing future pure borrowing types/calculations or block-pinned readers.
+- Designing or reviewing pure borrowing calculations or block-pinned readers.
 - Reviewing open, adjust, repay, close, claim, liquidation, or refinance flows.
 
 ## Do Not Use When
@@ -26,7 +26,7 @@ Liquity behavior into MDK code.
   skill and module.
 - Treating rounded LTV, UI risk classes, product planners, or wallet strategy as
   protocol truth.
-- Treating the published 0.1% refinance prose as deployed behavior instead of
+- Treating the published refinance prose as deployed behavior instead of
   evaluating the pinned nested formula and current parameters.
 - Shipping a write path while its embedded capability remains proposed.
 
@@ -59,7 +59,13 @@ event field alone.
 
 ## Procedure
 
-1. Classify the request as state read, pure calculation, borrower operation,
+Apply [knowledge retrieval](../../../docs/standards/knowledge-management.md#read-or-use-knowledge):
+use scoped evidence for explanations and historical claims, explicit input
+provenance for calculations, and live reads for current operations. Maintenance
+checks below apply to changed knowledge. A blocked operation does not block a
+sourced explanation of borrowing.
+
+1. Classify the request as explanation, state read, pure calculation, borrower operation,
    liquidation, or redemption.
 2. Fail closed if the relevant catalog is not reviewed or the capability is
    listed in `blockedCapabilities`.
@@ -68,7 +74,8 @@ event field alone.
 4. For deployed behavior, give block-pinned state and version-matched verified
    source precedence over descriptive documentation. Retain documentation
    conflicts as discrepancies; do not average them into the fact.
-5. Read mutable and borrower-specific inputs at an explicit block. Record the
+5. For current position calculations or preparation, read mutable and
+   borrower-specific inputs at an explicit block. Record the
    block, block timestamp, price provenance, fee-exempt status, and read set.
 6. Normalize the position using `borrowing-position`: distinguish stored,
    pending, newly accrued, net, composite, principal, interest, and entire
@@ -83,7 +90,7 @@ event field alone.
    cache state. Transaction lifecycle belongs to the shared core boundary.
 10. On changes, update candidate disposition, pinned evidence, canonical record,
     fixture, derived reference, and validator together.
-11. Run the borrowing validator plus its MUSD, contract, and network
+11. For maintenance, run the borrowing validator plus its MUSD, contract, and network
     dependencies. Require qualified review for changed facts or capabilities.
 
 ## Verification
@@ -121,5 +128,5 @@ Stop for qualified direction when:
 - Increasing borrowing capacity merely because collateral or price increased.
 - Computing minimum requested debt without the mode/exemption-dependent fee.
 - Paying principal before interest.
-- Copying the stale 0.1% refinance prose instead of evaluating the deployed
+- Copying the stale refinance prose instead of evaluating the deployed
   nested fee formula.

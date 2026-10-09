@@ -20,8 +20,8 @@ This document does not replace:
   protocol safety, secrets, and release security;
 - domain knowledge and package documentation, which own domain correctness and
   local commands; or
-- the [manifest](../manifest), which owns current project decisions, with
-  rationale retained in historical decision records.
+- the [manifest](../manifest), which owns current project decisions and their
+  rationale.
 
 When rules conflict, the more safety-preserving rule applies until the owning
 documents are reconciled. A package-local rule may refine this standard for a

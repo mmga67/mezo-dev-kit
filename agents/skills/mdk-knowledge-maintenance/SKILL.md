@@ -23,6 +23,11 @@ description: Maintain, migrate, validate or generate knowledge modules and deriv
 2. Identify the single owning module and preserve stable module, resource, and
    record IDs.
 3. Apply the matching workflow and conformance checklist from the standard.
+   For an observation from any task, follow
+   [observed-change maintenance](../../../docs/standards/knowledge-management.md#react-to-an-observed-change):
+   verify the scoped claim, run `pnpm context impact` for its owner/path, and
+   review semantic consumers outside the report's coverage. Record each affected
+   owner's update, unaffected rationale or unresolved dependency in the task.
 4. For a fact change, verify exact scope against pinned authoritative evidence;
    update evidence and canonical records together without weakening status,
    limitation, freshness, or review fields.
