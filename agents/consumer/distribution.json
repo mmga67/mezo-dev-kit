@@ -7,6 +7,7 @@
     "docs/guides/APPLICATION_ARCHITECTURE.md",
     "docs/guides/FRONTEND_PATTERNS.md",
     "docs/guides/EVIDENCE_REFRESH.md",
+    "docs/guides/INDEXING_RECONCILIATION.md",
     "docs/architecture/mezo-economic-system-composition.md",
     "knowledge/generated/economic-relationships.md",
     "knowledge/workflows/bridges/review/economic-routes.md",
@@ -62,7 +63,7 @@
     {
       "id": "history",
       "packages": ["@mezo-dev-kit/core"],
-      "resources": ["api:core"]
+      "resources": ["api:core", "guide:docs/guides/indexing_reconciliation.md"]
     },
     {
       "id": "frontend",

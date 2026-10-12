@@ -31,6 +31,33 @@ The [manifest](../manifest#document-authority) defines authority. This standard
 owns writing and navigation conventions; the [coding standard](coding.md#api-and-implementation-comments)
 owns API comments and TSDoc.
 
+## Build a connected explanation
+
+Human-facing documentation must work for its intended reader without requiring
+MDK's internal vocabulary. Establish what the reader can accomplish and explain
+the necessary concepts before using them to introduce a choice or action. Show
+how those concepts relate; defining several terms separately is not enough.
+
+Let the reader's progress determine the order. Each section should answer the
+question raised by the preceding step or offer a clearly marked alternative.
+For a tool guide, this can mean starting a project, trying it, adding a feature,
+and understanding an unsuccessful result. Introduce file formats, packaging
+details and internal checks when they help the reader make a decision; keep
+other implementation detail in its reference or contributor owner.
+
+Use familiar words and concrete verbs. Explain a necessary technical term where
+it first matters, including what it means for the reader. Expanding an acronym
+alone may not explain the concept. Describe a check by what its result allows
+the person to do next. Keep a material limit beside the action it affects.
+
+Review a representative reading path with the assumed background in mind. For
+an application guide, a developer familiar with TypeScript but new to MDK should
+be able to explain the tool's purpose, choose the relevant path, complete its
+steps and recognize success without opening implementation code. For other
+audiences, use the knowledge appropriate to their task. A reviewer walkthrough
+is an editorial check; report an observed newcomer trial separately when one
+was actually performed. Link and format checks cannot establish understanding.
+
 ## Write a useful README
 
 Use this outline as a starting point, omitting sections that do not help:
@@ -80,15 +107,12 @@ before presenting a link inventory. Use maintained models as the basis and link
 their detailed owners; a summary does not become another authority for formulas,
 deployments, parameters, or evidence.
 
-Build a connected explanation. Introduce a concept before using it to explain
-the next choice, and make clear why one paragraph or section follows another.
+Apply the [connected-explanation rules](#build-a-connected-explanation) to the subject.
 For contracts, finding a deployment leads to choosing its interface, checking
 the version, and inspecting source when more detail is needed. Avoid assembling
 independent facts, caveats, or maintenance notes into a page without that flow.
 
-Use familiar words and concrete verbs. Expand unfamiliar abbreviations at first
-use and explain necessary terms where they appear; spelling out an acronym alone
-may not explain the concept. Prefer headings such as “Read the saved contract
+Prefer headings such as “Read the saved contract
 source code” to “Retained CL source.” Explain what a check establishes and why
 the reader needs it instead of relying on internal process labels. The
 [contracts README](../../knowledge/contracts/README.md) illustrates this approach.
@@ -373,6 +397,8 @@ owners rather than carrying forward a dated assessment.
 ## Review a documentation change
 
 - Can the intended reader explain the page's purpose and take its first useful step?
+- Does the explanation introduce the concepts needed for each next choice, and
+  can the reader recognize success without learning unrelated implementation details?
 - Can each named audience find its own starting route, with only the setup its task needs?
 - Does each section serve that reader, with agent-only steps clearly located?
 - Is there one detailed owner, with descriptive working links to it?

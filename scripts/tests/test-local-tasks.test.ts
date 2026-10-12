@@ -152,7 +152,12 @@ test("review and done cannot conceal unfinished deliverables or acceptance", asy
 test("blocked tasks with no blocker fail", async () => {
   const root = await fixture(),
     current = await task(root, 1, "blocked");
-  await writeFile(current.path, current.content.replace("- None / ...", "None."));
+  const withoutBlocker = current.content.replace(
+    /(?<=^## Dependencies \/ Blockers\n)[\s\S]*?(?=^## )/m,
+    "\nNone.\n\n",
+  );
+  expect(withoutBlocker).not.toBe(current.content);
+  await writeFile(current.path, withoutBlocker);
   expect((await auditLocalTasks(root)).diagnostics.map((d) => d.message)).toContain(
     "blocked task must name its unresolved condition and next action",
   );

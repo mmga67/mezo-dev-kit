@@ -165,11 +165,16 @@ destination manager. It derives a digest from the strict NTT manager envelope in
 manager's `TransferRedeemed` event. Inbound queue events use that digest. Receive/attestation status
 alone is not delivery and is not assigned a joined state by this API.
 
-The retained TypeChain manager ABI omits digest-only `TransferSent`. This observer uses the correct
-transceiver event and pinned source encoding; it does not patch that ABI or qualify its writer
-interfaces. See [bridge review gaps](../../knowledge/workflows/bridges/review/gaps.md). Contracts
-resolves receipt generations; changed/unavailable registered identities require reassessment.
-Current runtime/configuration is not verified.
+The original TypeChain manager artifact omitted digest-only `TransferSent` and used incorrect
+indexed parameters for its six-field overload. The canonical full manager ABI includes both
+source-matched declarations following the accepted October 7 correction; the original artifact is
+retained for audit. This was an ABI metadata correction within the existing deployments, not a
+contract upgrade. The observer continues to use `SendTransceiverMessage` and its pinned envelope
+encoding; its behavior does not depend on the corrected overloads. The correction does not qualify
+writer interfaces or renew live evidence. See the
+[ABI correction review](../../knowledge/workflows/bridges/review/gaps.md#private-ntt-receipt-observer-review).
+Contracts resolves receipt generations; changed/unavailable registered identities require
+reassessment. Current runtime/configuration is not verified.
 
 ## Resume and failures
 

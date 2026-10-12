@@ -166,6 +166,11 @@ canonical knowledge bytes and skill directories remain unchanged. The pinned pnp
 interprets the existing root lockfile to derive starter dependency resolutions. No dependencies are
 installed by generation.
 
+A Git revision, when available, identifies the base checkout. Exported source may have no revision.
+Input hashes identify the actual snapshot, including uncommitted changes; the base revision alone
+does not identify those bytes. Generated starter tooling overrides preserve the root lockfile's
+exact external dependency resolutions.
+
 Markdown navigation links are rewritten for the bundle, while fenced, indented,
 and inline code examples retain their literal text. Links mentioned only inside
 examples do not add supporting-resource dependencies. Other links to excluded
@@ -184,6 +189,12 @@ This function validates pnpm's actual packed-file report
 against built files, license and reference docs (plus CLI schemas/assets). Contributor source and
 tests are excluded. It performs no publication or dependency installation.
 
+CLI artifacts include their generated assets, schemas and the locked production dependency closure
+required by Evidence. Packing uses a temporary hoisted tree and the existing `tar` tool without
+changing the workspace linker. The pinned pnpm 11 packer omits bundled dependency files, so the
+packer appends the validated production closure and checks the final archive against its exact
+file inventory. Multiple installed dependency versions retain their nested resolution paths.
+
 ## Failures and limits
 
 `CliError` extends Error with a readonly `code: CliErrorCode` and optional cause. Codes are
@@ -198,6 +209,22 @@ version strings are insufficient. Cached references must match declared sizes/di
 preserves subsequent edits and requires a single recovery process; normal project directories are
 assumed. Individual atomic replacements do not imply universal multi-file or power-loss atomicity.
 File discovery, live protocol evidence and public release approval remain distinct qualifications.
+Rollback may leave empty generated directories. Hostile concurrent replacement of filesystem
+ancestors is outside the private pilot's qualification.
+
+## Verification scope
+
+After building the workspace, `node scripts/tests/test-cli-built-package.ts` checks external packed
+installation, unchanged canonical records and skills, deterministic generation, starter checks,
+deeper retrieval, the declared offline corpus and locked restoration. Vitest covers malformed
+inputs, conflicts, compatibility, recovery, path containment and download failures.
+
+The recorded agent-host evaluation used Codex 0.154.0-alpha.6.1. Both consumer skills in that
+evaluation were reported enabled at repository scope through the local app-server catalog; the
+session retrieved the matching Core reference and exercised the installed starter. This is a
+historical observation of that host, version and selection, not an evaluation of every current skill.
+Further host/version evaluations and public release approval remain separate. These checks do not
+establish writer support, deployment freshness or transaction authorization.
 
 ## Evidence commands
 

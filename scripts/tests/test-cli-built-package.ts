@@ -56,6 +56,9 @@ try {
   for (const guide of ["application_architecture", "frontend_patterns"]) {
     assert.ok(bundle.resources.some((resource) => resource.id === `guide:docs/guides/${guide}.md`));
   }
+  const historyGuideId = "guide:docs/guides/indexing_reconciliation.md";
+  const historyGuide = bundle.resources.find((resource) => resource.id === historyGuideId);
+  assert.ok(historyGuide, "History consumers need the guide linked by Core's scanner reference");
   for (const resource of bundle.resources.filter((item) => item.kind === "knowledge"))
     assert.deepEqual(
       await readFile(join(source, resource.path)),
@@ -140,6 +143,22 @@ try {
   ]);
   const catalog = resultData(await pnpm(project, ["exec", "mdk", "sets", "--json"]));
   assert.ok(Array.isArray(catalog.sets) && catalog.sets.length === bundle.sets?.length);
+  const history = resultData(
+    await pnpm(project, ["exec", "mdk", "add", "history", "--offline", "--json"]),
+  );
+  assert.equal(history.complete, true);
+  const coreDocs = resultData(
+    await pnpm(project, ["exec", "mdk", "docs", "show", "api:core", "--offline", "--json"]),
+  );
+  assert.ok(typeof coreDocs.content === "string");
+  assert.ok(
+    coreDocs.content.includes(`(${historyGuide.path.slice("references/".length)})`),
+    "The installed Core reference must link to the local indexing guide",
+  );
+  const historyDocs = resultData(
+    await pnpm(project, ["exec", "mdk", "docs", "show", historyGuideId, "--offline", "--json"]),
+  );
+  assert.equal(historyDocs.content, await readFile(join(source, historyGuide.path), "utf8"));
   const beforeEconomy = await readFile(join(project, "package.json"));
   const beforeEconomyInstructions = await readFile(join(project, "AGENTS.md"));
   const economy = resultData(

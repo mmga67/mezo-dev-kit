@@ -19,6 +19,10 @@ compatibility promises. Earlier history remains available in Git.
 
 ### Changed
 
+- Reorganized the [CLI guide](docs/guides/MDK_CLI.md) around application setup,
+  capability additions and local documentation. Connected explanations and
+  reader-path review now apply across human-facing documentation; advanced
+  packaging and verification details retain their reference owners.
 - Established a [knowledge README standard](docs/standards/documentation.md#knowledge-readmes)
   and revised knowledge entry points to explain their subjects, guide useful
   next steps, and state practical limits. Shared review terminology lives in the
@@ -44,6 +48,10 @@ compatibility promises. Earlier history remains available in Git.
 
 ### Fixed
 
+- Included the indexing and reconciliation guide in consumer documentation so
+  installed history users can follow Core's reference offline. Clarified the
+  original NTT ABI defect and accepted canonical correction in the distributed
+  Bridges API reference.
 - Corrected generated knowledge references and review notes that described
   implemented private SDK readers or writers as absent. References now route
   implementation questions to package APIs and preserve separate evidence and
